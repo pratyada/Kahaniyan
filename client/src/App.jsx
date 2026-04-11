@@ -10,6 +10,8 @@ import Settings from './pages/Settings.jsx';
 import Roadmap from './pages/Roadmap.jsx';
 import VoiceStudio from './pages/VoiceStudio.jsx';
 import CulturalLessons from './pages/CulturalLessons.jsx';
+import Characters from './pages/Characters.jsx';
+import EditFamily from './pages/EditFamily.jsx';
 import BottomNav from './components/BottomNav.jsx';
 import PlayerBar from './components/PlayerBar.jsx';
 import RadioBar from './components/RadioBar.jsx';
@@ -47,6 +49,8 @@ function Shell() {
           <Route path="/radio" element={<Radio />} />
           <Route path="/lessons" element={<CulturalLessons />} />
           <Route path="/voices" element={<VoiceStudio />} />
+          <Route path="/characters" element={<Characters />} />
+          <Route path="/family" element={<EditFamily />} />
           <Route path="/guides" element={<Guides />} />
           <Route path="/settings" element={<Settings />} />
           <Route path="/roadmap" element={<Roadmap />} />

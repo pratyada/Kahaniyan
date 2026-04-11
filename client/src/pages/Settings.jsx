@@ -71,20 +71,32 @@ export default function Settings() {
         </div>
       </section>
 
-      {/* QUICK NAV */}
-      <SectionCard title="Customize">
+      {/* QUICK NAV — customization */}
+      <SectionCard title="Customize stories">
         <div className="grid grid-cols-2 gap-3">
           <NavTile
-            icon="🎙️"
-            title="Voice Studio"
-            sub={`${voices.length} ${voices.length === 1 ? 'voice' : 'voices'}`}
-            onClick={() => navigate('/voices')}
+            icon="👨‍👩‍👧"
+            title="Story cast"
+            sub={`${(profile.characters?.length || 0)} ${(profile.characters?.length || 0) === 1 ? 'character' : 'characters'}`}
+            onClick={() => navigate('/characters')}
+          />
+          <NavTile
+            icon="🏠"
+            title="Edit family"
+            sub="Name, age, country, religion"
+            onClick={() => navigate('/family')}
           />
           <NavTile
             icon="🪷"
             title="Cultural Lessons"
             sub="Many traditions"
             onClick={() => navigate('/lessons')}
+          />
+          <NavTile
+            icon="🎙️"
+            title="Voice Studio"
+            sub={`${voices.length} ${voices.length === 1 ? 'voice' : 'voices'}`}
+            onClick={() => navigate('/voices')}
           />
           <NavTile icon="✨" title="Guides" sub="5 reads" onClick={() => navigate('/guides')} />
           <NavTile icon="🛣️" title="Roadmap" sub="Build status" onClick={() => navigate('/roadmap')} />

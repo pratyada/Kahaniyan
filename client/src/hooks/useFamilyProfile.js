@@ -1,6 +1,15 @@
 import { createContext, createElement, useCallback, useContext, useEffect, useState } from 'react';
+import { defaultCharactersFromProfile } from '../utils/constants.js';
 
 const KEY = 'kahaniyo:familyProfile';
+
+function migrate(profile) {
+  if (!profile) return profile;
+  if (!profile.characters || profile.characters.length === 0) {
+    return { ...profile, characters: defaultCharactersFromProfile(profile) };
+  }
+  return profile;
+}
 
 const FamilyProfileCtx = createContext(null);
 
@@ -11,7 +20,15 @@ export function FamilyProfileProvider({ children }) {
   useEffect(() => {
     try {
       const raw = localStorage.getItem(KEY);
-      if (raw) setProfile(JSON.parse(raw));
+      if (raw) {
+        const migrated = migrate(JSON.parse(raw));
+        setProfile(migrated);
+        try {
+          localStorage.setItem(KEY, JSON.stringify(migrated));
+        } catch {
+          // ignore
+        }
+      }
     } catch {
       // ignore
     }
@@ -19,9 +36,10 @@ export function FamilyProfileProvider({ children }) {
   }, []);
 
   const save = useCallback((p) => {
-    setProfile(p);
+    const migrated = migrate(p);
+    setProfile(migrated);
     try {
-      localStorage.setItem(KEY, JSON.stringify(p));
+      localStorage.setItem(KEY, JSON.stringify(migrated));
     } catch {
       // ignore quota errors
     }

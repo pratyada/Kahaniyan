@@ -78,3 +78,92 @@ export const FAMILY_RELATIONS = [
 // The training paragraph from product spec — used by voice cloning models.
 // Contains the full phonetic + emotional range needed for a good voice clone.
 export const VOICE_TRAINING_PARAGRAPH = `From the moment I saw you, everything changed. Listen carefully — this is not a drill. I need you to breathe, stay calm, and trust me. Why would anyone leave behind something so beautiful? Don't you dare give up now. Whisper it softly... tell me the story of how we got here. One day, all of this will make perfect sense.`;
+
+// ─── Character system ───
+// "Characters" are the cast available to appear in tonight's story.
+// Bucket maps a free-form relation to which template slot it fills.
+export const CHARACTER_BUCKETS = {
+  self: 'self',
+  sibling: 'sibling',
+  bhaiya: 'sibling',
+  didi: 'sibling',
+  dada: 'grandfather',
+  nana: 'grandfather',
+  grandfather: 'grandfather',
+  dadi: 'grandmother',
+  nani: 'grandmother',
+  grandmother: 'grandmother',
+  mummy: 'grandmother', // adult woman slot fallback
+  daddy: 'grandfather', // adult man slot fallback
+  chacha: 'grandfather',
+  chachi: 'grandmother',
+  mama: 'grandfather',
+  mami: 'grandmother',
+  pet: 'pet',
+  imaginary: 'sibling',
+  friend: 'sibling',
+  other: 'sibling',
+};
+
+export const RELATION_EMOJI = {
+  self: '🌟',
+  sibling: '🧒',
+  bhaiya: '🧑',
+  didi: '👧',
+  dada: '👴',
+  dadi: '👵',
+  nana: '👴',
+  nani: '👵',
+  mummy: '👩',
+  daddy: '👨',
+  chacha: '🧔',
+  chachi: '👩',
+  mama: '🧔',
+  mami: '👩',
+  pet: '🐶',
+  imaginary: '🦄',
+  friend: '🧒',
+  other: '✨',
+};
+
+// Map a character into the template slot it fills.
+// Falls back to first empty slot if relation has no canonical bucket.
+export function mapCharactersToFamilyMembers(characters) {
+  const slots = { sibling: '', grandfather: '', grandmother: '', pet: '' };
+  const orderedFallback = ['sibling', 'grandfather', 'grandmother', 'pet'];
+  const nonProtagonist = characters.filter((c) => c.relation !== 'self');
+  for (const c of nonProtagonist) {
+    const bucket = CHARACTER_BUCKETS[c.relation] || 'sibling';
+    if (bucket !== 'self' && !slots[bucket]) {
+      slots[bucket] = c.name;
+    } else {
+      // bucket already filled — overflow to next empty slot
+      const open = orderedFallback.find((s) => !slots[s]);
+      if (open) slots[open] = c.name;
+    }
+  }
+  return slots;
+}
+
+// Build the default character list from a legacy onboarding profile.
+// Used to auto-migrate users who completed onboarding before the
+// Characters feature existed.
+export function defaultCharactersFromProfile(profile) {
+  const list = [];
+  if (profile?.childName) {
+    list.push({ id: 'char_self', name: profile.childName, relation: 'self', emoji: '🌟', traits: '' });
+  }
+  if (profile?.sibling) {
+    list.push({ id: 'char_sibling', name: profile.sibling, relation: 'sibling', emoji: RELATION_EMOJI.sibling, traits: '' });
+  }
+  if (profile?.grandfather) {
+    list.push({ id: 'char_dada', name: profile.grandfather, relation: 'dada', emoji: RELATION_EMOJI.dada, traits: '' });
+  }
+  if (profile?.grandmother) {
+    list.push({ id: 'char_nani', name: profile.grandmother, relation: 'nani', emoji: RELATION_EMOJI.nani, traits: '' });
+  }
+  if (profile?.pet) {
+    list.push({ id: 'char_pet', name: profile.pet, relation: 'pet', emoji: RELATION_EMOJI.pet, traits: '' });
+  }
+  return list;
+}
