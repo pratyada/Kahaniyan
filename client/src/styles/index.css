@@ -1,0 +1,188 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ───────────────────────────────────────────────
+   Kahaniyo Design Tokens
+   Spotify-inspired dark UI, adapted for bedtime warmth.
+   ─────────────────────────────────────────────── */
+:root {
+  /* Surfaces */
+  --bg-base: #0a0a0f;
+  --bg-surface: #141420;
+  --bg-elevated: #1c1c2a;
+  --bg-card: #22222f;
+
+  /* Text */
+  --ink: #f5f0e8;
+  --ink-muted: #a8a39a;
+  --ink-dim: #6e6a63;
+
+  /* Brand */
+  --gold: #f0a500;
+  --gold-bright: #ffb733;
+  --gold-dim: #b87f00;
+  --plum: #3a2a4a;
+
+  /* Semantic */
+  --negative: #f3727f;
+  --warning: #ffa42b;
+  --info: #539df5;
+
+  /* Shadows */
+  --shadow-lift: 0 8px 24px rgba(0, 0, 0, 0.5);
+  --shadow-card: 0 8px 8px rgba(0, 0, 0, 0.3);
+  --shadow-glow: 0 0 32px rgba(240, 165, 0, 0.25);
+
+  /* Type */
+  --font-display: 'Playfair Display', Georgia, serif;
+  --font-ui: 'DM Sans', system-ui, -apple-system, sans-serif;
+  --font-story: 'Lora', Georgia, serif;
+}
+
+/* ───── Reset / base ───── */
+* {
+  -webkit-tap-highlight-color: transparent;
+}
+
+html,
+body,
+#root {
+  height: 100%;
+  margin: 0;
+  background: var(--bg-base);
+  color: var(--ink);
+  font-family: var(--font-ui);
+  font-size: 16px;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  overscroll-behavior-y: none;
+}
+
+button {
+  font-family: inherit;
+  cursor: pointer;
+  border: none;
+  background: none;
+  color: inherit;
+}
+
+input,
+select,
+textarea {
+  font-family: inherit;
+  color: inherit;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+/* ───── Reusable layers ───── */
+@layer components {
+  .display-title {
+    @apply font-display text-3xl font-bold tracking-tight;
+  }
+  .ui-title {
+    @apply font-ui text-xl font-semibold;
+  }
+  .ui-label {
+    @apply font-ui text-xs font-bold uppercase tracking-[0.14em] text-ink-muted;
+  }
+
+  /* Pill button — Spotify-style */
+  .btn-pill {
+    @apply inline-flex items-center justify-center gap-2 rounded-pill px-5 py-3
+           font-ui text-sm font-bold uppercase tracking-[0.12em]
+           transition-transform duration-150 active:scale-[0.97];
+  }
+  .btn-primary {
+    @apply btn-pill bg-gold text-bg-base shadow-glow hover:brightness-110;
+  }
+  .btn-secondary {
+    @apply btn-pill bg-bg-elevated text-ink hover:bg-bg-card;
+  }
+  .btn-outline {
+    @apply btn-pill border border-ink-dim text-ink hover:border-ink;
+  }
+
+  /* Surfaces */
+  .card {
+    @apply rounded-2xl bg-bg-surface p-4 shadow-card;
+  }
+  .card-elevated {
+    @apply rounded-2xl bg-bg-elevated p-4 shadow-lift;
+  }
+
+  /* Inputs */
+  .field {
+    @apply w-full rounded-2xl bg-bg-surface px-4 py-3
+           font-ui text-base text-ink placeholder:text-ink-dim
+           outline-none ring-1 ring-inset ring-white/5
+           focus:ring-gold;
+  }
+
+  /* Mobile shell — phone-shaped on desktop, full bleed on mobile */
+  .phone-shell {
+    @apply relative mx-auto flex h-[100dvh] w-full max-w-[460px] flex-col
+           bg-bg-base overflow-hidden;
+  }
+
+  /* Page scroll area above bottom nav */
+  .page-scroll {
+    @apply flex-1 overflow-y-auto overflow-x-hidden pb-32;
+  }
+}
+
+/* ───── Star-field animation (player background) ───── */
+.starfield {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(2px 2px at 20% 30%, rgba(255, 255, 255, 0.85), transparent 50%),
+    radial-gradient(1.5px 1.5px at 60% 20%, rgba(255, 255, 255, 0.7), transparent 50%),
+    radial-gradient(2px 2px at 80% 60%, rgba(255, 255, 255, 0.6), transparent 50%),
+    radial-gradient(1px 1px at 35% 70%, rgba(255, 255, 255, 0.7), transparent 50%),
+    radial-gradient(1.5px 1.5px at 85% 85%, rgba(255, 255, 255, 0.5), transparent 50%),
+    radial-gradient(2px 2px at 50% 50%, rgba(255, 255, 255, 0.4), transparent 50%),
+    radial-gradient(1px 1px at 10% 80%, rgba(255, 255, 255, 0.6), transparent 50%),
+    radial-gradient(1px 1px at 70% 35%, rgba(255, 255, 255, 0.7), transparent 50%);
+  animation: twinkle 6s ease-in-out infinite;
+  pointer-events: none;
+}
+
+.aurora {
+  position: absolute;
+  inset: -20%;
+  background: radial-gradient(
+      40% 50% at 30% 40%,
+      rgba(240, 165, 0, 0.18),
+      transparent 70%
+    ),
+    radial-gradient(35% 45% at 70% 65%, rgba(58, 42, 74, 0.6), transparent 70%);
+  filter: blur(40px);
+  pointer-events: none;
+}
+
+/* ───── Scrollbar ───── */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.08);
+  border-radius: 999px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.16);
+}
+
+/* ───── Safe area for iOS ───── */
+.safe-bottom {
+  padding-bottom: max(env(safe-area-inset-bottom), 1rem);
+}
+.safe-top {
+  padding-top: max(env(safe-area-inset-top), 1rem);
+}

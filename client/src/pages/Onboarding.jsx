@@ -1,0 +1,129 @@
+import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { motion, AnimatePresence } from 'framer-motion';
+import { useFamilyProfile } from '../hooks/useFamilyProfile.js';
+import { LANGUAGES } from '../utils/constants.js';
+
+const STEPS = [
+  { key: 'childName', title: "What's your child's name?", placeholder: 'e.g. Arjun', type: 'text' },
+  { key: 'age', title: 'How old are they?', placeholder: '6', type: 'number' },
+  { key: 'sibling', title: 'A brother or sister?', placeholder: 'optional — e.g. Priya', type: 'text', optional: true },
+  { key: 'grandfather', title: 'A grandfather they love?', placeholder: 'optional — e.g. Dada ji', type: 'text', optional: true },
+  { key: 'grandmother', title: 'A grandmother they love?', placeholder: 'optional — e.g. Nani ma', type: 'text', optional: true },
+  { key: 'pet', title: 'A pet at home?', placeholder: 'optional — e.g. Bruno', type: 'text', optional: true },
+  { key: 'language', title: 'Which language tonight?', type: 'language' },
+];
+
+export default function Onboarding() {
+  const [step, setStep] = useState(0);
+  const [draft, setDraft] = useState({ language: 'English' });
+  const navigate = useNavigate();
+  const { save } = useFamilyProfile();
+
+  const current = STEPS[step];
+  const value = draft[current.key] ?? '';
+
+  const next = () => {
+    if (step === STEPS.length - 1) {
+      save({ ...draft, age: Number(draft.age) || 6, tier: 'free', createdAt: Date.now() });
+      navigate('/');
+    } else {
+      setStep((s) => s + 1);
+    }
+  };
+
+  const canAdvance = current.optional || (typeof value === 'string' ? value.trim().length > 0 : !!value);
+
+  return (
+    <div className="phone-shell">
+      <div className="aurora" />
+      <div className="starfield opacity-30" />
+
+      <div className="relative z-10 flex h-full flex-col px-6 pt-12 pb-8 safe-top">
+        {/* Brand */}
+        <div className="mb-2 flex items-center gap-2 text-gold">
+          <span className="text-2xl">🌙</span>
+          <span className="font-display text-xl font-bold tracking-tight">Kahaniyo</span>
+        </div>
+        <p className="mb-10 text-xs uppercase tracking-[0.18em] text-ink-muted">
+          Step {step + 1} of {STEPS.length}
+        </p>
+
+        {/* Progress dots */}
+        <div className="mb-8 flex gap-1.5">
+          {STEPS.map((_, i) => (
+            <div
+              key={i}
+              className={`h-1 flex-1 rounded-full transition ${
+                i <= step ? 'bg-gold' : 'bg-white/10'
+              }`}
+            />
+          ))}
+        </div>
+
+        <AnimatePresence mode="wait">
+          <motion.div
+            key={current.key}
+            initial={{ opacity: 0, x: 20 }}
+            animate={{ opacity: 1, x: 0 }}
+            exit={{ opacity: 0, x: -20 }}
+            transition={{ duration: 0.25 }}
+            className="flex flex-1 flex-col"
+          >
+            <h1 className="display-title mb-6 text-ink">{current.title}</h1>
+
+            {current.type === 'language' ? (
+              <div className="grid grid-cols-2 gap-3">
+                {LANGUAGES.map((l) => (
+                  <button
+                    key={l.key}
+                    onClick={() => setDraft((d) => ({ ...d, language: l.key }))}
+                    className={`rounded-2xl px-4 py-5 text-left transition ${
+                      draft.language === l.key
+                        ? 'bg-gold text-bg-base shadow-glow'
+                        : 'bg-bg-surface text-ink ring-1 ring-white/5'
+                    }`}
+                  >
+                    <div className="font-display text-2xl">{l.label}</div>
+                    <div
+                      className={`text-xs ${
+                        draft.language === l.key ? 'text-bg-base/70' : 'text-ink-muted'
+                      }`}
+                    >
+                      {l.key}
+                    </div>
+                  </button>
+                ))}
+              </div>
+            ) : (
+              <input
+                autoFocus
+                type={current.type}
+                placeholder={current.placeholder}
+                value={value}
+                onChange={(e) => setDraft((d) => ({ ...d, [current.key]: e.target.value }))}
+                onKeyDown={(e) => e.key === 'Enter' && canAdvance && next()}
+                className="field text-lg"
+              />
+            )}
+          </motion.div>
+        </AnimatePresence>
+
+        <div className="mt-8 flex items-center gap-3">
+          {step > 0 && (
+            <button onClick={() => setStep((s) => s - 1)} className="btn-secondary">
+              ← Back
+            </button>
+          )}
+          <button
+            onClick={next}
+            disabled={!canAdvance}
+            className="btn-primary flex-1 disabled:opacity-40"
+          >
+            {step === STEPS.length - 1 ? 'Begin →' : 'Next →'}
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+}

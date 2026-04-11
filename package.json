@@ -1,0 +1,15 @@
+{
+  "name": "kahaniyo",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Personalized AI bedtime stories for children — POC build (no external APIs).",
+  "scripts": {
+    "install:all": "cd server && npm install && cd ../client && npm install",
+    "dev": "concurrently -n server,client -c gold,cyan \"npm --prefix server run dev\" \"npm --prefix client run dev\"",
+    "dev:server": "npm --prefix server run dev",
+    "dev:client": "npm --prefix client run dev"
+  },
+  "devDependencies": {
+    "concurrently": "^9.0.1"
+  }
+}
