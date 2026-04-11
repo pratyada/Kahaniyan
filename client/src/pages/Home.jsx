@@ -147,27 +147,40 @@ export default function Home() {
         </details>
       </SectionCard>
 
-      {/* ─── LENGTH (segmented control) ─── */}
-      <SectionCard title="How long?">
-        <SegmentedControl
-          value={duration}
-          onChange={(v) => {
-            const locked = v > maxDuration;
-            if (locked) {
-              setUpgradeReason(`${v} min stories require a paid plan.`);
-              setUpgradeOpen(true);
-            } else {
-              setDuration(v);
-            }
-          }}
-          options={DURATIONS.map((d) => ({
-            value: d.minutes,
-            label: `${d.minutes}m`,
-            sub: d.sub,
-          }))}
-          lockedKey={DURATIONS.find((d) => d.minutes > maxDuration)?.minutes}
-        />
-      </SectionCard>
+      {/* ─── LENGTH — compact inline strip ─── */}
+      <section className="mb-5 flex items-center justify-between gap-3">
+        <span className="ui-label">Length</span>
+        <div className="flex gap-1.5 rounded-pill bg-bg-surface p-1 ring-1 ring-white/5">
+          {DURATIONS.map((d) => {
+            const locked = d.minutes > maxDuration;
+            const active = duration === d.minutes;
+            return (
+              <button
+                key={d.minutes}
+                onClick={() => {
+                  if (locked) {
+                    setUpgradeReason(`${d.minutes} min stories require a paid plan.`);
+                    setUpgradeOpen(true);
+                  } else {
+                    setDuration(d.minutes);
+                  }
+                }}
+                className={`relative rounded-pill px-3 py-1.5 text-xs font-bold transition ${
+                  active
+                    ? 'bg-gold text-bg-base shadow-glow'
+                    : 'text-ink-muted hover:text-ink'
+                }`}
+                aria-label={`${d.minutes} minute story`}
+              >
+                {d.minutes}m
+                {locked && !active && (
+                  <span className="absolute -right-0.5 -top-0.5 text-[8px] text-gold">🔒</span>
+                )}
+              </button>
+            );
+          })}
+        </div>
+      </section>
 
       {/* ─── NARRATOR ─── */}
       <SectionCard title="Narrator voice">
