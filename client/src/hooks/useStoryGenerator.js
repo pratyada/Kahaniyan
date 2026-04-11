@@ -9,7 +9,8 @@ export function useStoryGenerator() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
-  const generate = useCallback(async ({ profile, value, duration, language, voice }) => {
+  const generate = useCallback(
+    async ({ profile, value, duration, language, voice, whisper, whisperOverridesValue }) => {
     setLoading(true);
     setError(null);
     try {
@@ -21,6 +22,8 @@ export function useStoryGenerator() {
         language,
         voice,
         recentPlotTypes,
+        whisper,
+        whisperOverridesValue,
       });
 
       const res = await fetch(`${API_BASE}/api/generate-story`, {

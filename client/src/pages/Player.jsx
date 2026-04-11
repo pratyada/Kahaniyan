@@ -238,23 +238,71 @@ export default function Player() {
               </div>
             </div>
 
-            {/* Controls */}
-            <div className="mt-4 flex items-center justify-center gap-6">
-              <button
-                onClick={() => handleSpeedChange(SPEEDS[(SPEEDS.indexOf(speed) + 1) % SPEEDS.length])}
-                className="text-xs font-bold uppercase tracking-wider text-ink-muted"
-              >
-                {speed}x
-              </button>
-
+            {/* Controls — large, obvious, mobile-first */}
+            <div className="mt-5 flex flex-col items-center gap-3">
+              {/* Big play / pause */}
               <button
                 onClick={handleTogglePlay}
-                className="grid h-16 w-16 place-items-center rounded-full bg-gold text-bg-base shadow-glow active:scale-95"
+                aria-label={isPlaying && !paused ? 'Pause story' : 'Play story'}
+                className="group relative grid h-24 w-24 place-items-center rounded-full bg-gold text-bg-base shadow-glow transition active:scale-95"
               >
-                {isPlaying && !paused ? <span className="text-xl">❚❚</span> : <span className="text-xl">▶</span>}
+                <span className="absolute inset-0 rounded-full ring-4 ring-gold/20" />
+                {isPlaying && !paused ? (
+                  // Pause icon (two bars)
+                  <svg width="36" height="36" viewBox="0 0 24 24" fill="currentColor">
+                    <rect x="6" y="4" width="4" height="16" rx="1.5" />
+                    <rect x="14" y="4" width="4" height="16" rx="1.5" />
+                  </svg>
+                ) : (
+                  // Play icon (triangle)
+                  <svg width="36" height="36" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M8 5.5v13a1 1 0 0 0 1.55.83l10-6.5a1 1 0 0 0 0-1.66l-10-6.5A1 1 0 0 0 8 5.5z" />
+                  </svg>
+                )}
               </button>
+              <div className="text-[11px] font-bold uppercase tracking-[0.18em] text-ink-muted">
+                {isPlaying && !paused ? 'Tap to pause' : paused ? 'Tap to resume' : 'Tap to play'}
+              </div>
 
-              <SleepMenu sleepMin={sleepMin} setSleepMin={setSleepMin} />
+              {/* Secondary controls — speed, sleep timer, restart */}
+              <div className="mt-2 grid w-full grid-cols-3 gap-2">
+                <button
+                  onClick={() =>
+                    handleSpeedChange(SPEEDS[(SPEEDS.indexOf(speed) + 1) % SPEEDS.length])
+                  }
+                  aria-label="Change speed"
+                  className="flex flex-col items-center gap-1 rounded-2xl bg-white/5 py-3 ring-1 ring-white/10 transition active:scale-95"
+                >
+                  <span className="text-lg font-bold text-gold">{speed}x</span>
+                  <span className="text-[9px] font-bold uppercase tracking-wider text-ink-muted">
+                    Speed
+                  </span>
+                </button>
+
+                <SleepButton sleepMin={sleepMin} setSleepMin={setSleepMin} />
+
+                <button
+                  onClick={() => {
+                    stop();
+                    setTimeout(() => {
+                      speak({
+                        text: current.text,
+                        language: current.language || profile?.language || 'English',
+                        rate: speed,
+                        volume: 1,
+                      });
+                      setIsPlaying(true);
+                    }, 100);
+                  }}
+                  aria-label="Restart story"
+                  className="flex flex-col items-center gap-1 rounded-2xl bg-white/5 py-3 ring-1 ring-white/10 transition active:scale-95"
+                >
+                  <span className="text-lg">↺</span>
+                  <span className="text-[9px] font-bold uppercase tracking-wider text-ink-muted">
+                    Restart
+                  </span>
+                </button>
+              </div>
             </div>
 
             {!supported && (
@@ -281,15 +329,19 @@ function HighlightedText({ text, progress }) {
   );
 }
 
-function SleepMenu({ sleepMin, setSleepMin }) {
+function SleepButton({ sleepMin, setSleepMin }) {
   const [open, setOpen] = useState(false);
   return (
     <div className="relative">
       <button
         onClick={() => setOpen((o) => !o)}
-        className="text-xs font-bold uppercase tracking-wider text-ink-muted"
+        aria-label="Sleep timer"
+        className="flex w-full flex-col items-center gap-1 rounded-2xl bg-white/5 py-3 ring-1 ring-white/10 transition active:scale-95"
       >
-        {sleepMin ? `${sleepMin}m` : '⏱'}
+        <span className="text-lg text-gold">{sleepMin ? `${sleepMin}m` : '⏱'}</span>
+        <span className="text-[9px] font-bold uppercase tracking-wider text-ink-muted">
+          Sleep
+        </span>
       </button>
       <AnimatePresence>
         {open && (
@@ -297,7 +349,7 @@ function SleepMenu({ sleepMin, setSleepMin }) {
             initial={{ opacity: 0, y: 8 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: 8 }}
-            className="absolute -right-2 bottom-10 z-20 grid grid-cols-2 gap-1 rounded-2xl bg-bg-elevated p-2 shadow-lift"
+            className="absolute bottom-[calc(100%+8px)] left-1/2 z-20 grid w-44 -translate-x-1/2 grid-cols-3 gap-1 rounded-2xl bg-bg-elevated p-2 shadow-lift"
           >
             {SLEEP_OPTIONS.map((m) => (
               <button
@@ -306,7 +358,7 @@ function SleepMenu({ sleepMin, setSleepMin }) {
                   setSleepMin(m);
                   setOpen(false);
                 }}
-                className={`rounded-xl px-3 py-2 text-xs font-bold transition ${
+                className={`rounded-xl px-2 py-2 text-xs font-bold transition ${
                   sleepMin === m ? 'bg-gold text-bg-base' : 'text-ink hover:bg-bg-card'
                 }`}
               >

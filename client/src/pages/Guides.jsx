@@ -61,17 +61,18 @@ const GUIDES = [
     ],
   },
   {
-    id: 'subscription',
-    icon: '✨',
-    title: 'Free vs Family vs Annual — what changes',
-    audience: 'Customers deciding on a plan',
-    summary: 'A practical guide to the three tiers — when each one is right.',
+    id: 'tonight-whisper',
+    icon: '💭',
+    title: "Tonight's Whisper — telling Kahaniyo what's on their heart",
+    audience: 'Parents who want stories that meet the moment',
+    summary:
+      'Type one sentence about how your child is feeling and the story will be woven around it — gently, in your culture, in your values.',
     body: [
-      'Free is built for trying it out. Three stories a week is enough for two or three bedtime experiments.',
-      'Family (₹299/mo) makes sense once Kahaniyo is part of your nightly ritual. Unlimited stories, longer formats, and up to three child profiles.',
-      'Annual (₹179/mo billed yearly) adds custom voice recording — record a real grandparent reading once, and their voice can narrate forever.',
-      'Festival packs (Diwali, Eid, Christmas, Holi) are Annual-only and include culturally specific stories tied to the date.',
-      'You can switch between tiers any time. Your library, profiles, and progress carry across plans.',
+      'Open the home screen and tap the "Tonight\'s Whisper" card. A small text box opens.',
+      'Write one honest sentence — "they are scared of thunder" or "first day of school tomorrow" or "wants to know why the moon follows them home".',
+      'Leave the toggle "Let the whisper choose the value" on — Kahaniyo will pick courage, kindness, patience, or whichever value fits best.',
+      'If you want to keep your own value choice, turn the toggle off — the whisper will still be woven into the opening and closing of the story.',
+      'The whisper never leaves your device. It is used only to shape tonight\'s story, then forgotten.',
     ],
   },
 ];

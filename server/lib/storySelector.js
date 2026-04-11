@@ -11,6 +11,7 @@
 // and stretches/trims the body to fit the requested duration.
 // ─────────────────────────────────────────────────────────────
 import { STORY_BANK, STORIES_BY_VALUE } from '../data/storyBank.js';
+import { detectTheme, weaveWhisper } from './whisperWeaver.js';
 
 const WORDS_PER_MINUTE = 150;
 
@@ -64,11 +65,21 @@ export function selectStory({
   voice = 'AI Narrator',
   familyMembers = {},
   recentPlotTypes = [],
+  whisper = '',
+  whisperOverridesValue = false,
 }) {
   const ageBand = ageBandFor(age);
 
+  // 0. Detect a theme from the whisper, if any.
+  const theme = detectTheme(whisper);
+
+  // If parent didn't lock the value (whisperOverridesValue), and the
+  // whisper detected a strong theme, gently steer the value selection.
+  const effectiveValue =
+    whisperOverridesValue && theme.value ? theme.value : value;
+
   // 1. Try value + age band match
-  const candidates = STORIES_BY_VALUE[value] || STORY_BANK;
+  const candidates = STORIES_BY_VALUE[effectiveValue] || STORY_BANK;
   const ageMatched = candidates.filter((s) => s.ageBand === ageBand);
   const pool = ageMatched.length > 0 ? ageMatched : candidates;
 
@@ -76,7 +87,16 @@ export function selectStory({
 
   const filledTitle = fillTokens(template.title, familyMembers, childName);
   const filledBody = fillTokens(template.body, familyMembers, childName);
-  const fitted = fitToDuration(filledBody, duration);
+
+  // 2. Weave the whisper into the body (opening + closing frame)
+  const woven = weaveWhisper({
+    storyText: filledBody,
+    whisper,
+    childName: childName || 'little one',
+    theme,
+  });
+
+  const fitted = fitToDuration(woven, duration);
 
   return {
     id: `story_${Date.now()}_${Math.random().toString(36).slice(2, 8)}`,
@@ -89,6 +109,8 @@ export function selectStory({
     plotType: template.plotType,
     language,
     voice,
+    whisper: whisper?.trim() || null,
+    whisperTheme: whisper?.trim() ? theme.key : null,
     createdAt: new Date().toISOString(),
   };
 }

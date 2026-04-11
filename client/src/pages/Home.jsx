@@ -6,6 +6,7 @@ import ValuePill from '../components/ValuePill.jsx';
 import VoiceAvatar from '../components/VoiceAvatar.jsx';
 import UpgradeModal from '../components/UpgradeModal.jsx';
 import VersionFooter from '../components/VersionFooter.jsx';
+import WhisperBox from '../components/WhisperBox.jsx';
 import { useFamilyProfile } from '../hooks/useFamilyProfile.js';
 import { useStoryGenerator } from '../hooks/useStoryGenerator.js';
 import { usePlayer } from '../hooks/usePlayer.jsx';
@@ -32,6 +33,8 @@ export default function Home() {
   const [value, setValue] = useState(recommended[0]);
   const [duration, setDuration] = useState(15);
   const [voice, setVoice] = useState('AI Narrator');
+  const [whisper, setWhisper] = useState('');
+  const [whisperOverridesValue, setWhisperOverridesValue] = useState(true);
   const [upgradeOpen, setUpgradeOpen] = useState(false);
   const [upgradeReason, setUpgradeReason] = useState('');
 
@@ -56,6 +59,8 @@ export default function Home() {
         duration,
         language: profile.language || 'English',
         voice,
+        whisper,
+        whisperOverridesValue,
       });
       load(story);
       navigate('/player');
@@ -84,6 +89,14 @@ export default function Home() {
           {used}/{tier === 'free' ? 3 : '∞'} stories this week · {profile?.language}
         </p>
       </header>
+
+      {/* Tonight's Whisper — the headline feature */}
+      <WhisperBox
+        value={whisper}
+        onChange={setWhisper}
+        overrideValue={whisperOverridesValue}
+        onToggleOverride={setWhisperOverridesValue}
+      />
 
       {/* Recommended */}
       <section className="mb-8">

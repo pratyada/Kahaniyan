@@ -17,12 +17,12 @@ export default function BottomNav() {
               to={t.to}
               end={t.to === '/'}
               className={({ isActive }) =>
-                `flex flex-col items-center gap-1 rounded-2xl py-2 transition ${
-                  isActive ? 'text-gold' : 'text-ink-muted'
+                `flex min-h-[56px] flex-col items-center justify-center gap-1 rounded-2xl py-2 transition ${
+                  isActive ? 'text-gold' : 'text-ink-muted active:text-ink'
                 }`
               }
             >
-              <span className="text-xl leading-none">{t.icon}</span>
+              <span className="text-2xl leading-none">{t.icon}</span>
               <span className="text-[10px] font-bold uppercase tracking-[0.14em]">
                 {t.label}
               </span>

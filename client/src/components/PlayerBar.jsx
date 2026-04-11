@@ -31,9 +31,19 @@ export default function PlayerBar() {
           e.stopPropagation();
           setIsPlaying((p) => !p);
         }}
-        className="grid h-10 w-10 place-items-center rounded-full bg-gold text-bg-base"
+        aria-label={isPlaying ? 'Pause' : 'Play'}
+        className="grid h-12 w-12 place-items-center rounded-full bg-gold text-bg-base shadow-glow"
       >
-        {isPlaying ? '❚❚' : '▶'}
+        {isPlaying ? (
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+            <rect x="6" y="4" width="4" height="16" rx="1.5" />
+            <rect x="14" y="4" width="4" height="16" rx="1.5" />
+          </svg>
+        ) : (
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M8 5.5v13a1 1 0 0 0 1.55.83l10-6.5a1 1 0 0 0 0-1.66l-10-6.5A1 1 0 0 0 8 5.5z" />
+          </svg>
+        )}
       </span>
     </button>
   );

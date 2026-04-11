@@ -1,7 +1,16 @@
 // Builds the API request body. In the POC this just shapes the
 // payload — when Claude is wired up, this same builder will create
 // the prompt instead.
-export function buildStoryRequest({ profile, value, duration, language, voice, recentPlotTypes }) {
+export function buildStoryRequest({
+  profile,
+  value,
+  duration,
+  language,
+  voice,
+  recentPlotTypes,
+  whisper,
+  whisperOverridesValue,
+}) {
   return {
     childName: profile.childName,
     age: profile.age,
@@ -16,5 +25,7 @@ export function buildStoryRequest({ profile, value, duration, language, voice, r
       pet: profile.pet,
     },
     recentPlotTypes,
+    whisper: whisper || '',
+    whisperOverridesValue: !!whisperOverridesValue,
   };
 }
