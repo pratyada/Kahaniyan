@@ -4,6 +4,7 @@ import Onboarding from './pages/Onboarding.jsx';
 import Home from './pages/Home.jsx';
 import Player from './pages/Player.jsx';
 import Library from './pages/Library.jsx';
+import Guides from './pages/Guides.jsx';
 import Settings from './pages/Settings.jsx';
 import BottomNav from './components/BottomNav.jsx';
 import PlayerBar from './components/PlayerBar.jsx';
@@ -32,6 +33,7 @@ function Shell() {
           <Route path="/onboarding" element={<Onboarding />} />
           <Route path="/player" element={<Player />} />
           <Route path="/library" element={<Library />} />
+          <Route path="/guides" element={<Guides />} />
           <Route path="/settings" element={<Settings />} />
           <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>

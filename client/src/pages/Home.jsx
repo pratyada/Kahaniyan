@@ -5,6 +5,7 @@ import PageTransition from '../components/PageTransition.jsx';
 import ValuePill from '../components/ValuePill.jsx';
 import VoiceAvatar from '../components/VoiceAvatar.jsx';
 import UpgradeModal from '../components/UpgradeModal.jsx';
+import VersionFooter from '../components/VersionFooter.jsx';
 import { useFamilyProfile } from '../hooks/useFamilyProfile.js';
 import { useStoryGenerator } from '../hooks/useStoryGenerator.js';
 import { usePlayer } from '../hooks/usePlayer.jsx';
@@ -181,6 +182,8 @@ export default function Home() {
         onClose={() => setUpgradeOpen(false)}
         reason={upgradeReason}
       />
+
+      <VersionFooter />
     </PageTransition>
   );
 }

@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import PageTransition from '../components/PageTransition.jsx';
 import UpgradeModal from '../components/UpgradeModal.jsx';
+import VersionFooter from '../components/VersionFooter.jsx';
 import { useFamilyProfile } from '../hooks/useFamilyProfile.js';
 import { LANGUAGES, NARRATORS } from '../utils/constants.js';
 import { TIERS, storiesThisWeek } from '../utils/tierGate.js';
@@ -125,6 +126,8 @@ export default function Settings() {
       </p>
 
       <UpgradeModal open={upgradeOpen} onClose={() => setUpgradeOpen(false)} />
+
+      <VersionFooter />
     </PageTransition>
   );
 }

@@ -2,6 +2,7 @@ import { useEffect, useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import PageTransition from '../components/PageTransition.jsx';
 import StoryCard from '../components/StoryCard.jsx';
+import VersionFooter from '../components/VersionFooter.jsx';
 import ValuePill from '../components/ValuePill.jsx';
 import { getLibrary, pruneArchive } from '../utils/storyCache.js';
 import { archiveDaysFor } from '../utils/tierGate.js';
@@ -81,6 +82,8 @@ export default function Library() {
           ))}
         </div>
       )}
+
+      <VersionFooter />
     </PageTransition>
   );
 }

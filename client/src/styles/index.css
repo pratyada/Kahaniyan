@@ -126,8 +126,24 @@ a {
 
   /* Mobile shell — phone-shaped on desktop, full bleed on mobile */
   .phone-shell {
-    @apply relative mx-auto flex h-[100dvh] w-full max-w-[460px] flex-col
-           bg-bg-base overflow-hidden;
+    @apply relative mx-auto flex h-[100dvh] w-full max-w-[460px] flex-col overflow-hidden;
+    background-color: var(--bg-base);
+    background-image: url('/bg-night.svg');
+    background-size: cover;
+    background-position: center;
+    background-attachment: local;
+  }
+  .phone-shell::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(180deg, rgba(10, 10, 15, 0.55) 0%, rgba(10, 10, 15, 0.85) 60%, rgba(10, 10, 15, 0.95) 100%);
+    pointer-events: none;
+    z-index: 0;
+  }
+  .phone-shell > * {
+    position: relative;
+    z-index: 1;
   }
 
   /* Page scroll area above bottom nav */

@@ -1,0 +1,89 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1080 1920" preserveAspectRatio="xMidYMid slice">
+  <defs>
+    <linearGradient id="nightSky" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#0a0a0f"/>
+      <stop offset="40%" stop-color="#141420"/>
+      <stop offset="80%" stop-color="#1c1c2a"/>
+      <stop offset="100%" stop-color="#22222f"/>
+    </linearGradient>
+    <radialGradient id="moonGlow" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="rgba(240,165,0,0.5)"/>
+      <stop offset="50%" stop-color="rgba(240,165,0,0.15)"/>
+      <stop offset="100%" stop-color="rgba(240,165,0,0)"/>
+    </radialGradient>
+    <radialGradient id="moonBody" cx="35%" cy="35%" r="70%">
+      <stop offset="0%" stop-color="#ffe5a8"/>
+      <stop offset="50%" stop-color="#f0a500"/>
+      <stop offset="100%" stop-color="#8a5e00"/>
+    </radialGradient>
+    <linearGradient id="hill1" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#1c1c2a"/>
+      <stop offset="100%" stop-color="#0a0a0f"/>
+    </linearGradient>
+    <linearGradient id="hill2" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#22222f"/>
+      <stop offset="100%" stop-color="#141420"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Sky -->
+  <rect width="1080" height="1920" fill="url(#nightSky)"/>
+
+  <!-- Aurora wash -->
+  <ellipse cx="300" cy="700" rx="600" ry="280" fill="rgba(58,42,74,0.45)"/>
+  <ellipse cx="800" cy="500" rx="500" ry="220" fill="rgba(240,165,0,0.08)"/>
+
+  <!-- Moon -->
+  <g transform="translate(780,420)">
+    <circle r="280" fill="url(#moonGlow)"/>
+    <circle r="140" fill="url(#moonBody)"/>
+    <circle cx="-35" cy="-30" r="22" fill="rgba(0,0,0,0.12)"/>
+    <circle cx="40" cy="20" r="14" fill="rgba(0,0,0,0.1)"/>
+    <circle cx="10" cy="55" r="10" fill="rgba(0,0,0,0.08)"/>
+  </g>
+
+  <!-- Stars (large field) -->
+  <g fill="#f5f0e8">
+    <circle cx="80" cy="80" r="1.8"/>
+    <circle cx="200" cy="140" r="1.2"/>
+    <circle cx="340" cy="60" r="2.2"/>
+    <circle cx="420" cy="220" r="1.4"/>
+    <circle cx="540" cy="120" r="1.8"/>
+    <circle cx="660" cy="80" r="1.0"/>
+    <circle cx="900" cy="160" r="1.6"/>
+    <circle cx="1020" cy="100" r="1.2"/>
+    <circle cx="160" cy="320" r="1.4"/>
+    <circle cx="280" cy="440" r="1.0"/>
+    <circle cx="60" cy="500" r="1.6"/>
+    <circle cx="380" cy="380" r="1.2"/>
+    <circle cx="500" cy="280" r="1.0"/>
+    <circle cx="980" cy="320" r="1.8"/>
+    <circle cx="1040" cy="540" r="1.4"/>
+    <circle cx="100" cy="660" r="1.6"/>
+    <circle cx="220" cy="720" r="1.0"/>
+    <circle cx="340" cy="800" r="1.4"/>
+    <circle cx="460" cy="640" r="1.2"/>
+    <circle cx="580" cy="780" r="1.6"/>
+    <circle cx="720" cy="820" r="1.0"/>
+    <circle cx="860" cy="760" r="1.2"/>
+    <circle cx="980" cy="700" r="1.4"/>
+    <circle cx="40" cy="900" r="1.2"/>
+    <circle cx="180" cy="980" r="1.6"/>
+    <circle cx="500" cy="940" r="1.4"/>
+    <circle cx="800" cy="900" r="1.0"/>
+    <circle cx="1020" cy="980" r="1.2"/>
+  </g>
+
+  <!-- Distant hill silhouettes -->
+  <path d="M0,1500 C200,1380 400,1460 600,1400 C800,1340 1000,1430 1080,1410 L1080,1920 L0,1920 Z" fill="url(#hill2)"/>
+  <path d="M0,1620 C150,1520 350,1600 540,1560 C720,1520 920,1600 1080,1580 L1080,1920 L0,1920 Z" fill="url(#hill1)"/>
+
+  <!-- Tiny tree silhouettes on the hills -->
+  <g fill="#0a0a0f">
+    <polygon points="120,1610 130,1580 140,1610"/>
+    <polygon points="160,1605 170,1572 180,1605"/>
+    <polygon points="600,1590 610,1560 620,1590"/>
+    <polygon points="640,1595 650,1565 660,1595"/>
+    <polygon points="900,1605 910,1575 920,1605"/>
+  </g>
+</svg>
