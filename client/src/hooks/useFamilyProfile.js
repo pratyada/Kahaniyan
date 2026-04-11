@@ -1,11 +1,11 @@
-import { useEffect, useState, useCallback } from 'react';
+import { createContext, createElement, useCallback, useContext, useEffect, useState } from 'react';
 
 const KEY = 'kahaniyo:familyProfile';
 
-const DEFAULT_PROFILE = null;
+const FamilyProfileCtx = createContext(null);
 
-export function useFamilyProfile() {
-  const [profile, setProfile] = useState(DEFAULT_PROFILE);
+export function FamilyProfileProvider({ children }) {
+  const [profile, setProfile] = useState(null);
   const [ready, setReady] = useState(false);
 
   useEffect(() => {
@@ -20,21 +20,46 @@ export function useFamilyProfile() {
 
   const save = useCallback((p) => {
     setProfile(p);
-    localStorage.setItem(KEY, JSON.stringify(p));
+    try {
+      localStorage.setItem(KEY, JSON.stringify(p));
+    } catch {
+      // ignore quota errors
+    }
   }, []);
 
   const update = useCallback(
     (patch) => {
-      const next = { ...(profile || {}), ...patch };
-      save(next);
+      setProfile((prev) => {
+        const next = { ...(prev || {}), ...patch };
+        try {
+          localStorage.setItem(KEY, JSON.stringify(next));
+        } catch {
+          // ignore
+        }
+        return next;
+      });
     },
-    [profile, save]
+    []
   );
 
   const clear = useCallback(() => {
     setProfile(null);
-    localStorage.removeItem(KEY);
+    try {
+      localStorage.removeItem(KEY);
+    } catch {
+      // ignore
+    }
   }, []);
 
-  return { profile, ready, save, update, clear };
+  return createElement(
+    FamilyProfileCtx.Provider,
+    { value: { profile, ready, save, update, clear } },
+    children
+  );
+}
+
+export function useFamilyProfile() {
+  const ctx = useContext(FamilyProfileCtx);
+  if (!ctx) throw new Error('useFamilyProfile must be used inside FamilyProfileProvider');
+  return ctx;
 }

@@ -8,7 +8,7 @@ import Guides from './pages/Guides.jsx';
 import Settings from './pages/Settings.jsx';
 import BottomNav from './components/BottomNav.jsx';
 import PlayerBar from './components/PlayerBar.jsx';
-import { useFamilyProfile } from './hooks/useFamilyProfile.js';
+import { FamilyProfileProvider, useFamilyProfile } from './hooks/useFamilyProfile.js';
 import { PlayerProvider, usePlayer } from './hooks/usePlayer.jsx';
 
 function Shell() {
@@ -50,8 +50,10 @@ function Shell() {
 
 export default function App() {
   return (
-    <PlayerProvider>
-      <Shell />
-    </PlayerProvider>
+    <FamilyProfileProvider>
+      <PlayerProvider>
+        <Shell />
+      </PlayerProvider>
+    </FamilyProfileProvider>
   );
 }
