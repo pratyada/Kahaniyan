@@ -2,11 +2,13 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useFamilyProfile } from '../hooks/useFamilyProfile.js';
-import { LANGUAGES } from '../utils/constants.js';
+import { LANGUAGES, COUNTRIES, RELIGIONS } from '../utils/constants.js';
 
 const STEPS = [
   { key: 'childName', title: "What's your child's name?", placeholder: 'e.g. Arjun', type: 'text' },
   { key: 'age', title: 'How old are they?', placeholder: '6', type: 'number' },
+  { key: 'country', title: 'Where do you live?', type: 'country' },
+  { key: 'religion', title: 'Your family tradition?', subtitle: 'We use this to recommend culturally relevant stories. You can change this later.', type: 'religion' },
   { key: 'sibling', title: 'A brother or sister?', placeholder: 'optional — e.g. Priya', type: 'text', optional: true },
   { key: 'grandfather', title: 'A grandfather they love?', placeholder: 'optional — e.g. Dada ji', type: 'text', optional: true },
   { key: 'grandmother', title: 'A grandmother they love?', placeholder: 'optional — e.g. Nani ma', type: 'text', optional: true },
@@ -16,7 +18,12 @@ const STEPS = [
 
 export default function Onboarding() {
   const [step, setStep] = useState(0);
-  const [draft, setDraft] = useState({ language: 'English' });
+  const [draft, setDraft] = useState({
+    language: 'English',
+    country: 'IN',
+    religion: 'all',
+    openToAllCultures: true,
+  });
   const navigate = useNavigate();
   const { save } = useFamilyProfile();
 
@@ -43,7 +50,7 @@ export default function Onboarding() {
         {/* Brand */}
         <div className="mb-2 flex items-center gap-2 text-gold">
           <span className="text-2xl">🌙</span>
-          <span className="font-display text-xl font-bold tracking-tight">Kahaniyo</span>
+          <span className="font-display text-xl font-bold tracking-tight">Dreemo</span>
         </div>
         <p className="mb-10 text-xs uppercase tracking-[0.18em] text-ink-muted">
           Step {step + 1} of {STEPS.length}
@@ -70,7 +77,11 @@ export default function Onboarding() {
             transition={{ duration: 0.25 }}
             className="flex flex-1 flex-col"
           >
-            <h1 className="display-title mb-6 text-ink">{current.title}</h1>
+            <h1 className="display-title mb-2 text-ink">{current.title}</h1>
+            {current.subtitle && (
+              <p className="mb-6 text-sm text-ink-muted">{current.subtitle}</p>
+            )}
+            {!current.subtitle && <div className="mb-6" />}
 
             {current.type === 'language' ? (
               <div className="grid grid-cols-2 gap-3">
@@ -92,6 +103,40 @@ export default function Onboarding() {
                     >
                       {l.key}
                     </div>
+                  </button>
+                ))}
+              </div>
+            ) : current.type === 'country' ? (
+              <div className="grid grid-cols-2 gap-2">
+                {COUNTRIES.map((c) => (
+                  <button
+                    key={c.key}
+                    onClick={() => setDraft((d) => ({ ...d, country: c.key }))}
+                    className={`flex items-center gap-2 rounded-2xl px-3 py-3 text-left transition ${
+                      draft.country === c.key
+                        ? 'bg-gold text-bg-base shadow-glow'
+                        : 'bg-bg-surface text-ink ring-1 ring-white/5'
+                    }`}
+                  >
+                    <span className="text-2xl">{c.flag}</span>
+                    <span className="font-ui text-sm font-bold">{c.label}</span>
+                  </button>
+                ))}
+              </div>
+            ) : current.type === 'religion' ? (
+              <div className="grid grid-cols-2 gap-2">
+                {RELIGIONS.map((r) => (
+                  <button
+                    key={r.key}
+                    onClick={() => setDraft((d) => ({ ...d, religion: r.key }))}
+                    className={`flex items-center gap-2 rounded-2xl px-3 py-3 text-left transition ${
+                      draft.religion === r.key
+                        ? 'bg-gold text-bg-base shadow-glow'
+                        : 'bg-bg-surface text-ink ring-1 ring-white/5'
+                    }`}
+                  >
+                    <span className="text-xl">{r.icon}</span>
+                    <span className="font-ui text-sm font-bold">{r.label}</span>
                   </button>
                 ))}
               </div>

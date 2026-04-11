@@ -1,9 +1,9 @@
 {
-  "name": "kahaniyo",
-  "version": "0.1.0",
+  "name": "dreemo",
+  "version": "0.0.2",
   "private": true,
   "type": "module",
-  "description": "Personalized AI bedtime stories for children — POC build (no external APIs).",
+  "description": "Dreemo — bedtime stories that grow with your child. POC build (no external APIs).",
   "scripts": {
     "build": "cd client && npm install && npm run build",
     "install:all": "cd server && npm install && cd ../client && npm install",

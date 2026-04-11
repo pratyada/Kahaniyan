@@ -4,6 +4,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { usePlayer } from '../hooks/usePlayer.jsx';
 import { useFamilyProfile } from '../hooks/useFamilyProfile.js';
 import { useSpeech } from '../hooks/useSpeech.js';
+import { useWhiteNoise, NOISE_TYPES } from '../hooks/useWhiteNoise.jsx';
 import { valueMeta } from '../utils/constants.js';
 
 const SPEEDS = [0.7, 1, 1.3];
@@ -14,16 +15,19 @@ export default function Player() {
   const { current, clear, isPlaying, setIsPlaying } = usePlayer();
   const { profile } = useFamilyProfile();
   const { speak, pause, resume, stop, setVolume, paused, progress, supported } = useSpeech();
+  const noise = useWhiteNoise();
 
   const [speed, setSpeed] = useState(1);
   const [sleepMin, setSleepMin] = useState(0);
   const [showText, setShowText] = useState(true);
   const [done, setDone] = useState(false);
+  const [noiseType, setNoiseType] = useState(null);
+  const dialogueFadeRef = useRef(null);
   const sleepTimerRef = useRef(null);
   const fadeIntervalRef = useRef(null);
   const startedRef = useRef(false);
 
-  // Auto-play on mount (the "1-second auto-play" promise)
+  // Auto-play on mount + auto-start ambient noise if user enabled it
   useEffect(() => {
     if (!current) {
       navigate('/');
@@ -31,6 +35,15 @@ export default function Player() {
     }
     if (startedRef.current) return;
     startedRef.current = true;
+
+    // If profile has white noise enabled, start the default (rain)
+    if (profile?.whiteNoiseEnabled) {
+      const initial = profile?.preferredNoise || 'rain';
+      setNoiseType(initial);
+      noise.start(initial);
+      noise.setVolume(0.25);
+    }
+
     const t = setTimeout(() => {
       speak({
         text: current.text,
@@ -44,6 +57,62 @@ export default function Player() {
     return () => clearTimeout(t);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [current]);
+
+  // Dialogue fade — narration ramps down while noise grows in second half
+  useEffect(() => {
+    if (!profile?.dialogueFade || !noiseType) return;
+    if (progress < 0.5) return;
+    if (dialogueFadeRef.current) return; // only once
+    dialogueFadeRef.current = true;
+
+    // Speech volume → 0 over the next ~30s (handled by setVolume on next utterances)
+    const target = 0.2;
+    const fadeMs = 30000;
+    const startedAt = Date.now();
+    const id = setInterval(() => {
+      const elapsed = Date.now() - startedAt;
+      const t = Math.min(1, elapsed / fadeMs);
+      const speechVol = 1 - (1 - target) * t;
+      setVolume(speechVol);
+      const noiseVol = 0.25 + (0.55 * t);
+      noise.setVolume(noiseVol);
+      if (t >= 1) clearInterval(id);
+    }, 200);
+    return () => clearInterval(id);
+  }, [progress, profile?.dialogueFade, noiseType, setVolume, noise]);
+
+  // Cleanup noise on unmount
+  useEffect(() => {
+    return () => {
+      noise.stop();
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  const toggleNoise = (type) => {
+    if (noiseType === type) {
+      noise.stop();
+      setNoiseType(null);
+    } else {
+      noise.start(type);
+      setNoiseType(type);
+    }
+  };
+
+  const shareStory = async () => {
+    const url = `${window.location.origin}/player?storyId=${encodeURIComponent(current.id)}`;
+    const text = `${current.title} — a Dreemo bedtime story for ${profile?.childName}`;
+    try {
+      if (navigator.share) {
+        await navigator.share({ title: 'Dreemo story', text, url });
+      } else {
+        await navigator.clipboard.writeText(url);
+        alert('Story link copied to clipboard');
+      }
+    } catch {
+      // user cancelled
+    }
+  };
 
   // Sleep timer + fade-out in final 2 minutes
   useEffect(() => {
@@ -121,6 +190,7 @@ export default function Player() {
 
   const handleClose = () => {
     stop();
+    noise.stop();
     clear();
     navigate('/');
   };
@@ -177,13 +247,44 @@ export default function Player() {
                 </div>
                 <div className="text-xs font-bold text-ink">{meta.label}</div>
               </div>
-              <button
-                onClick={() => setShowText((s) => !s)}
-                className="grid h-10 w-10 place-items-center rounded-full bg-white/5 text-sm"
-                title="Toggle text"
-              >
-                {showText ? '🅣' : '☾'}
-              </button>
+              <div className="flex items-center gap-2">
+                <button
+                  onClick={shareStory}
+                  className="grid h-10 w-10 place-items-center rounded-full bg-white/5 text-sm"
+                  title="Share story"
+                  aria-label="Share story"
+                >
+                  ↗
+                </button>
+                <button
+                  onClick={() => setShowText((s) => !s)}
+                  className="grid h-10 w-10 place-items-center rounded-full bg-white/5 text-sm"
+                  title="Toggle text"
+                >
+                  {showText ? '🅣' : '☾'}
+                </button>
+              </div>
+            </div>
+
+            {/* White noise picker — small chip strip */}
+            <div className="mb-3 -mx-6 flex gap-2 overflow-x-auto px-6">
+              {NOISE_TYPES.map((n) => {
+                const active = noiseType === n.key;
+                return (
+                  <button
+                    key={n.key}
+                    onClick={() => toggleNoise(n.key)}
+                    className={`shrink-0 rounded-full px-3 py-1.5 text-[11px] font-bold uppercase tracking-wider transition ${
+                      active
+                        ? 'bg-gold text-bg-base shadow-glow'
+                        : 'bg-white/5 text-ink-muted ring-1 ring-white/10'
+                    }`}
+                    title={n.description}
+                  >
+                    {n.icon} {n.label}
+                  </button>
+                );
+              })}
             </div>
 
             {/* Cover art (gradient + emoji) */}

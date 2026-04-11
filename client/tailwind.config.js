@@ -5,22 +5,25 @@ export default {
     extend: {
       colors: {
         bg: {
-          base: '#0a0a0f',
-          surface: '#141420',
-          elevated: '#1c1c2a',
-          card: '#22222f',
+          base: 'var(--bg-base)',
+          surface: 'var(--bg-surface)',
+          elevated: 'var(--bg-elevated)',
+          card: 'var(--bg-card)',
         },
         ink: {
-          DEFAULT: '#f5f0e8',
-          muted: '#a8a39a',
-          dim: '#6e6a63',
+          DEFAULT: 'var(--ink)',
+          muted: 'var(--ink-muted)',
+          dim: 'var(--ink-dim)',
         },
         gold: {
-          DEFAULT: '#f0a500',
-          bright: '#ffb733',
-          dim: '#b87f00',
+          DEFAULT: 'var(--gold)',
+          bright: 'var(--gold-bright)',
+          dim: 'var(--gold-dim)',
         },
-        plum: '#3a2a4a',
+        plum: 'var(--plum)',
+        negative: 'var(--negative)',
+        warning: 'var(--warning)',
+        info: 'var(--info)',
       },
       fontFamily: {
         display: ['"Playfair Display"', 'Georgia', 'serif'],
@@ -31,9 +34,9 @@ export default {
         pill: '9999px',
       },
       boxShadow: {
-        lift: '0 8px 24px rgba(0,0,0,0.5)',
-        card: '0 8px 8px rgba(0,0,0,0.3)',
-        glow: '0 0 32px rgba(240, 165, 0, 0.25)',
+        lift: 'var(--shadow-lift)',
+        card: 'var(--shadow-card)',
+        glow: 'var(--shadow-glow)',
       },
       keyframes: {
         twinkle: {

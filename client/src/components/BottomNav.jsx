@@ -2,10 +2,10 @@ import { NavLink } from 'react-router-dom';
 
 const tabs = [
   { to: '/', label: 'Tonight', icon: '🌙' },
-  { to: '/library', label: 'Library', icon: '📚' },
+  { to: '/lessons', label: 'Lessons', icon: '🪷' },
   { to: '/radio', label: 'Radio', icon: '📻' },
-  { to: '/guides', label: 'Guides', icon: '✨' },
-  { to: '/settings', label: 'Settings', icon: '⚙️' },
+  { to: '/library', label: 'Library', icon: '📚' },
+  { to: '/settings', label: 'More', icon: '⚙️' },
 ];
 
 export default function BottomNav() {

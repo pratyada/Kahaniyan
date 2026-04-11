@@ -3,10 +3,12 @@
 @tailwind utilities;
 
 /* ───────────────────────────────────────────────
-   Kahaniyo Design Tokens
-   Spotify-inspired dark UI, adapted for bedtime warmth.
+   Dreemo Design Tokens
+   Spotify-inspired UI, adapted for bedtime warmth.
+   Two themes: night (default) and day.
    ─────────────────────────────────────────────── */
-:root {
+:root,
+[data-theme='night'] {
   /* Surfaces */
   --bg-base: #0a0a0f;
   --bg-surface: #141420;
@@ -34,10 +36,34 @@
   --shadow-card: 0 8px 8px rgba(0, 0, 0, 0.3);
   --shadow-glow: 0 0 32px rgba(240, 165, 0, 0.25);
 
+  /* Backdrop on phone-shell bg image */
+  --shell-overlay: linear-gradient(180deg, rgba(10, 10, 15, 0.55) 0%, rgba(10, 10, 15, 0.85) 60%, rgba(10, 10, 15, 0.95) 100%);
+
   /* Type */
   --font-display: 'Playfair Display', Georgia, serif;
   --font-ui: 'DM Sans', system-ui, -apple-system, sans-serif;
   --font-story: 'Lora', Georgia, serif;
+}
+
+[data-theme='day'] {
+  --bg-base: #fff8ec;
+  --bg-surface: #ffffff;
+  --bg-elevated: #fffdf7;
+  --bg-card: #fff3d6;
+
+  --ink: #2a1f15;
+  --ink-muted: #6b5e4f;
+  --ink-dim: #a89984;
+
+  --gold: #d68a00;
+  --gold-bright: #f0a500;
+  --gold-dim: #a36900;
+
+  --shadow-lift: 0 16px 40px rgba(106, 84, 33, 0.18);
+  --shadow-card: 0 6px 18px rgba(106, 84, 33, 0.12);
+  --shadow-glow: 0 0 28px rgba(214, 138, 0, 0.35);
+
+  --shell-overlay: linear-gradient(180deg, rgba(255, 248, 236, 0.85) 0%, rgba(255, 248, 236, 0.95) 60%, rgba(255, 248, 236, 0.98) 100%);
 }
 
 /* ───── Reset / base ───── */
@@ -137,7 +163,7 @@ a {
     content: '';
     position: absolute;
     inset: 0;
-    background: linear-gradient(180deg, rgba(10, 10, 15, 0.55) 0%, rgba(10, 10, 15, 0.85) 60%, rgba(10, 10, 15, 0.95) 100%);
+    background: var(--shell-overlay);
     pointer-events: none;
     z-index: 0;
   }

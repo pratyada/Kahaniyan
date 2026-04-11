@@ -1,16 +1,22 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import PageTransition from '../components/PageTransition.jsx';
+import SectionCard from '../components/SectionCard.jsx';
+import Toggle from '../components/Toggle.jsx';
 import UpgradeModal from '../components/UpgradeModal.jsx';
 import VersionFooter from '../components/VersionFooter.jsx';
 import { useFamilyProfile } from '../hooks/useFamilyProfile.js';
+import { useTheme } from '../hooks/useTheme.jsx';
+import { useFamilyVoices } from '../hooks/useFamilyVoices.jsx';
 import { useSpeech } from '../hooks/useSpeech.js';
-import { LANGUAGES, NARRATORS } from '../utils/constants.js';
+import { LANGUAGES, RELIGIONS, COUNTRIES } from '../utils/constants.js';
 import { TIERS, storiesThisWeek } from '../utils/tierGate.js';
 
 export default function Settings() {
   const navigate = useNavigate();
   const { profile, update, clear } = useFamilyProfile();
+  const { theme, toggle: toggleTheme } = useTheme();
+  const { voices } = useFamilyVoices();
   const { voicesForLanguage, speak, stop } = useSpeech();
   const [upgradeOpen, setUpgradeOpen] = useState(false);
 
@@ -44,10 +50,10 @@ export default function Settings() {
     <PageTransition className="page-scroll px-5 pt-10 safe-top">
       <header className="mb-6">
         <p className="ui-label">Settings</p>
-        <h1 className="display-title mt-1 text-ink">Family</h1>
+        <h1 className="display-title mt-1 text-ink">Dreemo for {profile.childName}</h1>
       </header>
 
-      {/* Profile card */}
+      {/* Family card */}
       <section className="card-elevated mb-6">
         <div className="flex items-center gap-4">
           <div className="grid h-16 w-16 place-items-center rounded-full bg-gold/20 text-3xl">
@@ -55,26 +61,102 @@ export default function Settings() {
           </div>
           <div className="flex-1">
             <div className="font-display text-xl font-bold text-ink">{profile.childName}</div>
-            <div className="text-xs text-ink-muted">Age {profile.age}</div>
+            <div className="text-xs text-ink-muted">
+              Age {profile.age} ·{' '}
+              {RELIGIONS.find((r) => r.key === profile.religion)?.label || 'Open to all'}
+              {profile.country &&
+                ` · ${COUNTRIES.find((c) => c.key === profile.country)?.label || profile.country}`}
+            </div>
           </div>
         </div>
-        <dl className="mt-4 grid grid-cols-2 gap-3 text-xs">
-          {profile.sibling && (
-            <Row label="Sibling" value={profile.sibling} />
-          )}
-          {profile.grandfather && (
-            <Row label="Grandfather" value={profile.grandfather} />
-          )}
-          {profile.grandmother && (
-            <Row label="Grandmother" value={profile.grandmother} />
-          )}
-          {profile.pet && <Row label="Pet" value={profile.pet} />}
-        </dl>
       </section>
 
-      {/* Language */}
-      <section className="mb-6">
-        <h2 className="ui-label mb-3">Language</h2>
+      {/* QUICK NAV */}
+      <SectionCard title="Customize">
+        <div className="grid grid-cols-2 gap-3">
+          <NavTile
+            icon="🎙️"
+            title="Voice Studio"
+            sub={`${voices.length} ${voices.length === 1 ? 'voice' : 'voices'}`}
+            onClick={() => navigate('/voices')}
+          />
+          <NavTile
+            icon="🪷"
+            title="Cultural Lessons"
+            sub="Many traditions"
+            onClick={() => navigate('/lessons')}
+          />
+          <NavTile icon="✨" title="Guides" sub="5 reads" onClick={() => navigate('/guides')} />
+          <NavTile icon="🛣️" title="Roadmap" sub="Build status" onClick={() => navigate('/roadmap')} />
+        </div>
+      </SectionCard>
+
+      {/* APPEARANCE */}
+      <SectionCard title="Appearance">
+        <Toggle
+          id="theme-toggle"
+          checked={theme === 'day'}
+          onChange={() => toggleTheme()}
+          label={theme === 'day' ? 'Day mode' : 'Night mode'}
+          description={
+            theme === 'day'
+              ? 'Warm cream background. Switch to night for bedtime.'
+              : 'Deep night palette. Tap to switch to warm day mode.'
+          }
+        />
+      </SectionCard>
+
+      {/* PLAYBACK */}
+      <SectionCard title="Playback">
+        <div className="space-y-2">
+          <Toggle
+            id="autoplay-toggle"
+            checked={!!profile.autoplayNext}
+            onChange={(v) => update({ autoplayNext: v })}
+            label="Autoplay next related story"
+            description="When one story ends, automatically queue another using the same value."
+          />
+          <Toggle
+            id="whitenoise-toggle"
+            checked={!!profile.whiteNoiseEnabled}
+            onChange={(v) => update({ whiteNoiseEnabled: v })}
+            label="Layer white noise under stories"
+            description="Soft ambient sounds (rain, ocean, fan, drone) play under the narration. Choose from the player."
+          />
+          <Toggle
+            id="dialogue-fade-toggle"
+            checked={!!profile.dialogueFade}
+            onChange={(v) => update({ dialogueFade: v })}
+            label="Dialogue fades as your child sleeps"
+            description="Story narration gradually softens while white noise grows over the second half."
+          />
+        </div>
+      </SectionCard>
+
+      {/* CONTENT */}
+      <SectionCard title="Content preferences">
+        <div className="space-y-2">
+          <Toggle
+            id="only-tradition-toggle"
+            checked={!!profile.onlyMyTradition}
+            onChange={(v) => update({ onlyMyTradition: v })}
+            label="Only show stories from my tradition"
+            description={`Cultural Lessons will only show ${
+              RELIGIONS.find((r) => r.key === profile.religion)?.label || 'your tradition'
+            } stories.`}
+          />
+          <Toggle
+            id="cross-culture-toggle"
+            checked={!!profile.openToAllCultures}
+            onChange={(v) => update({ openToAllCultures: v })}
+            label="Show similar stories from other cultures"
+            description="Help your child grow up open-minded — same lesson, many traditions."
+          />
+        </div>
+      </SectionCard>
+
+      {/* LANGUAGE */}
+      <SectionCard title="Language">
         <div className="grid grid-cols-2 gap-2">
           {LANGUAGES.map((l) => (
             <button
@@ -87,24 +169,27 @@ export default function Settings() {
               }`}
             >
               <div className="font-display text-lg">{l.label}</div>
-              <div className={`text-[10px] ${profile.language === l.key ? 'text-bg-base/70' : 'text-ink-muted'}`}>
+              <div
+                className={`text-[10px] ${
+                  profile.language === l.key ? 'text-bg-base/70' : 'text-ink-muted'
+                }`}
+              >
                 {l.key}
               </div>
             </button>
           ))}
         </div>
-      </section>
+      </SectionCard>
 
-      {/* Device voice picker — biggest free quality win */}
-      <section className="mb-6">
-        <h2 className="ui-label mb-3">Narrator voice (device)</h2>
+      {/* DEVICE VOICES */}
+      <SectionCard title="Browser narrator voice">
         <p className="mb-3 text-xs text-ink-muted">
           {availableVoices.length === 0
-            ? 'Loading voices… (some browsers take a moment)'
-            : `${availableVoices.length} voices available for ${profile.language}. Tap to preview.`}
+            ? 'Loading voices…'
+            : `${availableVoices.length} voices available. Tap to preview.`}
         </p>
         <div className="space-y-2">
-          {availableVoices.slice(0, 8).map((v, idx) => {
+          {availableVoices.slice(0, 6).map((v, idx) => {
             const active = profile.preferredVoiceName === v.name;
             const isTop = idx === 0;
             return (
@@ -136,7 +221,7 @@ export default function Settings() {
                       </span>
                     )}
                   </div>
-                  <div className="mt-0.5 text-[11px] text-ink-muted">
+                  <div className="text-[11px] text-ink-muted">
                     {v.lang} · {v.localService ? 'On device' : 'Cloud'}
                   </div>
                 </div>
@@ -145,53 +230,10 @@ export default function Settings() {
             );
           })}
         </div>
-        <details className="mt-4">
-          <summary className="cursor-pointer text-[11px] uppercase tracking-wider text-ink-dim">
-            Why does the voice still sound robotic?
-          </summary>
-          <div className="mt-2 space-y-2 rounded-2xl bg-bg-base/60 p-3 text-[11px] leading-relaxed text-ink-muted">
-            <p>
-              Browser voices vary wildly. To get a real "narrator" voice for free:
-            </p>
-            <p>
-              <strong className="text-ink">macOS / iOS:</strong> System Settings → Accessibility →
-              Spoken Content → System Voice → Manage Voices. Download a "Premium" or "Enhanced"
-              voice (Samantha, Daniel, Karen, Serena). Then come back and pick it here.
-            </p>
-            <p>
-              <strong className="text-ink">Chrome:</strong> Voices labelled "Google" or "Natural" are
-              the highest quality. They appear automatically.
-            </p>
-            <p>
-              For studio-quality narration, the next step is wiring up ElevenLabs (paid) — the
-              architecture is ready for it.
-            </p>
-          </div>
-        </details>
-      </section>
+      </SectionCard>
 
-      {/* Default narrator */}
-      <section className="mb-6">
-        <h2 className="ui-label mb-3">Default narrator</h2>
-        <div className="grid grid-cols-5 gap-1">
-          {NARRATORS.map((n) => (
-            <button
-              key={n.key}
-              onClick={() => update({ defaultVoice: n.key })}
-              className={`flex flex-col items-center gap-1 rounded-2xl p-2 transition ${
-                profile.defaultVoice === n.key ? 'bg-bg-elevated' : ''
-              }`}
-            >
-              <span className="text-2xl">{n.emoji}</span>
-              <span className="text-[10px] text-ink-muted">{n.label}</span>
-            </button>
-          ))}
-        </div>
-      </section>
-
-      {/* Subscription */}
-      <section className="mb-6">
-        <h2 className="ui-label mb-3">Subscription</h2>
+      {/* SUBSCRIPTION */}
+      <SectionCard title="Subscription">
         <div className="card flex items-center justify-between">
           <div>
             <div className="font-ui text-sm font-bold text-ink">{tier.label} plan</div>
@@ -203,17 +245,20 @@ export default function Settings() {
             Upgrade
           </button>
         </div>
-      </section>
+      </SectionCard>
 
-      {/* Danger */}
-      <section className="mt-10">
-        <button onClick={handleReset} className="text-xs uppercase tracking-wider text-negative/80">
+      {/* DANGER */}
+      <section className="mt-6">
+        <button
+          onClick={handleReset}
+          className="text-xs uppercase tracking-wider text-negative/80"
+        >
           Reset family profile
         </button>
       </section>
 
       <p className="mt-10 text-center text-[10px] text-ink-dim">
-        Kahaniyo POC · in-house build · no external APIs
+        Dreemo POC · in-house build · no external APIs
       </p>
 
       <UpgradeModal open={upgradeOpen} onClose={() => setUpgradeOpen(false)} />
@@ -223,11 +268,19 @@ export default function Settings() {
   );
 }
 
-function Row({ label, value }) {
+function NavTile({ icon, title, sub, onClick }) {
   return (
-    <div className="rounded-xl bg-bg-base/60 p-3">
-      <div className="text-[10px] uppercase tracking-wider text-ink-dim">{label}</div>
-      <div className="mt-0.5 font-ui text-sm text-ink">{value}</div>
-    </div>
+    <button
+      onClick={onClick}
+      className="flex items-start gap-3 rounded-2xl bg-bg-surface p-4 text-left shadow-card ring-1 ring-white/5 transition hover:bg-bg-elevated active:scale-[0.98]"
+    >
+      <div className="grid h-10 w-10 shrink-0 place-items-center rounded-2xl bg-gold/15 text-2xl">
+        {icon}
+      </div>
+      <div className="min-w-0">
+        <div className="font-ui text-sm font-bold text-ink">{title}</div>
+        <div className="text-[11px] text-ink-muted">{sub}</div>
+      </div>
+    </button>
   );
 }

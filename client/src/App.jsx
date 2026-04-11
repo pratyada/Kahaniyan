@@ -7,12 +7,18 @@ import Library from './pages/Library.jsx';
 import Radio from './pages/Radio.jsx';
 import Guides from './pages/Guides.jsx';
 import Settings from './pages/Settings.jsx';
+import Roadmap from './pages/Roadmap.jsx';
+import VoiceStudio from './pages/VoiceStudio.jsx';
+import CulturalLessons from './pages/CulturalLessons.jsx';
 import BottomNav from './components/BottomNav.jsx';
 import PlayerBar from './components/PlayerBar.jsx';
 import RadioBar from './components/RadioBar.jsx';
 import { FamilyProfileProvider, useFamilyProfile } from './hooks/useFamilyProfile.js';
 import { PlayerProvider, usePlayer } from './hooks/usePlayer.jsx';
 import { RadioProvider, useRadio } from './hooks/useRadio.jsx';
+import { ThemeProvider } from './hooks/useTheme.jsx';
+import { WhiteNoiseProvider } from './hooks/useWhiteNoise.jsx';
+import { FamilyVoicesProvider } from './hooks/useFamilyVoices.jsx';
 
 function Shell() {
   const location = useLocation();
@@ -39,8 +45,11 @@ function Shell() {
           <Route path="/player" element={<Player />} />
           <Route path="/library" element={<Library />} />
           <Route path="/radio" element={<Radio />} />
+          <Route path="/lessons" element={<CulturalLessons />} />
+          <Route path="/voices" element={<VoiceStudio />} />
           <Route path="/guides" element={<Guides />} />
           <Route path="/settings" element={<Settings />} />
+          <Route path="/roadmap" element={<Roadmap />} />
           <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
       </AnimatePresence>
@@ -48,10 +57,10 @@ function Shell() {
       {/* Mini player bar — visible everywhere except player + onboarding */}
       {current && !isPlayerRoute && !isOnboardingRoute && <PlayerBar />}
 
-      {/* Radio mini bar — visible on every route except onboarding/player/radio */}
+      {/* Radio mini bar */}
       {stationId && !isOnboardingRoute && !isPlayerRoute && !isRadioRoute && !current && <RadioBar />}
 
-      {/* Bottom nav — hidden on player + onboarding */}
+      {/* Bottom nav */}
       {!isPlayerRoute && !isOnboardingRoute && <BottomNav />}
     </div>
   );
@@ -59,12 +68,18 @@ function Shell() {
 
 export default function App() {
   return (
-    <FamilyProfileProvider>
-      <PlayerProvider>
-        <RadioProvider>
-          <Shell />
-        </RadioProvider>
-      </PlayerProvider>
-    </FamilyProfileProvider>
+    <ThemeProvider>
+      <FamilyProfileProvider>
+        <FamilyVoicesProvider>
+          <PlayerProvider>
+            <RadioProvider>
+              <WhiteNoiseProvider>
+                <Shell />
+              </WhiteNoiseProvider>
+            </RadioProvider>
+          </PlayerProvider>
+        </FamilyVoicesProvider>
+      </FamilyProfileProvider>
+    </ThemeProvider>
   );
 }
