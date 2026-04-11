@@ -35,8 +35,9 @@ export default function Player() {
       speak({
         text: current.text,
         language: current.language || profile?.language || 'English',
-        rate: speed,
+        rate: speed * 0.92,
         volume: 1,
+        preferredVoiceName: profile?.preferredVoiceName || null,
       });
       setIsPlaying(true);
     }, 800);

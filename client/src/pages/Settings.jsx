@@ -4,18 +4,34 @@ import PageTransition from '../components/PageTransition.jsx';
 import UpgradeModal from '../components/UpgradeModal.jsx';
 import VersionFooter from '../components/VersionFooter.jsx';
 import { useFamilyProfile } from '../hooks/useFamilyProfile.js';
+import { useSpeech } from '../hooks/useSpeech.js';
 import { LANGUAGES, NARRATORS } from '../utils/constants.js';
 import { TIERS, storiesThisWeek } from '../utils/tierGate.js';
 
 export default function Settings() {
   const navigate = useNavigate();
   const { profile, update, clear } = useFamilyProfile();
+  const { voicesForLanguage, speak, stop } = useSpeech();
   const [upgradeOpen, setUpgradeOpen] = useState(false);
 
   if (!profile) return null;
 
   const tier = TIERS[profile.tier || 'free'];
   const used = storiesThisWeek();
+  const availableVoices = voicesForLanguage(profile.language || 'English');
+
+  const previewVoice = (voiceName) => {
+    stop();
+    setTimeout(() => {
+      speak({
+        text: `Hello ${profile.childName}. Tonight, I will tell you a beautiful bedtime story.`,
+        language: profile.language || 'English',
+        rate: 0.92,
+        volume: 1,
+        preferredVoiceName: voiceName,
+      });
+    }, 100);
+  };
 
   const handleReset = () => {
     if (confirm('Clear family profile and start over?')) {
@@ -77,6 +93,81 @@ export default function Settings() {
             </button>
           ))}
         </div>
+      </section>
+
+      {/* Device voice picker — biggest free quality win */}
+      <section className="mb-6">
+        <h2 className="ui-label mb-3">Narrator voice (device)</h2>
+        <p className="mb-3 text-xs text-ink-muted">
+          {availableVoices.length === 0
+            ? 'Loading voices… (some browsers take a moment)'
+            : `${availableVoices.length} voices available for ${profile.language}. Tap to preview.`}
+        </p>
+        <div className="space-y-2">
+          {availableVoices.slice(0, 8).map((v, idx) => {
+            const active = profile.preferredVoiceName === v.name;
+            const isTop = idx === 0;
+            return (
+              <button
+                key={v.name}
+                onClick={() => {
+                  update({ preferredVoiceName: v.name });
+                  previewVoice(v.name);
+                }}
+                className={`flex w-full items-center gap-3 rounded-2xl p-3 text-left transition ${
+                  active
+                    ? 'bg-gold/15 ring-1 ring-gold'
+                    : 'bg-bg-surface ring-1 ring-white/5 hover:bg-bg-elevated'
+                }`}
+              >
+                <div
+                  className={`grid h-10 w-10 shrink-0 place-items-center rounded-full ${
+                    active ? 'bg-gold text-bg-base' : 'bg-bg-card text-gold'
+                  }`}
+                >
+                  ▶
+                </div>
+                <div className="min-w-0 flex-1">
+                  <div className="truncate font-ui text-sm font-bold text-ink">
+                    {v.name}
+                    {isTop && (
+                      <span className="ml-2 rounded-full bg-gold/20 px-2 py-0.5 text-[9px] font-bold uppercase tracking-wider text-gold">
+                        Recommended
+                      </span>
+                    )}
+                  </div>
+                  <div className="mt-0.5 text-[11px] text-ink-muted">
+                    {v.lang} · {v.localService ? 'On device' : 'Cloud'}
+                  </div>
+                </div>
+                {active && <span className="text-xs font-bold text-gold">✓</span>}
+              </button>
+            );
+          })}
+        </div>
+        <details className="mt-4">
+          <summary className="cursor-pointer text-[11px] uppercase tracking-wider text-ink-dim">
+            Why does the voice still sound robotic?
+          </summary>
+          <div className="mt-2 space-y-2 rounded-2xl bg-bg-base/60 p-3 text-[11px] leading-relaxed text-ink-muted">
+            <p>
+              Browser voices vary wildly. To get a real "narrator" voice for free:
+            </p>
+            <p>
+              <strong className="text-ink">macOS / iOS:</strong> System Settings → Accessibility →
+              Spoken Content → System Voice → Manage Voices. Download a "Premium" or "Enhanced"
+              voice (Samantha, Daniel, Karen, Serena). Then come back and pick it here.
+            </p>
+            <p>
+              <strong className="text-ink">Chrome:</strong> Voices labelled "Google" or "Natural" are
+              the highest quality. They appear automatically.
+            </p>
+            <p>
+              For studio-quality narration, the next step is wiring up ElevenLabs (paid) — the
+              architecture is ready for it.
+            </p>
+          </div>
+        </details>
       </section>
 
       {/* Default narrator */}
