@@ -2,6 +2,8 @@ import { useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import PageTransition from '../components/PageTransition.jsx';
+import SectionCard from '../components/SectionCard.jsx';
+import SegmentedControl from '../components/SegmentedControl.jsx';
 import ValuePill from '../components/ValuePill.jsx';
 import VoiceAvatar from '../components/VoiceAvatar.jsx';
 import UpgradeModal from '../components/UpgradeModal.jsx';
@@ -32,7 +34,7 @@ export default function Home() {
 
   const [value, setValue] = useState(recommended[0]);
   const [duration, setDuration] = useState(15);
-  const [voice, setVoice] = useState('AI Narrator');
+  const [voice, setVoice] = useState(profile?.defaultVoice || 'AI Narrator');
   const [whisper, setWhisper] = useState('');
   const [whisperOverridesValue, setWhisperOverridesValue] = useState(true);
   const [upgradeOpen, setUpgradeOpen] = useState(false);
@@ -40,6 +42,7 @@ export default function Home() {
 
   const maxDuration = maxDurationFor(tier);
   const used = storiesThisWeek();
+  const remaining = tier === 'free' ? Math.max(0, 3 - used) : Infinity;
 
   const handleStart = async () => {
     if (!canGenerate(tier)) {
@@ -76,21 +79,32 @@ export default function Home() {
     return 'Good evening';
   })();
 
+  const valueMetaForActive = VALUES.find((v) => v.key === value);
+
   return (
     <PageTransition className="page-scroll px-5 pt-10 safe-top">
-      {/* Header */}
-      <header className="mb-8">
+      {/* ─── HERO ─── */}
+      <header className="mb-6">
         <p className="ui-label">{greeting}</p>
         <h1 className="display-title mt-1 text-ink">
-          Tonight's story for{' '}
-          <span className="text-gold">{profile?.childName}</span>
+          A story for <span className="text-gold">{profile?.childName}</span>
         </h1>
         <p className="mt-2 text-sm text-ink-muted">
-          {used}/{tier === 'free' ? 3 : '∞'} stories this week · {profile?.language}
+          Age {profile?.age} · {profile?.language}
         </p>
+
+        {/* Quota chip */}
+        <div className="mt-4 inline-flex items-center gap-2 rounded-full bg-bg-surface px-3 py-1.5 ring-1 ring-white/5">
+          <span className="h-1.5 w-1.5 rounded-full bg-gold" />
+          <span className="text-[11px] font-bold uppercase tracking-wider text-ink-muted">
+            {tier === 'free'
+              ? `${remaining} ${remaining === 1 ? 'story' : 'stories'} left this week`
+              : 'Unlimited stories'}
+          </span>
+        </div>
       </header>
 
-      {/* Tonight's Whisper — the headline feature */}
+      {/* ─── TONIGHT'S WHISPER (headline feature) ─── */}
       <WhisperBox
         value={whisper}
         onChange={setWhisper}
@@ -98,77 +112,66 @@ export default function Home() {
         onToggleOverride={setWhisperOverridesValue}
       />
 
-      {/* Recommended */}
-      <section className="mb-8">
-        <h2 className="ui-label mb-3">Suggested for age {profile?.age}</h2>
-        <div className="flex flex-wrap gap-2">
+      {/* ─── VALUE PICKER ─── */}
+      <SectionCard
+        title="What should the story teach?"
+        action={
+          <span className="text-[10px] uppercase tracking-wider text-ink-dim">
+            Suggested for age {profile?.age}
+          </span>
+        }
+      >
+        {/* Recommended row — bigger pills */}
+        <div className="mb-2 flex flex-wrap gap-2">
           {recommended.map((v) => (
             <ValuePill key={v} value={v} active={value === v} onClick={() => setValue(v)} />
           ))}
         </div>
-      </section>
+        {/* All values — small pills, scroll horizontally on overflow */}
+        <details className="group">
+          <summary className="cursor-pointer list-none text-[11px] font-bold uppercase tracking-wider text-ink-muted hover:text-ink">
+            <span className="group-open:hidden">+ Show all 8 values</span>
+            <span className="hidden group-open:inline">− Hide</span>
+          </summary>
+          <div className="mt-3 flex flex-wrap gap-2">
+            {VALUES.map((v) => (
+              <ValuePill
+                key={v.key}
+                value={v.key}
+                size="sm"
+                active={value === v.key}
+                onClick={() => setValue(v.key)}
+              />
+            ))}
+          </div>
+        </details>
+      </SectionCard>
 
-      {/* All values */}
-      <section className="mb-8">
-        <h2 className="ui-label mb-3">All values</h2>
-        <div className="flex flex-wrap gap-2">
-          {VALUES.map((v) => (
-            <ValuePill
-              key={v.key}
-              value={v.key}
-              size="sm"
-              active={value === v.key}
-              onClick={() => setValue(v.key)}
-            />
-          ))}
-        </div>
-      </section>
+      {/* ─── LENGTH (segmented control) ─── */}
+      <SectionCard title="How long?">
+        <SegmentedControl
+          value={duration}
+          onChange={(v) => {
+            const locked = v > maxDuration;
+            if (locked) {
+              setUpgradeReason(`${v} min stories require a paid plan.`);
+              setUpgradeOpen(true);
+            } else {
+              setDuration(v);
+            }
+          }}
+          options={DURATIONS.map((d) => ({
+            value: d.minutes,
+            label: `${d.minutes}m`,
+            sub: d.sub,
+          }))}
+          lockedKey={DURATIONS.find((d) => d.minutes > maxDuration)?.minutes}
+        />
+      </SectionCard>
 
-      {/* Duration */}
-      <section className="mb-8">
-        <h2 className="ui-label mb-3">Length</h2>
-        <div className="grid grid-cols-2 gap-2">
-          {DURATIONS.map((d) => {
-            const locked = d.minutes > maxDuration;
-            const active = duration === d.minutes;
-            return (
-              <button
-                key={d.minutes}
-                onClick={() => {
-                  if (locked) {
-                    setUpgradeReason(`${d.minutes} min stories require a paid plan.`);
-                    setUpgradeOpen(true);
-                  } else {
-                    setDuration(d.minutes);
-                  }
-                }}
-                className={`relative rounded-2xl p-4 text-left transition ${
-                  active
-                    ? 'bg-gold text-bg-base shadow-glow'
-                    : 'bg-bg-surface text-ink ring-1 ring-white/5'
-                }`}
-              >
-                <div className="font-display text-2xl font-bold">{d.label}</div>
-                <div
-                  className={`text-xs ${
-                    active ? 'text-bg-base/70' : 'text-ink-muted'
-                  }`}
-                >
-                  {d.sub}
-                </div>
-                {locked && (
-                  <span className="absolute right-3 top-3 text-xs text-gold">🔒</span>
-                )}
-              </button>
-            );
-          })}
-        </div>
-      </section>
-
-      {/* Narrator */}
-      <section className="mb-10">
-        <h2 className="ui-label mb-3">Narrator</h2>
-        <div className="grid grid-cols-5 gap-2">
+      {/* ─── NARRATOR ─── */}
+      <SectionCard title="Narrator voice">
+        <div className="grid grid-cols-5 gap-1">
           {NARRATORS.map((n) => (
             <VoiceAvatar
               key={n.key}
@@ -178,17 +181,30 @@ export default function Home() {
             />
           ))}
         </div>
-      </section>
+      </SectionCard>
 
-      {/* CTA */}
+      {/* ─── CTA ─── */}
       <motion.button
         whileTap={{ scale: 0.97 }}
         onClick={handleStart}
         disabled={loading}
-        className="btn-primary w-full py-4 text-base disabled:opacity-60"
+        className="btn-primary mt-2 w-full py-5 text-base disabled:opacity-60"
       >
-        {loading ? 'Weaving your story…' : '✨ Start Tonight\u2019s Story'}
+        {loading ? (
+          <span className="inline-flex items-center gap-2">
+            <span className="inline-block h-3 w-3 animate-pulse rounded-full bg-bg-base/70" />
+            Weaving your story…
+          </span>
+        ) : (
+          <>
+            <span>{valueMetaForActive?.emoji}</span>
+            <span>Start Tonight's Story</span>
+          </>
+        )}
       </motion.button>
+      <p className="mt-3 text-center text-[11px] text-ink-dim">
+        {whisper ? 'Tonight\'s whisper will be woven in' : 'Tap to weave a fresh story'}
+      </p>
 
       <UpgradeModal
         open={upgradeOpen}

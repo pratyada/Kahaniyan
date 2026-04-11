@@ -195,6 +195,36 @@ a {
   background: rgba(255, 255, 255, 0.16);
 }
 
+/* ───── Range slider (volume / progress) ───── */
+.kahaniyo-range {
+  -webkit-appearance: none;
+  appearance: none;
+  height: 4px;
+  background: rgba(255, 255, 255, 0.12);
+  border-radius: 999px;
+  outline: none;
+}
+.kahaniyo-range::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: var(--gold);
+  box-shadow: 0 0 12px rgba(240, 165, 0, 0.5);
+  cursor: pointer;
+  border: 0;
+}
+.kahaniyo-range::-moz-range-thumb {
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: var(--gold);
+  border: 0;
+  cursor: pointer;
+  box-shadow: 0 0 12px rgba(240, 165, 0, 0.5);
+}
+
 /* ───── Safe area for iOS ───── */
 .safe-bottom {
   padding-bottom: max(env(safe-area-inset-bottom), 1rem);

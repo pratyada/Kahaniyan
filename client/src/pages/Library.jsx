@@ -34,6 +34,9 @@ export default function Library() {
         <h1 className="display-title mt-1 text-ink">
           Stories <span className="text-gold">{profile?.childName}</span> has heard
         </h1>
+        <p className="mt-2 text-sm text-ink-muted">
+          {library.length} {library.length === 1 ? 'story' : 'stories'} saved · tap any to replay
+        </p>
       </header>
 
       {/* Filters */}
@@ -61,12 +64,22 @@ export default function Library() {
 
       {/* Grid */}
       {filtered.length === 0 ? (
-        <div className="card-elevated mt-12 text-center">
-          <div className="mb-3 text-4xl">📖</div>
-          <p className="font-ui text-sm font-bold text-ink">No stories yet</p>
-          <p className="mt-1 text-xs text-ink-muted">
-            Generate your first story from the home screen.
+        <div className="card-elevated mt-8 text-center">
+          <div className="mb-4 text-5xl">📖</div>
+          <p className="font-display text-xl font-bold text-ink">
+            {library.length === 0 ? 'Your library is empty' : 'No stories with that value yet'}
           </p>
+          <p className="mt-2 text-sm text-ink-muted">
+            {library.length === 0
+              ? "Tap Tonight to weave your child's first bedtime story."
+              : 'Try a different filter or generate one with this value.'}
+          </p>
+          <button
+            onClick={() => navigate(library.length === 0 ? '/' : '/')}
+            className="btn-primary mt-5"
+          >
+            {library.length === 0 ? 'Weave first story' : 'Back to Tonight'}
+          </button>
         </div>
       ) : (
         <div className="space-y-3">
