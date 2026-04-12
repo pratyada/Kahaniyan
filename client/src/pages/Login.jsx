@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { useAuth } from '../hooks/useAuth.jsx';
+import VersionFooter from '../components/VersionFooter.jsx';
 
 export default function Login() {
   const navigate = useNavigate();
@@ -152,6 +153,8 @@ export default function Login() {
             {mode === 'login' ? 'Sign up' : 'Log in'}
           </button>
         </p>
+
+        <VersionFooter className="mt-8" />
       </div>
     </div>
   );
