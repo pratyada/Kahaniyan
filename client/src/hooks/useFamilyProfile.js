@@ -1,8 +1,8 @@
 import { createContext, createElement, useCallback, useContext, useEffect, useState } from 'react';
 import { defaultCharactersFromProfile } from '../utils/constants.js';
 
-const PROFILES_KEY = 'dreemo:profiles';
-const ACTIVE_KEY = 'dreemo:activeProfile';
+const PROFILES_KEY = 'qissaa:profiles';
+const ACTIVE_KEY = 'qissaa:activeProfile';
 // Legacy key from the single-profile era
 const LEGACY_KEY = 'kahaniyo:familyProfile';
 

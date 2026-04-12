@@ -59,7 +59,7 @@ export default function Login() {
           className="mb-8 text-center"
         >
           <div className="mb-2 text-5xl">🌙</div>
-          <h1 className="font-display text-3xl font-bold text-gold">Dreemo</h1>
+          <h1 className="font-display text-3xl font-bold text-gold">Qissaa</h1>
           <p className="mt-1 text-sm text-ink-muted">Bedtime stories that grow with your child</p>
         </motion.div>
 

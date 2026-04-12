@@ -7,11 +7,11 @@ const GUIDES = [
   {
     id: 'first-night',
     icon: '🌙',
-    title: 'Your first bedtime with Dreemo',
+    title: 'Your first bedtime with Qissaa',
     audience: 'New parents',
-    summary: 'A 5-minute setup that turns Dreemo into part of your nightly ritual.',
+    summary: 'A 5-minute setup that turns Qissaa into part of your nightly ritual.',
     body: [
-      'Open Dreemo about 15 minutes before bedtime — give your child time to settle.',
+      'Open Qissaa about 15 minutes before bedtime — give your child time to settle.',
       'Complete the family profile once. Use real names — "Dada ji", "Nani ma", "Bruno". The story will weave them in naturally.',
       'Pick a 15-minute story for the very first night. Children build trust with shorter formats first.',
       'Dim the lights, dock the phone, and tap Start. The story begins in under a second — no fiddling once your child is in bed.',
@@ -63,14 +63,14 @@ const GUIDES = [
   {
     id: 'tonight-whisper',
     icon: '💭',
-    title: "Tonight's Whisper — telling Dreemo what's on their heart",
+    title: "Tonight's Whisper — telling Qissaa what's on their heart",
     audience: 'Parents who want stories that meet the moment',
     summary:
       'Type one sentence about how your child is feeling and the story will be woven around it — gently, in your culture, in your values.',
     body: [
       'Open the home screen and tap the "Tonight\'s Whisper" card. A small text box opens.',
       'Write one honest sentence — "they are scared of thunder" or "first day of school tomorrow" or "wants to know why the moon follows them home".',
-      'Leave the toggle "Let the whisper choose the value" on — Dreemo will pick courage, kindness, patience, or whichever value fits best.',
+      'Leave the toggle "Let the whisper choose the value" on — Qissaa will pick courage, kindness, patience, or whichever value fits best.',
       'If you want to keep your own value choice, turn the toggle off — the whisper will still be woven into the opening and closing of the story.',
       'The whisper never leaves your device. It is used only to shape tonight\'s story, then forgotten.',
     ],

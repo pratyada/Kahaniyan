@@ -1,7 +1,7 @@
 // Tiny IndexedDB wrapper for persisting voice recordings as Blobs.
 // Avoids localStorage's ~5MB limit and base64 bloat.
 
-const DB_NAME = 'dreemo-voices';
+const DB_NAME = 'qissaa-voices';
 const STORE = 'voices';
 const VERSION = 1;
 

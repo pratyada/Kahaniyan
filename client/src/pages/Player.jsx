@@ -101,10 +101,10 @@ export default function Player() {
 
   const shareStory = async () => {
     const url = `${window.location.origin}/player?storyId=${encodeURIComponent(current.id)}`;
-    const text = `${current.title} — a Dreemo bedtime story for ${profile?.childName}`;
+    const text = `${current.title} — a Qissaa bedtime story for ${profile?.childName}`;
     try {
       if (navigator.share) {
-        await navigator.share({ title: 'Dreemo story', text, url });
+        await navigator.share({ title: 'Qissaa story', text, url });
       } else {
         await navigator.clipboard.writeText(url);
         alert('Story link copied to clipboard');
