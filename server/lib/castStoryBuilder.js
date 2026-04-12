@@ -55,11 +55,21 @@ function describe(c) {
   return `${c.name}`;
 }
 
+const PET_SOUNDS = {
+  dog: { sound: 'bhau bhau', move: 'wagged its tail', walk: 'padded along' },
+  cat: { sound: 'meow', move: 'arched its back softly', walk: 'tiptoed' },
+  bird: { sound: 'chirp chirp', move: 'fluttered its wings', walk: 'hopped beside' },
+  rabbit: { sound: 'thump thump', move: 'twitched its little nose', walk: 'bounced beside' },
+  fish: { sound: 'blub blub', move: 'swirled in its bowl', walk: 'glided in a small glass jar carried by' },
+  hamster: { sound: 'squeak', move: 'puffed out its tiny cheeks', walk: 'rode on the shoulder of' },
+};
+
 function beatFor(c, contextNoun = 'the path') {
   const r = c.relation || 'other';
   const name = c.name;
   if (r === 'pet') {
-    return `${name} padded along beside {childName}, ears pricked at every sound, tail moving like a quiet flag in the wind. ${name} could not speak, but ${name} knew the way home, and that was its own kind of magic.`;
+    const pet = PET_SOUNDS[c.petType] || PET_SOUNDS.dog;
+    return `${name} ${pet.walk} {childName}, and every few steps said "${pet.sound}" — which, in pet language, meant "I am here, and I am yours." Then ${name} ${pet.move}, and everyone smiled, because ${name} always knew exactly when the moment needed a little softness.`;
   }
   if (r === 'imaginary') {
     return `${name} skipped along beside {childName}, sometimes visible, sometimes not, but always close. "I will go first," ${name} whispered. "I am made of bravery and starlight, and that is enough for both of us."`;

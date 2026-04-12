@@ -105,6 +105,24 @@ export const CHARACTER_BUCKETS = {
   other: 'sibling',
 };
 
+export const PET_TYPES = [
+  { key: 'dog', label: 'Dog', emoji: '🐶', sound: 'bhau bhau', move: 'wagged its tail' },
+  { key: 'cat', label: 'Cat', emoji: '🐱', sound: 'meow', move: 'arched its back softly' },
+  { key: 'bird', label: 'Bird', emoji: '🐦', sound: 'chirp chirp', move: 'fluttered its wings' },
+  { key: 'rabbit', label: 'Rabbit', emoji: '🐰', sound: 'thump thump', move: 'twitched its little nose' },
+  { key: 'fish', label: 'Fish', emoji: '🐠', sound: 'blub blub', move: 'swirled in its bowl' },
+  { key: 'hamster', label: 'Hamster', emoji: '🐹', sound: 'squeak', move: 'ran in its tiny wheel' },
+];
+
+export const SKIN_TONES = [
+  { key: 'default', emoji: '🧒' },
+  { key: 'light', emoji: '🧒🏻' },
+  { key: 'medium-light', emoji: '🧒🏼' },
+  { key: 'medium', emoji: '🧒🏽' },
+  { key: 'medium-dark', emoji: '🧒🏾' },
+  { key: 'dark', emoji: '🧒🏿' },
+];
+
 export const RELATION_EMOJI = {
   self: '🌟',
   sibling: '🧒',

@@ -39,14 +39,19 @@ export function buildStoryRequest({
       .filter((c) => c.relation !== 'self')
       .map((c) => c.name);
     selectedCast = selectedCharacters.map((c) => ({
-      name: c.name,
+      name: c.relation === 'self' && c.adventureName ? c.adventureName : c.name,
       relation: c.relation,
       traits: c.traits || '',
+      petType: c.petType || undefined,
     }));
   }
 
   return {
-    childName: profile.childName,
+    childName: (() => {
+      // If hero has an adventure name, use it as the story protagonist
+      const hero = profile.characters?.find((c) => c.relation === 'self');
+      return (hero?.adventureName?.trim() || profile.childName);
+    })(),
     age: profile.age,
     value,
     duration,

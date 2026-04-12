@@ -25,14 +25,19 @@ export default function Onboarding() {
     openToAllCultures: true,
   });
   const navigate = useNavigate();
-  const { save } = useFamilyProfile();
+  const { save, addKid, profiles } = useFamilyProfile();
 
   const current = STEPS[step];
   const value = draft[current.key] ?? '';
 
   const next = () => {
     if (step === STEPS.length - 1) {
-      save({ ...draft, age: Number(draft.age) || 6, tier: 'free', createdAt: Date.now() });
+      const payload = { ...draft, age: Number(draft.age) || 6, tier: 'free', createdAt: Date.now() };
+      if (profiles.length > 0) {
+        addKid(payload);
+      } else {
+        save(payload);
+      }
       navigate('/');
     } else {
       setStep((s) => s + 1);
