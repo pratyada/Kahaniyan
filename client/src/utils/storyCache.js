@@ -1,6 +1,6 @@
 // Non-repetition engine: tracks the last 10 plot types per child
 // so the selector can avoid serving the same shape twice in a row.
-const KEY = (childName) => `kahaniyo:plotHistory:${childName || 'default'}`;
+const KEY = (childName) => `qissaa:plotHistory:${childName || 'default'}`;
 const MAX = 10;
 
 export function getRecentPlotTypes(childName) {
@@ -19,7 +19,7 @@ export function pushPlotType(childName, plotType) {
   localStorage.setItem(KEY(childName), JSON.stringify(next));
 }
 
-const LIB_KEY = 'kahaniyo:library';
+const LIB_KEY = 'qissaa:library';
 
 export function getLibrary() {
   try {

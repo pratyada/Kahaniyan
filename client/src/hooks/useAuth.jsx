@@ -1,4 +1,4 @@
-import { createContext, createElement, useCallback, useContext, useEffect, useState } from 'react';
+import { createContext, createElement, useCallback, useContext, useEffect, useRef, useState } from 'react';
 import {
   onAuthStateChanged,
   signInWithEmailAndPassword,
@@ -11,20 +11,32 @@ import { auth, googleProvider, hasConfig } from '../lib/firebase.js';
 
 const AuthCtx = createContext(null);
 
+// Callback registered by FamilyProfileProvider so auth can notify
+// it when the user changes. This avoids a circular dependency.
+let _onUserChange = null;
+export function registerOnUserChange(fn) {
+  _onUserChange = fn;
+}
+
 export function AuthProvider({ children }) {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const notifiedRef = useRef(null);
 
   useEffect(() => {
     if (!auth) {
-      // No Firebase config — skip auth, run in local-only mode
       setLoading(false);
       return;
     }
     const unsub = onAuthStateChanged(auth, (u) => {
       setUser(u);
       setLoading(false);
+      // Notify profile hook when user changes
+      if (_onUserChange && u?.uid !== notifiedRef.current) {
+        notifiedRef.current = u?.uid || null;
+        _onUserChange(u);
+      }
     });
     return unsub;
   }, []);

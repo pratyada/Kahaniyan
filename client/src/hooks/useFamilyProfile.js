@@ -1,9 +1,30 @@
-import { createContext, createElement, useCallback, useContext, useEffect, useState } from 'react';
+import { createContext, createElement, useCallback, useContext, useEffect, useRef, useState } from 'react';
+import { doc, getDoc, setDoc } from 'firebase/firestore';
+import { db, hasConfig } from '../lib/firebase.js';
+import { registerOnUserChange } from './useAuth.jsx';
 import { defaultCharactersFromProfile } from '../utils/constants.js';
 
-const PROFILES_KEY = 'qissaa:profiles';
-const ACTIVE_KEY = 'qissaa:activeProfile';
-// Legacy key from the single-profile era
+// ─────────────────────────────────────────────────────────────
+// useFamilyProfile — dual-layer persistence.
+//
+// When a Firebase user is logged in + Firestore is available:
+//   Read/write: Firestore → users/{uid}
+//   Also mirror to localStorage as offline cache.
+//
+// When no Firebase / no user:
+//   Read/write: localStorage only (same as before).
+//
+// Data shape in Firestore:
+//   users/{uid} → { profiles: [...], activeIndex: 0 }
+//
+// Migration:
+//   - Legacy single-profile (kahaniyo:familyProfile) → profiles[0]
+//   - Old multi-profile (dreemo:profiles) → profiles[]
+//   - Missing characters/beliefs → auto-populated
+// ─────────────────────────────────────────────────────────────
+
+const LS_PROFILES = 'qissaa:profiles';
+const LS_ACTIVE = 'qissaa:activeProfile';
 const LEGACY_KEY = 'kahaniyo:familyProfile';
 
 function migrate(profile) {
@@ -19,18 +40,14 @@ function migrate(profile) {
   return next;
 }
 
-function loadAll() {
+function loadFromLS() {
   try {
-    const raw = localStorage.getItem(PROFILES_KEY);
+    const raw = localStorage.getItem(LS_PROFILES);
     if (raw) return JSON.parse(raw).map(migrate);
-    // Migrate from legacy single-profile
     const legacy = localStorage.getItem(LEGACY_KEY);
     if (legacy) {
       const p = migrate(JSON.parse(legacy));
-      const all = [p];
-      localStorage.setItem(PROFILES_KEY, JSON.stringify(all));
-      localStorage.setItem(ACTIVE_KEY, '0');
-      return all;
+      return [p];
     }
   } catch {
     // ignore
@@ -38,21 +55,27 @@ function loadAll() {
   return [];
 }
 
-function loadActiveIndex() {
+function loadActiveFromLS() {
   try {
-    return parseInt(localStorage.getItem(ACTIVE_KEY) || '0', 10);
+    return parseInt(localStorage.getItem(LS_ACTIVE) || '0', 10);
   } catch {
     return 0;
   }
 }
 
-function persist(profiles, activeIndex) {
+function persistLS(profiles, activeIndex) {
   try {
-    localStorage.setItem(PROFILES_KEY, JSON.stringify(profiles));
-    localStorage.setItem(ACTIVE_KEY, String(activeIndex));
+    localStorage.setItem(LS_PROFILES, JSON.stringify(profiles));
+    localStorage.setItem(LS_ACTIVE, String(activeIndex));
   } catch {
-    // ignore quota errors
+    // ignore
   }
+}
+
+// Firestore doc ref for a given uid
+function userDocRef(uid) {
+  if (!db || !uid) return null;
+  return doc(db, 'users', uid);
 }
 
 const FamilyProfileCtx = createContext(null);
@@ -61,35 +84,117 @@ export function FamilyProfileProvider({ children }) {
   const [profiles, setProfiles] = useState([]);
   const [activeIndex, setActiveIndex] = useState(0);
   const [ready, setReady] = useState(false);
+  const [uid, setUid] = useState(null);
+  const savingRef = useRef(false);
 
-  useEffect(() => {
-    const all = loadAll();
-    const idx = Math.min(loadActiveIndex(), Math.max(0, all.length - 1));
-    setProfiles(all);
-    setActiveIndex(all.length > 0 ? idx : 0);
-    setReady(true);
+  // Called by useAuth when user changes
+  const attachUser = useCallback(async (user) => {
+    const newUid = user?.uid || null;
+    setUid(newUid);
+
+    if (newUid && db) {
+      // Try loading from Firestore
+      try {
+        const snap = await getDoc(userDocRef(newUid));
+        if (snap.exists()) {
+          const data = snap.data();
+          const cloudProfiles = (data.profiles || []).map(migrate);
+          const cloudIdx = Math.min(data.activeIndex || 0, Math.max(0, cloudProfiles.length - 1));
+
+          if (cloudProfiles.length > 0) {
+            setProfiles(cloudProfiles);
+            setActiveIndex(cloudIdx);
+            persistLS(cloudProfiles, cloudIdx);
+            setReady(true);
+            return;
+          }
+        }
+      } catch (e) {
+        console.warn('Firestore read failed, using localStorage', e);
+      }
+
+      // Firestore empty — check localStorage for existing data to migrate up
+      const local = loadFromLS();
+      const localIdx = loadActiveFromLS();
+      if (local.length > 0) {
+        setProfiles(local);
+        setActiveIndex(Math.min(localIdx, local.length - 1));
+        // Push local data to Firestore
+        try {
+          await setDoc(userDocRef(newUid), { profiles: local, activeIndex: localIdx }, { merge: true });
+        } catch {
+          // offline — will sync next time
+        }
+      }
+      setReady(true);
+    } else {
+      // No Firebase user — localStorage only
+      const local = loadFromLS();
+      const localIdx = Math.min(loadActiveFromLS(), Math.max(0, local.length - 1));
+      setProfiles(local);
+      setActiveIndex(local.length > 0 ? localIdx : 0);
+      setReady(true);
+    }
   }, []);
+
+  // Initial load + register for auth state changes
+  useEffect(() => {
+    const local = loadFromLS();
+    const localIdx = Math.min(loadActiveFromLS(), Math.max(0, local.length - 1));
+    setProfiles(local);
+    setActiveIndex(local.length > 0 ? localIdx : 0);
+    if (!hasConfig) setReady(true);
+    // Register callback so AuthProvider can notify us on user change
+    registerOnUserChange((user) => attachUser(user));
+  }, [attachUser]);
+
+  // Persist helper — writes to both LS and Firestore
+  const persist = useCallback(
+    async (nextProfiles, nextIdx) => {
+      persistLS(nextProfiles, nextIdx);
+      if (uid && db && !savingRef.current) {
+        savingRef.current = true;
+        try {
+          await setDoc(userDocRef(uid), {
+            profiles: nextProfiles,
+            activeIndex: nextIdx,
+          });
+        } catch (e) {
+          console.warn('Firestore write failed', e);
+        } finally {
+          savingRef.current = false;
+        }
+      }
+    },
+    [uid]
+  );
 
   const profile = profiles[activeIndex] || null;
 
-  const save = useCallback((p) => {
-    const migrated = migrate(p);
-    setProfiles((prev) => {
-      const next = [...prev];
-      next[activeIndex] = migrated;
-      persist(next, activeIndex);
-      return next;
-    });
-  }, [activeIndex]);
+  const save = useCallback(
+    (p) => {
+      const migrated = migrate(p);
+      setProfiles((prev) => {
+        const next = [...prev];
+        next[activeIndex] = migrated;
+        persist(next, activeIndex);
+        return next;
+      });
+    },
+    [activeIndex, persist]
+  );
 
-  const update = useCallback((patch) => {
-    setProfiles((prev) => {
-      const next = [...prev];
-      next[activeIndex] = { ...(next[activeIndex] || {}), ...patch };
-      persist(next, activeIndex);
-      return next;
-    });
-  }, [activeIndex]);
+  const update = useCallback(
+    (patch) => {
+      setProfiles((prev) => {
+        const next = [...prev];
+        next[activeIndex] = { ...(next[activeIndex] || {}), ...patch };
+        persist(next, activeIndex);
+        return next;
+      });
+    },
+    [activeIndex, persist]
+  );
 
   const clear = useCallback(() => {
     setProfiles((prev) => {
@@ -99,31 +204,46 @@ export function FamilyProfileProvider({ children }) {
       persist(next, newIdx);
       return next;
     });
-  }, [activeIndex]);
+  }, [activeIndex, persist]);
 
-  const addKid = useCallback((p) => {
-    const migrated = migrate(p);
-    setProfiles((prev) => {
-      const next = [...prev, migrated];
-      const newIdx = next.length - 1;
-      setActiveIndex(newIdx);
-      persist(next, newIdx);
-      return next;
-    });
-  }, []);
+  const addKid = useCallback(
+    (p) => {
+      const migrated = migrate(p);
+      setProfiles((prev) => {
+        const next = [...prev, migrated];
+        const newIdx = next.length - 1;
+        setActiveIndex(newIdx);
+        persist(next, newIdx);
+        return next;
+      });
+    },
+    [persist]
+  );
 
-  const switchKid = useCallback((idx) => {
-    setActiveIndex(idx);
-    try {
-      localStorage.setItem(ACTIVE_KEY, String(idx));
-    } catch {
-      // ignore
-    }
-  }, []);
+  const switchKid = useCallback(
+    (idx) => {
+      setActiveIndex(idx);
+      persist(profiles, idx);
+    },
+    [profiles, persist]
+  );
 
   return createElement(
     FamilyProfileCtx.Provider,
-    { value: { profile, profiles, activeIndex, ready, save, update, clear, addKid, switchKid } },
+    {
+      value: {
+        profile,
+        profiles,
+        activeIndex,
+        ready,
+        save,
+        update,
+        clear,
+        addKid,
+        switchKid,
+        attachUser,
+      },
+    },
     children
   );
 }

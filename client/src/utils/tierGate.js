@@ -35,7 +35,7 @@ export const TIERS = {
   },
 };
 
-const USAGE_KEY = 'kahaniyo:usage';
+const USAGE_KEY = 'qissaa:usage';
 
 function loadUsage() {
   try {
