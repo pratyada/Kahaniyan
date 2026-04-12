@@ -3,6 +3,8 @@ node_modules/
 dist/
 .env
 .env.local
+client/.env
+client/.env.local
 .DS_Store
 *.log
 .vscode/
