@@ -63,7 +63,8 @@ export function AuthProvider({ children }) {
       await signInWithPopup(auth, googleProvider);
     } catch (e) {
       if (e.code === 'auth/popup-closed-by-user') return;
-      setError(friendlyError(e.code));
+      console.error('Google sign-in error:', e.code, e.message);
+      setError(friendlyError(e.code) + ` (${e.code})`);
       throw e;
     }
   }, []);
