@@ -102,7 +102,7 @@ export default function Settings() {
           <MiniToggle
             checked={!!profile.autoplayNext}
             onChange={(v) => update({ autoplayNext: v })}
-            label="Autoplay next story"
+            label="🔁 Autoplay next story"
           />
           <MiniToggle
             checked={!!profile.whiteNoiseEnabled}
