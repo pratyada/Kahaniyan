@@ -107,12 +107,12 @@ export default function Settings() {
           <MiniToggle
             checked={!!profile.whiteNoiseEnabled}
             onChange={(v) => update({ whiteNoiseEnabled: v })}
-            label="White noise under narration"
+            label="🌧️ Sleep sounds behind stories"
           />
           <MiniToggle
             checked={!!profile.dialogueFade}
             onChange={(v) => update({ dialogueFade: v })}
-            label="Narration fades as child sleeps"
+            label="🌙 Story voice fades into sleep sounds"
           />
         </div>
       </SectionCard>
@@ -125,9 +125,9 @@ export default function Settings() {
             label="Only stories from my beliefs"
           />
           <MiniToggle
-            checked={!!profile.openToAllCultures}
-            onChange={(v) => update({ openToAllCultures: v })}
-            label="Show cross-culture stories too"
+            checked={!!profile.showCrossCulture}
+            onChange={(v) => update({ showCrossCulture: v })}
+            label="Also show similar stories from other cultures"
           />
         </div>
       </SectionCard>

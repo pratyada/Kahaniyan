@@ -22,7 +22,7 @@ export default function Onboarding() {
     language: 'English',
     country: 'IN',
     beliefs: [],
-    openToAllCultures: true,
+    showCrossCulture: false,
   });
   const navigate = useNavigate();
   const { save, addKid, profiles } = useFamilyProfile();

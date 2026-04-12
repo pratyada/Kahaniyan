@@ -93,7 +93,7 @@ export default function Home() {
     // If "openToAllCultures" is off, hard-filter to selected beliefs.
     if (beliefs.length > 0) {
       const matched = list.filter((l) => beliefs.includes(l.tradition));
-      if (profile?.onlyMyTradition || !profile?.openToAllCultures) {
+      if (profile?.onlyMyTradition || !profile?.showCrossCulture) {
         list = matched;
       } else {
         // Sort matched first, then the rest
@@ -102,7 +102,7 @@ export default function Home() {
       }
     }
     return list;
-  }, [traditionTheme, profile?.beliefs, profile?.onlyMyTradition, profile?.openToAllCultures]);
+  }, [traditionTheme, profile?.beliefs, profile?.onlyMyTradition, profile?.showCrossCulture]);
 
   const handleStart = async () => {
     if (!canGenerate(tier)) {
@@ -269,8 +269,8 @@ export default function Home() {
                       .map((b) => RELIGIONS.find((r) => r.key === b)?.label)
                       .filter(Boolean)
                       .join(', ')}${
-                      profile?.openToAllCultures && !profile?.onlyMyTradition
-                        ? ' · plus other traditions'
+                      profile?.showCrossCulture
+                        ? ' · plus other cultures'
                         : ''
                     }`
                   : 'Showing wisdom from all traditions. Add your beliefs in More → Edit family.'}

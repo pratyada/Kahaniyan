@@ -34,7 +34,7 @@ export default function CulturalLessons() {
       list = list.filter((l) => l.tradition === traditionFilter);
     } else if (beliefs.length > 0) {
       const matched = list.filter((l) => beliefs.includes(l.tradition));
-      if (onlyMyTradition || !profile?.openToAllCultures) {
+      if (onlyMyTradition || !profile?.showCrossCulture) {
         list = matched;
       } else {
         const others = list.filter((l) => !beliefs.includes(l.tradition));
@@ -42,7 +42,7 @@ export default function CulturalLessons() {
       }
     }
     return list;
-  }, [activeTheme, traditionFilter, onlyMyTradition, beliefs, profile?.openToAllCultures]);
+  }, [activeTheme, traditionFilter, onlyMyTradition, beliefs, profile?.showCrossCulture]);
 
   const playLesson = (lesson) => {
     const filledText = fillTokens(lesson.body, profile);
