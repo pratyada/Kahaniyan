@@ -36,14 +36,15 @@ export const RADIO_STATIONS = [
     bestFor: 'deep sleep',
   },
   {
-    id: 'bhajan-sandhya',
-    name: 'Bhajan Sandhya',
-    tagline: 'Devotional · India',
+    id: 'deep-space',
+    name: 'Deep Space One',
+    tagline: 'Deep Ambient · Global',
     description:
-      'Soft evening bhajans and shlokas — the way Nani ma sings them, half humming, half remembering.',
-    stream: 'https://stream.zeno.fm/8wv4d9fmkxhvv',
-    accent: '#ffd166',
-    icon: '🪔',
-    bestFor: 'before stories',
+      'Intergalactic deep ambient — slow, vast, and weightless. Like floating through space while your eyes close.',
+    stream: 'https://ice1.somafm.com/deepspaceone-128-mp3',
+    fallback: 'https://ice2.somafm.com/deepspaceone-128-mp3',
+    accent: '#9cb3ff',
+    icon: '🪐',
+    bestFor: 'deep background',
   },
 ];

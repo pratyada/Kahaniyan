@@ -143,7 +143,7 @@ export default function Radio() {
       </AnimatePresence>
 
       <p className="mt-6 text-center text-[10px] text-ink-dim">
-        Radio streams are provided by SomaFM and Zeno.fm. They are free and ad-supported.
+        Streams provided by SomaFM and Zeno.fm — free and ad-supported.
       </p>
 
       <VersionFooter />
