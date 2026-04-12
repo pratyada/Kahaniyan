@@ -7,6 +7,7 @@ import UpgradeModal from '../components/UpgradeModal.jsx';
 import VersionFooter from '../components/VersionFooter.jsx';
 import { useFamilyProfile } from '../hooks/useFamilyProfile.js';
 import { useAuth } from '../hooks/useAuth.jsx';
+import { useAdmin } from '../hooks/useAdmin.jsx';
 import { useTheme } from '../hooks/useTheme.jsx';
 import { useFamilyVoices } from '../hooks/useFamilyVoices.jsx';
 import { RELIGIONS } from '../utils/constants.js';
@@ -16,6 +17,7 @@ export default function Settings() {
   const navigate = useNavigate();
   const { profile, profiles, activeIndex, update, clear, switchKid } = useFamilyProfile();
   const { user, logout, isConfigured } = useAuth();
+  const { isAdmin } = useAdmin();
   const { theme, toggle: toggleTheme } = useTheme();
   const { voices } = useFamilyVoices();
   const [upgradeOpen, setUpgradeOpen] = useState(false);
@@ -139,6 +141,9 @@ export default function Settings() {
         <div className="grid grid-cols-2 gap-2">
           <Tile icon="✨" title="Guides" sub="5 reads" onClick={() => navigate('/guides')} />
           <Tile icon="🛣️" title="Roadmap" sub="Build status" onClick={() => navigate('/roadmap')} />
+          {isAdmin && (
+            <Tile icon="🔑" title="Admin" sub="Dashboard" onClick={() => navigate('/admin')} />
+          )}
         </div>
       </SectionCard>
 

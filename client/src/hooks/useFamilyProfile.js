@@ -1,6 +1,6 @@
 import { createContext, createElement, useCallback, useContext, useEffect, useRef, useState } from 'react';
 import { doc, getDoc, setDoc } from 'firebase/firestore';
-import { db, hasConfig } from '../lib/firebase.js';
+import { db, auth as firebaseAuth, hasConfig } from '../lib/firebase.js';
 import { registerOnUserChange } from './useAuth.jsx';
 import { defaultCharactersFromProfile } from '../utils/constants.js';
 
@@ -101,6 +101,8 @@ export function FamilyProfileProvider({ children }) {
           const cloudProfiles = (data.profiles || []).map(migrate);
           const cloudIdx = Math.min(data.activeIndex || 0, Math.max(0, cloudProfiles.length - 1));
 
+          if (data.accountStatus) setAccountStatus(data.accountStatus);
+
           if (cloudProfiles.length > 0) {
             setProfiles(cloudProfiles);
             setActiveIndex(cloudIdx);
@@ -155,9 +157,19 @@ export function FamilyProfileProvider({ children }) {
       if (uid && db && !savingRef.current) {
         savingRef.current = true;
         try {
+          // Include auth metadata so admin can see emails + last activity
+          const authMeta = firebaseAuth?.currentUser
+            ? {
+                email: auth.currentUser.email || '',
+                displayName: auth.currentUser.displayName || '',
+                photoURL: auth.currentUser.photoURL || '',
+                lastActiveAt: new Date().toISOString(),
+              }
+            : {};
           await setDoc(userDocRef(uid), {
             profiles: nextProfiles,
             activeIndex: nextIdx,
+            ...authMeta,
           });
         } catch (e) {
           console.warn('Firestore write failed', e);
@@ -168,6 +180,8 @@ export function FamilyProfileProvider({ children }) {
     },
     [uid]
   );
+
+  const [accountStatus, setAccountStatus] = useState('active');
 
   const profile = profiles[activeIndex] || null;
 
@@ -236,6 +250,7 @@ export function FamilyProfileProvider({ children }) {
         profiles,
         activeIndex,
         ready,
+        accountStatus,
         save,
         update,
         clear,

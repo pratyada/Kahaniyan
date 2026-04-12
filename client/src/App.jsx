@@ -13,6 +13,7 @@ import CulturalLessons from './pages/CulturalLessons.jsx';
 import Characters from './pages/Characters.jsx';
 import EditFamily from './pages/EditFamily.jsx';
 import Login from './pages/Login.jsx';
+import Admin from './pages/Admin.jsx';
 import BottomNav from './components/BottomNav.jsx';
 import PlayerBar from './components/PlayerBar.jsx';
 import RadioBar from './components/RadioBar.jsx';
@@ -23,21 +24,40 @@ import { RadioProvider, useRadio } from './hooks/useRadio.jsx';
 import { ThemeProvider } from './hooks/useTheme.jsx';
 import { WhiteNoiseProvider } from './hooks/useWhiteNoise.jsx';
 import { FamilyVoicesProvider } from './hooks/useFamilyVoices.jsx';
+import { AdminProvider } from './hooks/useAdmin.jsx';
 
 function Shell() {
   const location = useLocation();
   const { user, loading: authLoading, isConfigured } = useAuth();
-  const { profile, ready } = useFamilyProfile();
+  const { profile, ready, accountStatus } = useFamilyProfile();
   const { current } = usePlayer();
   const { stationId } = useRadio();
 
   // Wait for auth + profile to load
   if (authLoading || !ready) return null;
 
-  // If Firebase is configured and user isn't logged in → Login page
-  // If Firebase isn't configured → skip auth (local-only mode)
   const needsAuth = isConfigured && !user;
   const onboarded = !!profile?.childName;
+  const isBlocked = accountStatus === 'blocked' || accountStatus === 'paused';
+
+  // Blocked/paused users see a static screen
+  if (!needsAuth && isBlocked && !location.pathname.startsWith('/login')) {
+    return (
+      <div className="phone-shell">
+        <div className="flex h-full flex-col items-center justify-center px-8 text-center">
+          <div className="text-5xl mb-4">{accountStatus === 'blocked' ? '🚫' : '⏸️'}</div>
+          <h1 className="font-display text-2xl font-bold text-gold">
+            Account {accountStatus}
+          </h1>
+          <p className="mt-3 text-sm text-ink-muted">
+            {accountStatus === 'blocked'
+              ? 'Your account has been suspended. Please contact support.'
+              : 'Your account is paused. Please contact support to resume.'}
+          </p>
+        </div>
+      </div>
+    );
+  }
   const isPlayerRoute = location.pathname.startsWith('/player');
   const isOnboardingRoute = location.pathname === '/onboarding';
   const isLoginRoute = location.pathname === '/login';
@@ -73,6 +93,7 @@ function Shell() {
           <Route path="/guides" element={<Guides />} />
           <Route path="/settings" element={<Settings />} />
           <Route path="/roadmap" element={<Roadmap />} />
+          <Route path="/admin" element={<Admin />} />
           <Route path="*" element={<Navigate to={needsAuth ? '/login' : '/'} replace />} />
         </Routes>
       </AnimatePresence>
@@ -94,15 +115,17 @@ export default function App() {
     <ThemeProvider>
       <AuthProvider>
         <FamilyProfileProvider>
-          <FamilyVoicesProvider>
-            <PlayerProvider>
-              <RadioProvider>
-                <WhiteNoiseProvider>
-                  <Shell />
-                </WhiteNoiseProvider>
-              </RadioProvider>
-            </PlayerProvider>
-          </FamilyVoicesProvider>
+          <AdminProvider>
+            <FamilyVoicesProvider>
+              <PlayerProvider>
+                <RadioProvider>
+                  <WhiteNoiseProvider>
+                    <Shell />
+                  </WhiteNoiseProvider>
+                </RadioProvider>
+              </PlayerProvider>
+            </FamilyVoicesProvider>
+          </AdminProvider>
         </FamilyProfileProvider>
       </AuthProvider>
     </ThemeProvider>
