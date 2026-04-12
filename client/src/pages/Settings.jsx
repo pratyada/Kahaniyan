@@ -6,14 +6,16 @@ import Toggle from '../components/Toggle.jsx';
 import UpgradeModal from '../components/UpgradeModal.jsx';
 import VersionFooter from '../components/VersionFooter.jsx';
 import { useFamilyProfile } from '../hooks/useFamilyProfile.js';
+import { useAuth } from '../hooks/useAuth.jsx';
 import { useTheme } from '../hooks/useTheme.jsx';
 import { useFamilyVoices } from '../hooks/useFamilyVoices.jsx';
-import { RELIGIONS, SKIN_TONES } from '../utils/constants.js';
+import { RELIGIONS } from '../utils/constants.js';
 import { TIERS, storiesThisWeek } from '../utils/tierGate.js';
 
 export default function Settings() {
   const navigate = useNavigate();
   const { profile, profiles, activeIndex, update, clear, switchKid } = useFamilyProfile();
+  const { user, logout, isConfigured } = useAuth();
   const { theme, toggle: toggleTheme } = useTheme();
   const { voices } = useFamilyVoices();
   const [upgradeOpen, setUpgradeOpen] = useState(false);
@@ -152,6 +154,31 @@ export default function Settings() {
           Upgrade
         </button>
       </div>
+
+      {/* ─── ACCOUNT ─── */}
+      {isConfigured && user && (
+        <SectionCard title="Account">
+          <div className="flex items-center justify-between rounded-2xl bg-bg-surface p-3 ring-1 ring-white/5">
+            <div className="min-w-0 flex-1">
+              <div className="truncate text-sm font-bold text-ink">
+                {user.displayName || user.email}
+              </div>
+              {user.displayName && (
+                <div className="truncate text-[11px] text-ink-muted">{user.email}</div>
+              )}
+            </div>
+            <button
+              onClick={async () => {
+                await logout();
+                navigate('/login');
+              }}
+              className="shrink-0 rounded-pill bg-bg-card px-3 py-1.5 text-[10px] font-bold uppercase tracking-wider text-ink-muted"
+            >
+              Log out
+            </button>
+          </div>
+        </SectionCard>
+      )}
 
       {/* ─── DANGER ─── */}
       <button
