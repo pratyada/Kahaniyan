@@ -26,17 +26,23 @@ export default function CulturalLessons() {
   const [traditionFilter, setTraditionFilter] = useState(null);
 
   const onlyMyTradition = profile?.onlyMyTradition;
-  const myReligion = profile?.religion;
+  const beliefs = profile?.beliefs || [];
 
   const filtered = useMemo(() => {
     let list = CULTURAL_LESSONS.filter((l) => l.theme === activeTheme);
     if (traditionFilter) {
       list = list.filter((l) => l.tradition === traditionFilter);
-    } else if (onlyMyTradition && myReligion && myReligion !== 'all') {
-      list = list.filter((l) => l.tradition === myReligion);
+    } else if (beliefs.length > 0) {
+      const matched = list.filter((l) => beliefs.includes(l.tradition));
+      if (onlyMyTradition || !profile?.openToAllCultures) {
+        list = matched;
+      } else {
+        const others = list.filter((l) => !beliefs.includes(l.tradition));
+        list = [...matched, ...others];
+      }
     }
     return list;
-  }, [activeTheme, traditionFilter, onlyMyTradition, myReligion]);
+  }, [activeTheme, traditionFilter, onlyMyTradition, beliefs, profile?.openToAllCultures]);
 
   const playLesson = (lesson) => {
     const filledText = fillTokens(lesson.body, profile);
@@ -60,13 +66,12 @@ export default function CulturalLessons() {
   return (
     <PageTransition className="page-scroll px-5 pt-10 safe-top">
       <header className="mb-6">
-        <p className="ui-label">Cultural Lessons</p>
+        <p className="ui-label">Wisdom Stories</p>
         <h1 className="display-title mt-1 text-ink">
-          Wisdom from <span className="text-gold">many traditions</span>
+          Stories from <span className="text-gold">your beliefs</span>
         </h1>
         <p className="mt-2 text-sm text-ink-muted">
-          Hand-picked stories from Hindu, Muslim, Christian, Sikh, Buddhist, Jain and Jewish
-          traditions. Same theme, many voices.
+          Hand-picked stories grouped by theme. Set your beliefs in More → Edit family to filter.
         </p>
       </header>
 
@@ -116,9 +121,9 @@ export default function CulturalLessons() {
         </div>
       )}
 
-      {onlyMyTradition && myReligion && (
+      {onlyMyTradition && beliefs.length > 0 && (
         <div className="mb-4 rounded-2xl bg-bg-surface p-3 text-[11px] text-ink-muted ring-1 ring-white/5">
-          Showing only stories from your tradition. You can change this in Settings → Content.
+          Showing only stories from your beliefs. Change this in Settings → Content.
         </div>
       )}
 

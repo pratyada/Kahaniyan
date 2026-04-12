@@ -12,12 +12,33 @@
 // ─────────────────────────────────────────────────────────────
 import { STORY_BANK, STORIES_BY_VALUE } from '../data/storyBank.js';
 import { detectTheme, weaveWhisper } from './whisperWeaver.js';
+import { buildCastStory } from './castStoryBuilder.js';
 
 const WORDS_PER_MINUTE = 150;
 
-function pickWeighted(stories, recentPlotTypes = []) {
+function pickWeighted(stories, recentPlotTypes = [], preferredSlots = []) {
   const fresh = stories.filter((s) => !recentPlotTypes.includes(s.plotType));
   const pool = fresh.length > 0 ? fresh : stories;
+
+  // Bias toward stories that actually USE the slots the user filled
+  // by counting how many of those tokens appear in the story body.
+  if (preferredSlots.length > 0) {
+    const scored = pool.map((s) => {
+      let score = 0;
+      for (const slot of preferredSlots) {
+        const token = `{${slot}}`;
+        const count = (s.body.match(new RegExp(token.replace(/[{}]/g, '\\$&'), 'g')) || []).length;
+        score += count;
+      }
+      return { s, score };
+    });
+    const maxScore = Math.max(...scored.map((x) => x.score));
+    if (maxScore > 0) {
+      const top = scored.filter((x) => x.score === maxScore);
+      return top[Math.floor(Math.random() * top.length)].s;
+    }
+  }
+
   return pool[Math.floor(Math.random() * pool.length)];
 }
 
@@ -65,10 +86,45 @@ export function selectStory({
   voice = 'AI Narrator',
   familyMembers = {},
   recentPlotTypes = [],
+  preferredSlots = [],
+  castNames = [],
+  selectedCast = [],
   whisper = '',
   whisperOverridesValue = false,
 }) {
   const ageBand = ageBandFor(age);
+
+  // ─── CAST MODE ───
+  // If the request includes a real selected cast, build a fresh
+  // story scaffolded around those characters instead of picking
+  // a fixed template. Every cast member gets a real beat.
+  if (selectedCast && selectedCast.length > 0) {
+    const built = buildCastStory({
+      childName: childName || 'little one',
+      cast: selectedCast,
+      value,
+      recentPlotTypes,
+    });
+    if (built) {
+      const fitted = fitToDuration(built.body, duration);
+      return {
+        id: `story_${Date.now()}_${Math.random().toString(36).slice(2, 8)}`,
+        templateId: built.templateId,
+        title: built.title,
+        text: fitted,
+        wordCount: fitted.split(/\s+/).length,
+        estimatedMinutes: duration,
+        value,
+        plotType: built.plotType,
+        language,
+        voice,
+        cast: (castNames && castNames.length > 0) ? castNames : selectedCast.filter((c) => c.relation !== 'self').map((c) => c.name),
+        whisper: null,
+        whisperTheme: null,
+        createdAt: new Date().toISOString(),
+      };
+    }
+  }
 
   // 0. Detect a theme from the whisper, if any.
   const theme = detectTheme(whisper);
@@ -83,7 +139,7 @@ export function selectStory({
   const ageMatched = candidates.filter((s) => s.ageBand === ageBand);
   const pool = ageMatched.length > 0 ? ageMatched : candidates;
 
-  const template = pickWeighted(pool, recentPlotTypes);
+  const template = pickWeighted(pool, recentPlotTypes, preferredSlots);
 
   const filledTitle = fillTokens(template.title, familyMembers, childName);
   const filledBody = fillTokens(template.body, familyMembers, childName);
@@ -111,6 +167,7 @@ export function selectStory({
     voice,
     whisper: whisper?.trim() || null,
     whisperTheme: whisper?.trim() ? theme.key : null,
+    cast: castNames || [],
     createdAt: new Date().toISOString(),
   };
 }

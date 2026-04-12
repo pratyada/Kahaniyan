@@ -62,8 +62,12 @@ export default function Settings() {
           <div className="flex-1">
             <div className="font-display text-xl font-bold text-ink">{profile.childName}</div>
             <div className="text-xs text-ink-muted">
-              Age {profile.age} ·{' '}
-              {RELIGIONS.find((r) => r.key === profile.religion)?.label || 'Open to all'}
+              Age {profile.age}
+              {profile.beliefs?.length > 0 &&
+                ` · ${profile.beliefs
+                  .map((b) => RELIGIONS.find((r) => r.key === b)?.label)
+                  .filter(Boolean)
+                  .join(', ')}`}
               {profile.country &&
                 ` · ${COUNTRIES.find((c) => c.key === profile.country)?.label || profile.country}`}
             </div>
@@ -88,8 +92,8 @@ export default function Settings() {
           />
           <NavTile
             icon="🪷"
-            title="Cultural Lessons"
-            sub="Many traditions"
+            title="Wisdom Stories"
+            sub="From your beliefs"
             onClick={() => navigate('/lessons')}
           />
           <NavTile
@@ -152,10 +156,15 @@ export default function Settings() {
             id="only-tradition-toggle"
             checked={!!profile.onlyMyTradition}
             onChange={(v) => update({ onlyMyTradition: v })}
-            label="Only show stories from my tradition"
-            description={`Cultural Lessons will only show ${
-              RELIGIONS.find((r) => r.key === profile.religion)?.label || 'your tradition'
-            } stories.`}
+            label="Only show stories from my beliefs"
+            description={
+              profile.beliefs?.length > 0
+                ? `Wisdom Stories will only show ${profile.beliefs
+                    .map((b) => RELIGIONS.find((r) => r.key === b)?.label)
+                    .filter(Boolean)
+                    .join(', ')} stories.`
+                : 'Add your beliefs in Edit Family first.'
+            }
           />
           <Toggle
             id="cross-culture-toggle"

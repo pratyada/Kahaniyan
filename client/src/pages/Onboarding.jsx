@@ -8,7 +8,7 @@ const STEPS = [
   { key: 'childName', title: "What's your child's name?", placeholder: 'e.g. Arjun', type: 'text' },
   { key: 'age', title: 'How old are they?', placeholder: '6', type: 'number' },
   { key: 'country', title: 'Where do you live?', type: 'country' },
-  { key: 'religion', title: 'Your family tradition?', subtitle: 'We use this to recommend culturally relevant stories. You can change this later.', type: 'religion' },
+  { key: 'beliefs', title: 'Your family belief?', subtitle: 'Pick one or more. Wisdom stories will come from these traditions. You can change this later.', type: 'beliefs', optional: true },
   { key: 'sibling', title: 'A brother or sister?', placeholder: 'optional — e.g. Priya', type: 'text', optional: true },
   { key: 'grandfather', title: 'A grandfather they love?', placeholder: 'optional — e.g. Dada ji', type: 'text', optional: true },
   { key: 'grandmother', title: 'A grandmother they love?', placeholder: 'optional — e.g. Nani ma', type: 'text', optional: true },
@@ -21,7 +21,7 @@ export default function Onboarding() {
   const [draft, setDraft] = useState({
     language: 'English',
     country: 'IN',
-    religion: 'all',
+    beliefs: [],
     openToAllCultures: true,
   });
   const navigate = useNavigate();
@@ -123,22 +123,39 @@ export default function Onboarding() {
                   </button>
                 ))}
               </div>
-            ) : current.type === 'religion' ? (
-              <div className="grid grid-cols-2 gap-2">
-                {RELIGIONS.map((r) => (
-                  <button
-                    key={r.key}
-                    onClick={() => setDraft((d) => ({ ...d, religion: r.key }))}
-                    className={`flex items-center gap-2 rounded-2xl px-3 py-3 text-left transition ${
-                      draft.religion === r.key
-                        ? 'bg-gold text-bg-base shadow-glow'
-                        : 'bg-bg-surface text-ink ring-1 ring-white/5'
-                    }`}
-                  >
-                    <span className="text-xl">{r.icon}</span>
-                    <span className="font-ui text-sm font-bold">{r.label}</span>
-                  </button>
-                ))}
+            ) : current.type === 'beliefs' ? (
+              <div>
+                <p className="mb-2 text-[11px] text-ink-dim">
+                  Tap to select multiple. Leave empty for stories from all traditions.
+                </p>
+                <div className="grid grid-cols-2 gap-2">
+                  {RELIGIONS.filter((r) => r.key !== 'all').map((r) => {
+                    const selected = (draft.beliefs || []).includes(r.key);
+                    return (
+                      <button
+                        key={r.key}
+                        onClick={() =>
+                          setDraft((d) => {
+                            const cur = d.beliefs || [];
+                            const next = cur.includes(r.key)
+                              ? cur.filter((x) => x !== r.key)
+                              : [...cur, r.key];
+                            return { ...d, beliefs: next };
+                          })
+                        }
+                        className={`flex items-center gap-2 rounded-2xl px-3 py-3 text-left transition ${
+                          selected
+                            ? 'bg-gold text-bg-base shadow-glow'
+                            : 'bg-bg-surface text-ink ring-1 ring-white/5'
+                        }`}
+                      >
+                        <span className="text-xl">{r.icon}</span>
+                        <span className="font-ui text-sm font-bold">{r.label}</span>
+                        {selected && <span className="ml-auto text-xs">✓</span>}
+                      </button>
+                    );
+                  })}
+                </div>
               </div>
             ) : (
               <input

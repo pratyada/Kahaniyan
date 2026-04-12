@@ -14,17 +14,36 @@ export function buildStoryRequest({
   whisperOverridesValue,
   selectedCharacters,
 }) {
-  // If a cast was explicitly selected for tonight, derive familyMembers
-  // from those characters. Otherwise fall back to legacy onboarding fields.
-  const familyMembers =
-    selectedCharacters && selectedCharacters.length > 0
-      ? mapCharactersToFamilyMembers(selectedCharacters)
-      : {
-          sibling: profile.sibling,
-          grandfather: profile.grandfather,
-          grandmother: profile.grandmother,
-          pet: profile.pet,
-        };
+  // Always start from the legacy onboarding fields so unfilled slots
+  // keep the real family members. Then override with whatever the
+  // selected cast provides — selected characters take priority.
+  const familyMembers = {
+    sibling: profile.sibling || '',
+    grandfather: profile.grandfather || '',
+    grandmother: profile.grandmother || '',
+    pet: profile.pet || '',
+  };
+  let preferredSlots = []; // bias the story picker toward these slots
+  let castNames = [];
+  let selectedCast = []; // full character objects for the cast builder
+
+  if (selectedCharacters && selectedCharacters.length > 0) {
+    const overrides = mapCharactersToFamilyMembers(selectedCharacters);
+    for (const slot of Object.keys(overrides)) {
+      if (overrides[slot]) {
+        familyMembers[slot] = overrides[slot];
+        preferredSlots.push(slot);
+      }
+    }
+    castNames = selectedCharacters
+      .filter((c) => c.relation !== 'self')
+      .map((c) => c.name);
+    selectedCast = selectedCharacters.map((c) => ({
+      name: c.name,
+      relation: c.relation,
+      traits: c.traits || '',
+    }));
+  }
 
   return {
     childName: profile.childName,
@@ -34,6 +53,9 @@ export function buildStoryRequest({
     language,
     voice,
     familyMembers,
+    preferredSlots,
+    castNames,
+    selectedCast,
     recentPlotTypes,
     whisper: whisper || '',
     whisperOverridesValue: !!whisperOverridesValue,

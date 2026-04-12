@@ -75,22 +75,36 @@ export default function EditFamily() {
           </div>
         </Field>
 
-        <Field label="Tradition">
+        <Field label="Belief — pick one or more">
+          <p className="mb-2 text-[11px] text-ink-dim">
+            Wisdom Stories will come from your selected traditions. Leave empty for stories from
+            all traditions.
+          </p>
           <div className="grid grid-cols-2 gap-2">
-            {RELIGIONS.map((r) => (
-              <button
-                key={r.key}
-                onClick={() => setDraft({ ...draft, religion: r.key })}
-                className={`flex items-center gap-2 rounded-2xl px-3 py-3 text-left transition ${
-                  draft.religion === r.key
-                    ? 'bg-gold text-bg-base shadow-glow'
-                    : 'bg-bg-surface text-ink ring-1 ring-white/5'
-                }`}
-              >
-                <span className="text-lg">{r.icon}</span>
-                <span className="text-sm font-bold">{r.label}</span>
-              </button>
-            ))}
+            {RELIGIONS.filter((r) => r.key !== 'all').map((r) => {
+              const selected = (draft.beliefs || []).includes(r.key);
+              return (
+                <button
+                  key={r.key}
+                  onClick={() => {
+                    const cur = draft.beliefs || [];
+                    const next = cur.includes(r.key)
+                      ? cur.filter((x) => x !== r.key)
+                      : [...cur, r.key];
+                    setDraft({ ...draft, beliefs: next });
+                  }}
+                  className={`flex items-center gap-2 rounded-2xl px-3 py-3 text-left transition ${
+                    selected
+                      ? 'bg-gold text-bg-base shadow-glow'
+                      : 'bg-bg-surface text-ink ring-1 ring-white/5'
+                  }`}
+                >
+                  <span className="text-lg">{r.icon}</span>
+                  <span className="text-sm font-bold">{r.label}</span>
+                  {selected && <span className="ml-auto text-xs">✓</span>}
+                </button>
+              );
+            })}
           </div>
         </Field>
 

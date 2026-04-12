@@ -88,11 +88,21 @@ export default function Home() {
 
   const lessonsForTradition = useMemo(() => {
     let list = CULTURAL_LESSONS.filter((l) => l.theme === traditionTheme);
-    if (profile?.onlyMyTradition && profile?.religion && profile.religion !== 'all') {
-      list = list.filter((l) => l.tradition === profile.religion);
+    const beliefs = profile?.beliefs || [];
+    // If user has selected specific beliefs, prioritize those traditions.
+    // If "openToAllCultures" is off, hard-filter to selected beliefs.
+    if (beliefs.length > 0) {
+      const matched = list.filter((l) => beliefs.includes(l.tradition));
+      if (profile?.onlyMyTradition || !profile?.openToAllCultures) {
+        list = matched;
+      } else {
+        // Sort matched first, then the rest
+        const others = list.filter((l) => !beliefs.includes(l.tradition));
+        list = [...matched, ...others];
+      }
     }
     return list;
-  }, [traditionTheme, profile?.onlyMyTradition, profile?.religion]);
+  }, [traditionTheme, profile?.beliefs, profile?.onlyMyTradition, profile?.openToAllCultures]);
 
   const handleStart = async () => {
     if (!canGenerate(tier)) {
@@ -251,12 +261,19 @@ export default function Home() {
           >
             <div className="mb-4 flex items-center gap-2 rounded-2xl bg-gold/10 p-3 ring-1 ring-gold/20">
               <span className="text-xl">
-                {RELIGIONS.find((r) => r.key === profile?.religion)?.icon || '🌏'}
+                {(profile?.beliefs?.[0] && RELIGIONS.find((r) => r.key === profile.beliefs[0])?.icon) || '🌏'}
               </span>
               <div className="text-[11px] text-ink-muted">
-                {profile?.onlyMyTradition
-                  ? `Showing only ${RELIGIONS.find((r) => r.key === profile?.religion)?.label || 'your tradition'} stories.`
-                  : 'Showing wisdom from many traditions. Toggle in Settings → Content.'}
+                {profile?.beliefs?.length > 0
+                  ? `Beliefs: ${profile.beliefs
+                      .map((b) => RELIGIONS.find((r) => r.key === b)?.label)
+                      .filter(Boolean)
+                      .join(', ')}${
+                      profile?.openToAllCultures && !profile?.onlyMyTradition
+                        ? ' · plus other traditions'
+                        : ''
+                    }`
+                  : 'Showing wisdom from all traditions. Add your beliefs in More → Edit family.'}
               </div>
             </div>
 

@@ -5,10 +5,18 @@ const KEY = 'kahaniyo:familyProfile';
 
 function migrate(profile) {
   if (!profile) return profile;
-  if (!profile.characters || profile.characters.length === 0) {
-    return { ...profile, characters: defaultCharactersFromProfile(profile) };
+  let next = profile;
+  if (!next.characters || next.characters.length === 0) {
+    next = { ...next, characters: defaultCharactersFromProfile(next) };
   }
-  return profile;
+  // Migrate single religion → beliefs array
+  if (!next.beliefs && next.religion) {
+    next = { ...next, beliefs: next.religion === 'all' ? [] : [next.religion] };
+  }
+  if (!next.beliefs) {
+    next = { ...next, beliefs: [] };
+  }
+  return next;
 }
 
 const FamilyProfileCtx = createContext(null);
