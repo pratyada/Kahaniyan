@@ -56,6 +56,26 @@ export default function EditFamily() {
           />
         </Field>
 
+        <Field label="Mother's name">
+          <input
+            type="text"
+            value={draft.motherName || ''}
+            onChange={(e) => setDraft({ ...draft, motherName: e.target.value })}
+            placeholder="optional"
+            className="field"
+          />
+        </Field>
+
+        <Field label="Father's name">
+          <input
+            type="text"
+            value={draft.fatherName || ''}
+            onChange={(e) => setDraft({ ...draft, fatherName: e.target.value })}
+            placeholder="optional"
+            className="field"
+          />
+        </Field>
+
         <Field label="Country">
           <div className="grid grid-cols-2 gap-2">
             {COUNTRIES.map((c) => (

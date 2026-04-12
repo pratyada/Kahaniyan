@@ -9,10 +9,12 @@ const STEPS = [
   { key: 'age', title: 'How old are they?', placeholder: '6', type: 'number' },
   { key: 'country', title: 'Where do you live?', type: 'country' },
   { key: 'beliefs', title: 'Your family belief?', subtitle: 'Pick one or more. Wisdom stories will come from these traditions. You can change this later.', type: 'beliefs', optional: true },
-  { key: 'sibling', title: 'A brother or sister?', placeholder: 'optional — e.g. Priya', type: 'text', optional: true },
-  { key: 'grandfather', title: 'A grandfather they love?', placeholder: 'optional — e.g. Dada ji', type: 'text', optional: true },
-  { key: 'grandmother', title: 'A grandmother they love?', placeholder: 'optional — e.g. Nani ma', type: 'text', optional: true },
-  { key: 'pet', title: 'A pet at home?', placeholder: 'optional — e.g. Bruno', type: 'text', optional: true },
+  { key: 'motherName', title: "Mother's name?", placeholder: 'optional — e.g. Meera', type: 'text', optional: true },
+  { key: 'fatherName', title: "Father's name?", placeholder: 'optional — e.g. Raj', type: 'text', optional: true },
+  { key: 'sibling', title: 'Sibling name?', placeholder: 'optional — e.g. Priya', type: 'text', optional: true },
+  { key: 'grandfather', title: 'Grandfather name?', placeholder: 'optional — e.g. Dada ji', type: 'text', optional: true },
+  { key: 'grandmother', title: 'Grandmother name?', placeholder: 'optional — e.g. Nani ma', type: 'text', optional: true },
+  { key: 'pet', title: 'Pet name?', placeholder: 'optional — e.g. Bruno', type: 'text', optional: true },
   { key: 'language', title: 'Which language tonight?', type: 'language' },
 ];
 

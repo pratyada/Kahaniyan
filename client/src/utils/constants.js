@@ -171,6 +171,12 @@ export function defaultCharactersFromProfile(profile) {
   if (profile?.childName) {
     list.push({ id: 'char_self', name: profile.childName, relation: 'self', emoji: '🌟', traits: '' });
   }
+  if (profile?.motherName) {
+    list.push({ id: 'char_mummy', name: profile.motherName, relation: 'mummy', emoji: RELATION_EMOJI.mummy, traits: '' });
+  }
+  if (profile?.fatherName) {
+    list.push({ id: 'char_daddy', name: profile.fatherName, relation: 'daddy', emoji: RELATION_EMOJI.daddy, traits: '' });
+  }
   if (profile?.sibling) {
     list.push({ id: 'char_sibling', name: profile.sibling, relation: 'sibling', emoji: RELATION_EMOJI.sibling, traits: '' });
   }
