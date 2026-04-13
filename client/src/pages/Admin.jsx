@@ -152,7 +152,7 @@ export default function Admin() {
               <BigStat label="Characters" value={stats.totalChars} icon="👨‍👩‍👧" />
               <BigStat label="Stories generated" value={totalStoriesAll} icon="📖" />
               <BigStat label="Minutes listened" value={Math.round(totalMinutesAll)} icon="⏱️" />
-              <BigStat label="Est. API cost" value={`$${estimatedCost}`} icon="💰" />
+              <BigStat label="Est. API cost" value={`CA$${estimatedCost}`} icon="💰" />
             </div>
 
             <div className="grid gap-6 lg:grid-cols-3">
