@@ -115,19 +115,10 @@ export function FamilyProfileProvider({ children }) {
         console.warn('Firestore read failed, using localStorage', e);
       }
 
-      // Firestore empty — check localStorage for existing data to migrate up
-      const local = loadFromLS();
-      const localIdx = loadActiveFromLS();
-      if (local.length > 0) {
-        setProfiles(local);
-        setActiveIndex(Math.min(localIdx, local.length - 1));
-        // Push local data to Firestore
-        try {
-          await setDoc(userDocRef(newUid), { profiles: local, activeIndex: localIdx }, { merge: true });
-        } catch {
-          // offline — will sync next time
-        }
-      }
+      // Firestore empty for this user — start fresh.
+      // Do NOT inherit localStorage data from another user's session.
+      setProfiles([]);
+      setActiveIndex(0);
       setReady(true);
     } else {
       // No Firebase user — localStorage only
