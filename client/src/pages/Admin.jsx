@@ -77,9 +77,17 @@ export default function Admin() {
     .filter(Boolean)
     .sort();
 
+  // Usage aggregates
+  const totalStoriesAll = allUsers.reduce((s, u) => s + (u.usage?.totalStories || 0), 0);
+  const totalMinutesAll = allUsers.reduce((s, u) => s + (u.usage?.totalMinutes || 0), 0);
+  // Cost estimate: ~$0.015/1K chars for TTS, ~4500 words = 27K chars per 30 min ≈ $0.40/30min
+  const COST_PER_MINUTE = 0.013; // estimated blended cost with ElevenLabs
+  const estimatedCost = (totalMinutesAll * COST_PER_MINUTE).toFixed(2);
+
   const TABS = [
     { key: 'overview', label: 'Overview', icon: '📊' },
     { key: 'users', label: `Users (${allUsers.length})`, icon: '👤' },
+    { key: 'usage', label: 'Usage & Costs', icon: '💰' },
     { key: 'emails', label: `Emails (${allEmails.length})`, icon: '📧' },
     { key: 'admins', label: 'Admins', icon: '🔑' },
   ];
@@ -133,11 +141,13 @@ export default function Admin() {
         {tab === 'overview' && stats && (
           <div className="space-y-6">
             {/* Stat grid */}
-            <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+            <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6">
               <BigStat label="Total users" value={stats.totalUsers} icon="👤" />
               <BigStat label="Kid profiles" value={stats.totalKids} icon="🧒" />
-              <BigStat label="Characters created" value={stats.totalChars} icon="👨‍👩‍👧" />
-              <BigStat label="Admins" value={adminEmails.length} icon="🔑" />
+              <BigStat label="Characters" value={stats.totalChars} icon="👨‍👩‍👧" />
+              <BigStat label="Stories generated" value={totalStoriesAll} icon="📖" />
+              <BigStat label="Minutes listened" value={Math.round(totalMinutesAll)} icon="⏱️" />
+              <BigStat label="Est. API cost" value={`$${estimatedCost}`} icon="💰" />
             </div>
 
             <div className="grid gap-6 lg:grid-cols-3">
@@ -247,11 +257,8 @@ export default function Admin() {
                     <th className="px-4 py-3">User</th>
                     <th className="px-4 py-3">Email</th>
                     <th className="px-4 py-3 text-center">Kids</th>
-                    <th className="px-4 py-3">Kid details</th>
-                    <th className="px-4 py-3 text-center">Characters</th>
-                    <th className="px-4 py-3 text-center">Voices</th>
-                    <th className="px-4 py-3">Beliefs</th>
-                    <th className="px-4 py-3">Language</th>
+                    <th className="px-4 py-3 text-center">Stories</th>
+                    <th className="px-4 py-3 text-center">Minutes</th>
                     <th className="px-4 py-3 text-center">Tier</th>
                     <th className="px-4 py-3 text-center">Status</th>
                     <th className="px-4 py-3">Last active</th>
@@ -261,7 +268,7 @@ export default function Admin() {
                 <tbody>
                   {filteredUsers.length === 0 ? (
                     <tr>
-                      <td colSpan={13} className="px-4 py-8 text-center text-[#6e6a63]">
+                      <td colSpan={10} className="px-4 py-8 text-center text-[#6e6a63]">
                         {searchQuery ? 'No users match your search.' : 'No users yet.'}
                       </td>
                     </tr>
@@ -269,9 +276,8 @@ export default function Admin() {
                     filteredUsers.map((u, idx) => {
                       const status = u.accountStatus || 'active';
                       const kids = u.profiles || [];
-                      const totalChars = kids.reduce((s, p) => s + (p.characters?.length || 0), 0);
-                      const allBeliefs = [...new Set(kids.flatMap((p) => p.beliefs || []))];
-                      const allLangs = [...new Set(kids.map((p) => p.language).filter(Boolean))];
+                      const stories = u.usage?.totalStories || 0;
+                      const minutes = u.usage?.totalMinutes || 0;
                       const tiers = [...new Set(kids.map((p) => p.tier || 'free'))];
                       const lastActive = u.lastActiveAt
                         ? new Date(u.lastActiveAt).toLocaleDateString(undefined, {
@@ -313,45 +319,8 @@ export default function Admin() {
                               {kids.length}
                             </span>
                           </td>
-                          <td className="px-4 py-3">
-                            {kids.length === 0 ? (
-                              <span className="text-xs text-[#6e6a63]">No profiles</span>
-                            ) : (
-                              <div className="space-y-0.5">
-                                {kids.map((kid, i) => (
-                                  <div key={i} className="text-xs text-[#a8a39a]">
-                                    <span className="font-bold text-[#f5f0e8]">{kid.childName || '?'}</span>
-                                    <span className="text-[#6e6a63]"> · age {kid.age || '?'}</span>
-                                    {kid.motherName && <span className="text-[#6e6a63]"> · mom: {kid.motherName}</span>}
-                                    {kid.fatherName && <span className="text-[#6e6a63]"> · dad: {kid.fatherName}</span>}
-                                    {kid.sibling && <span className="text-[#6e6a63]"> · sib: {kid.sibling}</span>}
-                                    {kid.pet && <span className="text-[#6e6a63]"> · pet: {kid.pet}</span>}
-                                  </div>
-                                ))}
-                              </div>
-                            )}
-                          </td>
-                          <td className="px-4 py-3 text-center text-xs text-[#a8a39a]">{totalChars}</td>
-                          <td className="px-4 py-3 text-center text-xs text-[#a8a39a]">—</td>
-                          <td className="px-4 py-3">
-                            {allBeliefs.length > 0 ? (
-                              <div className="flex flex-wrap gap-1">
-                                {allBeliefs.map((b) => {
-                                  const r = RELIGIONS.find((x) => x.key === b);
-                                  return (
-                                    <span key={b} className="text-xs" title={r?.label}>
-                                      {r?.icon || b}
-                                    </span>
-                                  );
-                                })}
-                              </div>
-                            ) : (
-                              <span className="text-xs text-[#6e6a63]">—</span>
-                            )}
-                          </td>
-                          <td className="px-4 py-3 text-xs text-[#a8a39a]">
-                            {allLangs.join(', ') || '—'}
-                          </td>
+                          <td className="px-4 py-3 text-center text-xs text-[#a8a39a]">{stories}</td>
+                          <td className="px-4 py-3 text-center text-xs text-[#a8a39a]">{Math.round(minutes)}</td>
                           <td className="px-4 py-3 text-center">
                             {tiers.map((t) => (
                               <span
@@ -509,6 +478,167 @@ export default function Admin() {
                 );
               })()}
             </AnimatePresence>
+          </div>
+        )}
+
+        {/* ═══ USAGE & COSTS ═══ */}
+        {tab === 'usage' && (
+          <div className="space-y-6">
+            {/* Top-line metrics */}
+            <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+              <BigStat label="Total stories" value={totalStoriesAll} icon="📖" />
+              <BigStat label="Total minutes" value={Math.round(totalMinutesAll)} icon="⏱️" />
+              <BigStat label="Avg min / user" value={allUsers.length ? Math.round(totalMinutesAll / allUsers.length) : 0} icon="📊" />
+              <BigStat label="Est. API cost" value={`$${estimatedCost}`} icon="💰" />
+            </div>
+
+            {/* Cost breakdown note */}
+            <div className="rounded-2xl bg-[#1a1a28] p-6">
+              <h3 className="mb-3 text-xs font-bold uppercase tracking-wider text-[#a8a39a]">
+                Cost estimation basis
+              </h3>
+              <div className="grid gap-4 text-xs text-[#a8a39a] sm:grid-cols-3">
+                <div className="rounded-xl bg-[#0f0f17] p-3">
+                  <div className="text-[9px] uppercase tracking-wider text-[#6e6a63]">ElevenLabs TTS</div>
+                  <div className="mt-1 font-bold text-[#f5f0e8]">~$0.40 / 30 min story</div>
+                </div>
+                <div className="rounded-xl bg-[#0f0f17] p-3">
+                  <div className="text-[9px] uppercase tracking-wider text-[#6e6a63]">Claude API (story gen)</div>
+                  <div className="mt-1 font-bold text-[#f5f0e8]">~$0.02 / story</div>
+                </div>
+                <div className="rounded-xl bg-[#0f0f17] p-3">
+                  <div className="text-[9px] uppercase tracking-wider text-[#6e6a63]">Blended per minute</div>
+                  <div className="mt-1 font-bold text-[#f0a500]">~$0.013 / min</div>
+                </div>
+              </div>
+              <p className="mt-3 text-[11px] text-[#6e6a63]">
+                These are estimates based on ElevenLabs Starter plan + Claude Sonnet pricing.
+                Actual costs depend on voice quality tier, caching, and story length distribution.
+              </p>
+            </div>
+
+            {/* Per-user usage table */}
+            <div className="rounded-2xl bg-[#1a1a28]">
+              <div className="border-b border-white/5 px-6 py-4">
+                <h3 className="text-xs font-bold uppercase tracking-wider text-[#a8a39a]">
+                  Per-user usage
+                </h3>
+              </div>
+              <div className="overflow-x-auto">
+                <table className="w-full min-w-[700px] text-left text-sm">
+                  <thead>
+                    <tr className="border-b border-white/10 text-[10px] font-bold uppercase tracking-wider text-[#6e6a63]">
+                      <th className="px-4 py-3">#</th>
+                      <th className="px-4 py-3">User</th>
+                      <th className="px-4 py-3">Email</th>
+                      <th className="px-4 py-3 text-center">Stories</th>
+                      <th className="px-4 py-3 text-center">Minutes</th>
+                      <th className="px-4 py-3 text-center">Est. cost</th>
+                      <th className="px-4 py-3">Last story</th>
+                      <th className="px-4 py-3 text-center">Tier</th>
+                      <th className="px-4 py-3 text-center">Paying?</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {[...allUsers]
+                      .sort((a, b) => (b.usage?.totalMinutes || 0) - (a.usage?.totalMinutes || 0))
+                      .map((u, idx) => {
+                        const stories = u.usage?.totalStories || 0;
+                        const minutes = u.usage?.totalMinutes || 0;
+                        const cost = (minutes * COST_PER_MINUTE).toFixed(2);
+                        const tier = (u.profiles || []).map((p) => p.tier || 'free').join(', ') || 'free';
+                        const isPaid = tier.includes('family') || tier.includes('annual');
+                        const lastStory = u.usage?.lastStoryAt
+                          ? new Date(u.usage.lastStoryAt).toLocaleDateString(undefined, {
+                              month: 'short',
+                              day: 'numeric',
+                            })
+                          : '—';
+                        return (
+                          <tr key={u.uid} className="border-b border-white/5 hover:bg-white/[0.02]">
+                            <td className="px-4 py-3 text-[#6e6a63]">{idx + 1}</td>
+                            <td className="px-4 py-3 font-bold text-[#f5f0e8]">
+                              {u.displayName || u.email?.split('@')[0] || '—'}
+                            </td>
+                            <td className="px-4 py-3 font-mono text-xs text-[#a8a39a]">{u.email || '—'}</td>
+                            <td className="px-4 py-3 text-center">
+                              <span className="rounded-full bg-[#f0a500]/15 px-2 py-0.5 text-xs font-bold text-[#f0a500]">
+                                {stories}
+                              </span>
+                            </td>
+                            <td className="px-4 py-3 text-center text-xs text-[#a8a39a]">{Math.round(minutes)}</td>
+                            <td className="px-4 py-3 text-center text-xs font-bold text-[#f0a500]">${cost}</td>
+                            <td className="px-4 py-3 text-xs text-[#6e6a63]">{lastStory}</td>
+                            <td className="px-4 py-3 text-center">
+                              <span className="rounded-full bg-[#f0a500]/10 px-2 py-0.5 text-[9px] font-bold capitalize text-[#f0a500]">
+                                {tier}
+                              </span>
+                            </td>
+                            <td className="px-4 py-3 text-center">
+                              {isPaid ? (
+                                <span className="text-[#7ad9a1]">✓</span>
+                              ) : (
+                                <span className="text-[#6e6a63]">—</span>
+                              )}
+                            </td>
+                          </tr>
+                        );
+                      })}
+                  </tbody>
+                  <tfoot>
+                    <tr className="border-t border-white/10 font-bold">
+                      <td className="px-4 py-3" colSpan={3}>
+                        <span className="text-xs uppercase tracking-wider text-[#a8a39a]">Total</span>
+                      </td>
+                      <td className="px-4 py-3 text-center text-[#f0a500]">{totalStoriesAll}</td>
+                      <td className="px-4 py-3 text-center text-[#a8a39a]">{Math.round(totalMinutesAll)}</td>
+                      <td className="px-4 py-3 text-center text-[#f0a500]">${estimatedCost}</td>
+                      <td colSpan={3} />
+                    </tr>
+                  </tfoot>
+                </table>
+              </div>
+            </div>
+
+            {/* Pricing helper */}
+            <div className="rounded-2xl bg-[#1a1a28] p-6">
+              <h3 className="mb-3 text-xs font-bold uppercase tracking-wider text-[#a8a39a]">
+                Pricing decision helper
+              </h3>
+              <div className="grid gap-4 sm:grid-cols-3">
+                <div className="rounded-xl bg-[#0f0f17] p-4">
+                  <div className="text-[10px] uppercase tracking-wider text-[#6e6a63]">If avg user = 30 min / month</div>
+                  <div className="mt-1 text-lg font-bold text-[#f5f0e8]">
+                    ${(30 * COST_PER_MINUTE).toFixed(2)} <span className="text-xs text-[#6e6a63]">cost / user / mo</span>
+                  </div>
+                  <div className="mt-1 text-xs text-[#7ad9a1]">
+                    ₹299/mo plan → ₹{Math.round(299 - 30 * COST_PER_MINUTE * 85)} margin
+                  </div>
+                </div>
+                <div className="rounded-xl bg-[#0f0f17] p-4">
+                  <div className="text-[10px] uppercase tracking-wider text-[#6e6a63]">If avg user = 60 min / month</div>
+                  <div className="mt-1 text-lg font-bold text-[#f5f0e8]">
+                    ${(60 * COST_PER_MINUTE).toFixed(2)} <span className="text-xs text-[#6e6a63]">cost / user / mo</span>
+                  </div>
+                  <div className="mt-1 text-xs text-[#7ad9a1]">
+                    ₹299/mo plan → ₹{Math.round(299 - 60 * COST_PER_MINUTE * 85)} margin
+                  </div>
+                </div>
+                <div className="rounded-xl bg-[#0f0f17] p-4">
+                  <div className="text-[10px] uppercase tracking-wider text-[#6e6a63]">If avg user = 120 min / month</div>
+                  <div className="mt-1 text-lg font-bold text-[#f5f0e8]">
+                    ${(120 * COST_PER_MINUTE).toFixed(2)} <span className="text-xs text-[#6e6a63]">cost / user / mo</span>
+                  </div>
+                  <div className="mt-1 text-xs text-[#ffa42b]">
+                    ₹299/mo plan → ₹{Math.round(299 - 120 * COST_PER_MINUTE * 85)} margin
+                  </div>
+                </div>
+              </div>
+              <p className="mt-3 text-[11px] text-[#6e6a63]">
+                Margins assume ₹85/$1 exchange rate. Real margins improve with story caching
+                (repeat plays don't regenerate) and free-tier pre-written stories (zero API cost).
+              </p>
+            </div>
           </div>
         )}
 

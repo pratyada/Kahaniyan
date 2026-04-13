@@ -1,7 +1,9 @@
 import { useState, useCallback } from 'react';
 import { buildStoryRequest } from '../utils/promptBuilder.js';
 import { getRecentPlotTypes, pushPlotType, saveToLibrary } from '../utils/storyCache.js';
-import { recordStoryGenerated } from '../utils/tierGate.js';
+import { recordStoryGenerated, getUsageStats } from '../utils/tierGate.js';
+import { doc, setDoc } from 'firebase/firestore';
+import { db, auth } from '../lib/firebase.js';
 
 const API_BASE = import.meta.env.VITE_API_BASE_URL || '';
 
@@ -47,7 +49,27 @@ export function useStoryGenerator() {
 
       pushPlotType(profile.childName, story.plotType);
       saveToLibrary(story);
-      recordStoryGenerated();
+      const usage = recordStoryGenerated(story.estimatedMinutes || 0);
+
+      // Sync usage stats to Firestore so admin can see them
+      if (db && auth?.currentUser) {
+        try {
+          await setDoc(
+            doc(db, 'users', auth.currentUser.uid),
+            {
+              usage: {
+                totalStories: usage.totalStories || 0,
+                totalMinutes: usage.totalMinutes || 0,
+                lastStoryAt: new Date().toISOString(),
+              },
+            },
+            { merge: true }
+          );
+        } catch {
+          // non-critical
+        }
+      }
+
       return story;
     } catch (e) {
       setError(e.message || 'Could not generate story');

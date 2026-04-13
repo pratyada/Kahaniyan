@@ -4,19 +4,22 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { useFamilyProfile } from '../hooks/useFamilyProfile.js';
 import { LANGUAGES, COUNTRIES, RELIGIONS } from '../utils/constants.js';
 
-const STEPS = [
-  { key: 'childName', title: "What's your child's name?", placeholder: 'e.g. Arjun', type: 'text' },
-  { key: 'age', title: 'How old are they?', placeholder: '6', type: 'number' },
-  { key: 'country', title: 'Where do you live?', type: 'country' },
-  { key: 'beliefs', title: 'Your family belief?', subtitle: 'Pick one or more. Wisdom stories will come from these traditions. You can change this later.', type: 'beliefs', optional: true },
-  { key: 'motherName', title: "Mother's name?", placeholder: 'optional — e.g. Meera', type: 'text', optional: true },
-  { key: 'fatherName', title: "Father's name?", placeholder: 'optional — e.g. Raj', type: 'text', optional: true },
-  { key: 'sibling', title: 'Sibling name?', placeholder: 'optional — e.g. Priya', type: 'text', optional: true },
-  { key: 'grandfather', title: 'Grandfather name?', placeholder: 'optional — e.g. Dada ji', type: 'text', optional: true },
-  { key: 'grandmother', title: 'Grandmother name?', placeholder: 'optional — e.g. Nani ma', type: 'text', optional: true },
-  { key: 'pet', title: 'Pet name?', placeholder: 'optional — e.g. Bruno', type: 'text', optional: true },
-  { key: 'language', title: 'Which language tonight?', type: 'language' },
-];
+const makeSteps = (name) => {
+  const n = name || 'your child';
+  return [
+    { key: 'childName', title: "What's your child's name?", placeholder: 'e.g. Arjun', type: 'text' },
+    { key: 'age', title: `How old is ${n}?`, placeholder: '6', type: 'number' },
+    { key: 'country', title: `Where does ${n} live?`, type: 'country' },
+    { key: 'beliefs', title: `${n}'s family belief?`, subtitle: 'Pick one or more. Wisdom stories will come from these traditions.', type: 'beliefs', optional: true },
+    { key: 'motherName', title: `${n}'s mother's name?`, placeholder: 'optional — e.g. Meera', type: 'text', optional: true },
+    { key: 'fatherName', title: `${n}'s father's name?`, placeholder: 'optional — e.g. Raj', type: 'text', optional: true },
+    { key: 'sibling', title: `${n}'s sibling name?`, placeholder: 'optional — e.g. Priya', type: 'text', optional: true },
+    { key: 'grandfather', title: `${n}'s grandfather name?`, placeholder: 'optional — e.g. Dada ji', type: 'text', optional: true },
+    { key: 'grandmother', title: `${n}'s grandmother name?`, placeholder: 'optional — e.g. Nani ma', type: 'text', optional: true },
+    { key: 'pet', title: `${n}'s pet name?`, placeholder: 'optional — e.g. Bruno', type: 'text', optional: true },
+    { key: 'language', title: `Which language for ${n} tonight?`, type: 'language' },
+  ];
+};
 
 export default function Onboarding() {
   const [step, setStep] = useState(0);
@@ -29,6 +32,7 @@ export default function Onboarding() {
   const navigate = useNavigate();
   const { save, addKid, profiles } = useFamilyProfile();
 
+  const STEPS = makeSteps(draft.childName?.trim());
   const current = STEPS[step];
   const value = draft[current.key] ?? '';
 
@@ -46,7 +50,7 @@ export default function Onboarding() {
     }
   };
 
-  const canAdvance = current.optional || (typeof value === 'string' ? value.trim().length > 0 : !!value);
+  const canAdvance = current.optional || current.type === 'beliefs' || (typeof value === 'string' ? value.trim().length > 0 : !!value);
 
   return (
     <div className="phone-shell">

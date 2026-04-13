@@ -39,9 +39,9 @@ const USAGE_KEY = 'qissaa:usage';
 
 function loadUsage() {
   try {
-    return JSON.parse(localStorage.getItem(USAGE_KEY) || '{"timestamps":[]}');
+    return JSON.parse(localStorage.getItem(USAGE_KEY) || '{"timestamps":[],"totalStories":0,"totalMinutes":0}');
   } catch {
-    return { timestamps: [] };
+    return { timestamps: [], totalStories: 0, totalMinutes: 0 };
   }
 }
 
@@ -49,10 +49,17 @@ function saveUsage(u) {
   localStorage.setItem(USAGE_KEY, JSON.stringify(u));
 }
 
-export function recordStoryGenerated() {
+export function recordStoryGenerated(durationMinutes = 0) {
   const u = loadUsage();
   u.timestamps.push(Date.now());
+  u.totalStories = (u.totalStories || 0) + 1;
+  u.totalMinutes = (u.totalMinutes || 0) + durationMinutes;
   saveUsage(u);
+  return u;
+}
+
+export function getUsageStats() {
+  return loadUsage();
 }
 
 export function storiesThisWeek() {
