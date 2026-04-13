@@ -3,8 +3,9 @@ import { useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useAdmin } from '../hooks/useAdmin.jsx';
 import { useAuth } from '../hooks/useAuth.jsx';
-import { RELIGIONS } from '../utils/constants.js';
+import { RELIGIONS, COUNTRIES } from '../utils/constants.js';
 import { APP_NAME, APP_VERSION } from '../utils/version.js';
+import { GA_MEASUREMENT_ID } from '../lib/firebase.js';
 
 const STATUS_COLORS = {
   active: '#7ad9a1',
@@ -236,6 +237,145 @@ export default function Admin() {
                 </div>
               </div>
             </div>
+
+            {/* Geo / Regions */}
+            <div className="grid gap-6 lg:grid-cols-3">
+              {/* Countries */}
+              <div className="rounded-2xl bg-[#1a1a28] p-6">
+                <h3 className="mb-4 text-xs font-bold uppercase tracking-wider text-[#a8a39a]">
+                  🌍 Users by country
+                </h3>
+                <div className="space-y-2">
+                  {Object.entries(stats.countries || {})
+                    .sort((a, b) => b[1] - a[1])
+                    .map(([key, count]) => {
+                      const c = COUNTRIES.find((x) => x.key === key);
+                      const pct = stats.totalUsers > 0 ? Math.round((count / stats.totalUsers) * 100) : 0;
+                      return (
+                        <div key={key}>
+                          <div className="mb-1 flex items-center justify-between text-sm">
+                            <span className="flex items-center gap-2 text-[#f5f0e8]">
+                              <span>{c?.flag || '🌍'}</span>
+                              {c?.label || key}
+                            </span>
+                            <span className="text-[#a8a39a]">{count} ({pct}%)</span>
+                          </div>
+                          <div className="h-1.5 overflow-hidden rounded-full bg-[#0f0f17]">
+                            <div className="h-full rounded-full bg-[#f0a500]" style={{ width: `${pct}%` }} />
+                          </div>
+                        </div>
+                      );
+                    })}
+                  {Object.keys(stats.countries || {}).length === 0 && (
+                    <p className="text-sm text-[#6e6a63]">No country data yet.</p>
+                  )}
+                </div>
+              </div>
+
+              {/* Timezones */}
+              <div className="rounded-2xl bg-[#1a1a28] p-6">
+                <h3 className="mb-4 text-xs font-bold uppercase tracking-wider text-[#a8a39a]">
+                  🕐 Timezones
+                </h3>
+                <div className="space-y-2">
+                  {Object.entries(stats.tzCities || {})
+                    .sort((a, b) => b[1] - a[1])
+                    .slice(0, 10)
+                    .map(([tz, count]) => (
+                      <div key={tz} className="flex items-center justify-between">
+                        <span className="truncate text-sm text-[#f5f0e8]">{tz}</span>
+                        <span className="shrink-0 text-sm font-bold text-[#f0a500]">{count}</span>
+                      </div>
+                    ))}
+                  {Object.keys(stats.tzCities || {}).length === 0 && (
+                    <p className="text-sm text-[#6e6a63]">No timezone data yet.</p>
+                  )}
+                </div>
+              </div>
+
+              {/* Browser languages */}
+              <div className="rounded-2xl bg-[#1a1a28] p-6">
+                <h3 className="mb-4 text-xs font-bold uppercase tracking-wider text-[#a8a39a]">
+                  🗣️ Browser languages
+                </h3>
+                <div className="space-y-2">
+                  {Object.entries(stats.languages || {})
+                    .sort((a, b) => b[1] - a[1])
+                    .map(([lang, count]) => (
+                      <div key={lang} className="flex items-center justify-between">
+                        <span className="text-sm text-[#f5f0e8]">{lang}</span>
+                        <span className="text-sm font-bold text-[#f0a500]">{count}</span>
+                      </div>
+                    ))}
+                  {Object.keys(stats.languages || {}).length === 0 && (
+                    <p className="text-sm text-[#6e6a63]">No language data yet.</p>
+                  )}
+                </div>
+              </div>
+            </div>
+
+            {/* Google Analytics embed */}
+            {GA_MEASUREMENT_ID && (
+              <div className="rounded-2xl bg-[#1a1a28] p-6">
+                <h3 className="mb-4 text-xs font-bold uppercase tracking-wider text-[#a8a39a]">
+                  📊 Google Analytics
+                </h3>
+                <div className="grid gap-3 sm:grid-cols-2">
+                  <a
+                    href={`https://analytics.google.com/analytics/web/#/p${GA_MEASUREMENT_ID.replace('G-', '')}/reports/dashboard`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex items-center gap-3 rounded-xl bg-[#0f0f17] p-4 transition hover:bg-white/[0.03]"
+                  >
+                    <span className="text-2xl">📈</span>
+                    <div>
+                      <div className="text-sm font-bold text-[#f5f0e8]">Open GA Dashboard</div>
+                      <div className="text-[11px] text-[#6e6a63]">Real-time, audience, acquisition, engagement</div>
+                    </div>
+                  </a>
+                  <a
+                    href={`https://analytics.google.com/analytics/web/#/p${GA_MEASUREMENT_ID.replace('G-', '')}/reports/explorer-user?params=_u..nav%3Dmaui&irl=all`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex items-center gap-3 rounded-xl bg-[#0f0f17] p-4 transition hover:bg-white/[0.03]"
+                  >
+                    <span className="text-2xl">🌍</span>
+                    <div>
+                      <div className="text-sm font-bold text-[#f5f0e8]">GA Geography Report</div>
+                      <div className="text-[11px] text-[#6e6a63]">Countries, cities, sessions by region</div>
+                    </div>
+                  </a>
+                  <a
+                    href={`https://analytics.google.com/analytics/web/#/p${GA_MEASUREMENT_ID.replace('G-', '')}/reports/realtime`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex items-center gap-3 rounded-xl bg-[#0f0f17] p-4 transition hover:bg-white/[0.03]"
+                  >
+                    <span className="text-2xl">⚡</span>
+                    <div>
+                      <div className="text-sm font-bold text-[#f5f0e8]">GA Real-time</div>
+                      <div className="text-[11px] text-[#6e6a63]">Live users, active pages, events</div>
+                    </div>
+                  </a>
+                  <a
+                    href={`https://analytics.google.com/analytics/web/#/p${GA_MEASUREMENT_ID.replace('G-', '')}/reports/acquisition-overview`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex items-center gap-3 rounded-xl bg-[#0f0f17] p-4 transition hover:bg-white/[0.03]"
+                  >
+                    <span className="text-2xl">🔗</span>
+                    <div>
+                      <div className="text-sm font-bold text-[#f5f0e8]">GA Acquisition</div>
+                      <div className="text-[11px] text-[#6e6a63]">Traffic sources, channels, referrals</div>
+                    </div>
+                  </a>
+                </div>
+                <p className="mt-3 text-[11px] text-[#6e6a63]">
+                  Measurement ID: {GA_MEASUREMENT_ID}. Links open Google Analytics in a new tab.
+                  For embedded dashboards, use GA4 → Admin → Custom Reports → Share → Embed.
+                </p>
+              </div>
+            )}
           </div>
         )}
 

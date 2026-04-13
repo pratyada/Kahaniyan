@@ -112,6 +112,11 @@ export function FamilyProfileProvider({ children }) {
                 displayName: cu.displayName || '',
                 photoURL: cu.photoURL || '',
                 lastActiveAt: new Date().toISOString(),
+                geo: {
+                  timezone: Intl.DateTimeFormat().resolvedOptions().timeZone || '',
+                  language: navigator.language || '',
+                  updatedAt: new Date().toISOString(),
+                },
               }, { merge: true });
             }
           } catch {
@@ -142,6 +147,11 @@ export function FamilyProfileProvider({ children }) {
             lastActiveAt: new Date().toISOString(),
             profiles: [],
             activeIndex: 0,
+            geo: {
+              timezone: Intl.DateTimeFormat().resolvedOptions().timeZone || '',
+              language: navigator.language || '',
+              updatedAt: new Date().toISOString(),
+            },
           });
         }
       } catch {

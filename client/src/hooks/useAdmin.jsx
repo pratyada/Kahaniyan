@@ -79,12 +79,45 @@ export function AdminProvider({ children }) {
         });
       });
 
+      // Geo / region breakdown from timezone data
+      const regions = {};
+      const languages = {};
+      const countries = {};
+      users.forEach((u) => {
+        const tz = u.geo?.timezone || '';
+        const lang = u.geo?.language?.split('-')[0] || '';
+        const profileCountry = (u.profiles || []).map((p) => p.country).filter(Boolean)[0];
+
+        if (tz) {
+          // Extract region from timezone (e.g. "America/Toronto" → "America")
+          const region = tz.split('/')[0];
+          regions[region] = (regions[region] || 0) + 1;
+        }
+        if (lang) {
+          languages[lang] = (languages[lang] || 0) + 1;
+        }
+        if (profileCountry) {
+          countries[profileCountry] = (countries[profileCountry] || 0) + 1;
+        }
+      });
+
+      // Timezone → city breakdown
+      const tzCities = {};
+      users.forEach((u) => {
+        const tz = u.geo?.timezone || 'Unknown';
+        tzCities[tz] = (tzCities[tz] || 0) + 1;
+      });
+
       setStats({
         totalUsers: users.length,
         totalKids,
         totalChars,
         tiers,
         beliefs,
+        regions,
+        languages,
+        countries,
+        tzCities,
       });
     } catch (e) {
       console.warn('Failed to load users', e);
