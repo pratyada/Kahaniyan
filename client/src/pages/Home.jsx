@@ -223,28 +223,16 @@ export default function Home() {
 
             <section className="mb-6">
               <h2 className="ui-label mb-3">What should the story teach?</h2>
-              <div className="flex flex-wrap gap-2">
-                {recommended.map((v) => (
-                  <ValuePill key={v} value={v} active={value === v} onClick={() => setValue(v)} />
-                ))}
-              </div>
-              <details className="group mt-3">
-                <summary className="cursor-pointer list-none text-[11px] font-bold uppercase tracking-wider text-ink-muted hover:text-ink">
-                  <span className="group-open:hidden">+ Show all 8 values</span>
-                  <span className="hidden group-open:inline">− Hide</span>
-                </summary>
-                <div className="mt-3 flex flex-wrap gap-2">
-                  {VALUES.map((v) => (
-                    <ValuePill
-                      key={v.key}
-                      value={v.key}
-                      size="sm"
-                      active={value === v.key}
-                      onClick={() => setValue(v.key)}
-                    />
+              <div className="-mx-5 overflow-x-auto px-5">
+                <div className="flex w-max gap-2">
+                  {recommended.map((v) => (
+                    <ValuePill key={`rec-${v}`} value={v} active={value === v} onClick={() => setValue(v)} />
+                  ))}
+                  {VALUES.filter((v) => !recommended.includes(v.key)).map((v) => (
+                    <ValuePill key={v.key} value={v.key} size="sm" active={value === v.key} onClick={() => setValue(v.key)} />
                   ))}
                 </div>
-              </details>
+              </div>
             </section>
 
             <LengthStrip duration={duration} setDuration={setDuration} maxDuration={maxDuration} setUpgradeReason={setUpgradeReason} setUpgradeOpen={setUpgradeOpen} />
@@ -393,10 +381,15 @@ export default function Home() {
 
             <section className="mb-5">
               <h2 className="ui-label mb-3">What should the story teach?</h2>
-              <div className="flex flex-wrap gap-2">
-                {recommended.map((v) => (
-                  <ValuePill key={v} value={v} active={value === v} onClick={() => setValue(v)} />
-                ))}
+              <div className="-mx-5 overflow-x-auto px-5">
+                <div className="flex w-max gap-2">
+                  {recommended.map((v) => (
+                    <ValuePill key={`rec2-${v}`} value={v} active={value === v} onClick={() => setValue(v)} />
+                  ))}
+                  {VALUES.filter((v) => !recommended.includes(v.key)).map((v) => (
+                    <ValuePill key={v.key} value={v.key} size="sm" active={value === v.key} onClick={() => setValue(v.key)} />
+                  ))}
+                </div>
               </div>
             </section>
 

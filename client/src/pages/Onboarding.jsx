@@ -17,7 +17,7 @@ const makeSteps = (name) => {
     { key: 'grandfather', title: `${n}'s grandfather name?`, placeholder: 'optional — e.g. Dada ji', type: 'text', optional: true },
     { key: 'grandmother', title: `${n}'s grandmother name?`, placeholder: 'optional — e.g. Nani ma', type: 'text', optional: true },
     { key: 'pet', title: `${n}'s pet name?`, placeholder: 'optional — e.g. Bruno', type: 'text', optional: true },
-    { key: 'language', title: `Which language for ${n} tonight?`, type: 'language' },
+    { key: 'language', title: `Select preferred language`, subtitle: 'Your stories will be played in this language.', type: 'language' },
   ];
 };
 

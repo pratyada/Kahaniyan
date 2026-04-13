@@ -26,10 +26,11 @@ export const NARRATORS = [
 ];
 
 export const DURATIONS = [
-  { minutes: 15, label: '15 min', sub: 'short tale' },
-  { minutes: 30, label: '30 min', sub: 'classic' },
-  { minutes: 45, label: '45 min', sub: 'long journey' },
-  { minutes: 60, label: '60 min', sub: 'epic night' },
+  { minutes: 2, label: '2 min', sub: 'quick' },
+  { minutes: 5, label: '5 min', sub: 'short' },
+  { minutes: 10, label: '10 min', sub: 'classic', locked: true },
+  { minutes: 15, label: '15 min', sub: 'bedtime', locked: true },
+  { minutes: 30, label: '30 min', sub: 'deep sleep', locked: true },
 ];
 
 export const valueMeta = (key) => VALUES.find((v) => v.key === key) || VALUES[0];
