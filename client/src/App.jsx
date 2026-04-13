@@ -62,6 +62,12 @@ function Shell() {
   const isOnboardingRoute = location.pathname === '/onboarding';
   const isLoginRoute = location.pathname === '/login';
   const isRadioRoute = location.pathname.startsWith('/radio');
+  const isAdminRoute = location.pathname.startsWith('/admin');
+
+  // Admin page is a full-width desktop layout — not inside the phone shell
+  if (isAdminRoute) {
+    return <Admin />;
+  }
 
   return (
     <div className="phone-shell">
