@@ -1,5 +1,6 @@
-import { Routes, Route, Navigate, useLocation } from 'react-router-dom';
-import { AnimatePresence } from 'framer-motion';
+import { useState, useEffect } from 'react';
+import { Routes, Route, Navigate, useLocation, useNavigate } from 'react-router-dom';
+import { AnimatePresence, motion } from 'framer-motion';
 import Onboarding from './pages/Onboarding.jsx';
 import Home from './pages/Home.jsx';
 import Player from './pages/Player.jsx';
@@ -37,9 +38,22 @@ function Shell() {
   // Wait for auth + profile to load
   if (authLoading || !ready) return null;
 
-  const needsAuth = isConfigured && !user;
+  // 5-second grace period — let the user browse the app before showing login popup
+  const [graceExpired, setGraceExpired] = useState(false);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (isConfigured && !user) {
+      const t = setTimeout(() => setGraceExpired(true), 5000);
+      return () => clearTimeout(t);
+    }
+    if (user) setGraceExpired(false);
+  }, [isConfigured, user]);
+
+  const needsAuth = false; // never hard-block — use the popup instead
+  const showLoginPopup = isConfigured && !user && graceExpired;
   const onboarded = !!profile?.childName;
-  const isBlocked = accountStatus === 'blocked' || accountStatus === 'paused';
+  const isBlocked = !showLoginPopup && (accountStatus === 'blocked' || accountStatus === 'paused');
 
   // Blocked/paused users see a static screen
   if (!needsAuth && isBlocked && !location.pathname.startsWith('/login')) {
@@ -75,22 +89,12 @@ function Shell() {
     <div className="phone-shell">
       <AnimatePresence mode="wait">
         <Routes location={location} key={location.pathname}>
-          {/* Auth routes */}
-          <Route path="/login" element={
-            needsAuth ? <Login /> : <Navigate to="/" replace />
-          } />
-
-          {/* Protected routes */}
+          <Route path="/login" element={<Login />} />
           <Route
             path="/"
-            element={
-              needsAuth ? <Navigate to="/login" replace /> :
-              onboarded ? <Home /> : <Navigate to="/onboarding" replace />
-            }
+            element={onboarded ? <Home /> : <Navigate to="/onboarding" replace />}
           />
-          <Route path="/onboarding" element={
-            needsAuth ? <Navigate to="/login" replace /> : <Onboarding />
-          } />
+          <Route path="/onboarding" element={<Onboarding />} />
           <Route path="/player" element={<Player />} />
           <Route path="/library" element={<Library />} />
           <Route path="/radio" element={<Radio />} />
@@ -102,7 +106,7 @@ function Shell() {
           <Route path="/settings" element={<Settings />} />
           <Route path="/roadmap" element={<Roadmap />} />
           <Route path="/admin" element={<Admin />} />
-          <Route path="*" element={<Navigate to={needsAuth ? '/login' : '/'} replace />} />
+          <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
       </AnimatePresence>
 
@@ -114,7 +118,56 @@ function Shell() {
 
       {/* Bottom nav */}
       {!isPlayerRoute && !isOnboardingRoute && !isLoginRoute && <BottomNav />}
+
+      {/* Login popup — appears after 5 seconds if user isn't signed in */}
+      <AnimatePresence>
+        {showLoginPopup && !isLoginRoute && (
+          <LoginPopup onLogin={() => navigate('/login')} onDismiss={() => setGraceExpired(false)} />
+        )}
+      </AnimatePresence>
     </div>
+  );
+}
+
+function LoginPopup({ onLogin, onDismiss }) {
+  return (
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      className="absolute inset-0 z-50 flex items-end justify-center bg-black/70 backdrop-blur-sm"
+      onClick={onDismiss}
+    >
+      <motion.div
+        initial={{ y: '100%' }}
+        animate={{ y: 0 }}
+        exit={{ y: '100%' }}
+        transition={{ type: 'spring', damping: 28, stiffness: 280 }}
+        className="w-full rounded-t-3xl bg-bg-elevated p-6 shadow-lift"
+        onClick={(e) => e.stopPropagation()}
+      >
+        <div className="mx-auto mb-4 h-1 w-12 rounded-full bg-white/20" />
+        <div className="mb-4 text-center">
+          <div className="mb-2 text-4xl">🌙</div>
+          <h2 className="font-display text-2xl font-bold text-gold">Sign in to save your stories</h2>
+          <p className="mt-2 text-sm text-ink-muted">
+            Your stories, characters, and preferences will sync across devices.
+          </p>
+        </div>
+        <button
+          onClick={onLogin}
+          className="btn-primary w-full py-4 text-base"
+        >
+          Sign in / Sign up
+        </button>
+        <button
+          onClick={onDismiss}
+          className="mt-3 w-full text-center text-sm text-ink-muted"
+        >
+          Maybe later
+        </button>
+      </motion.div>
+    </motion.div>
   );
 }
 
