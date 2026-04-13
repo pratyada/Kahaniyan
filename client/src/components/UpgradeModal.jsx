@@ -1,4 +1,6 @@
+import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { auth } from '../lib/firebase.js';
 
 const PLANS = [
   {
@@ -24,6 +26,34 @@ const PLANS = [
 ];
 
 export default function UpgradeModal({ open, onClose, reason }) {
+  const [loading, setLoading] = useState(null);
+
+  const handleCheckout = async (tier) => {
+    setLoading(tier);
+    try {
+      const user = auth?.currentUser;
+      const res = await fetch('/api/create-checkout', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          tier,
+          uid: user?.uid || '',
+          email: user?.email || '',
+        }),
+      });
+      const data = await res.json();
+      if (data.url) {
+        window.location.href = data.url;
+      } else {
+        alert(data.error || 'Could not start checkout');
+      }
+    } catch (e) {
+      alert('Checkout failed. Please try again.');
+    } finally {
+      setLoading(null);
+    }
+  };
+
   return (
     <AnimatePresence>
       {open && (
@@ -73,7 +103,13 @@ export default function UpgradeModal({ open, onClose, reason }) {
                     {plan.current ? (
                       <span className="text-[10px] uppercase tracking-wider text-ink-dim">Current</span>
                     ) : (
-                      <button className="btn-primary">Choose</button>
+                      <button
+                        onClick={() => handleCheckout(plan.key)}
+                        disabled={loading === plan.key}
+                        className="btn-primary disabled:opacity-60"
+                      >
+                        {loading === plan.key ? 'Loading…' : 'Choose'}
+                      </button>
                     )}
                   </div>
                   <ul className="mt-3 space-y-1">

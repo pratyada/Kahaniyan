@@ -1,5 +1,5 @@
-import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useState, useEffect } from 'react';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import PageTransition from '../components/PageTransition.jsx';
 import SectionCard from '../components/SectionCard.jsx';
 import Toggle from '../components/Toggle.jsx';
@@ -21,6 +21,19 @@ export default function Settings() {
   const { theme, toggle: toggleTheme } = useTheme();
   const { voices } = useFamilyVoices();
   const [upgradeOpen, setUpgradeOpen] = useState(false);
+  const [searchParams, setSearchParams] = useSearchParams();
+  const [upgradeSuccess, setUpgradeSuccess] = useState(null);
+
+  useEffect(() => {
+    const upgraded = searchParams.get('upgraded');
+    if (upgraded) {
+      setUpgradeSuccess(upgraded);
+      // Clear the query param
+      setSearchParams({}, { replace: true });
+      // Auto-dismiss after 5 seconds
+      setTimeout(() => setUpgradeSuccess(null), 5000);
+    }
+  }, [searchParams, setSearchParams]);
 
   if (!profile) return null;
 
@@ -52,6 +65,19 @@ export default function Settings() {
           >
             + Add kid
           </button>
+        </div>
+      )}
+
+      {/* Success banner */}
+      {upgradeSuccess && (
+        <div className="mb-4 rounded-2xl bg-green-900/30 p-4 text-center ring-1 ring-green-400/30">
+          <div className="text-2xl">🎉</div>
+          <div className="mt-1 text-sm font-bold text-green-400">
+            Welcome to Qissaa {upgradeSuccess.charAt(0).toUpperCase() + upgradeSuccess.slice(1)}!
+          </div>
+          <div className="mt-1 text-xs text-green-400/70">
+            Your account is being upgraded. It may take a moment to reflect.
+          </div>
         </div>
       )}
 
