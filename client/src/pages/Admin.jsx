@@ -238,36 +238,277 @@ export default function Admin() {
               />
             </div>
 
-            {/* Table header (desktop) */}
-            <div className="mb-2 hidden items-center gap-4 px-4 text-[10px] font-bold uppercase tracking-wider text-[#6e6a63] lg:flex">
-              <div className="w-12" />
-              <div className="flex-1">User</div>
-              <div className="w-48">Email</div>
-              <div className="w-24 text-center">Kids</div>
-              <div className="w-24 text-center">Status</div>
-              <div className="w-32 text-center">Last active</div>
-              <div className="w-20" />
+            {/* Full data table */}
+            <div className="overflow-x-auto rounded-2xl bg-[#1a1a28]">
+              <table className="w-full min-w-[900px] text-left text-sm">
+                <thead>
+                  <tr className="border-b border-white/10 text-[10px] font-bold uppercase tracking-wider text-[#6e6a63]">
+                    <th className="px-4 py-3">#</th>
+                    <th className="px-4 py-3">User</th>
+                    <th className="px-4 py-3">Email</th>
+                    <th className="px-4 py-3 text-center">Kids</th>
+                    <th className="px-4 py-3">Kid details</th>
+                    <th className="px-4 py-3 text-center">Characters</th>
+                    <th className="px-4 py-3 text-center">Voices</th>
+                    <th className="px-4 py-3">Beliefs</th>
+                    <th className="px-4 py-3">Language</th>
+                    <th className="px-4 py-3 text-center">Tier</th>
+                    <th className="px-4 py-3 text-center">Status</th>
+                    <th className="px-4 py-3">Last active</th>
+                    <th className="px-4 py-3">Actions</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {filteredUsers.length === 0 ? (
+                    <tr>
+                      <td colSpan={13} className="px-4 py-8 text-center text-[#6e6a63]">
+                        {searchQuery ? 'No users match your search.' : 'No users yet.'}
+                      </td>
+                    </tr>
+                  ) : (
+                    filteredUsers.map((u, idx) => {
+                      const status = u.accountStatus || 'active';
+                      const kids = u.profiles || [];
+                      const totalChars = kids.reduce((s, p) => s + (p.characters?.length || 0), 0);
+                      const allBeliefs = [...new Set(kids.flatMap((p) => p.beliefs || []))];
+                      const allLangs = [...new Set(kids.map((p) => p.language).filter(Boolean))];
+                      const tiers = [...new Set(kids.map((p) => p.tier || 'free'))];
+                      const lastActive = u.lastActiveAt
+                        ? new Date(u.lastActiveAt).toLocaleDateString(undefined, {
+                            month: 'short',
+                            day: 'numeric',
+                            hour: '2-digit',
+                            minute: '2-digit',
+                          })
+                        : '—';
+                      const expanded = expandedUser === u.uid;
+
+                      return (
+                        <tr
+                          key={u.uid}
+                          className={`border-b border-white/5 transition hover:bg-white/[0.02] ${
+                            expanded ? 'bg-white/[0.03]' : ''
+                          }`}
+                        >
+                          <td className="px-4 py-3 text-[#6e6a63]">{idx + 1}</td>
+                          <td className="px-4 py-3">
+                            <div className="flex items-center gap-2">
+                              <div className="grid h-8 w-8 shrink-0 place-items-center overflow-hidden rounded-full bg-[#f0a500]/15">
+                                {u.photoURL ? (
+                                  <img src={u.photoURL} alt="" className="h-8 w-8 rounded-full object-cover" />
+                                ) : (
+                                  <span className="text-sm">👤</span>
+                                )}
+                              </div>
+                              <span className="font-bold text-[#f5f0e8]">
+                                {u.displayName || u.email?.split('@')[0] || '—'}
+                              </span>
+                            </div>
+                          </td>
+                          <td className="px-4 py-3 font-mono text-xs text-[#a8a39a]">
+                            {u.email || '—'}
+                          </td>
+                          <td className="px-4 py-3 text-center">
+                            <span className="rounded-full bg-[#f0a500]/15 px-2 py-0.5 text-xs font-bold text-[#f0a500]">
+                              {kids.length}
+                            </span>
+                          </td>
+                          <td className="px-4 py-3">
+                            {kids.length === 0 ? (
+                              <span className="text-xs text-[#6e6a63]">No profiles</span>
+                            ) : (
+                              <div className="space-y-0.5">
+                                {kids.map((kid, i) => (
+                                  <div key={i} className="text-xs text-[#a8a39a]">
+                                    <span className="font-bold text-[#f5f0e8]">{kid.childName || '?'}</span>
+                                    <span className="text-[#6e6a63]"> · age {kid.age || '?'}</span>
+                                    {kid.motherName && <span className="text-[#6e6a63]"> · mom: {kid.motherName}</span>}
+                                    {kid.fatherName && <span className="text-[#6e6a63]"> · dad: {kid.fatherName}</span>}
+                                    {kid.sibling && <span className="text-[#6e6a63]"> · sib: {kid.sibling}</span>}
+                                    {kid.pet && <span className="text-[#6e6a63]"> · pet: {kid.pet}</span>}
+                                  </div>
+                                ))}
+                              </div>
+                            )}
+                          </td>
+                          <td className="px-4 py-3 text-center text-xs text-[#a8a39a]">{totalChars}</td>
+                          <td className="px-4 py-3 text-center text-xs text-[#a8a39a]">—</td>
+                          <td className="px-4 py-3">
+                            {allBeliefs.length > 0 ? (
+                              <div className="flex flex-wrap gap-1">
+                                {allBeliefs.map((b) => {
+                                  const r = RELIGIONS.find((x) => x.key === b);
+                                  return (
+                                    <span key={b} className="text-xs" title={r?.label}>
+                                      {r?.icon || b}
+                                    </span>
+                                  );
+                                })}
+                              </div>
+                            ) : (
+                              <span className="text-xs text-[#6e6a63]">—</span>
+                            )}
+                          </td>
+                          <td className="px-4 py-3 text-xs text-[#a8a39a]">
+                            {allLangs.join(', ') || '—'}
+                          </td>
+                          <td className="px-4 py-3 text-center">
+                            {tiers.map((t) => (
+                              <span
+                                key={t}
+                                className="rounded-full bg-[#f0a500]/10 px-2 py-0.5 text-[9px] font-bold capitalize text-[#f0a500]"
+                              >
+                                {t}
+                              </span>
+                            ))}
+                          </td>
+                          <td className="px-4 py-3 text-center">
+                            <span
+                              className="rounded-full px-2 py-0.5 text-[9px] font-bold uppercase"
+                              style={{
+                                background: `${STATUS_COLORS[status]}22`,
+                                color: STATUS_COLORS[status],
+                              }}
+                            >
+                              {status}
+                            </span>
+                          </td>
+                          <td className="px-4 py-3 text-xs text-[#6e6a63]">{lastActive}</td>
+                          <td className="px-4 py-3">
+                            <div className="flex gap-1">
+                              {status !== 'active' && (
+                                <button
+                                  onClick={() => setUserStatus(u.uid, 'active')}
+                                  className="rounded-lg bg-[#7ad9a1]/10 px-2 py-1 text-[9px] font-bold text-[#7ad9a1]"
+                                  title="Activate"
+                                >
+                                  ✓
+                                </button>
+                              )}
+                              {status !== 'paused' && (
+                                <button
+                                  onClick={() => setUserStatus(u.uid, 'paused')}
+                                  className="rounded-lg bg-[#ffa42b]/10 px-2 py-1 text-[9px] font-bold text-[#ffa42b]"
+                                  title="Pause"
+                                >
+                                  ⏸
+                                </button>
+                              )}
+                              {status !== 'blocked' && (
+                                <button
+                                  onClick={() => setUserStatus(u.uid, 'blocked')}
+                                  className="rounded-lg bg-[#f3727f]/10 px-2 py-1 text-[9px] font-bold text-[#f3727f]"
+                                  title="Block"
+                                >
+                                  ✕
+                                </button>
+                              )}
+                              <button
+                                onClick={() => setExpandedUser(expanded ? null : u.uid)}
+                                className="rounded-lg bg-white/5 px-2 py-1 text-[9px] font-bold text-[#a8a39a]"
+                                title="Details"
+                              >
+                                ⋯
+                              </button>
+                            </div>
+                          </td>
+                        </tr>
+                      );
+                    })
+                  )}
+                </tbody>
+              </table>
             </div>
 
-            {/* Rows */}
-            <div className="space-y-2">
-              {filteredUsers.length === 0 ? (
-                <p className="py-8 text-center text-sm text-[#6e6a63]">
-                  {searchQuery ? 'No users match your search.' : 'No users yet.'}
-                </p>
-              ) : (
-                filteredUsers.map((u) => (
-                  <UserRow
-                    key={u.uid}
-                    u={u}
-                    expanded={expandedUser === u.uid}
-                    onToggle={() => setExpandedUser(expandedUser === u.uid ? null : u.uid)}
-                    setUserStatus={setUserStatus}
-                    setUserTier={setUserTier}
-                  />
-                ))
-              )}
-            </div>
+            {/* Expanded detail panel (below table) */}
+            <AnimatePresence>
+              {expandedUser && (() => {
+                const u = allUsers.find((x) => x.uid === expandedUser);
+                if (!u) return null;
+                return (
+                  <motion.div
+                    key={expandedUser}
+                    initial={{ opacity: 0, y: -8 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: -8 }}
+                    className="mt-4 rounded-2xl bg-[#1a1a28] p-6"
+                  >
+                    <div className="mb-4 flex items-center justify-between">
+                      <h3 className="text-sm font-bold text-[#f5f0e8]">
+                        {u.displayName || u.email} — full details
+                      </h3>
+                      <button
+                        onClick={() => setExpandedUser(null)}
+                        className="text-xs text-[#6e6a63] hover:text-[#f5f0e8]"
+                      >
+                        Close ✕
+                      </button>
+                    </div>
+
+                    <div className="mb-4 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+                      <MetaItem label="UID" value={u.uid} mono />
+                      <MetaItem label="Email" value={u.email || '—'} mono />
+                      <MetaItem label="Display name" value={u.displayName || '—'} />
+                      <MetaItem label="Last active" value={u.lastActiveAt ? new Date(u.lastActiveAt).toLocaleString() : '—'} />
+                    </div>
+
+                    <h4 className="mb-2 text-[10px] font-bold uppercase tracking-wider text-[#6e6a63]">
+                      Kid profiles ({(u.profiles || []).length})
+                    </h4>
+                    <div className="grid gap-3 sm:grid-cols-2">
+                      {(u.profiles || []).map((kid, i) => (
+                        <div key={i} className="rounded-xl bg-[#0f0f17] p-4">
+                          <div className="mb-2 flex items-center justify-between">
+                            <span className="text-sm font-bold text-[#f5f0e8]">
+                              {kid.childName || `Kid ${i + 1}`}
+                            </span>
+                            <select
+                              value={kid.tier || 'free'}
+                              onChange={(e) => setUserTier(u.uid, i, e.target.value)}
+                              className="rounded-lg bg-[#1a1a28] px-2 py-1 text-[10px] font-bold text-[#f0a500] outline-none"
+                            >
+                              <option value="free">Free</option>
+                              <option value="family">Family</option>
+                              <option value="annual">Annual</option>
+                            </select>
+                          </div>
+                          <div className="space-y-1 text-[11px] text-[#6e6a63]">
+                            <div>Age: <span className="text-[#a8a39a]">{kid.age || '?'}</span></div>
+                            {kid.motherName && <div>Mother: <span className="text-[#a8a39a]">{kid.motherName}</span></div>}
+                            {kid.fatherName && <div>Father: <span className="text-[#a8a39a]">{kid.fatherName}</span></div>}
+                            {kid.sibling && <div>Sibling: <span className="text-[#a8a39a]">{kid.sibling}</span></div>}
+                            {kid.grandfather && <div>Grandfather: <span className="text-[#a8a39a]">{kid.grandfather}</span></div>}
+                            {kid.grandmother && <div>Grandmother: <span className="text-[#a8a39a]">{kid.grandmother}</span></div>}
+                            {kid.pet && <div>Pet: <span className="text-[#a8a39a]">{kid.pet}</span></div>}
+                            <div>Language: <span className="text-[#a8a39a]">{kid.language || 'English'}</span></div>
+                            <div>Beliefs: <span className="text-[#a8a39a]">{(kid.beliefs || []).map(b => RELIGIONS.find(r => r.key === b)?.label || b).join(', ') || 'None'}</span></div>
+                            <div>Characters: <span className="text-[#a8a39a]">{kid.characters?.length || 0}</span></div>
+                            {kid.characters && kid.characters.length > 0 && (
+                              <div className="mt-1 flex flex-wrap gap-1">
+                                {kid.characters.map((c, ci) => (
+                                  <span key={ci} className="rounded-full bg-[#1a1a28] px-2 py-0.5 text-[9px] text-[#a8a39a]">
+                                    {c.emoji || '👤'} {c.name}
+                                  </span>
+                                ))}
+                              </div>
+                            )}
+                            <div className="mt-1">
+                              Auto-play: <span className="text-[#a8a39a]">{kid.autoplayNext ? 'On' : 'Off'}</span> ·
+                              Sleep sounds: <span className="text-[#a8a39a]">{kid.whiteNoiseEnabled ? 'On' : 'Off'}</span> ·
+                              Dialogue fade: <span className="text-[#a8a39a]">{kid.dialogueFade ? 'On' : 'Off'}</span>
+                            </div>
+                            <div>
+                              Cross-culture: <span className="text-[#a8a39a]">{kid.showCrossCulture ? 'On' : 'Off'}</span> ·
+                              Only my beliefs: <span className="text-[#a8a39a]">{kid.onlyMyTradition ? 'On' : 'Off'}</span>
+                            </div>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </motion.div>
+                );
+              })()}
+            </AnimatePresence>
           </div>
         )}
 
