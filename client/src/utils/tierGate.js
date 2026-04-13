@@ -2,37 +2,46 @@
 export const TIERS = {
   free: {
     label: 'Free',
+    price: 'CA$0',
     storiesPerWeek: 3,
-    maxDuration: 30,
+    maxDuration: 5,
     languageCount: 2,
     archiveDays: 7,
     customVoices: 0,
     childProfiles: 1,
     festivalPacks: false,
     offline: false,
+    voiceCloning: false,
   },
-  family: {
-    label: 'Family',
+  pro: {
+    label: 'Pro',
+    price: 'CA$9.99/mo',
     storiesPerWeek: Infinity,
-    maxDuration: 60,
+    maxDuration: 30,
     languageCount: Infinity,
     archiveDays: 90,
-    customVoices: 2,
+    customVoices: 3,
     childProfiles: 3,
-    festivalPacks: false,
+    festivalPacks: true,
     offline: false,
+    voiceCloning: true,
   },
-  annual: {
-    label: 'Annual',
+  enterprise: {
+    label: 'Enterprise',
+    price: 'CA$24.99/mo',
     storiesPerWeek: Infinity,
-    maxDuration: 60,
+    maxDuration: 30,
     languageCount: Infinity,
     archiveDays: Infinity,
     customVoices: Infinity,
-    childProfiles: 5,
+    childProfiles: 10,
     festivalPacks: true,
     offline: true,
+    voiceCloning: true,
   },
+  // Legacy tiers — map to new ones
+  family: { label: 'Pro', price: 'CA$9.99/mo', storiesPerWeek: Infinity, maxDuration: 30, languageCount: Infinity, archiveDays: 90, customVoices: 3, childProfiles: 3, festivalPacks: true, offline: false, voiceCloning: true },
+  annual: { label: 'Enterprise', price: 'CA$24.99/mo', storiesPerWeek: Infinity, maxDuration: 30, languageCount: Infinity, archiveDays: Infinity, customVoices: Infinity, childProfiles: 10, festivalPacks: true, offline: true, voiceCloning: true },
 };
 
 const USAGE_KEY = 'qissaa:usage';

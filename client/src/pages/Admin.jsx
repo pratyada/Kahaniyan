@@ -27,9 +27,15 @@ export default function Admin() {
     removeAdmin,
     setUserStatus,
     setUserTier,
+    team,
+    addTeamMember,
+    updateTeamMember,
+    removeTeamMember,
   } = useAdmin();
 
   const [newAdminEmail, setNewAdminEmail] = useState('');
+  const [newTeamEmail, setNewTeamEmail] = useState('');
+  const [newTeamRole, setNewTeamRole] = useState('tester');
   const [tab, setTab] = useState('overview');
   const [expandedUser, setExpandedUser] = useState(null);
   const [searchQuery, setSearchQuery] = useState('');
@@ -94,6 +100,7 @@ export default function Admin() {
     { key: 'overview', label: 'Overview', icon: '📊' },
     { key: 'users', label: `Users (${allUsers.length})`, icon: '👤' },
     { key: 'usage', label: 'Usage & Costs', icon: '💰' },
+    { key: 'team', label: `Team (${team.length})`, icon: '👥' },
     { key: 'emails', label: `Emails (${allEmails.length})`, icon: '📧' },
     { key: 'admins', label: 'Admins', icon: '🔑' },
   ];
@@ -823,6 +830,134 @@ export default function Admin() {
                 regen cost) and pre-written cultural stories (zero API cost). At scale, negotiate
                 ElevenLabs Business tier (~CA$0.14/1K chars) for 40% cost reduction.
               </p>
+            </div>
+          </div>
+        )}
+
+        {/* ═══ TEAM ═══ */}
+        {tab === 'team' && (
+          <div className="max-w-3xl space-y-6">
+            <div className="rounded-2xl bg-[#1a1a28] p-6">
+              <h3 className="mb-4 text-xs font-bold uppercase tracking-wider text-[#a8a39a]">
+                Add team member
+              </h3>
+              <div className="flex gap-2">
+                <input
+                  type="email"
+                  placeholder="Email address"
+                  value={newTeamEmail}
+                  onChange={(e) => setNewTeamEmail(e.target.value)}
+                  className="flex-1 rounded-xl bg-[#0f0f17] px-4 py-3 text-sm text-[#f5f0e8] placeholder-[#6e6a63] outline-none ring-1 ring-white/5 focus:ring-[#f0a500]"
+                />
+                <select
+                  value={newTeamRole}
+                  onChange={(e) => setNewTeamRole(e.target.value)}
+                  className="rounded-xl bg-[#0f0f17] px-3 py-3 text-sm text-[#f0a500] outline-none ring-1 ring-white/5"
+                >
+                  <option value="tester">🧪 Tester</option>
+                  <option value="marketing">📣 Marketing</option>
+                </select>
+                <button
+                  onClick={() => {
+                    if (newTeamEmail.trim()) {
+                      addTeamMember(newTeamEmail, newTeamRole);
+                      setNewTeamEmail('');
+                    }
+                  }}
+                  className="rounded-xl bg-[#f0a500] px-5 py-3 text-sm font-bold text-[#0f0f17]"
+                >
+                  Add
+                </button>
+              </div>
+              <p className="mt-2 text-[11px] text-[#6e6a63]">
+                Testers get full app access for QA. Marketing gets analytics + sharing features.
+                You can pause or stop access anytime.
+              </p>
+            </div>
+
+            {/* Team list */}
+            <div className="overflow-x-auto rounded-2xl bg-[#1a1a28]">
+              <table className="w-full text-left text-sm">
+                <thead>
+                  <tr className="border-b border-white/10 text-[10px] font-bold uppercase tracking-wider text-[#6e6a63]">
+                    <th className="px-4 py-3">Email</th>
+                    <th className="px-4 py-3">Role</th>
+                    <th className="px-4 py-3 text-center">Status</th>
+                    <th className="px-4 py-3">Added by</th>
+                    <th className="px-4 py-3">Added</th>
+                    <th className="px-4 py-3">Actions</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {team.length === 0 ? (
+                    <tr>
+                      <td colSpan={6} className="px-4 py-8 text-center text-[#6e6a63]">
+                        No team members yet.
+                      </td>
+                    </tr>
+                  ) : (
+                    team.map((t) => {
+                      const statusColor = t.status === 'active' ? '#7ad9a1' : t.status === 'paused' ? '#ffa42b' : '#f3727f';
+                      return (
+                        <tr key={t.email} className="border-b border-white/5">
+                          <td className="px-4 py-3 font-mono text-xs text-[#f5f0e8]">{t.email}</td>
+                          <td className="px-4 py-3">
+                            <span className={`rounded-full px-2 py-0.5 text-[9px] font-bold uppercase ${
+                              t.role === 'tester'
+                                ? 'bg-[#539df5]/15 text-[#539df5]'
+                                : 'bg-[#e8b4ff]/15 text-[#e8b4ff]'
+                            }`}>
+                              {t.role === 'tester' ? '🧪 Tester' : '📣 Marketing'}
+                            </span>
+                          </td>
+                          <td className="px-4 py-3 text-center">
+                            <span
+                              className="rounded-full px-2 py-0.5 text-[9px] font-bold uppercase"
+                              style={{ background: `${statusColor}22`, color: statusColor }}
+                            >
+                              {t.status}
+                            </span>
+                          </td>
+                          <td className="px-4 py-3 text-xs text-[#a8a39a]">{t.addedBy?.split('@')[0] || '—'}</td>
+                          <td className="px-4 py-3 text-xs text-[#6e6a63]">
+                            {t.addedAt ? new Date(t.addedAt).toLocaleDateString(undefined, { month: 'short', day: 'numeric' }) : '—'}
+                          </td>
+                          <td className="px-4 py-3">
+                            <div className="flex gap-1">
+                              {t.status !== 'active' && (
+                                <button
+                                  onClick={() => updateTeamMember(t.email, { status: 'active' })}
+                                  className="rounded-lg bg-[#7ad9a1]/10 px-2 py-1 text-[9px] font-bold text-[#7ad9a1]"
+                                  title="Activate"
+                                >✓</button>
+                              )}
+                              {t.status !== 'paused' && (
+                                <button
+                                  onClick={() => updateTeamMember(t.email, { status: 'paused' })}
+                                  className="rounded-lg bg-[#ffa42b]/10 px-2 py-1 text-[9px] font-bold text-[#ffa42b]"
+                                  title="Pause"
+                                >⏸</button>
+                              )}
+                              {t.status !== 'stopped' && (
+                                <button
+                                  onClick={() => updateTeamMember(t.email, { status: 'stopped' })}
+                                  className="rounded-lg bg-[#f3727f]/10 px-2 py-1 text-[9px] font-bold text-[#f3727f]"
+                                  title="Stop"
+                                >⏹</button>
+                              )}
+                              <button
+                                onClick={() => { if (confirm(`Remove ${t.email}?`)) removeTeamMember(t.email); }}
+                                className="rounded-lg bg-white/5 px-2 py-1 text-[9px] font-bold text-[#6e6a63]"
+                                title="Remove"
+                              >✕</button>
+                            </div>
+                          </td>
+                        </tr>
+                      );
+                    })
+                  )}
+                </tbody>
+              </table>
             </div>
           </div>
         )}

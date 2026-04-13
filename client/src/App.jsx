@@ -14,6 +14,7 @@ import Characters from './pages/Characters.jsx';
 import EditFamily from './pages/EditFamily.jsx';
 import Login from './pages/Login.jsx';
 import Admin from './pages/Admin.jsx';
+import RecordVoice from './pages/RecordVoice.jsx';
 import BottomNav from './components/BottomNav.jsx';
 import PlayerBar from './components/PlayerBar.jsx';
 import RadioBar from './components/RadioBar.jsx';
@@ -64,10 +65,11 @@ function Shell() {
   const isRadioRoute = location.pathname.startsWith('/radio');
   const isAdminRoute = location.pathname.startsWith('/admin');
 
-  // Admin page is a full-width desktop layout — not inside the phone shell
-  if (isAdminRoute) {
-    return <Admin />;
-  }
+  // Admin page — full desktop layout
+  if (isAdminRoute) return <Admin />;
+
+  // Voice recording link — public, no auth, no shell
+  if (location.pathname.startsWith('/record/')) return <RecordVoice />;
 
   return (
     <div className="phone-shell">

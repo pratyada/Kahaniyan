@@ -144,6 +144,53 @@ export function AdminProvider({ children }) {
     [adminEmails]
   );
 
+  // ─── TEAM ROLES (testers / marketing) ───
+  const [team, setTeam] = useState([]);
+
+  const loadTeam = useCallback(async () => {
+    if (!db) return;
+    try {
+      const snap = await getDoc(doc(db, CONFIG_DOC));
+      if (snap.exists()) {
+        setTeam(snap.data().team || []);
+      }
+    } catch {
+      // ignore
+    }
+  }, []);
+
+  useEffect(() => {
+    if (isAdmin) loadTeam();
+  }, [isAdmin, loadTeam]);
+
+  const addTeamMember = useCallback(async (email, role) => {
+    if (!db || !email.trim()) return;
+    const member = {
+      email: email.trim().toLowerCase(),
+      role, // 'tester' | 'marketing'
+      status: 'active',
+      addedAt: new Date().toISOString(),
+      addedBy: user?.email || '',
+    };
+    const next = [...team.filter((t) => t.email !== member.email), member];
+    await setDoc(doc(db, CONFIG_DOC), { team: next }, { merge: true });
+    setTeam(next);
+  }, [team, user]);
+
+  const updateTeamMember = useCallback(async (email, updates) => {
+    if (!db) return;
+    const next = team.map((t) => (t.email === email ? { ...t, ...updates } : t));
+    await setDoc(doc(db, CONFIG_DOC), { team: next }, { merge: true });
+    setTeam(next);
+  }, [team]);
+
+  const removeTeamMember = useCallback(async (email) => {
+    if (!db) return;
+    const next = team.filter((t) => t.email !== email);
+    await setDoc(doc(db, CONFIG_DOC), { team: next }, { merge: true });
+    setTeam(next);
+  }, [team]);
+
   // Block / unblock / pause a user
   const setUserStatus = useCallback(async (uid, status) => {
     // status: 'active' | 'blocked' | 'paused'
@@ -172,7 +219,7 @@ export function AdminProvider({ children }) {
 
   return createElement(
     AdminCtx.Provider,
-    { value: { isAdmin, loading, allUsers, stats, adminEmails, loadUsers, addAdmin, removeAdmin, setUserStatus, setUserTier } },
+    { value: { isAdmin, loading, allUsers, stats, adminEmails, loadUsers, addAdmin, removeAdmin, setUserStatus, setUserTier, team, addTeamMember, updateTeamMember, removeTeamMember } },
     children
   );
 }

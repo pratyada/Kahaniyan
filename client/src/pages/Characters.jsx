@@ -5,6 +5,8 @@ import PageTransition from '../components/PageTransition.jsx';
 import VersionFooter from '../components/VersionFooter.jsx';
 import { useFamilyProfile } from '../hooks/useFamilyProfile.js';
 import { FAMILY_RELATIONS, RELATION_EMOJI, PET_TYPES, SKIN_TONES } from '../utils/constants.js';
+import { createVoiceLink } from '../utils/voiceLink.js';
+import { hasConfig } from '../lib/firebase.js';
 
 const EXTRA_RELATIONS = [
   { key: 'pet', label: 'Pet', emoji: '🐶' },
@@ -19,6 +21,8 @@ export default function Characters() {
   const { profile, update } = useFamilyProfile();
   const [editing, setEditing] = useState(null);
   const [draft, setDraft] = useState({ name: '', relation: 'sibling', traits: '', emoji: '🧒', petType: 'dog', adventureName: '' });
+  const [sendingLink, setSendingLink] = useState(null); // character id
+  const [linkUrl, setLinkUrl] = useState(null);
 
   if (!profile) return null;
   const characters = profile.characters || [];
@@ -125,6 +129,38 @@ export default function Characters() {
                 >
                   Edit
                 </button>
+                {!isSelf && hasConfig && (
+                  <button
+                    onClick={async () => {
+                      setSendingLink(c.id);
+                      try {
+                        const result = await createVoiceLink({
+                          characterName: c.name,
+                          relation: c.relation,
+                          emoji: c.emoji,
+                        });
+                        setLinkUrl(result.url);
+                        if (navigator.share) {
+                          await navigator.share({
+                            title: `Record your voice for Qissaa`,
+                            text: `${c.name}, please record your voice for bedtime stories! Link expires in 5 minutes.`,
+                            url: result.url,
+                          });
+                        } else {
+                          await navigator.clipboard.writeText(result.url);
+                          alert(`Link copied! Send it to ${c.name}. Expires in 5 minutes.`);
+                        }
+                      } catch {
+                        // cancelled or failed
+                      }
+                      setSendingLink(null);
+                    }}
+                    disabled={sendingLink === c.id}
+                    className="shrink-0 rounded-full bg-bg-card px-2 py-1 text-[9px] font-bold uppercase tracking-wider text-gold disabled:opacity-50"
+                  >
+                    {sendingLink === c.id ? '…' : '🔗 Send link'}
+                  </button>
+                )}
                 {!isSelf && (
                   <button
                     onClick={() => remove(c.id)}
