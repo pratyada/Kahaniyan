@@ -147,6 +147,26 @@ export default function Settings() {
         </div>
       </SectionCard>
 
+      {/* ─── ABOUT ─── */}
+      <section className="mb-6 rounded-2xl bg-bg-surface p-4 ring-1 ring-white/5">
+        <div className="flex items-start gap-3">
+          <span className="text-3xl">📖</span>
+          <div>
+            <h3 className="font-display text-lg font-bold text-gold">Qissaa</h3>
+            <p className="mt-1 font-story text-[13px] leading-relaxed text-ink-muted">
+              <strong className="text-ink">Qissaa</strong> (قصّہ / क़िस्सा) — from the Arabic
+              "qissa," meaning a tale, a narrative, a story. In Urdu and Hindi, it's the word
+              grandmothers use at bedtime: <em>"Ek qissa sunao na..."</em> — "Tell me a story."
+            </p>
+            <p className="mt-2 font-story text-[13px] leading-relaxed text-ink-muted">
+              Every culture has this word. Arabic: qissa. Hindi: kahani. Tamil: kathai.
+              Swahili: hadithi. Qissaa is built for all of them — personalized bedtime stories
+              rooted in your family's values, voices, and beliefs.
+            </p>
+          </div>
+        </div>
+      </section>
+
       {/* ─── PLAN ─── */}
       <div className="mt-2 flex items-center justify-between rounded-2xl bg-bg-surface p-3 ring-1 ring-white/5">
         <div>

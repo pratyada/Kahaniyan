@@ -3,97 +3,230 @@ import { motion, AnimatePresence } from 'framer-motion';
 import PageTransition from '../components/PageTransition.jsx';
 import VersionFooter from '../components/VersionFooter.jsx';
 
+// ─── QUICK GUIDES — one per feature, 30-second reads ───
 const GUIDES = [
   {
-    id: 'first-night',
+    id: 'tonight',
     icon: '🌙',
-    title: 'Your first bedtime with Qissaa',
-    audience: 'New parents',
-    summary: 'A 5-minute setup that turns Qissaa into part of your nightly ritual.',
+    title: 'Tonight — 3 ways to start a story',
+    time: '30 sec read',
     body: [
-      'Open Qissaa about 15 minutes before bedtime — give your child time to settle.',
-      'Complete the family profile once. Use real names — "Dada ji", "Nani ma", "Bruno". The story will weave them in naturally.',
-      'Pick a 15-minute story for the very first night. Children build trust with shorter formats first.',
-      'Dim the lights, dock the phone, and tap Start. The story begins in under a second — no fiddling once your child is in bed.',
-      'After the story ends, leave the "Sweet dreams" screen up. The fade-to-black is part of the experience.',
+      '💭 "Today this happened" — type one sentence about how your child is feeling. Qissaa weaves a bedtime story around it.',
+      '🪷 "Wisdom story" — pick a tradition and a theme. Tap any story to play instantly. No generation, no wait.',
+      '👨‍👩‍👧 "Choose the cast" — select 2–5 characters (family, pets, imaginary friends). Qissaa builds a fresh story starring all of them.',
     ],
   },
   {
-    id: 'choose-value',
-    icon: '🌿',
-    title: 'How to choose the right value',
-    audience: 'Parents of 2–10 year olds',
-    summary: 'Eight values, one child, one night — pick the one that matches what is happening today.',
+    id: 'cast',
+    icon: '👨‍👩‍👧',
+    title: 'Story cast — add your whole family',
+    time: '30 sec read',
     body: [
-      'Think about today, not forever. If your child shared a toy without being asked, pick Sharing — celebrate it.',
-      'If something hard happened — a doctor visit, a bee sting, a first day of school — pick Courage or Bravery.',
-      'For ages 2–4: stick to Sharing, Kindness, and Saying sorry. Big abstract ideas come later.',
-      'For ages 5–7: lean into Honesty, Respect, and Gratitude — they are old enough to feel the weight.',
-      'For ages 8–10: Patience, Courage, and Fairness land best. They notice when stories oversimplify, so use the longer formats.',
+      'Go to More → Story cast. Everyone you added during onboarding is already there.',
+      'Tap "+ Add character" to add grandparents, cousins, imaginary friends, or pets.',
+      'Each pet has a type — dogs say "bhau bhau", cats say "meow". Pick the right one.',
+      'Edit the Hero (your child) to set an "adventure name" — they can be Iron Man or Princess Luna in the story.',
+      'On the Tonight screen, tap "Choose the cast" and select who stars tonight.',
     ],
   },
   {
-    id: 'story-language',
-    icon: '🗣️',
-    title: 'Switching languages — when and why',
-    audience: 'Multilingual families',
-    summary: 'Stories in Hindi, Tamil, Spanish, and Arabic are not translations — they are written natively.',
+    id: 'wisdom',
+    icon: '🪷',
+    title: 'Wisdom Stories — many beliefs, one app',
+    time: '30 sec read',
     body: [
-      'Use the heritage language one or two nights a week, even if it is not the dominant language at home. Children learn rhythm first, vocabulary second.',
-      'For very young children, choose the language a grandparent would use. The voice association makes the words stickier.',
-      'Switch language in Settings, not in the middle of the night — children notice when something feels different and may resist sleep.',
-      'Pair language switches with a value the child already knows. Familiar idea + new sounds = comfortable learning.',
-      'If the narration sounds robotic, your browser may not have a native voice for that language installed. Chrome on Mac/Windows has the widest support.',
+      'Qissaa has hand-written stories from Hindu, Muslim, Christian, Sikh, Buddhist, Jain, and Jewish traditions.',
+      'Same theme (like compassion to animals) told through different cultures — so your child grows up rooted AND open-minded.',
+      'Go to More → Edit family → Belief to choose yours. Qissaa prioritizes your tradition first.',
+      'Toggle "Also show stories from other cultures" in More → Content if you want cross-culture stories too.',
     ],
   },
   {
-    id: 'sleep-timer',
-    icon: '⏱️',
-    title: 'Using the sleep timer like a pro',
-    audience: 'Parents whose kids fall asleep mid-story',
-    summary: 'The sleep timer plus volume fade-out is the secret to a clean handover from story to dreams.',
+    id: 'radio',
+    icon: '📻',
+    title: 'Radio — bedtime ambient music',
+    time: '20 sec read',
     body: [
-      'Set the sleep timer to roughly the duration of the story plus 5 minutes. The story finishes; the silence is the cue.',
-      'For children who resist endings, use a 30-minute timer with a 15-minute story — the silent gap lets them drift without realizing it.',
-      'The last 2 minutes always fade out gently. Do not turn the volume up to compensate; the fade is intentional.',
-      'On a tablet, dock it on the bedside and use the largest text mode. Some children like to follow along visually until their eyes close.',
-      'If your child wakes up partway through, tap the mini player to resume from where it stopped.',
+      'Three stations: Drone Zone (ambient), Raag Nidra (Indian classical), Deep Space One (deep ambient).',
+      'Tap play. Switch tabs — the music keeps playing. A mini bar shows above the bottom nav.',
+      'Use it to wind down before a story, or leave it running after the story ends.',
     ],
   },
   {
-    id: 'tonight-whisper',
-    icon: '💭',
-    title: "Tonight's Whisper — telling Qissaa what's on their heart",
-    audience: 'Parents who want stories that meet the moment',
-    summary:
-      'Type one sentence about how your child is feeling and the story will be woven around it — gently, in your culture, in your values.',
+    id: 'sleep-sounds',
+    icon: '🌧️',
+    title: 'Sleep sounds + story fade',
+    time: '20 sec read',
     body: [
-      'Open the home screen and tap the "Tonight\'s Whisper" card. A small text box opens.',
-      'Write one honest sentence — "they are scared of thunder" or "first day of school tomorrow" or "wants to know why the moon follows them home".',
-      'Leave the toggle "Let the whisper choose the value" on — Qissaa will pick courage, kindness, patience, or whichever value fits best.',
-      'If you want to keep your own value choice, turn the toggle off — the whisper will still be woven into the opening and closing of the story.',
-      'The whisper never leaves your device. It is used only to shape tonight\'s story, then forgotten.',
+      'In the player, tap any noise chip (Rain, Ocean, Fan, Drone) to layer it under the narration.',
+      'Enable "🌧️ Sleep sounds behind stories" in More to auto-start rain when a story plays.',
+      'Enable "🌙 Story voice fades into sleep sounds" — the narration gets quieter while noise grows, easing your child into sleep.',
+    ],
+  },
+  {
+    id: 'voices',
+    icon: '🎙️',
+    title: 'Voice Studio — record family voices',
+    time: '30 sec read',
+    body: [
+      'Go to More → Voices → "+ Add a new voice".',
+      'Hold the gold button and read the training paragraph out loud in your natural voice.',
+      'Release → listen back → if happy, tap "Looks good" → name the voice and pick the relationship.',
+      'Voices are stored on your device. When we add ElevenLabs, these recordings will be used to clone real family voices for narration.',
+    ],
+  },
+  {
+    id: 'multi-kids',
+    icon: '🧒',
+    title: 'Multiple kids — switch profiles',
+    time: '20 sec read',
+    body: [
+      'Go to More → tap "+ Add another kid" → complete onboarding for the second child.',
+      'A profile switcher appears at the top of More. Tap any name to switch.',
+      'Each child has their own characters, beliefs, library, and settings.',
+    ],
+  },
+  {
+    id: 'theme',
+    icon: '☀️',
+    title: 'Day mode — for mornings',
+    time: '10 sec read',
+    body: [
+      'Go to More → tap the day/night toggle.',
+      'Day mode uses warm cream backgrounds. Night mode uses deep dark backgrounds for bedtime.',
     ],
   },
 ];
 
+// ─── BLOGS — soft marketing, storytelling about Qissaa ───
+const BLOGS = [
+  {
+    id: 'what-is-qissaa',
+    icon: '📖',
+    title: 'What does Qissaa mean?',
+    time: '2 min read',
+    body: `Qissaa (قصّہ / क़िस्सा) comes from the Arabic word "qissa" — a tale, a narrative, a story passed from one generation to the next.
+
+In Urdu and Hindi, "kissa" or "qissa" is the word grandmothers use at bedtime: "Ek qissa sunao na..." — "Tell me a story." It carries warmth, intimacy, and the trust between a child and the person whose voice makes the world feel safe.
+
+We named this app Qissaa because bedtime stories are not content. They are not media. They are the oldest technology in human parenting — a voice, a child, a dark room, and a tale that teaches without lecturing, that soothes without sedating, that makes the world a little more navigable by morning.
+
+Every culture has its own word for this. In Arabic: qissa. In Hindi: kahani. In Tamil: kathai. In Swahili: hadithi. Qissaa is built for all of them.`,
+  },
+  {
+    id: 'why-bedtime',
+    icon: '🌙',
+    title: 'Why bedtime is the most important 15 minutes of the day',
+    time: '3 min read',
+    body: `Neuroscience has known for decades what grandmothers always knew: the last thing a child hears before sleep shapes how their brain consolidates the day.
+
+During the transition from wakefulness to sleep, a child's brain moves into a theta-wave state — the same state used in meditation and deep learning. In this state, the brain is 2–3x more receptive to emotional patterning. Whatever narrative is running at that moment — fear, safety, loneliness, belonging — gets wired deeper than anything heard during the busy day.
+
+This is why a bedtime story is not a luxury. It is a developmental tool. A child who hears a story about courage before sleep is literally more likely to act with courage the next day. A child who hears a story about kindness carries that template into their playground interactions.
+
+Qissaa is built around this insight. We don't just generate stories. We match the story's emotional core — its value — to the child's developmental stage. Courage for a 3-year-old is not the same as courage for a 10-year-old. Honesty at 5 sounds different from honesty at 12.
+
+The goal is simple: own the last 15 minutes of your child's day. Make them count. Make them soft, warm, personal, and rooted in the values your family actually believes in.
+
+That's what Qissaa does. One story, every night, for the child you know best.`,
+  },
+  {
+    id: 'personalization',
+    icon: '✨',
+    title: 'Why your child\'s name in the story changes everything',
+    time: '2 min read',
+    body: `There is a well-documented phenomenon in developmental psychology called the "cocktail party effect" — even in a noisy room, a child's attention snaps to their own name. The name is the first word a child recognizes, and it remains the most emotionally loaded word in their vocabulary for life.
+
+When a bedtime story says "Once upon a time there was a child," a listener hears a generic tale. When the story says "Once upon a time, Ved walked into a garden with his grandmother Nani ma and his puppy Bruno," something electric happens. The child is IN the story. Their brain simulates the events as if they are happening to them personally.
+
+This is not a gimmick. This is the difference between a story that entertains and a story that teaches. Personalization — using the child's real name, their real family members, their real pet — turns a bedtime story into a rehearsal. The child practices courage, patience, honesty, and kindness from inside the narrative, not from the outside looking in.
+
+Qissaa personalizes every story. Not just the name — the sibling, the grandparents, the pet, the cultural references, the food, the festivals. The story feels like home because it IS home, rearranged into a new adventure every night.`,
+  },
+  {
+    id: 'screen-time',
+    icon: '📵',
+    title: 'This is the opposite of screen time',
+    time: '2 min read',
+    body: `Parents worry about screen time. They should. The research on passive video consumption for children under 8 is clear and concerning — it reduces attention span, delays language development, and disrupts sleep onset.
+
+But Qissaa is not screen time. It is voice time.
+
+The screen is only the remote control. You open the app, tap one button, and put the phone face-down. What follows is a voice — a warm, paced, story-shaped voice — filling the dark room for 5, 10, or 15 minutes. The child's eyes are closed. Their brain is listening, imagining, building the world of the story inside their own head.
+
+This is the exact opposite of a screen. A screen gives you the images. A voice makes you build them yourself. That act of imagination is one of the most developmentally important things a child's brain can do.
+
+When you use Qissaa, you are not handing your child a device. You are handing them a storyteller. The device just happens to be how the storyteller arrives.
+
+And when the story ends, the screen fades to black, and the room is quiet, and the child is asleep. That is not screen time. That is parenting.`,
+  },
+  {
+    id: 'culture',
+    icon: '🌍',
+    title: 'Raising global children with local roots',
+    time: '2 min read',
+    body: `The hardest question in modern parenting is: how do I raise a child who is proud of where they come from AND open to where the world is going?
+
+Too much cultural specificity and the child grows up in a bubble. Too much universalism and the child grows up rootless — knowing about everything, belonging to nothing.
+
+Qissaa solves this with a simple design choice: we tell the same lesson from many traditions.
+
+Compassion to animals is taught by Krishna and the squirrel, by Prophet Muhammad and the crying camel, by Jesus and the birds, by Prince Siddhartha and the wounded swan, by Guru Nanak and the true bargain, by Mahavir and the tiny ant.
+
+The child hears their own tradition's version first. Then, over time, they hear the others. They realize — without being told, without a lecture — that kindness is not the property of any one religion. That courage looks the same in a Hindu village and a Christian hillside and a Sikh battlefield.
+
+This is not moral relativism. This is the oldest form of education: stories from many places, arriving in one child's bedroom, building a mind that can hold complexity without losing its center.
+
+That is the kind of child the world needs. And bedtime, it turns out, is the best time to start.`,
+  },
+];
+
 export default function Guides() {
-  const [openId, setOpenId] = useState('first-night');
+  const [tab, setTab] = useState('guides');
+  const [openId, setOpenId] = useState('tonight');
+
+  const items = tab === 'guides' ? GUIDES : BLOGS;
 
   return (
     <PageTransition className="page-scroll px-5 pt-10 safe-top">
       <header className="mb-6">
-        <p className="ui-label">Guides</p>
+        <p className="ui-label">Learn</p>
         <h1 className="display-title mt-1 text-ink">
-          Get the most <span className="text-gold">out of bedtime</span>
+          {tab === 'guides' ? (
+            <>How to use <span className="text-gold">Qissaa</span></>
+          ) : (
+            <>Why <span className="text-gold">Qissaa</span> matters</>
+          )}
         </h1>
         <p className="mt-2 text-sm text-ink-muted">
-          Five short reads for parents and customers. Tap any guide to expand.
+          {tab === 'guides'
+            ? 'Quick reads — one per feature, 10–30 seconds each.'
+            : 'The thinking behind bedtime stories.'}
         </p>
       </header>
 
+      {/* Tab toggle */}
+      <div className="mb-6 flex gap-1 rounded-pill bg-bg-surface p-1 ring-1 ring-white/5">
+        <button
+          onClick={() => { setTab('guides'); setOpenId('tonight'); }}
+          className={`flex-1 rounded-pill py-2.5 text-center text-xs font-bold uppercase tracking-wider transition ${
+            tab === 'guides' ? 'bg-gold text-bg-base' : 'text-ink-muted'
+          }`}
+        >
+          ✨ Guides
+        </button>
+        <button
+          onClick={() => { setTab('blogs'); setOpenId('what-is-qissaa'); }}
+          className={`flex-1 rounded-pill py-2.5 text-center text-xs font-bold uppercase tracking-wider transition ${
+            tab === 'blogs' ? 'bg-gold text-bg-base' : 'text-ink-muted'
+          }`}
+        >
+          📖 Blog
+        </button>
+      </div>
+
       <div className="space-y-3">
-        {GUIDES.map((g, i) => {
+        {items.map((g, i) => {
           const open = openId === g.id;
           return (
             <motion.article
@@ -118,13 +251,13 @@ export default function Guides() {
                   {g.icon}
                 </div>
                 <div className="min-w-0 flex-1">
-                  <div className="text-[10px] uppercase tracking-[0.16em] text-gold">
-                    Guide {String(i + 1).padStart(2, '0')} · {g.audience}
+                  <div className="text-[10px] font-bold uppercase tracking-[0.16em] text-gold">
+                    {tab === 'guides' ? `Guide ${String(i + 1).padStart(2, '0')}` : `Blog ${String(i + 1).padStart(2, '0')}`}
+                    {' · '}{g.time}
                   </div>
-                  <div className="mt-1 truncate font-ui text-sm font-bold text-ink">
+                  <div className="mt-1 font-ui text-sm font-bold leading-snug text-ink">
                     {g.title}
                   </div>
-                  <div className="mt-1 line-clamp-2 text-xs text-ink-muted">{g.summary}</div>
                 </div>
                 <span
                   className={`grid h-8 w-8 shrink-0 place-items-center rounded-full bg-bg-card text-xs text-ink-muted transition ${
@@ -145,19 +278,32 @@ export default function Guides() {
                     transition={{ duration: 0.25 }}
                     className="overflow-hidden"
                   >
-                    <ol className="space-y-3 px-4 pb-5 pl-[4.25rem]">
-                      {g.body.map((step, idx) => (
-                        <li
-                          key={idx}
-                          className="relative pl-6 font-story text-[14px] leading-relaxed text-ink-muted"
-                        >
-                          <span className="absolute left-0 top-0 grid h-5 w-5 place-items-center rounded-full bg-gold/15 text-[10px] font-bold text-gold">
-                            {idx + 1}
-                          </span>
-                          {step}
-                        </li>
-                      ))}
-                    </ol>
+                    {tab === 'guides' ? (
+                      <ol className="space-y-3 px-4 pb-5 pl-[4.25rem]">
+                        {g.body.map((step, idx) => (
+                          <li
+                            key={idx}
+                            className="relative pl-6 font-story text-[14px] leading-relaxed text-ink-muted"
+                          >
+                            <span className="absolute left-0 top-0 grid h-5 w-5 place-items-center rounded-full bg-gold/15 text-[10px] font-bold text-gold">
+                              {idx + 1}
+                            </span>
+                            {step}
+                          </li>
+                        ))}
+                      </ol>
+                    ) : (
+                      <div className="px-4 pb-5 pl-[4.25rem]">
+                        {g.body.split('\n\n').map((para, idx) => (
+                          <p
+                            key={idx}
+                            className="mb-3 font-story text-[14px] leading-relaxed text-ink-muted last:mb-0"
+                          >
+                            {para}
+                          </p>
+                        ))}
+                      </div>
+                    )}
                   </motion.div>
                 )}
               </AnimatePresence>
