@@ -580,7 +580,7 @@ export default function Admin() {
                       .map((u, idx) => {
                         const stories = u.usage?.totalStories || 0;
                         const minutes = u.usage?.totalMinutes || 0;
-                        const cost = (minutes * COST_PER_MINUTE).toFixed(2);
+                        const cost = (minutes * COST_PER_MINUTE_CAD).toFixed(2);
                         const tier = (u.profiles || []).map((p) => p.tier || 'free').join(', ') || 'free';
                         const isPaid = tier.includes('family') || tier.includes('annual');
                         const lastStory = u.usage?.lastStoryAt
