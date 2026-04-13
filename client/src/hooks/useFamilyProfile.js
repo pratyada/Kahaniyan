@@ -103,6 +103,21 @@ export function FamilyProfileProvider({ children }) {
 
           if (data.accountStatus) setAccountStatus(data.accountStatus);
 
+          // Always update auth metadata on login so admin can see emails
+          try {
+            const cu = firebaseAuth?.currentUser;
+            if (cu) {
+              await setDoc(userDocRef(newUid), {
+                email: cu.email || '',
+                displayName: cu.displayName || '',
+                photoURL: cu.photoURL || '',
+                lastActiveAt: new Date().toISOString(),
+              }, { merge: true });
+            }
+          } catch {
+            // non-critical
+          }
+
           if (cloudProfiles.length > 0) {
             setProfiles(cloudProfiles);
             setActiveIndex(cloudIdx);
@@ -116,7 +131,22 @@ export function FamilyProfileProvider({ children }) {
       }
 
       // Firestore empty for this user — start fresh.
-      // Do NOT inherit localStorage data from another user's session.
+      // Write auth metadata so admin dashboard can see their email.
+      try {
+        const cu = firebaseAuth?.currentUser;
+        if (cu) {
+          await setDoc(userDocRef(newUid), {
+            email: cu.email || '',
+            displayName: cu.displayName || '',
+            photoURL: cu.photoURL || '',
+            lastActiveAt: new Date().toISOString(),
+            profiles: [],
+            activeIndex: 0,
+          });
+        }
+      } catch {
+        // non-critical
+      }
       setProfiles([]);
       setActiveIndex(0);
       setReady(true);
