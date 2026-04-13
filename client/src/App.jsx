@@ -122,21 +122,20 @@ function Shell() {
       {/* Login popup — appears after 5 seconds if user isn't signed in */}
       <AnimatePresence>
         {showLoginPopup && !isLoginRoute && (
-          <LoginPopup onLogin={() => navigate('/login')} onDismiss={() => setGraceExpired(false)} />
+          <LoginPopup onLogin={() => navigate('/login')} />
         )}
       </AnimatePresence>
     </div>
   );
 }
 
-function LoginPopup({ onLogin, onDismiss }) {
+function LoginPopup({ onLogin }) {
   return (
     <motion.div
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
-      className="absolute inset-0 z-50 flex items-end justify-center bg-black/70 backdrop-blur-sm"
-      onClick={onDismiss}
+      className="absolute inset-0 z-50 flex items-end justify-center bg-black/80 backdrop-blur-md"
     >
       <motion.div
         initial={{ y: '100%' }}
@@ -144,14 +143,13 @@ function LoginPopup({ onLogin, onDismiss }) {
         exit={{ y: '100%' }}
         transition={{ type: 'spring', damping: 28, stiffness: 280 }}
         className="w-full rounded-t-3xl bg-bg-elevated p-6 shadow-lift"
-        onClick={(e) => e.stopPropagation()}
       >
         <div className="mx-auto mb-4 h-1 w-12 rounded-full bg-white/20" />
         <div className="mb-4 text-center">
           <div className="mb-2 text-4xl">🌙</div>
-          <h2 className="font-display text-2xl font-bold text-gold">Sign in to save your stories</h2>
+          <h2 className="font-display text-2xl font-bold text-gold">Sign in to continue</h2>
           <p className="mt-2 text-sm text-ink-muted">
-            Your stories, characters, and preferences will sync across devices.
+            Create an account or sign in to start your child's bedtime journey.
           </p>
         </div>
         <button
@@ -159,12 +157,6 @@ function LoginPopup({ onLogin, onDismiss }) {
           className="btn-primary w-full py-4 text-base"
         >
           Sign in / Sign up
-        </button>
-        <button
-          onClick={onDismiss}
-          className="mt-3 w-full text-center text-sm text-ink-muted"
-        >
-          Maybe later
         </button>
       </motion.div>
     </motion.div>

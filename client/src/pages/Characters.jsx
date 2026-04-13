@@ -5,7 +5,6 @@ import PageTransition from '../components/PageTransition.jsx';
 import VersionFooter from '../components/VersionFooter.jsx';
 import { useFamilyProfile } from '../hooks/useFamilyProfile.js';
 import { FAMILY_RELATIONS, RELATION_EMOJI, PET_TYPES, SKIN_TONES } from '../utils/constants.js';
-import { createVoiceLink } from '../utils/voiceLink.js';
 import { hasConfig } from '../lib/firebase.js';
 
 const EXTRA_RELATIONS = [
@@ -21,8 +20,6 @@ export default function Characters() {
   const { profile, update } = useFamilyProfile();
   const [editing, setEditing] = useState(null);
   const [draft, setDraft] = useState({ name: '', relation: 'sibling', traits: '', emoji: '🧒', petType: 'dog', adventureName: '' });
-  const [sendingLink, setSendingLink] = useState(null); // character id
-  const [linkUrl, setLinkUrl] = useState(null);
 
   if (!profile) return null;
   const characters = profile.characters || [];
@@ -90,7 +87,10 @@ export default function Characters() {
             Story <span className="text-gold">cast</span>
           </h1>
           <p className="mt-1 text-[12px] text-ink-muted">
-            People, pets and imaginary friends for tonight's story.
+            Add the people in your child's life. Each character appears in bedtime stories with their own personality.
+          </p>
+          <p className="mt-2 text-[11px] text-ink-dim">
+            To record someone's voice, go to <strong className="text-gold">Voices</strong> in the menu.
           </p>
         </header>
 
@@ -118,10 +118,36 @@ export default function Characters() {
                   </div>
                   <div className="text-[11px] text-ink-muted">
                     {ALL_RELATIONS.find((r) => r.key === c.relation)?.label || c.relation}
-                    {petInfo && ` · ${petInfo.label}`}
+                    {petInfo && ` · ${petInfo.label} (says "${petInfo.sound}")`}
                     {c.adventureName && ` · plays as "${c.adventureName}"`}
-                    {c.traits && ` · ${c.traits}`}
                   </div>
+                  {c.traits && (
+                    <div className="mt-0.5 text-[10px] italic text-ink-dim">"{c.traits}"</div>
+                  )}
+                  {isSelf && (
+                    <div className="mt-0.5 text-[10px] text-gold">The hero of every story</div>
+                  )}
+                  {!isSelf && c.relation === 'pet' && (
+                    <div className="mt-0.5 text-[10px] text-ink-dim">Appears as a loyal companion in stories</div>
+                  )}
+                  {!isSelf && c.relation === 'imaginary' && (
+                    <div className="mt-0.5 text-[10px] text-ink-dim">Only your child can see them — appears in dreams and adventures</div>
+                  )}
+                  {!isSelf && (c.relation === 'sibling' || c.relation === 'bhaiya' || c.relation === 'didi') && (
+                    <div className="mt-0.5 text-[10px] text-ink-dim">Runs ahead and teases, but always watches over the hero</div>
+                  )}
+                  {!isSelf && (c.relation === 'dada' || c.relation === 'nana') && (
+                    <div className="mt-0.5 text-[10px] text-ink-dim">Walks slowly, tells old stories, rests a hand on the hero's shoulder</div>
+                  )}
+                  {!isSelf && (c.relation === 'dadi' || c.relation === 'nani') && (
+                    <div className="mt-0.5 text-[10px] text-ink-dim">Points out flowers, whispers old names, smiles from the kitchen</div>
+                  )}
+                  {!isSelf && (c.relation === 'mummy' || c.relation === 'daddy') && (
+                    <div className="mt-0.5 text-[10px] text-ink-dim">Always right there — quiet, steady, bigger than any story</div>
+                  )}
+                  {!isSelf && c.relation === 'friend' && (
+                    <div className="mt-0.5 text-[10px] text-ink-dim">Walks close enough that shoulders bump — the best kind of friendship</div>
+                  )}
                 </div>
                 <button
                   onClick={() => startEdit(c)}
@@ -129,38 +155,6 @@ export default function Characters() {
                 >
                   Edit
                 </button>
-                {!isSelf && hasConfig && (
-                  <button
-                    onClick={async () => {
-                      setSendingLink(c.id);
-                      try {
-                        const result = await createVoiceLink({
-                          characterName: c.name,
-                          relation: c.relation,
-                          emoji: c.emoji,
-                        });
-                        setLinkUrl(result.url);
-                        if (navigator.share) {
-                          await navigator.share({
-                            title: `Record your voice for Qissaa`,
-                            text: `${c.name}, please record your voice for bedtime stories! Link expires in 5 minutes.`,
-                            url: result.url,
-                          });
-                        } else {
-                          await navigator.clipboard.writeText(result.url);
-                          alert(`Link copied! Send it to ${c.name}. Expires in 5 minutes.`);
-                        }
-                      } catch {
-                        // cancelled or failed
-                      }
-                      setSendingLink(null);
-                    }}
-                    disabled={sendingLink === c.id}
-                    className="shrink-0 rounded-full bg-bg-card px-2 py-1 text-[9px] font-bold uppercase tracking-wider text-gold disabled:opacity-50"
-                  >
-                    {sendingLink === c.id ? '…' : '🔗 Send link'}
-                  </button>
-                )}
                 {!isSelf && (
                   <button
                     onClick={() => remove(c.id)}
