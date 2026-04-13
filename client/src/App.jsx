@@ -92,7 +92,13 @@ function Shell() {
           <Route path="/login" element={<Login />} />
           <Route
             path="/"
-            element={onboarded ? <Home /> : <Navigate to="/onboarding" replace />}
+            element={
+              // Before sign-in: always show Home (Tonight) so the visitor sees the app
+              // After sign-in: if no profile yet, go to onboarding
+              !user ? <Home /> :
+              onboarded ? <Home /> :
+              <Navigate to="/onboarding" replace />
+            }
           />
           <Route path="/onboarding" element={<Onboarding />} />
           <Route path="/player" element={<Player />} />

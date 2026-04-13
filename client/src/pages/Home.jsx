@@ -171,7 +171,7 @@ export default function Home() {
       <header className="mb-8">
         <p className="ui-label mb-1">{greeting}</p>
         <h1 className="display-title mt-2 text-ink">
-          A story for <span className="text-gold">{profile?.childName}</span>
+          A story for <span className="text-gold">{profile?.childName || 'your child'}</span>
         </h1>
         <p className="mt-3 text-sm text-ink-muted">
           What kind of bedtime story tonight?
