@@ -76,14 +76,24 @@ export default function Settings() {
         </button>
       </section>
 
-      {profiles.length <= 1 && (
-        <button
-          onClick={() => navigate('/onboarding')}
-          className="mb-5 w-full rounded-2xl bg-bg-surface p-3 text-center text-[11px] font-bold text-gold ring-1 ring-gold/20"
-        >
-          + Add another kid
-        </button>
-      )}
+      {(() => {
+        const currentTier = profile?.tier || 'free';
+        const limits = { free: 1, pro: 3, enterprise: 10, family: 3, annual: 10 };
+        const max = limits[currentTier] || 1;
+        const canAdd = profiles.length < max;
+        return canAdd ? (
+          <button
+            onClick={() => navigate('/onboarding')}
+            className="mb-5 w-full rounded-2xl bg-bg-surface p-3 text-center text-[11px] font-bold text-gold ring-1 ring-gold/20"
+          >
+            + Add another kid ({profiles.length}/{max})
+          </button>
+        ) : profiles.length <= 1 ? null : (
+          <div className="mb-5 w-full rounded-2xl bg-bg-surface p-3 text-center text-[11px] text-ink-muted ring-1 ring-white/5">
+            {max} / {max} kids — upgrade to add more
+          </div>
+        );
+      })()}
 
       {/* ─── CUSTOMIZE ─── */}
       <SectionCard title="Customize">

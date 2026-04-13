@@ -253,6 +253,13 @@ export function FamilyProfileProvider({ children }) {
 
   const addKid = useCallback(
     (p) => {
+      // Enforce child profile limit based on tier
+      const currentTier = profiles[0]?.tier || 'free';
+      const LIMITS = { free: 1, pro: 3, enterprise: 10, family: 3, annual: 10 };
+      const max = LIMITS[currentTier] || 1;
+      if (profiles.length >= max) {
+        throw new Error(`${currentTier === 'free' ? 'Free' : currentTier.charAt(0).toUpperCase() + currentTier.slice(1)} plan allows ${max} child profile${max === 1 ? '' : 's'}. Upgrade to add more.`);
+      }
       const migrated = migrate(p);
       setProfiles((prev) => {
         const next = [...prev, migrated];
@@ -262,7 +269,7 @@ export function FamilyProfileProvider({ children }) {
         return next;
       });
     },
-    [persist]
+    [persist, profiles]
   );
 
   const switchKid = useCallback(
