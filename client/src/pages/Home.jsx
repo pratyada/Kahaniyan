@@ -166,14 +166,17 @@ export default function Home() {
     (mode === 'cast' && selectedCharIds.length === 0);
 
   return (
-    <PageTransition className="page-scroll px-5 pt-10 safe-top">
+    <PageTransition className="page-scroll px-5 pt-12 safe-top">
       {/* HERO */}
-      <header className="mb-5">
-        <p className="ui-label">{greeting}</p>
-        <h1 className="display-title mt-1 text-ink">
+      <header className="mb-8">
+        <p className="ui-label mb-1">{greeting}</p>
+        <h1 className="display-title mt-2 text-ink">
           A story for <span className="text-gold">{profile?.childName}</span>
         </h1>
-        <div className="mt-3 inline-flex items-center gap-2 rounded-full bg-bg-surface px-3 py-1.5 ring-1 ring-white/5">
+        <p className="mt-3 text-sm text-ink-muted">
+          What kind of bedtime story tonight?
+        </p>
+        <div className="mt-4 inline-flex items-center gap-2 rounded-full bg-bg-surface px-3 py-1.5 ring-1 ring-white/5">
           <span className="h-1.5 w-1.5 rounded-full bg-gold" />
           <span className="text-[11px] font-bold uppercase tracking-wider text-ink-muted">
             {tier === 'free'
@@ -184,24 +187,24 @@ export default function Home() {
       </header>
 
       {/* MODE PICKER */}
-      <div className="mb-5 grid grid-cols-3 gap-2">
+      <div className="mb-6 grid grid-cols-3 gap-3">
         {MODES.map((m) => (
           <button
             key={m.key}
             onClick={() => setMode(m.key)}
-            className={`flex flex-col items-center gap-1 rounded-2xl p-3 text-center transition ${
+            className={`flex flex-col items-center gap-2 rounded-2xl p-4 text-center transition ${
               mode === m.key
                 ? 'bg-gold text-bg-base shadow-glow'
                 : 'bg-bg-surface text-ink ring-1 ring-white/5'
             }`}
           >
-            <span className="text-2xl">{m.icon}</span>
+            <span className="text-3xl">{m.icon}</span>
             <span className="text-[11px] font-bold leading-tight">{m.title}</span>
           </button>
         ))}
       </div>
 
-      <p className="mb-5 text-[12px] text-ink-muted">
+      <p className="mb-6 text-[13px] text-ink-muted">
         {MODES.find((m) => m.key === mode)?.subtitle}
       </p>
 
@@ -221,8 +224,8 @@ export default function Home() {
               onToggleOverride={setWhisperOverridesValue}
             />
 
-            <section className="mb-6">
-              <h2 className="ui-label mb-3">What should the story teach?</h2>
+            <section className="mb-8">
+              <h2 className="ui-label mb-4">What should the story teach?</h2>
               <div className="-mx-5 overflow-x-auto px-5">
                 <div className="flex w-max gap-2">
                   {recommended.map((v) => (
@@ -379,8 +382,8 @@ export default function Home() {
               )}
             </section>
 
-            <section className="mb-5">
-              <h2 className="ui-label mb-3">What should the story teach?</h2>
+            <section className="mb-8">
+              <h2 className="ui-label mb-4">What should the story teach?</h2>
               <div className="-mx-5 overflow-x-auto px-5">
                 <div className="flex w-max gap-2">
                   {recommended.map((v) => (
@@ -405,7 +408,7 @@ export default function Home() {
             whileTap={{ scale: 0.97 }}
             onClick={handleStart}
             disabled={ctaDisabled}
-            className="btn-primary mt-2 w-full py-5 text-base disabled:opacity-40"
+            className="btn-primary mt-6 w-full py-5 text-base disabled:opacity-40"
           >
             {loading ? (
               <span className="inline-flex items-center gap-2">
@@ -440,11 +443,11 @@ export default function Home() {
 
 function LengthStrip({ duration, setDuration, maxDuration, setUpgradeReason, setUpgradeOpen }) {
   return (
-    <section className="mb-5 flex items-center justify-between gap-3">
-      <span className="ui-label">Length</span>
+    <section className="mb-8">
+      <span className="ui-label mb-3 block">Story length</span>
       <div className="flex gap-1.5 rounded-pill bg-bg-surface p-1 ring-1 ring-white/5">
         {DURATIONS.map((d) => {
-          const locked = d.minutes > maxDuration;
+          const locked = d.locked && d.minutes > maxDuration;
           const active = duration === d.minutes;
           return (
             <button
@@ -457,15 +460,17 @@ function LengthStrip({ duration, setDuration, maxDuration, setUpgradeReason, set
                   setDuration(d.minutes);
                 }
               }}
-              className={`relative rounded-pill px-3 py-1.5 text-xs font-bold transition ${
+              className={`relative flex-1 rounded-pill py-2.5 text-center text-xs font-bold transition ${
                 active
                   ? 'bg-gold text-bg-base shadow-glow'
+                  : locked
+                  ? 'text-ink-dim'
                   : 'text-ink-muted hover:text-ink'
               }`}
             >
               {d.minutes}m
               {locked && !active && (
-                <span className="absolute -right-0.5 -top-0.5 text-[8px] text-gold">🔒</span>
+                <span className="ml-0.5 text-[8px] text-gold">🔒</span>
               )}
             </button>
           );
