@@ -550,7 +550,14 @@ function PlayerInner() {
 }
 
 function HighlightedText({ text, progress }) {
-  const cutoff = Math.floor(text.length * progress);
+  // Audio progress doesn't map linearly to text characters — narration
+  // speeds up/slows down. Apply a slight lead so the highlight stays
+  // with or slightly ahead of the voice, never behind.
+  const lead = 0.04; // 4% ahead
+  const adjusted = Math.min(1, progress + lead);
+  // Use a power curve — text reads faster at start, slows toward end
+  const curved = Math.pow(adjusted, 0.85);
+  const cutoff = Math.floor(text.length * curved);
   const read = text.slice(0, cutoff);
   const rest = text.slice(cutoff);
   return (
