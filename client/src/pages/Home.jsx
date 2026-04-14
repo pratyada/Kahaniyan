@@ -109,6 +109,10 @@ export default function Home() {
   }, [traditionTheme, profile?.beliefs, profile?.onlyMyTradition, profile?.showCrossCulture]);
 
   const handleStart = async () => {
+    if (!profile) {
+      alert('Profile not loaded. Please try again.');
+      return;
+    }
     if (!canGenerate(tier, isAdmin)) {
       setUpgradeReason(`Free plan allows 3 stories per week. You've used ${used}.`);
       setUpgradeOpen(true);
@@ -133,8 +137,9 @@ export default function Home() {
       });
       load(story);
       navigate('/player');
-    } catch {
-      // swallow
+    } catch (e) {
+      console.error('Story generation failed:', e);
+      alert(e.message || 'Could not generate story. Please try again.');
     }
   };
 
