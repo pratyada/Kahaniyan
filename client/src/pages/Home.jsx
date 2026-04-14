@@ -133,9 +133,11 @@ export default function Home() {
       });
       console.log('[Qissaa] Story generated:', story.title, '| loading into player...');
       load(story);
-      console.log('[Qissaa] Story loaded, navigating to /player...');
-      navigate('/player');
-      console.log('[Qissaa] Navigation dispatched');
+      // Wait for React state to propagate before navigating
+      setTimeout(() => {
+        console.log('[Qissaa] Navigating to /player...');
+        navigate('/player');
+      }, 50);
     } catch (e) {
       console.error('[Qissaa] Story generation FAILED:', e);
       setStoryError(e.message || 'Could not generate story. Please try again.');
