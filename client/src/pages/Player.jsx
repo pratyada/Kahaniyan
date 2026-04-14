@@ -78,16 +78,23 @@ function PlayerInner() {
   const fadeIntervalRef = useRef(null);
   const startedRef = useRef(false);
 
-  // Auto-play on mount — try ElevenLabs first, fall back to Web Speech
+  // Reset startedRef when story changes so auto-play fires for new stories
+  const currentIdRef = useRef(null);
+  if (current && current.id !== currentIdRef.current) {
+    currentIdRef.current = current.id;
+    startedRef.current = false;
+    dialogueFadeRef.current = null;
+  }
+
+  // Auto-play when current story is available
   useEffect(() => {
     if (!current) {
-      // Don't navigate away immediately — current might be loading.
-      // The render below handles the "no story" state with a message.
-      console.warn('[Qissaa:Player] No current story in context');
+      console.warn('[Qissaa:Player] Waiting for story...');
       return;
     }
     if (startedRef.current) return;
     startedRef.current = true;
+    console.log('[Qissaa:Player] Starting playback:', current.title);
 
     // Start ambient noise if enabled
     if (profile?.whiteNoiseEnabled) {
