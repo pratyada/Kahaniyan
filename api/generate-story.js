@@ -33,17 +33,25 @@ const TIER_LIMITS = {
   annual: { storiesPerWeek: Infinity, maxDuration: 30 },
 };
 
-async function isAdmin(uid) {
-  if (!db) return false;
+async function getRole(uid) {
+  // Returns: 'admin' | 'tester' | 'marketing' | 'user'
+  if (!db) return 'user';
   try {
     const configDoc = await db.collection('config').doc('app').get();
-    if (!configDoc.exists) return false;
+    if (!configDoc.exists) return 'user';
     const data = configDoc.data();
     const userDoc = await db.collection('users').doc(uid).get();
     const email = userDoc.exists ? userDoc.data().email : '';
-    return (data.adminEmails || []).includes(email);
+    if (!email) return 'user';
+    // Check admin
+    if ((data.adminEmails || []).includes(email)) return 'admin';
+    // Check team (testers get unlimited, marketing doesn't)
+    const team = data.team || [];
+    const member = team.find((t) => t.email === email && t.status === 'active');
+    if (member) return member.role; // 'tester' or 'marketing'
+    return 'user';
   } catch {
-    return false;
+    return 'user';
   }
 }
 
@@ -51,8 +59,9 @@ async function enforceUsageLimits(uid, requestedDuration) {
   if (!db || !uid) return { allowed: true }; // no enforcement if no DB
 
   try {
-    // Admins get unlimited access — skip all checks
-    if (await isAdmin(uid)) {
+    // Admins and active testers get unlimited access
+    const role = await getRole(uid);
+    if (role === 'admin' || role === 'tester') {
       // Still track usage for analytics
       const userDoc = await db.collection('users').doc(uid).get();
       if (userDoc.exists) {
@@ -63,7 +72,7 @@ async function enforceUsageLimits(uid, requestedDuration) {
           'usage.lastStoryAt': new Date().toISOString(),
         });
       }
-      return { allowed: true, tier: 'admin' };
+      return { allowed: true, tier: role };
     }
 
     const userDoc = await db.collection('users').doc(uid).get();

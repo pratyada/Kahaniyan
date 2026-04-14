@@ -217,9 +217,18 @@ export function AdminProvider({ children }) {
     }
   }, []);
 
+  // Check if current user is a tester (gets unlimited like admin)
+  const isTester = (() => {
+    if (!user || !user.email) return false;
+    return team.some((t) => t.email === user.email && t.role === 'tester' && t.status === 'active');
+  })();
+
+  // Admin or active tester = unlimited access
+  const isUnlimited = isAdmin || isTester;
+
   return createElement(
     AdminCtx.Provider,
-    { value: { isAdmin, loading: loading, allUsers, stats, adminEmails, loadUsers, addAdmin, removeAdmin, setUserStatus, setUserTier, team, addTeamMember, updateTeamMember, removeTeamMember } },
+    { value: { isAdmin, isTester, isUnlimited, loading: loading, allUsers, stats, adminEmails, loadUsers, addAdmin, removeAdmin, setUserStatus, setUserTier, team, addTeamMember, updateTeamMember, removeTeamMember } },
     children
   );
 }

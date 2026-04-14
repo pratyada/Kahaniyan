@@ -61,7 +61,8 @@ export default function Home() {
   const { profile } = useFamilyProfile();
   const { generate, loading } = useStoryGenerator();
   const { load } = usePlayer();
-  const { isAdmin } = useAdmin();
+  const { isUnlimited } = useAdmin();
+  const isAdmin = isUnlimited; // backward compat for logging
 
   const tier = profile?.tier || 'free';
   const recommended = useMemo(() => recommendedValueFor(profile?.age || 6), [profile?.age]);
@@ -79,9 +80,9 @@ export default function Home() {
   const [upgradeReason, setUpgradeReason] = useState('');
   const [storyError, setStoryError] = useState(null);
 
-  const maxDuration = maxDurationFor(tier, isAdmin);
+  const maxDuration = maxDurationFor(tier, isUnlimited);
   const used = storiesThisWeek();
-  const remaining = isAdmin ? Infinity : tier === 'free' ? Math.max(0, 3 - used) : Infinity;
+  const remaining = isUnlimited ? Infinity : tier === 'free' ? Math.max(0, 3 - used) : Infinity;
 
   const toggleChar = (id) => {
     setSelectedCharIds((prev) => {
@@ -120,7 +121,7 @@ export default function Home() {
     // Server will return 429 if the user is truly over limit.
     const selectedCharacters = characters.filter((c) => selectedCharIds.includes(c.id) || c.relation === 'self');
     try {
-      console.log('[Qissaa] Generating story...', { value, duration, mode, isAdmin, charCount: selectedCharacters.length });
+      console.log('[Qissaa] Generating story...', { value, duration, mode, isUnlimited, charCount: selectedCharacters.length });
       const story = await generate({
         profile,
         value,
@@ -197,8 +198,8 @@ export default function Home() {
         <div className="mt-4 inline-flex items-center gap-2 rounded-full bg-bg-surface px-3 py-1.5 ring-1 ring-white/5">
           <span className="h-1.5 w-1.5 rounded-full bg-gold" />
           <span className="text-[11px] font-bold uppercase tracking-wider text-ink-muted">
-            {isAdmin
-              ? 'Admin · Unlimited'
+            {isUnlimited
+              ? 'Unlimited'
               : tier === 'free'
               ? `${remaining} ${remaining === 1 ? 'story' : 'stories'} left this week`
               : 'Unlimited stories'}
