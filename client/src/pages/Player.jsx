@@ -1,6 +1,30 @@
-import { useEffect, useRef, useState } from 'react';
+import { Component, useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
+
+// Error boundary to catch crashes and show them instead of blank screen
+class PlayerErrorBoundary extends Component {
+  constructor(props) { super(props); this.state = { error: null }; }
+  static getDerivedStateFromError(error) { return { error }; }
+  render() {
+    if (this.state.error) {
+      return (
+        <div className="flex h-screen flex-col items-center justify-center bg-bg-base px-6 text-center">
+          <div className="text-4xl mb-4">⚠️</div>
+          <h1 className="font-display text-xl font-bold text-gold">Player error</h1>
+          <p className="mt-2 text-sm text-ink-muted">{this.state.error?.message || 'Unknown error'}</p>
+          <pre className="mt-3 max-w-sm overflow-auto rounded-xl bg-bg-surface p-3 text-[10px] text-ink-dim">
+            {this.state.error?.stack?.slice(0, 500)}
+          </pre>
+          <button onClick={() => window.location.href = '/'} className="btn-primary mt-6">
+            Back to home
+          </button>
+        </div>
+      );
+    }
+    return this.props.children;
+  }
+}
 import { usePlayer } from '../hooks/usePlayer.jsx';
 import { useFamilyProfile } from '../hooks/useFamilyProfile.js';
 import { useSpeech } from '../hooks/useSpeech.js';
@@ -12,6 +36,14 @@ const SPEEDS = [0.7, 1, 1.3];
 const SLEEP_OPTIONS = [0, 5, 10, 15, 30, 45];
 
 export default function Player() {
+  return (
+    <PlayerErrorBoundary>
+      <PlayerInner />
+    </PlayerErrorBoundary>
+  );
+}
+
+function PlayerInner() {
   const navigate = useNavigate();
   const { current, clear, isPlaying, setIsPlaying } = usePlayer();
   const { profile } = useFamilyProfile();
@@ -196,7 +228,8 @@ export default function Player() {
       let v = 1;
       fadeIntervalRef.current = setInterval(() => {
         v = Math.max(0, v - 0.05);
-        setVolume(v);
+        if (usingTTS) elevenLabs.setVolume(v);
+        else webSpeech.setVolume(v);
         if (v <= 0) clearInterval(fadeIntervalRef.current);
       }, (totalMs - fadeStart) / 20);
     }, fadeStart);
@@ -205,7 +238,8 @@ export default function Player() {
       clearTimeout(sleepTimerRef.current);
       clearInterval(fadeIntervalRef.current);
     };
-  }, [sleepMin, stop, setVolume, setIsPlaying]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [sleepMin, setIsPlaying]);
 
   // Mark "done" when progress reaches end
   useEffect(() => {
@@ -215,7 +249,16 @@ export default function Player() {
     }
   }, [progress, setIsPlaying]);
 
-  if (!current) return null;
+  if (!current) {
+    return (
+      <div className="flex h-screen flex-col items-center justify-center bg-bg-base px-6 text-center">
+        <div className="text-4xl mb-4">📖</div>
+        <h1 className="font-display text-xl font-bold text-gold">No story loaded</h1>
+        <p className="mt-2 text-sm text-ink-muted">The story may not have generated. Please go back and try again.</p>
+        <button onClick={() => navigate('/')} className="btn-primary mt-6">Back to home</button>
+      </div>
+    );
+  }
 
   const meta = valueMeta(current.value);
 
