@@ -6,6 +6,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 class PlayerErrorBoundary extends Component {
   constructor(props) { super(props); this.state = { error: null }; }
   static getDerivedStateFromError(error) { return { error }; }
+  componentDidCatch(error, info) { console.error('[Qissaa:Player] CRASH:', error.message, info.componentStack?.slice(0, 300)); }
   render() {
     if (this.state.error) {
       return (
@@ -80,7 +81,9 @@ function PlayerInner() {
   // Auto-play on mount — try ElevenLabs first, fall back to Web Speech
   useEffect(() => {
     if (!current) {
-      navigate('/');
+      // Don't navigate away immediately — current might be loading.
+      // The render below handles the "no story" state with a message.
+      console.warn('[Qissaa:Player] No current story in context');
       return;
     }
     if (startedRef.current) return;

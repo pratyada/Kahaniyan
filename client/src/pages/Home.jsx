@@ -131,9 +131,11 @@ export default function Home() {
         whisperOverridesValue: mode === 'whisper' ? whisperOverridesValue : false,
         selectedCharacters: mode === 'cast' ? selectedCharacters : undefined,
       });
-      console.log('[Qissaa] Story generated:', story.title);
+      console.log('[Qissaa] Story generated:', story.title, '| loading into player...');
       load(story);
+      console.log('[Qissaa] Story loaded, navigating to /player...');
       navigate('/player');
+      console.log('[Qissaa] Navigation dispatched');
     } catch (e) {
       console.error('[Qissaa] Story generation FAILED:', e);
       setStoryError(e.message || 'Could not generate story. Please try again.');
