@@ -7,6 +7,7 @@ import UpgradeModal from '../components/UpgradeModal.jsx';
 import VersionFooter from '../components/VersionFooter.jsx';
 import WhisperBox from '../components/WhisperBox.jsx';
 import StoryLoading from '../components/StoryLoading.jsx';
+import CalmParticles from '../components/CalmParticles.jsx';
 import { useFamilyProfile } from '../hooks/useFamilyProfile.js';
 import { useStoryGenerator } from '../hooks/useStoryGenerator.js';
 import { usePlayer } from '../hooks/usePlayer.jsx';
@@ -173,7 +174,10 @@ export default function Home() {
   }
 
   return (
-    <PageTransition className="page-scroll px-5 pt-12 safe-top">
+    <PageTransition className="relative page-scroll px-5 pt-12 safe-top">
+      {/* Calm particles background */}
+      <CalmParticles />
+
       {/* HERO */}
       <header className="mb-8">
         <p className="ui-label mb-1">{greeting}</p>
