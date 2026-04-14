@@ -27,8 +27,8 @@ function pickModel(language) {
 function pickVoice(narrator, language, customVoiceId) {
   // If user has a custom cloned voice ID, use it (Pro/Enterprise)
   if (customVoiceId) return customVoiceId;
-  // Language-specific voice
-  if (language === 'Hindi') return VOICE_MAP['Hindi'];
+  // Language-specific voice for non-English
+  if (language && language !== 'English' && VOICE_MAP[language]) return VOICE_MAP[language];
   // Narrator persona
   return VOICE_MAP[narrator] || VOICE_MAP['default'];
 }

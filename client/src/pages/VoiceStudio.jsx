@@ -6,7 +6,7 @@ import VersionFooter from '../components/VersionFooter.jsx';
 import { useFamilyVoices } from '../hooks/useFamilyVoices.jsx';
 import { useFamilyProfile } from '../hooks/useFamilyProfile.js';
 import { useVoiceRecorder } from '../hooks/useVoiceRecorder.js';
-import { VOICE_TRAINING_PARAGRAPH, FAMILY_RELATIONS, RELATION_EMOJI } from '../utils/constants.js';
+import { VOICE_TRAINING_PARAGRAPH, FAMILY_RELATIONS, RELATION_EMOJI, LANGUAGES } from '../utils/constants.js';
 import { createVoiceLink } from '../utils/voiceLink.js';
 import { hasConfig } from '../lib/firebase.js';
 
@@ -17,7 +17,10 @@ export default function VoiceStudio() {
   const recorder = useVoiceRecorder();
   const [step, setStep] = useState('pick'); // pick | record | done
   const [selectedChar, setSelectedChar] = useState(null);
+  const [recordLang, setRecordLang] = useState(profile?.language || 'English');
   const [sendingLink, setSendingLink] = useState(null);
+  const [cloning, setCloning] = useState(false);
+  const [cloneResult, setCloneResult] = useState(null);
   const previewAudioRef = useRef(null);
 
   const characters = (profile?.characters || []).filter((c) => c.relation !== 'self');
@@ -28,6 +31,8 @@ export default function VoiceStudio() {
 
   const startRecordFor = (char) => {
     setSelectedChar(char);
+    setRecordLang(profile?.language || 'English');
+    setCloneResult(null);
     recorder.reset();
     setStep('record');
   };
@@ -39,10 +44,59 @@ export default function VoiceStudio() {
       relation: selectedChar.relation,
       blob: recorder.lastBlob,
       durationSeconds: recorder.lastDuration,
+      language: recordLang,
     });
     recorder.reset();
     setStep('done');
     setTimeout(() => setStep('pick'), 2000);
+  };
+
+  const handleCloneVoice = async () => {
+    if (!recorder.lastBlob || !selectedChar) return;
+    setCloning(true);
+    setCloneResult(null);
+    try {
+      // Convert blob to base64
+      const arrayBuf = await recorder.lastBlob.arrayBuffer();
+      const base64 = btoa(String.fromCharCode(...new Uint8Array(arrayBuf)));
+
+      const res = await fetch('/api/clone-voice', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          name: selectedChar.name,
+          audioBase64: base64,
+          language: recordLang,
+          description: `${selectedChar.name} (${selectedChar.relation}) — ${recordLang}`,
+        }),
+      });
+      const data = await res.json();
+      if (data.voiceId) {
+        setCloneResult({ success: true, voiceId: data.voiceId });
+        // Save the voice with the ElevenLabs voice ID
+        await addVoice({
+          name: selectedChar.name,
+          relation: selectedChar.relation,
+          blob: recorder.lastBlob,
+          durationSeconds: recorder.lastDuration,
+          language: recordLang,
+          elevenLabsVoiceId: data.voiceId,
+        });
+        // Update the character with the cloned voice ID
+        const chars = profile?.characters || [];
+        const updated = chars.map((c) =>
+          c.id === selectedChar.id
+            ? { ...c, elevenLabsVoiceId: data.voiceId, voiceLanguage: recordLang }
+            : c
+        );
+        update({ characters: updated });
+      } else {
+        setCloneResult({ success: false, error: data.error || 'Clone failed' });
+      }
+    } catch (e) {
+      setCloneResult({ success: false, error: e.message });
+    }
+    setCloning(false);
   };
 
   const handleSendLink = async (char) => {
@@ -122,6 +176,7 @@ export default function VoiceStudio() {
                     {characters.map((c) => {
                       const rel = allRelations.find((r) => r.key === c.relation);
                       const recorded = hasVoice(c.name);
+                      const cloned = !!c.elevenLabsVoiceId;
                       return (
                         <div
                           key={c.id}
@@ -133,7 +188,12 @@ export default function VoiceStudio() {
                           <div className="min-w-0 flex-1">
                             <div className="flex items-center gap-2">
                               <span className="truncate font-ui text-sm font-bold text-ink">{c.name}</span>
-                              {recorded && (
+                              {cloned && (
+                                <span className="shrink-0 rounded-full bg-gold/20 px-2 py-0.5 text-[8px] font-bold uppercase text-gold">
+                                  AI Voice
+                                </span>
+                              )}
+                              {recorded && !cloned && (
                                 <span className="shrink-0 rounded-full bg-green-900/30 px-2 py-0.5 text-[8px] font-bold uppercase text-green-400">
                                   Recorded
                                 </span>
@@ -235,7 +295,7 @@ export default function VoiceStudio() {
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -8 }}
             >
-              <div className="mb-6 flex items-center gap-3 rounded-2xl bg-bg-elevated p-4">
+              <div className="mb-4 flex items-center gap-3 rounded-2xl bg-bg-elevated p-4">
                 <div className="grid h-14 w-14 place-items-center rounded-full bg-gold/15 text-2xl">
                   {selectedChar.emoji || '🎤'}
                 </div>
@@ -245,6 +305,31 @@ export default function VoiceStudio() {
                     {allRelations.find((r) => r.key === selectedChar.relation)?.label || selectedChar.relation}
                   </div>
                 </div>
+              </div>
+
+              {/* Language picker */}
+              <div className="mb-6">
+                <div className="mb-2 text-[10px] font-bold uppercase tracking-[0.16em] text-gold">
+                  Recording language
+                </div>
+                <div className="flex gap-2 overflow-x-auto">
+                  {LANGUAGES.map((l) => (
+                    <button
+                      key={l.key}
+                      onClick={() => setRecordLang(l.key)}
+                      className={`shrink-0 rounded-full px-3 py-1.5 text-[11px] font-bold transition ${
+                        recordLang === l.key
+                          ? 'bg-gold text-bg-base'
+                          : 'bg-bg-surface text-ink-muted ring-1 ring-white/5'
+                      }`}
+                    >
+                      {l.label}
+                    </button>
+                  ))}
+                </div>
+                <p className="mt-1 text-[10px] text-ink-dim">
+                  Speak in {recordLang}. The AI can use this voice for other languages too.
+                </p>
               </div>
 
               {!recorder.supported && (
@@ -304,10 +389,49 @@ export default function VoiceStudio() {
                     <button onClick={() => playPreview(recorder.lastBlob)} className="btn-secondary w-full">
                       ▶ Listen back ({recorder.lastDuration.toFixed(1)}s)
                     </button>
+
+                    {/* Clone result */}
+                    {cloneResult?.success && (
+                      <div className="rounded-2xl bg-green-900/30 p-3 text-center ring-1 ring-green-400/30">
+                        <div className="text-lg">✅</div>
+                        <div className="mt-1 text-xs font-bold text-green-400">
+                          AI voice clone created! Stories will now play in {selectedChar.name}'s real voice.
+                        </div>
+                      </div>
+                    )}
+                    {cloneResult?.success === false && (
+                      <div className="rounded-2xl bg-negative/10 p-3 text-center ring-1 ring-negative/20">
+                        <div className="text-xs text-negative">{cloneResult.error}</div>
+                      </div>
+                    )}
+
                     <div className="grid grid-cols-2 gap-2">
                       <button onClick={() => recorder.reset()} className="btn-outline">Try again</button>
-                      <button onClick={handleSave} className="btn-primary">Save voice</button>
+                      <button onClick={handleSave} className="btn-secondary">Save locally</button>
                     </div>
+
+                    {/* Clone button — the big feature */}
+                    <button
+                      onClick={handleCloneVoice}
+                      disabled={cloning || cloneResult?.success}
+                      className="w-full rounded-2xl bg-gold py-4 text-center text-sm font-bold text-bg-base shadow-glow transition disabled:opacity-50"
+                    >
+                      {cloning ? (
+                        <span className="inline-flex items-center gap-2">
+                          <span className="inline-block h-3 w-3 animate-pulse rounded-full bg-bg-base/70" />
+                          Creating AI voice clone…
+                        </span>
+                      ) : cloneResult?.success ? (
+                        '✅ Voice cloned'
+                      ) : (
+                        '✨ Create AI voice clone'
+                      )}
+                    </button>
+                    <p className="text-center text-[10px] text-ink-dim">
+                      {cloning
+                        ? 'Uploading to ElevenLabs — this may take 10-20 seconds'
+                        : 'Creates a voice model so stories play in this person\'s real voice. Pro/Enterprise only.'}
+                    </p>
                   </div>
                 )}
               </div>

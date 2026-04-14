@@ -62,12 +62,19 @@ export default function Player() {
     }
 
     const startPlayback = async () => {
+      // Find if the selected narrator has a cloned voice
+      const narratorName = current.voice || 'AI Narrator';
+      const chars = profile?.characters || [];
+      const matchedChar = chars.find((c) => c.name === narratorName || c.relation === narratorName.toLowerCase());
+      const customVoiceId = matchedChar?.elevenLabsVoiceId || null;
+
       // Try ElevenLabs TTS first
       try {
         const audio = await elevenLabs.generate({
           text: current.text,
-          narrator: current.voice || 'AI Narrator',
+          narrator: narratorName,
           language: current.language || profile?.language || 'English',
+          customVoiceId,
         });
         setUsingTTS(true);
         setTtsReady(true);

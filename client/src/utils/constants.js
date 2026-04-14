@@ -30,7 +30,6 @@ export const DURATIONS = [
   { minutes: 5, label: '5 min', sub: 'short' },
   { minutes: 10, label: '10 min', sub: 'classic', locked: true },
   { minutes: 15, label: '15 min', sub: 'bedtime', locked: true },
-  { minutes: 30, label: '30 min', sub: 'deep sleep', locked: true },
 ];
 
 export const valueMeta = (key) => VALUES.find((v) => v.key === key) || VALUES[0];
