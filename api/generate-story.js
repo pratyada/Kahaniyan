@@ -33,10 +33,39 @@ const TIER_LIMITS = {
   annual: { storiesPerWeek: Infinity, maxDuration: 30 },
 };
 
+async function isAdmin(uid) {
+  if (!db) return false;
+  try {
+    const configDoc = await db.collection('config').doc('app').get();
+    if (!configDoc.exists) return false;
+    const data = configDoc.data();
+    const userDoc = await db.collection('users').doc(uid).get();
+    const email = userDoc.exists ? userDoc.data().email : '';
+    return (data.adminEmails || []).includes(email);
+  } catch {
+    return false;
+  }
+}
+
 async function enforceUsageLimits(uid, requestedDuration) {
   if (!db || !uid) return { allowed: true }; // no enforcement if no DB
 
   try {
+    // Admins get unlimited access — skip all checks
+    if (await isAdmin(uid)) {
+      // Still track usage for analytics
+      const userDoc = await db.collection('users').doc(uid).get();
+      if (userDoc.exists) {
+        const usage = userDoc.data().usage || {};
+        await db.collection('users').doc(uid).update({
+          'usage.totalStories': (usage.totalStories || 0) + 1,
+          'usage.totalMinutes': (usage.totalMinutes || 0) + (requestedDuration || 0),
+          'usage.lastStoryAt': new Date().toISOString(),
+        });
+      }
+      return { allowed: true, tier: 'admin' };
+    }
+
     const userDoc = await db.collection('users').doc(uid).get();
     if (!userDoc.exists) return { allowed: true };
 
