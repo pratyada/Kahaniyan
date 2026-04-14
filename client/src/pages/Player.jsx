@@ -4,6 +4,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { usePlayer } from '../hooks/usePlayer.jsx';
 import { useFamilyProfile } from '../hooks/useFamilyProfile.js';
 import { useSpeech } from '../hooks/useSpeech.js';
+import { useElevenLabs } from '../hooks/useElevenLabs.js';
 import { useWhiteNoise, NOISE_TYPES } from '../hooks/useWhiteNoise.jsx';
 import { valueMeta } from '../utils/constants.js';
 
@@ -14,7 +15,8 @@ export default function Player() {
   const navigate = useNavigate();
   const { current, clear, isPlaying, setIsPlaying } = usePlayer();
   const { profile } = useFamilyProfile();
-  const { speak, pause, resume, stop, setVolume, paused, progress, supported } = useSpeech();
+  const webSpeech = useSpeech();
+  const elevenLabs = useElevenLabs();
   const noise = useWhiteNoise();
 
   const [speed, setSpeed] = useState(1);
@@ -22,12 +24,27 @@ export default function Player() {
   const [showText, setShowText] = useState(true);
   const [done, setDone] = useState(false);
   const [noiseType, setNoiseType] = useState(null);
+  const [usingTTS, setUsingTTS] = useState(false); // true = ElevenLabs, false = Web Speech
+  const [ttsReady, setTtsReady] = useState(false);
   const dialogueFadeRef = useRef(null);
+
+  // Unified interface — picks ElevenLabs or Web Speech
+  const voice = usingTTS ? {
+    speaking: elevenLabs.playing,
+    paused: !elevenLabs.playing && ttsReady && !done,
+    progress: elevenLabs.progress,
+    supported: true,
+  } : {
+    speaking: webSpeech.speaking,
+    paused: webSpeech.paused,
+    progress: webSpeech.progress,
+    supported: webSpeech.supported,
+  };
   const sleepTimerRef = useRef(null);
   const fadeIntervalRef = useRef(null);
   const startedRef = useRef(false);
 
-  // Auto-play on mount + auto-start ambient noise if user enabled it
+  // Auto-play on mount — try ElevenLabs first, fall back to Web Speech
   useEffect(() => {
     if (!current) {
       navigate('/');
@@ -36,7 +53,7 @@ export default function Player() {
     if (startedRef.current) return;
     startedRef.current = true;
 
-    // If profile has white noise enabled, start the default (rain)
+    // Start ambient noise if enabled
     if (profile?.whiteNoiseEnabled) {
       const initial = profile?.preferredNoise || 'rain';
       setNoiseType(initial);
@@ -44,8 +61,27 @@ export default function Player() {
       noise.setVolume(0.25);
     }
 
-    const t = setTimeout(() => {
-      speak({
+    const startPlayback = async () => {
+      // Try ElevenLabs TTS first
+      try {
+        const audio = await elevenLabs.generate({
+          text: current.text,
+          narrator: current.voice || 'AI Narrator',
+          language: current.language || profile?.language || 'English',
+        });
+        setUsingTTS(true);
+        setTtsReady(true);
+        audio.playbackRate = speed;
+        audio.play();
+        setIsPlaying(true);
+        return;
+      } catch (e) {
+        console.warn('ElevenLabs TTS failed, falling back to Web Speech:', e.message);
+      }
+
+      // Fallback to Web Speech
+      setUsingTTS(false);
+      webSpeech.speak({
         text: current.text,
         language: current.language || profile?.language || 'English',
         rate: speed * 0.92,
@@ -53,12 +89,15 @@ export default function Player() {
         preferredVoiceName: profile?.preferredVoiceName || null,
       });
       setIsPlaying(true);
-    }, 800);
+    };
+
+    const t = setTimeout(startPlayback, 800);
     return () => clearTimeout(t);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [current]);
 
   // Dialogue fade — narration ramps down while noise grows in second half
+  const progress = voice.progress;
   useEffect(() => {
     if (!profile?.dialogueFade || !noiseType) return;
     if (progress < 0.5) return;
@@ -73,18 +112,22 @@ export default function Player() {
       const elapsed = Date.now() - startedAt;
       const t = Math.min(1, elapsed / fadeMs);
       const speechVol = 1 - (1 - target) * t;
-      setVolume(speechVol);
+      if (usingTTS) elevenLabs.setVolume(speechVol);
+      else webSpeech.setVolume(speechVol);
       const noiseVol = 0.25 + (0.55 * t);
       noise.setVolume(noiseVol);
       if (t >= 1) clearInterval(id);
     }, 200);
     return () => clearInterval(id);
-  }, [progress, profile?.dialogueFade, noiseType, setVolume, noise]);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [progress, profile?.dialogueFade, noiseType]);
 
-  // Cleanup noise on unmount
+  // Cleanup on unmount
   useEffect(() => {
     return () => {
       noise.stop();
+      elevenLabs.stop();
+      webSpeech.stop();
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -124,7 +167,8 @@ export default function Player() {
     const fadeStart = Math.max(totalMs - 2 * 60 * 1000, totalMs * 0.6);
 
     sleepTimerRef.current = setTimeout(() => {
-      stop();
+      if (usingTTS) elevenLabs.stop();
+      else webSpeech.stop();
       setIsPlaying(false);
       setDone(true);
     }, totalMs);
@@ -145,13 +189,14 @@ export default function Player() {
     };
   }, [sleepMin, stop, setVolume, setIsPlaying]);
 
-  // Mark "done" when speech progress reaches end
+  // Mark "done" when progress reaches end
   useEffect(() => {
-    if (progress >= 0.999) {
+    if (progress >= 0.999 && (voice.speaking || ttsReady)) {
       setDone(true);
       setIsPlaying(false);
     }
-  }, [progress, setIsPlaying]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [progress]);
 
   if (!current) return null;
 
@@ -159,37 +204,46 @@ export default function Player() {
 
   const handleTogglePlay = () => {
     if (!isPlaying) {
-      if (paused) resume();
-      else
-        speak({
+      if (usingTTS) {
+        elevenLabs.resume();
+      } else {
+        if (webSpeech.paused) webSpeech.resume();
+        else webSpeech.speak({
           text: current.text,
           language: current.language || profile?.language || 'English',
-          rate: speed,
+          rate: speed * 0.92,
           volume: 1,
+          preferredVoiceName: profile?.preferredVoiceName || null,
         });
+      }
       setIsPlaying(true);
     } else {
-      pause();
+      if (usingTTS) elevenLabs.pause();
+      else webSpeech.pause();
       setIsPlaying(false);
     }
   };
 
   const handleSpeedChange = (newSpeed) => {
     setSpeed(newSpeed);
-    // Restart at new speed from current position is non-trivial w/ Web Speech;
-    // for POC, simply restart utterance.
-    stop();
-    speak({
-      text: current.text,
-      language: current.language || profile?.language || 'English',
-      rate: newSpeed,
-      volume: 1,
-    });
-    setIsPlaying(true);
+    if (usingTTS) {
+      elevenLabs.setRate(newSpeed);
+    } else {
+      webSpeech.stop();
+      webSpeech.speak({
+        text: current.text,
+        language: current.language || profile?.language || 'English',
+        rate: newSpeed * 0.92,
+        volume: 1,
+        preferredVoiceName: profile?.preferredVoiceName || null,
+      });
+      setIsPlaying(true);
+    }
   };
 
   const handleClose = () => {
-    stop();
+    if (usingTTS) elevenLabs.stop();
+    else webSpeech.stop();
     noise.stop();
     clear();
     navigate('/');
@@ -350,11 +404,11 @@ export default function Player() {
               {/* Big play / pause */}
               <button
                 onClick={handleTogglePlay}
-                aria-label={isPlaying && !paused ? 'Pause story' : 'Play story'}
+                aria-label={isPlaying ? 'Pause story' : 'Play story'}
                 className="group relative grid h-24 w-24 place-items-center rounded-full bg-gold text-bg-base shadow-glow transition active:scale-95"
               >
                 <span className="absolute inset-0 rounded-full ring-4 ring-gold/20" />
-                {isPlaying && !paused ? (
+                {isPlaying ? (
                   // Pause icon (two bars)
                   <svg width="36" height="36" viewBox="0 0 24 24" fill="currentColor">
                     <rect x="6" y="4" width="4" height="16" rx="1.5" />
@@ -368,7 +422,7 @@ export default function Player() {
                 )}
               </button>
               <div className="text-[11px] font-bold uppercase tracking-[0.18em] text-ink-muted">
-                {isPlaying && !paused ? 'Tap to pause' : paused ? 'Tap to resume' : 'Tap to play'}
+                {isPlaying ? 'Tap to pause' : voice.paused ? 'Tap to resume' : 'Tap to play'}
               </div>
 
               {/* Secondary controls — speed, sleep timer, restart */}
@@ -389,17 +443,24 @@ export default function Player() {
                 <SleepButton sleepMin={sleepMin} setSleepMin={setSleepMin} />
 
                 <button
-                  onClick={() => {
-                    stop();
-                    setTimeout(() => {
-                      speak({
-                        text: current.text,
-                        language: current.language || profile?.language || 'English',
-                        rate: speed,
-                        volume: 1,
-                      });
-                      setIsPlaying(true);
-                    }, 100);
+                  onClick={async () => {
+                    if (usingTTS) {
+                      elevenLabs.stop();
+                      elevenLabs.seek(0);
+                      elevenLabs.play();
+                    } else {
+                      webSpeech.stop();
+                      setTimeout(() => {
+                        webSpeech.speak({
+                          text: current.text,
+                          language: current.language || profile?.language || 'English',
+                          rate: speed * 0.92,
+                          volume: 1,
+                          preferredVoiceName: profile?.preferredVoiceName || null,
+                        });
+                      }, 100);
+                    }
+                    setIsPlaying(true);
                   }}
                   aria-label="Restart story"
                   className="flex flex-col items-center gap-1 rounded-2xl bg-white/5 py-3 ring-1 ring-white/10 transition active:scale-95"
@@ -412,9 +473,20 @@ export default function Player() {
               </div>
             </div>
 
-            {!supported && (
-              <p className="mt-3 text-center text-[10px] text-warning">
-                Your browser doesn't support Web Speech — text only.
+            {elevenLabs.loading && (
+              <div className="mt-3 flex items-center justify-center gap-2 text-[10px] text-gold">
+                <span className="inline-block h-2 w-2 animate-pulse rounded-full bg-gold" />
+                Generating voice… this may take a moment
+              </div>
+            )}
+            {elevenLabs.error && !usingTTS && (
+              <p className="mt-3 text-center text-[10px] text-ink-dim">
+                Using browser voice (AI voice unavailable)
+              </p>
+            )}
+            {usingTTS && (
+              <p className="mt-3 text-center text-[10px] text-gold/60">
+                AI narrator voice
               </p>
             )}
           </motion.div>
