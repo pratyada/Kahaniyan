@@ -6,6 +6,7 @@ import ValuePill from '../components/ValuePill.jsx';
 import UpgradeModal from '../components/UpgradeModal.jsx';
 import VersionFooter from '../components/VersionFooter.jsx';
 import WhisperBox from '../components/WhisperBox.jsx';
+import StoryLoading from '../components/StoryLoading.jsx';
 import { useFamilyProfile } from '../hooks/useFamilyProfile.js';
 import { useStoryGenerator } from '../hooks/useStoryGenerator.js';
 import { usePlayer } from '../hooks/usePlayer.jsx';
@@ -166,6 +167,10 @@ export default function Home() {
   const ctaDisabled =
     loading ||
     (mode === 'cast' && selectedCharIds.length === 0);
+
+  if (loading) {
+    return <StoryLoading />;
+  }
 
   return (
     <PageTransition className="page-scroll px-5 pt-12 safe-top">

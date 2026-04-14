@@ -31,6 +31,7 @@ import { useSpeech } from '../hooks/useSpeech.js';
 import { useElevenLabs } from '../hooks/useElevenLabs.js';
 import { useWhiteNoise, NOISE_TYPES } from '../hooks/useWhiteNoise.jsx';
 import { valueMeta } from '../utils/constants.js';
+import StoryLoading from '../components/StoryLoading.jsx';
 
 const SPEEDS = [0.7, 1, 1.3];
 const SLEEP_OPTIONS = [0, 5, 10, 15, 30, 45];
@@ -311,6 +312,9 @@ function PlayerInner() {
 
   return (
     <div className="absolute inset-0 z-40 overflow-hidden bg-bg-base">
+      {/* Full-screen loading while TTS generates */}
+      {elevenLabs.loading && !done && <StoryLoading />}
+
       <div className="aurora" />
       <div className="starfield" />
 
