@@ -110,19 +110,23 @@ export default function Home() {
   }, [traditionTheme, profile?.beliefs, profile?.onlyMyTradition, profile?.showCrossCulture]);
 
   const handleStart = async () => {
+    setStoryError(null);
     if (!profile) {
-      alert('Profile not loaded. Please try again.');
+      setStoryError('Profile not loaded. Please try again.');
       return;
     }
-    if (!canGenerate(tier, isAdmin)) {
-      setUpgradeReason(`Free plan allows 3 stories per week. You've used ${used}.`);
-      setUpgradeOpen(true);
-      return;
-    }
-    if (duration > maxDuration) {
-      setUpgradeReason(`${duration} min stories require a paid plan.`);
-      setUpgradeOpen(true);
-      return;
+    // Admins bypass all client-side limits
+    if (!isAdmin) {
+      if (!canGenerate(tier)) {
+        setUpgradeReason(`Free plan allows 3 stories per week. You've used ${used}.`);
+        setUpgradeOpen(true);
+        return;
+      }
+      if (duration > maxDuration) {
+        setUpgradeReason(`${duration} min stories require a paid plan.`);
+        setUpgradeOpen(true);
+        return;
+      }
     }
     const selectedCharacters = characters.filter((c) => selectedCharIds.includes(c.id) || c.relation === 'self');
     try {
