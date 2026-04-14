@@ -1,19 +1,87 @@
-// ElevenLabs Text-to-Speech with smart voice routing. v2
-// Picks the right accent/voice based on the family's country + beliefs.
+// OpenAI Text-to-Speech with smart voice routing by country + belief.
+// 6 voices: alloy, echo, fable, nova, onyx, shimmer
+// ~12x cheaper than ElevenLabs. No voice cloning (added later).
 
-import { routeVoice } from './voiceRouter.js';
+const OPENAI_KEY = process.env.OPENAI_API_KEY;
 
-const ELEVENLABS_KEY = process.env.ELEVENLABS_API_KEY;
-// Debug: log key length to verify it's loaded (never log the actual key)
-console.log('[TTS] API key loaded:', ELEVENLABS_KEY ? `${ELEVENLABS_KEY.length} chars, starts with ${ELEVENLABS_KEY.slice(0, 5)}` : 'MISSING');
+// Voice mapping by region + narrator role
+// OpenAI voices: alloy (neutral), echo (male), fable (british),
+// nova (warm female), onyx (deep male), shimmer (soft female)
+const VOICES = {
+  indian: {
+    narrator: 'nova',       // warm female — best for storytelling
+    mummy: 'nova',
+    daddy: 'onyx',          // deep, comforting male
+    grandfather: 'echo',    // mature male
+    grandmother: 'shimmer', // soft, gentle female
+  },
+  british: {
+    narrator: 'fable',      // british-accented
+    mummy: 'shimmer',
+    daddy: 'fable',
+    grandfather: 'echo',
+    grandmother: 'shimmer',
+  },
+  western: {
+    narrator: 'nova',
+    mummy: 'nova',
+    daddy: 'onyx',
+    grandfather: 'echo',
+    grandmother: 'shimmer',
+  },
+  arabic: {
+    narrator: 'onyx',
+    mummy: 'nova',
+    daddy: 'onyx',
+    grandfather: 'echo',
+    grandmother: 'shimmer',
+  },
+  australian: {
+    narrator: 'fable',
+    mummy: 'shimmer',
+    daddy: 'fable',
+    grandfather: 'echo',
+    grandmother: 'shimmer',
+  },
+};
+
+const COUNTRY_TO_REGION = {
+  IN: 'indian', GB: 'british', US: 'western', CA: 'western',
+  AU: 'australian', AE: 'arabic', SG: 'indian', OTHER: 'western',
+};
+
+const BELIEF_OVERRIDE = {
+  hindu: 'indian', sikh: 'indian', jain: 'indian', buddhist: 'indian',
+};
+
+const NARRATOR_TO_ROLE = {
+  'AI Narrator': 'narrator', 'Mummy': 'mummy', 'Daddy': 'daddy',
+  'Dada ji': 'grandfather', 'Nani ma': 'grandmother',
+};
+
+function pickVoice(narrator, country, beliefs) {
+  let region = 'western';
+  if (beliefs?.length > 0) {
+    for (const b of beliefs) {
+      if (BELIEF_OVERRIDE[b]) { region = BELIEF_OVERRIDE[b]; break; }
+    }
+    if (!BELIEF_OVERRIDE[beliefs[0]]) {
+      region = COUNTRY_TO_REGION[country] || 'western';
+    }
+  } else {
+    region = COUNTRY_TO_REGION[country] || 'western';
+  }
+  const role = NARRATOR_TO_ROLE[narrator] || 'narrator';
+  return (VOICES[region] || VOICES.western)[role] || 'nova';
+}
 
 export default async function handler(req, res) {
   if (req.method !== 'POST') {
     return res.status(405).json({ error: 'Method not allowed' });
   }
 
-  if (!ELEVENLABS_KEY) {
-    return res.status(503).json({ error: 'ElevenLabs not configured' });
+  if (!OPENAI_KEY) {
+    return res.status(503).json({ error: 'OpenAI TTS not configured' });
   }
 
   const {
@@ -22,67 +90,50 @@ export default async function handler(req, res) {
     language = 'English',
     country = 'OTHER',
     beliefs = [],
-    customVoiceId,
-    stability = 0.6,
-    similarityBoost = 0.8,
-    style = 0.3,
+    speed = 1.0,
   } = req.body || {};
 
   if (!text || text.length < 10) {
     return res.status(400).json({ error: 'Text too short' });
   }
 
-  // Cap text length
-  const trimmedText = text.slice(0, 30000);
+  // Cap text — OpenAI TTS max is 4096 chars per request.
+  // For longer stories, split into chunks.
+  const maxChars = 4096;
+  const trimmedText = text.slice(0, maxChars);
 
-  // Smart voice routing
-  const { voiceId, name: voiceName, model } = routeVoice({
-    narrator,
-    country,
-    beliefs,
-    language,
-    customVoiceId,
-  });
+  const voice = pickVoice(narrator, country, beliefs);
 
   try {
-    const response = await fetch(
-      `https://api.elevenlabs.io/v1/text-to-speech/${voiceId}/stream`,
-      {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'xi-api-key': ELEVENLABS_KEY,
-          'Accept': 'audio/mpeg',
-        },
-        body: JSON.stringify({
-          text: trimmedText,
-          model_id: model,
-          voice_settings: {
-            stability,
-            similarity_boost: similarityBoost,
-            style,
-            use_speaker_boost: true,
-          },
-        }),
-      }
-    );
+    const response = await fetch('https://api.openai.com/v1/audio/speech', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${OPENAI_KEY}`,
+      },
+      body: JSON.stringify({
+        model: 'tts-1',      // tts-1 for speed, tts-1-hd for quality
+        input: trimmedText,
+        voice,
+        speed: Math.max(0.25, Math.min(4.0, speed)),
+        response_format: 'mp3',
+      }),
+    });
 
     if (!response.ok) {
       const err = await response.text();
-      console.error('ElevenLabs error:', response.status, err);
+      console.error('OpenAI TTS error:', response.status, err);
       return res.status(response.status).json({
         error: response.status === 401 ? 'Invalid API key'
-             : response.status === 402 ? 'ElevenLabs quota exceeded. Upgrade your ElevenLabs plan or wait for reset.'
              : response.status === 429 ? 'Rate limit — try again in a moment.'
+             : response.status === 402 ? 'OpenAI billing issue — add payment method.'
              : `TTS failed (${response.status})`,
-        code: response.status,
       });
     }
 
-    // Stream audio back
     res.setHeader('Content-Type', 'audio/mpeg');
     res.setHeader('Cache-Control', 'public, max-age=86400');
-    res.setHeader('X-Voice-Used', voiceName);
+    res.setHeader('X-Voice-Used', voice);
 
     const reader = response.body.getReader();
     while (true) {
