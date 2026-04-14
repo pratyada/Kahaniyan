@@ -9,12 +9,15 @@
 // Available voices mapped by accent region
 const VOICES = {
   // Indian / South Asian
+  // Note: Muskaan (professional voice) requires paid ElevenLabs plan.
+  // Using warm premade voices that work on free tier, with multilingual
+  // model for Hindi/Tamil which adds natural Indian accent.
   indian: {
-    narrator:   { id: 'xoV6iGVuOGYHLWjXhVC7', name: 'Muskaan', accent: 'indian', gender: 'female' },
-    mummy:      { id: 'xoV6iGVuOGYHLWjXhVC7', name: 'Muskaan', accent: 'indian', gender: 'female' },
-    daddy:      { id: 'onwK4e9ZLuTAKqWW03F9', name: 'Daniel', accent: 'british', gender: 'male' },   // warm British as closest warm male
-    grandfather:{ id: 'pqHfZKP75CvOlQylNhV4', name: 'Bill', accent: 'american', gender: 'male' },    // wise old male
-    grandmother:{ id: 'xoV6iGVuOGYHLWjXhVC7', name: 'Muskaan', accent: 'indian', gender: 'female' },
+    narrator:   { id: 'pFZP5JQG7iQjIQuC4Bku', name: 'Lily', accent: 'british', gender: 'female' },   // warm, velvety — great for Indian stories with multilingual model
+    mummy:      { id: 'cgSgspJ2msm6clMCkdW9', name: 'Jessica', accent: 'american', gender: 'female' },
+    daddy:      { id: 'onwK4e9ZLuTAKqWW03F9', name: 'Daniel', accent: 'british', gender: 'male' },
+    grandfather:{ id: 'pqHfZKP75CvOlQylNhV4', name: 'Bill', accent: 'american', gender: 'male' },
+    grandmother:{ id: 'pFZP5JQG7iQjIQuC4Bku', name: 'Lily', accent: 'british', gender: 'female' },
   },
 
   // British
@@ -36,11 +39,13 @@ const VOICES = {
   },
 
   // Arabic / Middle Eastern
+  // Note: Matthew (professional voice) requires paid ElevenLabs plan.
+  // Using premade voices with multilingual model for Arabic accent.
   arabic: {
-    narrator:   { id: 'xYWUvKNK6zWCgsdAK7Wi', name: 'Matthew', accent: 'arabic', gender: 'male' },
-    mummy:      { id: 'EXAVITQu4vr4xnSDxMaL', name: 'Sarah', accent: 'american', gender: 'female' },  // warm female fallback
-    daddy:      { id: 'xYWUvKNK6zWCgsdAK7Wi', name: 'Matthew', accent: 'arabic', gender: 'male' },
-    grandfather:{ id: 'xYWUvKNK6zWCgsdAK7Wi', name: 'Matthew', accent: 'arabic', gender: 'male' },
+    narrator:   { id: 'JBFqnCBsd6RMkjVDRZzb', name: 'George', accent: 'british', gender: 'male' },
+    mummy:      { id: 'EXAVITQu4vr4xnSDxMaL', name: 'Sarah', accent: 'american', gender: 'female' },
+    daddy:      { id: 'JBFqnCBsd6RMkjVDRZzb', name: 'George', accent: 'british', gender: 'male' },
+    grandfather:{ id: 'pqHfZKP75CvOlQylNhV4', name: 'Bill', accent: 'american', gender: 'male' },
     grandmother:{ id: 'EXAVITQu4vr4xnSDxMaL', name: 'Sarah', accent: 'american', gender: 'female' },
   },
 
@@ -126,14 +131,10 @@ export function routeVoice({ narrator, country, beliefs, language, customVoiceId
     region = COUNTRY_TO_REGION[country] || 'western';
   }
 
-  // 3. Special case: Arabic language always uses Arabic voice
-  if (language === 'Arabic') {
-    region = 'arabic';
-  }
-  // Hindi/Tamil → Indian voice
-  if (language === 'Hindi' || language === 'Tamil') {
-    region = 'indian';
-  }
+  // 3. Language hint — use regional voice + multilingual model
+  if (language === 'Arabic') region = 'arabic';
+  if (language === 'Hindi' || language === 'Tamil') region = 'indian';
+  if (language === 'Spanish') region = 'western';
 
   // 4. Pick voice by role
   const role = NARRATOR_TO_ROLE[narrator] || 'narrator';
