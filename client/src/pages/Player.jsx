@@ -314,9 +314,6 @@ function PlayerInner() {
 
   return (
     <div className="absolute inset-0 z-40 overflow-hidden bg-bg-base">
-      {/* Full-screen loading while TTS generates */}
-      {elevenLabs.loading && !done && <StoryLoading />}
-
       <div className="aurora" />
       <div className="starfield" />
 
@@ -540,19 +537,18 @@ function PlayerInner() {
             </div>
 
             {elevenLabs.loading && (
-              <div className="mt-3 flex items-center justify-center gap-2 text-[10px] text-gold">
-                <span className="inline-block h-2 w-2 animate-pulse rounded-full bg-gold" />
-                Generating voice… this may take a moment
-              </div>
-            )}
-            {elevenLabs.error && !usingTTS && (
-              <p className="mt-3 text-center text-[10px] text-ink-dim">
-                Using browser voice (AI voice unavailable)
+              <p className="mt-3 text-center text-[10px] text-gold">
+                ● Preparing AI voice…
               </p>
             )}
-            {usingTTS && (
+            {!elevenLabs.loading && usingTTS && (
               <p className="mt-3 text-center text-[10px] text-gold/60">
-                AI narrator voice
+                AI narrator
+              </p>
+            )}
+            {!elevenLabs.loading && !usingTTS && elevenLabs.error && (
+              <p className="mt-3 text-center text-[10px] text-ink-dim">
+                Browser voice
               </p>
             )}
           </motion.div>
