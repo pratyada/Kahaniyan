@@ -2,7 +2,8 @@ import { useState, useCallback } from 'react';
 import { buildStoryRequest } from '../utils/promptBuilder.js';
 import { getRecentPlotTypes, pushPlotType, saveToLibrary } from '../utils/storyCache.js';
 import { recordStoryGenerated } from '../utils/tierGate.js';
-import { auth } from '../lib/firebase.js';
+import { auth, db } from '../lib/firebase.js';
+import { doc, setDoc } from 'firebase/firestore';
 
 const API_BASE = import.meta.env.VITE_API_BASE_URL || '';
 
@@ -66,7 +67,22 @@ export function useStoryGenerator() {
       try {
         pushPlotType(profile?.childName || 'default', story.plotType);
         saveToLibrary(story);
-        recordStoryGenerated(story.estimatedMinutes || 0);
+        const usage = recordStoryGenerated(story.estimatedMinutes || 0);
+
+        // Sync usage to Firestore so admin dashboard shows it
+        if (db && auth?.currentUser) {
+          setDoc(
+            doc(db, 'users', auth.currentUser.uid),
+            {
+              usage: {
+                totalStories: usage.totalStories || 0,
+                totalMinutes: usage.totalMinutes || 0,
+                lastStoryAt: new Date().toISOString(),
+              },
+            },
+            { merge: true }
+          ).catch(() => {}); // fire and forget
+        }
       } catch (cacheErr) {
         console.warn('[Qissaa:gen] Cache/save error (non-fatal):', cacheErr);
       }
