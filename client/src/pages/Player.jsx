@@ -94,58 +94,49 @@ function PlayerInner() {
       noise.setVolume(0.25);
     }
 
-    const fallbackToWebSpeech = () => {
-      setUsingTTS(false);
-      setTtsReady(false);
-      webSpeech.speak({
-        text: current.text,
-        language: current.language || profile?.language || 'English',
-        rate: speed * 0.92,
-        volume: 1,
-        preferredVoiceName: profile?.preferredVoiceName || null,
-      });
-      setIsPlaying(true);
-    };
+    // Start with Web Speech immediately (always works, preserves user gesture)
+    const lang = current.language || profile?.language || 'English';
+    webSpeech.speak({
+      text: current.text,
+      language: lang,
+      rate: speed * 0.92,
+      volume: 1,
+      preferredVoiceName: profile?.preferredVoiceName || null,
+    });
+    setUsingTTS(false);
+    setIsPlaying(true);
 
-    const startPlayback = async () => {
-      const narratorName = current.voice || 'AI Narrator';
-      const chars = profile?.characters || [];
-      const matchedChar = chars.find((c) => c.name === narratorName || c.relation === narratorName.toLowerCase());
-      const customVoiceId = matchedChar?.elevenLabsVoiceId || null;
+    // Try upgrading to ElevenLabs in the background
+    const narratorName = current.voice || 'AI Narrator';
+    const chars = profile?.characters || [];
+    const matchedChar = chars.find((c) => c.name === narratorName || c.relation === narratorName.toLowerCase());
+    const customVoiceId = matchedChar?.elevenLabsVoiceId || null;
 
-      // Try ElevenLabs TTS with a 30-second timeout
+    const tryTTS = async () => {
       try {
-        const ttsPromise = elevenLabs.generate({
+        const audio = await elevenLabs.generate({
           text: current.text,
           narrator: narratorName,
-          language: current.language || profile?.language || 'English',
+          language: lang,
           customVoiceId,
           country: profile?.country || 'OTHER',
           beliefs: profile?.beliefs || [],
         });
-        const timeoutPromise = new Promise((_, reject) =>
-          setTimeout(() => reject(new Error('TTS timeout')), 30000)
-        );
-        const audio = await Promise.race([ttsPromise, timeoutPromise]);
+        // TTS ready — stop Web Speech and switch
+        webSpeech.stop();
         setUsingTTS(true);
         setTtsReady(true);
         audio.playbackRate = speed;
-        await audio.play().catch(() => {
-          // Autoplay blocked — user needs to tap play manually
-          console.warn('Autoplay blocked — waiting for user tap');
-        });
+        audio.play().catch(() => {});
         setIsPlaying(true);
-        return;
       } catch (e) {
-        console.warn('ElevenLabs TTS failed, using Web Speech:', e.message);
+        // ElevenLabs failed — Web Speech is already playing, do nothing
+        console.warn('ElevenLabs unavailable, continuing with browser voice:', e.message);
       }
-
-      // Fallback to Web Speech
-      fallbackToWebSpeech();
     };
+    tryTTS();
 
-    const t = setTimeout(startPlayback, 500);
-    return () => clearTimeout(t);
+    return () => {};
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [current]);
 
