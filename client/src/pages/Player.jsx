@@ -61,33 +61,9 @@ export default function Player() {
       noise.setVolume(0.25);
     }
 
-    const startPlayback = async () => {
-      // Find if the selected narrator has a cloned voice
-      const narratorName = current.voice || 'AI Narrator';
-      const chars = profile?.characters || [];
-      const matchedChar = chars.find((c) => c.name === narratorName || c.relation === narratorName.toLowerCase());
-      const customVoiceId = matchedChar?.elevenLabsVoiceId || null;
-
-      // Try ElevenLabs TTS first
-      try {
-        const audio = await elevenLabs.generate({
-          text: current.text,
-          narrator: narratorName,
-          language: current.language || profile?.language || 'English',
-          customVoiceId,
-        });
-        setUsingTTS(true);
-        setTtsReady(true);
-        audio.playbackRate = speed;
-        audio.play();
-        setIsPlaying(true);
-        return;
-      } catch (e) {
-        console.warn('ElevenLabs TTS failed, falling back to Web Speech:', e.message);
-      }
-
-      // Fallback to Web Speech
+    const fallbackToWebSpeech = () => {
       setUsingTTS(false);
+      setTtsReady(false);
       webSpeech.speak({
         text: current.text,
         language: current.language || profile?.language || 'English',
@@ -98,7 +74,42 @@ export default function Player() {
       setIsPlaying(true);
     };
 
-    const t = setTimeout(startPlayback, 800);
+    const startPlayback = async () => {
+      const narratorName = current.voice || 'AI Narrator';
+      const chars = profile?.characters || [];
+      const matchedChar = chars.find((c) => c.name === narratorName || c.relation === narratorName.toLowerCase());
+      const customVoiceId = matchedChar?.elevenLabsVoiceId || null;
+
+      // Try ElevenLabs TTS with a 30-second timeout
+      try {
+        const ttsPromise = elevenLabs.generate({
+          text: current.text,
+          narrator: narratorName,
+          language: current.language || profile?.language || 'English',
+          customVoiceId,
+        });
+        const timeoutPromise = new Promise((_, reject) =>
+          setTimeout(() => reject(new Error('TTS timeout')), 30000)
+        );
+        const audio = await Promise.race([ttsPromise, timeoutPromise]);
+        setUsingTTS(true);
+        setTtsReady(true);
+        audio.playbackRate = speed;
+        await audio.play().catch(() => {
+          // Autoplay blocked — user needs to tap play manually
+          console.warn('Autoplay blocked — waiting for user tap');
+        });
+        setIsPlaying(true);
+        return;
+      } catch (e) {
+        console.warn('ElevenLabs TTS failed, using Web Speech:', e.message);
+      }
+
+      // Fallback to Web Speech
+      fallbackToWebSpeech();
+    };
+
+    const t = setTimeout(startPlayback, 500);
     return () => clearTimeout(t);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [current]);
@@ -198,12 +209,11 @@ export default function Player() {
 
   // Mark "done" when progress reaches end
   useEffect(() => {
-    if (progress >= 0.999 && (voice.speaking || ttsReady)) {
+    if (progress > 0 && progress >= 0.999) {
       setDone(true);
       setIsPlaying(false);
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [progress]);
+  }, [progress, setIsPlaying]);
 
   if (!current) return null;
 

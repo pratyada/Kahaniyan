@@ -66,7 +66,7 @@ export default function Home() {
 
   const [mode, setMode] = useState('whisper');
   const [value, setValue] = useState(recommended[0]);
-  const [duration, setDuration] = useState(15);
+  const [duration, setDuration] = useState(2);
   const [whisper, setWhisper] = useState('');
   const [whisperOverridesValue, setWhisperOverridesValue] = useState(true);
   const [selectedCharIds, setSelectedCharIds] = useState([]);
