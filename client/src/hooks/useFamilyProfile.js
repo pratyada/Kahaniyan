@@ -91,6 +91,10 @@ export function FamilyProfileProvider({ children }) {
   const attachUser = useCallback(async (user) => {
     const newUid = user?.uid || null;
     setUid(newUid);
+    // Block rendering until Firestore data is loaded — prevents
+    // the race where Shell sees user but no profile and redirects
+    // to onboarding for a returning user.
+    setReady(false);
 
     if (newUid && db) {
       // Try loading from Firestore
