@@ -12,6 +12,7 @@ import { usePlayer } from '../hooks/usePlayer.jsx';
 import { VALUES, DURATIONS, RELATION_EMOJI, RELIGIONS, mapCharactersToFamilyMembers } from '../utils/constants.js';
 import { CULTURAL_LESSONS, TRADITIONS, THEMES } from '../data/culturalLessons.js';
 import { canGenerate, maxDurationFor, storiesThisWeek } from '../utils/tierGate.js';
+import { useAdmin } from '../hooks/useAdmin.jsx';
 
 const MODES = [
   {
@@ -58,6 +59,7 @@ export default function Home() {
   const { profile } = useFamilyProfile();
   const { generate, loading } = useStoryGenerator();
   const { load } = usePlayer();
+  const { isAdmin } = useAdmin();
 
   const tier = profile?.tier || 'free';
   const recommended = useMemo(() => recommendedValueFor(profile?.age || 6), [profile?.age]);
@@ -74,9 +76,9 @@ export default function Home() {
   const [upgradeOpen, setUpgradeOpen] = useState(false);
   const [upgradeReason, setUpgradeReason] = useState('');
 
-  const maxDuration = maxDurationFor(tier);
+  const maxDuration = maxDurationFor(tier, isAdmin);
   const used = storiesThisWeek();
-  const remaining = tier === 'free' ? Math.max(0, 3 - used) : Infinity;
+  const remaining = isAdmin ? Infinity : tier === 'free' ? Math.max(0, 3 - used) : Infinity;
 
   const toggleChar = (id) => {
     setSelectedCharIds((prev) => {
@@ -105,7 +107,7 @@ export default function Home() {
   }, [traditionTheme, profile?.beliefs, profile?.onlyMyTradition, profile?.showCrossCulture]);
 
   const handleStart = async () => {
-    if (!canGenerate(tier)) {
+    if (!canGenerate(tier, isAdmin)) {
       setUpgradeReason(`Free plan allows 3 stories per week. You've used ${used}.`);
       setUpgradeOpen(true);
       return;
@@ -179,7 +181,9 @@ export default function Home() {
         <div className="mt-4 inline-flex items-center gap-2 rounded-full bg-bg-surface px-3 py-1.5 ring-1 ring-white/5">
           <span className="h-1.5 w-1.5 rounded-full bg-gold" />
           <span className="text-[11px] font-bold uppercase tracking-wider text-ink-muted">
-            {tier === 'free'
+            {isAdmin
+              ? 'Admin · Unlimited'
+              : tier === 'free'
               ? `${remaining} ${remaining === 1 ? 'story' : 'stories'} left this week`
               : 'Unlimited stories'}
           </span>

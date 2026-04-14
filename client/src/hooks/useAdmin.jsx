@@ -219,7 +219,7 @@ export function AdminProvider({ children }) {
 
   return createElement(
     AdminCtx.Provider,
-    { value: { isAdmin, loading, allUsers, stats, adminEmails, loadUsers, addAdmin, removeAdmin, setUserStatus, setUserTier, team, addTeamMember, updateTeamMember, removeTeamMember } },
+    { value: { isAdmin, loading: loading, allUsers, stats, adminEmails, loadUsers, addAdmin, removeAdmin, setUserStatus, setUserTier, team, addTeamMember, updateTeamMember, removeTeamMember } },
     children
   );
 }

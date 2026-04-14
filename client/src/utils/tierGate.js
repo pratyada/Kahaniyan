@@ -77,12 +77,14 @@ export function storiesThisWeek() {
   return u.timestamps.filter((t) => t >= cutoff).length;
 }
 
-export function canGenerate(tierKey) {
+export function canGenerate(tierKey, isAdmin = false) {
+  if (isAdmin) return true;
   const tier = TIERS[tierKey] || TIERS.free;
   return storiesThisWeek() < tier.storiesPerWeek;
 }
 
-export function maxDurationFor(tierKey) {
+export function maxDurationFor(tierKey, isAdmin = false) {
+  if (isAdmin) return 60;
   return (TIERS[tierKey] || TIERS.free).maxDuration;
 }
 
