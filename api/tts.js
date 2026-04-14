@@ -1,4 +1,4 @@
-// ElevenLabs Text-to-Speech with smart voice routing.
+// ElevenLabs Text-to-Speech with smart voice routing. v2
 // Picks the right accent/voice based on the family's country + beliefs.
 
 import { routeVoice } from './voiceRouter.js';
