@@ -27,7 +27,7 @@ export function useElevenLabs() {
     setProgress(0);
   }, []);
 
-  const generate = useCallback(async ({ text, narrator, language, customVoiceId }) => {
+  const generate = useCallback(async ({ text, narrator, language, customVoiceId, country, beliefs }) => {
     cleanup();
     setLoading(true);
     setError(null);
@@ -36,7 +36,7 @@ export function useElevenLabs() {
       const res = await fetch(`${API_BASE}/api/tts`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ text, narrator, language, customVoiceId }),
+        body: JSON.stringify({ text, narrator, language, customVoiceId, country, beliefs }),
       });
 
       if (!res.ok) {
