@@ -53,11 +53,20 @@ export function useElevenLabs() {
 
       // Set up event listeners
       audio.onloadedmetadata = () => {
-        setDuration(audio.duration);
+        if (isFinite(audio.duration) && audio.duration > 0) {
+          setDuration(audio.duration);
+        }
+      };
+      audio.ondurationchange = () => {
+        if (isFinite(audio.duration) && audio.duration > 0) {
+          setDuration(audio.duration);
+        }
       };
       audio.ontimeupdate = () => {
-        if (audio.duration > 0) {
-          setProgress(audio.currentTime / audio.duration);
+        if (isFinite(audio.duration) && audio.duration > 0) {
+          const p = Math.min(1, Math.max(0, audio.currentTime / audio.duration));
+          // Never go backward (prevents jitter from buffering)
+          setProgress((prev) => Math.max(prev, p));
         }
       };
       audio.onplay = () => setPlaying(true);
