@@ -94,25 +94,14 @@ function PlayerInner() {
       noise.setVolume(0.25);
     }
 
-    // Start with Web Speech immediately (always works, preserves user gesture)
     const lang = current.language || profile?.language || 'English';
-    webSpeech.speak({
-      text: current.text,
-      language: lang,
-      rate: speed * 0.92,
-      volume: 1,
-      preferredVoiceName: profile?.preferredVoiceName || null,
-    });
-    setUsingTTS(false);
-    setIsPlaying(true);
-
-    // Try upgrading to ElevenLabs in the background
     const narratorName = current.voice || 'AI Narrator';
     const chars = profile?.characters || [];
     const matchedChar = chars.find((c) => c.name === narratorName || c.relation === narratorName.toLowerCase());
     const customVoiceId = matchedChar?.elevenLabsVoiceId || null;
 
-    const tryTTS = async () => {
+    // Only ElevenLabs. If it fails, fall back to Web Speech ONCE (no overlap).
+    const startPlayback = async () => {
       try {
         const audio = await elevenLabs.generate({
           text: current.text,
@@ -122,21 +111,28 @@ function PlayerInner() {
           country: profile?.country || 'OTHER',
           beliefs: profile?.beliefs || [],
         });
-        // TTS ready — stop Web Speech and switch
-        webSpeech.stop();
         setUsingTTS(true);
         setTtsReady(true);
         audio.playbackRate = speed;
         audio.play().catch(() => {});
         setIsPlaying(true);
       } catch (e) {
-        // ElevenLabs failed — Web Speech is already playing, do nothing
-        console.warn('ElevenLabs unavailable, continuing with browser voice:', e.message);
+        console.warn('ElevenLabs failed, using browser voice:', e.message);
+        // Only now start Web Speech — no overlap
+        setUsingTTS(false);
+        webSpeech.speak({
+          text: current.text,
+          language: lang,
+          rate: speed * 0.92,
+          volume: 1,
+          preferredVoiceName: profile?.preferredVoiceName || null,
+        });
+        setIsPlaying(true);
       }
     };
-    tryTTS();
 
-    return () => {};
+    const t = setTimeout(startPlayback, 300);
+    return () => clearTimeout(t);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [current]);
 
