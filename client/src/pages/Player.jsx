@@ -287,17 +287,11 @@ function PlayerInner() {
   const handleSpeedChange = (newSpeed) => {
     setSpeed(newSpeed);
     if (usingTTS) {
+      // ElevenLabs: changes speed in real-time, no restart
       elevenLabs.setRate(newSpeed);
     } else {
-      webSpeech.stop();
-      webSpeech.speak({
-        text: current.text,
-        language: current.language || profile?.language || 'English',
-        rate: newSpeed * 0.92,
-        volume: 1,
-        preferredVoiceName: profile?.preferredVoiceName || null,
-      });
-      setIsPlaying(true);
+      // Web Speech: can't change speed mid-utterance, just update for next play
+      // Don't restart — keep playing at current speed
     }
   };
 
