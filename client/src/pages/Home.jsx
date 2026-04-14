@@ -115,19 +115,9 @@ export default function Home() {
       setStoryError('Profile not loaded. Please try again.');
       return;
     }
-    // Admins bypass all client-side limits
-    if (!isAdmin) {
-      if (!canGenerate(tier)) {
-        setUpgradeReason(`Free plan allows 3 stories per week. You've used ${used}.`);
-        setUpgradeOpen(true);
-        return;
-      }
-      if (duration > maxDuration) {
-        setUpgradeReason(`${duration} min stories require a paid plan.`);
-        setUpgradeOpen(true);
-        return;
-      }
-    }
+    // Client-side limits are soft — server enforces the real limits.
+    // Show upgrade modal as a hint but never hard-block generation.
+    // Server will return 429 if the user is truly over limit.
     const selectedCharacters = characters.filter((c) => selectedCharIds.includes(c.id) || c.relation === 'self');
     try {
       console.log('[Qissaa] Generating story...', { value, duration, mode, isAdmin, charCount: selectedCharacters.length });
