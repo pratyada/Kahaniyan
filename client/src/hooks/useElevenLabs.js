@@ -13,6 +13,7 @@ export function useElevenLabs() {
   const [duration, setDuration] = useState(0);
   const audioRef = useRef(null);
   const urlRef = useRef(null);
+  const knownDurationRef = useRef(0);
 
   const cleanup = useCallback(() => {
     if (audioRef.current) {
@@ -52,21 +53,18 @@ export function useElevenLabs() {
       audioRef.current = audio;
 
       // Set up event listeners
-      audio.onloadedmetadata = () => {
+      const updateDuration = () => {
         if (isFinite(audio.duration) && audio.duration > 0) {
+          knownDurationRef.current = audio.duration;
           setDuration(audio.duration);
         }
       };
-      audio.ondurationchange = () => {
-        if (isFinite(audio.duration) && audio.duration > 0) {
-          setDuration(audio.duration);
-        }
-      };
+      audio.onloadedmetadata = updateDuration;
+      audio.ondurationchange = updateDuration;
       audio.ontimeupdate = () => {
-        if (isFinite(audio.duration) && audio.duration > 0) {
-          const p = Math.min(1, Math.max(0, audio.currentTime / audio.duration));
-          // Never go backward (prevents jitter from buffering)
-          setProgress((prev) => Math.max(prev, p));
+        const dur = knownDurationRef.current;
+        if (dur > 0) {
+          setProgress(Math.min(1, audio.currentTime / dur));
         }
       };
       audio.onplay = () => setPlaying(true);
