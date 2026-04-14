@@ -130,6 +130,7 @@ export default function Home() {
     }
     const selectedCharacters = characters.filter((c) => selectedCharIds.includes(c.id) || c.relation === 'self');
     try {
+      console.log('[Qissaa] Generating story...', { value, duration, mode, isAdmin, charCount: selectedCharacters.length });
       const story = await generate({
         profile,
         value,
@@ -140,10 +141,11 @@ export default function Home() {
         whisperOverridesValue: mode === 'whisper' ? whisperOverridesValue : false,
         selectedCharacters: mode === 'cast' ? selectedCharacters : undefined,
       });
+      console.log('[Qissaa] Story generated:', story.title);
       load(story);
       navigate('/player');
     } catch (e) {
-      console.error('Story generation failed:', e);
+      console.error('[Qissaa] Story generation FAILED:', e);
       setStoryError(e.message || 'Could not generate story. Please try again.');
     }
   };
