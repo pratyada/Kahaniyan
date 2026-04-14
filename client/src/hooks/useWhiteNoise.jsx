@@ -17,7 +17,7 @@ import { createContext, createElement, useCallback, useContext, useEffect, useRe
 export const NOISE_TYPES = [
   { key: 'rain', label: 'Soft Rain', icon: '🌧️', description: 'Steady rain on a tin roof' },
   { key: 'ocean', label: 'Ocean Waves', icon: '🌊', description: 'Slow waves on a quiet shore' },
-  { key: 'fan', label: 'Bedroom Fan', icon: '💨', description: 'Steady mechanical hum' },
+  { key: 'fan', label: 'Water Stream', icon: '💧', description: 'Gentle flowing water' },
   { key: 'drone', label: 'Sleep Drone', icon: '🌙', description: 'Deep ambient pad' },
 ];
 
@@ -130,15 +130,19 @@ export function WhiteNoiseProvider({ children }) {
       // Filter chain per type
       let lastNode = src;
       if (type === 'rain') {
+        // Gentle rain — lower frequencies, softer
         const lp = ctx.createBiquadFilter();
         lp.type = 'lowpass';
-        lp.frequency.value = 4500;
+        lp.frequency.value = 2500;
         const hp = ctx.createBiquadFilter();
         hp.type = 'highpass';
-        hp.frequency.value = 600;
+        hp.frequency.value = 300;
+        const softGain = ctx.createGain();
+        softGain.gain.value = 0.3; // much quieter
         src.connect(lp);
         lp.connect(hp);
-        lastNode = hp;
+        hp.connect(softGain);
+        lastNode = softGain;
       } else if (type === 'ocean') {
         const lp = ctx.createBiquadFilter();
         lp.type = 'lowpass';
@@ -158,16 +162,19 @@ export function WhiteNoiseProvider({ children }) {
         lfoRef.current = lfo;
         lastNode = waveGain;
       } else if (type === 'fan') {
-        const notch = ctx.createBiquadFilter();
-        notch.type = 'notch';
-        notch.frequency.value = 1500;
-        notch.Q.value = 0.5;
+        // Water stream — gentle low-mid flow, very soft
         const lp = ctx.createBiquadFilter();
         lp.type = 'lowpass';
-        lp.frequency.value = 3500;
-        src.connect(notch);
-        notch.connect(lp);
-        lastNode = lp;
+        lp.frequency.value = 1800;
+        const hp = ctx.createBiquadFilter();
+        hp.type = 'highpass';
+        hp.frequency.value = 200;
+        const softGain = ctx.createGain();
+        softGain.gain.value = 0.25;
+        src.connect(lp);
+        lp.connect(hp);
+        hp.connect(softGain);
+        lastNode = softGain;
       }
 
       lastNode.connect(gainRef.current);
