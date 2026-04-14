@@ -120,6 +120,8 @@ function PlayerInner() {
           narrator: narratorName,
           language: current.language || profile?.language || 'English',
           customVoiceId,
+          country: profile?.country || 'OTHER',
+          beliefs: profile?.beliefs || [],
         });
         const timeoutPromise = new Promise((_, reject) =>
           setTimeout(() => reject(new Error('TTS timeout')), 30000)
