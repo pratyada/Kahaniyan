@@ -721,6 +721,149 @@ The next day, the teacher came in and said, in front of the whole class, "Yester
 That night, lying in bed, {childName} felt something steady and quiet inside them. Bravery, they realized, is not always about big dragons. Sometimes it is about a small hand raised in a quiet classroom, defending something nobody else thought was worth defending. The truth, even when it is small. The truth, even when it is awkward. The truth, especially then.`,
   },
   {
+    id: 'tpl_bravery_first_stage',
+    title: 'The Night of the School Play',
+    value: 'bravery',
+    ageBand: '5-7',
+    plotType: 'stage-fright',
+    cultures: ['universal'],
+    body: `{childName} had one line in the school play. Just one. But that one line felt heavier than a hundred.
+
+The curtain was red and thick and tall. Behind it, {childName} could hear the audience — parents shuffling, babies babbling, a chair squeaking. {sibling} was out there somewhere. {grandmother} too. Even {pet} was probably waiting at home, wondering why everyone had left.
+
+"You will be fine," said the teacher. But {childName}'s hands were cold and the words in their head had gone blurry.
+
+The curtain opened. The lights were so bright that {childName} could not see any faces. Which was strange, because it helped. If you cannot see the people, they become just a warm sound, like the sea.
+
+The other children said their lines. One by one, like dominoes falling. And then it was time.
+
+{childName} opened their mouth. For one terrible second, nothing came out. The silence was the loudest thing in the room.
+
+And then the words arrived. Not perfect. Not loud. But real. {childName}'s own voice, saying the line, filling the hall, reaching all the way to the back row where {grandfather} was sitting with his hands clasped together.
+
+The audience clapped. Not because the line was brilliant, but because a small person had stood under a big light and spoken when everything inside them wanted to hide.
+
+That night, {grandmother} said, "Do you know what bravery is? It is not the roar. It is the whisper that says 'I will try,' when every part of you wants to be quiet."
+
+And {childName} fell asleep smiling, because they had whispered, and the whole hall had heard.`,
+  },
+  {
+    id: 'tpl_bravery_lost_market',
+    title: 'The Boy Who Found His Way',
+    value: 'bravery',
+    ageBand: '2-4',
+    plotType: 'getting-lost',
+    cultures: ['indian'],
+    body: `One busy morning, {childName} went to the market with {grandmother}. The market was full of colours and sounds — mangoes stacked like little suns, bangles clinking, a man selling balloons that floated up like wishes.
+
+{childName} stopped to look at a parrot in a cage. The parrot was green and had clever eyes. "Hello!" said the parrot.
+
+"Hello!" said {childName}.
+
+When {childName} turned around, {grandmother} was gone. The crowd had swallowed her up like a river swallows a leaf.
+
+{childName}'s tummy went tight. The market suddenly felt very big and very loud. A tear came, but {childName} blinked it away.
+
+"What would {grandfather} do?" thought {childName}. {grandfather} always said, "Stand still when you are lost. The people who love you are already looking."
+
+So {childName} stood very still. Right next to the parrot. The parrot looked at {childName} and said, "Hello!" again, which was not helpful, but it was kind.
+
+One minute passed. Then two. Then {grandmother}'s voice came through the noise like a warm hand — "{childName}! There you are!"
+
+She knelt down and held {childName} tight. "You did not run. You did not cry. You stood still and waited. That is the bravest thing a small person can do."
+
+That night, {childName} told {pet} all about the parrot and the market and standing still. {pet} listened carefully, the way pets do.
+
+And as sleep came, {childName} understood that bravery is not always running forward. Sometimes bravery is standing very, very still.`,
+  },
+  {
+    id: 'tpl_bravery_deep_water',
+    title: 'The Deep End',
+    value: 'bravery',
+    ageBand: '8-10',
+    plotType: 'overcoming-fear',
+    cultures: ['universal'],
+    body: `All summer, {childName} had swum in the shallow end. The water came up to the waist. It was safe and warm and predictable. The deep end was on the other side of a rope with red and white floats, and {childName} had never crossed it.
+
+{sibling} could swim in the deep end. So could the other children. They jumped off the diving board and disappeared under the blue and came up laughing. {childName} watched from behind the rope.
+
+One afternoon, {grandfather} sat on the bench by the pool and said, "You know, I did not learn to swim until I was forty years old."
+
+{childName} stared. "Forty?"
+
+"Forty. I was afraid of water my whole life. And then one day, your {grandmother} said to me, 'The water is not trying to hurt you. It is trying to hold you. You just have to let it.'"
+
+{childName} looked at the deep end. The water was the same water. It did not care which side of the rope it was on.
+
+"Will you come with me?" {childName} asked.
+
+{grandfather} smiled. "I will stand right here. And if you need me, I will jump in fully clothed. I have done it before."
+
+{childName} walked to the rope. Touched it. Ducked under it. The water was suddenly deeper, but it was still water. It was still holding.
+
+One stroke. Two. Three. The bottom disappeared. {childName}'s heart was beating so fast it could probably be heard on land. But the water held. It held like {grandfather} said it would.
+
+{childName} reached the wall on the other side and grabbed it, breathing hard, grinning wide.
+
+{grandfather} was standing on the bench, fully clothed, ready to jump. He had not needed to. But he was ready. That, {childName} understood, was also a kind of bravery.
+
+That night, lying in bed, {childName} could still feel the water — the deep, kind, patient water that had been waiting on the other side of the rope all along.`,
+  },
+  {
+    id: 'tpl_bravery_new_school',
+    title: 'The First Lunch Alone',
+    value: 'bravery',
+    ageBand: '8-10',
+    plotType: 'new-beginning',
+    cultures: ['universal'],
+    body: `{childName} had moved to a new city, a new school, and a new life where nobody knew their name.
+
+The first morning was not so bad. The teacher introduced {childName} and everyone smiled politely, the way strangers do. But lunchtime — lunchtime was the hard part.
+
+The cafeteria was loud and full and everyone had someone to sit with. {childName} stood at the door with a tray, looking for a space that did not belong to anyone else.
+
+There was no space.
+
+So {childName} sat at the end of an empty table and opened the lunchbox that {grandmother} had packed that morning. Inside was a paratha, cut into triangles, with a tiny note that said: "You are braver than you think. Love, {grandmother}."
+
+{childName} ate the paratha slowly. The cafeteria noise washed around like a river around a stone. A stone does not need to move. It just needs to be there.
+
+The next day, {childName} sat at the same table. And the day after. By the third day, another new kid sat down — a quiet girl with braids who said, "Is this seat taken?"
+
+"No," said {childName}. And that was the beginning.
+
+By the end of the month, the empty table was not empty anymore. Three children sat there, then four, then five. And one day {childName} realized — the table had not been empty. It had been waiting.
+
+That night, {childName} told {pet} about the table and the girl with braids and the paratha triangles. And {childName} understood that the bravest thing you can do in a new place is sit down, stay still, and let the world find you.`,
+  },
+  {
+    id: 'tpl_bravery_dark_room',
+    title: 'The Room Without a Light',
+    value: 'bravery',
+    ageBand: '2-4',
+    plotType: 'fear-of-dark',
+    cultures: ['universal'],
+    body: `The light in {childName}'s room went out. Pop. Just like that. The bulb was tired, and it stopped shining.
+
+The room was dark. Very dark. The kind of dark where you cannot see your own hand.
+
+{childName} pulled the blanket up to the nose. Under the blanket it was warm, but outside the blanket it was dark, and dark felt very big.
+
+"Mummy!" called {childName}. But Mummy was downstairs, and the stairs were far, and the dark was here.
+
+Then {pet} jumped onto the bed. {pet} was warm and soft and not afraid of the dark at all. {pet} curled up next to {childName} and breathed slowly — in and out, in and out — like a tiny, furry clock.
+
+{childName} put one hand on {pet}. The fur was real. The warmth was real. The dark was still there, but it was not the only thing anymore.
+
+After a minute, {childName}'s eyes began to see. Not much. But a little. The window had a tiny bit of moonlight. The curtain had a shape. The chair in the corner was just a chair, not a monster.
+
+{grandfather} always said, "The dark does not add anything to a room. It only hides what is already there. And what is already there is safe."
+
+When Mummy came with a new bulb, {childName} was already half asleep, one hand on {pet}, breathing in time with the tiny furry clock.
+
+And {childName} learned that bravery in the dark is not about seeing. It is about trusting that everything is still exactly where you left it.`,
+  },
+  {
     id: 'tpl_imagination_sky_bridge',
     title: 'The Bridge of Clouds',
     value: 'bravery',
