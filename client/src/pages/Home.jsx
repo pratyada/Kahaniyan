@@ -77,6 +77,7 @@ export default function Home() {
   const [traditionTheme, setTraditionTheme] = useState('compassion-animals');
   const [upgradeOpen, setUpgradeOpen] = useState(false);
   const [upgradeReason, setUpgradeReason] = useState('');
+  const [storyError, setStoryError] = useState(null);
 
   const maxDuration = maxDurationFor(tier, isAdmin);
   const used = storiesThisWeek();
@@ -139,7 +140,7 @@ export default function Home() {
       navigate('/player');
     } catch (e) {
       console.error('Story generation failed:', e);
-      alert(e.message || 'Could not generate story. Please try again.');
+      setStoryError(e.message || 'Could not generate story. Please try again.');
     }
   };
 
@@ -174,7 +175,8 @@ export default function Home() {
     loading ||
     (mode === 'cast' && selectedCharIds.length === 0);
 
-  if (loading) {
+  // Only show loading for generated stories, not wisdom stories
+  if (loading && mode !== 'tradition') {
     return <StoryLoading />;
   }
 
@@ -446,6 +448,20 @@ export default function Home() {
             </p>
           )}
         </>
+      )}
+
+      {/* Error banner */}
+      {storyError && (
+        <div className="mt-4 rounded-2xl bg-negative/10 p-4 ring-1 ring-negative/20">
+          <div className="flex items-start gap-3">
+            <span className="text-xl">⚠️</span>
+            <div className="flex-1">
+              <div className="text-sm font-bold text-negative">Story failed</div>
+              <div className="mt-1 text-xs text-ink-muted">{storyError}</div>
+            </div>
+            <button onClick={() => setStoryError(null)} className="text-ink-dim">✕</button>
+          </div>
+        </div>
       )}
 
       <UpgradeModal

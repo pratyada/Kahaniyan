@@ -70,8 +70,10 @@ export default async function handler(req, res) {
       console.error('ElevenLabs error:', response.status, err);
       return res.status(response.status).json({
         error: response.status === 401 ? 'Invalid API key'
+             : response.status === 402 ? 'ElevenLabs quota exceeded. Upgrade your ElevenLabs plan or wait for reset.'
              : response.status === 429 ? 'Rate limit — try again in a moment.'
              : `TTS failed (${response.status})`,
+        code: response.status,
       });
     }
 
