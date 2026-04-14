@@ -4,6 +4,8 @@
 import { routeVoice } from './voiceRouter.js';
 
 const ELEVENLABS_KEY = process.env.ELEVENLABS_API_KEY;
+// Debug: log key length to verify it's loaded (never log the actual key)
+console.log('[TTS] API key loaded:', ELEVENLABS_KEY ? `${ELEVENLABS_KEY.length} chars, starts with ${ELEVENLABS_KEY.slice(0, 5)}` : 'MISSING');
 
 export default async function handler(req, res) {
   if (req.method !== 'POST') {
