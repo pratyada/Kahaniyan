@@ -128,6 +128,7 @@ export function FamilyProfileProvider({ children }) {
           }
 
           if (cloudProfiles.length > 0) {
+            console.log('[Qissaa:profile] Loaded from Firestore:', cloudProfiles.length, 'profiles, name:', cloudProfiles[cloudIdx]?.childName);
             setProfiles(cloudProfiles);
             setActiveIndex(cloudIdx);
             persistLS(cloudProfiles, cloudIdx);
@@ -192,6 +193,7 @@ export function FamilyProfileProvider({ children }) {
       if (uid && db && !savingRef.current) {
         savingRef.current = true;
         try {
+          console.log('[Qissaa:profile] Syncing to Firestore...');
           // Include auth metadata so admin can see emails + last activity
           const authMeta = firebaseAuth?.currentUser
             ? {
@@ -206,8 +208,9 @@ export function FamilyProfileProvider({ children }) {
             activeIndex: nextIdx,
             ...authMeta,
           });
+          console.log('[Qissaa:profile] Firestore sync done');
         } catch (e) {
-          console.warn('Firestore write failed', e);
+          console.error('[Qissaa:profile] Firestore write FAILED:', e.message);
         } finally {
           savingRef.current = false;
         }

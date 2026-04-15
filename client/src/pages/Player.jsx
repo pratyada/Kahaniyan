@@ -402,10 +402,11 @@ function PlayerInner() {
                 For {profile?.childName} · {current.estimatedMinutes} min · {current.voice}
               </p>
               {current.cast && current.cast.length > 0 && (
-                <p className="mt-2 inline-block rounded-full bg-gold/15 px-3 py-1 text-[10px] font-bold uppercase tracking-wider text-gold">
-                  Cast · {current.cast.join(' · ')}
+                <p className="mt-1 truncate text-[10px] text-gold">
+                  {current.cast.join(' · ')}
                 </p>
               )}
+              </div>
             </div>
 
             {/* Story text — scrolls in sync */}
