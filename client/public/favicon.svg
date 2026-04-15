@@ -11,11 +11,17 @@
     </radialGradient>
   </defs>
   <rect width="64" height="64" rx="14" fill="url(#bg)"/>
-  <circle cx="32" cy="30" r="16" fill="url(#moon)"/>
-  <circle cx="40" cy="24" r="14" fill="#0a0a0f"/>
+  <!-- Moon crescent -->
+  <circle cx="32" cy="26" r="16" fill="url(#moon)"/>
+  <circle cx="40" cy="20" r="14" fill="#0a0a0f"/>
+  <!-- Z's for sleep -->
+  <text x="42" y="22" font-family="Georgia, serif" font-size="10" font-weight="700" fill="#f0a500" opacity="0.7">z</text>
+  <text x="47" y="16" font-family="Georgia, serif" font-size="7" font-weight="700" fill="#f0a500" opacity="0.5">z</text>
+  <!-- Stars -->
   <circle cx="12" cy="14" r="0.9" fill="#f5f0e8"/>
   <circle cx="52" cy="12" r="0.7" fill="#f5f0e8"/>
   <circle cx="18" cy="50" r="0.7" fill="#f5f0e8"/>
   <circle cx="50" cy="52" r="0.9" fill="#f5f0e8"/>
-  <circle cx="8" cy="36" r="0.6" fill="#f5f0e8"/>
+  <!-- Sleeping child (tiny) -->
+  <ellipse cx="32" cy="50" rx="14" ry="5" fill="#1c1c2a" stroke="#f0a500" stroke-width="0.8" opacity="0.5"/>
 </svg>
