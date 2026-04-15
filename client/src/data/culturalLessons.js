@@ -167,6 +167,187 @@ The Guru was silent for a long moment. Then he smiled — the kind of smile that
 
 That night, {childName}, remember Bhai Kanhaiya. The bravest, kindest thing you can do in this world is to refuse to see other people as enemies.`,
   },
+  // ─── HINDU — expanded collection ─────────────────────────
+  {
+    id: 'hanuman_mountain',
+    tradition: 'hindu',
+    theme: 'courage',
+    title: 'Hanuman and the Mountain of Herbs',
+    durationMinutes: 10,
+    source: 'Hindu tradition · Ramayana',
+    body: `When Lord Ram's brother Lakshman was wounded in the great battle, the healers said only one herb could save him — Sanjeevani, a glowing plant that grew on a mountain far, far away in the Himalayas.
+
+There was no time. The sun was setting, and by sunrise Lakshman would be gone.
+
+Hanuman said, "I will go."
+
+He leapt into the sky — one leap so powerful that the wind parted and the clouds scattered. He flew over rivers and forests and cities, his heart beating with one single thought: save Lakshman.
+
+When he reached the mountain, the herbs all looked the same. He could not tell which one was Sanjeevani. A lesser person would have panicked. But Hanuman did not pause.
+
+He picked up the entire mountain. The whole thing. He lifted it above his head and flew back through the night sky, carrying a mountain on his palm like a lamp.
+
+By the time he landed, the first light of dawn was touching the horizon. The healers found the herb. Lakshman opened his eyes.
+
+That night, {childName}, remember Hanuman. When someone you love needs help, you do not stop to worry about whether the task is too big. You just go. You carry the whole mountain if you have to. That is what love looks like when it has no fear.`,
+  },
+  {
+    id: 'ram_golden_deer',
+    tradition: 'hindu',
+    theme: 'courage',
+    title: 'Ram and the Golden Deer',
+    durationMinutes: 10,
+    source: 'Hindu tradition · Ramayana',
+    body: `In the forest of Panchvati, where Ram, Sita, and Lakshman lived in a simple hut, a golden deer appeared one morning. It was beautiful — its coat shimmered like sunlight on water, and its eyes sparkled like jewels.
+
+Sita saw it and said, "How beautiful! Can you catch it for me?"
+
+Ram looked at the deer carefully. Something felt wrong. Real deer do not shine like gold. But Sita's eyes were so hopeful.
+
+Ram picked up his bow and followed the deer into the forest. The deer ran — fast, then slow, then fast again, always just out of reach. It was leading him away from the hut, deeper and deeper into the trees.
+
+When Ram finally caught up, the deer was not a deer at all. It was a trick — a demon in disguise, sent to separate Ram from Sita.
+
+Ram's heart filled with worry. He turned and ran back, faster than he had ever run, back through the trees, back through the sunlight, back to the place where his family was.
+
+That night, {childName}, remember two things from this story. First: not everything that glitters is real. Some beautiful things are traps. Second: when Ram realized the danger, he did not give up. He ran back. He fought. He never stopped until his family was safe.
+
+Courage is not the absence of tricks. It is what you do when the trick is revealed.`,
+  },
+  {
+    id: 'akbar_birbal_well',
+    tradition: 'hindu',
+    theme: 'wisdom',
+    title: 'Akbar, Birbal, and the Well That Swallowed Water',
+    durationMinutes: 10,
+    source: 'Indian folk tradition · Akbar-Birbal tales',
+    body: `Emperor Akbar loved to test his clever minister Birbal with impossible problems.
+
+One day, a farmer came to the court crying. "Your Majesty, my neighbour sold me a well. But now he says he only sold the well, not the water inside it! He will not let me draw a single bucket."
+
+The neighbour smiled smugly. "The deal was for the well, not the water. The water is mine."
+
+Akbar looked at Birbal. Birbal smiled — the kind of smile that meant he already had the answer.
+
+"Sir," Birbal said to the neighbour, "if the water inside the well belongs to you and not to the farmer, then you must pay rent to the farmer."
+
+"Rent? For what?" the neighbour asked.
+
+"For keeping your water in his well. The well belongs to him. You are storing your water in his property without permission. You must either pay rent for every day your water has sat in his well, or remove your water immediately."
+
+The neighbour's face went pale. He could not remove water from a well. And he certainly could not afford years of rent.
+
+"Fine!" he said. "The water belongs to the farmer."
+
+Akbar laughed so hard the whole court shook.
+
+That night, {childName}, remember Birbal. When someone tries to be too clever with their words, a wiser person can use the same words right back. Wisdom is not about being the loudest. It is about thinking one step further than everyone else.`,
+  },
+  {
+    id: 'panchatantra_monkey_crocodile',
+    tradition: 'hindu',
+    theme: 'wisdom',
+    title: 'The Monkey and the Crocodile',
+    durationMinutes: 10,
+    source: 'Indian tradition · Panchatantra',
+    body: `Once upon a time, a monkey lived in a tall jamun tree on the bank of a river. Every day, he ate the sweet purple fruits and threw some down into the river, where a crocodile waited below.
+
+The crocodile loved the fruits, and over time, the monkey and the crocodile became friends. They talked every afternoon while the monkey ate jamuns and the crocodile floated in the cool water.
+
+One day, the crocodile's wife tasted the jamuns and said, "If the fruits are this sweet, imagine how sweet the monkey's heart must be. Bring me his heart."
+
+The crocodile was torn. The monkey was his friend. But his wife would not stop asking.
+
+So the crocodile swam to the tree and said, "Friend, my wife has invited you for dinner. Climb on my back and I will carry you across the river."
+
+The monkey, trusting his friend, climbed on. But halfway across the river, the crocodile sank lower and said, "I am sorry, friend. My wife wants your heart."
+
+The monkey's own heart nearly stopped. But he did not panic. He thought quickly.
+
+"Oh!" said the monkey. "Why didn't you say so earlier? I left my heart hanging in the jamun tree. Take me back and I will get it for you."
+
+The foolish crocodile swam back. The moment they reached the tree, the monkey leapt onto a high branch and never came down again.
+
+"A heart that can be taken out and hung on a tree?" laughed the monkey. "You believed that? A true friend would never ask for your heart, my friend. Goodbye."
+
+That night, {childName}, remember the monkey. Quick thinking can save you from trouble. But the deeper lesson is this: be careful who you trust with your heart. And never become the crocodile — never betray a friend, no matter who asks you to.`,
+  },
+  {
+    id: 'panchatantra_crow_pitcher',
+    tradition: 'hindu',
+    theme: 'wisdom',
+    title: 'The Thirsty Crow',
+    durationMinutes: 8,
+    source: 'Indian tradition · Panchatantra / Aesop',
+    body: `On the hottest day of summer, a crow flew over a dusty village looking for water. His throat was dry. His wings were tired. Every pond was empty. Every puddle had dried up.
+
+Then he saw it — a tall clay pitcher sitting in a courtyard. He flew down and peered inside. There was water at the bottom! But the pitcher was too narrow for his beak, and the water was too low for him to reach.
+
+A weaker crow would have given up and flown away.
+
+But this crow sat on the rim and thought. He looked around. He saw small pebbles on the ground.
+
+One by one, he picked up pebbles in his beak and dropped them into the pitcher. Plink. Plink. Plink. Each pebble made the water rise a tiny bit.
+
+It took a long time. The sun was hot. His wings ached. But he did not stop.
+
+Plink. Plink. Plink.
+
+Slowly, slowly, the water rose. Higher. Higher. Until — at last — it reached the rim.
+
+The crow drank. And it was the sweetest water he had ever tasted. Not because the water was special, but because he had earned every drop.
+
+That night, {childName}, when something feels too hard or too far away, remember the crow and his pebbles. You do not need to solve the whole problem at once. You just need one small pebble at a time. And if you keep going, the water will rise.`,
+  },
+  {
+    id: 'krishna_govardhan',
+    tradition: 'hindu',
+    theme: 'courage',
+    title: 'Krishna and the Mountain Shield',
+    durationMinutes: 10,
+    source: 'Hindu tradition · Bhagavata Purana',
+    body: `Every year, the villagers of Vrindavan prayed to Indra, the god of rain, and offered him food and flowers. But young Krishna asked a question that nobody had thought to ask.
+
+"Why do we thank Indra for the rain," said Krishna, "when it is the mountain Govardhan that catches the clouds? The mountain gives us grass for our cows, rivers for our fields, and shade for our homes. Should we not thank the mountain instead?"
+
+The villagers listened. It made sense. So that year, they offered their food and flowers to Govardhan mountain instead of Indra.
+
+Indra was furious. He sent the darkest clouds he could find. Rain poured down in sheets. Thunder shook the ground. Lightning cracked the sky. The river rose. The village began to flood.
+
+The villagers ran to Krishna in fear. "What have we done? Indra will destroy us!"
+
+Krishna walked calmly to the base of Govardhan mountain. He bent down, placed one finger under the edge of the mountain, and lifted it. The entire mountain. On one finger.
+
+"Come," he said to the villagers. "Stand under the mountain. Bring your cows, your children, your grandparents. All of you."
+
+For seven days and seven nights, the rain fell. And for seven days and seven nights, Krishna held the mountain above the village, steady as a parent's hand over a sleeping child.
+
+On the eighth morning, Indra gave up. The rain stopped. The sun came out. Krishna set the mountain down gently.
+
+That night, {childName}, remember Krishna's finger under the mountain. When the storm comes — and storms always come — the bravest thing is not to run. It is to stand still and hold the shelter up for the people you love.`,
+  },
+  {
+    id: 'akbar_birbal_lines',
+    tradition: 'hindu',
+    theme: 'wisdom',
+    title: 'Birbal and the Shorter Line',
+    durationMinutes: 8,
+    source: 'Indian folk tradition · Akbar-Birbal tales',
+    body: `One afternoon, Emperor Akbar drew a line on the floor of the court and said to his ministers, "Make this line shorter — without erasing it or cutting it."
+
+The ministers scratched their heads. How can you make a line shorter without touching it?
+
+One minister tried blowing on it. Another tried covering part of it with his hand. Nothing worked.
+
+Then Birbal stepped forward. He took a piece of chalk and drew a longer line right next to Akbar's line.
+
+Now Akbar's line looked shorter. Not because it had changed — but because something bigger was standing beside it.
+
+Akbar clapped. The court cheered. Birbal bowed.
+
+That night, {childName}, remember Birbal's line. When someone seems bigger or better than you, they have not made you smaller. You are exactly the same size you always were. And when you want to be greater, you do not need to shrink anyone else. Just draw your own longer line.`,
+  },
+
 ];
 
 export const TRADITIONS = [
@@ -180,7 +361,9 @@ export const TRADITIONS = [
 ];
 
 export const THEMES = [
-  { key: 'compassion-animals', label: 'Compassion to animals', icon: '🦋' },
+  { key: 'compassion-animals', label: 'Compassion', icon: '🦋' },
+  { key: 'courage', label: 'Courage', icon: '🦁' },
+  { key: 'wisdom', label: 'Wisdom', icon: '🧠' },
   { key: 'honesty', label: 'Honesty', icon: '🌿' },
   { key: 'sharing', label: 'Sharing', icon: '🍪' },
   { key: 'humility', label: 'Humility', icon: '🪷' },
