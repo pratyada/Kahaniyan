@@ -16,6 +16,7 @@ import EditFamily from './pages/EditFamily.jsx';
 import Login from './pages/Login.jsx';
 import Admin from './pages/Admin.jsx';
 import RecordVoice from './pages/RecordVoice.jsx';
+import Invest from './pages/Invest.jsx';
 import BottomNav from './components/BottomNav.jsx';
 import PlayerBar from './components/PlayerBar.jsx';
 import RadioBar from './components/RadioBar.jsx';
@@ -79,8 +80,9 @@ function Shell() {
   const isRadioRoute = location.pathname.startsWith('/radio');
   const isAdminRoute = location.pathname.startsWith('/admin');
 
-  // Admin page — full desktop layout
+  // Full-page layouts (no phone shell)
   if (isAdminRoute) return <Admin />;
+  if (location.pathname === '/invest') return <Invest />;
 
   // Voice recording link — public, no auth, no shell
   if (location.pathname.startsWith('/record/')) return <RecordVoice />;
