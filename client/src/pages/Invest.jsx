@@ -19,36 +19,36 @@ import { APP_NAME, APP_VERSION } from '../utils/version.js';
 
 const ROUND_CONFIG = {
   name: 'Friends & Family',
-  target: 50000, // CAD
+  target: 25000, // CAD
   tokenPrice: 0.10, // CAD per token
   totalTokens: 10000000, // 10M total supply
-  founderTokens: 6000000, // 60% founders
-  roundTokens: 2000000, // 20% this round
-  reserveTokens: 2000000, // 20% future rounds + employees
-  minInvestment: 100, // CAD
+  founderTokens: 9000000, // 90% founders (45% + 45%)
+  roundTokens: 500000, // 5% this round
+  reserveTokens: 500000, // 5% future rounds
+  minInvestment: 50, // CAD
   maxInvestment: 10000, // CAD
 };
 
 const FOUNDERS = [
   {
-    name: 'Sahil',
-    role: 'Co-founder · Vision & Strategy',
-    tokens: 3000000,
-    description: 'Idea originator. Product vision, market strategy, and business development.',
-    emoji: '🧠',
-    linkedin: '',
-    bio: 'Conceptualized My Sleepy Tale from a personal need — bedtime stories that reflect cultural identity. Leading product direction, user research, and go-to-market strategy.',
-    skills: ['Product Strategy', 'Market Research', 'Business Development', 'UX Design'],
-  },
-  {
     name: 'Prateek',
-    role: 'Co-founder · Technology & Development',
-    tokens: 3000000,
-    description: 'Full-stack development, AI/ML integration, infrastructure, and all technical execution.',
+    role: 'Co-founder · Tech / Finance / Partners',
+    tokens: 4500000,
+    description: 'Full-stack development, AI/ML, finance, partnerships, and all technical execution.',
     emoji: '⚙️',
     linkedin: '',
-    bio: 'Built the entire My Sleepy Tale platform from scratch in 5 days — React, Firebase, OpenAI TTS, Stripe, admin dashboard. 200+ hours of focused engineering.',
-    skills: ['Full-Stack Engineering', 'AI/ML Integration', 'Cloud Architecture', 'Product Development'],
+    bio: 'Built the entire My Sleepy Tale platform from scratch — React, Firebase, OpenAI TTS, Stripe, admin dashboard. 200+ hours of focused engineering. Leads technology, finance, and partner relationships.',
+    skills: ['Full-Stack Engineering', 'AI/ML Integration', 'Finance', 'Partnerships'],
+  },
+  {
+    name: 'Sahil',
+    role: 'Co-founder · Go-to-Market / Vision / Team',
+    tokens: 4500000,
+    description: 'Idea originator. Go-to-market strategy, product vision, team building, and growth.',
+    emoji: '🧠',
+    linkedin: '',
+    bio: 'Conceptualized My Sleepy Tale from a personal need — bedtime stories that reflect cultural identity. Leading go-to-market, vision, and team building.',
+    skills: ['Go-to-Market Strategy', 'Product Vision', 'Team Building', 'Growth'],
   },
 ];
 

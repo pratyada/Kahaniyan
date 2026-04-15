@@ -9,8 +9,8 @@ export default async function handler(req, res) {
   const { amount, role, uid, email, displayName } = req.body || {};
   const cents = Math.round(Number(amount) * 100);
 
-  if (!cents || cents < 10000) { // min CA$100
-    return res.status(400).json({ error: 'Minimum contribution is CA$100' });
+  if (!cents || cents < 5000) { // min CA$50
+    return res.status(400).json({ error: 'Minimum contribution is CA$50' });
   }
   if (cents > 1000000) { // max CA$10,000
     return res.status(400).json({ error: 'Maximum contribution is CA$10,000' });
