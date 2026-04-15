@@ -227,10 +227,15 @@ export function FamilyProfileProvider({ children }) {
   const save = useCallback(
     (p) => {
       const migrated = migrate(p);
-      setProfiles((prev) => {
+      const doSave = (prev) => {
         const next = [...prev];
         next[activeIndex] = migrated;
-        persist(next, activeIndex);
+        return next;
+      };
+      setProfiles((prev) => {
+        const next = doSave(prev);
+        // Fire persist outside state updater so async works properly
+        setTimeout(() => persist(next, activeIndex), 0);
         return next;
       });
     },
@@ -242,7 +247,8 @@ export function FamilyProfileProvider({ children }) {
       setProfiles((prev) => {
         const next = [...prev];
         next[activeIndex] = { ...(next[activeIndex] || {}), ...patch };
-        persist(next, activeIndex);
+        // Fire persist outside state updater so async works properly
+        setTimeout(() => persist(next, activeIndex), 0);
         return next;
       });
     },
