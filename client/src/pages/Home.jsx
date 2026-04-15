@@ -188,7 +188,7 @@ export default function Home() {
 
       {/* HERO */}
       <header className="mb-8">
-        <p className="ui-label mb-1">{greeting}</p>
+        <p className="ui-label mb-1">{greeting}, <span className="text-gold">by My Sleepy Tale</span></p>
         <h1 className="display-title mt-2 text-ink">
           A story for <span className="text-gold">{profile?.childName || 'your child'}</span>
         </h1>
