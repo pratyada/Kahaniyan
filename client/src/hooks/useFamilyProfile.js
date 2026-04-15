@@ -186,6 +186,19 @@ export function FamilyProfileProvider({ children }) {
     registerOnUserChange((user) => attachUser(user));
   }, [attachUser]);
 
+  // Strip undefined values recursively — Firestore rejects them
+  function stripUndefined(obj) {
+    if (Array.isArray(obj)) return obj.map(stripUndefined);
+    if (obj && typeof obj === 'object' && !(obj instanceof Date)) {
+      const clean = {};
+      for (const [k, v] of Object.entries(obj)) {
+        if (v !== undefined) clean[k] = stripUndefined(v);
+      }
+      return clean;
+    }
+    return obj;
+  }
+
   // Persist helper — writes to both LS and Firestore
   const persist = useCallback(
     async (nextProfiles, nextIdx) => {
@@ -204,11 +217,11 @@ export function FamilyProfileProvider({ children }) {
                 lastActiveAt: new Date().toISOString(),
               }
             : {};
-          await setDoc(userDocRef(uid), {
+          await setDoc(userDocRef(uid), stripUndefined({
             profiles: nextProfiles,
             activeIndex: nextIdx,
             ...authMeta,
-          });
+          }));
           console.log('[Qissaa:profile] Firestore sync done');
         } catch (e) {
           console.error('[Qissaa:profile] Firestore write FAILED:', e.message);
