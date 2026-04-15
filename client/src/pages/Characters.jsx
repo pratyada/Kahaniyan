@@ -170,8 +170,8 @@ export default function Characters() {
         <VersionFooter />
       </div>
 
-      {/* Sticky bottom button — always accessible */}
-      <div className="absolute bottom-0 left-0 right-0 z-20 border-t border-white/5 bg-bg-base/95 px-5 py-3 backdrop-blur-xl safe-bottom">
+      {/* Sticky bottom button — above bottom nav (72px) */}
+      <div className="absolute bottom-[76px] left-0 right-0 z-20 border-t border-white/5 bg-bg-base/95 px-5 py-3 backdrop-blur-xl">
         <button onClick={startNew} className="btn-primary w-full py-4">
           + Add character
         </button>
