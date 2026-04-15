@@ -26,8 +26,8 @@ export default async function handler(req, res) {
           currency: 'cad',
           unit_amount: cents,
           product_data: {
-            name: `My Sleepy Tale Friends & Family — ${role || 'Investor'}`,
-            description: `CA$${amount} contribution to My Sleepy Tale. Tokens allocated after round closes.`,
+            name: `Invest in My Sleepy Tale - F&F Only`,
+            description: `CA$${amount} contribution as ${role || 'Investor'}. Tokens allocated after round closes.`,
           },
         },
         quantity: 1,
