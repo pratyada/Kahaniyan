@@ -45,6 +45,28 @@ export default function EditFamily() {
           />
         </Field>
 
+        <Field label="Gender">
+          <div className="grid grid-cols-2 gap-2">
+            {[
+              { key: 'boy', label: 'Boy', emoji: '👦' },
+              { key: 'girl', label: 'Girl', emoji: '👧' },
+            ].map((g) => (
+              <button
+                key={g.key}
+                onClick={() => setDraft({ ...draft, gender: g.key })}
+                className={`flex items-center gap-2 rounded-2xl px-3 py-3 transition ${
+                  draft.gender === g.key
+                    ? 'bg-gold text-bg-base shadow-glow'
+                    : 'bg-bg-surface text-ink ring-1 ring-white/5'
+                }`}
+              >
+                <span className="text-2xl">{g.emoji}</span>
+                <span className="text-sm font-bold">{g.label}</span>
+              </button>
+            ))}
+          </div>
+        </Field>
+
         <Field label="Age">
           <input
             type="number"

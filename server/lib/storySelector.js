@@ -49,7 +49,7 @@ function ageBandFor(age) {
   return '11-13';
 }
 
-function fillTokens(text, family, childName) {
+function fillTokens(text, family, childName, gender) {
   const tokens = {
     childName: childName || 'little one',
     sibling: family?.sibling || 'their friend',
@@ -57,7 +57,24 @@ function fillTokens(text, family, childName) {
     grandmother: family?.grandmother || 'Nani ma',
     pet: family?.pet || 'their puppy',
   };
-  return text.replace(/\{(\w+)\}/g, (_, k) => tokens[k] ?? `{${k}}`);
+  let filled = text.replace(/\{(\w+)\}/g, (_, k) => tokens[k] ?? `{${k}}`);
+
+  // Fix pronouns based on gender
+  if (gender === 'boy') {
+    filled = filled.replace(/\btheir\b(?= friend| puppy| eyes| face| heart| hands| chest| back| head| tummy| mouth| voice| pocket| bed| name| room| house| window| school| class| seat)/gi, 'his');
+    filled = filled.replace(/\bthey\b(?= loved| walked| ran| sat| stood| looked| thought| said| felt| held| took| went| came| opened| closed| put| pulled| understood| began| knew| asked| watched| tried| heard| smiled| laughed| cried| climbed| whispered| slept| woke| remembered| noticed| decided| promised| learned)/gi, 'he');
+    filled = filled.replace(/\bthem\b(?= tight| close| gently| softly| in| up| down| back| away| together)/gi, 'him');
+    filled = filled.replace(/\bthemselves\b/gi, 'himself');
+    filled = filled.replace(/\btheirs\b/gi, 'his');
+  } else if (gender === 'girl') {
+    filled = filled.replace(/\btheir\b(?= friend| puppy| eyes| face| heart| hands| chest| back| head| tummy| mouth| voice| pocket| bed| name| room| house| window| school| class| seat)/gi, 'her');
+    filled = filled.replace(/\bthey\b(?= loved| walked| ran| sat| stood| looked| thought| said| felt| held| took| went| came| opened| closed| put| pulled| understood| began| knew| asked| watched| tried| heard| smiled| laughed| cried| climbed| whispered| slept| woke| remembered| noticed| decided| promised| learned)/gi, 'she');
+    filled = filled.replace(/\bthem\b(?= tight| close| gently| softly| in| up| down| back| away| together)/gi, 'her');
+    filled = filled.replace(/\bthemselves\b/gi, 'herself');
+    filled = filled.replace(/\btheirs\b/gi, 'hers');
+  }
+
+  return filled;
 }
 
 function fitToDuration(text, durationMinutes) {
@@ -89,6 +106,7 @@ export function selectStory({
   preferredSlots = [],
   castNames = [],
   selectedCast = [],
+  gender: req_gender = '',
   whisper = '',
   whisperOverridesValue = false,
 }) {
@@ -101,6 +119,7 @@ export function selectStory({
   if (selectedCast && selectedCast.length > 0) {
     const built = buildCastStory({
       childName: childName || 'little one',
+      gender,
       cast: selectedCast,
       value,
       recentPlotTypes,
@@ -141,8 +160,9 @@ export function selectStory({
 
   const template = pickWeighted(pool, recentPlotTypes, preferredSlots);
 
-  const filledTitle = fillTokens(template.title, familyMembers, childName);
-  const filledBody = fillTokens(template.body, familyMembers, childName);
+  const gender = req_gender || '';
+  const filledTitle = fillTokens(template.title, familyMembers, childName, gender);
+  const filledBody = fillTokens(template.body, familyMembers, childName, gender);
 
   // 2. Weave the whisper into the body (opening + closing frame)
   const woven = weaveWhisper({

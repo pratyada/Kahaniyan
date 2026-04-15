@@ -48,10 +48,10 @@ export function buildStoryRequest({
 
   return {
     childName: (() => {
-      // If hero has an adventure name, use it as the story protagonist
       const hero = profile.characters?.find((c) => c.relation === 'self');
       return (hero?.adventureName?.trim() || profile.childName);
     })(),
+    gender: profile.gender || '',
     age: profile.age,
     value,
     duration,

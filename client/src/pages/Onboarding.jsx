@@ -8,6 +8,7 @@ const makeSteps = (name) => {
   const n = name || 'your child';
   return [
     { key: 'childName', title: "What's your child's name?", placeholder: 'e.g. Arjun', type: 'text' },
+    { key: 'gender', title: `Is ${n} a boy or a girl?`, type: 'gender' },
     { key: 'age', title: `How old is ${n}?`, placeholder: '6', type: 'number' },
     { key: 'country', title: `Where does ${n} live?`, type: 'country' },
     { key: 'beliefs', title: `${n}'s family belief?`, subtitle: 'Pick one or more. Wisdom stories will come from these traditions.', type: 'beliefs', optional: true },
@@ -25,6 +26,7 @@ export default function Onboarding() {
   const [step, setStep] = useState(0);
   const [draft, setDraft] = useState({
     language: 'English',
+    gender: 'boy',
     country: 'IN',
     beliefs: [],
     showCrossCulture: false,
@@ -114,6 +116,26 @@ export default function Onboarding() {
                     >
                       {l.key}
                     </div>
+                  </button>
+                ))}
+              </div>
+            ) : current.type === 'gender' ? (
+              <div className="grid grid-cols-2 gap-3">
+                {[
+                  { key: 'boy', label: 'Boy', emoji: '👦' },
+                  { key: 'girl', label: 'Girl', emoji: '👧' },
+                ].map((g) => (
+                  <button
+                    key={g.key}
+                    onClick={() => setDraft((d) => ({ ...d, gender: g.key }))}
+                    className={`flex flex-col items-center gap-2 rounded-2xl px-4 py-6 transition ${
+                      draft.gender === g.key
+                        ? 'bg-gold text-bg-base shadow-glow'
+                        : 'bg-bg-surface text-ink ring-1 ring-white/5'
+                    }`}
+                  >
+                    <span className="text-4xl">{g.emoji}</span>
+                    <span className="font-ui text-lg font-bold">{g.label}</span>
                   </button>
                 ))}
               </div>
