@@ -195,11 +195,12 @@ export function FamilyProfileProvider({ children }) {
         try {
           console.log('[Qissaa:profile] Syncing to Firestore...');
           // Include auth metadata so admin can see emails + last activity
-          const authMeta = firebaseAuth?.currentUser
+          const cu = firebaseAuth?.currentUser;
+          const authMeta = cu
             ? {
-                email: auth.currentUser.email || '',
-                displayName: auth.currentUser.displayName || '',
-                photoURL: auth.currentUser.photoURL || '',
+                email: cu.email || '',
+                displayName: cu.displayName || '',
+                photoURL: cu.photoURL || '',
                 lastActiveAt: new Date().toISOString(),
               }
             : {};
