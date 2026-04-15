@@ -8,6 +8,8 @@ import VersionFooter from '../components/VersionFooter.jsx';
 import { useFamilyProfile } from '../hooks/useFamilyProfile.js';
 import { useAuth } from '../hooks/useAuth.jsx';
 import { useAdmin } from '../hooks/useAdmin.jsx';
+import { doc, setDoc, getDoc } from 'firebase/firestore';
+import { db } from '../lib/firebase.js';
 import { useTheme } from '../hooks/useTheme.jsx';
 import { useFamilyVoices } from '../hooks/useFamilyVoices.jsx';
 import { RELIGIONS } from '../utils/constants.js';
@@ -21,6 +23,30 @@ export default function Settings() {
   const { theme, toggle: toggleTheme } = useTheme();
   const { voices } = useFamilyVoices();
   const [upgradeOpen, setUpgradeOpen] = useState(false);
+  const [feedbackOpen, setFeedbackOpen] = useState(false);
+  const [feedbackText, setFeedbackText] = useState('');
+  const [feedbackSent, setFeedbackSent] = useState(false);
+  const [feedbackSubmitting, setFeedbackSubmitting] = useState(false);
+
+  const submitFeedback = async () => {
+    if (!feedbackText.trim() || !user) return;
+    setFeedbackSubmitting(true);
+    try {
+      await setDoc(doc(db, 'feedback', user.uid + '_' + Date.now()), {
+        uid: user.uid,
+        email: user.email || '',
+        displayName: user.displayName || '',
+        text: feedbackText.trim(),
+        createdAt: new Date().toISOString(),
+      });
+      setFeedbackSent(true);
+      setFeedbackText('');
+      setTimeout(() => { setFeedbackSent(false); setFeedbackOpen(false); }, 3000);
+    } catch (e) {
+      alert('Could not send feedback: ' + e.message);
+    }
+    setFeedbackSubmitting(false);
+  };
   const [searchParams, setSearchParams] = useSearchParams();
   const [upgradeSuccess, setUpgradeSuccess] = useState(null);
 
@@ -101,6 +127,62 @@ export default function Settings() {
           Edit
         </button>
       </section>
+
+      {/* Share your thoughts */}
+      {user && (
+        <button
+          onClick={() => setFeedbackOpen(true)}
+          className="mb-5 flex w-full items-center gap-3 rounded-2xl bg-gold/10 p-4 text-left ring-1 ring-gold/20 transition active:scale-[0.99]"
+        >
+          <span className="text-2xl">💬</span>
+          <div className="flex-1">
+            <div className="text-sm font-bold text-gold">Share your thoughts</div>
+            <div className="text-[11px] text-ink-muted">Your feedback shapes what we build next</div>
+          </div>
+          <span className="text-ink-muted">→</span>
+        </button>
+      )}
+
+      {/* Feedback modal */}
+      {feedbackOpen && (
+        <div className="absolute inset-0 z-50 flex items-end justify-center bg-black/70 backdrop-blur-sm" onClick={() => setFeedbackOpen(false)}>
+          <div className="w-full rounded-t-3xl bg-bg-elevated p-6 shadow-lift" onClick={(e) => e.stopPropagation()}>
+            <div className="mx-auto mb-4 h-1 w-12 rounded-full bg-white/20" />
+            {feedbackSent ? (
+              <div className="py-8 text-center">
+                <div className="mb-3 text-4xl">💛</div>
+                <h2 className="font-display text-xl font-bold text-gold">Thank you!</h2>
+                <p className="mt-2 text-sm text-ink-muted">Your words mean more than you know.</p>
+              </div>
+            ) : (
+              <>
+                <h2 className="font-display text-xl font-bold text-gold">Share your thoughts</h2>
+                <p className="mt-1 text-sm text-ink-muted">
+                  What do you love? What's missing? What would make this perfect for your family?
+                </p>
+                <textarea
+                  autoFocus
+                  value={feedbackText}
+                  onChange={(e) => setFeedbackText(e.target.value)}
+                  placeholder="Your honest feedback helps us build something better..."
+                  rows={4}
+                  className="mt-4 w-full rounded-2xl bg-bg-surface px-4 py-3 font-story text-[15px] leading-relaxed text-ink placeholder:text-ink-dim outline-none ring-1 ring-white/5 focus:ring-gold"
+                />
+                <button
+                  onClick={submitFeedback}
+                  disabled={feedbackSubmitting || !feedbackText.trim()}
+                  className="btn-primary mt-4 w-full py-4 disabled:opacity-40"
+                >
+                  {feedbackSubmitting ? 'Sending...' : 'Send feedback'}
+                </button>
+                <button onClick={() => setFeedbackOpen(false)} className="mt-3 w-full text-center text-sm text-ink-muted">
+                  Maybe later
+                </button>
+              </>
+            )}
+          </div>
+        </div>
+      )}
 
       {(() => {
         const currentTier = profile?.tier || 'free';
