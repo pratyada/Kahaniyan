@@ -7,13 +7,23 @@ import { LANGUAGES, COUNTRIES, RELIGIONS } from '../utils/constants.js';
 
 export default function EditFamily() {
   const navigate = useNavigate();
-  const { profile, save } = useFamilyProfile();
+  const { profile, update } = useFamilyProfile();
   const [draft, setDraft] = useState(profile || {});
 
   if (!profile) return null;
 
   const handleSave = () => {
-    save({ ...draft, age: Number(draft.age) || profile.age });
+    // Use update() to merge changes — preserves characters, tier, etc.
+    update({
+      childName: draft.childName,
+      age: Number(draft.age) || profile.age,
+      gender: draft.gender,
+      motherName: draft.motherName,
+      fatherName: draft.fatherName,
+      country: draft.country,
+      beliefs: draft.beliefs,
+      language: draft.language,
+    });
     navigate('/settings');
   };
 
