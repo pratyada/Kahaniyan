@@ -66,6 +66,12 @@ export default function CulturalLessons() {
   return (
     <PageTransition className="page-scroll px-5 pt-10 safe-top">
       <header className="mb-6">
+        <button
+          onClick={() => navigate(-1)}
+          className="mb-3 inline-flex items-center gap-1 text-[11px] font-bold uppercase tracking-wider text-ink-muted hover:text-ink"
+        >
+          ← Back
+        </button>
         <p className="ui-label">Wisdom Stories</p>
         <h1 className="display-title mt-1 text-ink">
           Stories from <span className="text-gold">your beliefs</span>
