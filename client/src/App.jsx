@@ -39,20 +39,20 @@ function Shell() {
   // Wait for auth + profile to load
   if (authLoading || !ready) return null;
 
-  // 5-second grace period — let the user browse the app before showing login popup
-  const [graceExpired, setGraceExpired] = useState(false);
+  // Login popup triggered when user tries to generate a story
+  const [loginTriggered, setLoginTriggered] = useState(false);
   const navigate = useNavigate();
 
+  // Expose trigger globally so Home can call it
   useEffect(() => {
-    if (isConfigured && !user) {
-      const t = setTimeout(() => setGraceExpired(true), 5000);
-      return () => clearTimeout(t);
-    }
-    if (user) setGraceExpired(false);
+    window.__triggerLogin = () => {
+      if (isConfigured && !user) setLoginTriggered(true);
+    };
+    if (user) setLoginTriggered(false);
   }, [isConfigured, user]);
 
-  const needsAuth = false; // never hard-block — use the popup instead
-  const showLoginPopup = isConfigured && !user && graceExpired;
+  const needsAuth = false;
+  const showLoginPopup = isConfigured && !user && loginTriggered;
   const onboarded = !!profile?.childName;
   const isBlocked = !showLoginPopup && (accountStatus === 'blocked' || accountStatus === 'paused');
 

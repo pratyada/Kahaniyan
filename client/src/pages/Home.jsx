@@ -112,6 +112,13 @@ export default function Home() {
 
   const handleStart = async () => {
     setStoryError(null);
+    // If not signed in, trigger login popup
+    if (window.__triggerLogin) {
+      window.__triggerLogin();
+      // If popup was triggered (user not signed in), stop here
+      const { auth } = await import('../lib/firebase.js');
+      if (auth && !auth.currentUser) return;
+    }
     if (!profile) {
       setStoryError('Profile not loaded. Please try again.');
       return;
