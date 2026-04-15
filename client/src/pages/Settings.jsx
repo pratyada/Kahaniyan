@@ -259,6 +259,7 @@ export default function Settings() {
         <div className="grid grid-cols-2 gap-2">
           <Tile icon="✨" title="Guides" sub="5 reads" onClick={() => navigate('/guides')} />
           <Tile icon="🛣️" title="Roadmap" sub="Build status" onClick={() => navigate('/roadmap')} />
+          <Tile icon="🤝" title="Invest" sub="Back this project" onClick={() => navigate('/invest')} />
           {isAdmin && (
             <Tile icon="🔑" title="Admin" sub="Dashboard" onClick={() => navigate('/admin')} />
           )}
