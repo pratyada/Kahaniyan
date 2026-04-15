@@ -131,6 +131,14 @@ export default function StoryLoading() {
         >
           A fresh story, just for tonight
         </motion.p>
+        <motion.p
+          className="mt-3 text-xs text-ink-dim"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 3 }}
+        >
+          We'll notify once ready
+        </motion.p>
       </motion.div>
     </div>
   );

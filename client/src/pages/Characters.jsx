@@ -19,18 +19,18 @@ export default function Characters() {
   const navigate = useNavigate();
   const { profile, update } = useFamilyProfile();
   const [editing, setEditing] = useState(null);
-  const [draft, setDraft] = useState({ name: '', relation: 'sibling', traits: '', tags: [], emoji: '🧒', petType: 'dog', adventureName: '' });
+  const [draft, setDraft] = useState({ name: '', relation: 'sibling', traits: '', tags: [], emoji: '🧒', petType: 'dog', adventureName: '', nickname: '' });
 
   if (!profile) return null;
   const characters = profile.characters || [];
 
   const startNew = () => {
-    setDraft({ name: '', relation: 'sibling', traits: '', tags: [], emoji: RELATION_EMOJI.sibling, petType: 'dog', adventureName: '' });
+    setDraft({ name: '', relation: 'sibling', traits: '', tags: [], emoji: RELATION_EMOJI.sibling, petType: 'dog', adventureName: '', nickname: '' });
     setEditing('new');
   };
 
   const startEdit = (c) => {
-    setDraft({ petType: 'dog', adventureName: '', tags: [], ...c });
+    setDraft({ petType: 'dog', adventureName: '', tags: [], nickname: '', ...c });
     setEditing(c);
   };
 
@@ -45,8 +45,9 @@ export default function Characters() {
         emoji: draft.emoji || RELATION_EMOJI[draft.relation] || '✨',
         traits: (draft.tags || []).join(', '),
         tags: draft.tags || [],
-        petType: draft.relation === 'pet' ? draft.petType : undefined,
-        adventureName: draft.relation === 'self' ? draft.adventureName?.trim() : undefined,
+        nickname: draft.nickname?.trim() || '',
+        petType: draft.relation === 'pet' ? draft.petType : null,
+        adventureName: draft.relation === 'self' ? (draft.adventureName?.trim() || null) : null,
       };
       next = [...characters, newChar];
     } else {
@@ -59,6 +60,7 @@ export default function Characters() {
               emoji: draft.emoji,
               traits: (draft.tags || []).join(', '),
               tags: draft.tags || [],
+              nickname: draft.nickname?.trim() || '',
               petType: draft.relation === 'pet' ? draft.petType : c.petType,
               adventureName: draft.relation === 'self' ? draft.adventureName?.trim() : c.adventureName,
             }
@@ -144,7 +146,8 @@ export default function Characters() {
                   </div>
                   <div className="text-[11px] text-ink-muted">
                     {ALL_RELATIONS.find((r) => r.key === c.relation)?.label || c.relation}
-                    {petInfo && ` · ${petInfo.label} (says "${petInfo.sound}")`}
+                    {c.nickname && ` · called "${c.nickname}"`}
+                    {petInfo && ` · ${petInfo.label}`}
                     {c.adventureName && ` · plays as "${c.adventureName}"`}
                   </div>
                   {(c.tags || []).length > 0 ? (
@@ -158,30 +161,6 @@ export default function Characters() {
                   ) : c.traits ? (
                     <div className="mt-0.5 text-[10px] italic text-ink-dim">"{c.traits}"</div>
                   ) : null}
-                  {isSelf && (
-                    <div className="mt-0.5 text-[10px] text-gold">The hero of every story</div>
-                  )}
-                  {!isSelf && c.relation === 'pet' && (
-                    <div className="mt-0.5 text-[10px] text-ink-dim">Appears as a loyal companion in stories</div>
-                  )}
-                  {!isSelf && c.relation === 'imaginary' && (
-                    <div className="mt-0.5 text-[10px] text-ink-dim">Only your child can see them — appears in dreams and adventures</div>
-                  )}
-                  {!isSelf && (c.relation === 'sibling' || c.relation === 'bhaiya' || c.relation === 'didi') && (
-                    <div className="mt-0.5 text-[10px] text-ink-dim">Runs ahead and teases, but always watches over the hero</div>
-                  )}
-                  {!isSelf && (c.relation === 'dada' || c.relation === 'nana') && (
-                    <div className="mt-0.5 text-[10px] text-ink-dim">Walks slowly, tells old stories, rests a hand on the hero's shoulder</div>
-                  )}
-                  {!isSelf && (c.relation === 'dadi' || c.relation === 'nani') && (
-                    <div className="mt-0.5 text-[10px] text-ink-dim">Points out flowers, whispers old names, smiles from the kitchen</div>
-                  )}
-                  {!isSelf && (c.relation === 'mummy' || c.relation === 'daddy') && (
-                    <div className="mt-0.5 text-[10px] text-ink-dim">Always right there — quiet, steady, bigger than any story</div>
-                  )}
-                  {!isSelf && c.relation === 'friend' && (
-                    <div className="mt-0.5 text-[10px] text-ink-dim">Walks close enough that shoulders bump — the best kind of friendship</div>
-                  )}
                 </div>
                 <button
                   onClick={() => startEdit(c)}
@@ -315,6 +294,25 @@ export default function Characters() {
                   </div>
                 )}
 
+                {/* Nickname — what does the child call them */}
+                {!(editing !== 'new' && editing?.relation === 'self') && draft.relation !== 'pet' && (
+                  <div>
+                    <label className="ui-label mb-1 block">
+                      What does {profile?.childName || 'your child'} call them?
+                    </label>
+                    <input
+                      type="text"
+                      value={draft.nickname || ''}
+                      onChange={(e) => setDraft({ ...draft, nickname: e.target.value })}
+                      placeholder="e.g. Nanu, Grandpa, Pops, Dadu, Abba"
+                      className="field"
+                    />
+                    <p className="mt-1 text-[10px] text-ink-dim">
+                      Stories will sometimes use this name for warmth
+                    </p>
+                  </div>
+                )}
+
                 {/* Pet type selector */}
                 {draft.relation === 'pet' && (
                   <div>
@@ -369,14 +367,26 @@ export default function Characters() {
                       type="text"
                       placeholder={
                         (draft.tags || []).length === 0
-                          ? 'e.g. dinosaurs, cricket, space, painting'
+                          ? 'e.g. dinosaurs, cricket, space'
                           : 'Add another...'
                       }
                       className="field"
+                      onChange={(e) => {
+                        // Split on comma in real-time
+                        const val = e.target.value;
+                        if (val.includes(',')) {
+                          const parts = val.split(',').map((s) => s.trim()).filter(Boolean);
+                          const current = draft.tags || [];
+                          const toAdd = parts.filter((p) => !current.includes(p));
+                          const next = [...current, ...toAdd].slice(0, 5);
+                          setDraft({ ...draft, tags: next });
+                          e.target.value = '';
+                        }
+                      }}
                       onKeyDown={(e) => {
-                        if (e.key === 'Enter' || e.key === ',') {
+                        if (e.key === 'Enter') {
                           e.preventDefault();
-                          const val = e.target.value.trim().replace(/,$/,'');
+                          const val = e.target.value.trim();
                           if (val && (draft.tags || []).length < 5) {
                             setDraft({ ...draft, tags: [...(draft.tags || []), val] });
                             e.target.value = '';
@@ -384,7 +394,7 @@ export default function Characters() {
                         }
                       }}
                       onBlur={(e) => {
-                        const val = e.target.value.trim().replace(/,$/,'');
+                        const val = e.target.value.trim();
                         if (val && (draft.tags || []).length < 5) {
                           setDraft({ ...draft, tags: [...(draft.tags || []), val] });
                           e.target.value = '';

@@ -60,18 +60,18 @@ export const RELIGIONS = [
 
 // Family member relationships used in voice studio
 export const FAMILY_RELATIONS = [
-  { key: 'mummy', label: 'Mummy', emoji: '👩' },
-  { key: 'daddy', label: 'Daddy', emoji: '👨' },
-  { key: 'dada', label: 'Dada ji', emoji: '👴' },
-  { key: 'dadi', label: 'Dadi ma', emoji: '👵' },
-  { key: 'nana', label: 'Nana ji', emoji: '👴' },
-  { key: 'nani', label: 'Nani ma', emoji: '👵' },
-  { key: 'bhaiya', label: 'Bhaiya', emoji: '🧑' },
-  { key: 'didi', label: 'Didi', emoji: '👧' },
-  { key: 'chacha', label: 'Chacha', emoji: '🧔' },
-  { key: 'chachi', label: 'Chachi', emoji: '👩' },
-  { key: 'mama', label: 'Mama', emoji: '🧔' },
-  { key: 'mami', label: 'Mami', emoji: '👩' },
+  { key: 'mummy', label: 'Mother', emoji: '👩' },
+  { key: 'daddy', label: 'Father', emoji: '👨' },
+  { key: 'dada', label: 'Paternal grandfather', emoji: '👴' },
+  { key: 'dadi', label: 'Paternal grandmother', emoji: '👵' },
+  { key: 'nana', label: 'Maternal grandfather', emoji: '👴' },
+  { key: 'nani', label: 'Maternal grandmother', emoji: '👵' },
+  { key: 'sibling', label: 'Sibling', emoji: '🧒' },
+  { key: 'uncle', label: 'Uncle', emoji: '🧔' },
+  { key: 'aunt', label: 'Aunt', emoji: '👩' },
+  { key: 'cousin', label: 'Cousin', emoji: '🧒' },
+  { key: 'friend', label: 'Friend', emoji: '🧒' },
+  { key: 'relative', label: 'Relative', emoji: '👤' },
   { key: 'other', label: 'Other', emoji: '✨' },
 ];
 
@@ -87,21 +87,25 @@ export const CHARACTER_BUCKETS = {
   sibling: 'sibling',
   bhaiya: 'sibling',
   didi: 'sibling',
+  cousin: 'sibling',
+  friend: 'sibling',
   dada: 'grandfather',
   nana: 'grandfather',
   grandfather: 'grandfather',
+  uncle: 'grandfather',
+  relative: 'grandfather',
   dadi: 'grandmother',
   nani: 'grandmother',
   grandmother: 'grandmother',
-  mummy: 'grandmother', // adult woman slot fallback
-  daddy: 'grandfather', // adult man slot fallback
+  aunt: 'grandmother',
+  mummy: 'grandmother',
+  daddy: 'grandfather',
   chacha: 'grandfather',
   chachi: 'grandmother',
   mama: 'grandfather',
   mami: 'grandmother',
   pet: 'pet',
   imaginary: 'sibling',
-  friend: 'sibling',
   other: 'sibling',
 };
 
@@ -152,12 +156,13 @@ export function mapCharactersToFamilyMembers(characters) {
   const nonProtagonist = characters.filter((c) => c.relation !== 'self');
   for (const c of nonProtagonist) {
     const bucket = CHARACTER_BUCKETS[c.relation] || 'sibling';
+    // Mix name and nickname for variation — use nickname ~40% of the time
+    const useName = c.nickname && Math.random() < 0.4 ? c.nickname : c.name;
     if (bucket !== 'self' && !slots[bucket]) {
-      slots[bucket] = c.name;
+      slots[bucket] = useName;
     } else {
-      // bucket already filled — overflow to next empty slot
       const open = orderedFallback.find((s) => !slots[s]);
-      if (open) slots[open] = c.name;
+      if (open) slots[open] = useName;
     }
   }
   return slots;

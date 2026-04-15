@@ -34,7 +34,7 @@ import { useWhiteNoise, NOISE_TYPES } from '../hooks/useWhiteNoise.jsx';
 import { valueMeta } from '../utils/constants.js';
 import StoryLoading from '../components/StoryLoading.jsx';
 
-const SPEEDS = [0.7, 1, 1.3];
+const SPEEDS = [0.8, 1, 1.2];
 const SLEEP_OPTIONS = [0, 5, 10, 15, 30, 45];
 
 export default function Player() {
@@ -53,7 +53,7 @@ function PlayerInner() {
   const elevenLabs = useElevenLabs();
   const noise = useWhiteNoise();
 
-  const [speed, setSpeed] = useState(1);
+  const [speed, setSpeed] = useState(0.8);
   const [sleepMin, setSleepMin] = useState(0);
   const [showText, setShowText] = useState(true);
   const [done, setDone] = useState(false);
@@ -436,8 +436,17 @@ function PlayerInner() {
                 />
               </div>
               <div className="mt-2 flex justify-between text-[10px] uppercase tracking-wider text-ink-dim">
-                <span>{Math.round(progress * current.estimatedMinutes)} min</span>
-                <span>{current.estimatedMinutes} min</span>
+                {elevenLabs.duration > 0 ? (
+                  <>
+                    <span>{Math.floor(progress * elevenLabs.duration / 60)}:{String(Math.floor(progress * elevenLabs.duration % 60)).padStart(2,'0')}</span>
+                    <span>{Math.floor(elevenLabs.duration / 60)}:{String(Math.floor(elevenLabs.duration % 60)).padStart(2,'0')}</span>
+                  </>
+                ) : (
+                  <>
+                    <span>{Math.round(progress * current.estimatedMinutes)} min</span>
+                    <span>~{current.estimatedMinutes} min</span>
+                  </>
+                )}
               </div>
             </div>
 
