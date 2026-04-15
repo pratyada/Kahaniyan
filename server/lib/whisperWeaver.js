@@ -79,11 +79,56 @@ const THEMES = [
   {
     key: 'gratitude-celebration',
     value: 'gratitude',
-    keywords: ['happy', 'fun', 'birthday', 'festival', 'diwali', 'eid', 'christmas', 'holi', 'cake', 'celebration', 'gift'],
+    keywords: ['happy', 'fun', 'birthday', 'festival', 'diwali', 'eid', 'christmas', 'holi', 'cake', 'celebration', 'gift', 'party', 'won', 'prize', 'excited'],
     framing: (childName) =>
       `Today had a sparkle in it, didn't it, ${childName}? So tonight's story is a thank-you note, written in the soft language only sleep understands.`,
     closing: (childName) =>
       `${childName}, the days that shine the brightest are the ones we remember to thank. And tonight, you remembered.`,
+  },
+  {
+    key: 'health-sick',
+    value: 'patience',
+    keywords: ['sick', 'ill', 'fever', 'cold', 'cough', 'hospital', 'doctor', 'medicine', 'hurt', 'pain', 'tummy ache', 'headache', 'not feeling well', 'unwell'],
+    framing: (childName) =>
+      `Sometimes the body asks for a rest day, and that's okay. Tonight's story is a soft blanket made of words, wrapped around ${childName} until morning comes and the world feels a little easier.`,
+    closing: (childName) =>
+      `${childName}, sleep is the best medicine the world has ever made. Your body knows how to heal — it just needs you to close your eyes and let it work.`,
+  },
+  {
+    key: 'nature-animals',
+    value: 'kindness',
+    keywords: ['animal', 'dog', 'cat', 'bird', 'fish', 'butterfly', 'insect', 'garden', 'tree', 'flower', 'rain', 'rainbow', 'mountain', 'river', 'ocean', 'nature', 'park', 'zoo'],
+    framing: (childName) =>
+      `${childName} noticed something beautiful in the world today — a piece of nature that asked to be seen. So tonight's story is about the quiet kindness between children and the living world around them.`,
+    closing: (childName) =>
+      `${childName}, the world is full of small, living things that notice you back. Be gentle with them, and they will fill your days with wonder.`,
+  },
+  {
+    key: 'adventure-travel',
+    value: 'courage',
+    keywords: ['travel', 'trip', 'holiday', 'vacation', 'airplane', 'train', 'car ride', 'new place', 'adventure', 'explore', 'camping', 'beach', 'mountain', 'village'],
+    framing: (childName) =>
+      `New places can feel exciting and a little strange at the same time, can't they, ${childName}? Tonight's story is about a child who walked into somewhere new and found that the best adventures are the ones where you bring your heart.`,
+    closing: (childName) =>
+      `${childName}, wherever you go tomorrow, remember — home is not a place. Home is the people who love you, and they travel with you everywhere.`,
+  },
+  {
+    key: 'food-eating',
+    value: 'gratitude',
+    keywords: ['food', 'eat', 'hungry', 'cooking', 'kitchen', 'lunch', 'dinner', 'breakfast', 'vegetables', 'fruit', 'milk', 'chocolate', 'ice cream', 'picky', 'not eating'],
+    framing: (childName) =>
+      `Food is love that has been cooked. Every meal that arrives at ${childName}'s table was carried there by many hands — the farmer, the rain, the cook, and the person who set the plate down with a smile.`,
+    closing: (childName) =>
+      `${childName}, tomorrow when you eat, try to taste the love in it. It's always there, hiding between the bites.`,
+  },
+  {
+    key: 'sleep-bedtime',
+    value: 'patience',
+    keywords: ['sleep', 'can\'t sleep', 'not sleepy', 'nightmare', 'bad dream', 'wake up', 'bedtime', 'tired', 'restless', 'eyes open'],
+    framing: (childName) =>
+      `Sleep doesn't always come when we call it. Sometimes it waits around the corner, listening for the exact right moment. So tonight's story is the sound that sleep likes best — a slow, warm voice telling ${childName} that everything is safe.`,
+    closing: (childName) =>
+      `${childName}, you don't have to try to sleep. Just listen. Sleep will find you. It always does.`,
   },
 ];
 

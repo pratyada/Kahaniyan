@@ -65,14 +65,38 @@ export default function Characters() {
           : c
       );
     }
-    update({ characters: next });
+    // Sync legacy profile fields from characters so story templates use current names
+    const legacyPatch = { characters: next };
+    const selfChar = next.find((c) => c.relation === 'self');
+    if (selfChar) legacyPatch.childName = selfChar.name;
+    const siblingChar = next.find((c) => ['sibling', 'bhaiya', 'didi', 'friend'].includes(c.relation));
+    legacyPatch.sibling = siblingChar?.name || '';
+    const grandpaChar = next.find((c) => ['dada', 'nana', 'grandfather', 'daddy', 'chacha', 'mama'].includes(c.relation));
+    legacyPatch.grandfather = grandpaChar?.name || '';
+    const grandmaChar = next.find((c) => ['dadi', 'nani', 'grandmother', 'mummy', 'chachi', 'mami'].includes(c.relation));
+    legacyPatch.grandmother = grandmaChar?.name || '';
+    const petChar = next.find((c) => c.relation === 'pet');
+    legacyPatch.pet = petChar?.name || '';
+
+    update(legacyPatch);
     setEditing(null);
   };
 
   const remove = (id) => {
     if (id === 'char_self') return;
     if (!confirm('Remove this character?')) return;
-    update({ characters: characters.filter((c) => c.id !== id) });
+    const remaining = characters.filter((c) => c.id !== id);
+    // Sync legacy fields after delete
+    const legacyPatch = { characters: remaining };
+    const siblingChar = remaining.find((c) => ['sibling', 'bhaiya', 'didi', 'friend'].includes(c.relation));
+    legacyPatch.sibling = siblingChar?.name || '';
+    const grandpaChar = remaining.find((c) => ['dada', 'nana', 'grandfather', 'daddy', 'chacha', 'mama'].includes(c.relation));
+    legacyPatch.grandfather = grandpaChar?.name || '';
+    const grandmaChar = remaining.find((c) => ['dadi', 'nani', 'grandmother', 'mummy', 'chachi', 'mami'].includes(c.relation));
+    legacyPatch.grandmother = grandmaChar?.name || '';
+    const petChar = remaining.find((c) => c.relation === 'pet');
+    legacyPatch.pet = petChar?.name || '';
+    update(legacyPatch);
   };
 
   return (

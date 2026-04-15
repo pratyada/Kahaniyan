@@ -121,7 +121,7 @@ export default function Home() {
     // Server will return 429 if the user is truly over limit.
     const selectedCharacters = characters.filter((c) => selectedCharIds.includes(c.id) || c.relation === 'self');
     try {
-      console.log('[Qissaa] Generating story...', { value, duration, mode, isUnlimited, charCount: selectedCharacters.length });
+      console.log('[Qissaa] Generating story...', { value, duration, mode, castMode: mode === 'cast', selectedCast: selectedCharacters.map(c => c.name) });
       const story = await generate({
         profile,
         value,

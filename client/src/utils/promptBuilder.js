@@ -38,12 +38,15 @@ export function buildStoryRequest({
     castNames = selectedCharacters
       .filter((c) => c.relation !== 'self')
       .map((c) => c.name);
-    selectedCast = selectedCharacters.map((c) => ({
-      name: c.relation === 'self' && c.adventureName ? c.adventureName : c.name,
-      relation: c.relation,
-      traits: c.traits || '',
-      petType: c.petType || undefined,
-    }));
+    selectedCast = selectedCharacters.map((c) => {
+      const obj = {
+        name: c.relation === 'self' && c.adventureName ? c.adventureName : c.name,
+        relation: c.relation,
+        traits: c.traits || (c.tags || []).join(', ') || '',
+      };
+      if (c.petType) obj.petType = c.petType;
+      return obj;
+    });
   }
 
   return {
