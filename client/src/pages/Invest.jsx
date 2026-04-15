@@ -162,10 +162,11 @@ export default function Invest() {
     })();
   }, [submitted]);
 
-  // Computed stats
+  // Computed stats — only count confirmed contributions
   const stats = useMemo(() => {
-    const totalRaised = contributors.reduce((s, c) => s + (c.amount || 0), 0);
-    const totalContributorTokens = contributors.reduce((s, c) => s + (c.tokens || 0), 0);
+    const confirmed = contributors.filter((c) => c.status === 'confirmed');
+    const totalRaised = confirmed.reduce((s, c) => s + (c.amount || 0), 0);
+    const totalContributorTokens = confirmed.reduce((s, c) => s + (c.tokens || 0), 0);
     const founderTokens = FOUNDERS.reduce((s, f) => s + f.tokens, 0);
     const totalAllocated = founderTokens + totalContributorTokens;
     const totalExpenses = EXPENSES.reduce((s, e) => s + e.amount, 0);
@@ -176,7 +177,8 @@ export default function Invest() {
       totalAllocated,
       remaining: ROUND_CONFIG.roundTokens - totalContributorTokens,
       percentRaised: Math.min(100, (totalRaised / ROUND_CONFIG.target) * 100),
-      contributorCount: contributors.length,
+      contributorCount: confirmed.length,
+      pendingCount: contributors.filter((c) => c.status !== 'confirmed').length,
       totalExpenses,
     };
   }, [contributors]);
@@ -956,11 +958,15 @@ export default function Invest() {
             className="w-full max-w-md rounded-3xl bg-[#1a1a28] p-8 text-center"
           >
             <div className="mb-4 text-5xl">🎉</div>
-            <h2 className="font-display text-2xl font-bold text-[#f0a500]">Thank you!</h2>
+            <h2 className="font-display text-2xl font-bold text-[#f0a500]">Pledge received!</h2>
             <p className="mt-3 text-sm text-[#a8a39a]">
-              Your pledge has been recorded. You'll receive a confirmation email with
-              payment instructions and your SAFE agreement.
+              Your contribution is <strong className="text-[#ffa42b]">pending approval</strong>. Once payment
+              is verified by the founding team, your tokens will be allocated and your
+              name will appear on the backers board.
             </p>
+            <div className="mt-4 rounded-xl bg-[#0a0a0f] p-3 text-xs text-[#6e6a63]">
+              Status: Pending → Payment verified → Admin approved → Tokens allocated
+            </div>
             <button
               onClick={() => setSubmitted(false)}
               className="mt-6 rounded-full bg-[#f0a500] px-6 py-3 text-sm font-bold text-[#0a0a0f]"

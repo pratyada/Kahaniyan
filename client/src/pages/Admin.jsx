@@ -5,7 +5,8 @@ import { useAdmin } from '../hooks/useAdmin.jsx';
 import { useAuth } from '../hooks/useAuth.jsx';
 import { RELIGIONS, COUNTRIES } from '../utils/constants.js';
 import { APP_NAME, APP_VERSION } from '../utils/version.js';
-import { GA_MEASUREMENT_ID } from '../lib/firebase.js';
+import { GA_MEASUREMENT_ID, db } from '../lib/firebase.js';
+import { doc, setDoc, collection, getDocs } from 'firebase/firestore';
 
 const STATUS_COLORS = {
   active: '#7ad9a1',
@@ -36,6 +37,26 @@ export default function Admin() {
   const [newAdminEmail, setNewAdminEmail] = useState('');
   const [newTeamEmail, setNewTeamEmail] = useState('');
   const [newTeamRole, setNewTeamRole] = useState('tester');
+  const [investors, setInvestors] = useState([]);
+
+  // Load investors
+  useEffect(() => {
+    if (!isAdmin || !db) return;
+    (async () => {
+      try {
+        const snap = await getDocs(collection(db, 'investors'));
+        const list = [];
+        snap.forEach((d) => list.push({ id: d.id, ...d.data() }));
+        setInvestors(list.sort((a, b) => new Date(b.createdAt || 0) - new Date(a.createdAt || 0)));
+      } catch { /* ignore */ }
+    })();
+  }, [isAdmin]);
+
+  const updateInvestorStatus = async (uid, status) => {
+    if (!db) return;
+    await setDoc(doc(db, 'investors', uid), { status }, { merge: true });
+    setInvestors((prev) => prev.map((i) => i.id === uid ? { ...i, status } : i));
+  };
   const [tab, setTab] = useState('overview');
   const [expandedUser, setExpandedUser] = useState(null);
   const [searchQuery, setSearchQuery] = useState('');
@@ -102,6 +123,7 @@ export default function Admin() {
     { key: 'usage', label: 'Usage & Costs', icon: '💰' },
     { key: 'team', label: `Team (${team.length})`, icon: '👥' },
     { key: 'emails', label: `Emails (${allEmails.length})`, icon: '📧' },
+    { key: 'investors', label: 'Investors', icon: '🤝' },
     { key: 'admins', label: 'Admins', icon: '🔑' },
   ];
 
@@ -1064,6 +1086,99 @@ export default function Admin() {
         )}
 
         {/* ═══ ADMINS ═══ */}
+        {/* ═══ INVESTORS ═══ */}
+        {tab === 'investors' && (
+          <div className="space-y-4">
+            <div className="grid gap-3 sm:grid-cols-3">
+              <div className="rounded-2xl bg-[#1a1a28] p-4 text-center">
+                <div className="text-2xl font-bold text-[#f0a500]">{investors.filter((i) => i.status === 'confirmed').length}</div>
+                <div className="text-[10px] uppercase tracking-wider text-[#6e6a63]">Confirmed</div>
+              </div>
+              <div className="rounded-2xl bg-[#1a1a28] p-4 text-center">
+                <div className="text-2xl font-bold text-[#ffa42b]">{investors.filter((i) => i.status !== 'confirmed' && i.status !== 'rejected').length}</div>
+                <div className="text-[10px] uppercase tracking-wider text-[#6e6a63]">Pending</div>
+              </div>
+              <div className="rounded-2xl bg-[#1a1a28] p-4 text-center">
+                <div className="text-2xl font-bold text-[#f0a500]">
+                  CA${investors.filter((i) => i.status === 'confirmed').reduce((s, i) => s + (i.amount || 0), 0).toLocaleString()}
+                </div>
+                <div className="text-[10px] uppercase tracking-wider text-[#6e6a63]">Confirmed raised</div>
+              </div>
+            </div>
+
+            <div className="overflow-x-auto rounded-2xl bg-[#1a1a28]">
+              <table className="w-full min-w-[700px] text-left text-sm">
+                <thead>
+                  <tr className="border-b border-white/10 text-[10px] font-bold uppercase tracking-wider text-[#6e6a63]">
+                    <th className="px-4 py-3">Backer</th>
+                    <th className="px-4 py-3">Email</th>
+                    <th className="px-4 py-3">Role</th>
+                    <th className="px-4 py-3 text-right">Amount</th>
+                    <th className="px-4 py-3 text-right">Tokens</th>
+                    <th className="px-4 py-3 text-center">Status</th>
+                    <th className="px-4 py-3">Date</th>
+                    <th className="px-4 py-3">Actions</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {investors.length === 0 ? (
+                    <tr><td colSpan={8} className="px-4 py-8 text-center text-[#6e6a63]">No investors yet.</td></tr>
+                  ) : investors.map((inv) => {
+                    const statusColor = inv.status === 'confirmed' ? '#7ad9a1' : inv.status === 'rejected' ? '#f3727f' : '#ffa42b';
+                    return (
+                      <tr key={inv.id} className="border-b border-white/5">
+                        <td className="px-4 py-3">
+                          <div className="flex items-center gap-2">
+                            {inv.photoURL ? (
+                              <img src={inv.photoURL} alt="" className="h-7 w-7 rounded-full" referrerPolicy="no-referrer" />
+                            ) : <span className="text-lg">👤</span>}
+                            <span className="font-bold text-[#f5f0e8]">{inv.displayName || '—'}</span>
+                          </div>
+                        </td>
+                        <td className="px-4 py-3 font-mono text-xs text-[#a8a39a]">{inv.email}</td>
+                        <td className="px-4 py-3 text-xs text-[#a8a39a]">{inv.roleLabel || inv.role}</td>
+                        <td className="px-4 py-3 text-right font-bold text-[#f5f0e8]">CA${inv.amount?.toLocaleString()}</td>
+                        <td className="px-4 py-3 text-right font-bold text-[#f0a500]">{inv.tokens?.toLocaleString()}</td>
+                        <td className="px-4 py-3 text-center">
+                          <span className="rounded-full px-2 py-0.5 text-[9px] font-bold uppercase" style={{ background: `${statusColor}22`, color: statusColor }}>
+                            {inv.status || 'pledged'}
+                          </span>
+                        </td>
+                        <td className="px-4 py-3 text-xs text-[#6e6a63]">
+                          {inv.createdAt ? new Date(inv.createdAt).toLocaleDateString(undefined, { month: 'short', day: 'numeric' }) : '—'}
+                        </td>
+                        <td className="px-4 py-3">
+                          <div className="flex gap-1">
+                            {inv.status !== 'confirmed' && (
+                              <button
+                                onClick={() => updateInvestorStatus(inv.id, 'confirmed')}
+                                className="rounded-lg bg-[#7ad9a1]/10 px-2 py-1 text-[9px] font-bold text-[#7ad9a1]"
+                              >✓ Confirm</button>
+                            )}
+                            {inv.status !== 'rejected' && inv.status !== 'confirmed' && (
+                              <button
+                                onClick={() => updateInvestorStatus(inv.id, 'rejected')}
+                                className="rounded-lg bg-[#f3727f]/10 px-2 py-1 text-[9px] font-bold text-[#f3727f]"
+                              >✕ Reject</button>
+                            )}
+                            {inv.status === 'confirmed' && (
+                              <button
+                                onClick={() => updateInvestorStatus(inv.id, 'pending-payment')}
+                                className="rounded-lg bg-[#ffa42b]/10 px-2 py-1 text-[9px] font-bold text-[#ffa42b]"
+                              >↩ Revert</button>
+                            )}
+                          </div>
+                        </td>
+                      </tr>
+                    );
+                  })}
+                </tbody>
+              </table>
+            </div>
+
+          </div>
+        )}
+
         {tab === 'admins' && (
           <div className="max-w-xl space-y-4">
             <div className="rounded-2xl bg-[#1a1a28] p-6">
