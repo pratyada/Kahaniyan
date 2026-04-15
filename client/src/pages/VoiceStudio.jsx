@@ -110,7 +110,7 @@ export default function VoiceStudio() {
       });
       if (navigator.share) {
         await navigator.share({
-          title: 'Record your voice for Qissaa',
+          title: 'Record your voice for My Sleepy Tale',
           text: `${char.name}, please record your voice for bedtime stories! Link expires in 5 minutes.`,
           url: result.url,
         });

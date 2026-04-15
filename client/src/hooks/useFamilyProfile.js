@@ -23,8 +23,8 @@ import { defaultCharactersFromProfile } from '../utils/constants.js';
 //   - Missing characters/beliefs → auto-populated
 // ─────────────────────────────────────────────────────────────
 
-const LS_PROFILES = 'qissaa:profiles';
-const LS_ACTIVE = 'qissaa:activeProfile';
+const LS_PROFILES = 'mst:profiles';
+const LS_ACTIVE = 'mst:activeProfile';
 const LEGACY_KEY = 'kahaniyo:familyProfile';
 
 function migrate(profile) {
@@ -128,7 +128,7 @@ export function FamilyProfileProvider({ children }) {
           }
 
           if (cloudProfiles.length > 0) {
-            console.log('[Qissaa:profile] Loaded from Firestore:', cloudProfiles.length, 'profiles, name:', cloudProfiles[cloudIdx]?.childName);
+            console.log('[My Sleepy Tale:profile] Loaded from Firestore:', cloudProfiles.length, 'profiles, name:', cloudProfiles[cloudIdx]?.childName);
             setProfiles(cloudProfiles);
             setActiveIndex(cloudIdx);
             persistLS(cloudProfiles, cloudIdx);
@@ -206,7 +206,7 @@ export function FamilyProfileProvider({ children }) {
       if (uid && db && !savingRef.current) {
         savingRef.current = true;
         try {
-          console.log('[Qissaa:profile] Syncing to Firestore...');
+          console.log('[My Sleepy Tale:profile] Syncing to Firestore...');
           // Include auth metadata so admin can see emails + last activity
           const cu = firebaseAuth?.currentUser;
           const authMeta = cu
@@ -222,9 +222,9 @@ export function FamilyProfileProvider({ children }) {
             activeIndex: nextIdx,
             ...authMeta,
           }));
-          console.log('[Qissaa:profile] Firestore sync done');
+          console.log('[My Sleepy Tale:profile] Firestore sync done');
         } catch (e) {
-          console.error('[Qissaa:profile] Firestore write FAILED:', e.message);
+          console.error('[My Sleepy Tale:profile] Firestore write FAILED:', e.message);
         } finally {
           savingRef.current = false;
         }

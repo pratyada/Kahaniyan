@@ -1,6 +1,6 @@
 {
-  "name": "qissaa",
-  "version": "0.0.8",
+  "name": "my-sleepy-tale",
+  "version": "0.0.9",
   "private": true,
   "type": "module",
   "description": "Dreemo — bedtime stories that grow with your child. POC build (no external APIs).",

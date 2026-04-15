@@ -121,7 +121,7 @@ export default function Home() {
     // Server will return 429 if the user is truly over limit.
     const selectedCharacters = characters.filter((c) => selectedCharIds.includes(c.id) || c.relation === 'self');
     try {
-      console.log('[Qissaa] Generating story...', { value, duration, mode, castMode: mode === 'cast', selectedCast: selectedCharacters.map(c => c.name) });
+      console.log('[My Sleepy Tale] Generating story...', { value, duration, mode, castMode: mode === 'cast', selectedCast: selectedCharacters.map(c => c.name) });
       const story = await generate({
         profile,
         value,
@@ -132,15 +132,15 @@ export default function Home() {
         whisperOverridesValue: mode === 'whisper' ? whisperOverridesValue : false,
         selectedCharacters: mode === 'cast' ? selectedCharacters : undefined,
       });
-      console.log('[Qissaa] Story generated:', story.title, '| loading into player...');
+      console.log('[My Sleepy Tale] Story generated:', story.title, '| loading into player...');
       load(story);
       // Wait for React state to propagate before navigating
       setTimeout(() => {
-        console.log('[Qissaa] Navigating to /player...');
+        console.log('[My Sleepy Tale] Navigating to /player...');
         navigate('/player');
       }, 50);
     } catch (e) {
-      console.error('[Qissaa] Story generation FAILED:', e);
+      console.error('[My Sleepy Tale] Story generation FAILED:', e);
       setStoryError(e.message || 'Could not generate story. Please try again.');
     }
   };

@@ -1,12 +1,13 @@
 import { useState, useEffect, useMemo } from 'react';
-import { motion } from 'framer-motion';
+import { useSearchParams } from 'react-router-dom';
+import { motion, AnimatePresence } from 'framer-motion';
 import { useAuth } from '../hooks/useAuth.jsx';
 import { doc, getDoc, setDoc, collection, getDocs } from 'firebase/firestore';
 import { db } from '../lib/firebase.js';
 import { APP_NAME, APP_VERSION } from '../utils/version.js';
 
 // ─────────────────────────────────────────────────────────────
-// Qissaa Crowdfunding — Friends & Family Round
+// My Sleepy Tale Crowdfunding — Friends & Family Round
 //
 // Blockchain-inspired transparent equity model:
 //   - Every dollar contributed = equity tokens
@@ -35,6 +36,9 @@ const FOUNDERS = [
     tokens: 3000000,
     description: 'Idea originator. Product vision, market strategy, and business development.',
     emoji: '🧠',
+    linkedin: '',
+    bio: 'Conceptualized My Sleepy Tale from a personal need — bedtime stories that reflect cultural identity. Leading product direction, user research, and go-to-market strategy.',
+    skills: ['Product Strategy', 'Market Research', 'Business Development', 'UX Design'],
   },
   {
     name: 'Prateek',
@@ -42,6 +46,9 @@ const FOUNDERS = [
     tokens: 3000000,
     description: 'Full-stack development, AI/ML integration, infrastructure, and all technical execution.',
     emoji: '⚙️',
+    linkedin: '',
+    bio: 'Built the entire My Sleepy Tale platform from scratch in 5 days — React, Firebase, OpenAI TTS, Stripe, admin dashboard. 200+ hours of focused engineering.',
+    skills: ['Full-Stack Engineering', 'AI/ML Integration', 'Cloud Architecture', 'Product Development'],
   },
 ];
 
@@ -124,10 +131,21 @@ export default function Invest() {
   const { user } = useAuth();
   const [contributors, setContributors] = useState([]);
   const [showForm, setShowForm] = useState(false);
-  const [formData, setFormData] = useState({ amount: '', role: 'investor', message: '' });
+  const [formData, setFormData] = useState({ amount: '', role: 'investor', message: '', linkedin: '', isPublic: true });
   const [submitting, setSubmitting] = useState(false);
   const [submitted, setSubmitted] = useState(false);
   const [tab, setTab] = useState('overview');
+  const [founderModal, setFounderModal] = useState(null);
+  const [investorModal, setInvestorModal] = useState(null);
+  const [searchParams, setSearchParams] = useSearchParams();
+
+  // Handle Stripe return
+  useEffect(() => {
+    if (searchParams.get('paid') === 'true') {
+      setSubmitted(true);
+      setSearchParams({}, { replace: true });
+    }
+  }, [searchParams, setSearchParams]);
 
   // Load contributors
   useEffect(() => {
@@ -170,7 +188,9 @@ export default function Invest() {
       const amount = Number(formData.amount);
       const role = ROLES.find((r) => r.key === formData.role) || ROLES[0];
       const tokens = Math.floor((amount / ROUND_CONFIG.tokenPrice) * role.multiplier);
-      const data = {
+
+      // Save investor profile to Firestore first
+      await setDoc(doc(db, 'investors', user.uid), {
         email: user.email,
         displayName: user.displayName || '',
         photoURL: user.photoURL || '',
@@ -180,15 +200,35 @@ export default function Invest() {
         multiplier: role.multiplier,
         tokens,
         message: formData.message.trim(),
-        status: 'pledged',
+        linkedin: formData.linkedin.trim(),
+        isPublic: formData.isPublic,
+        status: 'pending-payment',
         createdAt: new Date().toISOString(),
         uid: user.uid,
-      };
-      await setDoc(doc(db, 'investors', user.uid), data);
-      setSubmitted(true);
-      setShowForm(false);
+      });
+
+      // Create Stripe checkout
+      const res = await fetch('/api/invest-checkout', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          amount,
+          role: role.label,
+          uid: user.uid,
+          email: user.email,
+          displayName: user.displayName || '',
+        }),
+      });
+      const data = await res.json();
+      if (data.url) {
+        // Update status to redirecting
+        await setDoc(doc(db, 'investors', user.uid), { status: 'redirected-to-stripe' }, { merge: true });
+        window.location.href = data.url;
+      } else {
+        alert(data.error || 'Could not start payment');
+      }
     } catch (e) {
-      alert('Failed to submit: ' + e.message);
+      alert('Failed: ' + e.message);
     }
     setSubmitting(false);
   };
@@ -278,7 +318,7 @@ export default function Invest() {
         {/* ═══ OVERVIEW ═══ */}
         {tab === 'overview' && (
           <div className="space-y-8">
-            {/* What is Qissaa */}
+            {/* What is My Sleepy Tale */}
             <section className="grid gap-6 md:grid-cols-2">
               <div className="rounded-2xl bg-[#1a1a28] p-6">
                 <h3 className="mb-3 font-display text-xl font-bold text-[#f0a500]">The problem</h3>
@@ -835,26 +875,63 @@ export default function Invest() {
 
               <div>
                 <label className="mb-1 block text-xs font-bold uppercase tracking-wider text-[#6e6a63]">
-                  Message (optional)
+                  LinkedIn profile (optional)
+                </label>
+                <input
+                  type="url"
+                  value={formData.linkedin}
+                  onChange={(e) => setFormData({ ...formData, linkedin: e.target.value })}
+                  placeholder="https://linkedin.com/in/yourname"
+                  className="w-full rounded-xl bg-[#0a0a0f] px-4 py-3 text-sm text-[#f5f0e8] outline-none ring-1 ring-white/10 focus:ring-[#f0a500]"
+                />
+                <p className="mt-1 text-[10px] text-[#6e6a63]">Shown on your backer profile to inspire others</p>
+              </div>
+
+              <div>
+                <label className="mb-1 block text-xs font-bold uppercase tracking-wider text-[#6e6a63]">
+                  Why you believe in this project (optional)
                 </label>
                 <textarea
                   value={formData.message}
                   onChange={(e) => setFormData({ ...formData, message: e.target.value })}
-                  placeholder="Why you believe in this project..."
+                  placeholder="A few words about why you're backing My Sleepy Tale..."
                   rows={2}
                   className="w-full rounded-xl bg-[#0a0a0f] px-4 py-3 text-sm text-[#f5f0e8] outline-none ring-1 ring-white/10 focus:ring-[#f0a500]"
                 />
               </div>
+
+              {/* Public/private toggle */}
+              <button
+                type="button"
+                onClick={() => setFormData({ ...formData, isPublic: !formData.isPublic })}
+                className="flex w-full items-center justify-between rounded-xl bg-[#0a0a0f] px-4 py-3 ring-1 ring-white/10"
+              >
+                <div>
+                  <div className="text-sm font-bold text-[#f5f0e8]">
+                    {formData.isPublic ? '🌍 Public profile' : '🔒 Private contribution'}
+                  </div>
+                  <div className="text-[10px] text-[#6e6a63]">
+                    {formData.isPublic ? 'Your name, role, and amount visible to other backers' : 'Only founders can see your contribution'}
+                  </div>
+                </div>
+                <span className={`relative inline-flex h-6 w-10 items-center rounded-full transition ${
+                  formData.isPublic ? 'bg-[#f0a500]' : 'bg-[#2a2a38]'
+                }`}>
+                  <span className={`inline-block h-4 w-4 transform rounded-full bg-[#0a0a0f] transition ${
+                    formData.isPublic ? 'translate-x-5' : 'translate-x-1'
+                  }`} />
+                </span>
+              </button>
 
               <button
                 onClick={handleSubmit}
                 disabled={submitting || !formData.amount || Number(formData.amount) < ROUND_CONFIG.minInvestment}
                 className="w-full rounded-xl bg-[#f0a500] py-4 text-lg font-bold text-[#0a0a0f] disabled:opacity-40"
               >
-                {submitting ? 'Submitting...' : 'Pledge my contribution'}
+                {submitting ? 'Processing...' : `Pay CA$${formData.amount || '0'} via Stripe`}
               </button>
               <p className="text-center text-[10px] text-[#6e6a63]">
-                This is a pledge. Payment details will be shared after confirmation.
+                Secure payment via Stripe. Your contribution is recorded immediately.
               </p>
             </div>
           </motion.div>

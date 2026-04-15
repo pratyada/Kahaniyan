@@ -73,7 +73,7 @@ export default function Settings() {
         <div className="mb-4 rounded-2xl bg-green-900/30 p-4 text-center ring-1 ring-green-400/30">
           <div className="text-2xl">🎉</div>
           <div className="mt-1 text-sm font-bold text-green-400">
-            Welcome to Qissaa {upgradeSuccess.charAt(0).toUpperCase() + upgradeSuccess.slice(1)}!
+            Welcome to My Sleepy Tale {upgradeSuccess.charAt(0).toUpperCase() + upgradeSuccess.slice(1)}!
           </div>
           <div className="mt-1 text-xs text-green-400/70">
             Your account is being upgraded. It may take a moment to reflect.
@@ -188,16 +188,15 @@ export default function Settings() {
         <div className="flex items-start gap-3">
           <span className="text-3xl">📖</span>
           <div>
-            <h3 className="font-display text-lg font-bold text-gold">Qissaa</h3>
+            <h3 className="font-display text-lg font-bold text-gold">My Sleepy Tale</h3>
             <p className="mt-1 font-story text-[13px] leading-relaxed text-ink-muted">
-              <strong className="text-ink">Qissaa</strong> (قصّہ / क़िस्सा) — from the Arabic
-              "qissa," meaning a tale, a narrative, a story. In Urdu and Hindi, it's the word
-              grandmothers use at bedtime: <em>"Ek qissa sunao na..."</em> — "Tell me a story."
+              Every child deserves a bedtime story that sounds like home — with their name,
+              their family, their values, and the warm voice of someone who loves them.
             </p>
             <p className="mt-2 font-story text-[13px] leading-relaxed text-ink-muted">
-              Every culture has this word. Arabic: qissa. Hindi: kahani. Tamil: kathai.
-              Swahili: hadithi. Qissaa is built for all of them — personalized bedtime stories
-              rooted in your family's values, voices, and beliefs.
+              <strong className="text-ink">My Sleepy Tale</strong> is personalized AI bedtime
+              storytelling — rooted in your culture, narrated in a voice that feels familiar,
+              and woven fresh every single night. One story. One child. One gentle slide into sleep.
             </p>
           </div>
         </div>

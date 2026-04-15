@@ -6,7 +6,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 class PlayerErrorBoundary extends Component {
   constructor(props) { super(props); this.state = { error: null }; }
   static getDerivedStateFromError(error) { return { error }; }
-  componentDidCatch(error, info) { console.error('[Qissaa:Player] CRASH:', error.message, info.componentStack?.slice(0, 300)); }
+  componentDidCatch(error, info) { console.error('[My Sleepy Tale:Player] CRASH:', error.message, info.componentStack?.slice(0, 300)); }
   render() {
     if (this.state.error) {
       return (
@@ -89,12 +89,12 @@ function PlayerInner() {
   // Auto-play when current story is available
   useEffect(() => {
     if (!current) {
-      console.warn('[Qissaa:Player] Waiting for story...');
+      console.warn('[My Sleepy Tale:Player] Waiting for story...');
       return;
     }
     if (startedRef.current) return;
     startedRef.current = true;
-    console.log('[Qissaa:Player] Starting playback:', current.title);
+    console.log('[My Sleepy Tale:Player] Starting playback:', current.title);
 
     // Start ambient noise if enabled
     if (profile?.whiteNoiseEnabled) {
@@ -136,7 +136,7 @@ function PlayerInner() {
           setIsPlaying(false);
         }
       } catch (e) {
-        console.warn('[Qissaa:Player] TTS failed, using browser voice:', e.message);
+        console.warn('[My Sleepy Tale:Player] TTS failed, using browser voice:', e.message);
         setUsingTTS(false);
         webSpeech.speak({
           text: current.text,
@@ -202,10 +202,10 @@ function PlayerInner() {
 
   const shareStory = async () => {
     const url = `${window.location.origin}/player?storyId=${encodeURIComponent(current.id)}`;
-    const text = `${current.title} — a Qissaa bedtime story for ${profile?.childName}`;
+    const text = `${current.title} — a My Sleepy Tale bedtime story for ${profile?.childName}`;
     try {
       if (navigator.share) {
-        await navigator.share({ title: 'Qissaa story', text, url });
+        await navigator.share({ title: 'My Sleepy Tale story', text, url });
       } else {
         await navigator.clipboard.writeText(url);
         alert('Story link copied to clipboard');

@@ -11,9 +11,9 @@ const GUIDES = [
     title: 'Tonight — 3 ways to start a story',
     time: '30 sec read',
     body: [
-      '💭 "Today this happened" — type one sentence about how your child is feeling. Qissaa weaves a bedtime story around it.',
+      '💭 "Today this happened" — type one sentence about how your child is feeling. My Sleepy Tale weaves a bedtime story around it.',
       '🪷 "Wisdom story" — pick a tradition and a theme. Tap any story to play instantly. No generation, no wait.',
-      '👨‍👩‍👧 "Choose the cast" — select 2–5 characters (family, pets, imaginary friends). Qissaa builds a fresh story starring all of them.',
+      '👨‍👩‍👧 "Choose the cast" — select 2–5 characters (family, pets, imaginary friends). My Sleepy Tale builds a fresh story starring all of them.',
     ],
   },
   {
@@ -35,9 +35,9 @@ const GUIDES = [
     title: 'Wisdom Stories — many beliefs, one app',
     time: '30 sec read',
     body: [
-      'Qissaa has hand-written stories from Hindu, Muslim, Christian, Sikh, Buddhist, Jain, and Jewish traditions.',
+      'My Sleepy Tale has hand-written stories from Hindu, Muslim, Christian, Sikh, Buddhist, Jain, and Jewish traditions.',
       'Same theme (like compassion to animals) told through different cultures — so your child grows up rooted AND open-minded.',
-      'Go to More → Edit family → Belief to choose yours. Qissaa prioritizes your tradition first.',
+      'Go to More → Edit family → Belief to choose yours. My Sleepy Tale prioritizes your tradition first.',
       'Toggle "Also show stories from other cultures" in More → Content if you want cross-culture stories too.',
     ],
   },
@@ -98,20 +98,24 @@ const GUIDES = [
   },
 ];
 
-// ─── BLOGS — soft marketing, storytelling about Qissaa ───
+// ─── BLOGS — soft marketing, storytelling about My Sleepy Tale ───
 const BLOGS = [
   {
-    id: 'what-is-qissaa',
+    id: 'what-is-mst',
     icon: '📖',
-    title: 'What does Qissaa mean?',
+    title: 'Why My Sleepy Tale?',
     time: '2 min read',
-    body: `Qissaa (قصّہ / क़िस्सा) comes from the Arabic word "qissa" — a tale, a narrative, a story passed from one generation to the next.
+    body: `Every parent knows the moment. The lights are dim, the child is in bed, and a small voice says: "Tell me a story."
 
-In Urdu and Hindi, "kissa" or "qissa" is the word grandmothers use at bedtime: "Ek qissa sunao na..." — "Tell me a story." It carries warmth, intimacy, and the trust between a child and the person whose voice makes the world feel safe.
+That moment — the last 15 minutes before sleep — is the most neurologically receptive window of a child's entire day. What they hear then shapes how they dream, what they believe, and who they become.
 
-We named this app Qissaa because bedtime stories are not content. They are not media. They are the oldest technology in human parenting — a voice, a child, a dark room, and a tale that teaches without lecturing, that soothes without sedating, that makes the world a little more navigable by morning.
+My Sleepy Tale exists for that moment. We built it because we couldn't find a bedtime story app that understood our families — their names, their grandparents, their pets, their cultural values, their language, their accent.
 
-Every culture has its own word for this. In Arabic: qissa. In Hindi: kahani. In Tamil: kathai. In Swahili: hadithi. Qissaa is built for all of them.`,
+So we built one. A story that knows your child by name. That weaves in their grandmother and their puppy. That teaches honesty through the lens of your own tradition. That narrates in a voice warm enough to make a dark room feel safe.
+
+My Sleepy Tale is not screen time. It is voice time. The screen is only the remote control. You tap one button, put the phone face-down, and a warm voice fills the room until your child's breathing slows and their eyes close.
+
+That is what a sleepy tale is. A bridge between the day that was, and the dreams that will be.`,
   },
   {
     id: 'why-bedtime',
@@ -124,11 +128,11 @@ During the transition from wakefulness to sleep, a child's brain moves into a th
 
 This is why a bedtime story is not a luxury. It is a developmental tool. A child who hears a story about courage before sleep is literally more likely to act with courage the next day. A child who hears a story about kindness carries that template into their playground interactions.
 
-Qissaa is built around this insight. We don't just generate stories. We match the story's emotional core — its value — to the child's developmental stage. Courage for a 3-year-old is not the same as courage for a 10-year-old. Honesty at 5 sounds different from honesty at 12.
+My Sleepy Tale is built around this insight. We don't just generate stories. We match the story's emotional core — its value — to the child's developmental stage. Courage for a 3-year-old is not the same as courage for a 10-year-old. Honesty at 5 sounds different from honesty at 12.
 
 The goal is simple: own the last 15 minutes of your child's day. Make them count. Make them soft, warm, personal, and rooted in the values your family actually believes in.
 
-That's what Qissaa does. One story, every night, for the child you know best.`,
+That's what My Sleepy Tale does. One story, every night, for the child you know best.`,
   },
   {
     id: 'personalization',
@@ -141,7 +145,7 @@ When a bedtime story says "Once upon a time there was a child," a listener hears
 
 This is not a gimmick. This is the difference between a story that entertains and a story that teaches. Personalization — using the child's real name, their real family members, their real pet — turns a bedtime story into a rehearsal. The child practices courage, patience, honesty, and kindness from inside the narrative, not from the outside looking in.
 
-Qissaa personalizes every story. Not just the name — the sibling, the grandparents, the pet, the cultural references, the food, the festivals. The story feels like home because it IS home, rearranged into a new adventure every night.`,
+My Sleepy Tale personalizes every story. Not just the name — the sibling, the grandparents, the pet, the cultural references, the food, the festivals. The story feels like home because it IS home, rearranged into a new adventure every night.`,
   },
   {
     id: 'screen-time',
@@ -150,13 +154,13 @@ Qissaa personalizes every story. Not just the name — the sibling, the grandpar
     time: '2 min read',
     body: `Parents worry about screen time. They should. The research on passive video consumption for children under 8 is clear and concerning — it reduces attention span, delays language development, and disrupts sleep onset.
 
-But Qissaa is not screen time. It is voice time.
+But My Sleepy Tale is not screen time. It is voice time.
 
 The screen is only the remote control. You open the app, tap one button, and put the phone face-down. What follows is a voice — a warm, paced, story-shaped voice — filling the dark room for 5, 10, or 15 minutes. The child's eyes are closed. Their brain is listening, imagining, building the world of the story inside their own head.
 
 This is the exact opposite of a screen. A screen gives you the images. A voice makes you build them yourself. That act of imagination is one of the most developmentally important things a child's brain can do.
 
-When you use Qissaa, you are not handing your child a device. You are handing them a storyteller. The device just happens to be how the storyteller arrives.
+When you use My Sleepy Tale, you are not handing your child a device. You are handing them a storyteller. The device just happens to be how the storyteller arrives.
 
 And when the story ends, the screen fades to black, and the room is quiet, and the child is asleep. That is not screen time. That is parenting.`,
   },
@@ -169,7 +173,7 @@ And when the story ends, the screen fades to black, and the room is quiet, and t
 
 Too much cultural specificity and the child grows up in a bubble. Too much universalism and the child grows up rootless — knowing about everything, belonging to nothing.
 
-Qissaa solves this with a simple design choice: we tell the same lesson from many traditions.
+My Sleepy Tale solves this with a simple design choice: we tell the same lesson from many traditions.
 
 Compassion to animals is taught by Krishna and the squirrel, by Prophet Muhammad and the crying camel, by Jesus and the birds, by Prince Siddhartha and the wounded swan, by Guru Nanak and the true bargain, by Mahavir and the tiny ant.
 
@@ -193,9 +197,9 @@ export default function Guides() {
         <p className="ui-label">Learn</p>
         <h1 className="display-title mt-1 text-ink">
           {tab === 'guides' ? (
-            <>How to use <span className="text-gold">Qissaa</span></>
+            <>How to use <span className="text-gold">My Sleepy Tale</span></>
           ) : (
-            <>Why <span className="text-gold">Qissaa</span> matters</>
+            <>Why <span className="text-gold">My Sleepy Tale</span> matters</>
           )}
         </h1>
         <p className="mt-2 text-sm text-ink-muted">
@@ -216,7 +220,7 @@ export default function Guides() {
           ✨ Guides
         </button>
         <button
-          onClick={() => { setTab('blogs'); setOpenId('what-is-qissaa'); }}
+          onClick={() => { setTab('blogs'); setOpenId('what-is-mst'); }}
           className={`flex-1 rounded-pill py-2.5 text-center text-xs font-bold uppercase tracking-wider transition ${
             tab === 'blogs' ? 'bg-gold text-bg-base' : 'text-ink-muted'
           }`}

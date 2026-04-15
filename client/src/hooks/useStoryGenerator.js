@@ -25,7 +25,7 @@ export function useStoryGenerator() {
     setLoading(true);
     setError(null);
     try {
-      console.log('[Qissaa:gen] Building request...');
+      console.log('[My Sleepy Tale:gen] Building request...');
 
       let body;
       try {
@@ -42,12 +42,12 @@ export function useStoryGenerator() {
           selectedCharacters,
         });
       } catch (buildErr) {
-        console.error('[Qissaa:gen] buildStoryRequest crashed:', buildErr);
+        console.error('[My Sleepy Tale:gen] buildStoryRequest crashed:', buildErr);
         throw new Error('Failed to build story request: ' + buildErr.message);
       }
 
       const uid = auth?.currentUser?.uid || null;
-      console.log('[Qissaa:gen] Calling API...', { uid: uid?.slice(0, 8), value, duration });
+      console.log('[My Sleepy Tale:gen] Calling API...', { uid: uid?.slice(0, 8), value, duration });
 
       const res = await fetch(`${API_BASE}/api/generate-story`, {
         method: 'POST',
@@ -55,14 +55,14 @@ export function useStoryGenerator() {
         body: JSON.stringify({ ...body, uid }),
       });
 
-      console.log('[Qissaa:gen] API response:', res.status);
+      console.log('[My Sleepy Tale:gen] API response:', res.status);
 
       if (!res.ok) {
         const errData = await res.json().catch(() => ({}));
         throw new Error(errData.error || `Server returned ${res.status}`);
       }
       const story = await res.json();
-      console.log('[Qissaa:gen] Story received:', story.title);
+      console.log('[My Sleepy Tale:gen] Story received:', story.title);
 
       try {
         pushPlotType(profile?.childName || 'default', story.plotType);
@@ -84,12 +84,12 @@ export function useStoryGenerator() {
           ).catch(() => {}); // fire and forget
         }
       } catch (cacheErr) {
-        console.warn('[Qissaa:gen] Cache/save error (non-fatal):', cacheErr);
+        console.warn('[My Sleepy Tale:gen] Cache/save error (non-fatal):', cacheErr);
       }
 
       return story;
     } catch (e) {
-      console.error('[Qissaa:gen] FAILED:', e.message);
+      console.error('[My Sleepy Tale:gen] FAILED:', e.message);
       setError(e.message || 'Could not generate story');
       throw e;
     } finally {

@@ -37,7 +37,7 @@ export default async function handler(req, res) {
 
     // Create form data for ElevenLabs API
     const formData = new FormData();
-    formData.append('name', `Qissaa - ${name}`);
+    formData.append('name', `My Sleepy Tale - ${name}`);
     formData.append('description', description || `Voice clone for ${name} (${language || 'English'})`);
     formData.append('files', new Blob([audioBuffer], { type: 'audio/webm' }), `${name}.webm`);
 

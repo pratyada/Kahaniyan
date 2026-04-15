@@ -97,7 +97,7 @@ export default function WhisperBox({ value, onChange, overrideValue, onToggleOve
                     Let the whisper choose the value
                   </div>
                   <div className="mt-0.5 text-[11px] text-ink-muted">
-                    Qissaa will pick the best value (courage, kindness, patience…) based on what you wrote.
+                    My Sleepy Tale will pick the best value (courage, kindness, patience…) based on what you wrote.
                   </div>
                 </div>
                 <span

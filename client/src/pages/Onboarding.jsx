@@ -63,7 +63,7 @@ export default function Onboarding() {
         {/* Brand */}
         <div className="mb-2 flex items-center gap-2 text-gold">
           <span className="text-2xl">🌙</span>
-          <span className="font-display text-xl font-bold tracking-tight">Qissaa</span>
+          <span className="font-display text-xl font-bold tracking-tight">My Sleepy Tale</span>
         </div>
         <p className="mb-10 text-xs uppercase tracking-[0.18em] text-ink-muted">
           Step {step + 1} of {STEPS.length}

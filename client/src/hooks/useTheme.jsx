@@ -1,7 +1,7 @@
 import { createContext, createElement, useContext, useEffect, useState } from 'react';
 
 const ThemeCtx = createContext(null);
-const KEY = 'qissaa:theme';
+const KEY = 'mst:theme';
 
 export function ThemeProvider({ children }) {
   const [theme, setTheme] = useState(() => {

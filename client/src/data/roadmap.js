@@ -5,7 +5,7 @@
 export const ROADMAP = [
   {
     id: 'app-rename',
-    title: 'Rename app to Qissaa',
+    title: 'Rename app to My Sleepy Tale',
     impact: 'med',
     mvp: false,
     status: 'shipped',

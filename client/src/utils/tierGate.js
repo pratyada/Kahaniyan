@@ -44,7 +44,7 @@ export const TIERS = {
   annual: { label: 'Enterprise', price: 'CA$24.99/mo', storiesPerWeek: Infinity, maxDuration: 30, languageCount: Infinity, archiveDays: Infinity, customVoices: Infinity, childProfiles: 10, festivalPacks: true, offline: true, voiceCloning: true },
 };
 
-const USAGE_KEY = 'qissaa:usage';
+const USAGE_KEY = 'mst:usage';
 
 function loadUsage() {
   try {
