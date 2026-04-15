@@ -351,13 +351,13 @@ That night, {childName}, remember Birbal's line. When someone seems bigger or be
 ];
 
 export const TRADITIONS = [
-  { key: 'hindu', label: 'Hindu', icon: '🕉️' },
-  { key: 'muslim', label: 'Muslim', icon: '☪️' },
-  { key: 'christian', label: 'Christian', icon: '✝️' },
-  { key: 'sikh', label: 'Sikh', icon: '☬' },
-  { key: 'buddhist', label: 'Buddhist', icon: '☸️' },
-  { key: 'jain', label: 'Jain', icon: '🪷' },
-  { key: 'jewish', label: 'Jewish', icon: '✡️' },
+  { key: 'hindu', label: 'Hinduism', icon: '🕉️' },
+  { key: 'muslim', label: 'Islam', icon: '☪️' },
+  { key: 'christian', label: 'Christianity', icon: '✝️' },
+  { key: 'sikh', label: 'Sikhism', icon: '☬' },
+  { key: 'buddhist', label: 'Buddhism', icon: '☸️' },
+  { key: 'jain', label: 'Jainism', icon: '🪷' },
+  { key: 'jewish', label: 'Judaism', icon: '✡️' },
 ];
 
 export const THEMES = [
