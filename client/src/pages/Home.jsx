@@ -241,6 +241,14 @@ export default function Home() {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -8 }}
           >
+            {/* Connection note */}
+            <div className="mb-4 flex items-start gap-3 rounded-2xl bg-bg-surface p-3 ring-1 ring-white/5">
+              <span className="mt-0.5 text-lg">💡</span>
+              <p className="text-[12px] leading-relaxed text-ink-muted">
+                Tell us what happened today — a worry, a win, a feeling — and we'll weave tonight's story around it. The whisper below turns your child's real day into a bedtime lesson.
+              </p>
+            </div>
+
             <WhisperBox
               value={whisper}
               onChange={setWhisper}
