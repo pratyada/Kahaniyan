@@ -140,31 +140,63 @@ export function FamilyProfileProvider({ children }) {
         console.warn('Firestore read failed, using localStorage', e);
       }
 
-      // Firestore empty for this user — start fresh.
-      // Write auth metadata so admin dashboard can see their email.
-      try {
-        const cu = firebaseAuth?.currentUser;
-        if (cu) {
-          await setDoc(userDocRef(newUid), {
-            email: cu.email || '',
-            displayName: cu.displayName || '',
-            photoURL: cu.photoURL || '',
-            lastActiveAt: new Date().toISOString(),
-            profiles: [],
-            activeIndex: 0,
-            geo: {
-              timezone: Intl.DateTimeFormat().resolvedOptions().timeZone || '',
-              language: navigator.language || '',
-              updatedAt: new Date().toISOString(),
-            },
-          });
+      // Firestore empty for this user.
+      // Check if localStorage has data from pre-login browsing/onboarding.
+      // If yes, carry it over to Firestore (seamless signup experience).
+      const local = loadFromLS();
+      const localIdx = loadActiveFromLS();
+      const cu = firebaseAuth?.currentUser;
+
+      if (local.length > 0 && local[0]?.childName) {
+        // User onboarded before signing in — migrate local data to Firestore
+        console.log('[My Sleepy Tale:profile] Migrating local profile to Firestore:', local[0]?.childName);
+        try {
+          if (cu) {
+            await setDoc(userDocRef(newUid), stripUndefined({
+              email: cu.email || '',
+              displayName: cu.displayName || '',
+              photoURL: cu.photoURL || '',
+              lastActiveAt: new Date().toISOString(),
+              profiles: local,
+              activeIndex: localIdx,
+              geo: {
+                timezone: Intl.DateTimeFormat().resolvedOptions().timeZone || '',
+                language: navigator.language || '',
+                updatedAt: new Date().toISOString(),
+              },
+            }));
+          }
+        } catch {
+          // non-critical — data still in localStorage
         }
-      } catch {
-        // non-critical
+        setProfiles(local);
+        setActiveIndex(Math.min(localIdx, local.length - 1));
+        setReady(true);
+      } else {
+        // Truly new user — no local data either
+        try {
+          if (cu) {
+            await setDoc(userDocRef(newUid), {
+              email: cu.email || '',
+              displayName: cu.displayName || '',
+              photoURL: cu.photoURL || '',
+              lastActiveAt: new Date().toISOString(),
+              profiles: [],
+              activeIndex: 0,
+              geo: {
+                timezone: Intl.DateTimeFormat().resolvedOptions().timeZone || '',
+                language: navigator.language || '',
+                updatedAt: new Date().toISOString(),
+              },
+            });
+          }
+        } catch {
+          // non-critical
+        }
+        setProfiles([]);
+        setActiveIndex(0);
+        setReady(true);
       }
-      setProfiles([]);
-      setActiveIndex(0);
-      setReady(true);
     } else {
       // No Firebase user — localStorage only
       const local = loadFromLS();
