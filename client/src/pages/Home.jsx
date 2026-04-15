@@ -188,22 +188,25 @@ export default function Home() {
 
       {/* HERO */}
       <header className="mb-8">
-        <p className="ui-label mb-1">{greeting}, <span className="text-gold">by My Sleepy Tale</span></p>
-        <h1 className="display-title mt-2 text-ink">
-          A story for <span className="text-gold">{profile?.childName || 'your child'}</span>
-        </h1>
-        <p className="mt-3 text-sm text-ink-muted">
-          What kind of bedtime story tonight?
-        </p>
-        <div className="mt-4 inline-flex items-center gap-2 rounded-full bg-bg-surface px-3 py-1.5 ring-1 ring-white/5">
-          <span className="h-1.5 w-1.5 rounded-full bg-gold" />
-          <span className="text-[11px] font-bold uppercase tracking-wider text-ink-muted">
-            {isUnlimited
-              ? 'Unlimited'
-              : tier === 'free'
-              ? `${remaining} ${remaining === 1 ? 'story' : 'stories'} left this week`
-              : 'Unlimited stories'}
-          </span>
+        <div className="flex items-start justify-between">
+          <div>
+            <h1 className="display-title text-ink">
+              A story for <span className="text-gold">{profile?.childName || 'your child'}</span>
+            </h1>
+            <p className="mt-2 text-sm text-ink-muted">
+              What kind of bedtime story tonight?
+            </p>
+          </div>
+          <div className="shrink-0 mt-1 inline-flex items-center gap-1.5 rounded-full bg-bg-surface px-2.5 py-1 ring-1 ring-white/5">
+            <span className="h-1.5 w-1.5 rounded-full bg-gold" />
+            <span className="text-[10px] font-bold uppercase tracking-wider text-ink-muted">
+              {isUnlimited
+                ? 'Unlimited'
+                : tier === 'free'
+                ? `${remaining} left`
+                : 'Unlimited'}
+            </span>
+          </div>
         </div>
       </header>
 
