@@ -47,15 +47,15 @@ export const COUNTRIES = [
 ];
 
 export const RELIGIONS = [
-  { key: 'hindu', label: 'Hindu', icon: '🕉️' },
-  { key: 'muslim', label: 'Muslim', icon: '☪️' },
-  { key: 'christian', label: 'Christian', icon: '✝️' },
-  { key: 'sikh', label: 'Sikh', icon: '☬' },
-  { key: 'buddhist', label: 'Buddhist', icon: '☸️' },
-  { key: 'jain', label: 'Jain', icon: '🪷' },
-  { key: 'jewish', label: 'Jewish', icon: '✡️' },
+  { key: 'hindu', label: 'Hinduism', icon: '🕉️' },
+  { key: 'muslim', label: 'Islam', icon: '☪️' },
+  { key: 'christian', label: 'Christianity', icon: '✝️' },
+  { key: 'sikh', label: 'Sikhism', icon: '☬' },
+  { key: 'buddhist', label: 'Buddhism', icon: '☸️' },
+  { key: 'jain', label: 'Jainism', icon: '🪷' },
+  { key: 'jewish', label: 'Judaism', icon: '✡️' },
   { key: 'secular', label: 'Secular / Spiritual', icon: '🌿' },
-  { key: 'all', label: 'Open to all traditions', icon: '🌏' },
+  { key: 'all', label: 'Open to all', icon: '🌏' },
 ];
 
 // Family member relationships used in voice studio
