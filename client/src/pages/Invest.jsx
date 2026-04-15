@@ -245,7 +245,16 @@ export default function Invest() {
       {/* ─── HERO ─── */}
       <header className="relative overflow-hidden border-b border-white/5">
         <div className="absolute inset-0 bg-gradient-to-b from-[#f0a500]/10 via-transparent to-transparent" />
-        <div className="relative mx-auto max-w-5xl px-6 py-16 text-center">
+        {/* Back to app */}
+        <div className="relative mx-auto max-w-5xl px-6 pt-4">
+          <a
+            href="/"
+            className="inline-flex items-center gap-1 rounded-full bg-white/5 px-4 py-2 text-xs font-bold text-[#a8a39a] ring-1 ring-white/10 transition hover:text-[#f5f0e8]"
+          >
+            ← Back to app
+          </a>
+        </div>
+        <div className="relative mx-auto max-w-5xl px-6 py-12 text-center">
           <motion.div initial={{ opacity: 0, y: -20 }} animate={{ opacity: 1, y: 0 }}>
             <div className="mb-4 inline-flex items-center gap-2 rounded-full bg-[#f0a500]/15 px-4 py-1.5 text-xs font-bold uppercase tracking-wider text-[#f0a500] ring-1 ring-[#f0a500]/30">
               🌙 Friends & Family Round · Now Open
