@@ -80,18 +80,41 @@ function fillTokens(text, family, childName, gender) {
 function fitToDuration(text, durationMinutes) {
   const targetWords = durationMinutes * WORDS_PER_MINUTE;
   const words = text.split(/\s+/);
+
+  const GENTLE_ENDING = '\n\nAnd as the night grew softer, sleep came gently, like a warm wave. Eyes grew heavy. The world was peaceful. Very, very peaceful. Goodnight.';
+
   if (words.length >= targetWords) {
-    return words.slice(0, targetWords).join(' ');
+    // Don't cut mid-sentence — find the nearest sentence end before the target
+    const rough = words.slice(0, targetWords).join(' ');
+    // Find the last sentence-ending punctuation within the target
+    const lastPeriod = Math.max(
+      rough.lastIndexOf('. '),
+      rough.lastIndexOf('.\n'),
+      rough.lastIndexOf('." '),
+      rough.lastIndexOf('? '),
+      rough.lastIndexOf('! ')
+    );
+    if (lastPeriod > rough.length * 0.6) {
+      // Cut at the last complete sentence + add gentle ending
+      return rough.slice(0, lastPeriod + 1) + GENTLE_ENDING;
+    }
+    // Fallback: use full rough cut + ending
+    return rough + '.' + GENTLE_ENDING;
   }
-  // Stretch by repeating a calming wind-down paragraph until we hit target.
-  const windDown = `\n\nThe night grew softer. The stars hummed their quiet song. ${
-    'The wind rustled the leaves like an old lullaby. '
-  }Sleep came slowly, like a warm wave. Eyes grew heavy. Hearts grew still. And the world was peaceful, very peaceful, all the way until morning.`;
+
+  // Story is shorter than target — add a wind-down
+  if (words.length >= targetWords * 0.7) {
+    // Close enough — just add the gentle ending
+    return text + GENTLE_ENDING;
+  }
+
+  // Need to stretch — add calming paragraphs
+  const windDown = '\n\nThe stars hummed their quiet song. The wind rustled the leaves like an old lullaby. Sleep came slowly, like a warm wave. Eyes grew heavy. Hearts grew still.';
   let out = text;
-  while (out.split(/\s+/).length < targetWords) {
+  while (out.split(/\s+/).length < targetWords * 0.85) {
     out += windDown;
   }
-  return out.split(/\s+/).slice(0, targetWords).join(' ');
+  return out + GENTLE_ENDING;
 }
 
 export function selectStory({

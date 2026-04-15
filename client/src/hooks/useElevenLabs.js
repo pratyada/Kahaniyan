@@ -64,7 +64,13 @@ export function useElevenLabs() {
       audio.ontimeupdate = () => {
         const dur = knownDurationRef.current;
         if (dur > 0) {
-          setProgress(Math.min(1, audio.currentTime / dur));
+          const p = Math.min(1, audio.currentTime / dur);
+          setProgress(p);
+          // Fade out volume in the last 2 seconds
+          const remaining = dur - audio.currentTime;
+          if (remaining < 2 && remaining > 0) {
+            audio.volume = Math.max(0, remaining / 2);
+          }
         }
       };
       audio.onplay = () => setPlaying(true);
