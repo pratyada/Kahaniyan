@@ -19,18 +19,18 @@ export default function Characters() {
   const navigate = useNavigate();
   const { profile, update } = useFamilyProfile();
   const [editing, setEditing] = useState(null);
-  const [draft, setDraft] = useState({ name: '', relation: 'sibling', traits: '', emoji: '🧒', petType: 'dog', adventureName: '' });
+  const [draft, setDraft] = useState({ name: '', relation: 'sibling', traits: '', tags: [], emoji: '🧒', petType: 'dog', adventureName: '' });
 
   if (!profile) return null;
   const characters = profile.characters || [];
 
   const startNew = () => {
-    setDraft({ name: '', relation: 'sibling', traits: '', emoji: RELATION_EMOJI.sibling, petType: 'dog', adventureName: '' });
+    setDraft({ name: '', relation: 'sibling', traits: '', tags: [], emoji: RELATION_EMOJI.sibling, petType: 'dog', adventureName: '' });
     setEditing('new');
   };
 
   const startEdit = (c) => {
-    setDraft({ petType: 'dog', adventureName: '', ...c });
+    setDraft({ petType: 'dog', adventureName: '', tags: [], ...c });
     setEditing(c);
   };
 
@@ -43,7 +43,8 @@ export default function Characters() {
         name: draft.name.trim(),
         relation: draft.relation,
         emoji: draft.emoji || RELATION_EMOJI[draft.relation] || '✨',
-        traits: draft.traits.trim(),
+        traits: (draft.tags || []).join(', '),
+        tags: draft.tags || [],
         petType: draft.relation === 'pet' ? draft.petType : undefined,
         adventureName: draft.relation === 'self' ? draft.adventureName?.trim() : undefined,
       };
@@ -56,7 +57,8 @@ export default function Characters() {
               name: draft.name.trim(),
               relation: draft.relation,
               emoji: draft.emoji,
-              traits: draft.traits.trim(),
+              traits: (draft.tags || []).join(', '),
+              tags: draft.tags || [],
               petType: draft.relation === 'pet' ? draft.petType : c.petType,
               adventureName: draft.relation === 'self' ? draft.adventureName?.trim() : c.adventureName,
             }
@@ -121,9 +123,17 @@ export default function Characters() {
                     {petInfo && ` · ${petInfo.label} (says "${petInfo.sound}")`}
                     {c.adventureName && ` · plays as "${c.adventureName}"`}
                   </div>
-                  {c.traits && (
+                  {(c.tags || []).length > 0 ? (
+                    <div className="mt-1 flex flex-wrap gap-1">
+                      {c.tags.map((tag, i) => (
+                        <span key={i} className="rounded-full bg-gold/10 px-2 py-0.5 text-[9px] font-bold text-gold">
+                          {tag}
+                        </span>
+                      ))}
+                    </div>
+                  ) : c.traits ? (
                     <div className="mt-0.5 text-[10px] italic text-ink-dim">"{c.traits}"</div>
-                  )}
+                  ) : null}
                   {isSelf && (
                     <div className="mt-0.5 text-[10px] text-gold">The hero of every story</div>
                   )}
@@ -308,14 +318,59 @@ export default function Characters() {
                 )}
 
                 <div>
-                  <label className="ui-label mb-1 block">Traits (optional)</label>
-                  <input
-                    type="text"
-                    value={draft.traits}
-                    onChange={(e) => setDraft({ ...draft, traits: e.target.value })}
-                    placeholder="e.g. loves cricket, always tells jokes"
-                    className="field"
-                  />
+                  <label className="ui-label mb-1 block">
+                    What they love (up to 5)
+                  </label>
+                  <div className="flex flex-wrap gap-2 mb-2">
+                    {(draft.tags || []).map((tag, i) => (
+                      <span
+                        key={i}
+                        className="inline-flex items-center gap-1 rounded-full bg-gold/15 px-3 py-1.5 text-xs font-bold text-gold ring-1 ring-gold/30"
+                      >
+                        {tag}
+                        <button
+                          type="button"
+                          onClick={() =>
+                            setDraft({ ...draft, tags: draft.tags.filter((_, j) => j !== i) })
+                          }
+                          className="ml-0.5 text-gold/60 hover:text-gold"
+                        >
+                          ✕
+                        </button>
+                      </span>
+                    ))}
+                  </div>
+                  {(draft.tags || []).length < 5 && (
+                    <input
+                      type="text"
+                      placeholder={
+                        (draft.tags || []).length === 0
+                          ? 'e.g. dinosaurs, cricket, space, painting'
+                          : 'Add another...'
+                      }
+                      className="field"
+                      onKeyDown={(e) => {
+                        if (e.key === 'Enter' || e.key === ',') {
+                          e.preventDefault();
+                          const val = e.target.value.trim().replace(/,$/,'');
+                          if (val && (draft.tags || []).length < 5) {
+                            setDraft({ ...draft, tags: [...(draft.tags || []), val] });
+                            e.target.value = '';
+                          }
+                        }
+                      }}
+                      onBlur={(e) => {
+                        const val = e.target.value.trim().replace(/,$/,'');
+                        if (val && (draft.tags || []).length < 5) {
+                          setDraft({ ...draft, tags: [...(draft.tags || []), val] });
+                          e.target.value = '';
+                        }
+                      }}
+                    />
+                  )}
+                  <p className="mt-1 text-[10px] text-ink-dim">
+                    {5 - (draft.tags || []).length} left · press Enter or comma to add
+                  </p>
                 </div>
 
                 <button
