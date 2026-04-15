@@ -188,7 +188,7 @@ export default function Characters() {
             onClick={() => setEditing(null)}
           >
             <motion.div
-              className="max-h-[85vh] w-full overflow-y-auto rounded-t-3xl bg-bg-elevated p-6 shadow-lift"
+              className="max-h-[85vh] w-full overflow-y-auto rounded-t-3xl bg-bg-elevated p-6 pb-24 shadow-lift"
               initial={{ y: '100%' }}
               animate={{ y: 0 }}
               exit={{ y: '100%' }}
