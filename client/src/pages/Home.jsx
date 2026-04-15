@@ -256,19 +256,22 @@ export default function Home() {
               onToggleOverride={setWhisperOverridesValue}
             />
 
-            <section className="mb-8">
-              <h2 className="ui-label mb-4">What should the story teach?</h2>
-              <div className="-mx-5 overflow-x-auto px-5">
-                <div className="flex w-max gap-2">
-                  {recommended.map((v) => (
-                    <ValuePill key={`rec-${v}`} value={v} active={value === v} onClick={() => setValue(v)} />
-                  ))}
-                  {VALUES.filter((v) => !recommended.includes(v.key)).map((v) => (
-                    <ValuePill key={v.key} value={v.key} size="sm" active={value === v.key} onClick={() => setValue(v.key)} />
-                  ))}
+            {/* Hide value picker when whisper + override is active — the whisper chooses the value */}
+            {!(whisper.trim() && whisperOverridesValue) && (
+              <section className="mb-8">
+                <h2 className="ui-label mb-4">What should the story teach?</h2>
+                <div className="-mx-5 overflow-x-auto px-5">
+                  <div className="flex w-max gap-2">
+                    {recommended.map((v) => (
+                      <ValuePill key={`rec-${v}`} value={v} active={value === v} onClick={() => setValue(v)} />
+                    ))}
+                    {VALUES.filter((v) => !recommended.includes(v.key)).map((v) => (
+                      <ValuePill key={v.key} value={v.key} size="sm" active={value === v.key} onClick={() => setValue(v.key)} />
+                    ))}
+                  </div>
                 </div>
-              </div>
-            </section>
+              </section>
+            )}
 
             <LengthStrip duration={duration} setDuration={setDuration} maxDuration={maxDuration} setUpgradeReason={setUpgradeReason} setUpgradeOpen={setUpgradeOpen} />
           </motion.div>
