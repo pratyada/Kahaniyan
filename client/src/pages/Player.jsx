@@ -383,43 +383,21 @@ function PlayerInner() {
               </div>
             </div>
 
-            {/* White noise picker — small chip strip */}
-            <div className="mb-3 -mx-6 flex gap-2 overflow-x-auto px-6">
-              {NOISE_TYPES.map((n) => {
-                const active = noiseType === n.key;
-                return (
-                  <button
-                    key={n.key}
-                    onClick={() => toggleNoise(n.key)}
-                    className={`shrink-0 rounded-full px-3 py-1.5 text-[11px] font-bold uppercase tracking-wider transition ${
-                      active
-                        ? 'bg-gold text-bg-base shadow-glow'
-                        : 'bg-white/5 text-ink-muted ring-1 ring-white/10'
-                    }`}
-                    title={n.description}
-                  >
-                    {n.icon} {n.label}
-                  </button>
-                );
-              })}
-            </div>
-
-            {/* Cover art (gradient + emoji) */}
-            <motion.div
-              initial={{ scale: 0.9, opacity: 0 }}
-              animate={{ scale: 1, opacity: 1 }}
-              transition={{ duration: 0.6 }}
-              className="mx-auto my-2 grid h-48 w-48 place-items-center rounded-3xl shadow-lift"
-              style={{
-                background: `radial-gradient(circle at 30% 30%, ${meta.color}aa, ${meta.color}22 60%, transparent)`,
-              }}
-            >
-              <span className="text-7xl">{meta.emoji}</span>
-            </motion.div>
-
-            {/* Title */}
-            <div className="mt-6 text-center">
-              <h1 className="font-display text-2xl font-bold text-ink">{current.title}</h1>
+            {/* Cover art — compact on mobile */}
+            <div className="flex items-center gap-4">
+              <motion.div
+                initial={{ scale: 0.9, opacity: 0 }}
+                animate={{ scale: 1, opacity: 1 }}
+                transition={{ duration: 0.6 }}
+                className="grid h-20 w-20 shrink-0 place-items-center rounded-2xl shadow-lift"
+                style={{
+                  background: `radial-gradient(circle at 30% 30%, ${meta.color}aa, ${meta.color}22 60%, transparent)`,
+                }}
+              >
+                <span className="text-4xl">{meta.emoji}</span>
+              </motion.div>
+              <div className="min-w-0 flex-1">
+                <h1 className="font-display text-xl font-bold text-ink">{current.title}</h1>
               <p className="mt-1 text-xs text-ink-muted">
                 For {profile?.childName} · {current.estimatedMinutes} min · {current.voice}
               </p>
@@ -437,7 +415,7 @@ function PlayerInner() {
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
                   exit={{ opacity: 0 }}
-                  className="mt-6 max-h-[28vh] overflow-y-auto rounded-2xl bg-black/30 p-4 font-story text-[15px] leading-relaxed text-ink-muted ring-1 ring-white/5"
+                  className="mt-4 max-h-[45vh] overflow-y-auto rounded-2xl bg-black/30 p-4 font-story text-[15px] leading-relaxed text-ink-muted ring-1 ring-white/5"
                 >
                   <HighlightedText text={current.text} progress={progress} />
                 </motion.div>
@@ -464,28 +442,32 @@ function PlayerInner() {
 
             {/* Controls — large, obvious, mobile-first */}
             <div className="mt-5 flex flex-col items-center gap-3">
-              {/* Big play / pause */}
+              {/* Big play / pause / loading */}
               <button
                 onClick={handleTogglePlay}
-                aria-label={isPlaying ? 'Pause story' : 'Play story'}
-                className="group relative grid h-24 w-24 place-items-center rounded-full bg-gold text-bg-base shadow-glow transition active:scale-95"
+                disabled={elevenLabs.loading}
+                aria-label={elevenLabs.loading ? 'Loading audio' : isPlaying ? 'Pause story' : 'Play story'}
+                className={`group relative grid h-20 w-20 place-items-center rounded-full transition active:scale-95 ${
+                  elevenLabs.loading
+                    ? 'bg-bg-elevated ring-2 ring-gold/30'
+                    : 'bg-gold text-bg-base shadow-glow'
+                }`}
               >
-                <span className="absolute inset-0 rounded-full ring-4 ring-gold/20" />
-                {isPlaying ? (
-                  // Pause icon (two bars)
-                  <svg width="36" height="36" viewBox="0 0 24 24" fill="currentColor">
+                {elevenLabs.loading ? (
+                  <span className="inline-block h-5 w-5 animate-spin rounded-full border-2 border-gold border-t-transparent" />
+                ) : isPlaying ? (
+                  <svg width="28" height="28" viewBox="0 0 24 24" fill="currentColor">
                     <rect x="6" y="4" width="4" height="16" rx="1.5" />
                     <rect x="14" y="4" width="4" height="16" rx="1.5" />
                   </svg>
                 ) : (
-                  // Play icon (triangle)
-                  <svg width="36" height="36" viewBox="0 0 24 24" fill="currentColor">
+                  <svg width="28" height="28" viewBox="0 0 24 24" fill="currentColor">
                     <path d="M8 5.5v13a1 1 0 0 0 1.55.83l10-6.5a1 1 0 0 0 0-1.66l-10-6.5A1 1 0 0 0 8 5.5z" />
                   </svg>
                 )}
               </button>
-              <div className="text-[11px] font-bold uppercase tracking-[0.18em] text-ink-muted">
-                {isPlaying ? 'Tap to pause' : voice.paused ? 'Tap to resume' : 'Tap to play'}
+              <div className="text-[10px] font-bold uppercase tracking-[0.18em] text-ink-muted">
+                {elevenLabs.loading ? 'Preparing audio…' : isPlaying ? 'Tap to pause' : 'Tap to play'}
               </div>
 
               {/* Secondary controls — speed, sleep timer, restart */}
@@ -551,6 +533,26 @@ function PlayerInner() {
                 Browser voice
               </p>
             )}
+
+            {/* Sleep sounds — below controls, always visible */}
+            <div className="mt-4 -mx-6 flex gap-2 overflow-x-auto px-6 pb-2">
+              {NOISE_TYPES.map((n) => {
+                const active = noiseType === n.key;
+                return (
+                  <button
+                    key={n.key}
+                    onClick={() => toggleNoise(n.key)}
+                    className={`shrink-0 rounded-full px-3 py-2 text-[11px] font-bold transition ${
+                      active
+                        ? 'bg-gold text-bg-base shadow-glow'
+                        : 'bg-white/5 text-ink-muted ring-1 ring-white/10'
+                    }`}
+                  >
+                    {n.icon} {n.label}
+                  </button>
+                );
+              })}
+            </div>
           </motion.div>
         )}
       </AnimatePresence>
