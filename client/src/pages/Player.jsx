@@ -110,10 +110,9 @@ function PlayerInner() {
     const matchedChar = chars.find((c) => c.name === narratorName || c.relation === narratorName.toLowerCase());
     const customVoiceId = matchedChar?.elevenLabsVoiceId || null;
 
-    // Try OpenAI TTS first. If it fails, fall back to Web Speech.
+    // Try OpenAI TTS. Don't set isPlaying until audio actually starts.
     const startPlayback = async () => {
       try {
-        console.log('[Qissaa:Player] Requesting TTS audio...');
         const audio = await elevenLabs.generate({
           text: current.text,
           narrator: narratorName,
@@ -125,17 +124,16 @@ function PlayerInner() {
         setUsingTTS(true);
         setTtsReady(true);
         audio.playbackRate = speed;
-        console.log('[Qissaa:Player] TTS audio ready, attempting play...');
+
+        // Listen for actual playback start
+        audio.onplay = () => setIsPlaying(true);
+        audio.onpause = () => setIsPlaying(false);
+
         try {
           await audio.play();
-          console.log('[Qissaa:Player] Audio playing');
-          setIsPlaying(true);
-        } catch (playErr) {
-          console.warn('[Qissaa:Player] Autoplay blocked:', playErr.message);
-          // Audio is loaded but browser blocked autoplay.
-          // Set state so the play button works on tap.
+        } catch {
+          // Autoplay blocked — show play button, user taps to start
           setIsPlaying(false);
-          setTtsReady(true);
         }
       } catch (e) {
         console.warn('[Qissaa:Player] TTS failed, using browser voice:', e.message);
