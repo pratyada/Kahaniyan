@@ -110,9 +110,10 @@ function PlayerInner() {
     const matchedChar = chars.find((c) => c.name === narratorName || c.relation === narratorName.toLowerCase());
     const customVoiceId = matchedChar?.elevenLabsVoiceId || null;
 
-    // Only ElevenLabs. If it fails, fall back to Web Speech ONCE (no overlap).
+    // Try OpenAI TTS first. If it fails, fall back to Web Speech.
     const startPlayback = async () => {
       try {
+        console.log('[Qissaa:Player] Requesting TTS audio...');
         const audio = await elevenLabs.generate({
           text: current.text,
           narrator: narratorName,
@@ -124,11 +125,20 @@ function PlayerInner() {
         setUsingTTS(true);
         setTtsReady(true);
         audio.playbackRate = speed;
-        audio.play().catch(() => {});
-        setIsPlaying(true);
+        console.log('[Qissaa:Player] TTS audio ready, attempting play...');
+        try {
+          await audio.play();
+          console.log('[Qissaa:Player] Audio playing');
+          setIsPlaying(true);
+        } catch (playErr) {
+          console.warn('[Qissaa:Player] Autoplay blocked:', playErr.message);
+          // Audio is loaded but browser blocked autoplay.
+          // Set state so the play button works on tap.
+          setIsPlaying(false);
+          setTtsReady(true);
+        }
       } catch (e) {
-        console.warn('ElevenLabs failed, using browser voice:', e.message);
-        // Only now start Web Speech — no overlap
+        console.warn('[Qissaa:Player] TTS failed, using browser voice:', e.message);
         setUsingTTS(false);
         webSpeech.speak({
           text: current.text,
@@ -141,8 +151,8 @@ function PlayerInner() {
       }
     };
 
-    const t = setTimeout(startPlayback, 300);
-    return () => clearTimeout(t);
+    startPlayback();
+    return () => {};
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [current]);
 
@@ -265,7 +275,8 @@ function PlayerInner() {
   const handleTogglePlay = () => {
     if (!isPlaying) {
       if (usingTTS) {
-        elevenLabs.resume();
+        // TTS audio loaded — play or resume
+        elevenLabs.play();
       } else {
         if (webSpeech.paused) webSpeech.resume();
         else webSpeech.speak({
