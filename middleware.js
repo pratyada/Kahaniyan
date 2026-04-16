@@ -17,7 +17,11 @@ const BOT_UA = /facebookexternalhit|Twitterbot|Slackbot|WhatsApp|LinkedInBot|Tel
 export default function middleware(request) {
   const ua = request.headers.get('user-agent') || '';
   const url = new URL(request.url);
-  const pageMeta = PAGES[url.pathname];
+  const host = request.headers.get('host') || '';
+
+  // Check subdomain OR path
+  let pageMeta = PAGES[url.pathname];
+  if (host.startsWith('stonedage.')) pageMeta = PAGES['/stonedage'];
 
   // Only intercept for social crawlers on pages with custom meta
   if (!pageMeta || !BOT_UA.test(ua)) return;
@@ -47,5 +51,5 @@ export default function middleware(request) {
 }
 
 export const config = {
-  matcher: ['/invest', '/stonedage'],
+  matcher: ['/', '/invest', '/stonedage'],
 };
