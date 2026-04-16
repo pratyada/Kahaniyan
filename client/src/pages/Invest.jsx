@@ -1033,7 +1033,7 @@ export default function Invest() {
             upside of something we're creating from scratch.
           </p>
           <a
-            href="mailto:i@yprateek.com?subject=I want to join My Sleepy Tale as a team member&body=Hi Prateek,%0A%0AI'd like to contribute to My Sleepy Tale as an active team member.%0A%0AMy skills:%0AHow I can help:%0A"
+            href="mailto:i@yprateek.com,sahil.faraz@gmail.com?subject=I want to join My Sleepy Tale as a team member&body=Hi Prateek,%0A%0AI'd like to contribute to My Sleepy Tale as an active team member.%0A%0AMy skills:%0AHow I can help:%0A"
             className="mt-5 inline-block rounded-full bg-[#f0a500] px-8 py-3 text-sm font-bold text-[#0a0a0f] transition hover:shadow-[0_0_40px_rgba(240,165,0,0.4)]"
           >
             Connect with us
