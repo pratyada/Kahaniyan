@@ -1,11 +1,11 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import PageTransition from '../components/PageTransition.jsx';
 import VersionFooter from '../components/VersionFooter.jsx';
 import { useFamilyProfile } from '../hooks/useFamilyProfile.js';
 import { FAMILY_RELATIONS, RELATION_EMOJI, PET_TYPES, SKIN_TONES } from '../utils/constants.js';
-import { hasConfig } from '../lib/firebase.js';
+import { hasConfig, db } from '../lib/firebase.js';
 
 const EXTRA_RELATIONS = [
   { key: 'pet', label: 'Pet', emoji: '🐶' },
@@ -13,13 +13,45 @@ const EXTRA_RELATIONS = [
   { key: 'friend', label: 'Friend', emoji: '🧒' },
   { key: 'other', label: 'Other', emoji: '✨' },
 ];
-const ALL_RELATIONS = [...FAMILY_RELATIONS, ...EXTRA_RELATIONS];
+const BASE_RELATIONS = [...FAMILY_RELATIONS, ...EXTRA_RELATIONS];
+
+// Hook to load admin-defined custom character types from Firestore
+function useAdminCharacterTypes() {
+  const [custom, setCustom] = useState([]);
+  useEffect(() => {
+    if (!db) return;
+    (async () => {
+      try {
+        const { doc, getDoc } = await import('firebase/firestore');
+        const snap = await getDoc(doc(db, 'config', 'storyLab'));
+        if (snap.exists()) {
+          const archetypes = snap.data().archetypes || [];
+          const customTypes = archetypes
+            .filter((a) => a.isCustom)
+            .map((a) => ({
+              key: a.key,
+              label: a.defaultCall || a.callOptions?.[0] || a.key,
+              emoji: '✨',
+              traits: a.traits || '',
+              activities: a.activities || '',
+            }));
+          setCustom(customTypes);
+        }
+      } catch {}
+    })();
+  }, []);
+  return custom;
+}
+
+// ALL_RELATIONS is built dynamically to include admin-defined types
 
 export default function Characters() {
   const navigate = useNavigate();
   const { profile, update } = useFamilyProfile();
   const [editing, setEditing] = useState(null);
   const [draft, setDraft] = useState({ name: '', relation: 'sibling', traits: '', tags: [], emoji: '🧒', petType: 'dog', adventureName: '', nickname: '' });
+  const adminChars = useAdminCharacterTypes();
+  const ALL_RELATIONS = [...BASE_RELATIONS, ...adminChars];
 
   if (!profile) return null;
   const characters = profile.characters || [];

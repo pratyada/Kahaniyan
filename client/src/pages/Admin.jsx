@@ -1423,7 +1423,7 @@ function MetaItem({ label, value, mono }) {
   );
 }
 
-// ─── Story Lab ───
+// ─── Story Lab — Content Engine ───
 
 const DEFAULT_ARCHETYPES = [
   { key: 'grandfather', callOptions: ['Dadu', 'Grandpa', 'Grandfather', 'Dada ji', 'Nana ji', 'Thatha', 'Abuelo', 'Baba'], defaultCall: 'Grandpa', traits: 'wise, tells old tales, adventurous spirit, gentle humor', activities: 'gardening, stargazing, woodworking, painting, telling riddles, cooking chai, playing chess, flying kites' },
@@ -1436,14 +1436,178 @@ const DEFAULT_ARCHETYPES = [
   { key: 'pet', callOptions: ['Pet', 'Buddy', 'Best friend'], defaultCall: 'Pet', traits: 'loyal, playful, sometimes naughty, brave', activities: 'following around, finding clues, causing funny trouble, protecting, snuggling' },
 ];
 
+const DEFAULT_CULTURAL_REFS = {
+  hindu: {
+    foods: ['kheer', 'jalebi', 'puri', 'khichdi', 'halwa', 'poha', 'dosa', 'samosa', 'chaat', 'rasmalai', 'gulab jamun', 'modak', 'peda', 'til gajak'],
+    festivals: ['Diwali', 'Holi', 'Raksha Bandhan', 'Ganesh Chaturthi', 'Navratri', 'Makar Sankranti', 'Janmashtami', 'Onam', 'Pongal', 'Baisakhi'],
+    traditions: ['lighting diyas', 'drawing rangoli', 'tying rakhi', 'flying kites on Sankranti', 'playing with colours on Holi', 'aarti ceremony', 'tulsi pooja', 'touching elders\' feet', 'sharing prasad'],
+    places: ['the mango tree in the courtyard', 'the temple steps', 'the river ghat', 'the village well', 'a chai stall', 'the rooftop under stars', 'a banyan tree', 'the spice market'],
+    music: ['tabla beats', 'sitar strings', 'bhajan humming', 'conch shell blowing', 'ghungroo bells', 'flute melodies', 'dholak rhythms'],
+    games: ['kabaddi', 'kho-kho', 'gilli-danda', 'marbles', 'hopscotch (stapu)', 'pitthu', 'hide and seek (chhupa chhupai)', 'spinning tops (lattu)'],
+    clothing: ['kurta pajama', 'lehenga', 'saree draped like a superhero cape', 'dupatta as a magic scarf', 'mojdi shoes', 'turban', 'bindi'],
+    greetings: ['Namaste', 'Ram Ram', 'Pranam', 'Jai Shri Krishna'],
+  },
+  muslim: {
+    foods: ['biryani', 'sheer khurma', 'nihari', 'kebabs', 'dates', 'haleem', 'samosa', 'phirni', 'seviyan', 'falooda', 'kofta curry'],
+    festivals: ['Eid ul-Fitr', 'Eid ul-Adha', 'Shab-e-Barat', 'Milad un-Nabi'],
+    traditions: ['breaking fast together', 'sharing food with neighbours', 'moon sighting', 'eidi (gifts) from elders', 'praying together', 'wearing new clothes on Eid', 'henna on hands'],
+    places: ['the mosque courtyard', 'a rooftop watching the moon', 'a bakery making seviyan', 'the old bazaar', 'under a date palm tree'],
+    music: ['qawwali melodies', 'nasheed humming', 'daf drums', 'rubab strings'],
+    games: ['flying kites', 'carrom board', 'marbles', 'tag in the courtyard', 'storytelling circles'],
+    clothing: ['topi and kurta', 'beautiful dupatta', 'embroidered jubbah', 'sherwani', 'henna-decorated hands'],
+    greetings: ['Assalamu Alaikum', 'Khuda Hafiz', 'Eid Mubarak'],
+  },
+  christian: {
+    foods: ['plum cake', 'hot chocolate', 'gingerbread cookies', 'apple pie', 'roast dinner', 'candy canes', 'eggnog', 'cinnamon rolls', 'bread pudding'],
+    festivals: ['Christmas', 'Easter', 'Thanksgiving', 'Palm Sunday', 'Epiphany'],
+    traditions: ['decorating the Christmas tree', 'singing carols', 'advent calendar countdown', 'Easter egg hunt', 'saying grace before meals', 'church bells ringing', 'nativity play', 'hanging stockings'],
+    places: ['the church garden', 'under the Christmas tree', 'a snow-covered village', 'the choir loft', 'a cozy fireplace'],
+    music: ['church bells', 'choir singing', 'organ melodies', 'carol humming', 'jingle bells'],
+    games: ['snowball fights', 'pin the star on the tree', 'musical chairs at the party', 'Easter egg roll'],
+    clothing: ['Sunday best dress', 'Christmas sweater', 'angel costume', 'Easter bonnet'],
+    greetings: ['Merry Christmas', 'God bless you', 'Peace be with you', 'Happy Easter'],
+  },
+  sikh: {
+    foods: ['langar (community meal)', 'karah prasad (halwa)', 'makki di roti with sarson da saag', 'lassi', 'chole bhature', 'pinni', 'jalebi'],
+    festivals: ['Baisakhi', 'Gurpurab', 'Lohri', 'Hola Mohalla', 'Diwali (Bandi Chhor Divas)'],
+    traditions: ['serving langar together', 'listening to kirtan', 'flying kites on Lohri', 'bonfire stories', 'visiting the Gurdwara', 'sharing karah prasad', 'tying a patka'],
+    places: ['the Gurdwara kitchen', 'a mustard field', 'the bonfire circle', 'under a mango tree in Punjab', 'the sarovar (holy pool)'],
+    music: ['kirtan melodies', 'dhol beats', 'harmonium notes', 'shabad humming'],
+    games: ['gatka (martial arts play)', 'pittu garam', 'kite flying', 'kabaddi', 'wrestling'],
+    clothing: ['colourful patka', 'turban tied with pride', 'salwar kameez', 'phulkari dupatta'],
+    greetings: ['Sat Sri Akal', 'Waheguru ji ka Khalsa'],
+  },
+  jewish: {
+    foods: ['challah bread', 'matzo ball soup', 'latkes', 'sufganiyot (donuts)', 'hamantaschen cookies', 'rugelach', 'apple dipped in honey'],
+    festivals: ['Hanukkah', 'Passover', 'Purim', 'Rosh Hashanah', 'Sukkot', 'Shabbat'],
+    traditions: ['lighting the menorah', 'spinning the dreidel', 'building a sukkah', 'hiding the afikomen', 'dressing up on Purim', 'Shabbat dinner together'],
+    places: ['the synagogue garden', 'under the sukkah', 'by the menorah', 'the bakery making challah', 'a kibbutz field'],
+    music: ['klezmer melodies', 'shofar blowing', 'Shabbat songs', 'hora dance music'],
+    games: ['dreidel spinning', 'afikomen hunt', 'gaga ball', 'building the tallest sukkah'],
+    clothing: ['kippah', 'tallith (prayer shawl)', 'Purim costume'],
+    greetings: ['Shalom', 'L\'chaim', 'Shabbat Shalom', 'Chag Sameach'],
+  },
+  buddhist: {
+    foods: ['rice porridge', 'momos', 'butter tea', 'veggie stir fry', 'sticky rice', 'coconut desserts', 'dal bhat'],
+    festivals: ['Vesak (Buddha Day)', 'Losar (New Year)', 'Kathina', 'Songkran'],
+    traditions: ['lighting butter lamps', 'spinning prayer wheels', 'making sand mandalas', 'offering flowers at the temple', 'meditation under a tree', 'releasing lanterns', 'walking barefoot in the garden'],
+    places: ['the temple garden', 'under a Bodhi tree', 'a mountain monastery', 'a lotus pond', 'a peaceful bamboo grove'],
+    music: ['temple bells', 'singing bowls', 'chanting monks', 'bamboo flute'],
+    games: ['balancing stones', 'mindful walking race', 'find the hidden lotus', 'peaceful hide and seek'],
+    clothing: ['orange robes', 'prayer beads', 'lotus flower garland'],
+    greetings: ['Namo Buddhaya', 'Om Mani Padme Hum'],
+  },
+  secular: {
+    foods: ['pancakes', 'cookies', 'hot cocoa', 'pizza', 'ice cream sundae', 'fresh fruit salad', 'popcorn', 'sandwiches'],
+    festivals: ['New Year', 'birthday parties', 'Earth Day', 'family reunion day', 'first day of school', 'summer solstice'],
+    traditions: ['family game night', 'stargazing on the rooftop', 'planting a tree together', 'making a time capsule', 'blanket fort movie night', 'writing letters to future self'],
+    places: ['the treehouse', 'a beach at sunset', 'a cozy blanket fort', 'the neighborhood park', 'a secret garden', 'a library corner'],
+    music: ['humming a made-up song', 'clapping rhythms', 'whistling', 'ukulele strumming'],
+    games: ['treasure hunt', 'building the tallest tower', 'cloud shape guessing', 'the floor is lava', 'hide and seek'],
+    clothing: ['favourite pajamas', 'superhero cape (a towel)', 'rain boots for puddle jumping', 'mismatched socks'],
+    greetings: ['Hello friend', 'Good morning sunshine', 'Hey there'],
+  },
+};
+
+const DEFAULT_STORY_OPENERS = [
+  { type: 'mystery', text: 'Something strange appeared on the doorstep that morning...', ages: '3-10' },
+  { type: 'adventure', text: 'The map was wrong. Or maybe — maybe the map was showing a place that hadn\'t existed... until now.', ages: '5-10' },
+  { type: 'funny', text: 'It started with a sneeze. Not a regular sneeze — a sneeze that sent {childName}\'s socks flying clean off.', ages: '3-7' },
+  { type: 'magical', text: 'The old tree in the backyard had never glowed before. But tonight, on this exact night, it did.', ages: '4-10' },
+  { type: 'animal', text: 'The squirrel was wearing a tiny hat. That was the first clue that today would be... different.', ages: '3-7' },
+  { type: 'wonder', text: '{childName} noticed something no one else had seen — the moon had left a trail of sparkly dust across the sky.', ages: '3-8' },
+  { type: 'action', text: 'RUN. That was the only word in {childName}\'s head as the giant bubble chased them down the street.', ages: '4-8' },
+  { type: 'cozy', text: 'Rain tapped on the window like tiny fingers. Inside, {childName} had the best idea of the whole week.', ages: '3-7' },
+];
+
+const DEFAULT_PLOT_TWISTS = [
+  'The scary thing turns out to be friendly and needs help',
+  'A character who seemed mean was actually protecting everyone',
+  'The treasure they were looking for was inside them all along',
+  'The animal sidekick saves the day in the silliest way possible',
+  'The villain turns out to be someone who just needed a friend',
+  'Two characters swap roles and realize how hard the other had it',
+  'The magical power runs out at the worst moment — but they solve it without magic',
+  'What everyone thought was broken was actually the key to something better',
+  'The smallest character solves the biggest problem',
+  'The mistake they made turns out to be the best thing that could have happened',
+];
+
+const DEFAULT_WINDDOWNS = [
+  'Stars come out one by one as {childName} yawns... each star a tiny nightlight just for them',
+  'The world gets quieter. Softer. Like the whole night is tucking itself in, just like {childName}',
+  'One last firefly blinks goodbye... then another... then everything is warm and still',
+  '{childName}\'s eyes grow heavy, like someone filled them with the coziest kind of sleepy-dust',
+  'The moon watches over {childName}, humming a song only sleeping children can hear',
+  'All the characters from tonight\'s story whisper "goodnight" and tiptoe away, smiling',
+];
+
+const DEFAULT_SOUND_FX = [
+  { sound: 'WHOOOOSH', when: 'flying, wind, something fast', emoji: '💨' },
+  { sound: 'CRASH-BANG-TINKLE', when: 'something falls, breaking something funny', emoji: '💥' },
+  { sound: 'tiptoe tiptoe tiptoe...', when: 'sneaking, being quiet', emoji: '🤫' },
+  { sound: 'SPLAT', when: 'mud, food fight, slipping', emoji: '💦' },
+  { sound: 'creak... creak... CREEEAK', when: 'opening old doors, suspense', emoji: '🚪' },
+  { sound: 'BOING BOING BOING', when: 'jumping, bouncing, springs', emoji: '🦘' },
+  { sound: 'pssst... pssst...', when: 'whispering, secrets', emoji: '🤐' },
+  { sound: 'rumble rumble GRUMBLE', when: 'hungry tummy, thunder', emoji: '⛈️' },
+  { sound: 'DING DING DING', when: 'winning, bells, ideas', emoji: '🔔' },
+  { sound: 'swish-swoosh-swirl', when: 'magic, wands, potions', emoji: '✨' },
+  { sound: 'click-clack click-clack', when: 'footsteps, trains, typing', emoji: '🚂' },
+  { sound: 'POP!', when: 'bubbles, surprises, disappearing', emoji: '🫧' },
+];
+
+const DEFAULT_SETTINGS = [
+  { name: 'Enchanted Forest', description: 'Trees that whisper, glowing mushrooms, paths that change direction', emoji: '🌲', ages: '3-10' },
+  { name: 'Cloud Kingdom', description: 'Fluffy cloud houses, rainbow bridges, sky gardens', emoji: '☁️', ages: '3-8' },
+  { name: 'Undersea City', description: 'Coral castles, talking fish, pearl streets', emoji: '🐠', ages: '3-8' },
+  { name: 'Tiny World', description: '{childName} shrinks down — furniture is mountains, puddles are oceans', emoji: '🔍', ages: '4-9' },
+  { name: 'Night Market', description: 'Floating lanterns, magical food stalls, strange and wonderful sellers', emoji: '🏮', ages: '4-10' },
+  { name: 'Dream Train', description: 'A train that travels through dreams, each carriage a new world', emoji: '🚂', ages: '3-8' },
+  { name: 'Grandparent\'s Village', description: 'A warm village from the past, old houses, big trees, everyone knows everyone', emoji: '🏡', ages: '3-10' },
+  { name: 'Flying Library', description: 'A library that floats in the sky, books that come alive when opened', emoji: '📚', ages: '5-10' },
+  { name: 'The Upside-Down House', description: 'Everything is flipped — walk on ceilings, sit on chandeliers', emoji: '🏠', ages: '3-7' },
+  { name: 'Animal School', description: 'A school where animals teach and kids learn animal things', emoji: '🎒', ages: '3-7' },
+];
+
+const DEFAULT_AGE_GUIDES = [
+  { range: '2-3', vocab: 'Very simple words. 2-4 word sentences. Lots of animal sounds and repetition. Name objects they know: ball, cat, moon, star', humor: 'Peek-a-boo style. Silly sounds. Things falling down. Unexpected animal noises', themes: 'Familiar routines: bedtime, bath, eating. Animals doing people things', attention: '2-3 minutes max. One simple event.' },
+  { range: '4-5', vocab: 'Short sentences. Some new words but explained by context. Rhymes and songs embedded. Sound effects!', humor: 'Potty humor (gentle). Funny names. Things going wrong in silly ways. Characters being dramatic', themes: 'Friendship, sharing, being brave (small fears). Magical helpers. Talking animals', attention: '5-7 minutes. One clear adventure with a problem and solution.' },
+  { range: '6-7', vocab: 'Longer sentences ok. Can handle some "big kid" words if context helps. Dialogue between characters', humor: 'Wordplay, misunderstandings, funny comparisons. "As big as a..." exaggeration. Characters being stubborn in cute ways', themes: 'Right vs wrong, teamwork, standing up for others, being different is ok. Mild peril (but always safe)', attention: '7-10 minutes. Can handle subplots. Like cliffhangers between sections.' },
+  { range: '8-10', vocab: 'Rich vocabulary welcome. Metaphors ok. Complex sentences. Can handle flashbacks and perspective shifts', humor: 'Irony, clever twists, self-aware humor. Characters knowing something the reader doesn\'t. Smart comebacks', themes: 'Complex feelings, empathy, consequences of actions, gray areas (not everything is black/white), inner strength, identity', attention: '10-15 minutes. Multiple plot threads ok. Character development matters.' },
+];
+
+const DEFAULT_VALUE_DELIVERY = [
+  { value: 'kindness', doThis: 'Show a character doing something kind without being asked. Show the ripple effect — how one kind act leads to another. The receiver should feel it, not hear about it.', notThis: 'Never say "being kind is important". Never have a character lecture about kindness. Never reward kindness immediately — let it be its own reward.' },
+  { value: 'courage', doThis: 'Show the fear FIRST. The child should feel scared too. Then show the small step — not a big heroic moment, but a tiny brave choice. Courage is doing the thing even when you\'re scared.', notThis: 'Don\'t make the hero fearless. Don\'t equate courage with physical strength. Don\'t have another character say "you were so brave!"' },
+  { value: 'honesty', doThis: 'Show the temptation to lie. Make it feel real — the lie would be easier. Then show the weight of it. The truth should feel like putting down something heavy.', notThis: 'Don\'t punish the liar. Don\'t make honesty always easy. Don\'t have an adult say "honesty is the best policy".' },
+  { value: 'patience', doThis: 'Show the waiting. Make the reader feel the itch of wanting something NOW. Then show how waiting revealed something better that rushing would have missed.', notThis: 'Don\'t make the impatient character look stupid. Don\'t lecture. Don\'t make patience boring — it should be active, noticing things while waiting.' },
+  { value: 'gratitude', doThis: 'Show a character noticing something they\'d normally ignore — a view, a sound, a person\'s effort. The "thank you" moment should feel genuine and specific, not generic.', notThis: 'Never have "count your blessings" moment. Don\'t compare to others who have less. Don\'t force a gratitude list into the story.' },
+  { value: 'sharing', doThis: 'Show the internal conflict — wanting to keep something for yourself. Then show how sharing created something neither could have alone. The joy should be in the together-ness.', notThis: 'Don\'t make the non-sharer a villain. Don\'t force sharing — show choosing to share. Don\'t reward sharing with getting more stuff back.' },
+  { value: 'respect', doThis: 'Show listening. Really listening. Show a character changing their mind after understanding someone else\'s perspective. Respect is seeing others as fully real people.', notThis: 'Don\'t confuse respect with obedience. Don\'t make it about rules. Don\'t show respect only to authority figures — show respect to everyone, including animals and nature.' },
+  { value: 'bravery', doThis: 'Show the moment of choice — the character could walk away but doesn\'t. Show that bravery looks different for different people. Sometimes bravery is speaking up. Sometimes it\'s staying quiet.', notThis: 'Don\'t glorify recklessness. Don\'t make bravery about fighting. Don\'t make the brave character special — any character can be brave.' },
+];
+
 const API_BASE = import.meta.env?.VITE_API_BASE_URL || '';
 
 function StoryLab() {
   const [subTab, setSubTab] = useState('playground');
+  const [saving, setSaving] = useState(false);
+  const [lastSaved, setLastSaved] = useState(null);
+
+  // All lab data — loaded from Firestore, falls back to defaults
   const [archetypes, setArchetypes] = useState(DEFAULT_ARCHETYPES);
   const [editingArch, setEditingArch] = useState(null);
+  const [culturalRefs, setCulturalRefs] = useState(DEFAULT_CULTURAL_REFS);
+  const [editingCulture, setEditingCulture] = useState(null);
+  const [storyOpeners, setStoryOpeners] = useState(DEFAULT_STORY_OPENERS);
+  const [plotTwists, setPlotTwists] = useState(DEFAULT_PLOT_TWISTS);
+  const [windDowns, setWindDowns] = useState(DEFAULT_WINDDOWNS);
+  const [soundFx, setSoundFx] = useState(DEFAULT_SOUND_FX);
+  const [settings, setSettings] = useState(DEFAULT_SETTINGS);
+  const [ageGuides, setAgeGuides] = useState(DEFAULT_AGE_GUIDES);
+  const [valueDelivery, setValueDelivery] = useState(DEFAULT_VALUE_DELIVERY);
   const [cachedStories, setCachedStories] = useState([]);
-  const [saving, setSaving] = useState(false);
 
   // Playground state
   const [pgChildName, setPgChildName] = useState('Aria');
@@ -1459,8 +1623,15 @@ function StoryLab() {
   const [pgGenerating, setPgGenerating] = useState(false);
   const [pgResult, setPgResult] = useState(null);
   const [pgError, setPgError] = useState(null);
+  const [pgRating, setPgRating] = useState(0);
+  const [pgNotes, setPgNotes] = useState('');
+  // Cache filters + manual story
+  const [cacheFilterBelief, setCacheFilterBelief] = useState('all');
+  const [cacheFilterCountry, setCacheFilterCountry] = useState('all');
+  const [showManualForm, setShowManualForm] = useState(false);
+  const [manualStory, setManualStory] = useState({ title: '', text: '', value: 'kindness', duration: 5, language: 'English', beliefs: 'hindu', country: 'IN', age: 5, gender: 'girl', childName: '{childName}' });
 
-  // Load config from Firestore
+  // Load all config from Firestore
   useEffect(() => {
     if (!db) return;
     (async () => {
@@ -1468,10 +1639,17 @@ function StoryLab() {
         const { getDoc } = await import('firebase/firestore');
         const snap = await getDoc(doc(db, 'config', 'storyLab'));
         if (snap.exists()) {
-          const data = snap.data();
-          if (data.archetypes?.length) setArchetypes(data.archetypes);
+          const d = snap.data();
+          if (d.archetypes?.length) setArchetypes(d.archetypes);
+          if (d.culturalRefs) setCulturalRefs({ ...DEFAULT_CULTURAL_REFS, ...d.culturalRefs });
+          if (d.storyOpeners?.length) setStoryOpeners(d.storyOpeners);
+          if (d.plotTwists?.length) setPlotTwists(d.plotTwists);
+          if (d.windDowns?.length) setWindDowns(d.windDowns);
+          if (d.soundFx?.length) setSoundFx(d.soundFx);
+          if (d.settings?.length) setSettings(d.settings);
+          if (d.ageGuides?.length) setAgeGuides(d.ageGuides);
+          if (d.valueDelivery?.length) setValueDelivery(d.valueDelivery);
         }
-        // Load cached stories
         const storiesSnap = await getDocs(collection(db, 'storyCache'));
         const list = [];
         storiesSnap.forEach((d) => list.push({ id: d.id, ...d.data() }));
@@ -1482,14 +1660,15 @@ function StoryLab() {
     })();
   }, []);
 
-  const saveArchetypes = async (updated) => {
+  const saveAll = async (section, data) => {
     if (!db) return;
     setSaving(true);
     try {
-      await setDoc(doc(db, 'config', 'storyLab'), { archetypes: updated }, { merge: true });
-      setArchetypes(updated);
+      await setDoc(doc(db, 'config', 'storyLab'), { [section]: data }, { merge: true });
+      setLastSaved(section);
+      setTimeout(() => setLastSaved(null), 2000);
     } catch (e) {
-      console.error('Failed to save archetypes:', e);
+      console.error('Failed to save:', e);
     }
     setSaving(false);
   };
@@ -1498,23 +1677,10 @@ function StoryLab() {
     if (!db || !story) return;
     try {
       const id = `story_${Date.now()}`;
-      const entry = {
-        ...story,
-        createdAt: Date.now(),
-        childName: pgChildName,
-        age: pgAge,
-        gender: pgGender,
-        value: pgValue,
-        duration: pgDuration,
-        language: pgLanguage,
-        beliefs: pgBeliefs,
-        country: pgCountry,
-      };
+      const entry = { ...story, createdAt: Date.now(), childName: pgChildName, age: pgAge, gender: pgGender, value: pgValue, duration: pgDuration, language: pgLanguage, beliefs: pgBeliefs, country: pgCountry, rating: pgRating, notes: pgNotes };
       await setDoc(doc(db, 'storyCache', id), entry);
       setCachedStories((prev) => [{ id, ...entry }, ...prev]);
-    } catch (e) {
-      console.error('Failed to cache story:', e);
-    }
+    } catch (e) { console.error('Failed to cache story:', e); }
   };
 
   const deleteFromCache = async (id) => {
@@ -1523,177 +1689,137 @@ function StoryLab() {
       const { deleteDoc } = await import('firebase/firestore');
       await deleteDoc(doc(db, 'storyCache', id));
       setCachedStories((prev) => prev.filter((s) => s.id !== id));
-    } catch (e) {
-      console.error('Failed to delete cached story:', e);
-    }
+    } catch (e) { console.error('Failed to delete cached story:', e); }
   };
 
   const generateTestStory = async () => {
     setPgGenerating(true);
     setPgError(null);
     setPgResult(null);
+    setPgRating(0);
+    setPgNotes('');
     try {
       const res = await fetch(`${API_BASE}/api/generate-story`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          childName: pgChildName,
-          age: pgAge,
-          gender: pgGender,
-          value: pgValue,
-          duration: pgDuration,
-          language: pgLanguage,
-          whisper: pgWhisper || undefined,
-          beliefs: [pgBeliefs],
-          country: pgCountry,
+          childName: pgChildName, age: pgAge, gender: pgGender, value: pgValue,
+          duration: pgDuration, language: pgLanguage, whisper: pgWhisper || undefined,
+          beliefs: [pgBeliefs], country: pgCountry, narrator: 'AI Narrator', _adminTest: true,
           selectedCast: pgCast.split(',').map((s) => {
             const match = s.trim().match(/^(.+?)\s*\((.+)\)$/);
-            if (match) {
-              const [, name, rest] = match;
-              const parts = rest.split(',').map((p) => p.trim());
-              return { name: name.trim(), relation: parts[0] || 'friend', traits: parts.slice(1).join(', ') };
-            }
+            if (match) { const [, name, rest] = match; const parts = rest.split(',').map((p) => p.trim()); return { name: name.trim(), relation: parts[0] || 'friend', traits: parts.slice(1).join(', ') }; }
             return { name: s.trim(), relation: 'friend', traits: '' };
           }),
-          narrator: 'AI Narrator',
-          _adminTest: true,
         }),
       });
       const data = await res.json();
       if (!res.ok) throw new Error(data.error || `Failed (${res.status})`);
       setPgResult(data);
-    } catch (e) {
-      setPgError(e.message);
-    }
+    } catch (e) { setPgError(e.message); }
     setPgGenerating(false);
   };
 
   const SUB_TABS = [
     { key: 'playground', label: 'Playground', icon: '🎮' },
-    { key: 'archetypes', label: 'Character Archetypes', icon: '👥' },
-    { key: 'cache', label: `Story Cache (${cachedStories.length})`, icon: '📦' },
+    { key: 'archetypes', label: 'Characters', icon: '👥' },
+    { key: 'culture', label: 'Cultural Library', icon: '🌍' },
+    { key: 'ingredients', label: 'Story Ingredients', icon: '🧩' },
+    { key: 'values', label: 'Value Delivery', icon: '💡' },
+    { key: 'ages', label: 'Age Guides', icon: '🎂' },
+    { key: 'cache', label: `Cache (${cachedStories.length})`, icon: '📦' },
   ];
 
   return (
     <div className="space-y-6">
-      {/* Sub-tabs */}
-      <div className="flex gap-2">
+      {/* Sub-tabs — scrollable on mobile */}
+      <div className="flex gap-2 overflow-x-auto pb-2">
         {SUB_TABS.map((t) => (
-          <button
-            key={t.key}
-            onClick={() => setSubTab(t.key)}
-            className={`rounded-xl px-4 py-2 text-sm font-bold transition ${
-              subTab === t.key ? 'bg-[#f0a500] text-[#0f0f17]' : 'bg-[#1a1a28] text-[#a8a39a] hover:text-[#f5f0e8]'
-            }`}
-          >
-            {t.icon} {t.label}
-          </button>
+          <button key={t.key} onClick={() => setSubTab(t.key)}
+            className={`shrink-0 rounded-xl px-4 py-2 text-sm font-bold transition ${subTab === t.key ? 'bg-[#f0a500] text-[#0f0f17]' : 'bg-[#1a1a28] text-[#a8a39a] hover:text-[#f5f0e8]'}`}
+          >{t.icon} {t.label}</button>
         ))}
       </div>
 
-      {/* ── PLAYGROUND ── */}
+      {saving && <div className="rounded-xl bg-[#f0a500]/10 p-3 text-center text-xs font-bold text-[#f0a500]">Saving...</div>}
+      {lastSaved && <div className="rounded-xl bg-[#7ad9a1]/10 p-3 text-center text-xs font-bold text-[#7ad9a1]">Saved {lastSaved}!</div>}
+
+      {/* ══════ PLAYGROUND ══════ */}
       {subTab === 'playground' && (
         <div className="grid gap-6 lg:grid-cols-2">
-          {/* Left: Config */}
           <div className="space-y-4">
-            <div className="rounded-2xl bg-[#1a1a28] p-6">
-              <h3 className="mb-4 text-xs font-bold uppercase tracking-wider text-[#a8a39a]">
-                Story Parameters
-              </h3>
+            <LabCard title="Story Parameters">
               <div className="grid grid-cols-2 gap-3">
                 <LabInput label="Child name" value={pgChildName} onChange={setPgChildName} />
                 <LabInput label="Age" value={pgAge} onChange={(v) => setPgAge(Number(v))} type="number" />
-                <LabSelect label="Gender" value={pgGender} onChange={setPgGender} options={[
-                  { value: 'girl', label: 'Girl' }, { value: 'boy', label: 'Boy' }, { value: 'other', label: 'Other' },
-                ]} />
-                <LabSelect label="Value/Lesson" value={pgValue} onChange={setPgValue} options={
-                  VALUES.map((v) => ({ value: v.key, label: `${v.emoji} ${v.label}` }))
-                } />
-                <LabSelect label="Duration" value={pgDuration} onChange={(v) => setPgDuration(Number(v))} options={
-                  DURATIONS.map((d) => ({ value: d.minutes, label: d.label }))
-                } />
-                <LabSelect label="Language" value={pgLanguage} onChange={setPgLanguage} options={
-                  LANGUAGES.map((l) => ({ value: l.key, label: l.label }))
-                } />
-                <LabSelect label="Belief" value={pgBeliefs} onChange={setPgBeliefs} options={
-                  RELIGIONS.map((r) => ({ value: r.key, label: `${r.icon} ${r.label}` }))
-                } />
-                <LabSelect label="Country" value={pgCountry} onChange={setPgCountry} options={
-                  COUNTRIES.map((c) => ({ value: c.key, label: `${c.flag} ${c.label}` }))
-                } />
+                <LabSelect label="Gender" value={pgGender} onChange={setPgGender} options={[{ value: 'girl', label: 'Girl' }, { value: 'boy', label: 'Boy' }, { value: 'other', label: 'Other' }]} />
+                <LabSelect label="Value" value={pgValue} onChange={setPgValue} options={VALUES.map((v) => ({ value: v.key, label: `${v.emoji} ${v.label}` }))} />
+                <LabSelect label="Duration" value={pgDuration} onChange={(v) => setPgDuration(Number(v))} options={DURATIONS.map((d) => ({ value: d.minutes, label: d.label }))} />
+                <LabSelect label="Language" value={pgLanguage} onChange={setPgLanguage} options={LANGUAGES.map((l) => ({ value: l.key, label: l.label }))} />
+                <LabSelect label="Belief" value={pgBeliefs} onChange={setPgBeliefs} options={RELIGIONS.map((r) => ({ value: r.key, label: `${r.icon} ${r.label}` }))} />
+                <LabSelect label="Country" value={pgCountry} onChange={setPgCountry} options={COUNTRIES.map((c) => ({ value: c.key, label: `${c.flag} ${c.label}` }))} />
               </div>
-
-              <div className="mt-3">
-                <LabInput label="Cast (Name (relation, traits), ...)" value={pgCast} onChange={setPgCast} full />
-              </div>
-              <div className="mt-3">
-                <LabInput label="Whisper (optional parent note)" value={pgWhisper} onChange={setPgWhisper} full />
-              </div>
-
-              <button
-                onClick={generateTestStory}
-                disabled={pgGenerating}
-                className="mt-4 w-full rounded-xl bg-[#f0a500] py-3 text-sm font-bold text-[#0f0f17] transition active:scale-95 disabled:opacity-50"
-              >
-                {pgGenerating ? 'Generating...' : 'Generate Test Story'}
+              <div className="mt-3"><LabInput label="Cast — Name (relation, traits), ..." value={pgCast} onChange={setPgCast} full /></div>
+              <div className="mt-3"><LabInput label="Whisper (parent note)" value={pgWhisper} onChange={setPgWhisper} full /></div>
+              <button onClick={generateTestStory} disabled={pgGenerating}
+                className="mt-4 w-full rounded-xl bg-[#f0a500] py-3 text-sm font-bold text-[#0f0f17] transition active:scale-95 disabled:opacity-50">
+                {pgGenerating ? 'Generating with Claude...' : 'Generate Test Story'}
               </button>
-              {pgError && (
-                <div className="mt-3 rounded-xl bg-[#f3727f]/10 p-3 text-xs text-[#f3727f]">{pgError}</div>
-              )}
-            </div>
+              {pgError && <div className="mt-3 rounded-xl bg-[#f3727f]/10 p-3 text-xs text-[#f3727f]">{pgError}</div>}
+            </LabCard>
           </div>
 
-          {/* Right: Result */}
           <div className="space-y-4">
             {pgGenerating && (
               <div className="flex items-center justify-center rounded-2xl bg-[#1a1a28] p-12">
                 <div className="text-center">
                   <div className="mb-3 inline-block h-8 w-8 animate-spin rounded-full border-2 border-[#f0a500] border-t-transparent" />
                   <p className="text-sm text-[#a8a39a]">Generating story with Claude...</p>
+                  <p className="mt-2 text-[10px] text-[#6e6a63]">This typically takes 10-15 seconds</p>
                 </div>
               </div>
             )}
             {pgResult && (
-              <div className="rounded-2xl bg-[#1a1a28] p-6">
-                <div className="mb-4 flex items-center justify-between">
-                  <div>
-                    <h3 className="font-display text-lg font-bold text-[#f0a500]">{pgResult.title}</h3>
-                    <p className="mt-1 text-xs text-[#a8a39a]">
-                      {pgResult.wordCount} words · {pgResult.generatedBy || 'claude'} · {pgDuration} min target
-                    </p>
+              <LabCard title={pgResult.title} titleColor>
+                <p className="text-xs text-[#a8a39a]">{pgResult.wordCount} words · ~{Math.round(pgResult.wordCount / 130)} min · {pgResult.generatedBy}</p>
+                <div className="mt-3 max-h-[50vh] overflow-y-auto rounded-xl bg-[#0f0f17] p-4 font-story text-sm leading-relaxed text-[#f5f0e8]/80">{pgResult.text}</div>
+
+                {/* Quality rating */}
+                <div className="mt-4 rounded-xl bg-[#0f0f17] p-4">
+                  <div className="text-[10px] font-bold uppercase tracking-wider text-[#6e6a63] mb-2">Rate this story</div>
+                  <div className="flex gap-2 mb-3">
+                    {[1,2,3,4,5].map((star) => (
+                      <button key={star} onClick={() => setPgRating(star)}
+                        className={`text-2xl transition ${star <= pgRating ? 'opacity-100' : 'opacity-20'}`}>
+                        {star <= pgRating ? '★' : '☆'}
+                      </button>
+                    ))}
+                    <span className="ml-2 self-center text-xs text-[#a8a39a]">
+                      {pgRating === 1 ? 'Bad' : pgRating === 2 ? 'Weak' : pgRating === 3 ? 'OK' : pgRating === 4 ? 'Good' : pgRating === 5 ? 'Amazing' : ''}
+                    </span>
                   </div>
-                  <button
-                    onClick={() => saveStoryToCache(pgResult)}
-                    className="rounded-xl bg-[#7ad9a1]/10 px-4 py-2 text-xs font-bold text-[#7ad9a1] hover:bg-[#7ad9a1]/20"
-                  >
-                    Save to cache
+                  <textarea value={pgNotes} onChange={(e) => setPgNotes(e.target.value)} placeholder="Notes — what worked, what didn't, what to change..."
+                    className="w-full rounded-lg bg-[#1a1a28] px-3 py-2 text-sm text-[#f5f0e8] placeholder-[#6e6a63] outline-none ring-1 ring-white/5 focus:ring-[#f0a500]" rows={3} />
+                </div>
+
+                <div className="mt-3 flex gap-2">
+                  <button onClick={() => saveStoryToCache(pgResult)}
+                    className="flex-1 rounded-xl bg-[#7ad9a1]/10 py-2.5 text-xs font-bold text-[#7ad9a1] hover:bg-[#7ad9a1]/20">
+                    Save to Cache
+                  </button>
+                  <button onClick={generateTestStory} disabled={pgGenerating}
+                    className="flex-1 rounded-xl bg-[#f0a500]/10 py-2.5 text-xs font-bold text-[#f0a500] hover:bg-[#f0a500]/20">
+                    Regenerate
                   </button>
                 </div>
-                <div className="max-h-[60vh] overflow-y-auto rounded-xl bg-[#0f0f17] p-4 font-story text-sm leading-relaxed text-[#f5f0e8]/80">
-                  {pgResult.text}
-                </div>
-                <div className="mt-3 grid grid-cols-3 gap-2 text-center text-[10px] text-[#a8a39a]">
-                  <div className="rounded-lg bg-[#0f0f17] p-2">
-                    <div className="font-bold text-[#f0a500]">{pgResult.wordCount}</div>
-                    words
-                  </div>
-                  <div className="rounded-lg bg-[#0f0f17] p-2">
-                    <div className="font-bold text-[#f0a500]">{Math.round(pgResult.wordCount / 130)}</div>
-                    est. minutes
-                  </div>
-                  <div className="rounded-lg bg-[#0f0f17] p-2">
-                    <div className="font-bold text-[#f0a500]">{pgResult.generatedBy}</div>
-                    engine
-                  </div>
-                </div>
-              </div>
+              </LabCard>
             )}
             {!pgGenerating && !pgResult && (
               <div className="flex items-center justify-center rounded-2xl bg-[#1a1a28] p-12">
                 <div className="text-center">
                   <div className="mb-3 text-4xl">🧪</div>
-                  <p className="text-sm text-[#a8a39a]">Configure parameters and generate a test story</p>
-                  <p className="mt-1 text-xs text-[#6e6a63]">Test different combos to see how Claude handles them</p>
+                  <p className="text-sm text-[#a8a39a]">Configure and generate a test story</p>
+                  <p className="mt-1 text-xs text-[#6e6a63]">Test different parameter combos. Rate results. Save the good ones.</p>
                 </div>
               </div>
             )}
@@ -1701,154 +1827,336 @@ function StoryLab() {
         </div>
       )}
 
-      {/* ── CHARACTER ARCHETYPES ── */}
+      {/* ══════ CHARACTER ARCHETYPES ══════ */}
       {subTab === 'archetypes' && (
         <div className="space-y-4">
-          <div className="rounded-2xl bg-[#1a1a28] p-6">
-            <div className="mb-4 flex items-center justify-between">
-              <h3 className="text-xs font-bold uppercase tracking-wider text-[#a8a39a]">
-                Character Archetypes — define how each role appears in stories
-              </h3>
-              {saving && <span className="text-xs text-[#f0a500]">Saving...</span>}
-            </div>
-            <p className="mb-4 text-xs text-[#6e6a63]">
-              Set what to call each character type, their personality traits, and activities they do in stories.
-              This prevents stereotypes and adds variety.
-            </p>
+          <LabCard title="Character Archetypes" subtitle="Define how each role appears in stories. Your team can customize names, traits, and activities to break stereotypes and add variety.">
             <div className="space-y-3">
               {archetypes.map((arch, i) => (
                 <div key={arch.key} className="rounded-xl bg-[#0f0f17] p-4">
                   <div className="flex items-center justify-between">
                     <div className="flex items-center gap-3">
-                      <span className="text-lg">
-                        {arch.key === 'grandfather' ? '👴' : arch.key === 'grandmother' ? '👵' :
-                         arch.key === 'mother' ? '👩' : arch.key === 'father' ? '👨' :
-                         arch.key === 'sibling' ? '🧒' : arch.key === 'uncle' ? '🧔' :
-                         arch.key === 'aunt' ? '👩' : '🐶'}
-                      </span>
+                      <span className="text-lg">{arch.key === 'grandfather' ? '👴' : arch.key === 'grandmother' ? '👵' : arch.key === 'mother' ? '👩' : arch.key === 'father' ? '👨' : arch.key === 'sibling' ? '🧒' : arch.key === 'uncle' ? '🧔' : arch.key === 'aunt' ? '👩' : '🐶'}</span>
                       <div>
                         <div className="font-bold text-[#f5f0e8] capitalize">{arch.key}</div>
-                        <div className="text-xs text-[#a8a39a]">
-                          Called: {arch.callOptions.slice(0, 4).join(', ')}{arch.callOptions.length > 4 ? ` +${arch.callOptions.length - 4} more` : ''}
-                        </div>
+                        <div className="text-xs text-[#a8a39a]">Called: {arch.callOptions.slice(0, 4).join(', ')}{arch.callOptions.length > 4 ? ` +${arch.callOptions.length - 4}` : ''}</div>
+                        <div className="mt-1 text-[10px] text-[#6e6a63] truncate max-w-md">{arch.traits}</div>
                       </div>
                     </div>
-                    <button
-                      onClick={() => setEditingArch(editingArch === i ? null : i)}
-                      className="rounded-lg bg-[#1a1a28] px-3 py-1.5 text-xs font-bold text-[#f0a500]"
-                    >
-                      {editingArch === i ? 'Close' : 'Edit'}
-                    </button>
+                    <button onClick={() => setEditingArch(editingArch === i ? null : i)} className="rounded-lg bg-[#1a1a28] px-3 py-1.5 text-xs font-bold text-[#f0a500]">{editingArch === i ? 'Close' : 'Edit'}</button>
                   </div>
-
                   {editingArch === i && (
-                    <motion.div
-                      initial={{ height: 0, opacity: 0 }}
-                      animate={{ height: 'auto', opacity: 1 }}
-                      className="mt-4 space-y-3 overflow-hidden"
-                    >
-                      <div>
-                        <label className="mb-1 block text-[10px] font-bold uppercase tracking-wider text-[#6e6a63]">
-                          What can they be called? (comma separated)
-                        </label>
-                        <input
-                          value={arch.callOptions.join(', ')}
-                          onChange={(e) => {
-                            const updated = [...archetypes];
-                            updated[i] = { ...arch, callOptions: e.target.value.split(',').map((s) => s.trim()).filter(Boolean) };
-                            setArchetypes(updated);
-                          }}
-                          className="w-full rounded-lg bg-[#1a1a28] px-3 py-2 text-sm text-[#f5f0e8] outline-none ring-1 ring-white/5 focus:ring-[#f0a500]"
-                        />
-                      </div>
-                      <div>
-                        <label className="mb-1 block text-[10px] font-bold uppercase tracking-wider text-[#6e6a63]">
-                          Default name to use in stories
-                        </label>
-                        <select
-                          value={arch.defaultCall}
-                          onChange={(e) => {
-                            const updated = [...archetypes];
-                            updated[i] = { ...arch, defaultCall: e.target.value };
-                            setArchetypes(updated);
-                          }}
-                          className="w-full rounded-lg bg-[#1a1a28] px-3 py-2 text-sm text-[#f5f0e8] outline-none ring-1 ring-white/5"
-                        >
-                          {arch.callOptions.map((o) => <option key={o} value={o}>{o}</option>)}
-                        </select>
-                      </div>
-                      <div>
-                        <label className="mb-1 block text-[10px] font-bold uppercase tracking-wider text-[#6e6a63]">
-                          Personality traits (comma separated — NOT stereotypical!)
-                        </label>
-                        <input
-                          value={arch.traits}
-                          onChange={(e) => {
-                            const updated = [...archetypes];
-                            updated[i] = { ...arch, traits: e.target.value };
-                            setArchetypes(updated);
-                          }}
-                          className="w-full rounded-lg bg-[#1a1a28] px-3 py-2 text-sm text-[#f5f0e8] outline-none ring-1 ring-white/5 focus:ring-[#f0a500]"
-                        />
-                      </div>
-                      <div>
-                        <label className="mb-1 block text-[10px] font-bold uppercase tracking-wider text-[#6e6a63]">
-                          Activities they do in stories (comma separated — be creative, break stereotypes!)
-                        </label>
-                        <input
-                          value={arch.activities}
-                          onChange={(e) => {
-                            const updated = [...archetypes];
-                            updated[i] = { ...arch, activities: e.target.value };
-                            setArchetypes(updated);
-                          }}
-                          className="w-full rounded-lg bg-[#1a1a28] px-3 py-2 text-sm text-[#f5f0e8] outline-none ring-1 ring-white/5 focus:ring-[#f0a500]"
-                        />
-                      </div>
+                    <motion.div initial={{ height: 0, opacity: 0 }} animate={{ height: 'auto', opacity: 1 }} className="mt-4 space-y-3 overflow-hidden">
+                      <LabField label="What can they be called? (comma separated)" value={arch.callOptions.join(', ')} onChange={(v) => { const u = [...archetypes]; u[i] = { ...arch, callOptions: v.split(',').map((s) => s.trim()).filter(Boolean) }; setArchetypes(u); }} />
+                      <LabField label="Default name in stories" value={arch.defaultCall} onChange={(v) => { const u = [...archetypes]; u[i] = { ...arch, defaultCall: v }; setArchetypes(u); }} />
+                      <LabField label="Personality traits (NOT stereotypical!)" value={arch.traits} onChange={(v) => { const u = [...archetypes]; u[i] = { ...arch, traits: v }; setArchetypes(u); }} />
+                      <LabField label="Activities in stories (creative, break expectations!)" value={arch.activities} onChange={(v) => { const u = [...archetypes]; u[i] = { ...arch, activities: v }; setArchetypes(u); }} />
                     </motion.div>
                   )}
                 </div>
               ))}
             </div>
-            <button
-              onClick={() => saveArchetypes(archetypes)}
-              disabled={saving}
-              className="mt-4 w-full rounded-xl bg-[#f0a500] py-3 text-sm font-bold text-[#0f0f17] disabled:opacity-50"
-            >
-              {saving ? 'Saving...' : 'Save All Archetypes'}
-            </button>
-          </div>
+            <button onClick={() => setArchetypes([...archetypes, { key: `custom_${Date.now()}`, callOptions: ['New Character'], defaultCall: 'New Character', traits: '', activities: '', isCustom: true }])}
+              className="mt-3 w-full rounded-lg border border-dashed border-white/10 py-3 text-xs font-bold text-[#a8a39a]">+ Add New Character Type (visible to all users in Characters section)</button>
+            <button onClick={() => saveAll('archetypes', archetypes)} disabled={saving} className="mt-3 w-full rounded-xl bg-[#f0a500] py-3 text-sm font-bold text-[#0f0f17] disabled:opacity-50">Save Archetypes</button>
+            <p className="mt-2 text-[10px] text-[#6e6a63] text-center">Custom character types added here will appear in every user's Characters section for selection</p>
+          </LabCard>
         </div>
       )}
 
-      {/* ── STORY CACHE ── */}
-      {subTab === 'cache' && (
+      {/* ══════ CULTURAL LIBRARY ══════ */}
+      {subTab === 'culture' && (
         <div className="space-y-4">
-          <div className="rounded-2xl bg-[#1a1a28] p-6">
-            <h3 className="mb-2 text-xs font-bold uppercase tracking-wider text-[#a8a39a]">
-              Cached Stories — pre-generated, no credits needed
-            </h3>
-            <p className="mb-4 text-xs text-[#6e6a63]">
-              Stories saved here can be served to users without calling Claude API. Generate in Playground, then save.
-            </p>
-          </div>
-          {cachedStories.length === 0 ? (
-            <div className="flex items-center justify-center rounded-2xl bg-[#1a1a28] p-12">
-              <div className="text-center">
-                <div className="mb-3 text-4xl">📦</div>
-                <p className="text-sm text-[#a8a39a]">No cached stories yet</p>
-                <p className="mt-1 text-xs text-[#6e6a63]">Generate stories in the Playground and save them here</p>
+          <LabCard title="Cultural Reference Library" subtitle="Foods, festivals, traditions, places, music, games, clothing, greetings — organized by belief system. Claude picks from these to add cultural warmth without repeating.">
+            <div className="flex gap-2 flex-wrap mb-4">
+              {Object.keys(culturalRefs).map((key) => {
+                const r = RELIGIONS.find((x) => x.key === key);
+                return (
+                  <button key={key} onClick={() => setEditingCulture(editingCulture === key ? null : key)}
+                    className={`rounded-lg px-3 py-2 text-xs font-bold transition ${editingCulture === key ? 'bg-[#f0a500] text-[#0f0f17]' : 'bg-[#0f0f17] text-[#a8a39a]'}`}>
+                    {r?.icon || '🌍'} {r?.label || key}
+                  </button>
+                );
+              })}
+            </div>
+            {editingCulture && culturalRefs[editingCulture] && (
+              <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="space-y-3 rounded-xl bg-[#0f0f17] p-4">
+                {Object.entries(culturalRefs[editingCulture]).map(([category, items]) => (
+                  <div key={category}>
+                    <label className="mb-1 block text-[10px] font-bold uppercase tracking-wider text-[#6e6a63]">
+                      {category === 'foods' ? '🍲 Foods' : category === 'festivals' ? '🎉 Festivals' : category === 'traditions' ? '🪷 Traditions' : category === 'places' ? '📍 Places' : category === 'music' ? '🎵 Music & Sounds' : category === 'games' ? '🎮 Games' : category === 'clothing' ? '👗 Clothing' : '👋 Greetings'}
+                    </label>
+                    <textarea value={Array.isArray(items) ? items.join(', ') : items}
+                      onChange={(e) => {
+                        const updated = { ...culturalRefs, [editingCulture]: { ...culturalRefs[editingCulture], [category]: e.target.value.split(',').map((s) => s.trim()).filter(Boolean) } };
+                        setCulturalRefs(updated);
+                      }}
+                      rows={2} className="w-full rounded-lg bg-[#1a1a28] px-3 py-2 text-sm text-[#f5f0e8] outline-none ring-1 ring-white/5 focus:ring-[#f0a500]" />
+                  </div>
+                ))}
+                <button onClick={() => saveAll('culturalRefs', culturalRefs)} disabled={saving} className="w-full rounded-xl bg-[#f0a500] py-2.5 text-sm font-bold text-[#0f0f17] disabled:opacity-50">Save {RELIGIONS.find((r) => r.key === editingCulture)?.label || editingCulture}</button>
+              </motion.div>
+            )}
+            {!editingCulture && (
+              <p className="text-center text-xs text-[#6e6a63] py-6">Select a belief system above to edit its cultural references</p>
+            )}
+          </LabCard>
+        </div>
+      )}
+
+      {/* ══════ STORY INGREDIENTS ══════ */}
+      {subTab === 'ingredients' && (
+        <div className="grid gap-6 lg:grid-cols-2">
+          {/* Openers */}
+          <LabCard title="Story Openers" subtitle="Great first lines that hook kids immediately. Claude picks from these.">
+            {storyOpeners.map((opener, i) => (
+              <div key={i} className="mb-2 rounded-lg bg-[#0f0f17] p-3">
+                <div className="flex items-center gap-2 mb-1">
+                  <span className="rounded bg-[#f0a500]/10 px-2 py-0.5 text-[9px] font-bold uppercase text-[#f0a500]">{opener.type}</span>
+                  <span className="text-[9px] text-[#6e6a63]">Ages {opener.ages}</span>
+                  <button onClick={() => { const u = storyOpeners.filter((_, j) => j !== i); setStoryOpeners(u); }} className="ml-auto text-[10px] text-[#f3727f]">remove</button>
+                </div>
+                <textarea value={opener.text} onChange={(e) => { const u = [...storyOpeners]; u[i] = { ...opener, text: e.target.value }; setStoryOpeners(u); }}
+                  rows={2} className="w-full rounded bg-[#1a1a28] px-2 py-1.5 text-xs text-[#f5f0e8] outline-none ring-1 ring-white/5 focus:ring-[#f0a500]" />
               </div>
+            ))}
+            <button onClick={() => setStoryOpeners([...storyOpeners, { type: 'new', text: '', ages: '3-10' }])} className="w-full rounded-lg border border-dashed border-white/10 py-2 text-xs text-[#a8a39a]">+ Add opener</button>
+            <button onClick={() => saveAll('storyOpeners', storyOpeners)} disabled={saving} className="mt-2 w-full rounded-xl bg-[#f0a500] py-2.5 text-sm font-bold text-[#0f0f17] disabled:opacity-50">Save Openers</button>
+          </LabCard>
+
+          {/* Plot Twists */}
+          <LabCard title="Plot Twists" subtitle="Surprise moments that make stories memorable">
+            {plotTwists.map((twist, i) => (
+              <div key={i} className="mb-2 flex gap-2">
+                <input value={twist} onChange={(e) => { const u = [...plotTwists]; u[i] = e.target.value; setPlotTwists(u); }}
+                  className="flex-1 rounded-lg bg-[#0f0f17] px-3 py-2 text-xs text-[#f5f0e8] outline-none ring-1 ring-white/5 focus:ring-[#f0a500]" />
+                <button onClick={() => setPlotTwists(plotTwists.filter((_, j) => j !== i))} className="text-xs text-[#f3727f]">x</button>
+              </div>
+            ))}
+            <button onClick={() => setPlotTwists([...plotTwists, ''])} className="w-full rounded-lg border border-dashed border-white/10 py-2 text-xs text-[#a8a39a]">+ Add twist</button>
+            <button onClick={() => saveAll('plotTwists', plotTwists)} disabled={saving} className="mt-2 w-full rounded-xl bg-[#f0a500] py-2.5 text-sm font-bold text-[#0f0f17] disabled:opacity-50">Save Twists</button>
+          </LabCard>
+
+          {/* Wind-downs */}
+          <LabCard title="Wind-Down Patterns" subtitle="How stories end — soft, sleepy, warm">
+            {windDowns.map((wd, i) => (
+              <div key={i} className="mb-2 flex gap-2">
+                <textarea value={wd} onChange={(e) => { const u = [...windDowns]; u[i] = e.target.value; setWindDowns(u); }}
+                  rows={2} className="flex-1 rounded-lg bg-[#0f0f17] px-3 py-2 text-xs text-[#f5f0e8] outline-none ring-1 ring-white/5 focus:ring-[#f0a500]" />
+                <button onClick={() => setWindDowns(windDowns.filter((_, j) => j !== i))} className="text-xs text-[#f3727f]">x</button>
+              </div>
+            ))}
+            <button onClick={() => setWindDowns([...windDowns, ''])} className="w-full rounded-lg border border-dashed border-white/10 py-2 text-xs text-[#a8a39a]">+ Add wind-down</button>
+            <button onClick={() => saveAll('windDowns', windDowns)} disabled={saving} className="mt-2 w-full rounded-xl bg-[#f0a500] py-2.5 text-sm font-bold text-[#0f0f17] disabled:opacity-50">Save Wind-Downs</button>
+          </LabCard>
+
+          {/* Sound Effects */}
+          <LabCard title="Sound Effects Library" subtitle="Fun sounds Claude weaves into the narrative">
+            {soundFx.map((fx, i) => (
+              <div key={i} className="mb-2 rounded-lg bg-[#0f0f17] p-3 flex items-center gap-3">
+                <span className="text-lg">{fx.emoji}</span>
+                <div className="flex-1 space-y-1">
+                  <input value={fx.sound} onChange={(e) => { const u = [...soundFx]; u[i] = { ...fx, sound: e.target.value }; setSoundFx(u); }} placeholder="Sound"
+                    className="w-full rounded bg-[#1a1a28] px-2 py-1 text-xs font-bold text-[#f0a500] outline-none ring-1 ring-white/5" />
+                  <input value={fx.when} onChange={(e) => { const u = [...soundFx]; u[i] = { ...fx, when: e.target.value }; setSoundFx(u); }} placeholder="When to use"
+                    className="w-full rounded bg-[#1a1a28] px-2 py-1 text-[10px] text-[#a8a39a] outline-none ring-1 ring-white/5" />
+                </div>
+                <button onClick={() => setSoundFx(soundFx.filter((_, j) => j !== i))} className="text-xs text-[#f3727f]">x</button>
+              </div>
+            ))}
+            <button onClick={() => setSoundFx([...soundFx, { sound: '', when: '', emoji: '🔊' }])} className="w-full rounded-lg border border-dashed border-white/10 py-2 text-xs text-[#a8a39a]">+ Add sound</button>
+            <button onClick={() => saveAll('soundFx', soundFx)} disabled={saving} className="mt-2 w-full rounded-xl bg-[#f0a500] py-2.5 text-sm font-bold text-[#0f0f17] disabled:opacity-50">Save Sounds</button>
+          </LabCard>
+
+          {/* Story Settings */}
+          <LabCard title="World Settings" subtitle="Magical places where stories happen" colSpan>
+            <div className="grid gap-3 sm:grid-cols-2">
+              {settings.map((s, i) => (
+                <div key={i} className="rounded-lg bg-[#0f0f17] p-3">
+                  <div className="flex items-center gap-2 mb-2">
+                    <input value={s.emoji} onChange={(e) => { const u = [...settings]; u[i] = { ...s, emoji: e.target.value }; setSettings(u); }} className="w-10 rounded bg-[#1a1a28] px-1 py-0.5 text-center text-lg outline-none" />
+                    <input value={s.name} onChange={(e) => { const u = [...settings]; u[i] = { ...s, name: e.target.value }; setSettings(u); }} className="flex-1 rounded bg-[#1a1a28] px-2 py-1 text-sm font-bold text-[#f5f0e8] outline-none ring-1 ring-white/5" />
+                    <span className="text-[9px] text-[#6e6a63]">{s.ages}</span>
+                    <button onClick={() => setSettings(settings.filter((_, j) => j !== i))} className="text-xs text-[#f3727f]">x</button>
+                  </div>
+                  <textarea value={s.description} onChange={(e) => { const u = [...settings]; u[i] = { ...s, description: e.target.value }; setSettings(u); }}
+                    rows={2} className="w-full rounded bg-[#1a1a28] px-2 py-1 text-[11px] text-[#a8a39a] outline-none ring-1 ring-white/5 focus:ring-[#f0a500]" />
+                </div>
+              ))}
+            </div>
+            <button onClick={() => setSettings([...settings, { name: 'New Setting', description: '', emoji: '✨', ages: '3-10' }])} className="mt-2 w-full rounded-lg border border-dashed border-white/10 py-2 text-xs text-[#a8a39a]">+ Add setting</button>
+            <button onClick={() => saveAll('settings', settings)} disabled={saving} className="mt-2 w-full rounded-xl bg-[#f0a500] py-2.5 text-sm font-bold text-[#0f0f17] disabled:opacity-50">Save Settings</button>
+          </LabCard>
+        </div>
+      )}
+
+      {/* ══════ VALUE DELIVERY ══════ */}
+      {subTab === 'values' && (
+        <div className="space-y-4">
+          <LabCard title="Value Delivery Guide" subtitle="How to teach each value WITHOUT being preachy. The 'Do this / Not this' for your storytelling AI.">
+            {valueDelivery.map((vd, i) => {
+              const meta = VALUES.find((v) => v.key === vd.value);
+              return (
+                <div key={vd.value} className="mb-3 rounded-xl bg-[#0f0f17] p-4">
+                  <div className="flex items-center gap-2 mb-3">
+                    <span className="text-xl">{meta?.emoji}</span>
+                    <span className="font-bold text-[#f5f0e8] capitalize">{vd.value}</span>
+                  </div>
+                  <div className="grid gap-3 sm:grid-cols-2">
+                    <div>
+                      <label className="mb-1 block text-[10px] font-bold uppercase tracking-wider text-[#7ad9a1]">Do this</label>
+                      <textarea value={vd.doThis} onChange={(e) => { const u = [...valueDelivery]; u[i] = { ...vd, doThis: e.target.value }; setValueDelivery(u); }}
+                        rows={4} className="w-full rounded-lg bg-[#1a1a28] px-3 py-2 text-xs text-[#f5f0e8] outline-none ring-1 ring-[#7ad9a1]/20 focus:ring-[#7ad9a1]" />
+                    </div>
+                    <div>
+                      <label className="mb-1 block text-[10px] font-bold uppercase tracking-wider text-[#f3727f]">Not this</label>
+                      <textarea value={vd.notThis} onChange={(e) => { const u = [...valueDelivery]; u[i] = { ...vd, notThis: e.target.value }; setValueDelivery(u); }}
+                        rows={4} className="w-full rounded-lg bg-[#1a1a28] px-3 py-2 text-xs text-[#f5f0e8] outline-none ring-1 ring-[#f3727f]/20 focus:ring-[#f3727f]" />
+                    </div>
+                  </div>
+                </div>
+              );
+            })}
+            <button onClick={() => saveAll('valueDelivery', valueDelivery)} disabled={saving} className="w-full rounded-xl bg-[#f0a500] py-3 text-sm font-bold text-[#0f0f17] disabled:opacity-50">Save Value Guides</button>
+          </LabCard>
+        </div>
+      )}
+
+      {/* ══════ AGE GUIDES ══════ */}
+      {subTab === 'ages' && (
+        <div className="space-y-4">
+          <LabCard title="Age-Appropriate Guidelines" subtitle="How vocabulary, humor, themes, and attention span change by age">
+            {ageGuides.map((ag, i) => (
+              <div key={ag.range} className="mb-4 rounded-xl bg-[#0f0f17] p-4">
+                <div className="mb-3 flex items-center gap-2">
+                  <span className="rounded-lg bg-[#f0a500]/10 px-3 py-1 text-sm font-bold text-[#f0a500]">{ag.range} years</span>
+                </div>
+                <div className="grid gap-3 sm:grid-cols-2">
+                  <div><label className="mb-1 block text-[10px] font-bold uppercase tracking-wider text-[#6e6a63]">Vocabulary & Language</label>
+                    <textarea value={ag.vocab} onChange={(e) => { const u = [...ageGuides]; u[i] = { ...ag, vocab: e.target.value }; setAgeGuides(u); }} rows={3} className="w-full rounded-lg bg-[#1a1a28] px-3 py-2 text-xs text-[#f5f0e8] outline-none ring-1 ring-white/5 focus:ring-[#f0a500]" /></div>
+                  <div><label className="mb-1 block text-[10px] font-bold uppercase tracking-wider text-[#6e6a63]">Humor Style</label>
+                    <textarea value={ag.humor} onChange={(e) => { const u = [...ageGuides]; u[i] = { ...ag, humor: e.target.value }; setAgeGuides(u); }} rows={3} className="w-full rounded-lg bg-[#1a1a28] px-3 py-2 text-xs text-[#f5f0e8] outline-none ring-1 ring-white/5 focus:ring-[#f0a500]" /></div>
+                  <div><label className="mb-1 block text-[10px] font-bold uppercase tracking-wider text-[#6e6a63]">Themes & Topics</label>
+                    <textarea value={ag.themes} onChange={(e) => { const u = [...ageGuides]; u[i] = { ...ag, themes: e.target.value }; setAgeGuides(u); }} rows={3} className="w-full rounded-lg bg-[#1a1a28] px-3 py-2 text-xs text-[#f5f0e8] outline-none ring-1 ring-white/5 focus:ring-[#f0a500]" /></div>
+                  <div><label className="mb-1 block text-[10px] font-bold uppercase tracking-wider text-[#6e6a63]">Attention Span & Pacing</label>
+                    <textarea value={ag.attention} onChange={(e) => { const u = [...ageGuides]; u[i] = { ...ag, attention: e.target.value }; setAgeGuides(u); }} rows={3} className="w-full rounded-lg bg-[#1a1a28] px-3 py-2 text-xs text-[#f5f0e8] outline-none ring-1 ring-white/5 focus:ring-[#f0a500]" /></div>
+                </div>
+              </div>
+            ))}
+            <button onClick={() => saveAll('ageGuides', ageGuides)} disabled={saving} className="w-full rounded-xl bg-[#f0a500] py-3 text-sm font-bold text-[#0f0f17] disabled:opacity-50">Save Age Guides</button>
+          </LabCard>
+        </div>
+      )}
+
+      {/* ══════ STORY CACHE ══════ */}
+      {subTab === 'cache' && (() => {
+        const filtered = cachedStories.filter((s) => {
+          if (cacheFilterBelief !== 'all' && s.beliefs !== cacheFilterBelief) return false;
+          if (cacheFilterCountry !== 'all' && s.country !== cacheFilterCountry) return false;
+          return true;
+        });
+        return (
+        <div className="space-y-4">
+          <LabCard title="Story Cache" subtitle="Pre-generated and hand-written stories. These can be served without API credits.">
+            {cachedStories.length > 0 && (
+              <div className="mb-4 grid grid-cols-4 gap-3 text-center">
+                <div className="rounded-lg bg-[#0f0f17] p-3"><div className="text-xl font-bold text-[#f0a500]">{cachedStories.length}</div><div className="text-[9px] text-[#6e6a63]">Total</div></div>
+                <div className="rounded-lg bg-[#0f0f17] p-3"><div className="text-xl font-bold text-[#7ad9a1]">{cachedStories.filter((s) => s.rating >= 4).length}</div><div className="text-[9px] text-[#6e6a63]">4-5 stars</div></div>
+                <div className="rounded-lg bg-[#0f0f17] p-3"><div className="text-xl font-bold text-[#f0a500]">{[...new Set(cachedStories.map((s) => s.value))].length}</div><div className="text-[9px] text-[#6e6a63]">Values</div></div>
+                <div className="rounded-lg bg-[#0f0f17] p-3"><div className="text-xl font-bold text-[#f0a500]">{[...new Set(cachedStories.map((s) => s.beliefs))].length}</div><div className="text-[9px] text-[#6e6a63]">Beliefs</div></div>
+              </div>
+            )}
+            {/* Filters */}
+            <div className="flex flex-wrap gap-3 mb-4">
+              <div className="flex items-center gap-2">
+                <span className="text-[10px] font-bold uppercase text-[#6e6a63]">Belief:</span>
+                <select value={cacheFilterBelief} onChange={(e) => setCacheFilterBelief(e.target.value)} className="rounded-lg bg-[#0f0f17] px-3 py-1.5 text-xs text-[#f5f0e8] outline-none ring-1 ring-white/5">
+                  <option value="all">All beliefs</option>
+                  {RELIGIONS.map((r) => <option key={r.key} value={r.key}>{r.icon} {r.label}</option>)}
+                </select>
+              </div>
+              <div className="flex items-center gap-2">
+                <span className="text-[10px] font-bold uppercase text-[#6e6a63]">Country:</span>
+                <select value={cacheFilterCountry} onChange={(e) => setCacheFilterCountry(e.target.value)} className="rounded-lg bg-[#0f0f17] px-3 py-1.5 text-xs text-[#f5f0e8] outline-none ring-1 ring-white/5">
+                  <option value="all">All countries</option>
+                  {COUNTRIES.map((c) => <option key={c.key} value={c.key}>{c.flag} {c.label}</option>)}
+                </select>
+              </div>
+              <span className="self-center text-xs text-[#a8a39a]">{filtered.length} stories</span>
+            </div>
+            {/* Add manual story button */}
+            <button onClick={() => setShowManualForm(!showManualForm)}
+              className="w-full rounded-xl bg-[#7ad9a1]/10 py-3 text-sm font-bold text-[#7ad9a1] hover:bg-[#7ad9a1]/20">
+              {showManualForm ? 'Cancel' : '+ Write a Story Manually (no API credits)'}
+            </button>
+          </LabCard>
+
+          {/* Manual story form */}
+          {showManualForm && (
+            <LabCard title="Write a Pre-Built Story" subtitle="Hand-craft a story template. Use {childName} as placeholder — it will be replaced with the child's actual name.">
+              <div className="grid grid-cols-2 gap-3 mb-3">
+                <LabInput label="Title" value={manualStory.title} onChange={(v) => setManualStory({ ...manualStory, title: v })} />
+                <LabSelect label="Value" value={manualStory.value} onChange={(v) => setManualStory({ ...manualStory, value: v })} options={VALUES.map((v) => ({ value: v.key, label: `${v.emoji} ${v.label}` }))} />
+                <LabSelect label="Belief" value={manualStory.beliefs} onChange={(v) => setManualStory({ ...manualStory, beliefs: v })} options={RELIGIONS.map((r) => ({ value: r.key, label: `${r.icon} ${r.label}` }))} />
+                <LabSelect label="Country" value={manualStory.country} onChange={(v) => setManualStory({ ...manualStory, country: v })} options={COUNTRIES.map((c) => ({ value: c.key, label: `${c.flag} ${c.label}` }))} />
+                <LabSelect label="Duration" value={manualStory.duration} onChange={(v) => setManualStory({ ...manualStory, duration: Number(v) })} options={DURATIONS.map((d) => ({ value: d.minutes, label: d.label }))} />
+                <LabSelect label="Language" value={manualStory.language} onChange={(v) => setManualStory({ ...manualStory, language: v })} options={LANGUAGES.map((l) => ({ value: l.key, label: l.label }))} />
+                <LabInput label="Target age" value={manualStory.age} onChange={(v) => setManualStory({ ...manualStory, age: Number(v) })} type="number" />
+                <LabSelect label="Gender" value={manualStory.gender} onChange={(v) => setManualStory({ ...manualStory, gender: v })} options={[{ value: 'girl', label: 'Girl' }, { value: 'boy', label: 'Boy' }, { value: 'other', label: 'Other' }]} />
+              </div>
+              <div className="mb-3">
+                <label className="mb-1 block text-[10px] font-bold uppercase tracking-wider text-[#6e6a63]">Story text (use {'{childName}'} for personalization)</label>
+                <textarea value={manualStory.text} onChange={(e) => setManualStory({ ...manualStory, text: e.target.value })}
+                  rows={12} placeholder="Once upon a time, {childName} found something magical..."
+                  className="w-full rounded-lg bg-[#0f0f17] px-4 py-3 font-story text-sm leading-relaxed text-[#f5f0e8] placeholder-[#6e6a63] outline-none ring-1 ring-white/5 focus:ring-[#f0a500]" />
+                <div className="mt-1 text-right text-[10px] text-[#6e6a63]">{manualStory.text.split(/\s+/).filter(Boolean).length} words</div>
+              </div>
+              <button onClick={async () => {
+                if (!manualStory.title || !manualStory.text) return;
+                const id = `manual_${Date.now()}`;
+                const entry = { ...manualStory, id, createdAt: Date.now(), wordCount: manualStory.text.split(/\s+/).filter(Boolean).length, generatedBy: 'manual', rating: 0, notes: '', childName: manualStory.childName || '{childName}' };
+                if (db) await setDoc(doc(db, 'storyCache', id), entry);
+                setCachedStories((prev) => [{ id, ...entry }, ...prev]);
+                setManualStory({ title: '', text: '', value: 'kindness', duration: 5, language: 'English', beliefs: 'hindu', country: 'IN', age: 5, gender: 'girl', childName: '{childName}' });
+                setShowManualForm(false);
+              }} disabled={!manualStory.title || !manualStory.text}
+                className="w-full rounded-xl bg-[#f0a500] py-3 text-sm font-bold text-[#0f0f17] disabled:opacity-50">Save Story to Cache</button>
+            </LabCard>
+          )}
+
+          {filtered.length === 0 ? (
+            <div className="flex items-center justify-center rounded-2xl bg-[#1a1a28] p-12">
+              <div className="text-center"><div className="mb-3 text-4xl">📦</div><p className="text-sm text-[#a8a39a]">{cachedStories.length === 0 ? 'No stories yet' : 'No stories match filters'}</p><p className="mt-1 text-xs text-[#6e6a63]">Generate in Playground or write manually</p></div>
             </div>
           ) : (
             <div className="space-y-3">
-              {cachedStories.map((story) => (
-                <CachedStoryCard key={story.id} story={story} onDelete={() => deleteFromCache(story.id)} />
-              ))}
+              {filtered.map((story) => <CachedStoryCard key={story.id} story={story} onDelete={() => deleteFromCache(story.id)} />)}
             </div>
           )}
         </div>
-      )}
+        );
+      })()}
+    </div>
+  );
+}
+
+// ─── Story Lab sub-components ───
+
+function LabCard({ title, subtitle, titleColor, children, colSpan }) {
+  return (
+    <div className={`rounded-2xl bg-[#1a1a28] p-6 ${colSpan ? 'sm:col-span-2' : ''}`}>
+      {title && <h3 className={`mb-1 text-sm font-bold ${titleColor ? 'font-display text-lg text-[#f0a500]' : 'text-[#f5f0e8]'}`}>{title}</h3>}
+      {subtitle && <p className="mb-4 text-xs text-[#6e6a63]">{subtitle}</p>}
+      {children}
+    </div>
+  );
+}
+
+function LabField({ label, value, onChange }) {
+  return (
+    <div>
+      <label className="mb-1 block text-[10px] font-bold uppercase tracking-wider text-[#6e6a63]">{label}</label>
+      <input value={value} onChange={(e) => onChange(e.target.value)} className="w-full rounded-lg bg-[#1a1a28] px-3 py-2 text-sm text-[#f5f0e8] outline-none ring-1 ring-white/5 focus:ring-[#f0a500]" />
     </div>
   );
 }
@@ -1863,40 +2171,23 @@ function CachedStoryCard({ story, onDelete }) {
           <span className="text-2xl">{meta?.emoji || '📖'}</span>
           <div className="min-w-0">
             <div className="font-bold text-[#f5f0e8] truncate">{story.title}</div>
-            <div className="text-xs text-[#a8a39a]">
-              {story.childName} · {story.age}y · {story.wordCount}w · {story.duration}min · {meta?.label} · {story.language}
-            </div>
-            <div className="text-[10px] text-[#6e6a63]">
-              {story.createdAt ? new Date(story.createdAt).toLocaleDateString() : 'Unknown date'}
+            <div className="text-xs text-[#a8a39a]">{story.childName} · {story.age}y · {story.wordCount}w · {story.duration}min · {meta?.label} · {story.language}</div>
+            <div className="flex items-center gap-2 mt-1">
+              <span className="text-[10px] text-[#6e6a63]">{story.createdAt ? new Date(story.createdAt).toLocaleDateString() : ''}</span>
+              {story.rating > 0 && <span className="text-[10px] text-[#f0a500]">{'★'.repeat(story.rating)}{'☆'.repeat(5 - story.rating)}</span>}
+              {story.notes && <span className="text-[10px] text-[#6e6a63] truncate max-w-[200px]">{story.notes}</span>}
             </div>
           </div>
         </div>
         <div className="flex items-center gap-2 shrink-0">
-          <button
-            onClick={() => setExpanded(!expanded)}
-            className="rounded-lg bg-[#0f0f17] px-3 py-1.5 text-xs font-bold text-[#f0a500]"
-          >
-            {expanded ? 'Hide' : 'Read'}
-          </button>
-          <button
-            onClick={() => { if (confirm('Delete this cached story?')) onDelete(); }}
-            className="rounded-lg bg-[#f3727f]/10 px-3 py-1.5 text-xs font-bold text-[#f3727f]"
-          >
-            Delete
-          </button>
+          <button onClick={() => setExpanded(!expanded)} className="rounded-lg bg-[#0f0f17] px-3 py-1.5 text-xs font-bold text-[#f0a500]">{expanded ? 'Hide' : 'Read'}</button>
+          <button onClick={() => { if (confirm('Delete?')) onDelete(); }} className="rounded-lg bg-[#f3727f]/10 px-3 py-1.5 text-xs font-bold text-[#f3727f]">Del</button>
         </div>
       </div>
       <AnimatePresence>
         {expanded && (
-          <motion.div
-            initial={{ height: 0, opacity: 0 }}
-            animate={{ height: 'auto', opacity: 1 }}
-            exit={{ height: 0, opacity: 0 }}
-            className="overflow-hidden"
-          >
-            <div className="mt-3 max-h-[40vh] overflow-y-auto rounded-lg bg-[#0f0f17] p-4 font-story text-sm leading-relaxed text-[#f5f0e8]/80">
-              {story.text}
-            </div>
+          <motion.div initial={{ height: 0, opacity: 0 }} animate={{ height: 'auto', opacity: 1 }} exit={{ height: 0, opacity: 0 }} className="overflow-hidden">
+            <div className="mt-3 max-h-[40vh] overflow-y-auto rounded-lg bg-[#0f0f17] p-4 font-story text-sm leading-relaxed text-[#f5f0e8]/80">{story.text}</div>
           </motion.div>
         )}
       </AnimatePresence>
@@ -1908,12 +2199,7 @@ function LabInput({ label, value, onChange, type = 'text', full }) {
   return (
     <div className={full ? 'col-span-2' : ''}>
       <label className="mb-1 block text-[10px] font-bold uppercase tracking-wider text-[#6e6a63]">{label}</label>
-      <input
-        type={type}
-        value={value}
-        onChange={(e) => onChange(e.target.value)}
-        className="w-full rounded-lg bg-[#0f0f17] px-3 py-2 text-sm text-[#f5f0e8] outline-none ring-1 ring-white/5 focus:ring-[#f0a500]"
-      />
+      <input type={type} value={value} onChange={(e) => onChange(e.target.value)} className="w-full rounded-lg bg-[#0f0f17] px-3 py-2 text-sm text-[#f5f0e8] outline-none ring-1 ring-white/5 focus:ring-[#f0a500]" />
     </div>
   );
 }
@@ -1922,13 +2208,7 @@ function LabSelect({ label, value, onChange, options }) {
   return (
     <div>
       <label className="mb-1 block text-[10px] font-bold uppercase tracking-wider text-[#6e6a63]">{label}</label>
-      <select
-        value={value}
-        onChange={(e) => onChange(e.target.value)}
-        className="w-full rounded-lg bg-[#0f0f17] px-3 py-2 text-sm text-[#f5f0e8] outline-none ring-1 ring-white/5"
-      >
-        {options.map((o) => <option key={o.value} value={o.value}>{o.label}</option>)}
-      </select>
+      <select value={value} onChange={(e) => onChange(e.target.value)} className="w-full rounded-lg bg-[#0f0f17] px-3 py-2 text-sm text-[#f5f0e8] outline-none ring-1 ring-white/5">{options.map((o) => <option key={o.value} value={o.value}>{o.label}</option>)}</select>
     </div>
   );
 }
