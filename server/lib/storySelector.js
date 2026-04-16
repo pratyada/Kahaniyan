@@ -136,6 +136,7 @@ export async function selectStory({
   beliefs = [],
   country = '',
   _archetypes,
+  _storyLab,
 }) {
   // When whisperOverridesValue is true, pick a random value so the story is fully independent
   const ALL_VALUES = ['kindness', 'courage', 'honesty', 'patience', 'gratitude', 'sharing', 'respect', 'bravery'];
@@ -157,6 +158,7 @@ export async function selectStory({
       whisper,
       beliefs,
       country,
+      _storyLab,
       _archetypes,
     });
     if (claudeStory) {

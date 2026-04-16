@@ -169,19 +169,25 @@ export default async function handler(req, res) {
   try {
     const { uid, duration = 5, _adminTest, ...storyParams } = req.body || {};
 
+    // Load Story Lab config for ALL story generation — this is the content engine
+    let storyLabConfig = null;
+    if (db) {
+      try {
+        const labDoc = await db.collection('config').doc('storyLab').get();
+        if (labDoc.exists) storyLabConfig = labDoc.data();
+      } catch (e) {
+        console.warn('Could not load Story Lab config:', e.message);
+      }
+    }
+    // Attach Story Lab to story params — flows into Claude prompt
+    if (storyLabConfig) storyParams._storyLab = storyLabConfig;
+
     // Admin playground test — skip usage limits but verify admin role
     if (_adminTest && uid) {
       const role = await getRole(uid);
       if (role !== 'admin' && role !== 'tester') {
         return res.status(403).json({ error: 'Admin access required for test generation' });
       }
-      // Load archetypes from config/storyLab if available
-      try {
-        const labDoc = await db.collection('config').doc('storyLab').get();
-        if (labDoc.exists && labDoc.data().archetypes) {
-          storyParams._archetypes = labDoc.data().archetypes;
-        }
-      } catch {}
       const story = await selectStory({ ...storyParams, duration });
       return res.status(200).json(story);
     }
