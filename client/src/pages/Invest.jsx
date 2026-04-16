@@ -20,7 +20,7 @@ import { APP_NAME, APP_VERSION } from '../utils/version.js';
 const ROUND_CONFIG = {
   name: 'Friends & Family · SAFE',
   target: 25000, // CAD
-  valuationCap: 2000000, // $2M CAD
+  valuationCap: 1000000, // $1M CAD
   minInvestment: 50, // CAD
   maxInvestment: 10000, // CAD
   instrument: 'SAFE',
@@ -248,7 +248,7 @@ export default function Invest() {
         <div className="relative mx-auto max-w-5xl px-6 py-12 text-center">
           <motion.div initial={{ opacity: 0, y: -20 }} animate={{ opacity: 1, y: 0 }}>
             <div className="mb-4 inline-flex items-center gap-2 rounded-full bg-[#f0a500]/15 px-4 py-1.5 text-xs font-bold uppercase tracking-wider text-[#f0a500] ring-1 ring-[#f0a500]/30">
-              🌙 SAFE at $2M Cap · Friends & Family · Now Open
+              🌙 SAFE at $1M Cap · Friends & Family · Now Open
             </div>
             <h1 className="font-display text-5xl font-bold leading-tight md:text-6xl">
               Invest in <span className="text-[#f0a500]">{APP_NAME}</span>
@@ -402,10 +402,10 @@ export default function Invest() {
                 </div>
                 <div className="rounded-2xl bg-[#1a1a28] p-5">
                   <div className="mb-2 text-2xl">2️⃣</div>
-                  <div className="text-sm font-bold text-[#f5f0e8]">$2M valuation cap</div>
+                  <div className="text-sm font-bold text-[#f5f0e8]">$1M valuation cap</div>
                   <p className="mt-1 text-xs text-[#a8a39a]">
-                    Your SAFE converts to equity at the next priced round — but capped at a $2M valuation.
-                    If {APP_NAME} is valued at $10M, you get equity as if it was worth $2M. 5x advantage.
+                    Your SAFE converts to equity at the next priced round — but capped at a $1M valuation.
+                    If {APP_NAME} is valued at $10M, you get equity as if it was worth $2M. 10x advantage.
                   </p>
                 </div>
                 <div className="rounded-2xl bg-[#1a1a28] p-5">
@@ -491,7 +491,7 @@ export default function Invest() {
                 A <strong className="text-[#f5f0e8]">SAFE (Simple Agreement for Future Equity)</strong> is
                 the standard investment instrument used by Y Combinator and thousands of startups. It's not
                 a loan, not debt, and not immediate equity. It's a promise: when {APP_NAME} raises a priced
-                round (Series A), your investment converts to real equity — but capped at the $2M valuation,
+                round (Series A), your investment converts to real equity — but capped at the $1M valuation,
                 no matter how high the actual valuation is at that time.
               </p>
               <div className="mt-4 grid gap-2 text-sm sm:grid-cols-3">
@@ -500,12 +500,12 @@ export default function Invest() {
                   <div className="font-bold text-[#f5f0e8]">CA$500</div>
                 </div>
                 <div className="rounded-xl bg-[#0a0a0f] p-3">
-                  <div className="text-xs text-[#6e6a63]">Implied ownership at $2M cap</div>
+                  <div className="text-xs text-[#6e6a63]">Implied ownership at $1M cap</div>
                   <div className="font-bold text-[#f0a500]">{(500 / ROUND_CONFIG.valuationCap * 100).toFixed(3)}%</div>
                 </div>
                 <div className="rounded-xl bg-[#0a0a0f] p-3">
                   <div className="text-xs text-[#6e6a63]">If Series A at $10M</div>
-                  <div className="font-bold text-[#7ad9a1]">You get equity at $2M price (5x advantage)</div>
+                  <div className="font-bold text-[#7ad9a1]">You get equity at $1M price (10x advantage)</div>
                 </div>
               </div>
               <div className="mt-4 space-y-2 text-xs text-[#a8a39a]">
@@ -526,7 +526,7 @@ export default function Invest() {
                   <thead>
                     <tr className="border-b border-white/10 text-[10px] uppercase tracking-wider text-[#6e6a63]">
                       <th className="py-2 text-left">You invest</th>
-                      <th className="py-2 text-right">Ownership at $2M cap</th>
+                      <th className="py-2 text-right">Ownership at $1M cap</th>
                       <th className="py-2 text-right">If valued at $10M</th>
                       <th className="py-2 text-right">If valued at $50M</th>
                     </tr>
@@ -815,7 +815,7 @@ export default function Invest() {
                 {[
                   { icon: '🔍', title: 'Full transparency', text: 'Every dollar raised and spent is visible on this page.' },
                   { icon: '📊', title: 'Public cap table', text: 'Every backer sees exactly what they own. No hidden shares.' },
-                  { icon: '🤝', title: 'Cap lock', text: '$2M valuation cap is locked for this round. No retroactive changes.' },
+                  { icon: '🤝', title: 'Cap lock', text: '$1M valuation cap is locked for this round. No retroactive changes.' },
                   { icon: '📝', title: 'Monthly updates', text: 'Product progress, finances, key decisions — every month.' },
                   { icon: '🗳️', title: 'Voting rights', text: 'Backers with 1%+ equity vote on major product decisions.' },
                   { icon: '💸', title: 'Fail-safe', text: 'If we shut down, remaining funds returned proportionally.' },
@@ -839,7 +839,7 @@ export default function Invest() {
               <p className="text-sm text-[#a8a39a]">
                 {APP_NAME} will be incorporated as a Canadian corporation. Each SAFE note
                 represents a binding commitment to convert to equity (common shares) at the next
-                priced round, capped at a $2M valuation. A formal SAFE document (based on the
+                priced round, capped at a $1M valuation. A formal SAFE document (based on the
                 YC standard template) will be provided to all backers. All contributions are
                 tracked with timestamps and are fully auditable.
               </p>
@@ -909,14 +909,14 @@ export default function Invest() {
               {formData.amount && Number(formData.amount) >= ROUND_CONFIG.minInvestment && (
                 <div className="rounded-xl bg-[#f0a500]/10 p-3 ring-1 ring-[#f0a500]/20">
                   <div className="flex items-center justify-between text-sm">
-                    <span className="text-[#a8a39a]">Implied ownership at $2M cap</span>
+                    <span className="text-[#a8a39a]">Implied ownership at $1M cap</span>
                     <span className="font-bold text-[#f0a500]">
                       {(Number(formData.amount) / ROUND_CONFIG.valuationCap * 100).toFixed(4)}%
                     </span>
                   </div>
                   <div className="mt-1 flex items-center justify-between text-xs text-[#6e6a63]">
                     <span>Instrument</span>
-                    <span>SAFE · $2M cap</span>
+                    <span>SAFE · $1M cap</span>
                   </div>
                 </div>
               )}
