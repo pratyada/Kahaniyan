@@ -154,7 +154,23 @@ export default function StonedAge() {
 
       <div style={{ textAlign: 'center', padding: '36px 20px 20px' }}>
         <a href="https://mysleepytale.com" style={{ display: 'inline-block', marginBottom: 16, padding: '6px 14px', borderRadius: 999, background: 'rgba(255,255,255,0.05)', color: '#a8a39a', fontSize: 11, textDecoration: 'none', border: '1px solid rgba(255,255,255,0.08)' }}>← {APP_NAME}</a>
-        <div style={{ fontSize: 44 }}>🪨</div>
+        <motion.div
+          style={{ fontSize: 52, display: 'inline-block' }}
+          animate={{
+            rotate: [0, 10, -10, 5, -5, 0],
+            scale: [1, 1.1, 0.95, 1.05, 1],
+            filter: [
+              'hue-rotate(0deg)',
+              'hue-rotate(30deg)',
+              'hue-rotate(-20deg)',
+              'hue-rotate(15deg)',
+              'hue-rotate(0deg)',
+            ],
+          }}
+          transition={{ duration: 6, repeat: Infinity, ease: 'easeInOut' }}
+        >
+          🪨
+        </motion.div>
         <h1 style={{ fontFamily: 'Playfair Display,Georgia,serif', fontSize: 32, fontWeight: 700, marginTop: 2 }}><span style={{ color: '#f0a500' }}>Stoned</span> Age</h1>
         <p style={{ color: '#a8a39a', fontSize: 13, marginTop: 4 }}>Pick your phase. Press play. Swipe cards.</p>
       </div>
