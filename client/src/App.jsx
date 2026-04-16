@@ -84,7 +84,14 @@ function Shell() {
   // Full-page layouts (no phone shell)
   if (isAdminRoute) return <Admin />;
   if (location.pathname === '/invest') return <Invest />;
-  if (location.pathname === '/stonedage' || window.location.hostname === 'stonedage.mysleepytale.com') return <StonedAge />;
+  if (location.pathname === '/stonedage' || window.location.hostname === 'stonedage.mysleepytale.com') {
+    return (
+      <div className="phone-shell">
+        <StonedAge />
+        <BottomNav />
+      </div>
+    );
+  }
 
   // Voice recording link — public, no auth, no shell
   if (location.pathname.startsWith('/record/')) return <RecordVoice />;
