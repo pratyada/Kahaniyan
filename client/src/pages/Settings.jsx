@@ -90,6 +90,7 @@ export default function Settings() {
           </button>
           <div className="mt-10 w-full space-y-3">
             <Tile icon="🤝" title="Invest" sub="Back this project" onClick={() => navigate('/invest')} />
+          <Tile icon="🪨" title="Kid slept?" sub="Stoned Age awaits" onClick={() => window.location.href = 'https://stonedage.mysleepytale.com'} />
             <Tile icon="✨" title="Guides" sub="Learn how it works" onClick={() => navigate('/guides')} />
           </div>
         </div>
@@ -316,6 +317,7 @@ export default function Settings() {
           <Tile icon="✨" title="Guides" sub="5 reads" onClick={() => navigate('/guides')} />
           <Tile icon="🛣️" title="Roadmap" sub="Build status" onClick={() => navigate('/roadmap')} />
           <Tile icon="🤝" title="Invest" sub="Back this project" onClick={() => navigate('/invest')} />
+          <Tile icon="🪨" title="Kid slept?" sub="Stoned Age awaits" onClick={() => window.location.href = 'https://stonedage.mysleepytale.com'} />
           {isAdmin && (
             <Tile icon="🔑" title="Admin" sub="Dashboard" onClick={() => navigate('/admin')} />
           )}
