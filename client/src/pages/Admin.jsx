@@ -343,66 +343,82 @@ export default function Admin() {
               </div>
             </div>
 
-            {/* Google Analytics embed */}
+            {/* Google Analytics — deployment timeline + reports */}
             {GA_MEASUREMENT_ID && (
-              <div className="rounded-2xl bg-[#1a1a28] p-6">
-                <h3 className="mb-4 text-xs font-bold uppercase tracking-wider text-[#a8a39a]">
-                  📊 Google Analytics
-                </h3>
-                <div className="grid gap-3 sm:grid-cols-2">
-                  <a
-                    href={`https://analytics.google.com/analytics/web/#/p${GA_MEASUREMENT_ID.replace('G-', '')}/reports/dashboard`}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="flex items-center gap-3 rounded-xl bg-[#0f0f17] p-4 transition hover:bg-white/[0.03]"
-                  >
-                    <span className="text-2xl">📈</span>
-                    <div>
-                      <div className="text-sm font-bold text-[#f5f0e8]">Open GA Dashboard</div>
-                      <div className="text-[11px] text-[#6e6a63]">Real-time, audience, acquisition, engagement</div>
+              <div className="space-y-4">
+                {/* Deployment timeline */}
+                <div className="rounded-2xl bg-[#1a1a28] p-6">
+                  <h3 className="mb-4 text-xs font-bold uppercase tracking-wider text-[#a8a39a]">
+                    📊 Analytics since mysleepytale.com launch
+                  </h3>
+                  <div className="mb-4 space-y-2">
+                    {[
+                      { date: 'Apr 11', event: 'First commit · POC scaffolded', icon: '🔨' },
+                      { date: 'Apr 12', event: 'Vercel deployed · kahaniyan-sage.vercel.app', icon: '▲' },
+                      { date: 'Apr 13', event: 'Firebase Auth + Firestore live', icon: '🔥' },
+                      { date: 'Apr 14', event: 'OpenAI TTS · AI narration live', icon: '🔊' },
+                      { date: 'Apr 15', event: 'mysleepytale.com domain live · GA tracking on', icon: '🌐' },
+                      { date: 'Apr 15', event: 'Stripe live · F&F round open', icon: '💳' },
+                      { date: 'Apr 15', event: 'Invest page · crowdfunding dashboard', icon: '🤝' },
+                    ].map((m, i) => (
+                      <div key={i} className="flex items-center gap-3">
+                        <span className="text-lg">{m.icon}</span>
+                        <div className="h-px flex-1 bg-white/5" />
+                        <span className="shrink-0 text-xs text-[#6e6a63]">{m.date}</span>
+                        <div className="h-px flex-1 bg-white/5" />
+                        <span className="shrink-0 text-xs text-[#a8a39a]">{m.event}</span>
+                      </div>
+                    ))}
+                  </div>
+                  <div className="rounded-xl bg-[#f0a500]/10 p-3 ring-1 ring-[#f0a500]/20">
+                    <div className="text-xs font-bold text-[#f0a500]">Key metrics to track post-launch</div>
+                    <div className="mt-2 grid gap-2 sm:grid-cols-3 text-[11px] text-[#a8a39a]">
+                      <div>📈 <strong className="text-[#f5f0e8]">Sessions</strong> — are people visiting?</div>
+                      <div>⏱️ <strong className="text-[#f5f0e8]">Avg session</strong> — are they staying?</div>
+                      <div>🔁 <strong className="text-[#f5f0e8]">Returning users</strong> — are they coming back?</div>
+                      <div>🌍 <strong className="text-[#f5f0e8]">Countries</strong> — where are they from?</div>
+                      <div>📱 <strong className="text-[#f5f0e8]">Device split</strong> — mobile vs desktop?</div>
+                      <div>🚪 <strong className="text-[#f5f0e8]">Bounce rate</strong> — leaving immediately?</div>
                     </div>
-                  </a>
-                  <a
-                    href={`https://analytics.google.com/analytics/web/#/p${GA_MEASUREMENT_ID.replace('G-', '')}/reports/explorer-user?params=_u..nav%3Dmaui&irl=all`}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="flex items-center gap-3 rounded-xl bg-[#0f0f17] p-4 transition hover:bg-white/[0.03]"
-                  >
-                    <span className="text-2xl">🌍</span>
-                    <div>
-                      <div className="text-sm font-bold text-[#f5f0e8]">GA Geography Report</div>
-                      <div className="text-[11px] text-[#6e6a63]">Countries, cities, sessions by region</div>
-                    </div>
-                  </a>
-                  <a
-                    href={`https://analytics.google.com/analytics/web/#/p${GA_MEASUREMENT_ID.replace('G-', '')}/reports/realtime`}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="flex items-center gap-3 rounded-xl bg-[#0f0f17] p-4 transition hover:bg-white/[0.03]"
-                  >
-                    <span className="text-2xl">⚡</span>
-                    <div>
-                      <div className="text-sm font-bold text-[#f5f0e8]">GA Real-time</div>
-                      <div className="text-[11px] text-[#6e6a63]">Live users, active pages, events</div>
-                    </div>
-                  </a>
-                  <a
-                    href={`https://analytics.google.com/analytics/web/#/p${GA_MEASUREMENT_ID.replace('G-', '')}/reports/acquisition-overview`}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="flex items-center gap-3 rounded-xl bg-[#0f0f17] p-4 transition hover:bg-white/[0.03]"
-                  >
-                    <span className="text-2xl">🔗</span>
-                    <div>
-                      <div className="text-sm font-bold text-[#f5f0e8]">GA Acquisition</div>
-                      <div className="text-[11px] text-[#6e6a63]">Traffic sources, channels, referrals</div>
-                    </div>
-                  </a>
+                  </div>
                 </div>
-                <p className="mt-3 text-[11px] text-[#6e6a63]">
-                  Measurement ID: {GA_MEASUREMENT_ID}. Links open Google Analytics in a new tab.
-                  For embedded dashboards, use GA4 → Admin → Custom Reports → Share → Embed.
-                </p>
+
+                {/* GA report links */}
+                <div className="rounded-2xl bg-[#1a1a28] p-6">
+                  <h3 className="mb-4 text-xs font-bold uppercase tracking-wider text-[#a8a39a]">
+                    Open in Google Analytics
+                  </h3>
+                  <div className="grid gap-2 sm:grid-cols-2 lg:grid-cols-3">
+                    {[
+                      { icon: '⚡', title: 'Real-time', sub: 'Who is on the site right now', path: 'reports/realtime' },
+                      { icon: '📈', title: 'Overview', sub: 'Sessions, users, pageviews', path: 'reports/dashboard' },
+                      { icon: '🌍', title: 'Geography', sub: 'Countries, cities', path: 'reports/explorer-user?params=_u..nav%3Dmaui&irl=all' },
+                      { icon: '🔗', title: 'Acquisition', sub: 'How people find us', path: 'reports/acquisition-overview' },
+                      { icon: '📱', title: 'Tech', sub: 'Devices, browsers, OS', path: 'reports/tech-overview' },
+                      { icon: '🔄', title: 'Retention', sub: 'Are they coming back?', path: 'reports/retention' },
+                      { icon: '🎯', title: 'Engagement', sub: 'Pages, events, scroll', path: 'reports/engagement-overview' },
+                      { icon: '💰', title: 'Monetization', sub: 'Revenue events', path: 'reports/monetization-overview' },
+                      { icon: '🗺️', title: 'User flow', sub: 'Journey through the app', path: 'reports/exploration' },
+                    ].map((r, i) => (
+                      <a
+                        key={i}
+                        href={`https://analytics.google.com/analytics/web/#/p${GA_MEASUREMENT_ID.replace('G-', '')}/${r.path}`}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="flex items-center gap-3 rounded-xl bg-[#0f0f17] p-3 transition hover:bg-white/[0.03]"
+                      >
+                        <span className="text-xl">{r.icon}</span>
+                        <div>
+                          <div className="text-xs font-bold text-[#f5f0e8]">{r.title}</div>
+                          <div className="text-[10px] text-[#6e6a63]">{r.sub}</div>
+                        </div>
+                      </a>
+                    ))}
+                  </div>
+                  <p className="mt-3 text-[10px] text-[#6e6a63]">
+                    ID: {GA_MEASUREMENT_ID} · Domain: mysleepytale.com · Tracking since Apr 15, 2026
+                  </p>
+                </div>
               </div>
             )}
           </div>
