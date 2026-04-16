@@ -814,7 +814,8 @@ export default function Invest() {
 
       {/* ─── INVEST FORM (modal) ─── */}
       {showForm && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 p-4 backdrop-blur-md">
+        <div className="fixed inset-0 z-50 overflow-y-auto bg-black/80 backdrop-blur-md" style={{ WebkitOverflowScrolling: 'touch' }}>
+          <div className="flex min-h-full items-center justify-center p-4">
           <motion.div
             initial={{ scale: 0.9, opacity: 0 }}
             animate={{ scale: 1, opacity: 1 }}
@@ -948,6 +949,7 @@ export default function Invest() {
               </p>
             </div>
           </motion.div>
+          </div>
         </div>
       )}
 
