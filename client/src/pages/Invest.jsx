@@ -1026,10 +1026,11 @@ export default function Invest() {
       <div className="mx-auto max-w-5xl px-6 py-8">
         <div className="rounded-2xl bg-gradient-to-r from-[#f0a500]/10 to-[#ffb733]/5 p-8 text-center ring-1 ring-[#f0a500]/20">
           <div className="mb-3 text-3xl">🚀</div>
-          <h3 className="font-display text-xl font-bold text-[#f0a500]">Want to join as an active team member?</h3>
+          <h3 className="font-display text-xl font-bold text-[#f0a500]">See the potential? Join actively.</h3>
           <p className="mx-auto mt-2 max-w-md text-sm text-[#a8a39a]">
-            Not just an investor — you want to build, market, test, or grow {APP_NAME} with us?
-            We're looking for passionate people who believe bedtime stories can change childhood.
+            Money is one way to back us. Your time and skills are worth even more.
+            Join as an active team member — build with us, grow with us, and share in the
+            upside of something we're creating from scratch.
           </p>
           <a
             href="mailto:prateekyadav2010@gmail.com?subject=I want to join My Sleepy Tale as a team member&body=Hi Prateek,%0A%0AI'd like to contribute to My Sleepy Tale as an active team member.%0A%0AMy skills:%0AHow I can help:%0A"
