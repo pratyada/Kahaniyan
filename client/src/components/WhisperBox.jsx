@@ -71,8 +71,8 @@ export default function WhisperBox({ value, onChange, overrideValue, onToggleOve
                 </span>
               </div>
 
-              {/* Quick suggestions */}
-              <div className="mt-4">
+              {/* Quick suggestions — hidden when user is typing their own */}
+              {!value.trim() && <div className="mt-4">
                 <div className="mb-2 text-[10px] font-bold uppercase tracking-[0.16em] text-ink-muted">
                   Quick whispers
                 </div>
@@ -88,7 +88,7 @@ export default function WhisperBox({ value, onChange, overrideValue, onToggleOve
                     </button>
                   ))}
                 </div>
-              </div>
+              </div>}
 
               {/* Override toggle */}
               <label className="mt-4 flex cursor-pointer items-center justify-between gap-3 rounded-2xl bg-bg-base p-3">
