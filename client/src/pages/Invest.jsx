@@ -393,6 +393,138 @@ export default function Invest() {
               </div>
             </section>
 
+            {/* Why CA$25K + How we'll spend it */}
+            <section>
+              <h3 className="mb-4 text-xs font-bold uppercase tracking-wider text-[#6e6a63]">
+                Why CA$25K and where every dollar goes
+              </h3>
+
+              {/* The split */}
+              <div className="mb-6 grid gap-4 md:grid-cols-2">
+                {/* Tech 40% */}
+                <div className="rounded-2xl bg-[#1a1a28] p-6">
+                  <div className="mb-3 flex items-center justify-between">
+                    <div className="flex items-center gap-2">
+                      <span className="text-2xl">⚙️</span>
+                      <span className="font-display text-lg font-bold text-[#f5f0e8]">Technology</span>
+                    </div>
+                    <span className="rounded-full bg-[#f0a500]/15 px-3 py-1 text-sm font-bold text-[#f0a500]">40% · CA$10K</span>
+                  </div>
+                  <div className="h-3 overflow-hidden rounded-full bg-[#0a0a0f]">
+                    <div className="h-full rounded-full bg-gradient-to-r from-[#f0a500] to-[#ffb733]" style={{ width: '40%' }} />
+                  </div>
+                  <div className="mt-4 space-y-2">
+                    {[
+                      { item: 'OpenAI TTS API (voice narration)', amount: 'CA$3,000', icon: '🔊' },
+                      { item: 'Voice cloning (family voices)', amount: 'CA$2,500', icon: '🎙️' },
+                      { item: 'Speech customization + accents', amount: 'CA$1,500', icon: '🗣️' },
+                      { item: 'Infrastructure (Firebase, Vercel, CDN)', amount: 'CA$1,500', icon: '☁️' },
+                      { item: 'App Store fees (Apple + Google)', amount: 'CA$500', icon: '📱' },
+                      { item: 'AI story generation (Claude API)', amount: 'CA$1,000', icon: '🧠' },
+                    ].map((e, i) => (
+                      <div key={i} className="flex items-center justify-between rounded-lg bg-[#0a0a0f] px-3 py-2">
+                        <div className="flex items-center gap-2 text-xs text-[#a8a39a]">
+                          <span>{e.icon}</span> {e.item}
+                        </div>
+                        <span className="text-xs font-bold text-[#f5f0e8]">{e.amount}</span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Marketing 60% */}
+                <div className="rounded-2xl bg-[#1a1a28] p-6">
+                  <div className="mb-3 flex items-center justify-between">
+                    <div className="flex items-center gap-2">
+                      <span className="text-2xl">📣</span>
+                      <span className="font-display text-lg font-bold text-[#f5f0e8]">Marketing & Growth</span>
+                    </div>
+                    <span className="rounded-full bg-[#7ad9a1]/15 px-3 py-1 text-sm font-bold text-[#7ad9a1]">60% · CA$15K</span>
+                  </div>
+                  <div className="h-3 overflow-hidden rounded-full bg-[#0a0a0f]">
+                    <div className="h-full rounded-full bg-gradient-to-r from-[#7ad9a1] to-[#4ecdc4]" style={{ width: '60%' }} />
+                  </div>
+                  <div className="mt-4 space-y-2">
+                    {[
+                      { item: 'Google Ads (search + YouTube)', amount: 'CA$5,000', icon: '🔍' },
+                      { item: 'Meta Ads (Instagram + Facebook)', amount: 'CA$4,000', icon: '📘' },
+                      { item: 'School partnerships & demos', amount: 'CA$2,000', icon: '🏫' },
+                      { item: 'Community camps & parent meetups', amount: 'CA$2,000', icon: '🏕️' },
+                      { item: 'Content creation & influencers', amount: 'CA$1,500', icon: '🎬' },
+                      { item: 'Print materials & QR campaigns', amount: 'CA$500', icon: '📄' },
+                    ].map((e, i) => (
+                      <div key={i} className="flex items-center justify-between rounded-lg bg-[#0a0a0f] px-3 py-2">
+                        <div className="flex items-center gap-2 text-xs text-[#a8a39a]">
+                          <span>{e.icon}</span> {e.item}
+                        </div>
+                        <span className="text-xs font-bold text-[#f5f0e8]">{e.amount}</span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </div>
+
+              {/* Market opportunity */}
+              <div className="rounded-2xl bg-[#1a1a28] p-6">
+                <h4 className="mb-4 text-xs font-bold uppercase tracking-wider text-[#6e6a63]">
+                  🇨🇦 Market opportunity — Canada first
+                </h4>
+                <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+                  <div className="rounded-xl bg-[#0a0a0f] p-4 text-center">
+                    <div className="text-2xl font-bold text-[#f0a500]">⚽</div>
+                    <div className="mt-1 text-sm font-bold text-[#f5f0e8]">FIFA 2026</div>
+                    <div className="mt-1 text-[10px] text-[#a8a39a]">Toronto is a host city. Massive influx of multicultural families. Perfect audience.</div>
+                  </div>
+                  <div className="rounded-xl bg-[#0a0a0f] p-4 text-center">
+                    <div className="text-2xl font-bold text-[#f0a500]">☀️</div>
+                    <div className="mt-1 text-sm font-bold text-[#f5f0e8]">Summer 2026</div>
+                    <div className="mt-1 text-[10px] text-[#a8a39a]">Kids home from school. Parents need bedtime routines. Peak demand season.</div>
+                  </div>
+                  <div className="rounded-xl bg-[#0a0a0f] p-4 text-center">
+                    <div className="text-2xl font-bold text-[#f0a500]">🏙️</div>
+                    <div className="mt-1 text-sm font-bold text-[#f5f0e8]">Toronto Downtown</div>
+                    <div className="mt-1 text-[10px] text-[#a8a39a]">First target. Dense, diverse, tech-savvy parents. 50K families with kids 0-10.</div>
+                  </div>
+                  <div className="rounded-xl bg-[#0a0a0f] p-4 text-center">
+                    <div className="text-2xl font-bold text-[#f0a500]">🗺️</div>
+                    <div className="mt-1 text-sm font-bold text-[#f5f0e8]">Then GTA</div>
+                    <div className="mt-1 text-[10px] text-[#a8a39a]">Expand to Greater Toronto Area. 2M+ families. South Asian, Arab, Jewish, Christian communities.</div>
+                  </div>
+                </div>
+
+                {/* Growth roadmap */}
+                <div className="mt-5">
+                  <div className="text-[10px] font-bold uppercase tracking-wider text-[#6e6a63] mb-3">Growth timeline</div>
+                  <div className="space-y-2">
+                    {[
+                      { q: 'May–Jun 2026', goal: '500 users', focus: 'Toronto downtown · organic + F&F referrals', color: '#f0a500' },
+                      { q: 'Jul–Aug 2026', goal: '2,000 users', focus: 'Google Ads + school partnerships · summer camps', color: '#ffb733' },
+                      { q: 'Sep–Oct 2026', goal: '5,000 users', focus: 'GTA expansion · Meta ads · FIFA buzz', color: '#7ad9a1' },
+                      { q: 'Nov–Dec 2026', goal: '10,000 users', focus: 'Pan-Canada · holiday season · gift subscriptions', color: '#539df5' },
+                    ].map((m, i) => (
+                      <div key={i} className="flex items-center gap-3">
+                        <div className="w-28 shrink-0 text-right text-xs font-bold text-[#a8a39a]">{m.q}</div>
+                        <div className="relative flex-1">
+                          <div className="h-8 overflow-hidden rounded-lg bg-[#0a0a0f]">
+                            <motion.div
+                              className="flex h-full items-center rounded-lg px-3"
+                              style={{ background: m.color }}
+                              initial={{ width: 0 }}
+                              animate={{ width: `${Math.min(100, (i + 1) * 25)}%` }}
+                              transition={{ duration: 1, delay: i * 0.2 }}
+                            >
+                              <span className="text-[10px] font-bold text-[#0a0a0f]">{m.goal}</span>
+                            </motion.div>
+                          </div>
+                        </div>
+                        <div className="w-48 shrink-0 text-[10px] text-[#6e6a63]">{m.focus}</div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            </section>
+
             {/* How SAFE works */}
             <section>
               <h3 className="mb-4 text-xs font-bold uppercase tracking-wider text-[#6e6a63]">
