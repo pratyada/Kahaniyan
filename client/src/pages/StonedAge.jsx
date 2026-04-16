@@ -65,7 +65,10 @@ function CardStack() {
   const visible = deck.slice(idx, idx + 3);
 
   return (
-    <div style={{ position: 'relative', width: '100%', maxWidth: 340, height: 360, margin: '0 auto' }}>
+    <div style={{ position: 'relative', width: '100%', maxWidth: 340, height: 360, margin: '0 auto', touchAction: 'pan-y' }}
+      onTouchStart={(e) => { if (e.touches.length === 1) e.currentTarget.style.touchAction = 'none'; }}
+      onTouchEnd={(e) => { e.currentTarget.style.touchAction = 'pan-y'; }}
+    >
       {visible.map((card, i) => {
         const isTop = i === 0;
         return (
