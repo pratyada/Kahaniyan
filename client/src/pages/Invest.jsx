@@ -109,16 +109,16 @@ const FOUNDER_INVESTMENTS = [
   },
 ];
 
-// Git contribution data (from actual repo)
+// Git stats — updated at build time. To refresh: update these numbers.
 const GIT_STATS = {
-  totalCommits: 85,
-  totalFilesChanged: 120,
-  linesAdded: 18000,
-  linesRemoved: 3000,
+  totalCommits: 131,
+  totalFilesChanged: 88,
+  linesAdded: 15927,
+  linesRemoved: 517,
   firstCommit: 'Apr 11, 2026',
   latestCommit: 'Apr 15, 2026',
   daysActive: 5,
-  versions: ['0.0.1', '0.0.2', '0.0.3', '0.0.4', '0.0.5', '0.0.6', '0.0.7', '0.0.8'],
+  versions: ['0.0.1', '0.0.2', '0.0.3', '0.0.4', '0.0.5', '0.0.6', '0.0.7', '0.0.8', '0.0.9'],
 };
 
 export default function Invest() {
