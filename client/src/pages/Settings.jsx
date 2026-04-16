@@ -322,7 +322,7 @@ export default function Settings() {
           {isAdmin && (
             <Tile icon="🔑" title="Admin" sub="Dashboard" onClick={() => navigate('/admin')} />
           )}
-          <Tile icon="📋" title="What's new" sub="v0.0.9" onClick={() => setReleasesOpen(true)} />
+          <Tile icon="📋" title="What's new" sub="v0.0.10" onClick={() => setReleasesOpen(true)} />
         </div>
       </SectionCard>
 
@@ -334,7 +334,8 @@ export default function Settings() {
             <h2 className="font-display text-xl font-bold text-gold mb-4">What's new</h2>
             <div className="space-y-2">
               {[
-                { v: 'v0.0.9', date: 'Apr 16', badge: 'LATEST', title: '🧠 Claude AI stories + your feedback shipped', detail: 'After community feedback: stories are now fun, silly, and kid-appropriate. Powered by Claude AI — every story is fresh. 5-min generation fully validated.' },
+                { v: 'v0.0.10', date: 'Apr 16', badge: 'LATEST', title: '🧪 Story Lab + personalized experience', detail: 'Story Lab content engine — culturally-rooted stories powered by your belief, country, and family. Quick whispers personalized to your culture. Longer, richer stories. Anti-stereotype characters. Better voice. Yellow text highlight. Stories never lost.' },
+                { v: 'v0.0.9', date: 'Apr 16', title: '🧠 Claude AI stories + your feedback shipped', detail: 'After community feedback: stories are now fun, silly, and kid-appropriate. Powered by Claude AI — every story is fresh. 5-min generation fully validated.' },
                 { v: 'v0.0.8', date: 'Apr 15', title: '🔊 OpenAI voice + cloud sync', detail: 'AI narrator voices. Profile syncs to cloud. Gender pronouns. Character tags.' },
                 { v: 'v0.0.7', date: 'Apr 14', title: '👨‍👩‍👧 Cast stories + multi-kid', detail: 'Choose characters for tonight. Multiple kids. Pet sounds (bhau bhau!).' },
                 { v: 'v0.0.5', date: 'Apr 13', title: '🔐 Auth + admin dashboard', detail: 'Google sign-in. Admin panel. Usage analytics. Team roles.' },
