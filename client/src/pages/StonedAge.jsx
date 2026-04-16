@@ -1,6 +1,7 @@
 import { useState, useRef, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { APP_NAME } from '../utils/version.js';
+import { usePageMeta } from '../hooks/usePageMeta.js';
 
 const PHASES = [
   { id: 'pre', name: 'Pre-Flight', emoji: '🌅', color: '#f0a500', tagline: 'Smooth talk. Good vibes.' },
@@ -108,6 +109,11 @@ function CardStack() {
 }
 
 export default function StonedAge() {
+  usePageMeta({
+    title: 'Stoned Age — After kids sleep, parents play 🪨',
+    description: 'Curated radio for every phase of your night. Pre-flight chill, peak orbit dance, soft landing ambient. Plus 20 swipeable joke, news & tip cards. A My Sleepy Tale side project.',
+  });
+
   const [phase, setPhase] = useState('pre');
   const [activeStation, setActiveStation] = useState(null);
   const [playing, setPlaying] = useState(false);

@@ -6,6 +6,10 @@ const PAGES = {
     title: 'Invest in My Sleepy Tale — SAFE at $1M Cap · Friends & Family',
     description: 'Back My Sleepy Tale, the AI-powered personalized bedtime story app. SAFE note at $1M valuation cap. Transparent cap table, real-time backer board. Min CA$50.',
   },
+  '/stonedage': {
+    title: 'Stoned Age — After kids sleep, parents play 🪨',
+    description: 'Curated radio for every phase of your night. Pre-flight chill → peak orbit dance → soft landing ambient. Plus 20 swipeable cards with jokes, news & pro tips. A My Sleepy Tale side project.',
+  },
 };
 
 const BOT_UA = /facebookexternalhit|Twitterbot|Slackbot|WhatsApp|LinkedInBot|TelegramBot|Discordbot/i;
@@ -43,5 +47,5 @@ export default function middleware(request) {
 }
 
 export const config = {
-  matcher: ['/invest'],
+  matcher: ['/invest', '/stonedage'],
 };
