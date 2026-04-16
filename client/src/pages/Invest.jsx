@@ -18,22 +18,19 @@ import { APP_NAME, APP_VERSION } from '../utils/version.js';
 // ─────────────────────────────────────────────────────────────
 
 const ROUND_CONFIG = {
-  name: 'Friends & Family',
+  name: 'Friends & Family · SAFE',
   target: 25000, // CAD
-  tokenPrice: 0.10, // CAD per token
-  totalTokens: 10000000, // 10M total supply
-  founderTokens: 9000000, // 90% founders (45% + 45%)
-  roundTokens: 500000, // 5% this round
-  reserveTokens: 500000, // 5% future rounds
+  valuationCap: 2000000, // $2M CAD
   minInvestment: 50, // CAD
   maxInvestment: 10000, // CAD
+  instrument: 'SAFE',
 };
 
 const FOUNDERS = [
   {
     name: 'Prateek',
     role: 'Co-founder · Tech / Finance / Partners',
-    tokens: 4500000,
+    equity: 45,
     description: 'Full-stack development, AI/ML, finance, partnerships, and all technical execution.',
     emoji: '⚙️',
     linkedin: '',
@@ -43,7 +40,7 @@ const FOUNDERS = [
   {
     name: 'Sahil',
     role: 'Co-founder · Go-to-Market / Vision / UI·UX / Team',
-    tokens: 4500000,
+    equity: 45,
     description: 'Idea originator. Go-to-market strategy, product vision, UI/UX design, team building, and growth.',
     emoji: '🧠',
     linkedin: '',
@@ -53,11 +50,11 @@ const FOUNDERS = [
 ];
 
 const ROLES = [
-  { key: 'investor', label: 'Investor', emoji: '💰', description: 'Financial contribution only', multiplier: 1.0 },
-  { key: 'investor-tester', label: 'Investor + Tester', emoji: '🧪', description: 'Money + QA testing the app', multiplier: 1.15 },
-  { key: 'investor-promoter', label: 'Investor + Promoter', emoji: '📣', description: 'Money + spreading the word', multiplier: 1.2 },
-  { key: 'investor-affiliate', label: 'Investor + Affiliate', emoji: '🔗', description: 'Money + bringing paying users', multiplier: 1.3 },
-  { key: 'investor-builder', label: 'Investor + Builder', emoji: '🔨', description: 'Money + contributing code/design/content', multiplier: 1.5 },
+  { key: 'investor', label: 'Investor', emoji: '💰', description: 'Financial contribution' },
+  { key: 'investor-tester', label: 'Investor + Tester', emoji: '🧪', description: 'Money + QA testing the app' },
+  { key: 'investor-promoter', label: 'Investor + Promoter', emoji: '📣', description: 'Money + spreading the word' },
+  { key: 'investor-affiliate', label: 'Investor + Affiliate', emoji: '🔗', description: 'Money + bringing paying users' },
+  { key: 'investor-builder', label: 'Investor + Builder', emoji: '🔨', description: 'Money + contributing code/design/content' },
 ];
 
 const EXPENSES = [
@@ -149,7 +146,7 @@ export default function Invest() {
         const snap = await getDocs(collection(db, 'investors'));
         const list = [];
         snap.forEach((d) => list.push({ id: d.id, ...d.data() }));
-        setContributors(list.sort((a, b) => (b.tokens || 0) - (a.tokens || 0)));
+        setContributors(list.sort((a, b) => (b.amount || 0) - (a.amount || 0)));
       } catch {
         // ignore
       }
@@ -160,16 +157,11 @@ export default function Invest() {
   const stats = useMemo(() => {
     const confirmed = contributors.filter((c) => c.status === 'confirmed');
     const totalRaised = confirmed.reduce((s, c) => s + (c.amount || 0), 0);
-    const totalContributorTokens = confirmed.reduce((s, c) => s + (c.tokens || 0), 0);
-    const founderTokens = FOUNDERS.reduce((s, f) => s + f.tokens, 0);
-    const totalAllocated = founderTokens + totalContributorTokens;
+    const totalImpliedOwnership = (totalRaised / ROUND_CONFIG.valuationCap) * 100;
     const totalExpenses = EXPENSES.reduce((s, e) => s + e.amount, 0);
     return {
       totalRaised,
-      totalContributorTokens,
-      founderTokens,
-      totalAllocated,
-      remaining: ROUND_CONFIG.roundTokens - totalContributorTokens,
+      totalImpliedOwnership,
       percentRaised: Math.min(100, (totalRaised / ROUND_CONFIG.target) * 100),
       contributorCount: confirmed.length,
       pendingCount: contributors.filter((c) => c.status !== 'confirmed').length,
@@ -183,7 +175,7 @@ export default function Invest() {
     try {
       const amount = Number(formData.amount);
       const role = ROLES.find((r) => r.key === formData.role) || ROLES[0];
-      const tokens = Math.floor((amount / ROUND_CONFIG.tokenPrice) * role.multiplier);
+      const impliedOwnership = (amount / ROUND_CONFIG.valuationCap) * 100;
 
       // Save investor profile to Firestore first
       await setDoc(doc(db, 'investors', user.uid), {
@@ -193,8 +185,9 @@ export default function Invest() {
         amount,
         role: formData.role,
         roleLabel: role.label,
-        multiplier: role.multiplier,
-        tokens,
+        instrument: 'SAFE',
+        valuationCap: ROUND_CONFIG.valuationCap,
+        impliedOwnership,
         message: formData.message.trim(),
         linkedin: formData.linkedin.trim(),
         isPublic: formData.isPublic,
@@ -255,7 +248,7 @@ export default function Invest() {
         <div className="relative mx-auto max-w-5xl px-6 py-12 text-center">
           <motion.div initial={{ opacity: 0, y: -20 }} animate={{ opacity: 1, y: 0 }}>
             <div className="mb-4 inline-flex items-center gap-2 rounded-full bg-[#f0a500]/15 px-4 py-1.5 text-xs font-bold uppercase tracking-wider text-[#f0a500] ring-1 ring-[#f0a500]/30">
-              🌙 Friends & Family Round · Now Open
+              🌙 SAFE at $2M Cap · Friends & Family · Now Open
             </div>
             <h1 className="font-display text-5xl font-bold leading-tight md:text-6xl">
               Invest in <span className="text-[#f0a500]">{APP_NAME}</span>
@@ -385,7 +378,7 @@ export default function Invest() {
                       <div className="text-xs font-bold text-[#f0a500]">{f.role}</div>
                       <p className="mt-2 text-sm text-[#a8a39a]">{f.description}</p>
                       <div className="mt-2 text-xs text-[#6e6a63]">
-                        {(f.tokens / 1000000).toFixed(1)}M tokens ({((f.tokens / ROUND_CONFIG.totalTokens) * 100).toFixed(0)}% equity)
+                        {f.equity}% equity
                       </div>
                     </div>
                   </div>
@@ -393,34 +386,34 @@ export default function Invest() {
               </div>
             </section>
 
-            {/* How it works */}
+            {/* How SAFE works */}
             <section>
               <h3 className="mb-4 text-xs font-bold uppercase tracking-wider text-[#6e6a63]">
-                How the token model works
+                How SAFE works
               </h3>
               <div className="grid gap-3 md:grid-cols-3">
                 <div className="rounded-2xl bg-[#1a1a28] p-5">
                   <div className="mb-2 text-2xl">1️⃣</div>
-                  <div className="text-sm font-bold text-[#f5f0e8]">You contribute</div>
+                  <div className="text-sm font-bold text-[#f5f0e8]">You invest now</div>
                   <p className="mt-1 text-xs text-[#a8a39a]">
-                    Min CA${ROUND_CONFIG.minInvestment}. Every dollar buys {(1 / ROUND_CONFIG.tokenPrice).toFixed(0)} tokens
-                    at the current round price of CA${ROUND_CONFIG.tokenPrice}/token.
+                    Min CA${ROUND_CONFIG.minInvestment}. Your money goes directly into building {APP_NAME}.
+                    You receive a SAFE note — the standard instrument used by YC and every major startup.
                   </p>
                 </div>
                 <div className="rounded-2xl bg-[#1a1a28] p-5">
                   <div className="mb-2 text-2xl">2️⃣</div>
-                  <div className="text-sm font-bold text-[#f5f0e8]">Role bonus</div>
+                  <div className="text-sm font-bold text-[#f5f0e8]">$2M valuation cap</div>
                   <p className="mt-1 text-xs text-[#a8a39a]">
-                    Contributing beyond money? Testers get 15% bonus tokens, promoters 20%,
-                    affiliates 30%, builders 50%. Your sweat equity is valued.
+                    Your SAFE converts to equity at the next priced round — but capped at a $2M valuation.
+                    If {APP_NAME} is valued at $10M, you get equity as if it was worth $2M. 5x advantage.
                   </p>
                 </div>
                 <div className="rounded-2xl bg-[#1a1a28] p-5">
                   <div className="mb-2 text-2xl">3️⃣</div>
-                  <div className="text-sm font-bold text-[#f5f0e8]">Your equity grows</div>
+                  <div className="text-sm font-bold text-[#f5f0e8]">Early = best price</div>
                   <p className="mt-1 text-xs text-[#a8a39a]">
-                    Tokens represent ownership. As {APP_NAME} grows, token value grows. Next round
-                    price will be higher. Early backers get the best deal.
+                    Friends & Family get the lowest cap. The next round will be at a higher valuation.
+                    Your CA${ROUND_CONFIG.minInvestment} today could be worth multiples at conversion.
                   </p>
                 </div>
               </div>
@@ -441,10 +434,7 @@ export default function Invest() {
                         <div className="text-xs text-[#a8a39a]">{r.description}</div>
                       </div>
                     </div>
-                    <div className="text-right">
-                      <div className="text-sm font-bold text-[#f0a500]">{r.multiplier}x</div>
-                      <div className="text-[10px] text-[#6e6a63]">token multiplier</div>
-                    </div>
+                    <div className="text-[10px] text-[#6e6a63]">Same SAFE terms</div>
                   </div>
                 ))}
               </div>
@@ -455,69 +445,106 @@ export default function Invest() {
         {/* ═══ CAP TABLE ═══ */}
         {tab === 'cap-table' && (
           <div className="space-y-6">
+            {/* Current ownership */}
             <section className="rounded-2xl bg-[#1a1a28] p-6">
               <h3 className="mb-4 text-xs font-bold uppercase tracking-wider text-[#6e6a63]">
-                Token distribution — {ROUND_CONFIG.totalTokens.toLocaleString()} total supply
+                Ownership (pre-conversion)
               </h3>
               <div className="space-y-3">
+                {FOUNDERS.map((f) => (
+                  <CapRow key={f.name} label={`${f.name} — ${f.role}`} tokens={f.equity} total={100} color="#f0a500" unit="%" />
+                ))}
                 <CapRow
-                  label="Founders (Sahil + Prateek)"
-                  tokens={stats.founderTokens}
-                  total={ROUND_CONFIG.totalTokens}
-                  color="#f0a500"
-                />
-                <CapRow
-                  label={`Friends & Family Round (${stats.contributorCount} backers)`}
-                  tokens={stats.totalContributorTokens}
-                  total={ROUND_CONFIG.totalTokens}
+                  label={`F&F SAFE holders (${stats.contributorCount} backers) — implied at conversion`}
+                  tokens={Math.round(stats.totalImpliedOwnership * 100) / 100}
+                  total={100}
                   color="#7ad9a1"
+                  unit="%"
                 />
                 <CapRow
-                  label="Available in this round"
-                  tokens={Math.max(0, stats.remaining)}
-                  total={ROUND_CONFIG.totalTokens}
+                  label="Unallocated (employee pool + future rounds)"
+                  tokens={Math.round((100 - FOUNDERS.reduce((s, f) => s + f.equity, 0) - stats.totalImpliedOwnership) * 100) / 100}
+                  total={100}
                   color="#539df5"
-                />
-                <CapRow
-                  label="Reserve (future rounds + employees)"
-                  tokens={ROUND_CONFIG.reserveTokens}
-                  total={ROUND_CONFIG.totalTokens}
-                  color="#a8a39a"
+                  unit="%"
                 />
               </div>
             </section>
 
+            {/* SAFE details */}
             <section className="rounded-2xl bg-[#1a1a28] p-6">
               <h3 className="mb-4 text-xs font-bold uppercase tracking-wider text-[#6e6a63]">
-                Round details
+                SAFE terms
               </h3>
               <div className="grid gap-3 sm:grid-cols-2 md:grid-cols-4">
-                <DetailCard label="Token price" value={`CA$${ROUND_CONFIG.tokenPrice}`} />
+                <DetailCard label="Instrument" value="SAFE" />
+                <DetailCard label="Valuation cap" value={`CA$${(ROUND_CONFIG.valuationCap / 1000000).toFixed(0)}M`} />
                 <DetailCard label="Min investment" value={`CA$${ROUND_CONFIG.minInvestment}`} />
-                <DetailCard label="Max investment" value={`CA$${ROUND_CONFIG.maxInvestment.toLocaleString()}`} />
                 <DetailCard label="Round target" value={`CA$${ROUND_CONFIG.target.toLocaleString()}`} />
               </div>
             </section>
 
-            {/* Example calculation */}
+            {/* SAFE explainer */}
             <section className="rounded-2xl bg-[#f0a500]/5 p-6 ring-1 ring-[#f0a500]/20">
-              <h3 className="mb-3 text-sm font-bold text-[#f0a500]">Example: CA$500 as Investor + Promoter</h3>
-              <div className="grid gap-2 text-sm sm:grid-cols-3">
+              <h3 className="mb-3 text-sm font-bold text-[#f0a500]">What is a SAFE?</h3>
+              <p className="text-sm text-[#a8a39a] leading-relaxed">
+                A <strong className="text-[#f5f0e8]">SAFE (Simple Agreement for Future Equity)</strong> is
+                the standard investment instrument used by Y Combinator and thousands of startups. It's not
+                a loan, not debt, and not immediate equity. It's a promise: when {APP_NAME} raises a priced
+                round (Series A), your investment converts to real equity — but capped at the $2M valuation,
+                no matter how high the actual valuation is at that time.
+              </p>
+              <div className="mt-4 grid gap-2 text-sm sm:grid-cols-3">
                 <div className="rounded-xl bg-[#0a0a0f] p-3">
-                  <div className="text-xs text-[#6e6a63]">Base tokens</div>
-                  <div className="font-bold text-[#f5f0e8]">{(500 / ROUND_CONFIG.tokenPrice).toLocaleString()}</div>
+                  <div className="text-xs text-[#6e6a63]">You invest</div>
+                  <div className="font-bold text-[#f5f0e8]">CA$500</div>
                 </div>
                 <div className="rounded-xl bg-[#0a0a0f] p-3">
-                  <div className="text-xs text-[#6e6a63]">Promoter bonus (1.2x)</div>
-                  <div className="font-bold text-[#f0a500]">+{Math.floor(500 / ROUND_CONFIG.tokenPrice * 0.2).toLocaleString()}</div>
+                  <div className="text-xs text-[#6e6a63]">Implied ownership at $2M cap</div>
+                  <div className="font-bold text-[#f0a500]">{(500 / ROUND_CONFIG.valuationCap * 100).toFixed(3)}%</div>
                 </div>
                 <div className="rounded-xl bg-[#0a0a0f] p-3">
-                  <div className="text-xs text-[#6e6a63]">Total tokens</div>
-                  <div className="font-bold text-[#7ad9a1]">{Math.floor(500 / ROUND_CONFIG.tokenPrice * 1.2).toLocaleString()}</div>
+                  <div className="text-xs text-[#6e6a63]">If Series A at $10M</div>
+                  <div className="font-bold text-[#7ad9a1]">You get equity at $2M price (5x advantage)</div>
                 </div>
               </div>
-              <p className="mt-3 text-xs text-[#a8a39a]">
-                = {((Math.floor(500 / ROUND_CONFIG.tokenPrice * 1.2) / ROUND_CONFIG.totalTokens) * 100).toFixed(3)}% ownership of {APP_NAME}
+              <div className="mt-4 space-y-2 text-xs text-[#a8a39a]">
+                <div className="flex items-start gap-2"><span className="text-[#7ad9a1]">✓</span> No dilution until priced round</div>
+                <div className="flex items-start gap-2"><span className="text-[#7ad9a1]">✓</span> Cap protects you from overpaying</div>
+                <div className="flex items-start gap-2"><span className="text-[#7ad9a1]">✓</span> Standard YC SAFE template — no legal surprises</div>
+                <div className="flex items-start gap-2"><span className="text-[#7ad9a1]">✓</span> Same terms for every backer — no special deals</div>
+              </div>
+            </section>
+
+            {/* Implied ownership table */}
+            <section className="rounded-2xl bg-[#1a1a28] p-6">
+              <h3 className="mb-4 text-xs font-bold uppercase tracking-wider text-[#6e6a63]">
+                What your investment means
+              </h3>
+              <div className="overflow-x-auto">
+                <table className="w-full text-sm">
+                  <thead>
+                    <tr className="border-b border-white/10 text-[10px] uppercase tracking-wider text-[#6e6a63]">
+                      <th className="py-2 text-left">You invest</th>
+                      <th className="py-2 text-right">Ownership at $2M cap</th>
+                      <th className="py-2 text-right">If valued at $10M</th>
+                      <th className="py-2 text-right">If valued at $50M</th>
+                    </tr>
+                  </thead>
+                  <tbody className="text-[#a8a39a]">
+                    {[50, 100, 500, 1000, 5000, 10000].map((amt) => (
+                      <tr key={amt} className="border-b border-white/5">
+                        <td className="py-2 font-bold text-[#f5f0e8]">CA${amt.toLocaleString()}</td>
+                        <td className="py-2 text-right text-[#f0a500]">{(amt / ROUND_CONFIG.valuationCap * 100).toFixed(4)}%</td>
+                        <td className="py-2 text-right text-[#7ad9a1]">CA${(amt * 10000000 / ROUND_CONFIG.valuationCap).toLocaleString()}</td>
+                        <td className="py-2 text-right text-[#7ad9a1]">CA${(amt * 50000000 / ROUND_CONFIG.valuationCap).toLocaleString()}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+              <p className="mt-3 text-[10px] text-[#6e6a63]">
+                Values shown are illustrative. Actual returns depend on company performance, dilution at future rounds, and conversion terms.
               </p>
             </section>
           </div>
@@ -531,7 +558,7 @@ export default function Invest() {
                 <div className="mb-3 text-4xl">🌱</div>
                 <h3 className="font-display text-xl font-bold text-[#f5f0e8]">Be the first backer</h3>
                 <p className="mt-2 text-sm text-[#a8a39a]">
-                  No one has contributed yet. Early backers get the lowest token price.
+                  No one has contributed yet. Early backers get the lowest valuation cap.
                 </p>
                 <button
                   onClick={async () => {
@@ -556,7 +583,7 @@ export default function Invest() {
                       <th className="px-4 py-3">Backer</th>
                       <th className="px-4 py-3">Role</th>
                       <th className="px-4 py-3 text-right">Amount</th>
-                      <th className="px-4 py-3 text-right">Tokens</th>
+                      <th className="px-4 py-3 text-right">Ownership</th>
                       <th className="px-4 py-3 text-right">Equity</th>
                       <th className="px-4 py-3 text-center">Status</th>
                     </tr>
@@ -577,9 +604,8 @@ export default function Invest() {
                         </td>
                         <td className="px-4 py-3 text-xs text-[#a8a39a]">{c.roleLabel}</td>
                         <td className="px-4 py-3 text-right font-bold text-[#f5f0e8]">CA${c.amount?.toLocaleString()}</td>
-                        <td className="px-4 py-3 text-right font-bold text-[#f0a500]">{c.tokens?.toLocaleString()}</td>
-                        <td className="px-4 py-3 text-right text-xs text-[#a8a39a]">
-                          {((c.tokens / ROUND_CONFIG.totalTokens) * 100).toFixed(3)}%
+                        <td className="px-4 py-3 text-right font-bold text-[#f0a500]">
+                          {((c.amount || 0) / ROUND_CONFIG.valuationCap * 100).toFixed(4)}%
                         </td>
                         <td className="px-4 py-3 text-center">
                           <span className={`rounded-full px-2 py-0.5 text-[9px] font-bold uppercase ${
@@ -789,7 +815,7 @@ export default function Invest() {
                 {[
                   { icon: '🔍', title: 'Full transparency', text: 'Every dollar raised and spent is visible on this page.' },
                   { icon: '📊', title: 'Public cap table', text: 'Every backer sees exactly what they own. No hidden shares.' },
-                  { icon: '🤝', title: 'Price lock', text: 'Token price is locked for this round. No retroactive dilution.' },
+                  { icon: '🤝', title: 'Cap lock', text: '$2M valuation cap is locked for this round. No retroactive changes.' },
                   { icon: '📝', title: 'Monthly updates', text: 'Product progress, finances, key decisions — every month.' },
                   { icon: '🗳️', title: 'Voting rights', text: 'Backers with 1%+ equity vote on major product decisions.' },
                   { icon: '💸', title: 'Fail-safe', text: 'If we shut down, remaining funds returned proportionally.' },
@@ -811,11 +837,11 @@ export default function Invest() {
                 Legal structure (planned)
               </h3>
               <p className="text-sm text-[#a8a39a]">
-                {APP_NAME} will be incorporated as a Canadian corporation. Tokens represent a
-                binding commitment to issue equivalent equity (common shares) upon incorporation.
-                A formal SAFE (Simple Agreement for Future Equity) will be provided to all backers
-                contributing CA$500 or more. All contributions are tracked in Firestore with
-                timestamps and are auditable.
+                {APP_NAME} will be incorporated as a Canadian corporation. Each SAFE note
+                represents a binding commitment to convert to equity (common shares) at the next
+                priced round, capped at a $2M valuation. A formal SAFE document (based on the
+                YC standard template) will be provided to all backers. All contributions are
+                tracked with timestamps and are fully auditable.
               </p>
             </section>
           </div>
@@ -883,16 +909,14 @@ export default function Invest() {
               {formData.amount && Number(formData.amount) >= ROUND_CONFIG.minInvestment && (
                 <div className="rounded-xl bg-[#f0a500]/10 p-3 ring-1 ring-[#f0a500]/20">
                   <div className="flex items-center justify-between text-sm">
-                    <span className="text-[#a8a39a]">You'll receive</span>
+                    <span className="text-[#a8a39a]">Implied ownership at $2M cap</span>
                     <span className="font-bold text-[#f0a500]">
-                      {Math.floor((Number(formData.amount) / ROUND_CONFIG.tokenPrice) * (ROLES.find((r) => r.key === formData.role)?.multiplier || 1)).toLocaleString()} tokens
+                      {(Number(formData.amount) / ROUND_CONFIG.valuationCap * 100).toFixed(4)}%
                     </span>
                   </div>
                   <div className="mt-1 flex items-center justify-between text-xs text-[#6e6a63]">
-                    <span>Equity</span>
-                    <span>
-                      {((Math.floor((Number(formData.amount) / ROUND_CONFIG.tokenPrice) * (ROLES.find((r) => r.key === formData.role)?.multiplier || 1)) / ROUND_CONFIG.totalTokens) * 100).toFixed(3)}%
-                    </span>
+                    <span>Instrument</span>
+                    <span>SAFE · $2M cap</span>
                   </div>
                 </div>
               )}
@@ -974,12 +998,12 @@ export default function Invest() {
             <div className="mb-4 text-5xl">🎉</div>
             <h2 className="font-display text-2xl font-bold text-[#f0a500]">Pledge received!</h2>
             <p className="mt-3 text-sm text-[#a8a39a]">
-              Your contribution is <strong className="text-[#ffa42b]">pending approval</strong>. Once payment
-              is verified by the founding team, your tokens will be allocated and your
+              Your SAFE note is <strong className="text-[#ffa42b]">pending approval</strong>. Once payment
+              is verified by the founding team, your SAFE will be confirmed and your
               name will appear on the backers board.
             </p>
             <div className="mt-4 rounded-xl bg-[#0a0a0f] p-3 text-xs text-[#6e6a63]">
-              Status: Pending → Payment verified → Admin approved → Tokens allocated
+              Status: Pending → Payment verified → Admin approved → SAFE confirmed
             </div>
             <button
               onClick={() => setSubmitted(false)}
@@ -1020,14 +1044,14 @@ function MetricCard({ icon, label, value }) {
   );
 }
 
-function CapRow({ label, tokens, total, color }) {
+function CapRow({ label, tokens, total, color, unit }) {
   const pct = (tokens / total) * 100;
   return (
     <div>
       <div className="mb-1 flex items-center justify-between text-sm">
         <span className="text-[#f5f0e8]">{label}</span>
         <span className="text-[#a8a39a]">
-          {(tokens / 1000000).toFixed(2)}M ({pct.toFixed(1)}%)
+          {unit ? `${tokens}${unit}` : `${pct.toFixed(1)}%`}
         </span>
       </div>
       <div className="h-2 overflow-hidden rounded-full bg-[#0a0a0f]">
