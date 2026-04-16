@@ -2,6 +2,7 @@ import { useState, useEffect, useMemo } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useAuth } from '../hooks/useAuth.jsx';
+import { usePageMeta } from '../hooks/usePageMeta.js';
 import { doc, getDoc, setDoc, collection, getDocs } from 'firebase/firestore';
 import { db } from '../lib/firebase.js';
 import { APP_NAME, APP_VERSION } from '../utils/version.js';
@@ -119,6 +120,12 @@ const GIT_STATS = {
 };
 
 export default function Invest() {
+  usePageMeta({
+    title: 'Invest in My Sleepy Tale — SAFE at $1M Cap · Friends & Family Round',
+    description: 'Back My Sleepy Tale, the AI-powered personalized bedtime story app. SAFE note at $1M valuation cap. Transparent cap table, real-time backer board, Stripe payments. Friends & Family round now open — min CA$50.',
+    image: 'https://mysleepytale.com/og-cover.svg',
+  });
+
   const { user } = useAuth();
   const [contributors, setContributors] = useState([]);
   const [showForm, setShowForm] = useState(false);
