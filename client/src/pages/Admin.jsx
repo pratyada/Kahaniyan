@@ -1630,6 +1630,10 @@ function StoryLab() {
   const [cacheFilterCountry, setCacheFilterCountry] = useState('all');
   const [showManualForm, setShowManualForm] = useState(false);
   const [manualStory, setManualStory] = useState({ title: '', text: '', value: 'kindness', duration: 5, language: 'English', beliefs: 'hindu', country: 'IN', age: 5, gender: 'girl', childName: '{childName}' });
+  // Quick whispers state
+  const [quickWhispers, setQuickWhispers] = useState({});
+  const [qwBelief, setQwBelief] = useState('hindu');
+  const [qwCountry, setQwCountry] = useState('IN');
 
   // Load all config from Firestore
   useEffect(() => {
@@ -1649,6 +1653,7 @@ function StoryLab() {
           if (d.settings?.length) setSettings(d.settings);
           if (d.ageGuides?.length) setAgeGuides(d.ageGuides);
           if (d.valueDelivery?.length) setValueDelivery(d.valueDelivery);
+          if (d.quickWhispers) setQuickWhispers(d.quickWhispers);
         }
         const storiesSnap = await getDocs(collection(db, 'storyCache'));
         const list = [];
@@ -1724,6 +1729,7 @@ function StoryLab() {
     { key: 'playground', label: 'Playground', icon: '🎮' },
     { key: 'archetypes', label: 'Characters', icon: '👥' },
     { key: 'culture', label: 'Cultural Library', icon: '🌍' },
+    { key: 'whispers', label: 'Quick Whispers', icon: '💭' },
     { key: 'ingredients', label: 'Story Ingredients', icon: '🧩' },
     { key: 'values', label: 'Value Delivery', icon: '💡' },
     { key: 'ages', label: 'Age Guides', icon: '🎂' },
@@ -1903,6 +1909,93 @@ function StoryLab() {
           </LabCard>
         </div>
       )}
+
+      {/* ══════ QUICK WHISPERS ══════ */}
+      {subTab === 'whispers' && (() => {
+        const key = `${qwBelief}_${qwCountry}`;
+        const current = quickWhispers[key] || ['', '', '', '', '', ''];
+        const updateWhisper = (idx, val) => {
+          const updated = [...current];
+          updated[idx] = val;
+          setQuickWhispers({ ...quickWhispers, [key]: updated });
+        };
+        return (
+        <div className="space-y-4">
+          <LabCard title="Quick Whispers" subtitle="Pre-set whisper suggestions shown to parents. 6 per belief + country combo. Parents see these as one-tap options before typing their own.">
+            <div className="flex flex-wrap gap-3 mb-4">
+              <div className="flex items-center gap-2">
+                <span className="text-[10px] font-bold uppercase text-[#6e6a63]">Belief:</span>
+                <select value={qwBelief} onChange={(e) => setQwBelief(e.target.value)} className="rounded-lg bg-[#0f0f17] px-3 py-1.5 text-xs text-[#f5f0e8] outline-none ring-1 ring-white/5">
+                  {RELIGIONS.map((r) => <option key={r.key} value={r.key}>{r.icon} {r.label}</option>)}
+                </select>
+              </div>
+              <div className="flex items-center gap-2">
+                <span className="text-[10px] font-bold uppercase text-[#6e6a63]">Country:</span>
+                <select value={qwCountry} onChange={(e) => setQwCountry(e.target.value)} className="rounded-lg bg-[#0f0f17] px-3 py-1.5 text-xs text-[#f5f0e8] outline-none ring-1 ring-white/5">
+                  {COUNTRIES.map((c) => <option key={c.key} value={c.key}>{c.flag} {c.label}</option>)}
+                </select>
+              </div>
+            </div>
+
+            <div className="rounded-xl bg-[#0f0f17] p-4 mb-4">
+              <div className="text-[10px] font-bold uppercase tracking-wider text-[#6e6a63] mb-3">
+                6 Quick Whispers for {RELIGIONS.find((r) => r.key === qwBelief)?.icon} {RELIGIONS.find((r) => r.key === qwBelief)?.label} · {COUNTRIES.find((c) => c.key === qwCountry)?.flag} {COUNTRIES.find((c) => c.key === qwCountry)?.label}
+              </div>
+              <div className="space-y-2">
+                {[0,1,2,3,4,5].map((idx) => (
+                  <div key={idx} className="flex items-center gap-3">
+                    <span className="text-xs font-bold text-[#f0a500] w-5">{idx + 1}</span>
+                    <input
+                      value={current[idx] || ''}
+                      onChange={(e) => updateWhisper(idx, e.target.value)}
+                      placeholder={`Quick whisper ${idx + 1}...`}
+                      className="flex-1 rounded-lg bg-[#1a1a28] px-3 py-2.5 text-sm text-[#f5f0e8] placeholder-[#6e6a63] outline-none ring-1 ring-white/5 focus:ring-[#f0a500]"
+                    />
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* Preview */}
+            <div className="rounded-xl bg-[#0f0f17] p-4 mb-4">
+              <div className="text-[10px] font-bold uppercase tracking-wider text-[#6e6a63] mb-2">Preview — what parents will see</div>
+              <div className="flex flex-wrap gap-2">
+                {current.filter(Boolean).map((w, i) => (
+                  <span key={i} className="rounded-full bg-[#1a1a28] px-3 py-1.5 text-[11px] text-[#a8a39a] ring-1 ring-white/5">{w}</span>
+                ))}
+                {current.filter(Boolean).length === 0 && <span className="text-xs text-[#6e6a63]">No whispers set — will use default suggestions</span>}
+              </div>
+            </div>
+
+            {/* Saved combos overview */}
+            {Object.keys(quickWhispers).length > 0 && (
+              <div className="rounded-xl bg-[#0f0f17] p-4 mb-4">
+                <div className="text-[10px] font-bold uppercase tracking-wider text-[#6e6a63] mb-2">All configured combos</div>
+                <div className="flex flex-wrap gap-2">
+                  {Object.entries(quickWhispers).filter(([, v]) => v.some(Boolean)).map(([k]) => {
+                    const [b, c] = k.split('_');
+                    const br = RELIGIONS.find((r) => r.key === b);
+                    const cr = COUNTRIES.find((x) => x.key === c);
+                    return (
+                      <button key={k} onClick={() => { setQwBelief(b); setQwCountry(c); }}
+                        className={`rounded-lg px-3 py-1.5 text-xs font-bold transition ${k === key ? 'bg-[#f0a500] text-[#0f0f17]' : 'bg-[#1a1a28] text-[#a8a39a]'}`}>
+                        {br?.icon} {cr?.flag}
+                      </button>
+                    );
+                  })}
+                </div>
+              </div>
+            )}
+
+            <button onClick={() => saveAll('quickWhispers', quickWhispers)} disabled={saving}
+              className="w-full rounded-xl bg-[#f0a500] py-3 text-sm font-bold text-[#0f0f17] disabled:opacity-50">
+              Save Quick Whispers
+            </button>
+            <p className="mt-2 text-[10px] text-[#6e6a63] text-center">Changes go live immediately for users matching this belief + country</p>
+          </LabCard>
+        </div>
+        );
+      })()}
 
       {/* ══════ STORY INGREDIENTS ══════ */}
       {subTab === 'ingredients' && (

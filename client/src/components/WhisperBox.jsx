@@ -1,7 +1,9 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { useFamilyProfile } from '../hooks/useFamilyProfile.js';
+import { db } from '../lib/firebase.js';
 
-const SUGGESTIONS = [
+const DEFAULT_SUGGESTIONS = [
   'They are scared of the dark tonight',
   'First day of school tomorrow',
   'Had a fight with their best friend',
@@ -10,8 +12,40 @@ const SUGGESTIONS = [
   'Festival was today and they are very happy',
 ];
 
+function useQuickWhispers() {
+  const { profile } = useFamilyProfile();
+  const [whispers, setWhispers] = useState(DEFAULT_SUGGESTIONS);
+
+  useEffect(() => {
+    if (!db || !profile) return;
+    const belief = profile.beliefs?.[0] || 'secular';
+    const country = profile.country || 'OTHER';
+    (async () => {
+      try {
+        const { doc, getDoc } = await import('firebase/firestore');
+        const snap = await getDoc(doc(db, 'config', 'storyLab'));
+        if (snap.exists()) {
+          const qw = snap.data().quickWhispers || {};
+          // Try exact match first, then belief-only, then defaults
+          const exact = qw[`${belief}_${country}`]?.filter(Boolean);
+          if (exact?.length) { setWhispers(exact.slice(0, 6)); return; }
+          // Try any country for this belief
+          const beliefKeys = Object.keys(qw).filter((k) => k.startsWith(belief + '_'));
+          for (const k of beliefKeys) {
+            const vals = qw[k]?.filter(Boolean);
+            if (vals?.length) { setWhispers(vals.slice(0, 6)); return; }
+          }
+        }
+      } catch {}
+    })();
+  }, [profile?.beliefs, profile?.country]);
+
+  return whispers;
+}
+
 export default function WhisperBox({ value, onChange, overrideValue, onToggleOverride }) {
   const [open, setOpen] = useState(false);
+  const SUGGESTIONS = useQuickWhispers();
   const charCount = value.length;
   const max = 200;
 
