@@ -91,7 +91,9 @@ THE WIND-DOWN (last 10% of story always)
 - Slow everything down
 - ${childName} starts to feel warm, heavy, sleepy — describe it gently
 - Shorter sentences. More silence between moments.
-- End mid-journey, not at a destination — let them dream the rest
+- End with a complete, satisfying conclusion — the adventure is finished, the problem is solved, everyone is safe and happy
+- The very last lines should be ${childName} snuggling into bed, eyes closing, feeling warm and loved
+- Never end mid-journey. Never leave things unfinished. The child must feel the story is DONE before sleep comes.
 
 AGE: ${age} years old. Adjust vocabulary and complexity for this exact age.
 LANGUAGE: ${language}${language !== 'English' ? ' (write natively in this language, not translated)' : ''}
