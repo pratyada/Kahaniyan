@@ -47,4 +47,16 @@ export const RADIO_STATIONS = [
     icon: '🪐',
     bestFor: 'deep background',
   },
+  {
+    id: 'heavy-lullaby',
+    name: 'Heavy Lullaby',
+    tagline: 'Metal Lullabies · Kids',
+    description:
+      'Metallica, AC/DC, and Iron Maiden — but played as gentle music box lullabies. Your kid sleeps to Enter Sandman and doesn\'t even know it.',
+    stream: 'https://ice1.somafm.com/covers-128-mp3',
+    fallback: 'https://ice2.somafm.com/covers-128-mp3',
+    accent: '#f3727f',
+    icon: '🤘',
+    bestFor: 'cool parents',
+  },
 ];
