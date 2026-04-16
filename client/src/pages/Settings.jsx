@@ -24,6 +24,7 @@ export default function Settings() {
   const { voices } = useFamilyVoices();
   const [upgradeOpen, setUpgradeOpen] = useState(false);
   const [feedbackOpen, setFeedbackOpen] = useState(false);
+  const [releasesOpen, setReleasesOpen] = useState(false);
   const [feedbackText, setFeedbackText] = useState('');
   const [feedbackSent, setFeedbackSent] = useState(false);
   const [feedbackSubmitting, setFeedbackSubmitting] = useState(false);
@@ -324,29 +325,43 @@ export default function Settings() {
         </div>
       </SectionCard>
 
-      {/* Releases */}
-      <SectionCard title="What's new">
-        <div className="space-y-2">
-          {[
-            { v: 'v0.0.9', date: 'Apr 16', badge: 'LATEST', title: '🧠 Claude AI stories + your feedback shipped', detail: 'After community feedback: stories are now fun, silly, and kid-appropriate. Powered by Claude AI — every story is fresh. 5-min generation fully validated.' },
-            { v: 'v0.0.8', date: 'Apr 15', title: '🔊 OpenAI voice + cloud sync', detail: 'AI narrator voices. Profile syncs to cloud. Gender pronouns. Character tags.' },
-            { v: 'v0.0.7', date: 'Apr 14', title: '👨‍👩‍👧 Cast stories + multi-kid', detail: 'Choose characters for tonight. Multiple kids. Pet sounds (bhau bhau!).' },
-            { v: 'v0.0.5', date: 'Apr 13', title: '🔐 Auth + admin dashboard', detail: 'Google sign-in. Admin panel. Usage analytics. Team roles.' },
-            { v: 'v0.0.3', date: 'Apr 12', title: '🪷 Wisdom stories + radio', detail: '8 traditions, 15 stories. Bedtime radio. Sleep sounds.' },
-            { v: 'v0.0.1', date: 'Apr 11', title: '🌙 First build', detail: 'Story engine, Spotify-style UI, onboarding, player.' },
-          ].map((r) => (
-            <div key={r.v} className="rounded-xl bg-bg-surface p-3 ring-1 ring-white/5">
-              <div className="flex items-center gap-2">
-                <span className="text-[10px] font-bold text-gold">{r.v}</span>
-                <span className="text-[9px] text-ink-dim">{r.date}</span>
-                {r.badge && <span className="rounded-full bg-gold/20 px-2 py-0.5 text-[8px] font-bold uppercase tracking-wider text-gold">{r.badge}</span>}
-              </div>
-              <div className="mt-1 text-[12px] font-bold text-ink">{r.title}</div>
-              <div className="mt-0.5 text-[10px] text-ink-muted">{r.detail}</div>
-            </div>
-          ))}
+      {/* What's new — tile that opens releases */}
+      <SectionCard title="More">
+        <div className="grid grid-cols-2 gap-2">
+          <Tile icon="📋" title="What's new" sub="v0.0.9 · Latest" onClick={() => setReleasesOpen(true)} />
         </div>
       </SectionCard>
+
+      {/* Releases modal */}
+      {releasesOpen && (
+        <div className="absolute inset-0 z-50 flex items-end justify-center bg-black/70 backdrop-blur-sm" onClick={() => setReleasesOpen(false)}>
+          <div className="max-h-[85vh] w-full overflow-y-auto rounded-t-3xl bg-bg-elevated p-6 pb-24 shadow-lift" onClick={(e) => e.stopPropagation()}>
+            <div className="mx-auto mb-4 h-1 w-12 rounded-full bg-white/20" />
+            <h2 className="font-display text-xl font-bold text-gold mb-4">What's new</h2>
+            <div className="space-y-2">
+              {[
+                { v: 'v0.0.9', date: 'Apr 16', badge: 'LATEST', title: '🧠 Claude AI stories + your feedback shipped', detail: 'After community feedback: stories are now fun, silly, and kid-appropriate. Powered by Claude AI — every story is fresh. 5-min generation fully validated.' },
+                { v: 'v0.0.8', date: 'Apr 15', title: '🔊 OpenAI voice + cloud sync', detail: 'AI narrator voices. Profile syncs to cloud. Gender pronouns. Character tags.' },
+                { v: 'v0.0.7', date: 'Apr 14', title: '👨‍👩‍👧 Cast stories + multi-kid', detail: 'Choose characters for tonight. Multiple kids. Pet sounds (bhau bhau!).' },
+                { v: 'v0.0.5', date: 'Apr 13', title: '🔐 Auth + admin dashboard', detail: 'Google sign-in. Admin panel. Usage analytics. Team roles.' },
+                { v: 'v0.0.3', date: 'Apr 12', title: '🪷 Wisdom stories + radio', detail: '8 traditions, 15 stories. Bedtime radio. Sleep sounds.' },
+                { v: 'v0.0.1', date: 'Apr 11', title: '🌙 First build', detail: 'Story engine, Spotify-style UI, onboarding, player.' },
+              ].map((r) => (
+                <div key={r.v} className="rounded-xl bg-bg-surface p-3 ring-1 ring-white/5">
+                  <div className="flex items-center gap-2">
+                    <span className="text-[10px] font-bold text-gold">{r.v}</span>
+                    <span className="text-[9px] text-ink-dim">{r.date}</span>
+                    {r.badge && <span className="rounded-full bg-gold/20 px-2 py-0.5 text-[8px] font-bold uppercase tracking-wider text-gold">{r.badge}</span>}
+                  </div>
+                  <div className="mt-1 text-[12px] font-bold text-ink">{r.title}</div>
+                  <div className="mt-0.5 text-[10px] text-ink-muted">{r.detail}</div>
+                </div>
+              ))}
+            </div>
+            <button onClick={() => setReleasesOpen(false)} className="mt-4 w-full text-center text-sm text-ink-muted">Close</button>
+          </div>
+        </div>
+      )}
 
       {/* ─── ABOUT ─── */}
       <section className="mb-6 rounded-2xl bg-bg-surface p-4 ring-1 ring-white/5">
