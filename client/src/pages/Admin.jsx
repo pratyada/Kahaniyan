@@ -1140,19 +1140,19 @@ export default function Admin() {
                       <div className="flex gap-1">
                         {inv.status !== 'confirmed' && (
                           <button
-                            onClick={() => updateInvestorStatus(inv.id, 'confirmed')}
+                            onClick={() => { if (confirm(`Confirm ${inv.displayName || inv.email}'s CA$${inv.amount} contribution?`)) updateInvestorStatus(inv.id, 'confirmed'); }}
                             className="rounded-lg bg-[#7ad9a1]/10 px-3 py-1.5 text-[10px] font-bold text-[#7ad9a1]"
                           >✓ Confirm</button>
                         )}
                         {inv.status !== 'rejected' && inv.status !== 'confirmed' && (
                           <button
-                            onClick={() => updateInvestorStatus(inv.id, 'rejected')}
+                            onClick={() => { if (confirm(`Reject ${inv.displayName || inv.email}'s contribution?`)) updateInvestorStatus(inv.id, 'rejected'); }}
                             className="rounded-lg bg-[#f3727f]/10 px-3 py-1.5 text-[10px] font-bold text-[#f3727f]"
                           >✕ Reject</button>
                         )}
                         {inv.status === 'confirmed' && (
                           <button
-                            onClick={() => updateInvestorStatus(inv.id, 'pending-payment')}
+                            onClick={() => { if (confirm(`Revert ${inv.displayName || inv.email} back to pending?`)) updateInvestorStatus(inv.id, 'pending-payment'); }}
                             className="rounded-lg bg-[#ffa42b]/10 px-3 py-1.5 text-[10px] font-bold text-[#ffa42b]"
                           >↩ Revert</button>
                             )}
