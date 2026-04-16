@@ -204,7 +204,7 @@ export default function StonedAge() {
 
       {/* Hero */}
       <div style={{ textAlign: 'center', padding: '48px 24px 32px' }}>
-        <a href="/" style={{ display: 'inline-block', marginBottom: 24, padding: '8px 16px', borderRadius: 999, background: 'rgba(255,255,255,0.05)', color: '#a8a39a', fontSize: 12, textDecoration: 'none', border: '1px solid rgba(255,255,255,0.1)' }}>
+        <a href="https://mysleepytale.com" style={{ display: 'inline-block', marginBottom: 24, padding: '8px 16px', borderRadius: 999, background: 'rgba(255,255,255,0.05)', color: '#a8a39a', fontSize: 12, textDecoration: 'none', border: '1px solid rgba(255,255,255,0.1)' }}>
           ← Back to {APP_NAME}
         </a>
         <div style={{ fontSize: 56 }}>🪨</div>
@@ -309,7 +309,7 @@ export default function StonedAge() {
           <p style={{ fontSize: 13, color: '#a8a39a', marginTop: 8 }}>
             {APP_NAME} puts your kids to sleep with personalized AI bedtime stories. Then Stoned Age takes over.
           </p>
-          <a href="/" style={{ display: 'inline-block', marginTop: 16, padding: '12px 24px', borderRadius: 999, background: '#f0a500', color: '#0a0a0f', fontWeight: 700, fontSize: 14, textDecoration: 'none' }}>
+          <a href="https://mysleepytale.com" style={{ display: 'inline-block', marginTop: 16, padding: '12px 24px', borderRadius: 999, background: '#f0a500', color: '#0a0a0f', fontWeight: 700, fontSize: 14, textDecoration: 'none' }}>
             Try {APP_NAME} for your kids
           </a>
         </div>
