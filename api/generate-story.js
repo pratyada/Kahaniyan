@@ -167,7 +167,24 @@ export default async function handler(req, res) {
   }
 
   try {
-    const { uid, duration = 5, ...storyParams } = req.body || {};
+    const { uid, duration = 5, _adminTest, ...storyParams } = req.body || {};
+
+    // Admin playground test — skip usage limits but verify admin role
+    if (_adminTest && uid) {
+      const role = await getRole(uid);
+      if (role !== 'admin' && role !== 'tester') {
+        return res.status(403).json({ error: 'Admin access required for test generation' });
+      }
+      // Load archetypes from config/storyLab if available
+      try {
+        const labDoc = await db.collection('config').doc('storyLab').get();
+        if (labDoc.exists && labDoc.data().archetypes) {
+          storyParams._archetypes = labDoc.data().archetypes;
+        }
+      } catch {}
+      const story = await selectStory({ ...storyParams, duration });
+      return res.status(200).json(story);
+    }
 
     // 1. Check account status
     if (uid) {

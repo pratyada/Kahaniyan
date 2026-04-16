@@ -3,10 +3,10 @@
 const ANTHROPIC_KEY = process.env.ANTHROPIC_API_KEY;
 
 const DURATION_GUIDE = {
-  2: { words: 260, pacing: 'Super short. One tiny adventure. Done.' },
-  5: { words: 650, pacing: 'Quick. One problem, one solution, one giggle, sleep.' },
-  10: { words: 1300, pacing: 'Move fast. One problem, one solution, done.' },
-  15: { words: 1950, pacing: 'Move fast. One problem, one solution, done.' },
+  2: { words: 350, pacing: 'Super short. One tiny adventure. Done.' },
+  5: { words: 850, pacing: 'Full story. One main adventure with a subplot or side moment — maybe a character does something funny on the way, or they stop to help someone, or explore a place. Fill the time naturally.' },
+  10: { words: 1600, pacing: 'Rich story. Main adventure plus side moments — characters doing silly things, exploring, discovering, small interactions that teach without being preachy.' },
+  15: { words: 2400, pacing: 'Full adventure. Main plot plus subplots — characters have their own little moments, discoveries, funny side quests. Fill the world with life.' },
 };
 
 export async function generateWithClaude({
@@ -22,6 +22,7 @@ export async function generateWithClaude({
   beliefs,
   country,
   recentPlotTypes,
+  _archetypes,
 }) {
   if (!ANTHROPIC_KEY) return null;
 
@@ -45,6 +46,13 @@ export async function generateWithClaude({
 
   const allCharacters = castList || family.join(', ') || 'none specified';
   const dur = DURATION_GUIDE[duration] || DURATION_GUIDE[5];
+
+  // Build archetype guidance if admin has configured character types
+  let archetypeHint = '';
+  if (_archetypes?.length) {
+    archetypeHint = '\n\nCHARACTER PERSONALITY GUIDE (use these traits & activities for each role):\n' +
+      _archetypes.map((a) => `- ${a.key}: traits: ${a.traits}. Activities: ${a.activities}`).join('\n');
+  }
   const cultureHint = beliefs?.length > 0 ? beliefs.join(', ') : 'universal';
   const recentPlots = (recentPlotTypes || []).join(', ') || 'none';
 
@@ -75,16 +83,24 @@ STORY SHAPE
 - The middle must have one moment where things go WRONG — not scary wrong, just funny-problem wrong
 - ${childName} is always the hero. ${gender === 'girl' ? 'She figures' : gender === 'boy' ? 'He figures' : 'They figure'} things out ${gender === 'girl' ? 'herself' : gender === 'boy' ? 'himself' : 'themselves'}.
 - Supporting characters: ${allCharacters} — give each one a funny little personality quirk
+- NEVER use stereotypical gender roles. Grandmothers are NOT always cooking in the kitchen. Grandfathers are NOT always reading newspapers. Women can be adventurous, strong, silly, inventive. Men can be gentle, nurturing, creative. Give every character surprising, non-stereotypical traits and activities — a grandma who builds rockets, a grandfather who bakes, a mom who fixes cars, a dad who sings lullabies. Break expectations.
 - End gently. Slow the words down. Make the sentences shorter and shorter. Let the world get quiet.
 
 CULTURAL WARMTH
 - Weave in one real detail from ${cultureHint} world — a food, a festival, a place, a small tradition — but make it feel natural, not like a lesson about culture
 - This detail should make a child from that culture smile with recognition
+- VARY your cultural references every story — don't default to the same food (like laddu or paratha). Use diverse foods, festivals, songs, places, games, clothing, greetings, and traditions from that culture
 ${country ? `- Country context: ${country}` : ''}
+
+FILLING THE TIME NATURALLY
+- Characters should have small side moments — a funny observation, helping someone along the way, discovering something curious, a silly interaction between supporting characters
+- Add sensory details: what they smell, hear, feel. Describe the world around them
+- Supporting characters can have their own tiny arcs or funny bits that run alongside the main plot
+- These moments should feel organic, not like filler — each one should either be funny, teach something subtly, or build the world
 
 PACING
 - Target: EXACTLY ~${dur.words} words (${duration} minute story). This is critical.
-- Do NOT stop early. Do NOT write less than ${Math.round(dur.words * 0.85)} words.
+- Do NOT stop early. Do NOT write less than ${Math.round(dur.words * 0.85)} words. If you're under, ADD more story moments.
 - ${dur.pacing}
 
 THE WIND-DOWN (last 10% of story always)
@@ -98,6 +114,7 @@ THE WIND-DOWN (last 10% of story always)
 AGE: ${age} years old. Adjust vocabulary and complexity for this exact age.
 LANGUAGE: ${language}${language !== 'English' ? ' (write natively in this language, not translated)' : ''}
 RECENT PLOTS TO AVOID: ${recentPlots}
+${archetypeHint}
 
 == OUTPUT FORMAT ==
 Plain story text only.
@@ -119,7 +136,7 @@ Begin immediately — first word of the story, not an introduction to it.`;
       },
       body: JSON.stringify({
         model: 'claude-sonnet-4-20250514',
-        max_tokens: Math.max(800, dur.words * 2),
+        max_tokens: Math.max(1200, dur.words * 2.5),
         system: systemPrompt,
         messages: [{ role: 'user', content: userMessage }],
       }),

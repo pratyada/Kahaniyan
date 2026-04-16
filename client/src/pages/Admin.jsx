@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useAdmin } from '../hooks/useAdmin.jsx';
 import { useAuth } from '../hooks/useAuth.jsx';
-import { RELIGIONS, COUNTRIES } from '../utils/constants.js';
+import { RELIGIONS, COUNTRIES, VALUES, DURATIONS, LANGUAGES } from '../utils/constants.js';
 import { APP_NAME, APP_VERSION } from '../utils/version.js';
 import { GA_MEASUREMENT_ID, db } from '../lib/firebase.js';
 import { doc, setDoc, collection, getDocs } from 'firebase/firestore';
@@ -119,6 +119,7 @@ export default function Admin() {
 
   const TABS = [
     { key: 'overview', label: 'Overview', icon: '📊' },
+    { key: 'storylab', label: 'Story Lab', icon: '🧪' },
     { key: 'users', label: `Users (${allUsers.length})`, icon: '👤' },
     { key: 'usage', label: 'Usage & Costs', icon: '💰' },
     { key: 'team', label: `Team (${team.length})`, icon: '👥' },
@@ -1241,6 +1242,9 @@ export default function Admin() {
             </div>
           </div>
         )}
+
+        {/* ═══ STORY LAB ═══ */}
+        {tab === 'storylab' && <StoryLab />}
       </div>
 
       {/* Footer */}
@@ -1415,6 +1419,516 @@ function MetaItem({ label, value, mono }) {
       >
         {value}
       </div>
+    </div>
+  );
+}
+
+// ─── Story Lab ───
+
+const DEFAULT_ARCHETYPES = [
+  { key: 'grandfather', callOptions: ['Dadu', 'Grandpa', 'Grandfather', 'Dada ji', 'Nana ji', 'Thatha', 'Abuelo', 'Baba'], defaultCall: 'Grandpa', traits: 'wise, tells old tales, adventurous spirit, gentle humor', activities: 'gardening, stargazing, woodworking, painting, telling riddles, cooking chai, playing chess, flying kites' },
+  { key: 'grandmother', callOptions: ['Dadi', 'Grandma', 'Grandmother', 'Nani', 'Naani ma', 'Paati', 'Abuela', 'Bibi'], defaultCall: 'Grandma', traits: 'adventurous, inventive, strong, warm-hearted, funny', activities: 'building things, painting, astronomy, gardening, singing, making potions, solving puzzles, racing, teaching magic tricks' },
+  { key: 'mother', callOptions: ['Mummy', 'Mom', 'Mama', 'Amma', 'Ammi', 'Ma'], defaultCall: 'Mummy', traits: 'brave, creative, nurturing, clever, playful', activities: 'fixing things, exploring, inventing, dancing, reading maps, climbing trees, building forts' },
+  { key: 'father', callOptions: ['Daddy', 'Dad', 'Papa', 'Baba', 'Abba', 'Appa'], defaultCall: 'Daddy', traits: 'gentle, silly, caring, creative, musical', activities: 'cooking, singing lullabies, drawing, telling jokes, sewing, braiding hair, making breakfast' },
+  { key: 'sibling', callOptions: ['Bhaiya', 'Didi', 'Brother', 'Sister', 'Bhai', 'Akka'], defaultCall: 'Sibling', traits: 'playful, curious, mischievous, loyal', activities: 'playing, exploring, building, imagining, competing, teamwork' },
+  { key: 'uncle', callOptions: ['Uncle', 'Chacha', 'Mama ji', 'Tau ji', 'Kaku'], defaultCall: 'Uncle', traits: 'funny, energetic, surprising, kind', activities: 'magic tricks, sports, storytelling, pranks, teaching new games' },
+  { key: 'aunt', callOptions: ['Aunt', 'Chachi', 'Mami', 'Bua', 'Mausi', 'Athai'], defaultCall: 'Aunt', traits: 'adventurous, clever, artistic, warm', activities: 'painting, traveling, cooking exotic food, science experiments, singing' },
+  { key: 'pet', callOptions: ['Pet', 'Buddy', 'Best friend'], defaultCall: 'Pet', traits: 'loyal, playful, sometimes naughty, brave', activities: 'following around, finding clues, causing funny trouble, protecting, snuggling' },
+];
+
+const API_BASE = import.meta.env?.VITE_API_BASE_URL || '';
+
+function StoryLab() {
+  const [subTab, setSubTab] = useState('playground');
+  const [archetypes, setArchetypes] = useState(DEFAULT_ARCHETYPES);
+  const [editingArch, setEditingArch] = useState(null);
+  const [cachedStories, setCachedStories] = useState([]);
+  const [saving, setSaving] = useState(false);
+
+  // Playground state
+  const [pgChildName, setPgChildName] = useState('Aria');
+  const [pgAge, setPgAge] = useState(5);
+  const [pgGender, setPgGender] = useState('girl');
+  const [pgValue, setPgValue] = useState('kindness');
+  const [pgDuration, setPgDuration] = useState(5);
+  const [pgLanguage, setPgLanguage] = useState('English');
+  const [pgWhisper, setPgWhisper] = useState('');
+  const [pgBeliefs, setPgBeliefs] = useState('hindu');
+  const [pgCountry, setPgCountry] = useState('IN');
+  const [pgCast, setPgCast] = useState('Dadu (grandfather, wise and funny), Nani (grandmother, builds rockets)');
+  const [pgGenerating, setPgGenerating] = useState(false);
+  const [pgResult, setPgResult] = useState(null);
+  const [pgError, setPgError] = useState(null);
+
+  // Load config from Firestore
+  useEffect(() => {
+    if (!db) return;
+    (async () => {
+      try {
+        const { getDoc } = await import('firebase/firestore');
+        const snap = await getDoc(doc(db, 'config', 'storyLab'));
+        if (snap.exists()) {
+          const data = snap.data();
+          if (data.archetypes?.length) setArchetypes(data.archetypes);
+        }
+        // Load cached stories
+        const storiesSnap = await getDocs(collection(db, 'storyCache'));
+        const list = [];
+        storiesSnap.forEach((d) => list.push({ id: d.id, ...d.data() }));
+        setCachedStories(list.sort((a, b) => (b.createdAt || 0) - (a.createdAt || 0)));
+      } catch (e) {
+        console.error('Failed to load story lab config:', e);
+      }
+    })();
+  }, []);
+
+  const saveArchetypes = async (updated) => {
+    if (!db) return;
+    setSaving(true);
+    try {
+      await setDoc(doc(db, 'config', 'storyLab'), { archetypes: updated }, { merge: true });
+      setArchetypes(updated);
+    } catch (e) {
+      console.error('Failed to save archetypes:', e);
+    }
+    setSaving(false);
+  };
+
+  const saveStoryToCache = async (story) => {
+    if (!db || !story) return;
+    try {
+      const id = `story_${Date.now()}`;
+      const entry = {
+        ...story,
+        createdAt: Date.now(),
+        childName: pgChildName,
+        age: pgAge,
+        gender: pgGender,
+        value: pgValue,
+        duration: pgDuration,
+        language: pgLanguage,
+        beliefs: pgBeliefs,
+        country: pgCountry,
+      };
+      await setDoc(doc(db, 'storyCache', id), entry);
+      setCachedStories((prev) => [{ id, ...entry }, ...prev]);
+    } catch (e) {
+      console.error('Failed to cache story:', e);
+    }
+  };
+
+  const deleteFromCache = async (id) => {
+    if (!db) return;
+    try {
+      const { deleteDoc } = await import('firebase/firestore');
+      await deleteDoc(doc(db, 'storyCache', id));
+      setCachedStories((prev) => prev.filter((s) => s.id !== id));
+    } catch (e) {
+      console.error('Failed to delete cached story:', e);
+    }
+  };
+
+  const generateTestStory = async () => {
+    setPgGenerating(true);
+    setPgError(null);
+    setPgResult(null);
+    try {
+      const res = await fetch(`${API_BASE}/api/generate-story`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          childName: pgChildName,
+          age: pgAge,
+          gender: pgGender,
+          value: pgValue,
+          duration: pgDuration,
+          language: pgLanguage,
+          whisper: pgWhisper || undefined,
+          beliefs: [pgBeliefs],
+          country: pgCountry,
+          selectedCast: pgCast.split(',').map((s) => {
+            const match = s.trim().match(/^(.+?)\s*\((.+)\)$/);
+            if (match) {
+              const [, name, rest] = match;
+              const parts = rest.split(',').map((p) => p.trim());
+              return { name: name.trim(), relation: parts[0] || 'friend', traits: parts.slice(1).join(', ') };
+            }
+            return { name: s.trim(), relation: 'friend', traits: '' };
+          }),
+          narrator: 'AI Narrator',
+          _adminTest: true,
+        }),
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error || `Failed (${res.status})`);
+      setPgResult(data);
+    } catch (e) {
+      setPgError(e.message);
+    }
+    setPgGenerating(false);
+  };
+
+  const SUB_TABS = [
+    { key: 'playground', label: 'Playground', icon: '🎮' },
+    { key: 'archetypes', label: 'Character Archetypes', icon: '👥' },
+    { key: 'cache', label: `Story Cache (${cachedStories.length})`, icon: '📦' },
+  ];
+
+  return (
+    <div className="space-y-6">
+      {/* Sub-tabs */}
+      <div className="flex gap-2">
+        {SUB_TABS.map((t) => (
+          <button
+            key={t.key}
+            onClick={() => setSubTab(t.key)}
+            className={`rounded-xl px-4 py-2 text-sm font-bold transition ${
+              subTab === t.key ? 'bg-[#f0a500] text-[#0f0f17]' : 'bg-[#1a1a28] text-[#a8a39a] hover:text-[#f5f0e8]'
+            }`}
+          >
+            {t.icon} {t.label}
+          </button>
+        ))}
+      </div>
+
+      {/* ── PLAYGROUND ── */}
+      {subTab === 'playground' && (
+        <div className="grid gap-6 lg:grid-cols-2">
+          {/* Left: Config */}
+          <div className="space-y-4">
+            <div className="rounded-2xl bg-[#1a1a28] p-6">
+              <h3 className="mb-4 text-xs font-bold uppercase tracking-wider text-[#a8a39a]">
+                Story Parameters
+              </h3>
+              <div className="grid grid-cols-2 gap-3">
+                <LabInput label="Child name" value={pgChildName} onChange={setPgChildName} />
+                <LabInput label="Age" value={pgAge} onChange={(v) => setPgAge(Number(v))} type="number" />
+                <LabSelect label="Gender" value={pgGender} onChange={setPgGender} options={[
+                  { value: 'girl', label: 'Girl' }, { value: 'boy', label: 'Boy' }, { value: 'other', label: 'Other' },
+                ]} />
+                <LabSelect label="Value/Lesson" value={pgValue} onChange={setPgValue} options={
+                  VALUES.map((v) => ({ value: v.key, label: `${v.emoji} ${v.label}` }))
+                } />
+                <LabSelect label="Duration" value={pgDuration} onChange={(v) => setPgDuration(Number(v))} options={
+                  DURATIONS.map((d) => ({ value: d.minutes, label: d.label }))
+                } />
+                <LabSelect label="Language" value={pgLanguage} onChange={setPgLanguage} options={
+                  LANGUAGES.map((l) => ({ value: l.key, label: l.label }))
+                } />
+                <LabSelect label="Belief" value={pgBeliefs} onChange={setPgBeliefs} options={
+                  RELIGIONS.map((r) => ({ value: r.key, label: `${r.icon} ${r.label}` }))
+                } />
+                <LabSelect label="Country" value={pgCountry} onChange={setPgCountry} options={
+                  COUNTRIES.map((c) => ({ value: c.key, label: `${c.flag} ${c.label}` }))
+                } />
+              </div>
+
+              <div className="mt-3">
+                <LabInput label="Cast (Name (relation, traits), ...)" value={pgCast} onChange={setPgCast} full />
+              </div>
+              <div className="mt-3">
+                <LabInput label="Whisper (optional parent note)" value={pgWhisper} onChange={setPgWhisper} full />
+              </div>
+
+              <button
+                onClick={generateTestStory}
+                disabled={pgGenerating}
+                className="mt-4 w-full rounded-xl bg-[#f0a500] py-3 text-sm font-bold text-[#0f0f17] transition active:scale-95 disabled:opacity-50"
+              >
+                {pgGenerating ? 'Generating...' : 'Generate Test Story'}
+              </button>
+              {pgError && (
+                <div className="mt-3 rounded-xl bg-[#f3727f]/10 p-3 text-xs text-[#f3727f]">{pgError}</div>
+              )}
+            </div>
+          </div>
+
+          {/* Right: Result */}
+          <div className="space-y-4">
+            {pgGenerating && (
+              <div className="flex items-center justify-center rounded-2xl bg-[#1a1a28] p-12">
+                <div className="text-center">
+                  <div className="mb-3 inline-block h-8 w-8 animate-spin rounded-full border-2 border-[#f0a500] border-t-transparent" />
+                  <p className="text-sm text-[#a8a39a]">Generating story with Claude...</p>
+                </div>
+              </div>
+            )}
+            {pgResult && (
+              <div className="rounded-2xl bg-[#1a1a28] p-6">
+                <div className="mb-4 flex items-center justify-between">
+                  <div>
+                    <h3 className="font-display text-lg font-bold text-[#f0a500]">{pgResult.title}</h3>
+                    <p className="mt-1 text-xs text-[#a8a39a]">
+                      {pgResult.wordCount} words · {pgResult.generatedBy || 'claude'} · {pgDuration} min target
+                    </p>
+                  </div>
+                  <button
+                    onClick={() => saveStoryToCache(pgResult)}
+                    className="rounded-xl bg-[#7ad9a1]/10 px-4 py-2 text-xs font-bold text-[#7ad9a1] hover:bg-[#7ad9a1]/20"
+                  >
+                    Save to cache
+                  </button>
+                </div>
+                <div className="max-h-[60vh] overflow-y-auto rounded-xl bg-[#0f0f17] p-4 font-story text-sm leading-relaxed text-[#f5f0e8]/80">
+                  {pgResult.text}
+                </div>
+                <div className="mt-3 grid grid-cols-3 gap-2 text-center text-[10px] text-[#a8a39a]">
+                  <div className="rounded-lg bg-[#0f0f17] p-2">
+                    <div className="font-bold text-[#f0a500]">{pgResult.wordCount}</div>
+                    words
+                  </div>
+                  <div className="rounded-lg bg-[#0f0f17] p-2">
+                    <div className="font-bold text-[#f0a500]">{Math.round(pgResult.wordCount / 130)}</div>
+                    est. minutes
+                  </div>
+                  <div className="rounded-lg bg-[#0f0f17] p-2">
+                    <div className="font-bold text-[#f0a500]">{pgResult.generatedBy}</div>
+                    engine
+                  </div>
+                </div>
+              </div>
+            )}
+            {!pgGenerating && !pgResult && (
+              <div className="flex items-center justify-center rounded-2xl bg-[#1a1a28] p-12">
+                <div className="text-center">
+                  <div className="mb-3 text-4xl">🧪</div>
+                  <p className="text-sm text-[#a8a39a]">Configure parameters and generate a test story</p>
+                  <p className="mt-1 text-xs text-[#6e6a63]">Test different combos to see how Claude handles them</p>
+                </div>
+              </div>
+            )}
+          </div>
+        </div>
+      )}
+
+      {/* ── CHARACTER ARCHETYPES ── */}
+      {subTab === 'archetypes' && (
+        <div className="space-y-4">
+          <div className="rounded-2xl bg-[#1a1a28] p-6">
+            <div className="mb-4 flex items-center justify-between">
+              <h3 className="text-xs font-bold uppercase tracking-wider text-[#a8a39a]">
+                Character Archetypes — define how each role appears in stories
+              </h3>
+              {saving && <span className="text-xs text-[#f0a500]">Saving...</span>}
+            </div>
+            <p className="mb-4 text-xs text-[#6e6a63]">
+              Set what to call each character type, their personality traits, and activities they do in stories.
+              This prevents stereotypes and adds variety.
+            </p>
+            <div className="space-y-3">
+              {archetypes.map((arch, i) => (
+                <div key={arch.key} className="rounded-xl bg-[#0f0f17] p-4">
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center gap-3">
+                      <span className="text-lg">
+                        {arch.key === 'grandfather' ? '👴' : arch.key === 'grandmother' ? '👵' :
+                         arch.key === 'mother' ? '👩' : arch.key === 'father' ? '👨' :
+                         arch.key === 'sibling' ? '🧒' : arch.key === 'uncle' ? '🧔' :
+                         arch.key === 'aunt' ? '👩' : '🐶'}
+                      </span>
+                      <div>
+                        <div className="font-bold text-[#f5f0e8] capitalize">{arch.key}</div>
+                        <div className="text-xs text-[#a8a39a]">
+                          Called: {arch.callOptions.slice(0, 4).join(', ')}{arch.callOptions.length > 4 ? ` +${arch.callOptions.length - 4} more` : ''}
+                        </div>
+                      </div>
+                    </div>
+                    <button
+                      onClick={() => setEditingArch(editingArch === i ? null : i)}
+                      className="rounded-lg bg-[#1a1a28] px-3 py-1.5 text-xs font-bold text-[#f0a500]"
+                    >
+                      {editingArch === i ? 'Close' : 'Edit'}
+                    </button>
+                  </div>
+
+                  {editingArch === i && (
+                    <motion.div
+                      initial={{ height: 0, opacity: 0 }}
+                      animate={{ height: 'auto', opacity: 1 }}
+                      className="mt-4 space-y-3 overflow-hidden"
+                    >
+                      <div>
+                        <label className="mb-1 block text-[10px] font-bold uppercase tracking-wider text-[#6e6a63]">
+                          What can they be called? (comma separated)
+                        </label>
+                        <input
+                          value={arch.callOptions.join(', ')}
+                          onChange={(e) => {
+                            const updated = [...archetypes];
+                            updated[i] = { ...arch, callOptions: e.target.value.split(',').map((s) => s.trim()).filter(Boolean) };
+                            setArchetypes(updated);
+                          }}
+                          className="w-full rounded-lg bg-[#1a1a28] px-3 py-2 text-sm text-[#f5f0e8] outline-none ring-1 ring-white/5 focus:ring-[#f0a500]"
+                        />
+                      </div>
+                      <div>
+                        <label className="mb-1 block text-[10px] font-bold uppercase tracking-wider text-[#6e6a63]">
+                          Default name to use in stories
+                        </label>
+                        <select
+                          value={arch.defaultCall}
+                          onChange={(e) => {
+                            const updated = [...archetypes];
+                            updated[i] = { ...arch, defaultCall: e.target.value };
+                            setArchetypes(updated);
+                          }}
+                          className="w-full rounded-lg bg-[#1a1a28] px-3 py-2 text-sm text-[#f5f0e8] outline-none ring-1 ring-white/5"
+                        >
+                          {arch.callOptions.map((o) => <option key={o} value={o}>{o}</option>)}
+                        </select>
+                      </div>
+                      <div>
+                        <label className="mb-1 block text-[10px] font-bold uppercase tracking-wider text-[#6e6a63]">
+                          Personality traits (comma separated — NOT stereotypical!)
+                        </label>
+                        <input
+                          value={arch.traits}
+                          onChange={(e) => {
+                            const updated = [...archetypes];
+                            updated[i] = { ...arch, traits: e.target.value };
+                            setArchetypes(updated);
+                          }}
+                          className="w-full rounded-lg bg-[#1a1a28] px-3 py-2 text-sm text-[#f5f0e8] outline-none ring-1 ring-white/5 focus:ring-[#f0a500]"
+                        />
+                      </div>
+                      <div>
+                        <label className="mb-1 block text-[10px] font-bold uppercase tracking-wider text-[#6e6a63]">
+                          Activities they do in stories (comma separated — be creative, break stereotypes!)
+                        </label>
+                        <input
+                          value={arch.activities}
+                          onChange={(e) => {
+                            const updated = [...archetypes];
+                            updated[i] = { ...arch, activities: e.target.value };
+                            setArchetypes(updated);
+                          }}
+                          className="w-full rounded-lg bg-[#1a1a28] px-3 py-2 text-sm text-[#f5f0e8] outline-none ring-1 ring-white/5 focus:ring-[#f0a500]"
+                        />
+                      </div>
+                    </motion.div>
+                  )}
+                </div>
+              ))}
+            </div>
+            <button
+              onClick={() => saveArchetypes(archetypes)}
+              disabled={saving}
+              className="mt-4 w-full rounded-xl bg-[#f0a500] py-3 text-sm font-bold text-[#0f0f17] disabled:opacity-50"
+            >
+              {saving ? 'Saving...' : 'Save All Archetypes'}
+            </button>
+          </div>
+        </div>
+      )}
+
+      {/* ── STORY CACHE ── */}
+      {subTab === 'cache' && (
+        <div className="space-y-4">
+          <div className="rounded-2xl bg-[#1a1a28] p-6">
+            <h3 className="mb-2 text-xs font-bold uppercase tracking-wider text-[#a8a39a]">
+              Cached Stories — pre-generated, no credits needed
+            </h3>
+            <p className="mb-4 text-xs text-[#6e6a63]">
+              Stories saved here can be served to users without calling Claude API. Generate in Playground, then save.
+            </p>
+          </div>
+          {cachedStories.length === 0 ? (
+            <div className="flex items-center justify-center rounded-2xl bg-[#1a1a28] p-12">
+              <div className="text-center">
+                <div className="mb-3 text-4xl">📦</div>
+                <p className="text-sm text-[#a8a39a]">No cached stories yet</p>
+                <p className="mt-1 text-xs text-[#6e6a63]">Generate stories in the Playground and save them here</p>
+              </div>
+            </div>
+          ) : (
+            <div className="space-y-3">
+              {cachedStories.map((story) => (
+                <CachedStoryCard key={story.id} story={story} onDelete={() => deleteFromCache(story.id)} />
+              ))}
+            </div>
+          )}
+        </div>
+      )}
+    </div>
+  );
+}
+
+function CachedStoryCard({ story, onDelete }) {
+  const [expanded, setExpanded] = useState(false);
+  const meta = VALUES.find((v) => v.key === story.value);
+  return (
+    <div className="rounded-xl bg-[#1a1a28] p-4">
+      <div className="flex items-center justify-between">
+        <div className="flex items-center gap-3 min-w-0">
+          <span className="text-2xl">{meta?.emoji || '📖'}</span>
+          <div className="min-w-0">
+            <div className="font-bold text-[#f5f0e8] truncate">{story.title}</div>
+            <div className="text-xs text-[#a8a39a]">
+              {story.childName} · {story.age}y · {story.wordCount}w · {story.duration}min · {meta?.label} · {story.language}
+            </div>
+            <div className="text-[10px] text-[#6e6a63]">
+              {story.createdAt ? new Date(story.createdAt).toLocaleDateString() : 'Unknown date'}
+            </div>
+          </div>
+        </div>
+        <div className="flex items-center gap-2 shrink-0">
+          <button
+            onClick={() => setExpanded(!expanded)}
+            className="rounded-lg bg-[#0f0f17] px-3 py-1.5 text-xs font-bold text-[#f0a500]"
+          >
+            {expanded ? 'Hide' : 'Read'}
+          </button>
+          <button
+            onClick={() => { if (confirm('Delete this cached story?')) onDelete(); }}
+            className="rounded-lg bg-[#f3727f]/10 px-3 py-1.5 text-xs font-bold text-[#f3727f]"
+          >
+            Delete
+          </button>
+        </div>
+      </div>
+      <AnimatePresence>
+        {expanded && (
+          <motion.div
+            initial={{ height: 0, opacity: 0 }}
+            animate={{ height: 'auto', opacity: 1 }}
+            exit={{ height: 0, opacity: 0 }}
+            className="overflow-hidden"
+          >
+            <div className="mt-3 max-h-[40vh] overflow-y-auto rounded-lg bg-[#0f0f17] p-4 font-story text-sm leading-relaxed text-[#f5f0e8]/80">
+              {story.text}
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </div>
+  );
+}
+
+function LabInput({ label, value, onChange, type = 'text', full }) {
+  return (
+    <div className={full ? 'col-span-2' : ''}>
+      <label className="mb-1 block text-[10px] font-bold uppercase tracking-wider text-[#6e6a63]">{label}</label>
+      <input
+        type={type}
+        value={value}
+        onChange={(e) => onChange(e.target.value)}
+        className="w-full rounded-lg bg-[#0f0f17] px-3 py-2 text-sm text-[#f5f0e8] outline-none ring-1 ring-white/5 focus:ring-[#f0a500]"
+      />
+    </div>
+  );
+}
+
+function LabSelect({ label, value, onChange, options }) {
+  return (
+    <div>
+      <label className="mb-1 block text-[10px] font-bold uppercase tracking-wider text-[#6e6a63]">{label}</label>
+      <select
+        value={value}
+        onChange={(e) => onChange(e.target.value)}
+        className="w-full rounded-lg bg-[#0f0f17] px-3 py-2 text-sm text-[#f5f0e8] outline-none ring-1 ring-white/5"
+      >
+        {options.map((o) => <option key={o.value} value={o.value}>{o.label}</option>)}
+      </select>
     </div>
   );
 }

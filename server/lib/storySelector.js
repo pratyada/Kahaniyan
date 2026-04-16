@@ -135,14 +135,21 @@ export async function selectStory({
   whisperOverridesValue = false,
   beliefs = [],
   country = '',
+  _archetypes,
 }) {
+  // When whisperOverridesValue is true, pick a random value so the story is fully independent
+  const ALL_VALUES = ['kindness', 'courage', 'honesty', 'patience', 'gratitude', 'sharing', 'respect', 'bravery'];
+  const effectiveValueForClaude = whisperOverridesValue
+    ? ALL_VALUES[Math.floor(Math.random() * ALL_VALUES.length)]
+    : value;
+
   // ─── TRY CLAUDE FIRST ───
   try {
     const claudeStory = await generateWithClaude({
       childName,
       age,
       gender: req_gender,
-      value,
+      value: effectiveValueForClaude,
       duration,
       language,
       familyMembers,
@@ -150,6 +157,7 @@ export async function selectStory({
       whisper,
       beliefs,
       country,
+      _archetypes,
     });
     if (claudeStory) {
       return {
@@ -159,8 +167,8 @@ export async function selectStory({
         text: claudeStory.text,
         wordCount: claudeStory.wordCount,
         estimatedMinutes: duration,
-        value,
-        plotType: 'claude-' + value,
+        value: effectiveValueForClaude,
+        plotType: 'claude-' + effectiveValueForClaude,
         language,
         voice,
         cast: (selectedCast || []).filter((c) => c.relation !== 'self').map((c) => c.name),

@@ -47,7 +47,7 @@ export default function Player() {
 
 function PlayerInner() {
   const navigate = useNavigate();
-  const { current, clear, isPlaying, setIsPlaying } = usePlayer();
+  const { current, clear, isPlaying, setIsPlaying, reloadLast } = usePlayer();
   const { profile } = useFamilyProfile();
   const webSpeech = useSpeech();
   const elevenLabs = useElevenLabs();
@@ -227,8 +227,9 @@ function PlayerInner() {
     sleepTimerRef.current = setTimeout(() => {
       if (usingTTS) elevenLabs.stop();
       else webSpeech.stop();
+      noise.stop();
       setIsPlaying(false);
-      setDone(true);
+      navigate('/');
     }, totalMs);
 
     // Volume fade in the last stretch
@@ -249,15 +250,30 @@ function PlayerInner() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [sleepMin, setIsPlaying]);
 
-  // Mark "done" when progress reaches end
+  // When story ends, stop everything and go back to home
   useEffect(() => {
-    if (progress > 0 && progress >= 0.999) {
-      setDone(true);
-      setIsPlaying(false);
+    let ended = false;
+    if (!usingTTS) {
+      if (progress > 0 && progress >= 0.999) ended = true;
+    } else {
+      if (progress >= 1 && !elevenLabs.playing && !elevenLabs.loading && ttsReady) ended = true;
     }
-  }, [progress, setIsPlaying]);
+    if (ended) {
+      setIsPlaying(false);
+      noise.stop();
+      elevenLabs.stop();
+      webSpeech.stop();
+      navigate('/');
+    }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [progress, setIsPlaying, usingTTS, elevenLabs.playing, elevenLabs.loading, ttsReady]);
 
   if (!current) {
+    const lastStory = reloadLast();
+    if (lastStory) {
+      // Story recovered from localStorage — will re-render with current set
+      return null;
+    }
     return (
       <div className="flex h-screen flex-col items-center justify-center bg-bg-base px-6 text-center">
         <div className="text-4xl mb-4">📖</div>
@@ -318,31 +334,6 @@ function PlayerInner() {
       <div className="starfield" />
 
       <AnimatePresence>
-        {done ? (
-          <motion.div
-            key="done"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            className="relative z-10 flex h-full flex-col items-center justify-center px-8 text-center"
-          >
-            <motion.div
-              initial={{ scale: 0.6, opacity: 0 }}
-              animate={{ scale: 1, opacity: 1 }}
-              transition={{ duration: 1 }}
-              className="mb-6 text-6xl"
-            >
-              🌙
-            </motion.div>
-            <h1 className="font-display text-4xl font-bold text-gold">Sweet dreams</h1>
-            <p className="mt-3 text-sm text-ink-muted">
-              {profile?.childName}, may your night be soft and warm.
-            </p>
-            <button onClick={handleClose} className="btn-secondary mt-12">
-              Back to home
-            </button>
-          </motion.div>
-        ) : (
           <motion.div
             key="player"
             initial={{ opacity: 0 }}
@@ -435,19 +426,12 @@ function PlayerInner() {
                   transition={{ ease: 'linear' }}
                 />
               </div>
-              <div className="mt-2 flex justify-between text-[10px] uppercase tracking-wider text-ink-dim">
-                {elevenLabs.duration > 0 ? (
-                  <>
-                    <span>{Math.floor(progress * elevenLabs.duration / 60)}:{String(Math.floor(progress * elevenLabs.duration % 60)).padStart(2,'0')}</span>
-                    <span>{Math.floor(elevenLabs.duration / 60)}:{String(Math.floor(elevenLabs.duration % 60)).padStart(2,'0')}</span>
-                  </>
-                ) : (
-                  <>
-                    <span>{Math.round(progress * current.estimatedMinutes)} min</span>
-                    <span>~{current.estimatedMinutes} min</span>
-                  </>
-                )}
-              </div>
+              {elevenLabs.duration > 0 && (
+                <div className="mt-2 flex justify-between text-[10px] uppercase tracking-wider text-ink-dim">
+                  <span>{Math.floor(progress * elevenLabs.duration / 60)}:{String(Math.floor(progress * elevenLabs.duration % 60)).padStart(2,'0')}</span>
+                  <span>{Math.floor(elevenLabs.duration / 60)}:{String(Math.floor(elevenLabs.duration % 60)).padStart(2,'0')}</span>
+                </div>
+              )}
             </div>
 
             {/* Controls — large, obvious, mobile-first */}
@@ -564,7 +548,6 @@ function PlayerInner() {
               })}
             </div>
           </motion.div>
-        )}
       </AnimatePresence>
     </div>
   );
@@ -574,16 +557,16 @@ function HighlightedText({ text, progress }) {
   // Audio progress doesn't map linearly to text characters — narration
   // speeds up/slows down. Apply a slight lead so the highlight stays
   // with or slightly ahead of the voice, never behind.
-  const lead = 0.04; // 4% ahead
+  const lead = 0.06; // 6% ahead for tighter sync
   const adjusted = Math.min(1, progress + lead);
   // Use a power curve — text reads faster at start, slows toward end
-  const curved = Math.pow(adjusted, 0.85);
+  const curved = Math.pow(adjusted, 0.92);
   const cutoff = Math.floor(text.length * curved);
   const read = text.slice(0, cutoff);
   const rest = text.slice(cutoff);
   return (
     <>
-      <span className="text-ink">{read}</span>
+      <span className="text-yellow-300">{read}</span>
       <span>{rest}</span>
     </>
   );

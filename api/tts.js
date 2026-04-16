@@ -90,7 +90,7 @@ export default async function handler(req, res) {
     language = 'English',
     country = 'OTHER',
     beliefs = [],
-    speed = 1.0,
+    speed = 0.9,
   } = req.body || {};
 
   if (!text || text.length < 10) {

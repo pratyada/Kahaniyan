@@ -17,6 +17,7 @@ export function useElevenLabs() {
 
   const cleanup = useCallback(() => {
     if (audioRef.current) {
+      if (audioRef.current._cleanupVisibility) audioRef.current._cleanupVisibility();
       audioRef.current.pause();
       audioRef.current.src = '';
     }
@@ -74,11 +75,29 @@ export function useElevenLabs() {
         }
       };
       audio.onplay = () => setPlaying(true);
-      audio.onpause = () => setPlaying(false);
+      audio.onpause = () => {
+        // Don't mark as not-playing if browser just suspended audio in background
+        // Only set false if audio is truly paused (not ended, not mid-playback)
+        if (audio.ended || audio.currentTime === 0) {
+          setPlaying(false);
+        } else {
+          // Might be background suspension — keep state, try to resume on visibility change
+          setPlaying(false);
+        }
+      };
       audio.onended = () => {
         setPlaying(false);
         setProgress(1);
       };
+
+      // Resume audio when app comes back to foreground
+      const handleVisibility = () => {
+        if (document.visibilityState === 'visible' && audio.paused && !audio.ended && audio.currentTime > 0) {
+          audio.play().catch(() => {});
+        }
+      };
+      document.addEventListener('visibilitychange', handleVisibility);
+      audio._cleanupVisibility = () => document.removeEventListener('visibilitychange', handleVisibility);
       audio.onerror = () => {
         setError('Audio playback failed');
         setPlaying(false);
