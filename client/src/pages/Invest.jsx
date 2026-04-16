@@ -294,10 +294,19 @@ export default function Invest() {
 
             <div className="mt-8 flex flex-col items-center gap-3 sm:flex-row sm:justify-center">
               <button
-                onClick={() => { if (user) setShowForm(true); else alert('Please sign in first'); }}
+                onClick={async () => {
+                  if (user) { setShowForm(true); return; }
+                  try { const { loginGoogle } = await import('../hooks/useAuth.jsx').then(m => ({ loginGoogle: null })); } catch {}
+                  // Direct Google sign-in
+                  const { signInWithPopup } = await import('firebase/auth');
+                  const { auth, googleProvider } = await import('../lib/firebase.js');
+                  if (auth && googleProvider) {
+                    try { await signInWithPopup(auth, googleProvider); setShowForm(true); } catch {}
+                  }
+                }}
                 className="rounded-full bg-[#f0a500] px-8 py-4 text-lg font-bold text-[#0a0a0f] shadow-[0_0_40px_rgba(240,165,0,0.3)] transition hover:shadow-[0_0_60px_rgba(240,165,0,0.5)]"
               >
-                Back this project
+                {user ? 'Back this project' : 'Sign in & Back this project'}
               </button>
               <a
                 href="#transparency"
@@ -531,10 +540,17 @@ export default function Invest() {
                   No one has contributed yet. Early backers get the lowest token price.
                 </p>
                 <button
-                  onClick={() => { if (user) setShowForm(true); else alert('Please sign in first'); }}
+                  onClick={async () => {
+                    if (user) { setShowForm(true); return; }
+                    const { signInWithPopup } = await import('firebase/auth');
+                    const { auth, googleProvider } = await import('../lib/firebase.js');
+                    if (auth && googleProvider) {
+                      try { await signInWithPopup(auth, googleProvider); setShowForm(true); } catch {}
+                    }
+                  }}
                   className="mt-6 rounded-full bg-[#f0a500] px-6 py-3 text-sm font-bold text-[#0a0a0f]"
                 >
-                  Back this project
+                  {user ? 'Back this project' : 'Sign in & Back this project'}
                 </button>
               </div>
             ) : (
