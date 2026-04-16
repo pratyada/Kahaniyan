@@ -393,6 +393,137 @@ export default function Invest() {
               </div>
             </section>
 
+            {/* Competitor landscape */}
+            <section>
+              <h3 className="mb-4 text-xs font-bold uppercase tracking-wider text-[#6e6a63]">
+                Competitive landscape — why we win
+              </h3>
+              <div className="overflow-x-auto">
+                <table style={{ width: '100%', minWidth: 600, fontSize: 12, borderCollapse: 'collapse' }}>
+                  <thead>
+                    <tr style={{ borderBottom: '1px solid rgba(255,255,255,0.1)', fontSize: 10, textTransform: 'uppercase', letterSpacing: '0.1em', color: '#6e6a63' }}>
+                      <th style={{ padding: '8px 12px', textAlign: 'left' }}>Feature</th>
+                      <th style={{ padding: '8px 12px', textAlign: 'center' }}>My Sleepy Tale</th>
+                      <th style={{ padding: '8px 12px', textAlign: 'center' }}>Calm Kids</th>
+                      <th style={{ padding: '8px 12px', textAlign: 'center' }}>Moshi</th>
+                      <th style={{ padding: '8px 12px', textAlign: 'center' }}>YouTube</th>
+                    </tr>
+                  </thead>
+                  <tbody style={{ color: '#a8a39a' }}>
+                    {[
+                      { feature: 'Child\'s real name in story', us: '✅', calm: '❌', moshi: '❌', yt: '❌' },
+                      { feature: 'Family members as characters', us: '✅', calm: '❌', moshi: '❌', yt: '❌' },
+                      { feature: 'Cultural / religious stories', us: '✅ 7 traditions', calm: '❌', moshi: '❌', yt: 'Fragmented' },
+                      { feature: 'AI-generated fresh stories', us: '✅ Claude AI', calm: '❌ Pre-recorded', moshi: '❌ Pre-recorded', yt: '❌' },
+                      { feature: 'Parent whisper (today\'s mood)', us: '✅', calm: '❌', moshi: '❌', yt: '❌' },
+                      { feature: 'Voice cloning (family)', us: '🔜 Planned', calm: '❌', moshi: '❌', yt: '❌' },
+                      { feature: 'Multi-language narration', us: '✅ 5 langs', calm: '❌ English', moshi: '❌ English', yt: 'Varies' },
+                      { feature: 'Sleep sounds + fade', us: '✅ 4 types', calm: '✅', moshi: '✅', yt: '❌' },
+                      { feature: 'Price / month', us: 'CA$9.99', calm: 'CA$90/yr', moshi: 'CA$80/yr', yt: 'Free + ads' },
+                      { feature: 'Ad-free, screen-free', us: '✅', calm: '✅', moshi: '✅', yt: '❌ Ads + video' },
+                    ].map((r, i) => (
+                      <tr key={i} style={{ borderBottom: '1px solid rgba(255,255,255,0.04)' }}>
+                        <td style={{ padding: '8px 12px', fontWeight: 600, color: '#f5f0e8' }}>{r.feature}</td>
+                        <td style={{ padding: '8px 12px', textAlign: 'center', color: '#f0a500', fontWeight: 700 }}>{r.us}</td>
+                        <td style={{ padding: '8px 12px', textAlign: 'center' }}>{r.calm}</td>
+                        <td style={{ padding: '8px 12px', textAlign: 'center' }}>{r.moshi}</td>
+                        <td style={{ padding: '8px 12px', textAlign: 'center' }}>{r.yt}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+              <p style={{ fontSize: 10, color: '#6e6a63', marginTop: 12 }}>
+                No one else personalizes stories with the child's real name, real family, and real cultural values. That's our moat.
+              </p>
+            </section>
+
+            {/* Market size */}
+            <section>
+              <h3 className="mb-4 text-xs font-bold uppercase tracking-wider text-[#6e6a63]">
+                Market opportunity
+              </h3>
+              <div className="grid gap-3 sm:grid-cols-3">
+                <div className="rounded-2xl bg-[#1a1a28] p-5 text-center">
+                  <div className="text-3xl font-bold text-[#f0a500]">$8.3B</div>
+                  <div className="mt-1 text-xs font-bold text-[#f5f0e8]">Kids Audio Market</div>
+                  <div className="mt-1 text-[10px] text-[#6e6a63]">By 2028 · 18% CAGR</div>
+                  <div className="mt-2 text-[9px] text-[#a8a39a]">Audiobooks, podcasts, sleep stories for children</div>
+                </div>
+                <div className="rounded-2xl bg-[#1a1a28] p-5 text-center">
+                  <div className="text-3xl font-bold text-[#f0a500]">$2.4B</div>
+                  <div className="mt-1 text-xs font-bold text-[#f5f0e8]">Sleep Apps Market</div>
+                  <div className="mt-1 text-[10px] text-[#6e6a63]">By 2027 · 12% CAGR</div>
+                  <div className="mt-2 text-[9px] text-[#a8a39a]">Calm, Headspace, Moshi — but none personalize for kids</div>
+                </div>
+                <div className="rounded-2xl bg-[#1a1a28] p-5 text-center">
+                  <div className="text-3xl font-bold text-[#f0a500]">42M</div>
+                  <div className="mt-1 text-xs font-bold text-[#f5f0e8]">Canadian Population</div>
+                  <div className="mt-1 text-[10px] text-[#6e6a63]">4.2M kids aged 0-9</div>
+                  <div className="mt-2 text-[9px] text-[#a8a39a]">200+ ethnicities · most multicultural market on earth</div>
+                </div>
+              </div>
+            </section>
+
+            {/* Short term targets */}
+            <section>
+              <h3 className="mb-4 text-xs font-bold uppercase tracking-wider text-[#6e6a63]">
+                Short-term milestones (next 6 months)
+              </h3>
+              <div className="space-y-2">
+                {[
+                  { month: 'May 2026', target: '100 active users', milestone: 'Product-market fit validation', icon: '🎯', status: 'Next' },
+                  { month: 'Jun 2026', target: 'iOS + Android apps', milestone: 'App store launches', icon: '📱', status: 'Planned' },
+                  { month: 'Jul 2026', target: '500 active users', milestone: 'First paying subscribers', icon: '💰', status: 'Planned' },
+                  { month: 'Aug 2026', target: 'Voice cloning live', milestone: 'Family voices narrate stories', icon: '🎙️', status: 'Planned' },
+                  { month: 'Sep 2026', target: '2,000 users', milestone: 'GTA school partnerships', icon: '🏫', status: 'Planned' },
+                  { month: 'Oct 2026', target: 'Seed round prep', milestone: 'Pitch deck + data for $500K raise', icon: '🚀', status: 'Planned' },
+                ].map((m, i) => (
+                  <div key={i} className="flex items-center gap-3 rounded-xl bg-[#1a1a28] p-3">
+                    <span className="text-xl">{m.icon}</span>
+                    <div className="flex-1">
+                      <div className="flex items-center gap-2">
+                        <span className="text-xs font-bold text-[#f5f0e8]">{m.month}</span>
+                        <span className="text-[9px] text-[#6e6a63]">·</span>
+                        <span className="text-[10px] font-bold text-[#f0a500]">{m.target}</span>
+                      </div>
+                      <div className="text-[10px] text-[#a8a39a]">{m.milestone}</div>
+                    </div>
+                    <span className={`rounded-full px-2 py-0.5 text-[8px] font-bold uppercase ${m.status === 'Next' ? 'bg-[#f0a500]/20 text-[#f0a500]' : 'bg-white/5 text-[#6e6a63]'}`}>{m.status}</span>
+                  </div>
+                ))}
+              </div>
+            </section>
+
+            {/* Unit economics */}
+            <section className="rounded-2xl bg-[#1a1a28] p-6">
+              <h3 className="mb-4 text-xs font-bold uppercase tracking-wider text-[#6e6a63]">
+                Unit economics (projected)
+              </h3>
+              <div className="grid gap-3 sm:grid-cols-4">
+                <div className="rounded-xl bg-[#0a0a0f] p-3 text-center">
+                  <div className="text-lg font-bold text-[#f0a500]">CA$9.99</div>
+                  <div className="text-[9px] text-[#6e6a63]">Monthly revenue / user</div>
+                </div>
+                <div className="rounded-xl bg-[#0a0a0f] p-3 text-center">
+                  <div className="text-lg font-bold text-[#f3727f]">~CA$2.50</div>
+                  <div className="text-[9px] text-[#6e6a63]">Cost / user / month (APIs)</div>
+                </div>
+                <div className="rounded-xl bg-[#0a0a0f] p-3 text-center">
+                  <div className="text-lg font-bold text-[#7ad9a1]">~CA$7.49</div>
+                  <div className="text-[9px] text-[#6e6a63]">Gross margin / user</div>
+                </div>
+                <div className="rounded-xl bg-[#0a0a0f] p-3 text-center">
+                  <div className="text-lg font-bold text-[#7ad9a1]">75%</div>
+                  <div className="text-[9px] text-[#6e6a63]">Gross margin</div>
+                </div>
+              </div>
+              <p className="mt-3 text-[10px] text-[#6e6a63]">
+                At 1,000 paying users: CA$9,990/mo revenue · CA$2,500/mo cost · CA$7,490/mo margin.
+                Pre-written wisdom stories have zero API cost — pure margin.
+              </p>
+            </section>
+
             {/* Why CA$25K + How we'll spend it */}
             <section>
               <h3 className="mb-4 text-xs font-bold uppercase tracking-wider text-[#6e6a63]">
