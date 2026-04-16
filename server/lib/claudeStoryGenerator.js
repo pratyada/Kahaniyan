@@ -1,7 +1,13 @@
 // Claude-powered story generation — fun, silly, kid-appropriate.
-// Replaces template-based stories with fresh AI-generated ones.
 
 const ANTHROPIC_KEY = process.env.ANTHROPIC_API_KEY;
+
+const DURATION_GUIDE = {
+  2: { words: 260, pacing: 'Super short. One tiny adventure. Done.' },
+  5: { words: 650, pacing: 'Quick. One problem, one solution, one giggle, sleep.' },
+  10: { words: 1300, pacing: 'Move fast. One problem, one solution, done.' },
+  15: { words: 1950, pacing: 'Move fast. One problem, one solution, done.' },
+};
 
 export async function generateWithClaude({
   childName,
@@ -15,61 +21,90 @@ export async function generateWithClaude({
   whisper,
   beliefs,
   country,
+  recentPlotTypes,
 }) {
   if (!ANTHROPIC_KEY) return null;
 
   const pronoun = gender === 'girl' ? 'she/her' : gender === 'boy' ? 'he/him' : 'they/them';
+
   const castList = (selectedCast || [])
     .filter((c) => c.relation !== 'self')
-    .map((c) => `${c.name} (${c.relation}${c.traits ? `, ${c.traits}` : ''})`)
+    .map((c) => {
+      let desc = `${c.name} (${c.relation}`;
+      if (c.traits) desc += `, ${c.traits}`;
+      if (c.nickname) desc += `, called "${c.nickname}"`;
+      return desc + ')';
+    })
     .join(', ');
 
   const family = [];
-  if (familyMembers?.sibling) family.push(`Sibling: ${familyMembers.sibling}`);
-  if (familyMembers?.grandfather) family.push(`Grandfather: ${familyMembers.grandfather}`);
-  if (familyMembers?.grandmother) family.push(`Grandmother: ${familyMembers.grandmother}`);
-  if (familyMembers?.pet) family.push(`Pet: ${familyMembers.pet}`);
+  if (familyMembers?.sibling) family.push(familyMembers.sibling + ' (sibling)');
+  if (familyMembers?.grandfather) family.push(familyMembers.grandfather + ' (grandfather)');
+  if (familyMembers?.grandmother) family.push(familyMembers.grandmother + ' (grandmother)');
+  if (familyMembers?.pet) family.push(familyMembers.pet + ' (pet)');
 
-  const wordTarget = Math.round(duration * 150);
+  const allCharacters = castList || family.join(', ') || 'none specified';
+  const dur = DURATION_GUIDE[duration] || DURATION_GUIDE[5];
+  const cultureHint = beliefs?.length > 0 ? beliefs.join(', ') : 'universal';
+  const recentPlots = (recentPlotTypes || []).join(', ') || 'none';
 
-  const systemPrompt = `You are the world's best bedtime storyteller for young children. You create stories that make kids giggle, feel safe, and drift gently to sleep.
+  const systemPrompt = `You are a master bedtime storyteller for children. You have one job tonight: tell ${childName} a story so good ${gender === 'girl' ? 'she forgets' : gender === 'boy' ? 'he forgets' : 'they forget'} to fight sleep.
 
-YOUR VOICE RULES (CRITICAL — follow these exactly):
-- Short sentences. 8-12 words max. Some even shorter. Like this.
-- Use fun sounds throughout: "WHOOOOSH!", "splish-splash!", "BONK!", "wheeeee!", "pitter-patter", "KABOOM!", "shhhhhh"
-- Repeat things kids love: "again and again and again", "bigger and bigger and BIGGER"
-- Give characters silly voices and actions: "whispered Bruno, wagging his tail SO fast it was a blur"
-- Ask the child direct questions: "Can you guess what happened next?", "Do you know what she found?"
-- Use big fun words: "ENORMOUS", "teeny-tiny", "super-duper", "bazillion", "fantastical", "magnificently"
-- Add giggly silly moments mixed with warmth
-- The last 3-4 paragraphs must get sleepier: sentences slow down, voice gets softer, words get dreamier
-- End with the child falling asleep: "And as ${childName}'s eyes grew heavy... sweet dreams, little one."
-- NEVER be scary. NEVER be sad. Always warm, safe, magical.
-- Value/lesson (${value}) must be woven in NATURALLY through the story — never stated as a moral or lecture.
+== YOUR STORYTELLING RULES ==
 
-STRUCTURE:
-1. Fun exciting opening that hooks the child
-2. Adventure/problem with the characters
-3. Silly moments + the value emerges naturally
-4. Gentle wind-down — slower, softer, dreamier
-5. Sleep ending — eyes closing, warmth, goodnight
+VOICE & LANGUAGE
+- Talk like a fun parent telling a story from memory — warm, playful, a little dramatic at the right moments
+- Short sentences. Simple words. Never use a big word when a small one works
+- Use sounds: WHOOSH. CRASH. Tiptoe tiptoe tiptoe...
+- Use repetition — kids love it: "And he ran, and he ran, and he RAN"
+- Ask the listener questions mid-story: "Can you guess what happened next?"
+- Build suspense slowly, then release it with something funny or surprising
+- Never say "thus", "however", "consequently", "indeed" or any word a textbook would use
+- If you catch yourself being clever for adults — stop. Start again simpler.
+- Use pronouns ${pronoun} for ${childName}.
 
-ABOUT THE CHILD:
-- Name: ${childName} (pronouns: ${pronoun})
-- Age: ${age} years old
-- Adjust vocabulary and complexity for this exact age
-${family.length > 0 ? `- Family: ${family.join(', ')}` : ''}
-${castList ? `- Tonight's cast: ${castList}` : ''}
-${beliefs?.length > 0 ? `- Cultural background: ${beliefs.join(', ')}` : ''}
-${country ? `- Country: ${country}` : ''}
+THE LESSON (${value})
+- Never say the lesson out loud. Ever.
+- Never end with "and so ${childName} learned that ${value} is important"
+- The lesson must live entirely inside what the character DOES and FEELS
+- One small moment in the story should make the child think "oh... I get it" — without you pointing at it
 
-TARGET: ~${wordTarget} words (${duration} minute story at bedtime reading pace)
+STORY SHAPE
+- Open with something immediately weird, funny, or exciting — no slow introductions
+- Every 3-4 paragraphs, something must change: a surprise, a problem, a funny moment, a discovery
+- The middle must have one moment where things go WRONG — not scary wrong, just funny-problem wrong
+- ${childName} is always the hero. ${gender === 'girl' ? 'She figures' : gender === 'boy' ? 'He figures' : 'They figure'} things out ${gender === 'girl' ? 'herself' : gender === 'boy' ? 'himself' : 'themselves'}.
+- Supporting characters: ${allCharacters} — give each one a funny little personality quirk
+- End gently. Slow the words down. Make the sentences shorter and shorter. Let the world get quiet.
+
+CULTURAL WARMTH
+- Weave in one real detail from ${cultureHint} world — a food, a festival, a place, a small tradition — but make it feel natural, not like a lesson about culture
+- This detail should make a child from that culture smile with recognition
+${country ? `- Country context: ${country}` : ''}
+
+PACING
+- Target: ~${dur.words} words (${duration} minute story)
+- ${dur.pacing}
+
+THE WIND-DOWN (last 10% of story always)
+- Slow everything down
+- ${childName} starts to feel warm, heavy, sleepy — describe it gently
+- Shorter sentences. More silence between moments.
+- End mid-journey, not at a destination — let them dream the rest
+
+AGE: ${age} years old. Adjust vocabulary and complexity for this exact age.
 LANGUAGE: ${language}${language !== 'English' ? ' (write natively in this language, not translated)' : ''}
-VALUE TO TEACH: ${value}`;
+RECENT PLOTS TO AVOID: ${recentPlots}
+
+== OUTPUT FORMAT ==
+Plain story text only.
+No headers. No chapter titles. No markdown. No labels.
+Just the story, start to finish.
+Begin immediately — first word of the story, not an introduction to it.`;
 
   const userMessage = whisper
-    ? `Tonight's context: "${whisper}". Create a bedtime story that gently addresses this through the lens of ${value}. Make it fun and light — not heavy. The child should giggle before they sleep.`
-    : `Create a fun, silly, warm bedtime story about ${value}. Use ${childName}'s name and family members throughout. Make it magical and giggly.`;
+    ? `Tonight's whisper from the parent: "${whisper}". Create a bedtime story that gently addresses what's on the child's heart, through the lens of ${value}. Make it fun and light — the child should giggle before they sleep.`
+    : `Create a bedtime story about ${value}. Use ${childName}'s name and the family members throughout. Make it magical, giggly, and impossible to fight sleep to.`;
 
   try {
     const res = await fetch('https://api.anthropic.com/v1/messages', {
@@ -81,7 +116,7 @@ VALUE TO TEACH: ${value}`;
       },
       body: JSON.stringify({
         model: 'claude-sonnet-4-20250514',
-        max_tokens: Math.max(1000, wordTarget * 2),
+        max_tokens: Math.max(800, dur.words * 2),
         system: systemPrompt,
         messages: [{ role: 'user', content: userMessage }],
       }),
@@ -97,19 +132,32 @@ VALUE TO TEACH: ${value}`;
     const text = data.content?.[0]?.text;
     if (!text) return null;
 
-    // Extract a title from the first line if it looks like one
-    const lines = text.split('\n').filter((l) => l.trim());
+    // Generate a title from the story content
+    const titleRes = await fetch('https://api.anthropic.com/v1/messages', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'x-api-key': ANTHROPIC_KEY,
+        'anthropic-version': '2023-06-01',
+      },
+      body: JSON.stringify({
+        model: 'claude-sonnet-4-20250514',
+        max_tokens: 20,
+        messages: [{ role: 'user', content: `Give this bedtime story a short, fun title (3-5 words, no quotes):\n\n${text.slice(0, 300)}` }],
+      }),
+    });
+
     let title = 'Tonight\'s Story';
-    let body = text;
-    if (lines[0] && lines[0].length < 80 && !lines[0].endsWith('.')) {
-      title = lines[0].replace(/^[#*\s]+/, '').replace(/[*#]+$/, '').trim();
-      body = lines.slice(1).join('\n').trim();
+    if (titleRes.ok) {
+      const titleData = await titleRes.json();
+      const t = titleData.content?.[0]?.text?.trim();
+      if (t && t.length < 60) title = t.replace(/^["']|["']$/g, '');
     }
 
     return {
       title,
-      text: body,
-      wordCount: body.split(/\s+/).length,
+      text,
+      wordCount: text.split(/\s+/).length,
       generatedBy: 'claude',
     };
   } catch (err) {
