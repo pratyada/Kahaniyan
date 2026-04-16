@@ -83,7 +83,8 @@ CULTURAL WARMTH
 ${country ? `- Country context: ${country}` : ''}
 
 PACING
-- Target: ~${dur.words} words (${duration} minute story)
+- Target: EXACTLY ~${dur.words} words (${duration} minute story). This is critical.
+- Do NOT stop early. Do NOT write less than ${Math.round(dur.words * 0.85)} words.
 - ${dur.pacing}
 
 THE WIND-DOWN (last 10% of story always)
