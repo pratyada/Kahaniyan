@@ -322,13 +322,7 @@ export default function Settings() {
           {isAdmin && (
             <Tile icon="🔑" title="Admin" sub="Dashboard" onClick={() => navigate('/admin')} />
           )}
-        </div>
-      </SectionCard>
-
-      {/* What's new — tile that opens releases */}
-      <SectionCard title="More">
-        <div className="grid grid-cols-2 gap-2">
-          <Tile icon="📋" title="What's new" sub="v0.0.9 · Latest" onClick={() => setReleasesOpen(true)} />
+          <Tile icon="📋" title="What's new" sub="v0.0.9" onClick={() => setReleasesOpen(true)} />
         </div>
       </SectionCard>
 
