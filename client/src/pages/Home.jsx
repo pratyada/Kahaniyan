@@ -400,7 +400,8 @@ export default function Home() {
                   </button>
                 </div>
               ) : (
-                <div className="grid grid-cols-3 gap-2">
+                <div className="-mx-5 overflow-x-auto px-5">
+                <div className="flex w-max gap-2">
                   {nonProtagonist.map((c) => {
                     const active = selectedCharIds.includes(c.id);
                     const disabled = !active && selectedCharIds.length >= 5;
@@ -409,7 +410,7 @@ export default function Home() {
                         key={c.id}
                         onClick={() => toggleChar(c.id)}
                         disabled={disabled}
-                        className={`flex flex-col items-center gap-1 rounded-2xl p-3 text-center transition disabled:opacity-40 ${
+                        className={`flex w-20 shrink-0 flex-col items-center gap-1 rounded-2xl p-3 text-center transition disabled:opacity-40 ${
                           active
                             ? 'bg-gold text-bg-base shadow-glow'
                             : 'bg-bg-surface text-ink ring-1 ring-white/5'
@@ -420,6 +421,7 @@ export default function Home() {
                       </button>
                     );
                   })}
+                </div>
                 </div>
               )}
             </section>

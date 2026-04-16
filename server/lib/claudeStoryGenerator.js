@@ -154,7 +154,7 @@ Begin immediately — first word of the story, not an introduction to it.`;
     if (titleRes.ok) {
       const titleData = await titleRes.json();
       const t = titleData.content?.[0]?.text?.trim();
-      if (t && t.length < 60) title = t.replace(/^["']|["']$/g, '');
+      if (t && t.length < 60) title = t.replace(/^["'*#\s]+|["'*#\s]+$/g, '').trim();
     }
 
     return {
