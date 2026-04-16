@@ -1144,7 +1144,7 @@ export default function Admin() {
                       </div>
                       <div className="text-right">
                         <div className="text-sm font-bold text-[#f5f0e8]">CA${inv.amount?.toLocaleString()}</div>
-                        <div className="text-[10px] text-[#f0a500]">{inv.tokens?.toLocaleString()} tokens</div>
+                        <div className="text-[10px] text-[#f0a500]">{((inv.amount || 0) / 2000000 * 100).toFixed(4)}% SAFE</div>
                       </div>
                     </div>
                     <div className="mt-3 flex items-center justify-between">
