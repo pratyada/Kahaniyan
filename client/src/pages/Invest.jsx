@@ -471,24 +471,24 @@ export default function Invest() {
                 </h4>
                 <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
                   <div className="rounded-xl bg-[#0a0a0f] p-4 text-center">
-                    <div className="text-2xl font-bold text-[#f0a500]">⚽</div>
-                    <div className="mt-1 text-sm font-bold text-[#f5f0e8]">FIFA 2026</div>
-                    <div className="mt-1 text-[10px] text-[#a8a39a]">Toronto is a host city. Massive influx of multicultural families. Perfect audience.</div>
-                  </div>
-                  <div className="rounded-xl bg-[#0a0a0f] p-4 text-center">
                     <div className="text-2xl font-bold text-[#f0a500]">☀️</div>
                     <div className="mt-1 text-sm font-bold text-[#f5f0e8]">Summer 2026</div>
-                    <div className="mt-1 text-[10px] text-[#a8a39a]">Kids home from school. Parents need bedtime routines. Peak demand season.</div>
+                    <div className="mt-1 text-[10px] text-[#a8a39a]">Kids home from school. No routine. Parents desperate for bedtime help. Peak demand.</div>
+                  </div>
+                  <div className="rounded-xl bg-[#0a0a0f] p-4 text-center">
+                    <div className="text-2xl font-bold text-[#f0a500]">🌍</div>
+                    <div className="mt-1 text-sm font-bold text-[#f5f0e8]">Toronto = the world</div>
+                    <div className="mt-1 text-[10px] text-[#a8a39a]">Most multicultural city on earth. 200+ ethnicities. Every family wants stories in their language and values.</div>
                   </div>
                   <div className="rounded-xl bg-[#0a0a0f] p-4 text-center">
                     <div className="text-2xl font-bold text-[#f0a500]">🏙️</div>
-                    <div className="mt-1 text-sm font-bold text-[#f5f0e8]">Toronto Downtown</div>
-                    <div className="mt-1 text-[10px] text-[#a8a39a]">First target. Dense, diverse, tech-savvy parents. 50K families with kids 0-10.</div>
+                    <div className="mt-1 text-sm font-bold text-[#f5f0e8]">Downtown first</div>
+                    <div className="mt-1 text-[10px] text-[#a8a39a]">Dense, tech-savvy parents. 50K families with kids 0–10. Schools, daycares, community centres.</div>
                   </div>
                   <div className="rounded-xl bg-[#0a0a0f] p-4 text-center">
                     <div className="text-2xl font-bold text-[#f0a500]">🗺️</div>
-                    <div className="mt-1 text-sm font-bold text-[#f5f0e8]">Then GTA</div>
-                    <div className="mt-1 text-[10px] text-[#a8a39a]">Expand to Greater Toronto Area. 2M+ families. South Asian, Arab, Jewish, Christian communities.</div>
+                    <div className="mt-1 text-sm font-bold text-[#f5f0e8]">Then GTA → Canada</div>
+                    <div className="mt-1 text-[10px] text-[#a8a39a]">2M+ families in GTA. South Asian, Arab, Jewish, East Asian, African communities. Then Vancouver, Calgary, Ottawa.</div>
                   </div>
                 </div>
 
@@ -499,7 +499,7 @@ export default function Invest() {
                     {[
                       { q: 'May–Jun 2026', goal: '500 users', focus: 'Toronto downtown · organic + F&F referrals', color: '#f0a500' },
                       { q: 'Jul–Aug 2026', goal: '2,000 users', focus: 'Google Ads + school partnerships · summer camps', color: '#ffb733' },
-                      { q: 'Sep–Oct 2026', goal: '5,000 users', focus: 'GTA expansion · Meta ads · FIFA buzz', color: '#7ad9a1' },
+                      { q: 'Sep–Oct 2026', goal: '5,000 users', focus: 'GTA expansion · Meta ads · back-to-school', color: '#7ad9a1' },
                       { q: 'Nov–Dec 2026', goal: '10,000 users', focus: 'Pan-Canada · holiday season · gift subscriptions', color: '#539df5' },
                     ].map((m, i) => (
                       <div key={i} className="flex items-center gap-3">
