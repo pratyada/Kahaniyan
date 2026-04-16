@@ -303,10 +303,10 @@ export default function Invest() {
                 {user ? 'Back this project' : 'Sign in & Back this project'}
               </button>
               <a
-                href="#transparency"
+                href="#join-team"
                 className="rounded-full bg-white/5 px-8 py-4 text-lg font-bold text-[#a8a39a] ring-1 ring-white/10 transition hover:text-[#f5f0e8]"
               >
-                See the numbers
+                See the potential
               </a>
             </div>
           </motion.div>
@@ -1023,7 +1023,7 @@ export default function Invest() {
       )}
 
       {/* Join the team CTA */}
-      <div className="mx-auto max-w-5xl px-6 py-8">
+      <div id="join-team" className="mx-auto max-w-5xl px-6 py-8">
         <div className="rounded-2xl bg-gradient-to-r from-[#f0a500]/10 to-[#ffb733]/5 p-8 text-center ring-1 ring-[#f0a500]/20">
           <div className="mb-3 text-3xl">🚀</div>
           <h3 className="font-display text-xl font-bold text-[#f0a500]">See the potential? Join actively.</h3>
@@ -1033,7 +1033,7 @@ export default function Invest() {
             upside of something we're creating from scratch.
           </p>
           <a
-            href="mailto:i@yprateek.com,sahil.faraz@gmail.com?subject=I want to join My Sleepy Tale as a team member&body=Hi Prateek,%0A%0AI'd like to contribute to My Sleepy Tale as an active team member.%0A%0AMy skills:%0AHow I can help:%0A"
+            href="mailto:i@yprateek.com,sahil.faraz@gmail.com?subject=I want to be an active part of My Sleepy Tale&body=Hi Prateek %26 Sahil,%0A%0AI see the potential in My Sleepy Tale and I'd like to be an active part of the development with the time I can spend.%0A%0AWhat I can contribute:%0AHours per week I can give:%0AMy background:%0A"
             className="mt-5 inline-block rounded-full bg-[#f0a500] px-8 py-3 text-sm font-bold text-[#0a0a0f] transition hover:shadow-[0_0_40px_rgba(240,165,0,0.4)]"
           >
             Connect with us
