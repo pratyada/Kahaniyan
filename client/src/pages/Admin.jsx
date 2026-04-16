@@ -1106,74 +1106,64 @@ export default function Admin() {
               </div>
             </div>
 
-            <div className="overflow-x-auto rounded-2xl bg-[#1a1a28]">
-              <table className="w-full min-w-[700px] text-left text-sm">
-                <thead>
-                  <tr className="border-b border-white/10 text-[10px] font-bold uppercase tracking-wider text-[#6e6a63]">
-                    <th className="px-4 py-3">Backer</th>
-                    <th className="px-4 py-3">Email</th>
-                    <th className="px-4 py-3">Role</th>
-                    <th className="px-4 py-3 text-right">Amount</th>
-                    <th className="px-4 py-3 text-right">Tokens</th>
-                    <th className="px-4 py-3 text-center">Status</th>
-                    <th className="px-4 py-3">Date</th>
-                    <th className="px-4 py-3">Actions</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {investors.length === 0 ? (
-                    <tr><td colSpan={8} className="px-4 py-8 text-center text-[#6e6a63]">No investors yet.</td></tr>
-                  ) : investors.map((inv) => {
-                    const statusColor = inv.status === 'confirmed' ? '#7ad9a1' : inv.status === 'rejected' ? '#f3727f' : '#ffa42b';
-                    return (
-                      <tr key={inv.id} className="border-b border-white/5">
-                        <td className="px-4 py-3">
-                          <div className="flex items-center gap-2">
-                            {inv.photoURL ? (
-                              <img src={inv.photoURL} alt="" className="h-7 w-7 rounded-full" referrerPolicy="no-referrer" />
-                            ) : <span className="text-lg">👤</span>}
-                            <span className="font-bold text-[#f5f0e8]">{inv.displayName || '—'}</span>
-                          </div>
-                        </td>
-                        <td className="px-4 py-3 font-mono text-xs text-[#a8a39a]">{inv.email}</td>
-                        <td className="px-4 py-3 text-xs text-[#a8a39a]">{inv.roleLabel || inv.role}</td>
-                        <td className="px-4 py-3 text-right font-bold text-[#f5f0e8]">CA${inv.amount?.toLocaleString()}</td>
-                        <td className="px-4 py-3 text-right font-bold text-[#f0a500]">{inv.tokens?.toLocaleString()}</td>
-                        <td className="px-4 py-3 text-center">
-                          <span className="rounded-full px-2 py-0.5 text-[9px] font-bold uppercase" style={{ background: `${statusColor}22`, color: statusColor }}>
+            <div className="space-y-3">
+              {investors.length === 0 ? (
+                <div className="rounded-2xl bg-[#1a1a28] p-8 text-center text-[#6e6a63]">No investors yet.</div>
+              ) : investors.map((inv) => {
+                const statusColor = inv.status === 'confirmed' ? '#7ad9a1' : inv.status === 'rejected' ? '#f3727f' : '#ffa42b';
+                return (
+                  <div key={inv.id} className="rounded-2xl bg-[#1a1a28] p-4">
+                    <div className="flex items-center gap-3">
+                      {inv.photoURL ? (
+                        <img src={inv.photoURL} alt="" className="h-10 w-10 rounded-full" referrerPolicy="no-referrer" />
+                      ) : <div className="grid h-10 w-10 place-items-center rounded-full bg-[#f0a500]/15 text-lg">👤</div>}
+                      <div className="min-w-0 flex-1">
+                        <div className="flex items-center gap-2">
+                          <span className="font-bold text-[#f5f0e8]">{inv.displayName || '—'}</span>
+                          <span className="rounded-full px-2 py-0.5 text-[8px] font-bold uppercase" style={{ background: `${statusColor}22`, color: statusColor }}>
                             {inv.status || 'pledged'}
                           </span>
-                        </td>
-                        <td className="px-4 py-3 text-xs text-[#6e6a63]">
-                          {inv.createdAt ? new Date(inv.createdAt).toLocaleDateString(undefined, { month: 'short', day: 'numeric' }) : '—'}
-                        </td>
-                        <td className="px-4 py-3">
-                          <div className="flex gap-1">
-                            {inv.status !== 'confirmed' && (
-                              <button
-                                onClick={() => updateInvestorStatus(inv.id, 'confirmed')}
-                                className="rounded-lg bg-[#7ad9a1]/10 px-2 py-1 text-[9px] font-bold text-[#7ad9a1]"
-                              >✓ Confirm</button>
-                            )}
-                            {inv.status !== 'rejected' && inv.status !== 'confirmed' && (
-                              <button
-                                onClick={() => updateInvestorStatus(inv.id, 'rejected')}
-                                className="rounded-lg bg-[#f3727f]/10 px-2 py-1 text-[9px] font-bold text-[#f3727f]"
-                              >✕ Reject</button>
-                            )}
-                            {inv.status === 'confirmed' && (
-                              <button
-                                onClick={() => updateInvestorStatus(inv.id, 'pending-payment')}
-                                className="rounded-lg bg-[#ffa42b]/10 px-2 py-1 text-[9px] font-bold text-[#ffa42b]"
-                              >↩ Revert</button>
+                        </div>
+                        <div className="truncate text-xs text-[#a8a39a]">{inv.email}</div>
+                      </div>
+                      <div className="text-right">
+                        <div className="text-sm font-bold text-[#f5f0e8]">CA${inv.amount?.toLocaleString()}</div>
+                        <div className="text-[10px] text-[#f0a500]">{inv.tokens?.toLocaleString()} tokens</div>
+                      </div>
+                    </div>
+                    <div className="mt-3 flex items-center justify-between">
+                      <div className="flex items-center gap-2 text-[11px] text-[#6e6a63]">
+                        <span>{inv.roleLabel || inv.role}</span>
+                        <span>·</span>
+                        <span>{inv.createdAt ? new Date(inv.createdAt).toLocaleDateString(undefined, { month: 'short', day: 'numeric' }) : '—'}</span>
+                      </div>
+                      <div className="flex gap-1">
+                        {inv.status !== 'confirmed' && (
+                          <button
+                            onClick={() => updateInvestorStatus(inv.id, 'confirmed')}
+                            className="rounded-lg bg-[#7ad9a1]/10 px-3 py-1.5 text-[10px] font-bold text-[#7ad9a1]"
+                          >✓ Confirm</button>
+                        )}
+                        {inv.status !== 'rejected' && inv.status !== 'confirmed' && (
+                          <button
+                            onClick={() => updateInvestorStatus(inv.id, 'rejected')}
+                            className="rounded-lg bg-[#f3727f]/10 px-3 py-1.5 text-[10px] font-bold text-[#f3727f]"
+                          >✕ Reject</button>
+                        )}
+                        {inv.status === 'confirmed' && (
+                          <button
+                            onClick={() => updateInvestorStatus(inv.id, 'pending-payment')}
+                            className="rounded-lg bg-[#ffa42b]/10 px-3 py-1.5 text-[10px] font-bold text-[#ffa42b]"
+                          >↩ Revert</button>
                             )}
                           </div>
-                        </td>
-                      </tr>
-                    );
-                  })}
-                </tbody>
-              </table>
+                    </div>
+                    {inv.message && (
+                      <div className="mt-2 text-[11px] italic text-[#6e6a63]">"{inv.message}"</div>
+                    )}
+                  </div>
+                );
+              })}
             </div>
 
           </div>
