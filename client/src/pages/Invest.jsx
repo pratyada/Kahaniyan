@@ -1022,8 +1022,29 @@ export default function Invest() {
         </div>
       )}
 
+      {/* Join the team CTA */}
+      <div className="mx-auto max-w-5xl px-6 py-8">
+        <div className="rounded-2xl bg-gradient-to-r from-[#f0a500]/10 to-[#ffb733]/5 p-8 text-center ring-1 ring-[#f0a500]/20">
+          <div className="mb-3 text-3xl">🚀</div>
+          <h3 className="font-display text-xl font-bold text-[#f0a500]">Want to join as an active team member?</h3>
+          <p className="mx-auto mt-2 max-w-md text-sm text-[#a8a39a]">
+            Not just an investor — you want to build, market, test, or grow {APP_NAME} with us?
+            We're looking for passionate people who believe bedtime stories can change childhood.
+          </p>
+          <a
+            href="mailto:prateekyadav2010@gmail.com?subject=I want to join My Sleepy Tale as a team member&body=Hi Prateek,%0A%0AI'd like to contribute to My Sleepy Tale as an active team member.%0A%0AMy skills:%0AHow I can help:%0A"
+            className="mt-5 inline-block rounded-full bg-[#f0a500] px-8 py-3 text-sm font-bold text-[#0a0a0f] transition hover:shadow-[0_0_40px_rgba(240,165,0,0.4)]"
+          >
+            Connect with us
+          </a>
+          <p className="mt-3 text-xs text-[#6e6a63]">
+            Roles: Engineering · Design · Content · Marketing · Growth · Community
+          </p>
+        </div>
+      </div>
+
       {/* Footer */}
-      <footer className="mt-12 border-t border-white/5 py-8 text-center">
+      <footer className="mt-4 border-t border-white/5 py-8 text-center">
         <div className="text-sm text-[#6e6a63]">
           {APP_NAME} · Friends & Family Round · v{APP_VERSION}
         </div>
