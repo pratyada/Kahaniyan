@@ -42,13 +42,13 @@ const FOUNDERS = [
   },
   {
     name: 'Sahil',
-    role: 'Co-founder · Go-to-Market / Vision / Team',
+    role: 'Co-founder · Go-to-Market / Vision / UI·UX / Team',
     tokens: 4500000,
-    description: 'Idea originator. Go-to-market strategy, product vision, team building, and growth.',
+    description: 'Idea originator. Go-to-market strategy, product vision, UI/UX design, team building, and growth.',
     emoji: '🧠',
     linkedin: '',
-    bio: 'Conceptualized My Sleepy Tale from a personal need — bedtime stories that reflect cultural identity. Leading go-to-market, vision, and team building.',
-    skills: ['Go-to-Market Strategy', 'Product Vision', 'Team Building', 'Growth'],
+    bio: 'Conceptualized My Sleepy Tale from a personal need — bedtime stories that reflect cultural identity. Leading go-to-market, vision, UI/UX design, and team building.',
+    skills: ['Go-to-Market Strategy', 'Product Vision', 'UI/UX Design', 'Team Building'],
   },
 ];
 
