@@ -35,7 +35,7 @@ export default function WhisperBox({ value, onChange, overrideValue, onToggleOve
           <div className="mt-1 line-clamp-1 text-xs text-ink-muted">
             {value
               ? `"${value}"`
-              : 'Share a worry, a dream, a feeling — we\'ll weave a story around it.'}
+              : 'A worry, a win, a feeling — type it here'}
           </div>
         </div>
         <span
