@@ -61,7 +61,52 @@ export default function Settings() {
     }
   }, [searchParams, setSearchParams]);
 
-  if (!profile) return null;
+  // Not signed in — show sign-in prompt
+  if (!user && isConfigured) {
+    return (
+      <PageTransition className="page-scroll px-5 pt-10 safe-top">
+        <div className="flex flex-col items-center py-16 text-center">
+          <div className="mb-4 text-5xl">🌙</div>
+          <h1 className="font-display text-2xl font-bold text-gold">Welcome to My Sleepy Tale</h1>
+          <p className="mt-3 max-w-xs text-sm text-ink-muted">
+            Sign in to set up your child's profile, customize characters, and start creating personalized bedtime stories.
+          </p>
+          <button
+            onClick={() => navigate('/login')}
+            className="btn-primary mt-8 px-8 py-4 text-base"
+          >
+            Sign in to get started
+          </button>
+          <div className="mt-10 w-full space-y-3">
+            <Tile icon="🤝" title="Invest" sub="Back this project" onClick={() => navigate('/invest')} />
+            <Tile icon="✨" title="Guides" sub="Learn how it works" onClick={() => navigate('/guides')} />
+          </div>
+        </div>
+        <VersionFooter />
+      </PageTransition>
+    );
+  }
+
+  if (!profile) {
+    return (
+      <PageTransition className="page-scroll px-5 pt-10 safe-top">
+        <div className="flex flex-col items-center py-16 text-center">
+          <div className="mb-4 text-5xl">👶</div>
+          <h1 className="font-display text-xl font-bold text-gold">Set up your child's profile</h1>
+          <p className="mt-3 max-w-xs text-sm text-ink-muted">
+            Complete onboarding to start creating personalized bedtime stories.
+          </p>
+          <button
+            onClick={() => navigate('/onboarding')}
+            className="btn-primary mt-6 px-8 py-4"
+          >
+            Start onboarding
+          </button>
+        </div>
+        <VersionFooter />
+      </PageTransition>
+    );
+  }
 
   const tier = TIERS[profile.tier || 'free'];
   const used = storiesThisWeek();

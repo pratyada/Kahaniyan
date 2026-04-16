@@ -243,7 +243,9 @@ export default function Invest() {
   ];
 
   return (
-    <div className="min-h-screen bg-[#0a0a0f] text-[#f5f0e8]">
+    <div className="bg-[#0a0a0f] text-[#f5f0e8]" style={{ minHeight: '100vh', overflow: 'auto', WebkitOverflowScrolling: 'touch' }}>
+      {/* Force body scroll on mobile — override phone-shell lock */}
+      <style>{`html, body, #root { height: auto !important; overflow: auto !important; overscroll-behavior: auto !important; }`}</style>
       {/* ─── HERO ─── */}
       <header className="relative overflow-hidden border-b border-white/5">
         <div className="absolute inset-0 bg-gradient-to-b from-[#f0a500]/10 via-transparent to-transparent" />
