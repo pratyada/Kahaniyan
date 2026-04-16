@@ -189,7 +189,7 @@ export default async function handler(req, res) {
     }
 
     // 3. Generate story
-    const story = selectStory({ ...storyParams, duration });
+    const story = await selectStory({ ...storyParams, duration });
     return res.status(200).json(story);
   } catch (err) {
     console.error('story generation failed', err);

@@ -67,5 +67,7 @@ export function buildStoryRequest({
     recentPlotTypes,
     whisper: whisper || '',
     whisperOverridesValue: !!whisperOverridesValue,
+    beliefs: profile.beliefs || [],
+    country: profile.country || '',
   };
 }

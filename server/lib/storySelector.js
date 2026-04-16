@@ -1,5 +1,5 @@
 // ─────────────────────────────────────────────────────────────
-// Story selector — the in-house stand-in for Claude generation.
+// Story selector — tries Claude first, falls back to templates.
 //
 // Given a request (value, age, language, family members, recent
 // plot types) it picks a story from the bank that:
@@ -13,6 +13,7 @@
 import { STORY_BANK, STORIES_BY_VALUE } from '../data/storyBank.js';
 import { detectTheme, weaveWhisper } from './whisperWeaver.js';
 import { buildCastStory } from './castStoryBuilder.js';
+import { generateWithClaude } from './claudeStoryGenerator.js';
 
 const WORDS_PER_MINUTE = 150;
 
@@ -117,7 +118,7 @@ function fitToDuration(text, durationMinutes) {
   return out + GENTLE_ENDING;
 }
 
-export function selectStory({
+export async function selectStory({
   childName,
   age = 6,
   value = 'kindness',
@@ -132,7 +133,47 @@ export function selectStory({
   gender: req_gender = '',
   whisper = '',
   whisperOverridesValue = false,
+  beliefs = [],
+  country = '',
 }) {
+  // ─── TRY CLAUDE FIRST ───
+  try {
+    const claudeStory = await generateWithClaude({
+      childName,
+      age,
+      gender: req_gender,
+      value,
+      duration,
+      language,
+      familyMembers,
+      selectedCast,
+      whisper,
+      beliefs,
+      country,
+    });
+    if (claudeStory) {
+      return {
+        id: `story_${Date.now()}_${Math.random().toString(36).slice(2, 8)}`,
+        templateId: 'claude-generated',
+        title: claudeStory.title,
+        text: claudeStory.text,
+        wordCount: claudeStory.wordCount,
+        estimatedMinutes: duration,
+        value,
+        plotType: 'claude-' + value,
+        language,
+        voice,
+        cast: (selectedCast || []).filter((c) => c.relation !== 'self').map((c) => c.name),
+        whisper: whisper?.trim() || null,
+        generatedBy: 'claude',
+        createdAt: new Date().toISOString(),
+      };
+    }
+  } catch (e) {
+    console.warn('Claude generation failed, falling back to templates:', e.message);
+  }
+
+  // ─── FALLBACK TO TEMPLATES ───
   const ageBand = ageBandFor(age);
 
   // ─── CAST MODE ───
