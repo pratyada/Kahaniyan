@@ -29,7 +29,7 @@ const ROUND_CONFIG = {
 const FOUNDERS = [
   {
     name: 'Prateek',
-    role: 'Co-founder · Tech / Finance / Partners',
+    role: 'Co-founder · Tech / Finance / Legal / Integrations / Partner Engagements',
     equity: 45,
     description: 'Full-stack development, AI/ML, finance, partnerships, and all technical execution.',
     emoji: '⚙️',
