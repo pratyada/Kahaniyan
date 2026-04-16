@@ -152,9 +152,10 @@ export default function StonedAge() {
     <div style={{ minHeight: '100vh', background: '#0a0a0f', color: '#f5f0e8', overflowY: 'auto', WebkitOverflowScrolling: 'touch' }}>
       <style>{`html,body,#root{height:auto!important;overflow:auto!important;overscroll-behavior:auto!important}`}</style>
 
-      <div style={{ textAlign: 'center', padding: '36px 20px 20px' }}>
-        <a href="https://mysleepytale.com" style={{ display: 'inline-block', marginBottom: 16, padding: '6px 14px', borderRadius: 999, background: 'rgba(255,255,255,0.05)', color: '#a8a39a', fontSize: 11, textDecoration: 'none', border: '1px solid rgba(255,255,255,0.08)' }}>← {APP_NAME}</a>
-        <motion.div
+      <div style={{ padding: '36px 20px 20px' }}>
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 16 }}>
+          <a href="https://mysleepytale.com" style={{ padding: '8px 14px', borderRadius: 999, background: 'rgba(255,255,255,0.05)', color: '#a8a39a', fontSize: 11, textDecoration: 'none', border: '1px solid rgba(255,255,255,0.08)', fontWeight: 600 }}>🌙 {APP_NAME}</a>
+          <motion.div
           style={{ fontSize: 52, display: 'inline-block' }}
           animate={{
             rotate: [0, 10, -10, 5, -5, 0],
@@ -168,11 +169,14 @@ export default function StonedAge() {
             ],
           }}
           transition={{ duration: 6, repeat: Infinity, ease: 'easeInOut' }}
-        >
-          🪨
-        </motion.div>
-        <h1 style={{ fontFamily: 'Playfair Display,Georgia,serif', fontSize: 32, fontWeight: 700, marginTop: 2 }}><span style={{ color: '#f0a500' }}>Stoned</span> Age</h1>
-        <p style={{ color: '#a8a39a', fontSize: 13, marginTop: 4 }}>Pick your phase. Press play. Swipe cards.</p>
+          >
+            🪨
+          </motion.div>
+        </div>
+        <div style={{ textAlign: 'center' }}>
+          <h1 style={{ fontFamily: 'Playfair Display,Georgia,serif', fontSize: 32, fontWeight: 700 }}><span style={{ color: '#f0a500' }}>Stoned</span> Age</h1>
+          <p style={{ color: '#a8a39a', fontSize: 13, marginTop: 4 }}>Pick your phase. Press play. Swipe cards.</p>
+        </div>
       </div>
 
       {/* Phase picker */}
