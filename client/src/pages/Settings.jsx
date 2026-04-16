@@ -324,6 +324,30 @@ export default function Settings() {
         </div>
       </SectionCard>
 
+      {/* Releases */}
+      <SectionCard title="What's new">
+        <div className="space-y-2">
+          {[
+            { v: 'v0.0.9', date: 'Apr 16', badge: 'LATEST', title: '🧠 Claude AI stories + your feedback shipped', detail: 'After community feedback: stories are now fun, silly, and kid-appropriate. Powered by Claude AI — every story is fresh. 5-min generation fully validated.' },
+            { v: 'v0.0.8', date: 'Apr 15', title: '🔊 OpenAI voice + cloud sync', detail: 'AI narrator voices. Profile syncs to cloud. Gender pronouns. Character tags.' },
+            { v: 'v0.0.7', date: 'Apr 14', title: '👨‍👩‍👧 Cast stories + multi-kid', detail: 'Choose characters for tonight. Multiple kids. Pet sounds (bhau bhau!).' },
+            { v: 'v0.0.5', date: 'Apr 13', title: '🔐 Auth + admin dashboard', detail: 'Google sign-in. Admin panel. Usage analytics. Team roles.' },
+            { v: 'v0.0.3', date: 'Apr 12', title: '🪷 Wisdom stories + radio', detail: '8 traditions, 15 stories. Bedtime radio. Sleep sounds.' },
+            { v: 'v0.0.1', date: 'Apr 11', title: '🌙 First build', detail: 'Story engine, Spotify-style UI, onboarding, player.' },
+          ].map((r) => (
+            <div key={r.v} className="rounded-xl bg-bg-surface p-3 ring-1 ring-white/5">
+              <div className="flex items-center gap-2">
+                <span className="text-[10px] font-bold text-gold">{r.v}</span>
+                <span className="text-[9px] text-ink-dim">{r.date}</span>
+                {r.badge && <span className="rounded-full bg-gold/20 px-2 py-0.5 text-[8px] font-bold uppercase tracking-wider text-gold">{r.badge}</span>}
+              </div>
+              <div className="mt-1 text-[12px] font-bold text-ink">{r.title}</div>
+              <div className="mt-0.5 text-[10px] text-ink-muted">{r.detail}</div>
+            </div>
+          ))}
+        </div>
+      </SectionCard>
+
       {/* ─── ABOUT ─── */}
       <section className="mb-6 rounded-2xl bg-bg-surface p-4 ring-1 ring-white/5">
         <div className="flex items-start gap-3">
