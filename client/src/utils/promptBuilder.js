@@ -14,20 +14,21 @@ export function buildStoryRequest({
   whisperOverridesValue,
   selectedCharacters,
 }) {
-  // Always start from the legacy onboarding fields so unfilled slots
-  // keep the real family members. Then override with whatever the
-  // selected cast provides — selected characters take priority.
-  const familyMembers = {
-    sibling: profile.sibling || '',
-    grandfather: profile.grandfather || '',
-    grandmother: profile.grandmother || '',
-    pet: profile.pet || '',
-  };
-  let preferredSlots = []; // bias the story picker toward these slots
+  // Only include family members and cast when the user explicitly
+  // chose "Cast" mode. Whisper mode = just the child, no characters.
+  let familyMembers = {};
+  let preferredSlots = [];
   let castNames = [];
-  let selectedCast = []; // full character objects for the cast builder
+  let selectedCast = [];
 
   if (selectedCharacters && selectedCharacters.length > 0) {
+    // Cast mode — use selected characters
+    familyMembers = {
+      sibling: profile.sibling || '',
+      grandfather: profile.grandfather || '',
+      grandmother: profile.grandmother || '',
+      pet: profile.pet || '',
+    };
     const overrides = mapCharactersToFamilyMembers(selectedCharacters);
     for (const slot of Object.keys(overrides)) {
       if (overrides[slot]) {
