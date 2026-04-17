@@ -36,7 +36,6 @@ import { valueMeta } from '../utils/constants.js';
 import StoryLoading from '../components/StoryLoading.jsx';
 
 const SPEEDS = [0.8, 1, 1.2];
-const SLEEP_OPTIONS = [0, 5, 10, 15, 30, 45];
 
 export default function Player() {
   return (
@@ -73,7 +72,6 @@ function PlayerInner() {
   }, [searchParams, current, load]);
 
   const [speed, setSpeed] = useState(0.8);
-  const [sleepMin, setSleepMin] = useState(0);
   const [showText, setShowText] = useState(true);
   const [done, setDone] = useState(false);
   const [noiseType, setNoiseType] = useState(null);
@@ -93,8 +91,6 @@ function PlayerInner() {
     progress: webSpeech.progress,
     supported: webSpeech.supported,
   };
-  const sleepTimerRef = useRef(null);
-  const fadeIntervalRef = useRef(null);
   const startedRef = useRef(false);
 
   // Reset startedRef when story changes so auto-play fires for new stories
@@ -237,41 +233,6 @@ function PlayerInner() {
       if (e.name !== 'AbortError') console.warn('Share failed:', e);
     }
   };
-
-  // Sleep timer + fade-out in final 2 minutes
-  useEffect(() => {
-    if (sleepTimerRef.current) clearTimeout(sleepTimerRef.current);
-    if (fadeIntervalRef.current) clearInterval(fadeIntervalRef.current);
-    if (!sleepMin) return;
-
-    const totalMs = sleepMin * 60 * 1000;
-    const fadeStart = Math.max(totalMs - 2 * 60 * 1000, totalMs * 0.6);
-
-    sleepTimerRef.current = setTimeout(() => {
-      if (usingTTS) elevenLabs.stop();
-      else webSpeech.stop();
-      noise.stop();
-      setIsPlaying(false);
-      navigate('/');
-    }, totalMs);
-
-    // Volume fade in the last stretch
-    fadeIntervalRef.current = setTimeout(() => {
-      let v = 1;
-      fadeIntervalRef.current = setInterval(() => {
-        v = Math.max(0, v - 0.05);
-        if (usingTTS) elevenLabs.setVolume(v);
-        else webSpeech.setVolume(v);
-        if (v <= 0) clearInterval(fadeIntervalRef.current);
-      }, (totalMs - fadeStart) / 20);
-    }, fadeStart);
-
-    return () => {
-      clearTimeout(sleepTimerRef.current);
-      clearInterval(fadeIntervalRef.current);
-    };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [sleepMin, setIsPlaying]);
 
   // When story ends, stop everything and go back to home
   useEffect(() => {
@@ -505,8 +466,8 @@ function PlayerInner() {
                 {elevenLabs.loading ? 'Preparing voice…' : isPlaying ? 'Tap to pause' : 'Tap to play'}
               </div>
 
-              {/* Secondary controls — speed, sleep timer, restart */}
-              <div className="mt-2 grid w-full grid-cols-3 gap-2">
+              {/* Secondary controls — speed + restart */}
+              <div className="mt-2 grid w-full grid-cols-2 gap-2">
                 <button
                   onClick={() =>
                     handleSpeedChange(SPEEDS[(SPEEDS.indexOf(speed) + 1) % SPEEDS.length])
@@ -519,8 +480,6 @@ function PlayerInner() {
                     Speed
                   </span>
                 </button>
-
-                <SleepButton sleepMin={sleepMin} setSleepMin={setSleepMin} />
 
                 <button
                   onClick={async () => {
@@ -553,21 +512,6 @@ function PlayerInner() {
               </div>
             </div>
 
-            {elevenLabs.loading && (
-              <p className="mt-3 text-center text-[10px] text-gold">
-                ● Preparing voice…
-              </p>
-            )}
-            {!elevenLabs.loading && usingTTS && (
-              <p className="mt-3 text-center text-[10px] text-gold/60">
-                Storyteller voice
-              </p>
-            )}
-            {!elevenLabs.loading && !usingTTS && elevenLabs.error && (
-              <p className="mt-3 text-center text-[10px] text-ink-dim">
-                Browser voice
-              </p>
-            )}
 
             {/* Sleep sounds — below controls, always visible */}
             <div className="mt-4 -mx-6 flex gap-2 overflow-x-auto px-6 pb-2">
@@ -613,45 +557,3 @@ function HighlightedText({ text, progress }) {
   );
 }
 
-function SleepButton({ sleepMin, setSleepMin }) {
-  const [open, setOpen] = useState(false);
-  return (
-    <div className="relative">
-      <button
-        onClick={() => setOpen((o) => !o)}
-        aria-label="Sleep timer"
-        className="flex w-full flex-col items-center gap-1 rounded-2xl bg-white/5 py-3 ring-1 ring-white/10 transition active:scale-95"
-      >
-        <span className="text-lg text-gold">{sleepMin ? `${sleepMin}m` : '⏱'}</span>
-        <span className="text-[9px] font-bold uppercase tracking-wider text-ink-muted">
-          Sleep
-        </span>
-      </button>
-      <AnimatePresence>
-        {open && (
-          <motion.div
-            initial={{ opacity: 0, y: 8 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: 8 }}
-            className="absolute bottom-[calc(100%+8px)] left-1/2 z-20 grid w-44 -translate-x-1/2 grid-cols-3 gap-1 rounded-2xl bg-bg-elevated p-2 shadow-lift"
-          >
-            {SLEEP_OPTIONS.map((m) => (
-              <button
-                key={m}
-                onClick={() => {
-                  setSleepMin(m);
-                  setOpen(false);
-                }}
-                className={`rounded-xl px-2 py-2 text-xs font-bold transition ${
-                  sleepMin === m ? 'bg-gold text-bg-base' : 'text-ink hover:bg-bg-card'
-                }`}
-              >
-                {m === 0 ? 'Off' : `${m}m`}
-              </button>
-            ))}
-          </motion.div>
-        )}
-      </AnimatePresence>
-    </div>
-  );
-}
