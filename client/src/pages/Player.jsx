@@ -502,7 +502,7 @@ function PlayerInner() {
                 )}
               </button>
               <div className="text-[10px] font-bold uppercase tracking-[0.18em] text-ink-muted">
-                {elevenLabs.loading ? 'Preparing audio…' : isPlaying ? 'Tap to pause' : 'Tap to play'}
+                {elevenLabs.loading ? 'Preparing voice…' : isPlaying ? 'Tap to pause' : 'Tap to play'}
               </div>
 
               {/* Secondary controls — speed, sleep timer, restart */}
@@ -555,12 +555,12 @@ function PlayerInner() {
 
             {elevenLabs.loading && (
               <p className="mt-3 text-center text-[10px] text-gold">
-                ● Preparing AI voice…
+                ● Preparing voice…
               </p>
             )}
             {!elevenLabs.loading && usingTTS && (
               <p className="mt-3 text-center text-[10px] text-gold/60">
-                AI narrator
+                Storyteller voice
               </p>
             )}
             {!elevenLabs.loading && !usingTTS && elevenLabs.error && (

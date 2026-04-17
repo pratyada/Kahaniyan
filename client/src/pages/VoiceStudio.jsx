@@ -395,7 +395,7 @@ export default function VoiceStudio() {
                       <div className="rounded-2xl bg-green-900/30 p-3 text-center ring-1 ring-green-400/30">
                         <div className="text-lg">✅</div>
                         <div className="mt-1 text-xs font-bold text-green-400">
-                          AI voice clone created! Stories will now play in {selectedChar.name}'s real voice.
+                          Voice clone created! Stories will now play in {selectedChar.name}'s real voice.
                         </div>
                       </div>
                     )}
@@ -419,12 +419,12 @@ export default function VoiceStudio() {
                       {cloning ? (
                         <span className="inline-flex items-center gap-2">
                           <span className="inline-block h-3 w-3 animate-pulse rounded-full bg-bg-base/70" />
-                          Creating AI voice clone…
+                          Creating voice clone…
                         </span>
                       ) : cloneResult?.success ? (
                         '✅ Voice cloned'
                       ) : (
-                        '✨ Create AI voice clone'
+                        '✨ Create voice clone'
                       )}
                     </button>
                     <p className="text-center text-[10px] text-ink-dim">

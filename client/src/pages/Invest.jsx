@@ -32,11 +32,11 @@ const FOUNDERS = [
     name: 'Prateek',
     role: 'Co-founder · Tech / Finance / Legal / Integrations / Partner Engagements',
     equity: 45,
-    description: 'Full-stack development, AI/ML, finance, partnerships, and all technical execution.',
+    description: 'Full-stack development, technology, finance, partnerships, and all technical execution.',
     emoji: '⚙️',
     linkedin: '',
-    bio: 'Built the entire My Sleepy Tale platform from scratch — React, Firebase, OpenAI TTS, Stripe, admin dashboard. 200+ hours of focused engineering. Leads technology, finance, and partner relationships.',
-    skills: ['Full-Stack Engineering', 'AI/ML Integration', 'Finance', 'Partnerships'],
+    bio: 'Built the entire My Sleepy Tale platform from scratch — React, Firebase, voice narration, Stripe, admin dashboard. 200+ hours of focused engineering. Leads technology, finance, and partner relationships.',
+    skills: ['Full-Stack Engineering', 'Product Development', 'Finance', 'Partnerships'],
   },
   {
     name: 'Sahil',
@@ -122,7 +122,7 @@ const GIT_STATS = {
 export default function Invest() {
   usePageMeta({
     title: 'Invest in My Sleepy Tale — SAFE at $1M Cap · Friends & Family Round',
-    description: 'Back My Sleepy Tale, the AI-powered personalized bedtime story app. SAFE note at $1M valuation cap. Transparent cap table, real-time backer board, Stripe payments. Friends & Family round now open — min CA$50.',
+    description: 'Back My Sleepy Tale, the personalized bedtime story app for families. SAFE note at $1M valuation cap. Transparent cap table, real-time backer board, Stripe payments. Friends & Family round now open — min CA$50.',
     image: 'https://mysleepytale.com/og-cover.svg',
   });
 
@@ -262,7 +262,7 @@ export default function Invest() {
             </h1>
             <p className="mx-auto mt-4 max-w-2xl text-lg text-[#a8a39a]">
               Bedtime stories that grow with your child. Personalized, culturally rooted,
-              AI-narrated. We're building the future of how families connect at bedtime —
+              beautifully narrated. We're building the future of how families connect at bedtime —
               and you can be part of it.
             </p>
 
@@ -348,9 +348,9 @@ export default function Invest() {
               <div className="rounded-2xl bg-[#1a1a28] p-6">
                 <h3 className="mb-3 font-display text-xl font-bold text-[#f0a500]">Our solution</h3>
                 <p className="text-sm leading-relaxed text-[#a8a39a]">
-                  {APP_NAME} generates personalized bedtime stories using AI — with your child's name,
+                  {APP_NAME} generates personalized bedtime stories — with your child's name,
                   their family members, their pets, their cultural values, and even their current mood.
-                  Narrated by warm AI voices that match your family's accent. One button. One story.
+                  Narrated by warm voices that match your family's accent. One button. One story.
                   Then sleep.
                 </p>
               </div>
@@ -414,7 +414,7 @@ export default function Invest() {
                       { feature: 'Child\'s real name in story', us: '✅', calm: '❌', moshi: '❌', yt: '❌' },
                       { feature: 'Family members as characters', us: '✅', calm: '❌', moshi: '❌', yt: '❌' },
                       { feature: 'Cultural / religious stories', us: '✅ 7 traditions', calm: '❌', moshi: '❌', yt: 'Fragmented' },
-                      { feature: 'AI-generated fresh stories', us: '✅ Claude AI', calm: '❌ Pre-recorded', moshi: '❌ Pre-recorded', yt: '❌' },
+                      { feature: 'Fresh stories every night', us: '✅ Always new', calm: '❌ Pre-recorded', moshi: '❌ Pre-recorded', yt: '❌' },
                       { feature: 'Parent whisper (today\'s mood)', us: '✅', calm: '❌', moshi: '❌', yt: '❌' },
                       { feature: 'Voice cloning (family)', us: '🔜 Planned', calm: '❌', moshi: '❌', yt: '❌' },
                       { feature: 'Multi-language narration', us: '✅ 5 langs', calm: '❌ English', moshi: '❌ English', yt: 'Varies' },
@@ -546,12 +546,12 @@ export default function Invest() {
                   </div>
                   <div className="mt-4 space-y-2">
                     {[
-                      { item: 'OpenAI TTS API (voice narration)', amount: 'CA$3,000', icon: '🔊' },
+                      { item: 'Voice narration engine', amount: 'CA$3,000', icon: '🔊' },
                       { item: 'Voice cloning (family voices)', amount: 'CA$2,500', icon: '🎙️' },
                       { item: 'Speech customization + accents', amount: 'CA$1,500', icon: '🗣️' },
                       { item: 'Infrastructure (Firebase, Vercel, CDN)', amount: 'CA$1,500', icon: '☁️' },
                       { item: 'App Store fees (Apple + Google)', amount: 'CA$500', icon: '📱' },
-                      { item: 'AI story generation (Claude API)', amount: 'CA$1,000', icon: '🧠' },
+                      { item: 'Story generation engine', amount: 'CA$1,000', icon: '🧠' },
                     ].map((e, i) => (
                       <div key={i} className="flex items-center justify-between rounded-lg bg-[#0a0a0f] px-3 py-2">
                         <div className="flex items-center gap-2 text-xs text-[#a8a39a]">

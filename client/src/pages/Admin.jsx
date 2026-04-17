@@ -357,7 +357,7 @@ export default function Admin() {
                       { date: 'Apr 11', event: 'First commit · POC scaffolded', icon: '🔨' },
                       { date: 'Apr 12', event: 'Vercel deployed · kahaniyan-sage.vercel.app', icon: '▲' },
                       { date: 'Apr 13', event: 'Firebase Auth + Firestore live', icon: '🔥' },
-                      { date: 'Apr 14', event: 'OpenAI TTS · AI narration live', icon: '🔊' },
+                      { date: 'Apr 14', event: 'Voice narration live', icon: '🔊' },
                       { date: 'Apr 15', event: 'mysleepytale.com domain live · GA tracking on', icon: '🌐' },
                       { date: 'Apr 15', event: 'Stripe live · F&F round open', icon: '💳' },
                       { date: 'Apr 15', event: 'Invest page · crowdfunding dashboard', icon: '🤝' },

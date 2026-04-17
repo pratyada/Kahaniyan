@@ -260,7 +260,7 @@ function LibraryCard({ story, onPlay, onShare, onDelete, onLike, isSharing }) {
           Remove
         </button>
         {story.generatedBy === 'claude' && (
-          <span className="ml-auto text-[9px] font-bold uppercase tracking-wider text-gold/40">AI</span>
+          <span className="ml-auto text-[9px] font-bold uppercase tracking-wider text-gold/40">Fresh</span>
         )}
       </div>
     </div>

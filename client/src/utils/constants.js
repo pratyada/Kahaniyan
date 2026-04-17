@@ -22,7 +22,7 @@ export const NARRATORS = [
   { key: 'Daddy', label: 'Daddy', emoji: '👨' },
   { key: 'Dada ji', label: 'Dada ji', emoji: '👴' },
   { key: 'Nani ma', label: 'Nani ma', emoji: '👵' },
-  { key: 'AI Narrator', label: 'AI Narrator', emoji: '✨' },
+  { key: 'AI Narrator', label: 'Storyteller', emoji: '✨' },
 ];
 
 export const DURATIONS = [

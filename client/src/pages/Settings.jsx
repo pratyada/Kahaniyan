@@ -342,8 +342,8 @@ export default function Settings() {
             <div className="space-y-2">
               {[
                 { v: 'v0.0.10', date: 'Apr 16', badge: 'LATEST', title: '🧪 Story Lab + personalized experience', detail: 'Story Lab content engine — culturally-rooted stories powered by your belief, country, and family. Quick whispers personalized to your culture. Longer, richer stories. Anti-stereotype characters. Better voice. Yellow text highlight. Stories never lost.' },
-                { v: 'v0.0.9', date: 'Apr 16', title: '🧠 Claude AI stories + your feedback shipped', detail: 'After community feedback: stories are now fun, silly, and kid-appropriate. Powered by Claude AI — every story is fresh. 5-min generation fully validated.' },
-                { v: 'v0.0.8', date: 'Apr 15', title: '🔊 OpenAI voice + cloud sync', detail: 'AI narrator voices. Profile syncs to cloud. Gender pronouns. Character tags.' },
+                { v: 'v0.0.9', date: 'Apr 16', title: '🧠 Personalized stories + your feedback shipped', detail: 'After community feedback: stories are now fun, silly, and kid-appropriate. Every story is fresh and unique to your family.' },
+                { v: 'v0.0.8', date: 'Apr 15', title: '🔊 Warm voices + cloud sync', detail: 'Storyteller voices. Profile syncs to cloud. Gender pronouns. Character tags.' },
                 { v: 'v0.0.7', date: 'Apr 14', title: '👨‍👩‍👧 Cast stories + multi-kid', detail: 'Choose characters for tonight. Multiple kids. Pet sounds (bhau bhau!).' },
                 { v: 'v0.0.5', date: 'Apr 13', title: '🔐 Auth + admin dashboard', detail: 'Google sign-in. Admin panel. Usage analytics. Team roles.' },
                 { v: 'v0.0.3', date: 'Apr 12', title: '🪷 Wisdom stories + radio', detail: '8 traditions, 15 stories. Bedtime radio. Sleep sounds.' },
@@ -393,9 +393,9 @@ export default function Settings() {
                   <div className="rounded-xl bg-bg-base p-4 ring-1 ring-white/5">
                     <div className="text-[10px] font-bold uppercase tracking-wider text-gold mb-3">What they get</div>
                     <div className="space-y-2 text-sm text-ink-muted">
-                      <div className="flex items-center gap-2"><span className="text-gold">✓</span> 1 month unlimited AI stories</div>
+                      <div className="flex items-center gap-2"><span className="text-gold">✓</span> 1 month unlimited personalized stories</div>
                       <div className="flex items-center gap-2"><span className="text-gold">✓</span> Stories up to 15 min</div>
-                      <div className="flex items-center gap-2"><span className="text-gold">✓</span> AI narrator voice</div>
+                      <div className="flex items-center gap-2"><span className="text-gold">✓</span> Warm storyteller voice</div>
                       <div className="flex items-center gap-2"><span className="text-gold">✓</span> All cultural traditions</div>
                       <div className="flex items-center gap-2"><span className="text-gold">✓</span> Can continue at CA$9.99/mo after</div>
                     </div>
