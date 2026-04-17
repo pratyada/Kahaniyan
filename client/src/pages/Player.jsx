@@ -28,6 +28,7 @@ class PlayerErrorBoundary extends Component {
   }
 }
 import { usePlayer } from '../hooks/usePlayer.jsx';
+import { useAuth } from '../hooks/useAuth.jsx';
 import { useFamilyProfile } from '../hooks/useFamilyProfile.js';
 import { useSpeech } from '../hooks/useSpeech.js';
 import { useElevenLabs } from '../hooks/useElevenLabs.js';
@@ -54,7 +55,9 @@ function PlayerInner() {
   const elevenLabs = useElevenLabs();
   const noise = useWhiteNoise();
   const [loadingShared, setLoadingShared] = useState(false);
+  const [sharedPreview, setSharedPreview] = useState(null); // story preview for non-logged-in users
   const [liked, setLiked] = useState(false);
+  const { user } = useAuth();
 
   // Load shared story from URL if ?storyId= is present
   const sharedIdRef = useRef(null);
@@ -65,13 +68,25 @@ function PlayerInner() {
     setLoadingShared(true);
     loadSharedStory(storyId).then((story) => {
       if (story) {
-        load(story);
+        if (user) {
+          load(story);
+        } else {
+          setSharedPreview(story);
+        }
       }
       setLoadingShared(false);
     });
-  }, [searchParams, current, load]);
+  }, [searchParams, current, load, user]);
 
-  const [speed, setSpeed] = useState(0.8);
+  // When user signs in after seeing preview, load the story
+  useEffect(() => {
+    if (user && sharedPreview && !current) {
+      load(sharedPreview);
+      setSharedPreview(null);
+    }
+  }, [user, sharedPreview, current, load]);
+
+  const [speed, setSpeed] = useState(1);
   const [showText, setShowText] = useState(true);
   const [done, setDone] = useState(false);
   const [noiseType, setNoiseType] = useState(null);
@@ -252,8 +267,64 @@ function PlayerInner() {
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [progress, setIsPlaying, usingTTS, elevenLabs.playing, elevenLabs.loading, ttsReady]);
 
+  // Shared story preview — user not logged in
+  if (sharedPreview && !user) {
+    const previewMeta = valueMeta(sharedPreview.value);
+    return (
+      <div className="absolute inset-0 z-40 flex flex-col bg-bg-base overflow-hidden">
+        <div className="aurora" />
+        <div className="starfield" />
+        <div className="relative z-10 flex flex-1 flex-col items-center justify-center px-6 text-center">
+          {/* Brand */}
+          <motion.div initial={{ scale: 0.8, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} transition={{ duration: 0.6 }}>
+            <div className="mb-6 text-5xl">🌙</div>
+            <h1 className="font-display text-3xl font-bold text-gold">My Sleepy Tale</h1>
+            <p className="mt-2 text-sm text-ink-muted">Personalized bedtime stories for your child</p>
+          </motion.div>
+
+          {/* Story preview card */}
+          <motion.div initial={{ y: 30, opacity: 0 }} animate={{ y: 0, opacity: 1 }} transition={{ delay: 0.3 }}
+            className="mt-8 w-full max-w-sm rounded-2xl bg-bg-elevated p-5 ring-1 ring-white/10 shadow-lift">
+            <div className="flex items-center gap-3 mb-3">
+              <div className="grid h-14 w-14 place-items-center rounded-xl text-2xl"
+                style={{ background: `linear-gradient(135deg, ${previewMeta.color}55, ${previewMeta.color}11)` }}>
+                <span>{previewMeta.emoji}</span>
+              </div>
+              <div className="text-left">
+                <div className="font-display text-lg font-bold text-ink">{sharedPreview.title}</div>
+                <div className="text-xs text-ink-muted">{previewMeta.label} · {sharedPreview.estimatedMinutes} min · {sharedPreview.language}</div>
+              </div>
+            </div>
+            <div className="rounded-xl bg-bg-base p-3 text-left font-story text-sm leading-relaxed text-ink-muted line-clamp-4">
+              {sharedPreview.text?.slice(0, 200)}...
+            </div>
+          </motion.div>
+
+          {/* CTA */}
+          <motion.div initial={{ y: 20, opacity: 0 }} animate={{ y: 0, opacity: 1 }} transition={{ delay: 0.6 }}
+            className="mt-8 w-full max-w-sm">
+            <button onClick={() => navigate('/login')} className="btn-primary w-full py-4 text-base">
+              Sign in to listen
+            </button>
+            <p className="mt-3 text-xs text-ink-dim">
+              Free to sign up. Someone shared this story with you!
+            </p>
+          </motion.div>
+
+          {/* Features */}
+          <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 1 }}
+            className="mt-8 flex gap-4 text-center text-[10px] text-ink-dim">
+            <div><div className="text-lg mb-1">🧒</div>Personalized</div>
+            <div><div className="text-lg mb-1">🌍</div>Cultural</div>
+            <div><div className="text-lg mb-1">🔊</div>Narrated</div>
+            <div><div className="text-lg mb-1">💤</div>Sleep-ready</div>
+          </motion.div>
+        </div>
+      </div>
+    );
+  }
+
   if (!current) {
-    // Loading a shared story from URL
     if (loadingShared) {
       return (
         <div className="flex h-screen flex-col items-center justify-center bg-bg-base px-6 text-center">
