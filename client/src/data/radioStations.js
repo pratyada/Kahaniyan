@@ -71,4 +71,16 @@ export const RADIO_STATIONS = [
     icon: '💪',
     bestFor: 'morning energy',
   },
+  {
+    id: 'meditation-432',
+    name: '432 Hz Meditation',
+    tagline: 'Meditation · 24/7',
+    description:
+      'Pure 432 Hz tuned meditation music — the frequency of calm. Deep healing tones, Tibetan bowls, and ambient pads running around the clock.',
+    stream: 'https://ice1.somafm.com/darkzone-128-mp3',
+    fallback: 'https://ice2.somafm.com/darkzone-128-mp3',
+    accent: '#9ad7c4',
+    icon: '🧘',
+    bestFor: 'meditation & healing',
+  },
 ];
