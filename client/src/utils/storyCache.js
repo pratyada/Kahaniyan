@@ -63,6 +63,19 @@ export function pruneArchive(maxDays) {
   setLibraryLocal(next);
 }
 
+// ─── One-time audio cache clear (TTS upgrade) ───
+const AUDIO_CLEAR_KEY = 'mst:audioClearedV2';
+if (!localStorage.getItem(AUDIO_CLEAR_KEY)) {
+  try {
+    const lib = getLibrary();
+    if (lib.length > 0) {
+      const cleaned = lib.map((s) => { const { audioUrl, ...rest } = s; return rest; });
+      setLibraryLocal(cleaned);
+    }
+    localStorage.setItem(AUDIO_CLEAR_KEY, '1');
+  } catch {}
+}
+
 // ─── Firestore sync (cross-device) ───
 
 function syncLibraryToFirestore(stories) {
