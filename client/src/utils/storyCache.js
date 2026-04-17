@@ -1,5 +1,8 @@
 // Non-repetition engine: tracks the last 10 plot types per child
 // so the selector can avoid serving the same shape twice in a row.
+import { db, auth } from '../lib/firebase.js';
+import { doc, getDoc, setDoc } from 'firebase/firestore';
+
 const KEY = (childName) => `mst:plotHistory:${childName || 'default'}`;
 const MAX = 10;
 
@@ -20,6 +23,9 @@ export function pushPlotType(childName, plotType) {
 }
 
 const LIB_KEY = 'mst:library';
+const MAX_STORIES = 200;
+
+// ─── Local storage (fast, offline) ───
 
 export function getLibrary() {
   try {
@@ -29,15 +35,23 @@ export function getLibrary() {
   }
 }
 
+function setLibraryLocal(stories) {
+  localStorage.setItem(LIB_KEY, JSON.stringify(stories.slice(0, MAX_STORIES)));
+}
+
 export function saveToLibrary(story) {
   const list = getLibrary();
-  const next = [story, ...list].slice(0, 200);
-  localStorage.setItem(LIB_KEY, JSON.stringify(next));
+  // Dedupe by id
+  const next = [story, ...list.filter((s) => s.id !== story.id)].slice(0, MAX_STORIES);
+  setLibraryLocal(next);
+  // Fire-and-forget sync to Firestore
+  syncLibraryToFirestore(next);
 }
 
 export function removeFromLibrary(storyId) {
   const next = getLibrary().filter((s) => s.id !== storyId);
-  localStorage.setItem(LIB_KEY, JSON.stringify(next));
+  setLibraryLocal(next);
+  syncLibraryToFirestore(next);
 }
 
 export function pruneArchive(maxDays) {
@@ -46,5 +60,65 @@ export function pruneArchive(maxDays) {
   const next = getLibrary().filter(
     (s) => new Date(s.createdAt).getTime() >= cutoff
   );
-  localStorage.setItem(LIB_KEY, JSON.stringify(next));
+  setLibraryLocal(next);
+}
+
+// ─── Firestore sync (cross-device) ───
+
+function syncLibraryToFirestore(stories) {
+  const uid = auth?.currentUser?.uid;
+  if (!db || !uid) return;
+  // Save lightweight version — strip full text to save space,
+  // keep enough to display cards and replay
+  const lightweight = stories.slice(0, 100).map((s) => ({
+    id: s.id,
+    title: s.title,
+    text: s.text,
+    value: s.value,
+    estimatedMinutes: s.estimatedMinutes,
+    language: s.language || 'English',
+    voice: s.voice || '',
+    cast: s.cast || [],
+    wordCount: s.wordCount || 0,
+    generatedBy: s.generatedBy || '',
+    createdAt: s.createdAt || '',
+    whisper: s.whisper || null,
+    plotType: s.plotType || '',
+  }));
+  setDoc(doc(db, 'users', uid), { library: lightweight }, { merge: true }).catch(() => {});
+}
+
+// Load from Firestore and merge with local — called once on app load
+export async function loadAndMergeLibrary() {
+  const uid = auth?.currentUser?.uid;
+  if (!db || !uid) return getLibrary();
+
+  try {
+    const snap = await getDoc(doc(db, 'users', uid));
+    const cloudLib = snap.exists() ? (snap.data().library || []) : [];
+    const localLib = getLibrary();
+
+    if (cloudLib.length === 0) {
+      // Nothing in cloud — push local up
+      if (localLib.length > 0) syncLibraryToFirestore(localLib);
+      return localLib;
+    }
+
+    // Merge: dedupe by id, sort by createdAt desc
+    const merged = new Map();
+    for (const s of [...localLib, ...cloudLib]) {
+      if (s.id && !merged.has(s.id)) merged.set(s.id, s);
+    }
+    const result = [...merged.values()]
+      .sort((a, b) => new Date(b.createdAt || 0) - new Date(a.createdAt || 0))
+      .slice(0, MAX_STORIES);
+
+    setLibraryLocal(result);
+    // Sync merged result back if cloud was behind
+    if (result.length > cloudLib.length) syncLibraryToFirestore(result);
+
+    return result;
+  } catch {
+    return getLibrary();
+  }
 }

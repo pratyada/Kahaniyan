@@ -4,7 +4,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import PageTransition from '../components/PageTransition.jsx';
 import VersionFooter from '../components/VersionFooter.jsx';
 import ValuePill from '../components/ValuePill.jsx';
-import { getLibrary, pruneArchive, removeFromLibrary } from '../utils/storyCache.js';
+import { getLibrary, pruneArchive, removeFromLibrary, loadAndMergeLibrary } from '../utils/storyCache.js';
 import { shareStoryToFirestore, toggleLike, isLikedByMe, getTopStories } from '../utils/shareStory.js';
 import { archiveDaysFor } from '../utils/tierGate.js';
 import { useFamilyProfile } from '../hooks/useFamilyProfile.js';
@@ -29,7 +29,9 @@ export default function Library() {
 
   useEffect(() => {
     pruneArchive(archiveDaysFor(profile?.tier || 'free'));
+    // Load local first (instant), then merge with Firestore (cross-device)
     setLibrary(getLibrary());
+    loadAndMergeLibrary().then((merged) => setLibrary(merged));
   }, [profile?.tier]);
 
   // Load top stories when tab switches or filters change
