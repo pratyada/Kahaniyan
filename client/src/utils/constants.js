@@ -27,7 +27,7 @@ export const NARRATORS = [
 
 export const DURATIONS = [
   { minutes: 2, label: '2 min', sub: 'quick' },
-  { minutes: 5, label: '5 min', sub: 'short' },
+  { minutes: 5, label: '5 min', sub: 'short', locked: true },
   { minutes: 10, label: '10 min', sub: 'classic', locked: true },
   { minutes: 15, label: '15 min', sub: 'bedtime', locked: true },
 ];
