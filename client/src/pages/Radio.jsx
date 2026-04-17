@@ -82,6 +82,15 @@ export default function Radio() {
 
   const showToast = (msg) => { setToast(msg); setTimeout(() => setToast(null), 2000); };
 
+  const handlePlay = (station) => {
+    if (!user) {
+      if (window.__triggerLogin) window.__triggerLogin();
+      else showToast('Sign in to listen');
+      return;
+    }
+    togglePlayPause(station);
+  };
+
   return (
     <PageTransition className="page-scroll px-5 pt-10 safe-top">
       <header className="mb-2">
@@ -176,7 +185,7 @@ export default function Radio() {
                   </button>
                 </div>
 
-                <button onClick={() => togglePlayPause(s)}
+                <button onClick={() => handlePlay(s)}
                   aria-label={isPlaying ? `Pause ${s.name}` : `Play ${s.name}`}
                   className={`grid h-12 w-12 place-items-center rounded-full transition active:scale-95 ${
                     isActive ? 'bg-gold text-bg-base shadow-glow' : 'bg-bg-card text-gold hover:bg-gold hover:text-bg-base'
