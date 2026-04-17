@@ -14,8 +14,14 @@ export function useElevenLabs() {
   const audioRef = useRef(null);
   const urlRef = useRef(null);
   const knownDurationRef = useRef(0);
+  const abortRef = useRef(null);
 
   const cleanup = useCallback(() => {
+    // Abort any in-flight TTS fetch
+    if (abortRef.current) {
+      abortRef.current.abort();
+      abortRef.current = null;
+    }
     if (audioRef.current) {
       if (audioRef.current._cleanupVisibility) audioRef.current._cleanupVisibility();
       audioRef.current.pause();
@@ -27,6 +33,7 @@ export function useElevenLabs() {
     }
     setPlaying(false);
     setProgress(0);
+    setLoading(false);
   }, []);
 
   const generate = useCallback(async ({ text, narrator, language, customVoiceId, country, beliefs }) => {
@@ -34,11 +41,15 @@ export function useElevenLabs() {
     setLoading(true);
     setError(null);
 
+    const controller = new AbortController();
+    abortRef.current = controller;
+
     try {
       const res = await fetch(`${API_BASE}/api/tts`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ text, narrator, language, customVoiceId, country, beliefs }),
+        signal: controller.signal,
       });
 
       if (!res.ok) {
@@ -106,6 +117,11 @@ export function useElevenLabs() {
       setLoading(false);
       return audio;
     } catch (e) {
+      if (e.name === 'AbortError') {
+        // User cancelled — not an error
+        setLoading(false);
+        return null;
+      }
       setError(e.message);
       setLoading(false);
       throw e;
