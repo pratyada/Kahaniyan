@@ -116,7 +116,7 @@ export default async function handler(req, res) {
         input: trimmedText,
         voice,
         speed: Math.max(0.25, Math.min(4.0, speed)),
-        response_format: 'mp3',
+        response_format: 'opus',
       }),
     });
 
@@ -131,7 +131,7 @@ export default async function handler(req, res) {
       });
     }
 
-    res.setHeader('Content-Type', 'audio/mpeg');
+    res.setHeader('Content-Type', 'audio/ogg');
     res.setHeader('Cache-Control', 'public, max-age=86400');
     res.setHeader('X-Voice-Used', voice);
 

@@ -10,8 +10,8 @@ async function cacheAudioToStorage(storyId, blob) {
   try {
     const { ref, uploadBytes, getDownloadURL } = await import('firebase/storage');
     const { doc, setDoc } = await import('firebase/firestore');
-    const storageRef = ref(storage, `audio/${storyId}.mp3`);
-    await uploadBytes(storageRef, blob, { contentType: 'audio/mpeg' });
+    const storageRef = ref(storage, `audio/${storyId}.opus`);
+    await uploadBytes(storageRef, blob, { contentType: 'audio/ogg' });
     const audioUrl = await getDownloadURL(storageRef);
 
     // Save URL to sharedStories (so shared links play instantly)
