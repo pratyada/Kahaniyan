@@ -59,4 +59,16 @@ export const RADIO_STATIONS = [
     icon: '🤘',
     bestFor: 'cool parents',
   },
+  {
+    id: 'workout',
+    name: 'Morning Pump',
+    tagline: 'Workout · Energy',
+    description:
+      'High-energy beats and motivating rhythms. After the kids are asleep, get your morning workout playlist ready — or use it for that 5am grind.',
+    stream: 'https://ice1.somafm.com/gsclassic-128-mp3',
+    fallback: 'https://ice2.somafm.com/gsclassic-128-mp3',
+    accent: '#ff7a59',
+    icon: '💪',
+    bestFor: 'morning energy',
+  },
 ];
