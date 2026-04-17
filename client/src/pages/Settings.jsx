@@ -395,7 +395,7 @@ export default function Settings() {
                     <div className="space-y-2 text-sm text-ink-muted">
                       <div className="flex items-center gap-2"><span className="text-gold">✓</span> 1 month unlimited personalized stories</div>
                       <div className="flex items-center gap-2"><span className="text-gold">✓</span> Stories up to 15 min</div>
-                      <div className="flex items-center gap-2"><span className="text-gold">✓</span> Warm storyteller voice</div>
+                      <div className="flex items-center gap-2"><span className="text-gold">✓</span> Homely narrator voice</div>
                       <div className="flex items-center gap-2"><span className="text-gold">✓</span> All cultural traditions</div>
                       <div className="flex items-center gap-2"><span className="text-gold">✓</span> Can continue at CA$9.99/mo after</div>
                     </div>

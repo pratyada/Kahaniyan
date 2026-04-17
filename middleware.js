@@ -4,7 +4,7 @@
 const PAGES = {
   '/invest': {
     title: 'Invest in My Sleepy Tale — SAFE at $1M Cap · Friends & Family',
-    description: 'Back My Sleepy Tale, the AI-powered personalized bedtime story app. SAFE note at $1M valuation cap. Transparent cap table, real-time backer board. Min CA$50.',
+    description: 'Back My Sleepy Tale, the personalized bedtime story app for families. SAFE note at $1M valuation cap. Transparent cap table, real-time backer board. Min CA$50.',
   },
   '/stonedage': {
     title: 'Stoned Age — After kids sleep, parents play 🪨',
