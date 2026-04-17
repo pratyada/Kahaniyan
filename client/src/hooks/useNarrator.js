@@ -1,7 +1,8 @@
 import { useCallback, useRef, useState } from 'react';
 
 // Narrator voice hook — calls /api/tts (OpenAI TTS), returns an <audio>
-// element that plays the streamed MP3. Falls back gracefully if TTS fails.
+// element that plays the streamed MP3. Supports cached audio URLs to
+// skip TTS generation for previously played or shared stories.
 
 const API_BASE = import.meta.env.VITE_API_BASE_URL || '';
 
@@ -15,9 +16,9 @@ export function useNarrator() {
   const urlRef = useRef(null);
   const knownDurationRef = useRef(0);
   const abortRef = useRef(null);
+  const blobRef = useRef(null); // keep raw blob for upload
 
   const cleanup = useCallback(() => {
-    // Abort any in-flight TTS fetch
     if (abortRef.current) {
       abortRef.current.abort();
       abortRef.current = null;
@@ -31,11 +32,64 @@ export function useNarrator() {
       URL.revokeObjectURL(urlRef.current);
       urlRef.current = null;
     }
+    blobRef.current = null;
     setPlaying(false);
     setProgress(0);
     setLoading(false);
   }, []);
 
+  // Wire up all event listeners on an audio element
+  const setupAudio = useCallback((audio) => {
+    audioRef.current = audio;
+
+    const updateDuration = () => {
+      if (isFinite(audio.duration) && audio.duration > 0) {
+        knownDurationRef.current = audio.duration;
+        setDuration(audio.duration);
+      }
+    };
+    audio.onloadedmetadata = updateDuration;
+    audio.ondurationchange = updateDuration;
+    audio.ontimeupdate = () => {
+      const dur = knownDurationRef.current;
+      if (dur > 0) {
+        const p = Math.min(1, audio.currentTime / dur);
+        setProgress(p);
+        const remaining = dur - audio.currentTime;
+        if (remaining < 2 && remaining > 0) {
+          audio.volume = Math.max(0, remaining / 2);
+        }
+      }
+    };
+    audio.onplay = () => setPlaying(true);
+    audio.onpause = () => setPlaying(false);
+    audio.onended = () => { setPlaying(false); setProgress(1); };
+
+    const handleVisibility = () => {
+      if (document.visibilityState === 'visible' && audio.paused && !audio.ended && audio.currentTime > 0) {
+        audio.play().catch(() => {});
+      }
+    };
+    document.addEventListener('visibilitychange', handleVisibility);
+    audio._cleanupVisibility = () => document.removeEventListener('visibilitychange', handleVisibility);
+    audio.onerror = () => { setError('Audio playback failed'); setPlaying(false); };
+
+    return audio;
+  }, []);
+
+  // Load from a cached audio URL — no TTS call needed
+  const loadCached = useCallback((audioUrl) => {
+    cleanup();
+    setLoading(true);
+    setError(null);
+
+    const audio = new Audio(audioUrl);
+    setupAudio(audio);
+    setLoading(false);
+    return audio;
+  }, [cleanup, setupAudio]);
+
+  // Generate fresh audio via TTS API
   const generate = useCallback(async ({ text, narrator, language, customVoiceId, country, beliefs }) => {
     cleanup();
     setLoading(true);
@@ -58,67 +112,16 @@ export function useNarrator() {
       }
 
       const blob = await res.blob();
+      blobRef.current = blob;
       const url = URL.createObjectURL(blob);
       urlRef.current = url;
 
       const audio = new Audio(url);
-      audioRef.current = audio;
-
-      // Set up event listeners
-      const updateDuration = () => {
-        if (isFinite(audio.duration) && audio.duration > 0) {
-          knownDurationRef.current = audio.duration;
-          setDuration(audio.duration);
-        }
-      };
-      audio.onloadedmetadata = updateDuration;
-      audio.ondurationchange = updateDuration;
-      audio.ontimeupdate = () => {
-        const dur = knownDurationRef.current;
-        if (dur > 0) {
-          const p = Math.min(1, audio.currentTime / dur);
-          setProgress(p);
-          // Fade out volume in the last 2 seconds
-          const remaining = dur - audio.currentTime;
-          if (remaining < 2 && remaining > 0) {
-            audio.volume = Math.max(0, remaining / 2);
-          }
-        }
-      };
-      audio.onplay = () => setPlaying(true);
-      audio.onpause = () => {
-        // Don't mark as not-playing if browser just suspended audio in background
-        // Only set false if audio is truly paused (not ended, not mid-playback)
-        if (audio.ended || audio.currentTime === 0) {
-          setPlaying(false);
-        } else {
-          // Might be background suspension — keep state, try to resume on visibility change
-          setPlaying(false);
-        }
-      };
-      audio.onended = () => {
-        setPlaying(false);
-        setProgress(1);
-      };
-
-      // Resume audio when app comes back to foreground
-      const handleVisibility = () => {
-        if (document.visibilityState === 'visible' && audio.paused && !audio.ended && audio.currentTime > 0) {
-          audio.play().catch(() => {});
-        }
-      };
-      document.addEventListener('visibilitychange', handleVisibility);
-      audio._cleanupVisibility = () => document.removeEventListener('visibilitychange', handleVisibility);
-      audio.onerror = () => {
-        setError('Audio playback failed');
-        setPlaying(false);
-      };
-
+      setupAudio(audio);
       setLoading(false);
       return audio;
     } catch (e) {
       if (e.name === 'AbortError') {
-        // User cancelled — not an error
         setLoading(false);
         return null;
       }
@@ -126,23 +129,15 @@ export function useNarrator() {
       setLoading(false);
       throw e;
     }
-  }, [cleanup]);
+  }, [cleanup, setupAudio]);
 
-  const play = useCallback(() => {
-    audioRef.current?.play();
-  }, []);
+  // Get the raw audio blob (for uploading to Storage after generation)
+  const getBlob = useCallback(() => blobRef.current, []);
 
-  const pause = useCallback(() => {
-    audioRef.current?.pause();
-  }, []);
-
-  const resume = useCallback(() => {
-    audioRef.current?.play();
-  }, []);
-
-  const stop = useCallback(() => {
-    cleanup();
-  }, [cleanup]);
+  const play = useCallback(() => { audioRef.current?.play(); }, []);
+  const pause = useCallback(() => { audioRef.current?.pause(); }, []);
+  const resume = useCallback(() => { audioRef.current?.play(); }, []);
+  const stop = useCallback(() => { cleanup(); }, [cleanup]);
 
   const seek = useCallback((fraction) => {
     if (audioRef.current && audioRef.current.duration) {
@@ -160,6 +155,8 @@ export function useNarrator() {
 
   return {
     generate,
+    loadCached,
+    getBlob,
     play,
     pause,
     resume,

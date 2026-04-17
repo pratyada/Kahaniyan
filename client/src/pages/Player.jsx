@@ -2,6 +2,49 @@ import { Component, useEffect, useRef, useState } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { loadSharedStory } from '../utils/shareStory.js';
+import { storage, db, auth } from '../lib/firebase.js';
+
+// Upload audio blob to Firebase Storage and save URL back to story
+async function cacheAudioToStorage(storyId, blob) {
+  if (!storage || !blob || !storyId) return;
+  try {
+    const { ref, uploadBytes, getDownloadURL } = await import('firebase/storage');
+    const { doc, setDoc } = await import('firebase/firestore');
+    const storageRef = ref(storage, `audio/${storyId}.mp3`);
+    await uploadBytes(storageRef, blob, { contentType: 'audio/mpeg' });
+    const audioUrl = await getDownloadURL(storageRef);
+
+    // Save URL to sharedStories (so shared links play instantly)
+    if (db) {
+      setDoc(doc(db, 'sharedStories', storyId), { audioUrl }, { merge: true }).catch(() => {});
+    }
+    // Save URL to user's library in Firestore
+    const uid = auth?.currentUser?.uid;
+    if (db && uid) {
+      const { getDoc: gd } = await import('firebase/firestore');
+      const userSnap = await gd(doc(db, 'users', uid));
+      if (userSnap.exists()) {
+        const lib = userSnap.data().library || [];
+        const updated = lib.map((s) => s.id === storyId ? { ...s, audioUrl } : s);
+        if (JSON.stringify(lib) !== JSON.stringify(updated)) {
+          setDoc(doc(db, 'users', uid), { library: updated }, { merge: true }).catch(() => {});
+        }
+      }
+    }
+    // Update localStorage library too
+    try {
+      const raw = localStorage.getItem('mst:library');
+      if (raw) {
+        const lib = JSON.parse(raw);
+        const updated = lib.map((s) => s.id === storyId ? { ...s, audioUrl } : s);
+        localStorage.setItem('mst:library', JSON.stringify(updated));
+      }
+    } catch {}
+    console.log('[My Sleepy Tale:Player] Audio cached to Storage:', storyId);
+  } catch (e) {
+    console.warn('[My Sleepy Tale:Player] Audio cache failed (non-fatal):', e.message);
+  }
+}
 
 // Error boundary to catch crashes and show them instead of blank screen
 class PlayerErrorBoundary extends Component {
@@ -140,29 +183,42 @@ function PlayerInner() {
     const matchedChar = chars.find((c) => c.name === narratorName || c.relation === narratorName.toLowerCase());
     const customVoiceId = matchedChar?.narratorVoiceId || null;
 
-    // Try OpenAI TTS. Don't set isPlaying until audio actually starts.
     const startPlayback = async () => {
       try {
-        const audio = await narrator.generate({
-          text: current.text,
-          narrator: narratorName,
-          language: lang,
-          customVoiceId,
-          country: profile?.country || 'OTHER',
-          beliefs: profile?.beliefs || [],
-        });
+        let audio;
+
+        // If story has cached audio URL, play directly — no TTS call
+        if (current.audioUrl) {
+          console.log('[My Sleepy Tale:Player] Playing cached audio');
+          audio = narrator.loadCached(current.audioUrl);
+        } else {
+          // Generate fresh audio via TTS
+          audio = await narrator.generate({
+            text: current.text,
+            narrator: narratorName,
+            language: lang,
+            customVoiceId,
+            country: profile?.country || 'OTHER',
+            beliefs: profile?.beliefs || [],
+          });
+
+          // Upload to Firebase Storage for future plays (fire and forget)
+          if (audio && current.id) {
+            cacheAudioToStorage(current.id, narrator.getBlob());
+          }
+        }
+
+        if (!audio) return; // aborted
         setUsingTTS(true);
         setTtsReady(true);
         audio.playbackRate = speed;
 
-        // Listen for actual playback start
         audio.onplay = () => setIsPlaying(true);
         audio.onpause = () => setIsPlaying(false);
 
         try {
           await audio.play();
         } catch {
-          // Autoplay blocked — show play button, user taps to start
           setIsPlaying(false);
         }
       } catch (e) {
