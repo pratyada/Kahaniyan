@@ -116,7 +116,7 @@ function PlayerInner() {
       const initial = profile?.preferredNoise || 'rain';
       setNoiseType(initial);
       noise.start(initial);
-      noise.setVolume(0.25);
+      noise.setVolume(0.10);
     }
 
     const lang = current.language || profile?.language || 'English';

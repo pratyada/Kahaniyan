@@ -53,7 +53,7 @@ export function WhiteNoiseProvider({ children }) {
   const droneNodesRef = useRef([]);
 
   const [active, setActive] = useState(null); // noise type key
-  const [volume, setVolumeState] = useState(0.4);
+  const [volume, setVolumeState] = useState(0.12);
 
   const ensureCtx = useCallback(() => {
     if (!audioCtxRef.current) {
@@ -111,7 +111,7 @@ export function WhiteNoiseProvider({ children }) {
           const g = ctx.createGain();
           osc.type = i === 2 ? 'triangle' : 'sine';
           osc.frequency.value = f;
-          g.gain.value = 0.18 - i * 0.04;
+          g.gain.value = 0.06 - i * 0.015;
           osc.connect(g);
           g.connect(gainRef.current);
           osc.start();
@@ -138,7 +138,7 @@ export function WhiteNoiseProvider({ children }) {
         hp.type = 'highpass';
         hp.frequency.value = 300;
         const softGain = ctx.createGain();
-        softGain.gain.value = 0.3; // much quieter
+        softGain.gain.value = 0.08;
         src.connect(lp);
         lp.connect(hp);
         hp.connect(softGain);
@@ -152,9 +152,9 @@ export function WhiteNoiseProvider({ children }) {
         const lfo = ctx.createOscillator();
         const lfoGain = ctx.createGain();
         lfo.frequency.value = 0.13;
-        lfoGain.gain.value = 0.35;
+        lfoGain.gain.value = 0.08;
         const waveGain = ctx.createGain();
-        waveGain.gain.value = 0.55;
+        waveGain.gain.value = 0.12;
         lfo.connect(lfoGain);
         lfoGain.connect(waveGain.gain);
         lp.connect(waveGain);
@@ -170,7 +170,7 @@ export function WhiteNoiseProvider({ children }) {
         hp.type = 'highpass';
         hp.frequency.value = 200;
         const softGain = ctx.createGain();
-        softGain.gain.value = 0.25;
+        softGain.gain.value = 0.07;
         src.connect(lp);
         lp.connect(hp);
         hp.connect(softGain);
