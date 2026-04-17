@@ -33,6 +33,7 @@ export function PlayerProvider({ children }) {
   const clear = useCallback(() => {
     setCurrent(null);
     setIsPlaying(false);
+    try { localStorage.removeItem(LAST_STORY_KEY); } catch {}
   }, []);
 
   // Expose method to reload last story if current is lost
