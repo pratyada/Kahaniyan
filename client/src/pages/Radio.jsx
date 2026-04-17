@@ -6,7 +6,7 @@ import { RADIO_STATIONS } from '../data/radioStations.js';
 import { useRadio } from '../hooks/useRadio.jsx';
 import { useAuth } from '../hooks/useAuth.jsx';
 import { db, auth } from '../lib/firebase.js';
-import { doc, getDoc, setDoc, updateDoc, increment, arrayUnion, arrayRemove } from 'firebase/firestore';
+import { doc, getDoc, setDoc, updateDoc, increment, arrayUnion, arrayRemove, onSnapshot } from 'firebase/firestore';
 
 export default function Radio() {
   const { stationId, playing, loading, error, togglePlayPause, volume, setVolume } = useRadio();
@@ -14,29 +14,24 @@ export default function Radio() {
   const [likes, setLikes] = useState({}); // { stationId: { count, liked } }
   const [toast, setToast] = useState(null);
 
-  // Load likes from Firestore
+  // Real-time likes from Firestore — updates live when anyone likes
   useEffect(() => {
     if (!db) return;
-    (async () => {
-      const result = {};
-      for (const s of RADIO_STATIONS) {
-        try {
-          const snap = await getDoc(doc(db, 'radioLikes', s.id));
-          if (snap.exists()) {
-            const data = snap.data();
-            result[s.id] = {
+    const unsubs = RADIO_STATIONS.map((s) =>
+      onSnapshot(doc(db, 'radioLikes', s.id), (snap) => {
+        if (snap.exists()) {
+          const data = snap.data();
+          setLikes((prev) => ({
+            ...prev,
+            [s.id]: {
               count: data.likes || 0,
               liked: user ? (data.likedBy || []).includes(user.uid) : false,
-            };
-          } else {
-            result[s.id] = { count: 0, liked: false };
-          }
-        } catch {
-          result[s.id] = { count: 0, liked: false };
+            },
+          }));
         }
-      }
-      setLikes(result);
-    })();
+      }, () => {})
+    );
+    return () => unsubs.forEach((u) => u());
   }, [user]);
 
   const handleLike = async (station) => {
