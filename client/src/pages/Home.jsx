@@ -505,7 +505,7 @@ function LengthStrip({ duration, setDuration, maxDuration, setUpgradeReason, set
       <span className="ui-label mb-3 block">Story length</span>
       <div className="flex gap-1.5 rounded-pill bg-bg-surface p-1 ring-1 ring-white/5">
         {DURATIONS.map((d) => {
-          const locked = d.locked && d.minutes > maxDuration;
+          const locked = !!d.locked;
           const active = duration === d.minutes;
           return (
             <button
