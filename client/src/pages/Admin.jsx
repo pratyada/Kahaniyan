@@ -117,9 +117,27 @@ export default function Admin() {
   const COST_PER_MINUTE_CAD = 0.25;
   const estimatedCost = (totalMinutesAll * COST_PER_MINUTE_CAD).toFixed(2);
 
+  const [feedbackList, setFeedbackList] = useState([]);
+  const [feedbackLoaded, setFeedbackLoaded] = useState(false);
+
+  // Load feedback when tab is selected
+  useEffect(() => {
+    if (tab !== 'feedback' || feedbackLoaded || !isAdmin || !db) return;
+    (async () => {
+      try {
+        const snap = await getDocs(collection(db, 'feedback'));
+        const list = [];
+        snap.forEach((d) => list.push({ id: d.id, ...d.data() }));
+        setFeedbackList(list.sort((a, b) => new Date(b.createdAt || 0) - new Date(a.createdAt || 0)));
+        setFeedbackLoaded(true);
+      } catch {}
+    })();
+  }, [tab, feedbackLoaded, isAdmin]);
+
   const TABS = [
     { key: 'overview', label: 'Overview', icon: '📊' },
     { key: 'storylab', label: 'Story Lab', icon: '🧪' },
+    { key: 'feedback', label: `Feedback (${feedbackLoaded ? feedbackList.length : '…'})`, icon: '💬' },
     { key: 'users', label: `Users (${allUsers.length})`, icon: '👤' },
     { key: 'usage', label: 'Usage & Costs', icon: '💰' },
     { key: 'team', label: `Team (${team.length})`, icon: '👥' },
@@ -420,6 +438,48 @@ export default function Admin() {
                     ID: {GA_MEASUREMENT_ID} · Domain: mysleepytale.com · Tracking since Apr 15, 2026
                   </p>
                 </div>
+              </div>
+            )}
+          </div>
+        )}
+
+        {/* ═══ FEEDBACK ═══ */}
+        {tab === 'feedback' && (
+          <div className="space-y-4">
+            <div className="rounded-2xl bg-[#1a1a28] p-6">
+              <h3 className="mb-1 text-sm font-bold text-[#f5f0e8]">User Feedback</h3>
+              <p className="mb-4 text-xs text-[#6e6a63]">
+                Thoughts shared by users from the "Share your thoughts" button in Settings. {feedbackList.length} total.
+              </p>
+            </div>
+            {feedbackList.length === 0 ? (
+              <div className="flex items-center justify-center rounded-2xl bg-[#1a1a28] p-12">
+                <div className="text-center">
+                  <div className="mb-3 text-4xl">💬</div>
+                  <p className="text-sm text-[#a8a39a]">No feedback yet</p>
+                </div>
+              </div>
+            ) : (
+              <div className="space-y-3">
+                {feedbackList.map((fb) => (
+                  <div key={fb.id} className="rounded-xl bg-[#1a1a28] p-4">
+                    <div className="flex items-center justify-between mb-2">
+                      <div className="flex items-center gap-2">
+                        <span className="text-lg">💬</span>
+                        <div>
+                          <div className="text-sm font-bold text-[#f5f0e8]">{fb.displayName || 'Anonymous'}</div>
+                          <div className="text-[10px] text-[#6e6a63]">{fb.email || 'No email'}</div>
+                        </div>
+                      </div>
+                      <div className="text-[10px] text-[#6e6a63]">
+                        {fb.createdAt ? new Date(fb.createdAt).toLocaleString() : 'Unknown date'}
+                      </div>
+                    </div>
+                    <div className="rounded-lg bg-[#0f0f17] p-3 text-sm leading-relaxed text-[#f5f0e8]/80">
+                      {fb.text}
+                    </div>
+                  </div>
+                ))}
               </div>
             )}
           </div>
