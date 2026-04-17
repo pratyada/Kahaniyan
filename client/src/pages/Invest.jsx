@@ -59,8 +59,8 @@ const ROLES = [
 ];
 
 const EXPENSES = [
-  { label: 'OpenAI TTS API', amount: 50, icon: '🔊', type: 'monthly' },
-  { label: 'ElevenLabs (voice cloning)', amount: 45, icon: '🎙️', type: 'monthly' },
+  { label: 'Voice narration API', amount: 50, icon: '🔊', type: 'monthly' },
+  { label: 'Voice cloning (planned)', amount: 45, icon: '🎙️', type: 'monthly' },
   { label: 'Firebase (auth + database)', amount: 0, icon: '🔥', type: 'monthly' },
   { label: 'Vercel (hosting)', amount: 0, icon: '▲', type: 'monthly' },
   { label: 'Domain (future)', amount: 20, icon: '🌐', type: 'monthly' },
@@ -85,9 +85,9 @@ const FOUNDER_INVESTMENTS = [
       { phase: 'Bug fixes + deployment', hours: 22, period: 'Apr 11–15' },
     ],
     moneySpent: [
-      { item: 'OpenAI API credits', amount: 50 },
-      { item: 'ElevenLabs API credits', amount: 45 },
-      { item: 'Claude Code (development AI)', amount: 250 },
+      { item: 'Voice API credits', amount: 50 },
+      { item: 'Voice cloning R&D', amount: 45 },
+      { item: 'Development tools', amount: 250 },
       { item: 'Domain + hosting setup', amount: 55 },
     ],
   },

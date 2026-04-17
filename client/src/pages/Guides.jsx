@@ -72,7 +72,7 @@ const GUIDES = [
       'Go to More → Voices → "+ Add a new voice".',
       'Hold the gold button and read the training paragraph out loud in your natural voice.',
       'Release → listen back → if happy, tap "Looks good" → name the voice and pick the relationship.',
-      'Voices are stored on your device. When we add ElevenLabs, these recordings will be used to clone real family voices for narration.',
+      'Voices are stored on your device. These recordings will be used to clone real family voices for narration.',
     ],
   },
   {

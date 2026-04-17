@@ -31,7 +31,7 @@ import { usePlayer } from '../hooks/usePlayer.jsx';
 import { useAuth } from '../hooks/useAuth.jsx';
 import { useFamilyProfile } from '../hooks/useFamilyProfile.js';
 import { useSpeech } from '../hooks/useSpeech.js';
-import { useElevenLabs } from '../hooks/useElevenLabs.js';
+import { useNarrator } from '../hooks/useNarrator.js';
 import { useWhiteNoise, NOISE_TYPES } from '../hooks/useWhiteNoise.jsx';
 import { valueMeta } from '../utils/constants.js';
 import StoryLoading from '../components/StoryLoading.jsx';
@@ -52,7 +52,7 @@ function PlayerInner() {
   const { current, clear, isPlaying, setIsPlaying, reloadLast, load } = usePlayer();
   const { profile } = useFamilyProfile();
   const webSpeech = useSpeech();
-  const elevenLabs = useElevenLabs();
+  const narrator = useNarrator();
   const noise = useWhiteNoise();
   const [loadingShared, setLoadingShared] = useState(false);
   const [sharedPreview, setSharedPreview] = useState(null); // story preview for non-logged-in users
@@ -96,9 +96,9 @@ function PlayerInner() {
 
   // Unified interface — picks ElevenLabs or Web Speech
   const voice = usingTTS ? {
-    speaking: elevenLabs.playing,
-    paused: !elevenLabs.playing && ttsReady && !done,
-    progress: elevenLabs.progress,
+    speaking: narrator.playing,
+    paused: !narrator.playing && ttsReady && !done,
+    progress: narrator.progress,
     supported: true,
   } : {
     speaking: webSpeech.speaking,
@@ -138,12 +138,12 @@ function PlayerInner() {
     const narratorName = current.voice || 'AI Narrator';
     const chars = profile?.characters || [];
     const matchedChar = chars.find((c) => c.name === narratorName || c.relation === narratorName.toLowerCase());
-    const customVoiceId = matchedChar?.elevenLabsVoiceId || null;
+    const customVoiceId = matchedChar?.narratorVoiceId || null;
 
     // Try OpenAI TTS. Don't set isPlaying until audio actually starts.
     const startPlayback = async () => {
       try {
-        const audio = await elevenLabs.generate({
+        const audio = await narrator.generate({
           text: current.text,
           narrator: narratorName,
           language: lang,
@@ -200,7 +200,7 @@ function PlayerInner() {
       const elapsed = Date.now() - startedAt;
       const t = Math.min(1, elapsed / fadeMs);
       const speechVol = 1 - (1 - target) * t;
-      if (usingTTS) elevenLabs.setVolume(speechVol);
+      if (usingTTS) narrator.setVolume(speechVol);
       else webSpeech.setVolume(speechVol);
       const noiseVol = 0.25 + (0.55 * t);
       noise.setVolume(noiseVol);
@@ -214,7 +214,7 @@ function PlayerInner() {
   useEffect(() => {
     return () => {
       noise.stop();
-      elevenLabs.stop();
+      narrator.stop();
       webSpeech.stop();
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -255,17 +255,17 @@ function PlayerInner() {
     if (!usingTTS) {
       if (progress > 0 && progress >= 0.999) ended = true;
     } else {
-      if (progress >= 1 && !elevenLabs.playing && !elevenLabs.loading && ttsReady) ended = true;
+      if (progress >= 1 && !narrator.playing && !narrator.loading && ttsReady) ended = true;
     }
     if (ended) {
       setIsPlaying(false);
       noise.stop();
-      elevenLabs.stop();
+      narrator.stop();
       webSpeech.stop();
       navigate('/');
     }
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [progress, setIsPlaying, usingTTS, elevenLabs.playing, elevenLabs.loading, ttsReady]);
+  }, [progress, setIsPlaying, usingTTS, narrator.playing, narrator.loading, ttsReady]);
 
   // Shared story preview — user not logged in
   if (sharedPreview && !user) {
@@ -353,7 +353,7 @@ function PlayerInner() {
     if (!isPlaying) {
       if (usingTTS) {
         // TTS audio loaded — play or resume
-        elevenLabs.play();
+        narrator.play();
       } else {
         if (webSpeech.paused) webSpeech.resume();
         else webSpeech.speak({
@@ -366,7 +366,7 @@ function PlayerInner() {
       }
       setIsPlaying(true);
     } else {
-      if (usingTTS) elevenLabs.pause();
+      if (usingTTS) narrator.pause();
       else webSpeech.pause();
       setIsPlaying(false);
     }
@@ -376,7 +376,7 @@ function PlayerInner() {
     setSpeed(newSpeed);
     if (usingTTS) {
       // ElevenLabs: changes speed in real-time, no restart
-      elevenLabs.setRate(newSpeed);
+      narrator.setRate(newSpeed);
     } else {
       // Web Speech: can't change speed mid-utterance, just update for next play
       // Don't restart — keep playing at current speed
@@ -384,7 +384,7 @@ function PlayerInner() {
   };
 
   const handleClose = () => {
-    if (usingTTS) elevenLabs.stop();
+    if (usingTTS) narrator.stop();
     else webSpeech.stop();
     noise.stop();
     clear();
@@ -499,10 +499,10 @@ function PlayerInner() {
                   transition={{ ease: 'linear' }}
                 />
               </div>
-              {elevenLabs.duration > 0 && (
+              {narrator.duration > 0 && (
                 <div className="mt-2 flex justify-between text-[10px] uppercase tracking-wider text-ink-dim">
-                  <span>{Math.floor(progress * elevenLabs.duration / 60)}:{String(Math.floor(progress * elevenLabs.duration % 60)).padStart(2,'0')}</span>
-                  <span>{Math.floor(elevenLabs.duration / 60)}:{String(Math.floor(elevenLabs.duration % 60)).padStart(2,'0')}</span>
+                  <span>{Math.floor(progress * narrator.duration / 60)}:{String(Math.floor(progress * narrator.duration % 60)).padStart(2,'0')}</span>
+                  <span>{Math.floor(narrator.duration / 60)}:{String(Math.floor(narrator.duration % 60)).padStart(2,'0')}</span>
                 </div>
               )}
             </div>
@@ -512,15 +512,15 @@ function PlayerInner() {
               {/* Big play / pause / loading */}
               <button
                 onClick={handleTogglePlay}
-                disabled={elevenLabs.loading}
-                aria-label={elevenLabs.loading ? 'Loading audio' : isPlaying ? 'Pause story' : 'Play story'}
+                disabled={narrator.loading}
+                aria-label={narrator.loading ? 'Loading audio' : isPlaying ? 'Pause story' : 'Play story'}
                 className={`group relative grid h-20 w-20 place-items-center rounded-full transition active:scale-95 ${
-                  elevenLabs.loading
+                  narrator.loading
                     ? 'bg-bg-elevated ring-2 ring-gold/30'
                     : 'bg-gold text-bg-base shadow-glow'
                 }`}
               >
-                {elevenLabs.loading ? (
+                {narrator.loading ? (
                   <span className="inline-block h-5 w-5 animate-spin rounded-full border-2 border-gold border-t-transparent" />
                 ) : isPlaying ? (
                   <svg width="28" height="28" viewBox="0 0 24 24" fill="currentColor">
@@ -534,7 +534,7 @@ function PlayerInner() {
                 )}
               </button>
               <div className="text-[10px] font-bold uppercase tracking-[0.18em] text-ink-muted">
-                {elevenLabs.loading ? 'Preparing voice…' : isPlaying ? 'Tap to pause' : 'Tap to play'}
+                {narrator.loading ? 'Preparing voice…' : isPlaying ? 'Tap to pause' : 'Tap to play'}
               </div>
 
               {/* Secondary controls — speed + restart */}
@@ -555,9 +555,9 @@ function PlayerInner() {
                 <button
                   onClick={async () => {
                     if (usingTTS) {
-                      elevenLabs.stop();
-                      elevenLabs.seek(0);
-                      elevenLabs.play();
+                      narrator.stop();
+                      narrator.seek(0);
+                      narrator.play();
                     } else {
                       webSpeech.stop();
                       setTimeout(() => {
