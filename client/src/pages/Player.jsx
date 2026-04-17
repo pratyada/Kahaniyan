@@ -55,6 +55,7 @@ function PlayerInner() {
   const elevenLabs = useElevenLabs();
   const noise = useWhiteNoise();
   const [loadingShared, setLoadingShared] = useState(false);
+  const [liked, setLiked] = useState(false);
 
   // Load shared story from URL if ?storyId= is present
   const sharedIdRef = useRef(null);
@@ -221,7 +222,10 @@ function PlayerInner() {
   const shareStory = async () => {
     try {
       const { shareStoryToFirestore } = await import('../utils/shareStory.js');
-      const url = await shareStoryToFirestore(current);
+      const url = await shareStoryToFirestore(current, {
+        beliefs: profile?.beliefs || [],
+        country: profile?.country || '',
+      });
       const text = `Listen to "${current.title}" — a bedtime story on My Sleepy Tale`;
       if (navigator.share) {
         await navigator.share({ title: 'My Sleepy Tale story', text, url });
@@ -384,10 +388,20 @@ function PlayerInner() {
               </div>
               <div className="flex items-center gap-2">
                 <button
+                  onClick={async () => {
+                    const { toggleLike } = await import('../utils/shareStory.js');
+                    const result = await toggleLike(current.id);
+                    if (result) setLiked(result.liked);
+                  }}
+                  className={`grid h-10 w-10 place-items-center rounded-full text-sm transition ${liked ? 'bg-red-500/20' : 'bg-white/5'}`}
+                  title="Like story"
+                >
+                  {liked ? '❤️' : '🤍'}
+                </button>
+                <button
                   onClick={shareStory}
                   className="grid h-10 w-10 place-items-center rounded-full bg-white/5 text-sm"
                   title="Share story"
-                  aria-label="Share story"
                 >
                   ↗
                 </button>
