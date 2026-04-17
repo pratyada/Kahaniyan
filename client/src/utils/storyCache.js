@@ -35,6 +35,11 @@ export function saveToLibrary(story) {
   localStorage.setItem(LIB_KEY, JSON.stringify(next));
 }
 
+export function removeFromLibrary(storyId) {
+  const next = getLibrary().filter((s) => s.id !== storyId);
+  localStorage.setItem(LIB_KEY, JSON.stringify(next));
+}
+
 export function pruneArchive(maxDays) {
   if (!maxDays || maxDays === Infinity) return;
   const cutoff = Date.now() - maxDays * 24 * 60 * 60 * 1000;

@@ -1,6 +1,7 @@
 import { Component, useEffect, useRef, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
+import { loadSharedStory } from '../utils/shareStory.js';
 
 // Error boundary to catch crashes and show them instead of blank screen
 class PlayerErrorBoundary extends Component {
@@ -47,11 +48,28 @@ export default function Player() {
 
 function PlayerInner() {
   const navigate = useNavigate();
-  const { current, clear, isPlaying, setIsPlaying, reloadLast } = usePlayer();
+  const [searchParams] = useSearchParams();
+  const { current, clear, isPlaying, setIsPlaying, reloadLast, load } = usePlayer();
   const { profile } = useFamilyProfile();
   const webSpeech = useSpeech();
   const elevenLabs = useElevenLabs();
   const noise = useWhiteNoise();
+  const [loadingShared, setLoadingShared] = useState(false);
+
+  // Load shared story from URL if ?storyId= is present
+  const sharedIdRef = useRef(null);
+  useEffect(() => {
+    const storyId = searchParams.get('storyId');
+    if (!storyId || current || sharedIdRef.current === storyId) return;
+    sharedIdRef.current = storyId;
+    setLoadingShared(true);
+    loadSharedStory(storyId).then((story) => {
+      if (story) {
+        load(story);
+      }
+      setLoadingShared(false);
+    });
+  }, [searchParams, current, load]);
 
   const [speed, setSpeed] = useState(0.8);
   const [sleepMin, setSleepMin] = useState(0);
@@ -201,17 +219,18 @@ function PlayerInner() {
   };
 
   const shareStory = async () => {
-    const url = `${window.location.origin}/player?storyId=${encodeURIComponent(current.id)}`;
-    const text = `${current.title} — a My Sleepy Tale bedtime story for ${profile?.childName}`;
     try {
+      const { shareStoryToFirestore } = await import('../utils/shareStory.js');
+      const url = await shareStoryToFirestore(current);
+      const text = `Listen to "${current.title}" — a bedtime story on My Sleepy Tale`;
       if (navigator.share) {
         await navigator.share({ title: 'My Sleepy Tale story', text, url });
       } else {
         await navigator.clipboard.writeText(url);
-        alert('Story link copied to clipboard');
+        alert('Story link copied!');
       }
-    } catch {
-      // user cancelled
+    } catch (e) {
+      if (e.name !== 'AbortError') console.warn('Share failed:', e);
     }
   };
 
@@ -269,11 +288,19 @@ function PlayerInner() {
   }, [progress, setIsPlaying, usingTTS, elevenLabs.playing, elevenLabs.loading, ttsReady]);
 
   if (!current) {
-    const lastStory = reloadLast();
-    if (lastStory) {
-      // Story recovered from localStorage — will re-render with current set
-      return null;
+    // Loading a shared story from URL
+    if (loadingShared) {
+      return (
+        <div className="flex h-screen flex-col items-center justify-center bg-bg-base px-6 text-center">
+          <div className="mb-4 inline-block h-8 w-8 animate-spin rounded-full border-2 border-gold border-t-transparent" />
+          <p className="text-sm text-ink-muted">Loading shared story...</p>
+        </div>
+      );
     }
+    // Try recovering from localStorage
+    const lastStory = reloadLast();
+    if (lastStory) return null;
+
     return (
       <div className="flex h-screen flex-col items-center justify-center bg-bg-base px-6 text-center">
         <div className="text-4xl mb-4">📖</div>

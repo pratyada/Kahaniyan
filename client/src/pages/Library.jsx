@@ -1,14 +1,15 @@
 import { useEffect, useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { motion, AnimatePresence } from 'framer-motion';
 import PageTransition from '../components/PageTransition.jsx';
-import StoryCard from '../components/StoryCard.jsx';
 import VersionFooter from '../components/VersionFooter.jsx';
 import ValuePill from '../components/ValuePill.jsx';
-import { getLibrary, pruneArchive } from '../utils/storyCache.js';
+import { getLibrary, pruneArchive, removeFromLibrary } from '../utils/storyCache.js';
+import { shareStoryToFirestore } from '../utils/shareStory.js';
 import { archiveDaysFor } from '../utils/tierGate.js';
 import { useFamilyProfile } from '../hooks/useFamilyProfile.js';
 import { usePlayer } from '../hooks/usePlayer.jsx';
-import { VALUES } from '../utils/constants.js';
+import { VALUES, valueMeta } from '../utils/constants.js';
 
 export default function Library() {
   const navigate = useNavigate();
@@ -16,6 +17,8 @@ export default function Library() {
   const { load } = usePlayer();
   const [library, setLibrary] = useState([]);
   const [filter, setFilter] = useState(null);
+  const [sharing, setSharing] = useState(null);
+  const [toast, setToast] = useState(null);
 
   useEffect(() => {
     pruneArchive(archiveDaysFor(profile?.tier || 'free'));
@@ -27,6 +30,35 @@ export default function Library() {
     [library, filter]
   );
 
+  const handleDelete = (storyId) => {
+    removeFromLibrary(storyId);
+    setLibrary((prev) => prev.filter((s) => s.id !== storyId));
+  };
+
+  const handleShare = async (story) => {
+    setSharing(story.id);
+    try {
+      const url = await shareStoryToFirestore(story);
+      if (navigator.share) {
+        await navigator.share({
+          title: `${story.title} — My Sleepy Tale`,
+          text: `Listen to this bedtime story! "${story.title}"`,
+          url,
+        });
+      } else {
+        await navigator.clipboard.writeText(url);
+        setToast('Link copied!');
+        setTimeout(() => setToast(null), 2000);
+      }
+    } catch (e) {
+      if (e.name !== 'AbortError') {
+        setToast('Could not share');
+        setTimeout(() => setToast(null), 2000);
+      }
+    }
+    setSharing(null);
+  };
+
   return (
     <PageTransition className="page-scroll px-5 pt-10 safe-top">
       <header className="mb-6">
@@ -35,7 +67,7 @@ export default function Library() {
           Stories <span className="text-gold">{profile?.childName}</span> has heard
         </h1>
         <p className="mt-2 text-sm text-ink-muted">
-          {library.length} {library.length === 1 ? 'story' : 'stories'} saved · tap any to replay
+          {library.length} {library.length === 1 ? 'story' : 'stories'} saved · tap to replay · swipe to share
         </p>
       </header>
 
@@ -62,6 +94,20 @@ export default function Library() {
         </div>
       </div>
 
+      {/* Toast */}
+      <AnimatePresence>
+        {toast && (
+          <motion.div
+            initial={{ opacity: 0, y: -20 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -20 }}
+            className="fixed top-4 left-1/2 z-50 -translate-x-1/2 rounded-full bg-gold px-5 py-2 text-sm font-bold text-bg-base shadow-glow"
+          >
+            {toast}
+          </motion.div>
+        )}
+      </AnimatePresence>
+
       {/* Grid */}
       {filtered.length === 0 ? (
         <div className="card-elevated mt-8 text-center">
@@ -75,7 +121,7 @@ export default function Library() {
               : 'Try a different filter or generate one with this value.'}
           </p>
           <button
-            onClick={() => navigate(library.length === 0 ? '/' : '/')}
+            onClick={() => navigate('/')}
             className="btn-primary mt-5"
           >
             {library.length === 0 ? 'Weave first story' : 'Back to Tonight'}
@@ -84,13 +130,13 @@ export default function Library() {
       ) : (
         <div className="space-y-3">
           {filtered.map((story) => (
-            <StoryCard
+            <LibraryCard
               key={story.id}
               story={story}
-              onClick={() => {
-                load(story);
-                navigate('/player');
-              }}
+              onPlay={() => { load(story); navigate('/player'); }}
+              onShare={() => handleShare(story)}
+              onDelete={() => handleDelete(story.id)}
+              isSharing={sharing === story.id}
             />
           ))}
         </div>
@@ -98,5 +144,59 @@ export default function Library() {
 
       <VersionFooter />
     </PageTransition>
+  );
+}
+
+function LibraryCard({ story, onPlay, onShare, onDelete, isSharing }) {
+  const meta = valueMeta(story.value);
+  const date = new Date(story.createdAt).toLocaleDateString(undefined, { month: 'short', day: 'numeric' });
+
+  return (
+    <div className="group rounded-2xl bg-bg-surface shadow-card transition">
+      {/* Main tap area — play */}
+      <button onClick={onPlay} className="flex w-full items-center gap-3 p-3 text-left">
+        <div
+          className="relative grid h-16 w-16 shrink-0 place-items-center overflow-hidden rounded-xl text-2xl"
+          style={{ background: `linear-gradient(135deg, ${meta.color}55, ${meta.color}11)` }}
+        >
+          <span>{meta.emoji}</span>
+        </div>
+        <div className="min-w-0 flex-1">
+          <div className="truncate font-ui text-sm font-bold text-ink">{story.title}</div>
+          <div className="mt-1 flex items-center gap-2 text-xs text-ink-muted">
+            <span>{meta.label}</span>
+            <span className="h-1 w-1 rounded-full bg-ink-dim" />
+            <span>{story.estimatedMinutes} min</span>
+            <span className="h-1 w-1 rounded-full bg-ink-dim" />
+            <span>{date}</span>
+          </div>
+        </div>
+        <span className="grid h-10 w-10 shrink-0 place-items-center rounded-full bg-bg-card text-gold">
+          ▶
+        </span>
+      </button>
+
+      {/* Action bar */}
+      <div className="flex items-center gap-2 border-t border-white/5 px-3 py-2">
+        <button
+          onClick={onShare}
+          disabled={isSharing}
+          className="flex items-center gap-1.5 rounded-full bg-gold/10 px-3 py-1.5 text-[11px] font-bold text-gold transition active:scale-95 disabled:opacity-50"
+        >
+          {isSharing ? (
+            <span className="inline-block h-3 w-3 animate-spin rounded-full border border-gold border-t-transparent" />
+          ) : '↗'} Share
+        </button>
+        <button
+          onClick={() => { if (confirm('Remove from library?')) onDelete(); }}
+          className="flex items-center gap-1.5 rounded-full bg-white/5 px-3 py-1.5 text-[11px] font-bold text-ink-muted transition active:scale-95"
+        >
+          Remove
+        </button>
+        {story.generatedBy === 'claude' && (
+          <span className="ml-auto text-[9px] font-bold uppercase tracking-wider text-gold/40">AI story</span>
+        )}
+      </div>
+    </div>
   );
 }
