@@ -112,7 +112,7 @@ export default async function handler(req, res) {
         'Authorization': `Bearer ${OPENAI_KEY}`,
       },
       body: JSON.stringify({
-        model: 'tts-1',      // tts-1 for speed, tts-1-hd for quality
+        model: 'tts-1-hd',   // HD quality — smoother, less artifacts
         input: trimmedText,
         voice,
         speed: Math.max(0.25, Math.min(4.0, speed)),
