@@ -79,13 +79,13 @@ export default function Library() {
     const result = await toggleLike(story.id);
     if (!result) {
       showToast('Sign in to like stories');
-      return;
+      return null;
     }
     // Update in top stories list
     setTopStories((prev) => prev.map((s) =>
       s.id === story.id ? { ...s, likes: result.likes, likedBy: result.liked ? [...(s.likedBy || []), 'me'] : (s.likedBy || []).filter((x) => x !== 'me') } : s
     ));
-    showToast(result.liked ? 'Liked!' : 'Unliked');
+    return result;
   };
 
   const showToast = (msg) => {
@@ -226,6 +226,16 @@ export default function Library() {
 function LibraryCard({ story, onPlay, onShare, onDelete, onLike, isSharing }) {
   const meta = valueMeta(story.value);
   const date = new Date(story.createdAt).toLocaleDateString(undefined, { month: 'short', day: 'numeric' });
+  const [liked, setLiked] = useState(isLikedByMe(story));
+  const [likeCount, setLikeCount] = useState(story.likes || 0);
+
+  const handleLike = async () => {
+    const result = await onLike();
+    if (result) {
+      setLiked(result.liked);
+      setLikeCount(result.likes);
+    }
+  };
 
   return (
     <div className="rounded-2xl bg-bg-surface shadow-card">
@@ -247,9 +257,11 @@ function LibraryCard({ story, onPlay, onShare, onDelete, onLike, isSharing }) {
         <span className="grid h-10 w-10 shrink-0 place-items-center rounded-full bg-bg-card text-gold">▶</span>
       </button>
       <div className="flex items-center gap-2 border-t border-white/5 px-3 py-2">
-        <button onClick={onLike}
-          className="flex items-center gap-1.5 rounded-full bg-white/5 px-3 py-1.5 text-[11px] font-bold text-ink-muted transition active:scale-95">
-          {isLikedByMe(story) ? '❤️' : '🤍'} {story.likes || 0}
+        <button onClick={handleLike}
+          className={`flex items-center gap-1.5 rounded-full px-3 py-1.5 text-[11px] font-bold transition active:scale-95 ${
+            liked ? 'bg-red-500/10 text-red-400' : 'bg-white/5 text-ink-muted'
+          }`}>
+          {liked ? '❤️' : '🤍'} {likeCount}
         </button>
         <button onClick={onShare} disabled={isSharing}
           className="flex items-center gap-1.5 rounded-full bg-gold/10 px-3 py-1.5 text-[11px] font-bold text-gold transition active:scale-95 disabled:opacity-50">
@@ -269,12 +281,20 @@ function LibraryCard({ story, onPlay, onShare, onDelete, onLike, isSharing }) {
 
 function TopStoryCard({ story, rank, onPlay, onLike }) {
   const meta = valueMeta(story.value);
-  const liked = isLikedByMe(story);
+  const [liked, setLiked] = useState(isLikedByMe(story));
+  const [likeCount, setLikeCount] = useState(story.likes || 0);
+
+  const handleLike = async () => {
+    const result = await onLike();
+    if (result) {
+      setLiked(result.liked);
+      setLikeCount(result.likes);
+    }
+  };
 
   return (
     <div className="rounded-2xl bg-bg-surface shadow-card">
       <button onClick={onPlay} className="flex w-full items-center gap-3 p-3 text-left">
-        {/* Rank badge */}
         <div className={`grid h-10 w-10 shrink-0 place-items-center rounded-full text-sm font-bold ${
           rank <= 3 ? 'bg-gold text-bg-base' : 'bg-bg-card text-ink-muted'
         }`}>
@@ -297,11 +317,11 @@ function TopStoryCard({ story, rank, onPlay, onLike }) {
         <span className="grid h-10 w-10 shrink-0 place-items-center rounded-full bg-bg-card text-gold">▶</span>
       </button>
       <div className="flex items-center gap-3 border-t border-white/5 px-3 py-2">
-        <button onClick={onLike}
+        <button onClick={handleLike}
           className={`flex items-center gap-1.5 rounded-full px-3 py-1.5 text-[11px] font-bold transition active:scale-95 ${
             liked ? 'bg-red-500/10 text-red-400' : 'bg-white/5 text-ink-muted'
           }`}>
-          {liked ? '❤️' : '🤍'} {story.likes || 0} {(story.likes || 0) === 1 ? 'like' : 'likes'}
+          {liked ? '❤️' : '🤍'} {likeCount} {likeCount === 1 ? 'like' : 'likes'}
         </button>
         {story.beliefs?.length > 0 && (
           <span className="text-[10px] text-ink-dim">
