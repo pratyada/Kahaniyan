@@ -521,7 +521,7 @@ function PlayerInner() {
                   <button
                     key={n.key}
                     onClick={() => toggleNoise(n.key)}
-                    className={`shrink-0 rounded-full px-3 py-2 text-[11px] font-bold transition ${
+                    className={`shrink-0 rounded-full px-4 py-2.5 text-xs font-bold whitespace-nowrap transition ${
                       active
                         ? 'bg-gold text-bg-base shadow-glow'
                         : 'bg-white/5 text-ink-muted ring-1 ring-white/10'
