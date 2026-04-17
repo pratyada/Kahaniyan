@@ -477,7 +477,7 @@ export default function Settings() {
               their family, their values, and the warm voice of someone who loves them.
             </p>
             <p className="mt-2 font-story text-[13px] leading-relaxed text-ink-muted">
-              <strong className="text-ink">My Sleepy Tale</strong> is personalized AI bedtime
+              <strong className="text-ink">My Sleepy Tale</strong> is personalized bedtime
               storytelling — rooted in your culture, narrated in a voice that feels familiar,
               and woven fresh every single night. One story. One child. One gentle slide into sleep.
             </p>
