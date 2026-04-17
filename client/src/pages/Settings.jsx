@@ -25,6 +25,12 @@ export default function Settings() {
   const [upgradeOpen, setUpgradeOpen] = useState(false);
   const [feedbackOpen, setFeedbackOpen] = useState(false);
   const [releasesOpen, setReleasesOpen] = useState(false);
+  const [giftOpen, setGiftOpen] = useState(false);
+  const [giftEmail, setGiftEmail] = useState('');
+  const [giftName, setGiftName] = useState('');
+  const [giftMessage, setGiftMessage] = useState('');
+  const [giftSending, setGiftSending] = useState(false);
+  const [giftSent, setGiftSent] = useState(false);
   const [feedbackText, setFeedbackText] = useState('');
   const [feedbackSent, setFeedbackSent] = useState(false);
   const [feedbackSubmitting, setFeedbackSubmitting] = useState(false);
@@ -316,6 +322,7 @@ export default function Settings() {
       <SectionCard title="More">
         <div className="grid grid-cols-2 gap-2">
           <Tile icon="✨" title="Guides" sub="5 reads" onClick={() => navigate('/guides')} />
+          <Tile icon="🎁" title="Gift a Story Pack" sub="CA$9.99/mo" onClick={() => setGiftOpen(true)} />
           <Tile icon="🛣️" title="Roadmap" sub="Build status" onClick={() => navigate('/roadmap')} />
           <Tile icon="🤝" title="Invest" sub="Back this project" onClick={() => navigate('/invest')} />
           <Tile icon="🪨" title="Kid slept?" sub="Stoned Age awaits" onClick={() => window.location.href = 'https://stonedage.mysleepytale.com'} />
@@ -354,6 +361,107 @@ export default function Settings() {
               ))}
             </div>
             <button onClick={() => setReleasesOpen(false)} className="mt-4 w-full text-center text-sm text-ink-muted">Close</button>
+          </div>
+        </div>
+      )}
+
+      {/* Gift Card modal */}
+      {giftOpen && (
+        <div className="absolute inset-0 z-50 flex items-end justify-center bg-black/70 backdrop-blur-sm" onClick={() => { setGiftOpen(false); setGiftSent(false); }}>
+          <div className="max-h-[85vh] w-full overflow-y-auto rounded-t-3xl bg-bg-elevated p-6 pb-24 shadow-lift" onClick={(e) => e.stopPropagation()}>
+            <div className="mx-auto mb-4 h-1 w-12 rounded-full bg-white/20" />
+            {giftSent ? (
+              <div className="text-center py-8">
+                <div className="text-5xl mb-4">🎁</div>
+                <h2 className="font-display text-2xl font-bold text-gold">Gift sent!</h2>
+                <p className="mt-3 text-sm text-ink-muted">
+                  {giftName || 'Your friend'} will receive an email with 1 month of free bedtime stories.
+                </p>
+                <button onClick={() => { setGiftOpen(false); setGiftSent(false); }} className="btn-primary mt-6">Done</button>
+              </div>
+            ) : (
+              <>
+                <div className="text-center mb-6">
+                  <div className="text-4xl mb-2">🎁</div>
+                  <h2 className="font-display text-2xl font-bold text-gold">Gift a Story Pack</h2>
+                  <p className="mt-2 text-sm text-ink-muted">
+                    Give a friend or family member 1 month of unlimited bedtime stories — CA$9.99
+                  </p>
+                </div>
+
+                <div className="space-y-3 mb-4">
+                  <div className="rounded-xl bg-bg-base p-4 ring-1 ring-white/5">
+                    <div className="text-[10px] font-bold uppercase tracking-wider text-gold mb-3">What they get</div>
+                    <div className="space-y-2 text-sm text-ink-muted">
+                      <div className="flex items-center gap-2"><span className="text-gold">✓</span> 1 month unlimited AI stories</div>
+                      <div className="flex items-center gap-2"><span className="text-gold">✓</span> Stories up to 15 min</div>
+                      <div className="flex items-center gap-2"><span className="text-gold">✓</span> AI narrator voice</div>
+                      <div className="flex items-center gap-2"><span className="text-gold">✓</span> All cultural traditions</div>
+                      <div className="flex items-center gap-2"><span className="text-gold">✓</span> Can continue at CA$9.99/mo after</div>
+                    </div>
+                  </div>
+
+                  <input
+                    type="text"
+                    placeholder="Recipient's name"
+                    value={giftName}
+                    onChange={(e) => setGiftName(e.target.value)}
+                    className="field w-full"
+                  />
+                  <input
+                    type="email"
+                    placeholder="Recipient's email"
+                    value={giftEmail}
+                    onChange={(e) => setGiftEmail(e.target.value)}
+                    className="field w-full"
+                  />
+                  <textarea
+                    placeholder="Add a personal message (optional)"
+                    value={giftMessage}
+                    onChange={(e) => setGiftMessage(e.target.value)}
+                    rows={2}
+                    className="field w-full resize-none"
+                  />
+                </div>
+
+                <button
+                  onClick={async () => {
+                    if (!giftEmail.trim()) return;
+                    setGiftSending(true);
+                    try {
+                      const API = import.meta.env.VITE_API_BASE_URL || '';
+                      const res = await fetch(`${API}/api/gift-checkout`, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({
+                          senderUid: user?.uid,
+                          senderEmail: user?.email,
+                          recipientName: giftName,
+                          recipientEmail: giftEmail,
+                          message: giftMessage,
+                        }),
+                      });
+                      const data = await res.json();
+                      if (data.url) {
+                        window.location.href = data.url;
+                      } else {
+                        setGiftSent(true);
+                      }
+                    } catch (e) {
+                      console.error('Gift checkout failed:', e);
+                    }
+                    setGiftSending(false);
+                  }}
+                  disabled={!giftEmail.trim() || giftSending}
+                  className="btn-primary w-full py-4 text-base disabled:opacity-50"
+                >
+                  {giftSending ? 'Processing...' : 'Gift for CA$9.99'}
+                </button>
+                <p className="mt-3 text-center text-[10px] text-ink-dim">
+                  Secure payment via Stripe. They'll get an email to sign up and start listening.
+                </p>
+              </>
+            )}
           </div>
         </div>
       )}
