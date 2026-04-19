@@ -2,6 +2,7 @@ import { useState, useEffect, useMemo } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useAuth } from '../hooks/useAuth.jsx';
+import { useAdmin } from '../hooks/useAdmin.jsx';
 import { usePageMeta } from '../hooks/usePageMeta.js';
 import { doc, getDoc, setDoc, collection, getDocs } from 'firebase/firestore';
 import { db } from '../lib/firebase.js';
@@ -127,6 +128,10 @@ export default function Invest() {
   });
 
   const { user } = useAuth();
+  const { isUnlimited } = useAdmin();
+  const isAdmin = isUnlimited;
+  const [accessGranted, setAccessGranted] = useState(false);
+  const [accessChecked, setAccessChecked] = useState(false);
   const [contributors, setContributors] = useState([]);
   const [showForm, setShowForm] = useState(false);
   const [formData, setFormData] = useState({ amount: '', role: 'investor', message: '', linkedin: '', isPublic: true });
@@ -136,6 +141,69 @@ export default function Invest() {
   const [founderModal, setFounderModal] = useState(null);
   const [investorModal, setInvestorModal] = useState(null);
   const [searchParams, setSearchParams] = useSearchParams();
+
+  // Access control — only admin or approved investors can see this page
+  useEffect(() => {
+    if (isAdmin) { setAccessGranted(true); setAccessChecked(true); return; }
+    if (!user || !db) { setAccessChecked(true); return; }
+    (async () => {
+      try {
+        // Check if user is in approved investors list
+        const snap = await getDoc(doc(db, 'investAccess', user.uid));
+        setAccessGranted(snap.exists() && snap.data().approved === true);
+      } catch {
+        setAccessGranted(false);
+      }
+      setAccessChecked(true);
+    })();
+  }, [user, isAdmin]);
+
+  // Gate: show access request screen if not approved
+  if (accessChecked && !accessGranted) {
+    return (
+      <div className="bg-[#0a0a0f] text-[#f5f0e8] flex items-center justify-center" style={{ minHeight: '100vh' }}>
+        <div className="max-w-md px-6 text-center">
+          <div className="mb-4 text-5xl">🔒</div>
+          <h1 className="font-display text-3xl font-bold text-[#f0a500]">Invite Only</h1>
+          <p className="mt-3 text-sm text-[#a8a39a]">
+            This investment page is available by invitation only. If you've been invited,
+            please sign in with the email that was approved.
+          </p>
+          {!user ? (
+            <button
+              onClick={async () => {
+                const { signInWithPopup } = await import('firebase/auth');
+                const { auth, googleProvider } = await import('../lib/firebase.js');
+                if (auth && googleProvider) {
+                  try { await signInWithPopup(auth, googleProvider); } catch {}
+                }
+              }}
+              className="mt-6 rounded-full bg-[#f0a500] px-8 py-4 text-lg font-bold text-[#0a0a0f]"
+            >
+              Sign in to check access
+            </button>
+          ) : (
+            <div className="mt-6 rounded-2xl bg-[#1a1a28] p-4 text-sm text-[#a8a39a]">
+              Signed in as <strong className="text-[#f5f0e8]">{user.email}</strong>
+              <br />
+              <span className="text-[#6e6a63]">Contact the founders to request access.</span>
+            </div>
+          )}
+          <a href="/" className="mt-6 inline-block text-sm text-[#6e6a63] hover:text-[#f5f0e8]">
+            ← Back to app
+          </a>
+        </div>
+      </div>
+    );
+  }
+
+  if (!accessChecked) {
+    return (
+      <div className="bg-[#0a0a0f] flex items-center justify-center" style={{ minHeight: '100vh' }}>
+        <div className="h-8 w-8 animate-spin rounded-full border-2 border-[#f0a500] border-t-transparent" />
+      </div>
+    );
+  }
 
   // Handle Stripe return
   useEffect(() => {
@@ -495,10 +563,11 @@ export default function Invest() {
               </div>
             </section>
 
-            {/* Unit economics */}
+            {/* Unit economics — admin only */}
+            {isAdmin && (
             <section className="rounded-2xl bg-[#1a1a28] p-6">
               <h3 className="mb-4 text-xs font-bold uppercase tracking-wider text-[#6e6a63]">
-                Unit economics (projected)
+                Unit economics (projected) <span className="text-[#f3727f]">· Admin only</span>
               </h3>
               <div className="grid gap-3 sm:grid-cols-4">
                 <div className="rounded-xl bg-[#0a0a0f] p-3 text-center">
@@ -523,6 +592,7 @@ export default function Invest() {
                 Pre-written wisdom stories have zero API cost — pure margin.
               </p>
             </section>
+            )}
 
             {/* Why CA$25K + How we'll spend it */}
             <section>

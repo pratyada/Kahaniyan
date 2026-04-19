@@ -5,7 +5,7 @@ import PageTransition from '../components/PageTransition.jsx';
 import ValuePill from '../components/ValuePill.jsx';
 import UpgradeModal from '../components/UpgradeModal.jsx';
 import VersionFooter from '../components/VersionFooter.jsx';
-import WhisperBox from '../components/WhisperBox.jsx';
+import WhisperBox, { saveRecentWhisper } from '../components/WhisperBox.jsx';
 import StoryLoading from '../components/StoryLoading.jsx';
 import CalmParticles from '../components/CalmParticles.jsx';
 import { useFamilyProfile } from '../hooks/useFamilyProfile.js';
@@ -140,7 +140,10 @@ export default function Home() {
         selectedCharacters: mode === 'cast' ? selectedCharacters : undefined,
       });
       console.log('[My Sleepy Tale] Story generated:', story.title, '| loading into player...');
+      if (mode === 'whisper' && whisper.trim()) saveRecentWhisper(whisper.trim());
       load(story);
+      // Vibrate + notify when ready
+      try { navigator.vibrate?.([200, 100, 200]); } catch {}
       // Wait for React state to propagate before navigating
       setTimeout(() => {
         console.log('[My Sleepy Tale] Navigating to /player...');
@@ -445,33 +448,38 @@ export default function Home() {
         )}
       </AnimatePresence>
 
-      {/* CTA — hidden in tradition mode (lessons play directly on tap) */}
+      {/* Spacer for sticky CTA */}
+      {mode !== 'tradition' && <div className="h-24" />}
+
+      {/* CTA — sticky floating button, hidden in tradition mode */}
       {mode !== 'tradition' && (
-        <>
-          <motion.button
-            whileTap={{ scale: 0.97 }}
-            onClick={handleStart}
-            disabled={ctaDisabled}
-            className="btn-primary mt-6 w-full py-5 text-base disabled:opacity-40"
-          >
-            {loading ? (
-              <span className="inline-flex items-center gap-2">
-                <span className="inline-block h-3 w-3 animate-pulse rounded-full bg-bg-base/70" />
-                Weaving your story…
-              </span>
-            ) : (
-              <>
-                <span>{valueMetaForActive?.emoji}</span>
-                <span>Start Tonight's Story</span>
-              </>
+        <div className="fixed bottom-20 left-0 right-0 z-20 px-5 pointer-events-none">
+          <div className="mx-auto max-w-lg pointer-events-auto">
+            <motion.button
+              whileTap={{ scale: 0.97 }}
+              onClick={handleStart}
+              disabled={ctaDisabled}
+              className="btn-primary w-full py-5 text-base disabled:opacity-40 shadow-[0_-4px_20px_rgba(240,165,0,0.3)]"
+            >
+              {loading ? (
+                <span className="inline-flex items-center gap-2">
+                  <span className="inline-block h-3 w-3 animate-pulse rounded-full bg-bg-base/70" />
+                  Weaving your story…
+                </span>
+              ) : (
+                <>
+                  <span>{valueMetaForActive?.emoji}</span>
+                  <span>Start Tonight's Story</span>
+                </>
+              )}
+            </motion.button>
+            {mode === 'cast' && selectedCharIds.length === 0 && (
+              <p className="mt-2 text-center text-[11px] text-ink-dim">
+                Pick at least one character to weave them in
+              </p>
             )}
-          </motion.button>
-          {mode === 'cast' && selectedCharIds.length === 0 && (
-            <p className="mt-3 text-center text-[11px] text-ink-dim">
-              Pick at least one character to weave them in
-            </p>
-          )}
-        </>
+          </div>
+        </div>
       )}
 
       {/* Error banner */}

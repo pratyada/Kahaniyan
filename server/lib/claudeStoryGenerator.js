@@ -222,6 +222,7 @@ CULTURAL WARMTH
 - Weave in 2-3 real details from ${cultureHint} world — foods, festivals, places, traditions — but make them feel natural, not like a lesson about culture
 - These details should make a child from that culture smile with recognition
 - VARY your cultural references every story — never repeat the same ones
+- When referring to Prophet Muhammad in Islamic culture, ALWAYS use the honorific "peace be upon him" after his name
 ${country ? `- Country context: ${country}` : ''}
 
 FILLING THE TIME NATURALLY

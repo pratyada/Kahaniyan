@@ -43,9 +43,31 @@ function useQuickWhispers() {
   return whispers;
 }
 
+const RECENT_KEY = 'mst:recentWhispers';
+function getRecentWhispers() {
+  try { return JSON.parse(localStorage.getItem(RECENT_KEY) || '[]').slice(0, 3); } catch { return []; }
+}
+function saveRecentWhisper(whisper) {
+  if (!whisper?.trim()) return;
+  try {
+    const list = getRecentWhispers().filter((w) => w !== whisper);
+    list.unshift(whisper);
+    localStorage.setItem(RECENT_KEY, JSON.stringify(list.slice(0, 3)));
+  } catch {}
+}
+function removeRecentWhisper(whisper) {
+  try {
+    const list = getRecentWhispers().filter((w) => w !== whisper);
+    localStorage.setItem(RECENT_KEY, JSON.stringify(list));
+  } catch {}
+}
+
+export { saveRecentWhisper };
+
 export default function WhisperBox({ value, onChange, overrideValue, onToggleOverride }) {
   const [open, setOpen] = useState(false);
   const SUGGESTIONS = useQuickWhispers();
+  const [recents, setRecents] = useState(getRecentWhispers);
   const charCount = value.length;
   const max = 200;
 
@@ -104,6 +126,44 @@ export default function WhisperBox({ value, onChange, overrideValue, onToggleOve
                   {charCount}/{max}
                 </span>
               </div>
+
+              {/* Recent whispers */}
+              {!value.trim() && recents.length > 0 && (
+                <div className="mt-4">
+                  <div className="mb-2 text-[10px] font-bold uppercase tracking-[0.16em] text-ink-muted">
+                    Recent whispers
+                  </div>
+                  <div className="space-y-1.5">
+                    {recents.map((w) => (
+                      <div key={w} className="flex items-center gap-2 rounded-xl bg-bg-base px-3 py-2 ring-1 ring-white/5">
+                        <button
+                          type="button"
+                          onClick={() => onChange(w)}
+                          className="flex-1 text-left text-[12px] text-ink-muted truncate"
+                        >
+                          {w}
+                        </button>
+                        <button
+                          type="button"
+                          onClick={() => { onChange(w); }}
+                          className="shrink-0 text-[11px] text-gold"
+                          title="Edit"
+                        >
+                          ✏️
+                        </button>
+                        <button
+                          type="button"
+                          onClick={() => { removeRecentWhisper(w); setRecents(getRecentWhispers()); }}
+                          className="shrink-0 text-[11px] text-ink-dim"
+                          title="Remove"
+                        >
+                          ✕
+                        </button>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
 
               {/* Quick suggestions — hidden when user is typing their own */}
               {!value.trim() && <div className="mt-4">

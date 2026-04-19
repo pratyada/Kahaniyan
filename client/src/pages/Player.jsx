@@ -75,11 +75,48 @@ import { useAuth } from '../hooks/useAuth.jsx';
 import { useFamilyProfile } from '../hooks/useFamilyProfile.js';
 import { useSpeech } from '../hooks/useSpeech.js';
 import { useNarrator } from '../hooks/useNarrator.js';
-import { useWhiteNoise, NOISE_TYPES } from '../hooks/useWhiteNoise.jsx';
 import { valueMeta } from '../utils/constants.js';
 import StoryLoading from '../components/StoryLoading.jsx';
 
 const SPEEDS = [0.8, 1, 1.2];
+
+// Request notification permission early (non-blocking)
+function requestNotificationPermission() {
+  if ('Notification' in window && Notification.permission === 'default') {
+    Notification.requestPermission().catch(() => {});
+  }
+}
+
+// Show notification when audio is ready (user may have backgrounded)
+function notifyAudioReady(title) {
+  if ('Notification' in window && Notification.permission === 'granted' && document.visibilityState === 'hidden') {
+    try {
+      const n = new Notification('Your story is ready!', {
+        body: `"${title}" is ready to play`,
+        icon: '/favicon.svg',
+        tag: 'story-ready',
+        requireInteraction: true,
+      });
+      n.onclick = () => { window.focus(); n.close(); };
+    } catch {}
+  }
+}
+
+// Set up Media Session for lock screen / notification bar controls
+function setupMediaSession(story, meta, handlers) {
+  if (!('mediaSession' in navigator)) return;
+  navigator.mediaSession.metadata = new MediaMetadata({
+    title: story.title,
+    artist: story.voice || 'AI Narrator',
+    album: 'My Sleepy Tale',
+    artwork: [{ src: '/favicon.svg', sizes: '192x192', type: 'image/png' }],
+  });
+  navigator.mediaSession.setActionHandler('play', handlers.play);
+  navigator.mediaSession.setActionHandler('pause', handlers.pause);
+  navigator.mediaSession.setActionHandler('seekbackward', handlers.seekBackward);
+  navigator.mediaSession.setActionHandler('seekforward', handlers.seekForward);
+  navigator.mediaSession.setActionHandler('stop', handlers.stop);
+}
 
 export default function Player() {
   return (
@@ -96,7 +133,6 @@ function PlayerInner() {
   const { profile } = useFamilyProfile();
   const webSpeech = useSpeech();
   const narrator = useNarrator();
-  const noise = useWhiteNoise();
   const [loadingShared, setLoadingShared] = useState(false);
   const [sharedPreview, setSharedPreview] = useState(null); // story preview for non-logged-in users
   const [liked, setLiked] = useState(false);
@@ -106,20 +142,27 @@ function PlayerInner() {
   const sharedIdRef = useRef(null);
   useEffect(() => {
     const storyId = searchParams.get('storyId');
-    if (!storyId || current || sharedIdRef.current === storyId) return;
+    if (!storyId || sharedIdRef.current === storyId) return;
+    // If current story is already this shared story, skip
+    if (current && current.id === storyId) return;
     sharedIdRef.current = storyId;
     setLoadingShared(true);
     loadSharedStory(storyId).then((story) => {
       if (story) {
         if (user) {
           load(story);
+          setLoadingShared(false);
         } else {
           setSharedPreview(story);
+          setLoadingShared(false);
         }
+      } else {
+        setLoadingShared(false);
       }
+    }).catch(() => {
       setLoadingShared(false);
     });
-  }, [searchParams, current, load, user]);
+  }, [searchParams, load, user]);
 
   // When user signs in after seeing preview, load the story
   useEffect(() => {
@@ -132,11 +175,8 @@ function PlayerInner() {
   const [speed, setSpeed] = useState(1);
   const [showText, setShowText] = useState(true);
   const [done, setDone] = useState(false);
-  const [noiseType, setNoiseType] = useState(null);
   const [usingTTS, setUsingTTS] = useState(false); // true = ElevenLabs, false = Web Speech
   const [ttsReady, setTtsReady] = useState(false);
-  const dialogueFadeRef = useRef(null);
-
   // Unified interface — picks ElevenLabs or Web Speech
   const voice = usingTTS ? {
     speaking: narrator.playing,
@@ -151,12 +191,14 @@ function PlayerInner() {
   };
   const startedRef = useRef(false);
 
+  // Request notification permission on mount
+  useEffect(() => { requestNotificationPermission(); }, []);
+
   // Reset startedRef when story changes so auto-play fires for new stories
   const currentIdRef = useRef(null);
   if (current && current.id !== currentIdRef.current) {
     currentIdRef.current = current.id;
     startedRef.current = false;
-    dialogueFadeRef.current = null;
   }
 
   // Auto-play when current story is available
@@ -168,14 +210,6 @@ function PlayerInner() {
     if (startedRef.current) return;
     startedRef.current = true;
     console.log('[My Sleepy Tale:Player] Starting playback:', current.title);
-
-    // Start ambient noise if enabled
-    if (profile?.whiteNoiseEnabled) {
-      const initial = profile?.preferredNoise || 'rain';
-      setNoiseType(initial);
-      noise.start(initial);
-      noise.setVolume(0.10);
-    }
 
     const lang = current.language || profile?.language || 'English';
     const narratorName = current.voice || 'AI Narrator';
@@ -204,7 +238,23 @@ function PlayerInner() {
 
           // Upload to Firebase Storage for future plays (fire and forget)
           if (audio && current.id) {
-            cacheAudioToStorage(current.id, narrator.getBlob());
+            cacheAudioToStorage(current.id, narrator.getBlob()).then(() => {
+              // Update the saved last-story in localStorage so reopened stories use cached audio
+              try {
+                const raw = localStorage.getItem('mst:lastStory');
+                if (raw) {
+                  const saved = JSON.parse(raw);
+                  if (saved.id === current.id) {
+                    const lib = JSON.parse(localStorage.getItem('mst:library') || '[]');
+                    const fromLib = lib.find((s) => s.id === current.id);
+                    if (fromLib?.audioUrl) {
+                      saved.audioUrl = fromLib.audioUrl;
+                      localStorage.setItem('mst:lastStory', JSON.stringify(saved));
+                    }
+                  }
+                }
+              } catch {}
+            });
           }
         }
 
@@ -215,6 +265,9 @@ function PlayerInner() {
 
         audio.onplay = () => setIsPlaying(true);
         audio.onpause = () => setIsPlaying(false);
+
+        // Notify user if they backgrounded while waiting for TTS
+        notifyAudioReady(current.title);
 
         try {
           await audio.play();
@@ -240,51 +293,16 @@ function PlayerInner() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [current]);
 
-  // Dialogue fade — narration ramps down while noise grows in second half
   const progress = voice.progress;
-  useEffect(() => {
-    if (!profile?.dialogueFade || !noiseType) return;
-    if (progress < 0.5) return;
-    if (dialogueFadeRef.current) return; // only once
-    dialogueFadeRef.current = true;
-
-    // Speech volume → 0 over the next ~30s (handled by setVolume on next utterances)
-    const target = 0.2;
-    const fadeMs = 30000;
-    const startedAt = Date.now();
-    const id = setInterval(() => {
-      const elapsed = Date.now() - startedAt;
-      const t = Math.min(1, elapsed / fadeMs);
-      const speechVol = 1 - (1 - target) * t;
-      if (usingTTS) narrator.setVolume(speechVol);
-      else webSpeech.setVolume(speechVol);
-      const noiseVol = 0.25 + (0.55 * t);
-      noise.setVolume(noiseVol);
-      if (t >= 1) clearInterval(id);
-    }, 200);
-    return () => clearInterval(id);
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [progress, profile?.dialogueFade, noiseType]);
 
   // Cleanup on unmount
   useEffect(() => {
     return () => {
-      noise.stop();
       narrator.stop();
       webSpeech.stop();
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-
-  const toggleNoise = (type) => {
-    if (noiseType === type) {
-      noise.stop();
-      setNoiseType(null);
-    } else {
-      noise.start(type);
-      setNoiseType(type);
-    }
-  };
 
   const shareStory = async () => {
     try {
@@ -305,7 +323,7 @@ function PlayerInner() {
     }
   };
 
-  // When story ends, stop everything and go back to home
+  // When story ends, show done state then go back after a pause
   useEffect(() => {
     let ended = false;
     if (!usingTTS) {
@@ -313,15 +331,18 @@ function PlayerInner() {
     } else {
       if (progress >= 1 && !narrator.playing && !narrator.loading && ttsReady) ended = true;
     }
-    if (ended) {
+    if (ended && !done) {
+      setDone(true);
       setIsPlaying(false);
-      noise.stop();
-      narrator.stop();
-      webSpeech.stop();
-      navigate('/');
+      // Give user a moment to see the completion, then navigate
+      setTimeout(() => {
+        narrator.stop();
+        webSpeech.stop();
+        navigate('/');
+      }, 3000);
     }
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [progress, setIsPlaying, usingTTS, narrator.playing, narrator.loading, ttsReady]);
+  }, [progress, setIsPlaying, usingTTS, narrator.playing, narrator.loading, ttsReady, done]);
 
   // Shared story preview — user not logged in
   if (sharedPreview && !user) {
@@ -389,9 +410,12 @@ function PlayerInner() {
         </div>
       );
     }
-    // Try recovering from localStorage
-    const lastStory = reloadLast();
-    if (lastStory) return null;
+    // Try recovering from localStorage — but not if we're loading a shared story
+    const hasSharedId = searchParams.get('storyId');
+    if (!hasSharedId) {
+      const lastStory = reloadLast();
+      if (lastStory) return null;
+    }
 
     return (
       <div className="flex h-screen flex-col items-center justify-center bg-bg-base px-6 text-center">
@@ -442,10 +466,22 @@ function PlayerInner() {
   const handleClose = () => {
     if (usingTTS) narrator.stop();
     else webSpeech.stop();
-    noise.stop();
     clear();
     navigate('/');
   };
+
+  // Media Session — lock screen / notification bar controls
+  useEffect(() => {
+    if (!current || !usingTTS) return;
+    setupMediaSession(current, meta, {
+      play: () => { narrator.play(); setIsPlaying(true); },
+      pause: () => { narrator.pause(); setIsPlaying(false); },
+      seekBackward: () => narrator.seekBy(-15),
+      seekForward: () => narrator.seekBy(15),
+      stop: handleClose,
+    });
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [current, usingTTS]);
 
   return (
     <div className="absolute inset-0 z-40 overflow-hidden bg-bg-base">
@@ -488,10 +524,14 @@ function PlayerInner() {
                 </button>
                 <button
                   onClick={shareStory}
-                  className="grid h-10 w-10 place-items-center rounded-full bg-white/5 text-sm"
+                  className="grid h-10 w-10 place-items-center rounded-full bg-white/5"
                   title="Share story"
                 >
-                  ↗
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    <path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8" />
+                    <polyline points="16 6 12 2 8 6" />
+                    <line x1="12" y1="2" x2="12" y2="15" />
+                  </svg>
                 </button>
                 <button
                   onClick={() => setShowText((s) => !s)}
@@ -546,49 +586,100 @@ function PlayerInner() {
             {/* Spacer */}
             <div className="flex-1" />
 
-            {/* Progress bar */}
+            {/* Progress bar — tappable + draggable to seek */}
             <div className="mt-4">
-              <div className="h-1 w-full overflow-hidden rounded-full bg-white/10">
-                <motion.div
-                  className="h-full bg-gold"
-                  animate={{ width: `${Math.round(progress * 100)}%` }}
-                  transition={{ ease: 'linear' }}
-                />
+              <div
+                className="relative h-6 w-full cursor-pointer flex items-center"
+                onClick={(e) => {
+                  if (!usingTTS) return;
+                  const rect = e.currentTarget.getBoundingClientRect();
+                  const fraction = Math.max(0, Math.min(1, (e.clientX - rect.left) / rect.width));
+                  narrator.seek(fraction);
+                }}
+                onTouchMove={(e) => {
+                  if (!usingTTS) return;
+                  const rect = e.currentTarget.getBoundingClientRect();
+                  const fraction = Math.max(0, Math.min(1, (e.touches[0].clientX - rect.left) / rect.width));
+                  narrator.seek(fraction);
+                }}
+              >
+                <div className="h-1.5 w-full overflow-hidden rounded-full bg-white/10">
+                  <div
+                    className="h-full bg-gold pointer-events-none rounded-full"
+                    style={{ width: `${Math.round(progress * 100)}%` }}
+                  />
+                </div>
+                {/* Seek thumb */}
+                {usingTTS && (
+                  <div
+                    className="absolute h-4 w-4 rounded-full bg-gold shadow-glow pointer-events-none"
+                    style={{ left: `calc(${Math.round(progress * 100)}% - 8px)` }}
+                  />
+                )}
               </div>
               {narrator.duration > 0 && (
-                <div className="mt-2 flex justify-between text-[10px] uppercase tracking-wider text-ink-dim">
+                <div className="mt-1 flex justify-between text-[10px] uppercase tracking-wider text-ink-dim">
                   <span>{Math.floor(progress * narrator.duration / 60)}:{String(Math.floor(progress * narrator.duration % 60)).padStart(2,'0')}</span>
-                  <span>{Math.floor(narrator.duration / 60)}:{String(Math.floor(narrator.duration % 60)).padStart(2,'0')}</span>
+                  <span>-{Math.floor((1 - progress) * narrator.duration / 60)}:{String(Math.floor((1 - progress) * narrator.duration % 60)).padStart(2,'0')}</span>
                 </div>
               )}
             </div>
 
             {/* Controls — large, obvious, mobile-first */}
             <div className="mt-5 flex flex-col items-center gap-3">
-              {/* Big play / pause / loading */}
-              <button
-                onClick={handleTogglePlay}
-                disabled={narrator.loading}
-                aria-label={narrator.loading ? 'Loading audio' : isPlaying ? 'Pause story' : 'Play story'}
-                className={`group relative grid h-20 w-20 place-items-center rounded-full transition active:scale-95 ${
-                  narrator.loading
-                    ? 'bg-bg-elevated ring-2 ring-gold/30'
-                    : 'bg-gold text-bg-base shadow-glow'
-                }`}
-              >
-                {narrator.loading ? (
-                  <span className="inline-block h-5 w-5 animate-spin rounded-full border-2 border-gold border-t-transparent" />
-                ) : isPlaying ? (
-                  <svg width="28" height="28" viewBox="0 0 24 24" fill="currentColor">
-                    <rect x="6" y="4" width="4" height="16" rx="1.5" />
-                    <rect x="14" y="4" width="4" height="16" rx="1.5" />
+              {/* Rewind / Play / Forward */}
+              <div className="flex items-center gap-6">
+                {/* Rewind 15s */}
+                <button
+                  onClick={() => { if (usingTTS) narrator.seekBy(-15); }}
+                  disabled={narrator.loading || !usingTTS}
+                  aria-label="Rewind 15 seconds"
+                  className="grid h-12 w-12 place-items-center rounded-full bg-white/5 text-ink-muted transition active:scale-95 disabled:opacity-30"
+                >
+                  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    <path d="M11 17a5 5 0 1 0 0-10" /><polyline points="11 7 7 7 7 11" />
+                    <text x="13" y="15" fill="currentColor" stroke="none" fontSize="7" fontWeight="bold">15</text>
                   </svg>
-                ) : (
-                  <svg width="28" height="28" viewBox="0 0 24 24" fill="currentColor">
-                    <path d="M8 5.5v13a1 1 0 0 0 1.55.83l10-6.5a1 1 0 0 0 0-1.66l-10-6.5A1 1 0 0 0 8 5.5z" />
+                </button>
+
+                {/* Big play / pause / loading */}
+                <button
+                  onClick={handleTogglePlay}
+                  disabled={narrator.loading}
+                  aria-label={narrator.loading ? 'Loading audio' : isPlaying ? 'Pause story' : 'Play story'}
+                  className={`group relative grid h-20 w-20 place-items-center rounded-full transition active:scale-95 ${
+                    narrator.loading
+                      ? 'bg-bg-elevated ring-2 ring-gold/30'
+                      : 'bg-gold text-bg-base shadow-glow'
+                  }`}
+                >
+                  {narrator.loading ? (
+                    <span className="inline-block h-5 w-5 animate-spin rounded-full border-2 border-gold border-t-transparent" />
+                  ) : isPlaying ? (
+                    <svg width="28" height="28" viewBox="0 0 24 24" fill="currentColor">
+                      <rect x="6" y="4" width="4" height="16" rx="1.5" />
+                      <rect x="14" y="4" width="4" height="16" rx="1.5" />
+                    </svg>
+                  ) : (
+                    <svg width="28" height="28" viewBox="0 0 24 24" fill="currentColor">
+                      <path d="M8 5.5v13a1 1 0 0 0 1.55.83l10-6.5a1 1 0 0 0 0-1.66l-10-6.5A1 1 0 0 0 8 5.5z" />
+                    </svg>
+                  )}
+                </button>
+
+                {/* Forward 15s */}
+                <button
+                  onClick={() => { if (usingTTS) narrator.seekBy(15); }}
+                  disabled={narrator.loading || !usingTTS}
+                  aria-label="Forward 15 seconds"
+                  className="grid h-12 w-12 place-items-center rounded-full bg-white/5 text-ink-muted transition active:scale-95 disabled:opacity-30"
+                >
+                  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    <path d="M13 17a5 5 0 1 0 0-10" /><polyline points="13 7 17 7 17 11" />
+                    <text x="5" y="15" fill="currentColor" stroke="none" fontSize="7" fontWeight="bold">15</text>
                   </svg>
-                )}
-              </button>
+                </button>
+              </div>
               <div className="text-[10px] font-bold uppercase tracking-[0.18em] text-ink-muted">
                 {narrator.loading ? 'Preparing voice…' : isPlaying ? 'Tap to pause' : 'Tap to play'}
               </div>
@@ -609,11 +700,15 @@ function PlayerInner() {
                 </button>
 
                 <button
-                  onClick={async () => {
+                  onClick={() => {
                     if (usingTTS) {
-                      narrator.stop();
-                      narrator.seek(0);
-                      narrator.play();
+                      // Stop current, seek to 0, then play — prevents duplicate audio
+                      const audio = narrator.audioRef?.current;
+                      if (audio) {
+                        audio.currentTime = 0;
+                        audio.volume = 1;
+                        audio.play().catch(() => {});
+                      }
                     } else {
                       webSpeech.stop();
                       setTimeout(() => {
@@ -640,25 +735,6 @@ function PlayerInner() {
             </div>
 
 
-            {/* Sleep sounds — below controls, always visible */}
-            <div className="mt-4 -mx-6 flex gap-2 overflow-x-auto px-6 pb-2">
-              {NOISE_TYPES.map((n) => {
-                const active = noiseType === n.key;
-                return (
-                  <button
-                    key={n.key}
-                    onClick={() => toggleNoise(n.key)}
-                    className={`shrink-0 rounded-full px-4 py-2.5 text-xs font-bold whitespace-nowrap transition ${
-                      active
-                        ? 'bg-gold text-bg-base shadow-glow'
-                        : 'bg-white/5 text-ink-muted ring-1 ring-white/10'
-                    }`}
-                  >
-                    {n.icon} {n.label}
-                  </button>
-                );
-              })}
-            </div>
           </motion.div>
       </AnimatePresence>
     </div>
@@ -666,20 +742,38 @@ function PlayerInner() {
 }
 
 function HighlightedText({ text, progress }) {
-  // Audio progress doesn't map linearly to text characters — narration
-  // speeds up/slows down. Apply a slight lead so the highlight stays
-  // with or slightly ahead of the voice, never behind.
-  const lead = 0.06; // 6% ahead for tighter sync
+  // Split text into sentences for better visual sync
+  const sentences = text.match(/[^.!?]+[.!?]+\s*/g) || [text];
+  const totalLen = text.length;
+
+  // Apply a small lead so highlight stays with or slightly ahead of voice
+  const lead = 0.04;
   const adjusted = Math.min(1, progress + lead);
-  // Use a power curve — text reads faster at start, slows toward end
-  const curved = Math.pow(adjusted, 0.92);
-  const cutoff = Math.floor(text.length * curved);
-  const read = text.slice(0, cutoff);
-  const rest = text.slice(cutoff);
+  const cutoff = Math.floor(totalLen * adjusted);
+
+  let charCount = 0;
   return (
     <>
-      <span className="text-yellow-300">{read}</span>
-      <span>{rest}</span>
+      {sentences.map((sentence, i) => {
+        const start = charCount;
+        charCount += sentence.length;
+        const isFullyRead = charCount <= cutoff;
+        const isPartial = start < cutoff && charCount > cutoff;
+        const partialCut = cutoff - start;
+
+        if (isFullyRead) {
+          return <span key={i} className="text-gold/90">{sentence}</span>;
+        }
+        if (isPartial) {
+          return (
+            <span key={i}>
+              <span className="text-gold/90">{sentence.slice(0, partialCut)}</span>
+              <span className="text-ink-muted">{sentence.slice(partialCut)}</span>
+            </span>
+          );
+        }
+        return <span key={i} className="text-ink-muted">{sentence}</span>;
+      })}
     </>
   );
 }

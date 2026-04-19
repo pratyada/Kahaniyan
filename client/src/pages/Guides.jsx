@@ -175,7 +175,7 @@ Too much cultural specificity and the child grows up in a bubble. Too much unive
 
 My Sleepy Tale solves this with a simple design choice: we tell the same lesson from many traditions.
 
-Compassion to animals is taught by Krishna and the squirrel, by Prophet Muhammad and the crying camel, by Jesus and the birds, by Prince Siddhartha and the wounded swan, by Guru Nanak and the true bargain, by Mahavir and the tiny ant.
+Compassion to animals is taught by Krishna and the squirrel, by Prophet Muhammad (peace be upon him) and the crying camel, by Jesus and the birds, by Prince Siddhartha and the wounded swan, by Guru Nanak and the true bargain, by Mahavir and the tiny ant.
 
 The child hears their own tradition's version first. Then, over time, they hear the others. They realize — without being told, without a lecture — that kindness is not the property of any one religion. That courage looks the same in a Hindu village and a Christian hillside and a Sikh battlefield.
 
