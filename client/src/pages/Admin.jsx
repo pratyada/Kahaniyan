@@ -1829,6 +1829,7 @@ function StoryLab() {
     { key: 'ingredients', label: 'Story Ingredients', icon: '🧩' },
     { key: 'values', label: 'Value Delivery', icon: '💡' },
     { key: 'ages', label: 'Age Guides', icon: '🎂' },
+    { key: 'wisdom-audio', label: 'Wisdom Audio', icon: '🔊' },
     { key: 'cache', label: `Cache (${cachedStories.length})`, icon: '📦' },
   ];
 
@@ -2267,6 +2268,9 @@ function StoryLab() {
         </div>
       )}
 
+      {/* ══════ WISDOM AUDIO ══════ */}
+      {subTab === 'wisdom-audio' && <WisdomAudioPanel />}
+
       {/* ══════ STORY CACHE ══════ */}
       {subTab === 'cache' && (() => {
         const filtered = cachedStories.filter((s) => {
@@ -2428,6 +2432,97 @@ function LabSelect({ label, value, onChange, options }) {
     <div>
       <label className="mb-1 block text-[10px] font-bold uppercase tracking-wider text-[#6e6a63]">{label}</label>
       <select value={value} onChange={(e) => onChange(e.target.value)} className="w-full rounded-lg bg-[#0f0f17] px-3 py-2 text-sm text-[#f5f0e8] outline-none ring-1 ring-white/5">{options.map((o) => <option key={o.value} value={o.value}>{o.label}</option>)}</select>
+    </div>
+  );
+}
+
+function WisdomAudioPanel() {
+  const [urls, setUrls] = useState({});
+  const [status, setStatus] = useState({});
+  const [generating, setGenerating] = useState(null);
+  const [lessons, setLessons] = useState([]);
+
+  useEffect(() => {
+    import('../data/culturalLessons.js').then(m => setLessons(m.CULTURAL_LESSONS));
+    (async () => {
+      try {
+        const { doc, getDoc } = await import('firebase/firestore');
+        const { db } = await import('../lib/firebase.js');
+        if (!db) return;
+        const snap = await getDoc(doc(db, 'config', 'wisdomAudio'));
+        if (snap.exists()) setUrls(snap.data());
+      } catch {}
+    })();
+  }, []);
+
+  const generateOne = async (lesson) => {
+    setGenerating(lesson.id);
+    setStatus(s => ({ ...s, [lesson.id]: 'generating...' }));
+    try {
+      const text = lesson.body.replace(/\{childName\}/g, 'little one').replace(/\{sibling\}/g, 'their friend').replace(/\{grandfather\}/g, 'Dada ji').replace(/\{grandmother\}/g, 'Nani ma').replace(/\{pet\}/g, 'their puppy');
+      const res = await fetch('/api/generate-wisdom-audio', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ lessonId: lesson.id, text: text.slice(0, 4096) }),
+      });
+      const data = await res.json();
+      if (data.audioUrl) {
+        setUrls(u => ({ ...u, [lesson.id]: data.audioUrl }));
+        setStatus(s => ({ ...s, [lesson.id]: 'done' }));
+      } else {
+        setStatus(s => ({ ...s, [lesson.id]: data.error || 'failed' }));
+      }
+    } catch (e) {
+      setStatus(s => ({ ...s, [lesson.id]: e.message }));
+    }
+    setGenerating(null);
+  };
+
+  const generateAll = async () => {
+    for (const lesson of lessons) {
+      if (urls[lesson.id]) continue;
+      await generateOne(lesson);
+    }
+  };
+
+  const cached = lessons.filter(l => urls[l.id]).length;
+
+  return (
+    <div className="space-y-4">
+      <div className="flex items-center justify-between rounded-2xl bg-[#1a1a28] p-4">
+        <div>
+          <h3 className="text-sm font-bold text-[#f5f0e8]">Pre-generate Wisdom Audio</h3>
+          <p className="text-xs text-[#6e6a63]">{cached}/{lessons.length} cached. One-time cost, then free forever.</p>
+        </div>
+        <button onClick={generateAll} disabled={!!generating}
+          className="rounded-full bg-[#f0a500] px-5 py-2 text-xs font-bold text-[#0a0a0f] disabled:opacity-50">
+          {generating ? 'Generating...' : `Generate ${lessons.length - cached} Missing`}
+        </button>
+      </div>
+      <div className="space-y-2">
+        {lessons.map(l => (
+          <div key={l.id} className="flex items-center gap-3 rounded-xl bg-[#1a1a28] p-3">
+            <div className="flex-1 min-w-0">
+              <div className="text-xs font-bold text-[#f5f0e8] truncate">{l.title}</div>
+              <div className="text-[10px] text-[#6e6a63]">{l.tradition}</div>
+            </div>
+            {urls[l.id] ? (
+              <div className="flex items-center gap-2">
+                <audio src={urls[l.id]} controls className="h-8 w-32" />
+                <span className="text-[10px] font-bold text-[#7ad9a1]">Cached</span>
+              </div>
+            ) : (
+              <button onClick={() => generateOne(l)} disabled={!!generating}
+                className="shrink-0 rounded-full bg-[#f0a500]/15 px-3 py-1 text-[10px] font-bold text-[#f0a500] disabled:opacity-50">
+                {generating === l.id ? 'Generating...' : 'Generate'}
+              </button>
+            )}
+            {status[l.id] && status[l.id] !== 'done' && (
+              <span className="text-[9px] text-[#6e6a63]">{status[l.id]}</span>
+            )}
+          </div>
+        ))}
+      </div>
     </div>
   );
 }

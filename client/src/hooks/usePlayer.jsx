@@ -49,6 +49,8 @@ export function PlayerProvider({ children }) {
       } catch {}
       audioRef.current = null;
     }
+    // Stop browser speech (wisdom stories)
+    try { window.speechSynthesis?.cancel(); } catch {}
     setCurrent(null);
     setIsPlaying(false);
     try { localStorage.removeItem(LAST_STORY_KEY); } catch {}

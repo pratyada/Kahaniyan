@@ -241,18 +241,8 @@ function PlayerInner() {
           audio = narrator.loadCached(current.audioUrl);
         }
 
-        // Priority 3: Wisdom stories — browser speech (free, already started from Home)
-        if (!audio && current.isWisdom && 'speechSynthesis' in window) {
-          console.log('[My Sleepy Tale:Player] Wisdom story — free browser voice (auto-playing)');
-          // Speech was already started in Home.jsx on user tap
-          const utterance = window.__wisdomUtterance;
-          if (utterance) {
-            utterance.onend = () => setIsPlaying(false);
-          }
-          setIsPlaying(true);
-          setTtsReady(true);
-          return;
-        }
+        // Priority 3: Wisdom stories without pre-generated audio — use paid TTS once, cache it
+        // (Pre-generated wisdom stories already have audioUrl and are handled by Priority 2)
 
         // Priority 4: Generate via paid TTS API (non-wisdom stories)
         if (!audio && current.text && !current.isWisdom) {
@@ -413,6 +403,8 @@ function PlayerInner() {
   const handleClose = () => {
     closedRef.current = true;
     narrator.stop();
+    // Also stop browser speech if playing (wisdom stories fallback)
+    try { window.speechSynthesis?.cancel(); } catch {}
     clear();
     navigate('/');
   };

@@ -81,6 +81,18 @@ export default function Home() {
   const [upgradeOpen, setUpgradeOpen] = useState(false);
   const [upgradeReason, setUpgradeReason] = useState('');
   const [storyError, setStoryError] = useState(null);
+  // Load pre-generated wisdom audio URLs from Firestore (one-time)
+  const [wisdomAudioUrls, setWisdomAudioUrls] = useState({});
+  useEffect(() => {
+    if (!db) return;
+    (async () => {
+      try {
+        const { doc: fdoc, getDoc: fget } = await import('firebase/firestore');
+        const snap = await fget(fdoc(db, 'config', 'wisdomAudio'));
+        if (snap.exists()) setWisdomAudioUrls(snap.data());
+      } catch {}
+    })();
+  }, []);
 
   const maxDuration = maxDurationFor(tier, isUnlimited);
   const used = storiesThisWeek();
@@ -162,8 +174,9 @@ export default function Home() {
 
   const playLesson = (lesson) => {
     const filledText = fillTokens(lesson.body, profile);
+    const pregenUrl = wisdomAudioUrls[lesson.id] || null;
     const story = {
-      id: `lesson_${lesson.id}_${Date.now()}`,
+      id: `lesson_${lesson.id}`,
       title: lesson.title,
       text: filledText,
       wordCount: filledText.split(/\s+/).length,
@@ -174,9 +187,10 @@ export default function Home() {
       tradition: lesson.tradition,
       source: lesson.source,
       createdAt: new Date().toISOString(),
-      isWisdom: true, // flag: uses browser TTS only, no API cost
+      isWisdom: true,
+      audioUrl: pregenUrl, // pre-generated high-quality audio (if available)
     };
-    // Track play count locally (zero cost, works at any scale)
+    // Track play count locally (zero cost)
     try {
       const key = 'mst:wisdomPlays';
       const plays = JSON.parse(localStorage.getItem(key) || '{}');
@@ -184,19 +198,6 @@ export default function Home() {
       plays._total = (plays._total || 0) + 1;
       localStorage.setItem(key, JSON.stringify(plays));
     } catch {}
-    // Start browser speech immediately (within user gesture context for mobile)
-    if ('speechSynthesis' in window && story.text) {
-      window.speechSynthesis.cancel();
-      const utterance = new SpeechSynthesisUtterance(story.text);
-      utterance.rate = 0.9;
-      utterance.pitch = 0.95;
-      const voices = window.speechSynthesis.getVoices();
-      const good = voices.find(v => v.name.toLowerCase().includes('google') || v.name.toLowerCase().includes('natural')) || voices[0];
-      if (good) utterance.voice = good;
-      window.speechSynthesis.speak(utterance);
-      // Store ref so Player can track it
-      window.__wisdomUtterance = utterance;
-    }
     load(story);
     navigate('/player');
   };
