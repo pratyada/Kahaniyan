@@ -235,21 +235,10 @@ function PlayerInner() {
           const url = URL.createObjectURL(localBlob);
           audio = narrator.loadCached(url);
         }
-        // Priority 2: Firebase Storage cached URL — fetch as blob to avoid CORS issues
+        // Priority 2: Firebase Storage cached URL — Audio() can play cross-origin directly
         else if (current.audioUrl) {
-          console.log('[My Sleepy Tale:Player] Fetching cached audio from Firebase...');
-          try {
-            const res = await fetch(current.audioUrl);
-            if (res.ok) {
-              const blob = await res.blob();
-              const blobUrl = URL.createObjectURL(blob);
-              audio = narrator.loadCached(blobUrl);
-              // Save to IDB for instant replay next time
-              if (current.id) setCachedAudio(current.id, blob);
-            }
-          } catch {
-            console.warn('[My Sleepy Tale:Player] Cached audio fetch failed (CORS), falling back to TTS');
-          }
+          console.log('[My Sleepy Tale:Player] Playing cached audio from Firebase');
+          audio = narrator.loadCached(current.audioUrl);
         }
 
         // Priority 3: Generate fresh audio via TTS (also fallback if cached fetch failed)
