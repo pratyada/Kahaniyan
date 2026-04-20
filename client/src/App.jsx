@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Routes, Route, Navigate, useLocation, useNavigate } from 'react-router-dom';
 import { AnimatePresence, motion } from 'framer-motion';
+import { trackPageView } from './utils/analytics.js';
 import Onboarding from './pages/Onboarding.jsx';
 import Home from './pages/Home.jsx';
 import Player from './pages/Player.jsx';
@@ -48,6 +49,11 @@ function Shell() {
     };
     if (user) setLoginTriggered(false);
   }, [isConfigured, user]);
+
+  // Track SPA page views
+  useEffect(() => {
+    trackPageView(location.pathname, document.title);
+  }, [location.pathname]);
 
   // Wait for auth + profile to load
   if (authLoading || !ready) return null;

@@ -6,6 +6,7 @@ import ValuePill from '../components/ValuePill.jsx';
 import UpgradeModal from '../components/UpgradeModal.jsx';
 import WhisperBox, { saveRecentWhisper } from '../components/WhisperBox.jsx';
 import CalmParticles from '../components/CalmParticles.jsx';
+import { trackStoryGenerated, trackWisdomStoryPlayed } from '../utils/analytics.js';
 import { useFamilyProfile } from '../hooks/useFamilyProfile.js';
 import { useStoryGenerator } from '../hooks/useStoryGenerator.js';
 import { usePlayer } from '../hooks/usePlayer.jsx';
@@ -161,6 +162,7 @@ export default function Home() {
       selectedCharacters: mode === 'cast' ? selectedCharacters : undefined,
     }).then((story) => {
       console.log('[My Sleepy Tale] Story generated:', story.title);
+      trackStoryGenerated(mode, value, duration);
       radio.stop();
       load(story);
       try { navigator.vibrate?.([200, 100, 200]); } catch {}
@@ -198,6 +200,7 @@ export default function Home() {
       plays._total = (plays._total || 0) + 1;
       localStorage.setItem(key, JSON.stringify(plays));
     } catch {}
+    trackWisdomStoryPlayed(lesson.id, lesson.tradition);
     load(story);
     navigate('/player');
   };

@@ -145,7 +145,9 @@ function SharedStoryGate() {
       setStatus('ready');
       try {
         const { recordListen } = await import('../utils/shareStory.js');
+        const { trackSharedLinkOpened } = await import('../utils/analytics.js');
         recordListen(sharedStoryId);
+        trackSharedLinkOpened(sharedStoryId);
       } catch {}
     }).catch(() => {
       setStatus('failed');
@@ -324,6 +326,8 @@ function PlayerInner() {
   const shareStory = async () => {
     try {
       const { shareStoryToFirestore } = await import('../utils/shareStory.js');
+      const { trackShareStory } = await import('../utils/analytics.js');
+      trackShareStory(current?.id);
       const url = await shareStoryToFirestore(current, {
         beliefs: profile?.beliefs || [],
         country: profile?.country || '',
