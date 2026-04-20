@@ -86,18 +86,8 @@ export function useNarrator() {
     audio.onpause = () => setPlaying(false);
     audio.onended = () => { setPlaying(false); setProgress(1); stopKeepalive(); };
 
-    // Do NOT auto-resume on visibility change — let the audio continue in background.
-    // Only handle case where browser killed playback while backgrounded.
-    const handleVisibility = () => {
-      if (document.visibilityState === 'visible') {
-        // If audio was playing but got interrupted by browser (not user pause), resume
-        if (audio.paused && !audio.ended && audio.currentTime > 0 && !userPausedRef.current) {
-          audio.play().catch(() => {});
-        }
-      }
-    };
-    document.addEventListener('visibilitychange', handleVisibility);
-    audio._cleanupVisibility = () => document.removeEventListener('visibilitychange', handleVisibility);
+    // Never auto-resume on visibility change. User must tap play manually.
+    audio._cleanupVisibility = () => {};
     audio.onerror = () => { setError('Audio playback failed'); setPlaying(false); };
 
     return audio;
