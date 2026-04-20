@@ -374,6 +374,18 @@ function PlayerInner() {
 
   const meta = valueMeta(current.value);
 
+  // If story has no text, show error
+  if (!current.text) {
+    return (
+      <div className="flex h-screen flex-col items-center justify-center bg-bg-base px-6 text-center">
+        <div className="text-4xl mb-4">😔</div>
+        <h1 className="font-display text-xl font-bold text-gold">{current.title || 'Story'}</h1>
+        <p className="mt-2 text-sm text-ink-muted">This story doesn't have any content to play.</p>
+        <button onClick={() => navigate('/')} className="btn-primary mt-6">Back to home</button>
+      </div>
+    );
+  }
+
   const handleTogglePlay = () => {
     if (!isPlaying) {
       narrator.play();
