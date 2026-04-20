@@ -138,11 +138,11 @@ function PlayerInner() {
   // Initialize loadingShared to true if URL has storyId — prevents flash of "no story"
   const hasSharedId = searchParams.get('storyId');
   const [loadingShared, setLoadingShared] = useState(!!hasSharedId);
-  const [sharedPreview, setSharedPreview] = useState(null);
   const [liked, setLiked] = useState(false);
   const { user } = useAuth();
 
   // Load shared story from URL if ?storyId= is present
+  // Shared stories play for EVERYONE — no sign-in required
   const sharedIdRef = useRef(null);
   const loadRef = useRef(load);
   loadRef.current = load;
@@ -154,27 +154,22 @@ function PlayerInner() {
     sharedIdRef.current = storyId;
     setLoadingShared(true);
     setSharedFailed(false);
-    loadSharedStory(storyId).then((story) => {
+    loadSharedStory(storyId).then(async (story) => {
       if (!story) { setLoadingShared(false); setSharedFailed(true); return; }
-      setSharedPreview(story);
+      // Load directly — no auth required for shared stories
+      loadRef.current(story);
       setLoadingShared(false);
+      // Track listen count (fire & forget)
+      try {
+        const { recordListen } = await import('../utils/shareStory.js');
+        recordListen(storyId);
+      } catch {}
     }).catch(() => {
       setLoadingShared(false);
       setSharedFailed(true);
     });
-  // Only depend on searchParams — load the story data once
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [searchParams]);
-
-  // Once we have the shared story AND know auth state, load or preview it
-  useEffect(() => {
-    if (!sharedPreview) return;
-    if (user) {
-      loadRef.current(sharedPreview);
-      setSharedPreview(null);
-    }
-    // If user is null, the preview screen will show (handled in render)
-  }, [user, sharedPreview]);
 
   const [speed, setSpeed] = useState(1);
   const [showText, setShowText] = useState(true);
@@ -368,71 +363,14 @@ function PlayerInner() {
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [progress, setIsPlaying, usingTTS, narrator.playing, narrator.loading, ttsReady, done]);
 
-  // Shared story preview — user not logged in
-  if (sharedPreview && !user) {
-    const previewMeta = valueMeta(sharedPreview.value);
-    return (
-      <div className="absolute inset-0 z-40 flex flex-col bg-bg-base overflow-hidden">
-        <div className="aurora" />
-        <div className="starfield" />
-        <div className="relative z-10 flex flex-1 flex-col items-center justify-center px-6 text-center">
-          {/* Brand */}
-          <motion.div initial={{ scale: 0.8, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} transition={{ duration: 0.6 }}>
-            <div className="mb-6 text-5xl">🌙</div>
-            <h1 className="font-display text-3xl font-bold text-gold">My Sleepy Tale</h1>
-            <p className="mt-2 text-sm text-ink-muted">Personalized bedtime stories for your child</p>
-          </motion.div>
-
-          {/* Story preview card */}
-          <motion.div initial={{ y: 30, opacity: 0 }} animate={{ y: 0, opacity: 1 }} transition={{ delay: 0.3 }}
-            className="mt-8 w-full max-w-sm rounded-2xl bg-bg-elevated p-5 ring-1 ring-white/10 shadow-lift">
-            <div className="flex items-center gap-3 mb-3">
-              <div className="grid h-14 w-14 place-items-center rounded-xl text-2xl"
-                style={{ background: `linear-gradient(135deg, ${previewMeta.color}55, ${previewMeta.color}11)` }}>
-                <span>{previewMeta.emoji}</span>
-              </div>
-              <div className="text-left">
-                <div className="font-display text-lg font-bold text-ink">{sharedPreview.title}</div>
-                <div className="text-xs text-ink-muted">{previewMeta.label} · {sharedPreview.estimatedMinutes} min · {sharedPreview.language}</div>
-              </div>
-            </div>
-            <div className="rounded-xl bg-bg-base p-3 text-left font-story text-sm leading-relaxed text-ink-muted line-clamp-4">
-              {sharedPreview.text?.slice(0, 200)}...
-            </div>
-          </motion.div>
-
-          {/* CTA */}
-          <motion.div initial={{ y: 20, opacity: 0 }} animate={{ y: 0, opacity: 1 }} transition={{ delay: 0.6 }}
-            className="mt-8 w-full max-w-sm">
-            <button onClick={() => navigate('/login')} className="btn-primary w-full py-4 text-base">
-              Sign in to listen
-            </button>
-            <p className="mt-3 text-xs text-ink-dim">
-              Free to sign up. Someone shared this story with you!
-            </p>
-          </motion.div>
-
-          {/* Features */}
-          <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 1 }}
-            className="mt-8 flex gap-4 text-center text-[10px] text-ink-dim">
-            <div><div className="text-lg mb-1">🧒</div>Personalized</div>
-            <div><div className="text-lg mb-1">🌍</div>Cultural</div>
-            <div><div className="text-lg mb-1">🔊</div>Narrated</div>
-            <div><div className="text-lg mb-1">💤</div>Sleep-ready</div>
-          </motion.div>
-        </div>
-      </div>
-    );
-  }
-
   // Try recovering last story from localStorage (moved to effect to avoid setState during render)
   const [triedReload, setTriedReload] = useState(false);
   useEffect(() => {
-    if (!current && !loadingShared && !sharedPreview && !hasSharedId && !triedReload) {
+    if (!current && !loadingShared && !hasSharedId && !triedReload) {
       setTriedReload(true);
       reloadLast();
     }
-  }, [current, loadingShared, sharedPreview, hasSharedId, triedReload, reloadLast]);
+  }, [current, loadingShared, hasSharedId, triedReload, reloadLast]);
 
   if (!current) {
     // Still loading shared story from Firestore
@@ -444,9 +382,6 @@ function PlayerInner() {
         </div>
       );
     }
-    // Shared story loaded, waiting for auth to decide load vs preview
-    if (sharedPreview && user) return null; // effect will call load() next render
-    // sharedPreview && !user is handled by the preview screen above
 
     // Shared story failed to load
     if (sharedFailed) {
@@ -573,12 +508,13 @@ function PlayerInner() {
               <div className="flex items-center gap-2">
                 <button
                   onClick={async () => {
+                    if (!user) { navigate('/login'); return; }
                     const { toggleLike } = await import('../utils/shareStory.js');
                     const result = await toggleLike(current.id);
                     if (result) setLiked(result.liked);
                   }}
                   className={`grid h-10 w-10 place-items-center rounded-full text-sm transition ${liked ? 'bg-red-500/20' : 'bg-white/5'}`}
-                  title="Like story"
+                  title={user ? 'Like story' : 'Sign in to like'}
                 >
                   {liked ? '❤️' : '🤍'}
                 </button>

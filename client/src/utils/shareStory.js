@@ -88,6 +88,15 @@ export function isLikedByMe(story) {
   return story.likedBy.includes(uid);
 }
 
+// Record a listen on a shared story (anonymous — no auth required)
+export async function recordListen(storyId) {
+  if (!db || !storyId) return;
+  try {
+    const ref = doc(db, 'sharedStories', storyId);
+    await updateDoc(ref, { listens: increment(1) });
+  } catch {}
+}
+
 // Fetch top stories — optionally filtered by belief/country
 export async function getTopStories({ belief, country, max = 20 } = {}) {
   if (!db) return [];
