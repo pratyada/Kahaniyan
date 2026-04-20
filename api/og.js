@@ -16,7 +16,7 @@ const PAGES = {
 };
 
 const DEFAULT = {
-  title: 'My Sleepy Tale — Personalized AI bedtime stories for your child',
+  title: 'My Sleepy Tale — Personalized bedtime stories for your child',
   description: 'Every night, a fresh story with your child\'s name, their family, their pet, and the lesson you choose. AI-narrated in a voice that sounds like home.',
   image: 'https://mysleepytale.com/og-cover.svg',
 };
