@@ -2,7 +2,6 @@ import { useEffect, useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import PageTransition from '../components/PageTransition.jsx';
-import VersionFooter from '../components/VersionFooter.jsx';
 import ValuePill from '../components/ValuePill.jsx';
 import { getLibrary, pruneArchive, removeFromLibrary, loadAndMergeLibrary } from '../utils/storyCache.js';
 import { shareStoryToFirestore } from '../utils/shareStory.js';
@@ -127,7 +126,6 @@ export default function Library() {
         </div>
       )}
 
-      <VersionFooter />
     </PageTransition>
   );
 }

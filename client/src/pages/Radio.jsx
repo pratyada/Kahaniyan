@@ -1,7 +1,6 @@
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import PageTransition from '../components/PageTransition.jsx';
-import VersionFooter from '../components/VersionFooter.jsx';
 import { RADIO_STATIONS } from '../data/radioStations.js';
 import { useRadio } from '../hooks/useRadio.jsx';
 import { useAuth } from '../hooks/useAuth.jsx';
@@ -220,7 +219,6 @@ export default function Radio() {
         Streams provided by SomaFM — free and community-supported.
       </p>
 
-      <VersionFooter />
     </PageTransition>
   );
 }

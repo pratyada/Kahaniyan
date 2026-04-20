@@ -4,7 +4,6 @@ import { motion, AnimatePresence } from 'framer-motion';
 import PageTransition from '../components/PageTransition.jsx';
 import ValuePill from '../components/ValuePill.jsx';
 import UpgradeModal from '../components/UpgradeModal.jsx';
-import VersionFooter from '../components/VersionFooter.jsx';
 import WhisperBox, { saveRecentWhisper } from '../components/WhisperBox.jsx';
 import CalmParticles from '../components/CalmParticles.jsx';
 import { useFamilyProfile } from '../hooks/useFamilyProfile.js';
@@ -235,6 +234,14 @@ export default function Home() {
 
       {/* HERO */}
       <header className="mb-8">
+        {/* Reload */}
+        <div className="mb-3 flex justify-end">
+          <button onClick={() => window.location.reload()}
+            className="grid h-8 w-8 place-items-center rounded-full bg-white/5 text-ink-muted active:scale-95"
+            title="Refresh">
+            ↻
+          </button>
+        </div>
         <div className="flex items-start justify-between">
           <div>
             <h1 className="display-title text-ink">
@@ -531,7 +538,6 @@ export default function Home() {
         reason={upgradeReason}
       />
 
-      <VersionFooter />
     </PageTransition>
   );
 }
