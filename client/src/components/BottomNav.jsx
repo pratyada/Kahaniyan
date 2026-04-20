@@ -26,7 +26,7 @@ export default function BottomNav() {
 
   return (
     <nav className="absolute bottom-0 left-0 right-0 z-30 border-t border-white/5 bg-bg-base/95 backdrop-blur-xl safe-bottom">
-      <ul className="flex items-center justify-around px-2 pt-2">
+      <ul className="mx-auto flex max-w-2xl items-center justify-around px-2 pt-2">
         {tabs.map((t) => (
           <li key={t.to} className="flex-1">
             {isSubdomain ? (

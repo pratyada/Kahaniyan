@@ -150,14 +150,20 @@ a {
            focus:ring-gold;
   }
 
-  /* Mobile shell — phone-shaped on desktop, full bleed on mobile */
+  /* App shell — full screen on all devices */
   .phone-shell {
-    @apply relative mx-auto flex h-[100dvh] w-full max-w-[460px] flex-col overflow-hidden;
+    @apply relative mx-auto flex h-[100dvh] w-full flex-col overflow-hidden;
     background-color: var(--bg-base);
     background-image: url('/bg-night.svg');
     background-size: cover;
     background-position: center;
     background-attachment: local;
+  }
+  /* On desktop (768px+), constrain content width for readability */
+  @media (min-width: 768px) {
+    .phone-shell {
+      max-width: 100%;
+    }
   }
   .phone-shell::before {
     content: '';
@@ -175,6 +181,13 @@ a {
   /* Page scroll area above bottom nav */
   .page-scroll {
     @apply flex-1 overflow-y-auto overflow-x-hidden pb-32;
+  }
+
+  /* Desktop: center content with max-width for readability */
+  @media (min-width: 768px) {
+    .page-scroll {
+      @apply mx-auto max-w-2xl;
+    }
   }
 }
 
