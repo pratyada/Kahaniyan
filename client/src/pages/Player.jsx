@@ -126,7 +126,11 @@ export default function Player() {
   );
 }
 
+const _rc = { count: 0, timer: null };
 function PlayerInner() {
+  _rc.count++;
+  if (!_rc.timer) _rc.timer = setTimeout(() => { console.log('[MST:Player] renders this cycle:', _rc.count); _rc.count = 0; _rc.timer = null; }, 0);
+
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const { current, clear, isPlaying, setIsPlaying, reloadLast, load, setAudio, audioRef: globalAudioRef } = usePlayer();
@@ -142,6 +146,7 @@ function PlayerInner() {
   loadRef.current = load;
   const [sharedFailed, setSharedFailed] = useState(false);
   useEffect(() => {
+    console.log('[MST:fx1] shared story effect, id:', sharedStoryId);
     if (!sharedStoryId) return;
     setLoadingShared(true);
     setSharedFailed(false);
@@ -166,7 +171,7 @@ function PlayerInner() {
   const startedRef = useRef(false);
 
   // Request notification permission on mount
-  useEffect(() => { requestNotificationPermission(); }, []);
+  useEffect(() => { console.log('[MST:fx2] notification perm'); requestNotificationPermission(); }, []);
 
   // Reset startedRef when story changes so auto-play fires for new stories
   const currentIdRef = useRef(null);
@@ -177,6 +182,7 @@ function PlayerInner() {
 
   // Auto-play when current story is available
   useEffect(() => {
+    console.log('[MST:fx3] auto-play effect, current:', !!current);
     if (!current) {
       console.warn('[My Sleepy Tale:Player] Waiting for story...');
       return;
@@ -319,6 +325,7 @@ function PlayerInner() {
 
   // When story ends, show done state then go back after a pause
   useEffect(() => {
+    console.log('[MST:fx5] end check, progress:', progress, 'playing:', narrator.playing, 'ttsReady:', ttsReady);
     if (!current || !ttsReady) return;
     const ended = progress >= 1 && !narrator.playing && !narrator.loading;
     if (ended && !done) {
@@ -336,6 +343,7 @@ function PlayerInner() {
   // Use a timeout to avoid synchronous setState during React render cycle
   const recoveredRef = useRef(false);
   useEffect(() => {
+    console.log('[MST:fx6] recover effect, current:', !!current, 'shared:', sharedStoryId, 'loading:', loadingShared);
     if (current || sharedStoryId || loadingShared || recoveredRef.current) return;
     recoveredRef.current = true;
     // Delay to ensure React has finished its render cycle
