@@ -206,10 +206,7 @@ export default function Home() {
             className="mb-4 flex items-center gap-3 rounded-2xl bg-gold/10 p-3 ring-1 ring-gold/20"
           >
             <span className="inline-block h-4 w-4 animate-spin rounded-full border-2 border-gold border-t-transparent" />
-            <div className="flex-1">
-              <div className="text-xs font-bold text-gold">Weaving your story...</div>
-              <div className="text-[10px] text-ink-muted">Gentle music playing while we prepare it</div>
-            </div>
+            <div className="text-xs font-bold text-gold">Weaving your story...</div>
           </motion.div>
         )}
       </AnimatePresence>
