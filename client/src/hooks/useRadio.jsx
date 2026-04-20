@@ -99,6 +99,7 @@ export function RadioProvider({ children }) {
         resume();
       } else {
         play(station);
+        import('../utils/analytics.js').then(({ trackRadioPlay }) => trackRadioPlay(station.id)).catch(() => {});
       }
     },
     [stationId, playing, play, pause, resume]

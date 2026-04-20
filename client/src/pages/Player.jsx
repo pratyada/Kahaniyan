@@ -53,7 +53,10 @@ async function cacheAudioToStorage(storyId, blob) {
 class PlayerErrorBoundary extends Component {
   constructor(props) { super(props); this.state = { error: null }; }
   static getDerivedStateFromError(error) { return { error }; }
-  componentDidCatch(error, info) { console.error('[My Sleepy Tale:Player] CRASH:', error.message, info.componentStack?.slice(0, 300)); }
+  componentDidCatch(error, info) {
+    console.error('[My Sleepy Tale:Player] CRASH:', error.message, info.componentStack?.slice(0, 300));
+    import('../utils/analytics.js').then(({ trackError }) => trackError('player_crash', error.message)).catch(() => {});
+  }
   render() {
     if (this.state.error) {
       return (
@@ -351,6 +354,7 @@ function PlayerInner() {
     if (ended && !done) {
       setDone(true);
       setIsPlaying(false);
+      import('../utils/analytics.js').then(({ trackAudioCompleted }) => trackAudioCompleted(current?.id, current?.estimatedMinutes)).catch(() => {});
       setTimeout(() => {
         narrator.stop();
         navigate('/');

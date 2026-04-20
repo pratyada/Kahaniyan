@@ -73,6 +73,7 @@ export function AuthProvider({ children }) {
     setError(null);
     try {
       await signInWithPopup(auth, googleProvider);
+      try { const { trackSignUp } = await import('../utils/analytics.js'); trackSignUp(); } catch {}
     } catch (e) {
       if (e.code === 'auth/popup-closed-by-user') return;
       console.error('Google sign-in error:', e.code, e.message);

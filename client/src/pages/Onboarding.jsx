@@ -46,6 +46,7 @@ export default function Onboarding() {
       } else {
         save(payload);
       }
+      import('../utils/analytics.js').then(({ trackOnboardingComplete }) => trackOnboardingComplete(draft.childName)).catch(() => {});
       navigate('/');
     } else {
       setStep((s) => s + 1);
