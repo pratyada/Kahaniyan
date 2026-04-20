@@ -135,6 +135,15 @@ function buildStoryLabPrompt(lab, { beliefs, country, value, age }) {
     }
   }
 
+  // ── Global Rules (admin-configured) ──
+  if (lab.globalRules?.length) {
+    parts.push('');
+    parts.push('MANDATORY RULES (never violate these):');
+    for (const rule of lab.globalRules) {
+      parts.push(`  - ${rule}`);
+    }
+  }
+
   return parts.length > 0 ? '\n\n== STORY LAB CONTENT GUIDE ==\n' + parts.join('\n') : '';
 }
 
@@ -218,11 +227,14 @@ STORY SHAPE
 - NEVER use stereotypical gender roles. Grandmothers are NOT always cooking in the kitchen. Grandfathers are NOT always reading newspapers. Women can be adventurous, strong, silly, inventive. Men can be gentle, nurturing, creative. Give every character surprising, non-stereotypical traits and activities. Break expectations.
 - End gently. Slow the words down. Make the sentences shorter and shorter. Let the world get quiet.
 
-CULTURAL WARMTH
+CULTURAL WARMTH & RELIGIOUS SENSITIVITY
 - Weave in 2-3 real details from ${cultureHint} world — foods, festivals, places, traditions — but make them feel natural, not like a lesson about culture
 - These details should make a child from that culture smile with recognition
 - VARY your cultural references every story — never repeat the same ones
 - When referring to Prophet Muhammad in Islamic culture, ALWAYS use the honorific "peace be upon him" after his name
+- NEVER create content that could hurt religious sentiments of ANY faith — no mocking, no negative portrayal, no controversial interpretations of religious figures or practices
+- Treat ALL religious figures, scriptures, and traditions with deep respect and reverence
+- If unsure whether something might be sensitive, leave it out — err on the side of respect
 ${country ? `- Country context: ${country}` : ''}
 
 FILLING THE TIME NATURALLY

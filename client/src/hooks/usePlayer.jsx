@@ -27,6 +27,14 @@ export function PlayerProvider({ children }) {
   const audioRef = useRef(null); // global ref to active audio element
 
   const load = useCallback((story) => {
+    // CRITICAL: stop any currently playing audio before loading new story
+    if (audioRef.current) {
+      try {
+        audioRef.current.pause();
+        audioRef.current.src = '';
+      } catch {}
+      audioRef.current = null;
+    }
     setCurrent(story);
     saveStory(story);
     setIsPlaying(true);

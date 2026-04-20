@@ -6,13 +6,14 @@ import ValuePill from '../components/ValuePill.jsx';
 import UpgradeModal from '../components/UpgradeModal.jsx';
 import VersionFooter from '../components/VersionFooter.jsx';
 import WhisperBox, { saveRecentWhisper } from '../components/WhisperBox.jsx';
-import StoryLoading from '../components/StoryLoading.jsx';
 import CalmParticles from '../components/CalmParticles.jsx';
 import { useFamilyProfile } from '../hooks/useFamilyProfile.js';
 import { useStoryGenerator } from '../hooks/useStoryGenerator.js';
 import { usePlayer } from '../hooks/usePlayer.jsx';
+import { useRadio } from '../hooks/useRadio.jsx';
 import { VALUES, DURATIONS, RELATION_EMOJI, RELIGIONS, mapCharactersToFamilyMembers } from '../utils/constants.js';
 import { CULTURAL_LESSONS, TRADITIONS, THEMES } from '../data/culturalLessons.js';
+import { RADIO_STATIONS } from '../data/radioStations.js';
 import { canGenerate, maxDurationFor, storiesThisWeek } from '../utils/tierGate.js';
 import { useAdmin } from '../hooks/useAdmin.jsx';
 
@@ -61,6 +62,7 @@ export default function Home() {
   const { profile } = useFamilyProfile();
   const { generate, loading } = useStoryGenerator();
   const { load } = usePlayer();
+  const radio = useRadio();
   const { isUnlimited } = useAdmin();
   const isAdmin = isUnlimited; // backward compat for logging
 
@@ -127,32 +129,35 @@ export default function Home() {
     // Show upgrade modal as a hint but never hard-block generation.
     // Server will return 429 if the user is truly over limit.
     const selectedCharacters = characters.filter((c) => selectedCharIds.includes(c.id) || c.relation === 'self');
-    try {
-      console.log('[My Sleepy Tale] Generating story...', { value, duration, mode, castMode: mode === 'cast', selectedCast: selectedCharacters.map(c => c.name) });
-      const story = await generate({
-        profile,
-        value,
-        duration,
-        language: profile.language || 'English',
-        voice: profile.defaultVoice || 'AI Narrator',
-        whisper: mode === 'whisper' ? whisper : '',
-        whisperOverridesValue: mode === 'whisper' ? whisperOverridesValue : false,
-        selectedCharacters: mode === 'cast' ? selectedCharacters : undefined,
-      });
-      console.log('[My Sleepy Tale] Story generated:', story.title, '| loading into player...');
+    // Start gentle radio while story generates (Raag Nidra — sleep ritual sound)
+    const raagNidra = RADIO_STATIONS.find(s => s.id === 'raag-nidra') || RADIO_STATIONS[0];
+    try { radio.play(raagNidra); } catch {}
+
+    // Generate in background — user can navigate freely
+    console.log('[My Sleepy Tale] Generating story in background...', { value, duration, mode });
+    generate({
+      profile,
+      value,
+      duration,
+      language: profile.language || 'English',
+      voice: profile.defaultVoice || 'AI Narrator',
+      whisper: mode === 'whisper' ? whisper : '',
+      whisperOverridesValue: mode === 'whisper' ? whisperOverridesValue : false,
+      selectedCharacters: mode === 'cast' ? selectedCharacters : undefined,
+    }).then((story) => {
+      console.log('[My Sleepy Tale] Story generated:', story.title);
       if (mode === 'whisper' && whisper.trim()) saveRecentWhisper(whisper.trim());
+      // Stop the ritual radio
+      radio.stop();
+      // Load story + navigate to player
       load(story);
-      // Vibrate + notify when ready
       try { navigator.vibrate?.([200, 100, 200]); } catch {}
-      // Wait for React state to propagate before navigating
-      setTimeout(() => {
-        console.log('[My Sleepy Tale] Navigating to /player...');
-        navigate('/player');
-      }, 50);
-    } catch (e) {
+      setTimeout(() => navigate('/player'), 50);
+    }).catch((e) => {
       console.error('[My Sleepy Tale] Story generation FAILED:', e);
+      radio.stop();
       setStoryError(e.message || 'Could not generate story. Please try again.');
-    }
+    });
   };
 
   const playLesson = (lesson) => {
@@ -186,15 +191,28 @@ export default function Home() {
     loading ||
     (mode === 'cast' && selectedCharIds.length === 0);
 
-  // Only show loading for generated stories, not wisdom stories
-  if (loading && mode !== 'tradition') {
-    return <StoryLoading />;
-  }
-
   return (
     <PageTransition className="relative page-scroll px-5 pt-12 safe-top">
       {/* Calm particles background */}
       <CalmParticles />
+
+      {/* Generating banner — non-blocking, user can still browse */}
+      <AnimatePresence>
+        {loading && (
+          <motion.div
+            initial={{ opacity: 0, y: -20 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -20 }}
+            className="mb-4 flex items-center gap-3 rounded-2xl bg-gold/10 p-3 ring-1 ring-gold/20"
+          >
+            <span className="inline-block h-4 w-4 animate-spin rounded-full border-2 border-gold border-t-transparent" />
+            <div className="flex-1">
+              <div className="text-xs font-bold text-gold">Weaving your story...</div>
+              <div className="text-[10px] text-ink-muted">Gentle music playing while we prepare it</div>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
 
       {/* HERO */}
       <header className="mb-8">

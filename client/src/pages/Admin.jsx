@@ -1690,6 +1690,11 @@ function StoryLab() {
   const [cacheFilterCountry, setCacheFilterCountry] = useState('all');
   const [showManualForm, setShowManualForm] = useState(false);
   const [manualStory, setManualStory] = useState({ title: '', text: '', value: 'kindness', duration: 5, language: 'English', beliefs: 'hindu', country: 'IN', age: 5, gender: 'girl', childName: '{childName}' });
+  // Global rules state
+  const [globalRules, setGlobalRules] = useState([
+    'Never create content that could hurt religious sentiments of any faith',
+    'Try to include closest cultural references to the story — go beyond famous gods/characters to teach about lesser-known religious figures',
+  ]);
   // Quick whispers state
   const [quickWhispers, setQuickWhispers] = useState({});
   const [qwBelief, setQwBelief] = useState('hindu');
@@ -1714,6 +1719,7 @@ function StoryLab() {
           if (d.ageGuides?.length) setAgeGuides(d.ageGuides);
           if (d.valueDelivery?.length) setValueDelivery(d.valueDelivery);
           if (d.quickWhispers) setQuickWhispers(d.quickWhispers);
+          if (d.globalRules?.length) setGlobalRules(d.globalRules);
         }
         const storiesSnap = await getDocs(collection(db, 'storyCache'));
         const list = [];
@@ -1786,6 +1792,7 @@ function StoryLab() {
   };
 
   const SUB_TABS = [
+    { key: 'rules', label: 'Global Rules', icon: '🛡️' },
     { key: 'playground', label: 'Playground', icon: '🎮' },
     { key: 'archetypes', label: 'Characters', icon: '👥' },
     { key: 'culture', label: 'Cultural Library', icon: '🌍' },
@@ -1809,6 +1816,36 @@ function StoryLab() {
 
       {saving && <div className="rounded-xl bg-[#f0a500]/10 p-3 text-center text-xs font-bold text-[#f0a500]">Saving...</div>}
       {lastSaved && <div className="rounded-xl bg-[#7ad9a1]/10 p-3 text-center text-xs font-bold text-[#7ad9a1]">Saved {lastSaved}!</div>}
+
+      {/* ══════ GLOBAL RULES ══════ */}
+      {subTab === 'rules' && (
+        <div className="rounded-2xl bg-[#1a1a28] p-6">
+          <div className="mb-4 flex items-center justify-between">
+            <h3 className="text-sm font-bold text-[#f5f0e8]">Mandatory Rules for ALL stories</h3>
+            <button onClick={() => saveAll('globalRules', globalRules)} disabled={saving}
+              className="rounded-full bg-[#f0a500] px-4 py-1.5 text-xs font-bold text-[#0a0a0f] disabled:opacity-50">
+              {saving ? 'Saving...' : 'Save Rules'}
+            </button>
+          </div>
+          <p className="mb-4 text-xs text-[#6e6a63]">These rules are injected into every story generation prompt. Claude will never violate them.</p>
+          <div className="space-y-2">
+            {globalRules.map((rule, i) => (
+              <div key={i} className="flex items-start gap-2">
+                <textarea value={rule} onChange={(e) => {
+                  const updated = [...globalRules];
+                  updated[i] = e.target.value;
+                  setGlobalRules(updated);
+                }} rows={2}
+                className="flex-1 rounded-xl bg-[#0a0a0f] px-3 py-2 text-sm text-[#f5f0e8] outline-none ring-1 ring-white/10" />
+                <button onClick={() => setGlobalRules(globalRules.filter((_, j) => j !== i))}
+                  className="mt-1 text-xs text-[#f3727f]">Remove</button>
+              </div>
+            ))}
+          </div>
+          <button onClick={() => setGlobalRules([...globalRules, ''])}
+            className="mt-3 text-xs font-bold text-[#f0a500]">+ Add rule</button>
+        </div>
+      )}
 
       {/* ══════ PLAYGROUND ══════ */}
       {subTab === 'playground' && (
