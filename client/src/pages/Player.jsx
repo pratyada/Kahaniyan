@@ -721,9 +721,8 @@ function HighlightedText({ text, progress }) {
   const words = text.split(/(\s+)/);
   const totalLen = text.length;
 
-  // Lag the highlight slightly behind audio so it never runs ahead of the voice
-  const lag = 0.02;
-  const adjusted = Math.max(0, Math.min(1, progress - lag));
+  // No offset — highlight matches audio position exactly
+  const adjusted = Math.min(1, progress);
   const cutoff = Math.floor(totalLen * adjusted);
 
   // Auto-scroll to keep active word visible
