@@ -75,10 +75,8 @@ class PlayerErrorBoundary extends Component {
 import { usePlayer } from '../hooks/usePlayer.jsx';
 import { useAuth } from '../hooks/useAuth.jsx';
 import { useFamilyProfile } from '../hooks/useFamilyProfile.js';
-import { useSpeech } from '../hooks/useSpeech.js';
 import { useNarrator } from '../hooks/useNarrator.js';
 import { valueMeta } from '../utils/constants.js';
-import StoryLoading from '../components/StoryLoading.jsx';
 
 const SPEEDS = [0.8, 1, 1.2];
 
@@ -133,7 +131,6 @@ function PlayerInner() {
   const [searchParams] = useSearchParams();
   const { current, clear, isPlaying, setIsPlaying, reloadLast, load, setAudio, audioRef: globalAudioRef } = usePlayer();
   const { profile } = useFamilyProfile();
-  const webSpeech = useSpeech();
   const narrator = useNarrator();
   // Extract storyId once as a stable string (searchParams object is recreated every render)
   const sharedStoryId = searchParams.get('storyId') || '';
@@ -165,20 +162,7 @@ function PlayerInner() {
   const [speed, setSpeed] = useState(1);
   const [showText, setShowText] = useState(true);
   const [done, setDone] = useState(false);
-  const [usingTTS, setUsingTTS] = useState(false); // true = ElevenLabs, false = Web Speech
   const [ttsReady, setTtsReady] = useState(false);
-  // Unified interface — picks ElevenLabs or Web Speech
-  const voice = usingTTS ? {
-    speaking: narrator.playing,
-    paused: !narrator.playing && ttsReady && !done,
-    progress: narrator.progress,
-    supported: true,
-  } : {
-    speaking: webSpeech.speaking,
-    paused: webSpeech.paused,
-    progress: webSpeech.progress,
-    supported: webSpeech.supported,
-  };
   const startedRef = useRef(false);
 
   // Request notification permission on mount
@@ -206,7 +190,6 @@ function PlayerInner() {
     if (existingAudio && existingAudio.src && !existingAudio.ended && existingAudio.currentTime > 0) {
       console.log('[My Sleepy Tale:Player] Reconnecting to existing audio');
       narrator.reconnect(existingAudio);
-      setUsingTTS(true);
       setTtsReady(true);
       return;
     }
@@ -277,7 +260,6 @@ function PlayerInner() {
         }
 
         if (!audio) return; // aborted
-        setUsingTTS(true);
         setTtsReady(true);
         setAudio(audio); // register with global context so clear() can stop it
         audio.playbackRate = speed;
@@ -285,7 +267,6 @@ function PlayerInner() {
         audio.onplay = () => setIsPlaying(true);
         audio.onpause = () => setIsPlaying(false);
 
-        // Notify user if they backgrounded while waiting for TTS
         notifyAudioReady(current.title);
 
         try {
@@ -294,16 +275,8 @@ function PlayerInner() {
           setIsPlaying(false);
         }
       } catch (e) {
-        console.warn('[My Sleepy Tale:Player] TTS failed, using browser voice:', e.message);
-        setUsingTTS(false);
-        webSpeech.speak({
-          text: current.text,
-          language: lang,
-          rate: speed * 0.92,
-          volume: 1,
-          preferredVoiceName: profile?.preferredVoiceName || null,
-        });
-        setIsPlaying(true);
+        console.warn('[My Sleepy Tale:Player] TTS failed:', e.message);
+        setIsPlaying(false);
       }
     };
 
@@ -312,7 +285,7 @@ function PlayerInner() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [current]);
 
-  const progress = voice.progress;
+  const progress = narrator.progress;
 
   // Only stop audio on unmount if user explicitly closed (X button)
   const closedRef = useRef(false);
@@ -320,7 +293,6 @@ function PlayerInner() {
     return () => {
       if (closedRef.current) {
         narrator.stop();
-        webSpeech.stop();
       }
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -347,25 +319,18 @@ function PlayerInner() {
 
   // When story ends, show done state then go back after a pause
   useEffect(() => {
-    if (!current) return; // no story loaded yet
-    let ended = false;
-    if (!usingTTS) {
-      if (progress > 0 && progress >= 0.999) ended = true;
-    } else {
-      if (progress >= 1 && !narrator.playing && !narrator.loading && ttsReady) ended = true;
-    }
+    if (!current || !ttsReady) return;
+    const ended = progress >= 1 && !narrator.playing && !narrator.loading;
     if (ended && !done) {
       setDone(true);
       setIsPlaying(false);
-      // Give user a moment to see the completion, then navigate
       setTimeout(() => {
         narrator.stop();
-        webSpeech.stop();
         navigate('/');
       }, 3000);
     }
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [progress, setIsPlaying, usingTTS, narrator.playing, narrator.loading, ttsReady, done]);
+  }, [progress, narrator.playing, narrator.loading, ttsReady, done]);
 
   // Recover story from localStorage if current is null and no shared link
   // Use a timeout to avoid synchronous setState during React render cycle
@@ -415,49 +380,29 @@ function PlayerInner() {
 
   const handleTogglePlay = () => {
     if (!isPlaying) {
-      if (usingTTS) {
-        // TTS audio loaded — play or resume
-        narrator.play();
-      } else {
-        if (webSpeech.paused) webSpeech.resume();
-        else webSpeech.speak({
-          text: current.text,
-          language: current.language || profile?.language || 'English',
-          rate: speed * 0.92,
-          volume: 1,
-          preferredVoiceName: profile?.preferredVoiceName || null,
-        });
-      }
+      narrator.play();
       setIsPlaying(true);
     } else {
-      if (usingTTS) narrator.pause();
-      else webSpeech.pause();
+      narrator.pause();
       setIsPlaying(false);
     }
   };
 
   const handleSpeedChange = (newSpeed) => {
     setSpeed(newSpeed);
-    if (usingTTS) {
-      // ElevenLabs: changes speed in real-time, no restart
-      narrator.setRate(newSpeed);
-    } else {
-      // Web Speech: can't change speed mid-utterance, just update for next play
-      // Don't restart — keep playing at current speed
-    }
+    narrator.setRate(newSpeed);
   };
 
   const handleClose = () => {
     closedRef.current = true;
-    if (usingTTS) narrator.stop();
-    else webSpeech.stop();
+    narrator.stop();
     clear();
     navigate('/');
   };
 
   // Media Session — lock screen / notification bar controls
   useEffect(() => {
-    if (!current || !usingTTS) return;
+    if (!current) return;
     setupMediaSession(current, meta, {
       play: () => { narrator.play(); setIsPlaying(true); },
       pause: () => { narrator.pause(); setIsPlaying(false); },
@@ -466,7 +411,7 @@ function PlayerInner() {
       stop: handleClose,
     });
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [current, usingTTS]);
+  }, [current]);
 
   return (
     <div className="absolute inset-0 z-40 overflow-hidden bg-bg-base">
@@ -559,13 +504,13 @@ function PlayerInner() {
               <div
                 className="relative h-6 w-full cursor-pointer flex items-center"
                 onClick={(e) => {
-                  if (!usingTTS) return;
+                  if (!ttsReady) return;
                   const rect = e.currentTarget.getBoundingClientRect();
                   const fraction = Math.max(0, Math.min(1, (e.clientX - rect.left) / rect.width));
                   narrator.seek(fraction);
                 }}
                 onTouchMove={(e) => {
-                  if (!usingTTS) return;
+                  if (!ttsReady) return;
                   const rect = e.currentTarget.getBoundingClientRect();
                   const fraction = Math.max(0, Math.min(1, (e.touches[0].clientX - rect.left) / rect.width));
                   narrator.seek(fraction);
@@ -578,7 +523,7 @@ function PlayerInner() {
                   />
                 </div>
                 {/* Seek thumb */}
-                {usingTTS && (
+                {ttsReady && (
                   <div
                     className="absolute h-4 w-4 rounded-full bg-gold shadow-glow pointer-events-none"
                     style={{ left: `calc(${Math.round(progress * 100)}% - 8px)` }}
@@ -599,8 +544,8 @@ function PlayerInner() {
               <div className="flex items-center gap-6">
                 {/* Rewind 15s */}
                 <button
-                  onClick={() => { if (usingTTS) narrator.seekBy(-10); }}
-                  disabled={narrator.loading || !usingTTS}
+                  onClick={() => { narrator.seekBy(-10); }}
+                  disabled={narrator.loading || !ttsReady}
                   aria-label="Rewind 10 seconds"
                   className="flex h-12 w-12 flex-col items-center justify-center rounded-full bg-white/5 text-ink-muted transition active:scale-95 disabled:opacity-30"
                 >
@@ -635,8 +580,8 @@ function PlayerInner() {
 
                 {/* Forward 15s */}
                 <button
-                  onClick={() => { if (usingTTS) narrator.seekBy(10); }}
-                  disabled={narrator.loading || !usingTTS}
+                  onClick={() => { narrator.seekBy(10); }}
+                  disabled={narrator.loading || !ttsReady}
                   aria-label="Forward 10 seconds"
                   className="flex h-12 w-12 flex-col items-center justify-center rounded-full bg-white/5 text-ink-muted transition active:scale-95 disabled:opacity-30"
                 >
@@ -667,25 +612,11 @@ function PlayerInner() {
 
                 <button
                   onClick={() => {
-                    if (usingTTS) {
-                      // Stop current, seek to 0, then play — prevents duplicate audio
-                      const audio = narrator.audioRef?.current;
-                      if (audio) {
-                        audio.currentTime = 0;
-                        audio.volume = 1;
-                        audio.play().catch(() => {});
-                      }
-                    } else {
-                      webSpeech.stop();
-                      setTimeout(() => {
-                        webSpeech.speak({
-                          text: current.text,
-                          language: current.language || profile?.language || 'English',
-                          rate: speed * 0.92,
-                          volume: 1,
-                          preferredVoiceName: profile?.preferredVoiceName || null,
-                        });
-                      }, 100);
+                    const audio = narrator.audioRef?.current;
+                    if (audio) {
+                      audio.currentTime = 0;
+                      audio.volume = 1;
+                      audio.play().catch(() => {});
                     }
                     setIsPlaying(true);
                   }}
