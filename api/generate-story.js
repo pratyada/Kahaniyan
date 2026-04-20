@@ -178,9 +178,12 @@ export default async function handler(req, res) {
     if (db) {
       try {
         const labDoc = await db.collection('config').doc('storyLab').get();
-        if (labDoc.exists) storyLabConfig = labDoc.data();
+        if (labDoc.exists) {
+          storyLabConfig = labDoc.data();
+          console.log('[generate-story] Story Lab loaded, globalRules:', storyLabConfig.globalRules?.length || 0);
+        }
       } catch (e) {
-        console.warn('Could not load Story Lab config:', e.message);
+        console.warn('[generate-story] Could not load Story Lab config:', e.message);
       }
     }
     // Attach Story Lab to story params — flows into Claude prompt

@@ -234,13 +234,14 @@ STORY SHAPE
 
 CULTURAL WARMTH & RELIGIOUS SENSITIVITY
 - Weave in 2-3 real details from ${cultureHint} world — foods, festivals, places, traditions — but make them feel natural, not like a lesson about culture
+- DO NOT overuse the same cultural references (samosa, laddu, diwali). Go DEEP — use lesser-known foods (pongal, appam, kheer, jalebi, paratha, dosa, poha), regional festivals, local games, specific places
 - These details should make a child from that culture smile with recognition
-- VARY your cultural references every story — never repeat the same ones
+- VARY your cultural references every story — never repeat the same ones across stories
 - When referring to Prophet Muhammad in Islamic culture, ALWAYS use the honorific "peace be upon him" after his name
-- NEVER create content that could hurt religious sentiments of ANY faith — no mocking, no negative portrayal, no controversial interpretations of religious figures or practices
+- NEVER create content that could hurt religious sentiments of ANY faith
 - Treat ALL religious figures, scriptures, and traditions with deep respect and reverence
 - If unsure whether something might be sensitive, leave it out — err on the side of respect
-${country ? `- Country context: ${country}` : ''}
+${country === 'CA' ? '- Set the story in TORONTO, Canada — mention Toronto landmarks, neighborhoods, or parks by name (High Park, CN Tower, Scarborough, Kensington Market, etc.)' : country === 'IN' ? '- Set the story in India — use specific Indian city names, landmarks, and local flavor' : country ? `- Country context: ${country} — use real places and landmarks from this country` : ''}
 
 FILLING THE TIME NATURALLY
 - Characters should have small side moments — a funny observation, helping someone along the way, discovering something curious, a silly interaction between supporting characters
