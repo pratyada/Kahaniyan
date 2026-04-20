@@ -110,17 +110,15 @@ export default function Home() {
   const lessonsForTradition = useMemo(() => {
     let list = CULTURAL_LESSONS.filter((l) => l.theme === traditionTheme);
     const beliefs = profile?.beliefs || [];
-    // If user has selected specific beliefs, prioritize those traditions.
-    // If "openToAllCultures" is off, hard-filter to selected beliefs.
-    if (beliefs.length > 0) {
+    // Show ALL traditions by default. Only filter if user explicitly set beliefs
+    // AND opted for "only my tradition" in settings.
+    if (beliefs.length > 0 && profile?.onlyMyTradition) {
+      list = list.filter((l) => beliefs.includes(l.tradition));
+    } else if (beliefs.length > 0) {
+      // Prioritize user's beliefs first, then show all others
       const matched = list.filter((l) => beliefs.includes(l.tradition));
-      if (profile?.onlyMyTradition || !profile?.showCrossCulture) {
-        list = matched;
-      } else {
-        // Sort matched first, then the rest
-        const others = list.filter((l) => !beliefs.includes(l.tradition));
-        list = [...matched, ...others];
-      }
+      const others = list.filter((l) => !beliefs.includes(l.tradition));
+      list = [...matched, ...others];
     }
     return list;
   }, [traditionTheme, profile?.beliefs, profile?.onlyMyTradition, profile?.showCrossCulture]);
