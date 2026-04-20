@@ -12,7 +12,6 @@ const EXTRA_RELATIONS = [
   { key: 'imaginary', label: 'Imaginary friend', emoji: '🦄' },
   { key: 'friend-boy', label: 'Friend (he)', emoji: '👦' },
   { key: 'friend-girl', label: 'Friend (she)', emoji: '👧' },
-  { key: 'other', label: 'Other', emoji: '✨' },
 ];
 const BASE_RELATIONS = [...FAMILY_RELATIONS, ...EXTRA_RELATIONS];
 

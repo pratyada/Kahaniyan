@@ -70,9 +70,7 @@ export const FAMILY_RELATIONS = [
   { key: 'uncle', label: 'Uncle', emoji: '🧔' },
   { key: 'aunt', label: 'Aunt', emoji: '👩' },
   { key: 'cousin', label: 'Cousin', emoji: '🧒' },
-  { key: 'friend', label: 'Friend', emoji: '🧒' },
   { key: 'relative', label: 'Relative', emoji: '👤' },
-  { key: 'other', label: 'Other', emoji: '✨' },
 ];
 
 // The training paragraph from product spec — used by voice cloning models.
