@@ -33,32 +33,10 @@ export function useNarrator() {
   const abortRef = useRef(null);
   const blobRef = useRef(null); // keep raw blob for upload
   const userPausedRef = useRef(false); // track manual pause to prevent auto-resume
-  const keepaliveRef = useRef(null); // persistent keepalive for background playback
-
-  // Persistent keepalive — keeps audio context alive in background
-  const ensureKeepalive = useCallback(() => {
-    if (keepaliveRef.current) return;
-    try {
-      const ctx = new (window.AudioContext || window.webkitAudioContext)();
-      const osc = ctx.createOscillator();
-      const gain = ctx.createGain();
-      gain.gain.value = 0;
-      osc.connect(gain);
-      gain.connect(ctx.destination);
-      osc.start();
-      keepaliveRef.current = { ctx, osc };
-    } catch {}
-  }, []);
-
-  const stopKeepalive = useCallback(() => {
-    if (keepaliveRef.current) {
-      try {
-        keepaliveRef.current.osc.stop();
-        keepaliveRef.current.ctx.close();
-      } catch {}
-      keepaliveRef.current = null;
-    }
-  }, []);
+  // No persistent keepalive — it causes echo on mobile devices.
+  // The Audio element itself keeps the tab alive while playing.
+  const ensureKeepalive = useCallback(() => {}, []);
+  const stopKeepalive = useCallback(() => {}, []);
 
   const cleanup = useCallback(() => {
     if (abortRef.current) {
