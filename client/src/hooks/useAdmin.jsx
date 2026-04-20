@@ -223,12 +223,18 @@ export function AdminProvider({ children }) {
     return team.some((t) => t.email === user.email && t.role === 'tester' && t.status === 'active');
   })();
 
+  // Check if current user is an investor (gets invest page access)
+  const isInvestor = (() => {
+    if (!user || !user.email) return false;
+    return team.some((t) => t.email === user.email && t.role === 'investor' && t.status === 'active');
+  })();
+
   // Admin or active tester = unlimited access
-  const isUnlimited = isAdmin || isTester;
+  const isUnlimited = isAdmin || isTester || isInvestor;
 
   return createElement(
     AdminCtx.Provider,
-    { value: { isAdmin, isTester, isUnlimited, loading: loading, allUsers, stats, adminEmails, loadUsers, addAdmin, removeAdmin, setUserStatus, setUserTier, team, addTeamMember, updateTeamMember, removeTeamMember } },
+    { value: { isAdmin, isTester, isInvestor, isUnlimited, loading: loading, allUsers, stats, adminEmails, loadUsers, addAdmin, removeAdmin, setUserStatus, setUserTier, team, addTeamMember, updateTeamMember, removeTeamMember } },
     children
   );
 }

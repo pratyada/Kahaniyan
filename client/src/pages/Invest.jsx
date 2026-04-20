@@ -128,8 +128,8 @@ export default function Invest() {
   });
 
   const { user } = useAuth();
-  const { isUnlimited } = useAdmin();
-  const isAdmin = isUnlimited;
+  const { isAdmin, isUnlimited } = useAdmin();
+  const isTeamMember = isUnlimited; // admin, tester, or investor
   const [accessGranted, setAccessGranted] = useState(false);
   const [accessChecked, setAccessChecked] = useState(false);
   const [contributors, setContributors] = useState([]);
@@ -146,7 +146,7 @@ export default function Invest() {
   const accessCode = searchParams.get('code') || '';
   useEffect(() => {
     // Admin always has access
-    if (isAdmin) { setAccessGranted(true); setAccessChecked(true); return; }
+    if (isTeamMember) { setAccessGranted(true); setAccessChecked(true); return; }
     // Secret invite code — stored in Firestore config
     if (accessCode) {
       (async () => {
@@ -172,7 +172,7 @@ export default function Invest() {
       }
       setAccessChecked(true);
     })();
-  }, [user, isAdmin, accessCode]);
+  }, [user, isTeamMember, accessCode]);
 
   // Gate: show access request screen if not approved
   if (accessChecked && !accessGranted) {
