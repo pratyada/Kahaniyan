@@ -235,17 +235,25 @@ function PlayerInner() {
           const url = URL.createObjectURL(localBlob);
           audio = narrator.loadCached(url);
         }
-        // Priority 2: Firebase Storage cached URL (fast download)
+        // Priority 2: Firebase Storage cached URL — fetch as blob to avoid CORS issues
         else if (current.audioUrl) {
-          console.log('[My Sleepy Tale:Player] Playing from Firebase cached URL');
-          audio = narrator.loadCached(current.audioUrl);
-          // Also save to local IDB for next time (fire & forget)
-          fetch(current.audioUrl).then(r => r.blob()).then(blob => {
-            setCachedAudio(current.id, blob);
-          }).catch(() => {});
+          console.log('[My Sleepy Tale:Player] Fetching cached audio from Firebase...');
+          try {
+            const res = await fetch(current.audioUrl);
+            if (res.ok) {
+              const blob = await res.blob();
+              const blobUrl = URL.createObjectURL(blob);
+              audio = narrator.loadCached(blobUrl);
+              // Save to IDB for instant replay next time
+              if (current.id) setCachedAudio(current.id, blob);
+            }
+          } catch {
+            console.warn('[My Sleepy Tale:Player] Cached audio fetch failed (CORS), falling back to TTS');
+          }
         }
-        // Priority 3: Generate fresh audio via TTS
-        else {
+
+        // Priority 3: Generate fresh audio via TTS (also fallback if cached fetch failed)
+        if (!audio && current.text) {
           audio = await narrator.generate({
             text: current.text,
             narrator: narratorName,
@@ -353,11 +361,6 @@ function PlayerInner() {
     }
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [progress, narrator.playing, narrator.loading, ttsReady, done]);
-
-  // Stop audio immediately if story has no text
-  useEffect(() => {
-    if (current && !current.text) clear();
-  }, [current, clear]);
 
   // Recover story from localStorage if current is null (e.g. navigated from library)
   const recoveredRef = useRef(false);
