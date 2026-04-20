@@ -132,14 +132,14 @@ function SharedStoryGate() {
   const navigate = useNavigate();
   const { current, load, clear } = usePlayer();
   const sharedStoryId = searchParams.get('storyId') || '';
-  const [status, setStatus] = useState(sharedStoryId ? 'loading' : 'ready'); // 'loading' | 'ready' | 'failed'
+  const [status, setStatus] = useState(sharedStoryId ? 'loading' : 'ready');
+  const loadedRef = useRef(false);
 
   useEffect(() => {
-    if (!sharedStoryId || current) { setStatus('ready'); return; }
-    let cancelled = false;
+    if (!sharedStoryId || loadedRef.current) return;
+    loadedRef.current = true;
     loadSharedStory(sharedStoryId).then(async (story) => {
-      if (cancelled) return;
-      if (!story) { clear(); setStatus('failed'); return; }
+      if (!story) { setStatus('failed'); return; }
       load(story);
       setStatus('ready');
       try {
@@ -147,10 +147,9 @@ function SharedStoryGate() {
         recordListen(sharedStoryId);
       } catch {}
     }).catch(() => {
-      if (!cancelled) { clear(); setStatus('failed'); }
+      setStatus('failed');
     });
-    return () => { cancelled = true; };
-  }, [sharedStoryId, current, load]);
+  }, [sharedStoryId, load]);
 
   if (status === 'loading') {
     return (
