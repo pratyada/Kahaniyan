@@ -241,8 +241,40 @@ function PlayerInner() {
           audio = narrator.loadCached(current.audioUrl);
         }
 
-        // Priority 3: Generate fresh audio via TTS (also fallback if cached fetch failed)
-        if (!audio && current.text) {
+        // Priority 3: Generate audio via TTS
+        // Wisdom stories skip paid API — use browser speech synthesis (free, unlimited)
+        if (!audio && current.text && current.isWisdom) {
+          console.log('[My Sleepy Tale:Player] Wisdom story — using free browser voice');
+          if ('speechSynthesis' in window) {
+            // Use browser TTS — completely free, no API cost
+            const utterance = new SpeechSynthesisUtterance(current.text);
+            utterance.rate = 0.9;
+            utterance.pitch = 0.95;
+            // Try to pick a good voice
+            const voices = window.speechSynthesis.getVoices();
+            const good = voices.find(v => v.name.toLowerCase().includes('google') || v.name.toLowerCase().includes('natural')) || voices[0];
+            if (good) utterance.voice = good;
+
+            // Create a silent audio element just for progress tracking
+            const silentAudio = new Audio();
+            const totalChars = current.text.length;
+            let charsSoFar = 0;
+            utterance.onboundary = (e) => {
+              charsSoFar = e.charIndex;
+            };
+            utterance.onend = () => {
+              setIsPlaying(false);
+            };
+            window.speechSynthesis.speak(utterance);
+            setIsPlaying(true);
+            setTtsReady(true);
+            // Can't use narrator for browser speech — just return
+            return;
+          }
+        }
+
+        // Priority 4: Generate via paid TTS API (non-wisdom stories)
+        if (!audio && current.text && !current.isWisdom) {
           audio = await narrator.generate({
             text: current.text,
             narrator: narratorName,

@@ -19,16 +19,16 @@ import { useAdmin } from '../hooks/useAdmin.jsx';
 
 const MODES = [
   {
+    key: 'tradition',
+    icon: '🪷',
+    title: 'Wisdom story',
+    subtitle: 'Pre-written stories from your tradition. Free, instant, no waiting.',
+  },
+  {
     key: 'whisper',
     icon: '💭',
     title: 'Today this happened',
     subtitle: 'Tell us how your child is feeling. We weave a story around it.',
-  },
-  {
-    key: 'tradition',
-    icon: '🪷',
-    title: 'Wisdom story',
-    subtitle: 'A pre-written cultural lesson from your tradition (or many).',
   },
   {
     key: 'cast',
@@ -71,7 +71,7 @@ export default function Home() {
   const characters = profile?.characters || [];
   const nonProtagonist = characters.filter((c) => c.relation !== 'self');
 
-  const [mode, setMode] = useState('whisper');
+  const [mode, setMode] = useState('tradition');
   const [value, setValue] = useState(recommended[0]);
   const [duration, setDuration] = useState(2);
   const [whisper, setWhisper] = useState('');
@@ -174,7 +174,16 @@ export default function Home() {
       tradition: lesson.tradition,
       source: lesson.source,
       createdAt: new Date().toISOString(),
+      isWisdom: true, // flag: uses browser TTS only, no API cost
     };
+    // Track play count locally (zero cost, works at any scale)
+    try {
+      const key = 'mst:wisdomPlays';
+      const plays = JSON.parse(localStorage.getItem(key) || '{}');
+      plays[lesson.id] = (plays[lesson.id] || 0) + 1;
+      plays._total = (plays._total || 0) + 1;
+      localStorage.setItem(key, JSON.stringify(plays));
+    } catch {}
     load(story);
     navigate('/player');
   };
