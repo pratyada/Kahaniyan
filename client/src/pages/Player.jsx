@@ -375,17 +375,9 @@ function PlayerInner() {
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [progress, setIsPlaying, usingTTS, narrator.playing, narrator.loading, ttsReady, done]);
 
-  // Try recovering last story from localStorage on mount (one-time)
-  const triedReloadRef = useRef(false);
-  useEffect(() => {
-    if (current || loadingShared || hasSharedId || triedReloadRef.current) return;
-    triedReloadRef.current = true;
-    reloadLast();
-  }, [current, loadingShared, hasSharedId, reloadLast]);
-
   if (!current) {
     // Still loading shared story from Firestore
-    if (loadingShared) {
+    if (loadingShared || hasSharedId) {
       return (
         <div className="flex h-screen flex-col items-center justify-center bg-bg-base px-6 text-center">
           <div className="mb-4 inline-block h-8 w-8 animate-spin rounded-full border-2 border-gold border-t-transparent" />
@@ -406,21 +398,11 @@ function PlayerInner() {
       );
     }
 
-    // Waiting for shared story or localStorage reload
-    if (hasSharedId || !triedReloadRef.current) {
-      return (
-        <div className="flex h-screen flex-col items-center justify-center bg-bg-base px-6 text-center">
-          <div className="mb-4 inline-block h-8 w-8 animate-spin rounded-full border-2 border-gold border-t-transparent" />
-          <p className="text-sm text-ink-muted">Loading story...</p>
-        </div>
-      );
-    }
-
     return (
       <div className="flex h-screen flex-col items-center justify-center bg-bg-base px-6 text-center">
         <div className="text-4xl mb-4">📖</div>
         <h1 className="font-display text-xl font-bold text-gold">No story loaded</h1>
-        <p className="mt-2 text-sm text-ink-muted">The story may not have generated. Please go back and try again.</p>
+        <p className="mt-2 text-sm text-ink-muted">Go back to Tonight and create a story.</p>
         <button onClick={() => navigate('/')} className="btn-primary mt-6">Back to home</button>
       </div>
     );
@@ -564,9 +546,7 @@ function PlayerInner() {
             </div>
 
             {/* Story text — always visible, scrolls in sync */}
-            <div className="mt-4 max-h-[45vh] overflow-y-auto rounded-2xl bg-black/30 p-4 font-story text-[15px] leading-relaxed text-ink-muted ring-1 ring-white/5">
-              <HighlightedText text={current.text} progress={progress} />
-            </div>
+            <HighlightedText text={current.text} progress={progress} />
 
             {/* Spacer */}
             <div className="flex-1" />
@@ -725,39 +705,73 @@ function PlayerInner() {
 }
 
 function HighlightedText({ text, progress }) {
-  // Split text into sentences for better visual sync
-  const sentences = text.match(/[^.!?]+[.!?]+\s*/g) || [text];
+  const containerRef = useRef(null);
+  const activeRef = useRef(null);
+
+  // Split into words, preserving whitespace
+  const words = text.split(/(\s+)/);
   const totalLen = text.length;
 
-  // Apply a small lead so highlight stays with or slightly ahead of voice
-  const lead = 0.04;
+  // Small lead so highlight stays with or slightly ahead of voice
+  const lead = 0.03;
   const adjusted = Math.min(1, progress + lead);
   const cutoff = Math.floor(totalLen * adjusted);
 
-  let charCount = 0;
-  return (
-    <>
-      {sentences.map((sentence, i) => {
-        const start = charCount;
-        charCount += sentence.length;
-        const isFullyRead = charCount <= cutoff;
-        const isPartial = start < cutoff && charCount > cutoff;
-        const partialCut = cutoff - start;
+  // Auto-scroll to keep active word visible
+  useEffect(() => {
+    if (activeRef.current && containerRef.current) {
+      const container = containerRef.current;
+      const active = activeRef.current;
+      const containerRect = container.getBoundingClientRect();
+      const activeRect = active.getBoundingClientRect();
+      // Scroll if active word is below the visible area
+      if (activeRect.top > containerRect.bottom - 60 || activeRect.bottom < containerRect.top + 20) {
+        active.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      }
+    }
+  }, [cutoff]);
 
-        if (isFullyRead) {
-          return <span key={i} className="text-gold/90">{sentence}</span>;
+  let charCount = 0;
+  let foundActive = false;
+
+  return (
+    <div ref={containerRef} className="mt-4 max-h-[45vh] overflow-y-auto rounded-2xl bg-black/30 p-4 font-story text-[15px] leading-[1.9] text-ink-muted/60 ring-1 ring-white/5">
+      {words.map((word, i) => {
+        const start = charCount;
+        charCount += word.length;
+
+        // Whitespace — render as-is
+        if (/^\s+$/.test(word)) {
+          return <span key={i}>{word}</span>;
         }
-        if (isPartial) {
+
+        const isRead = charCount <= cutoff;
+        const isActive = !foundActive && start < cutoff && charCount > cutoff;
+        if (isActive) foundActive = true;
+        // Also mark the last fully-read word as active if no partial word found
+        const isLastRead = !foundActive && isRead && charCount + 10 > cutoff;
+
+        if (isActive || isLastRead) {
+          if (isActive || isLastRead) foundActive = true;
           return (
-            <span key={i}>
-              <span className="text-gold/90">{sentence.slice(0, partialCut)}</span>
-              <span className="text-ink-muted">{sentence.slice(partialCut)}</span>
+            <span
+              key={i}
+              ref={activeRef}
+              className="rounded px-0.5 text-bg-base font-bold"
+              style={{ backgroundColor: '#f0a500', boxShadow: '0 0 8px rgba(240,165,0,0.4)' }}
+            >
+              {word}
             </span>
           );
         }
-        return <span key={i} className="text-ink-muted">{sentence}</span>;
+
+        if (isRead) {
+          return <span key={i} className="text-ink">{word}</span>;
+        }
+
+        return <span key={i}>{word}</span>;
       })}
-    </>
+    </div>
   );
 }
 

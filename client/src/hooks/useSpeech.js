@@ -90,7 +90,10 @@ export function useSpeech() {
       setSupported(false);
       return;
     }
-    const load = () => setVoices(window.speechSynthesis.getVoices());
+    const load = () => {
+      const v = window.speechSynthesis.getVoices();
+      setVoices((prev) => prev.length === v.length ? prev : v);
+    };
     load();
     window.speechSynthesis.onvoiceschanged = load;
     return () => {
