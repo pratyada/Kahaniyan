@@ -26,8 +26,8 @@ const MODES = [
   },
   {
     key: 'whisper',
-    icon: '💭',
-    title: 'Today this happened',
+    icon: '📜',
+    title: 'Write my story',
     subtitle: 'Tell us how your child is feeling. We weave a story around it.',
   },
   {
