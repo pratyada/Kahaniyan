@@ -490,7 +490,7 @@ function PlayerInner() {
             </div>
 
             {/* Story text — always visible, scrolls in sync */}
-            <HighlightedText text={current.text} progress={progress} />
+            {current.text && <HighlightedText text={current.text} progress={progress} />}
 
             {/* Spacer */}
             <div className="flex-1" />
@@ -639,7 +639,7 @@ function HighlightedText({ text, progress }) {
   const activeRef = useRef(null);
 
   // Split into words, preserving whitespace
-  const words = text.split(/(\s+)/);
+  const words = (text || '').split(/(\s+)/);
   const totalLen = text.length;
 
   // No offset — highlight matches audio position exactly
