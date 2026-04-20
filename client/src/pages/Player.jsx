@@ -1,4 +1,4 @@
-import { Component, useEffect, useLayoutEffect, useRef, useState } from 'react';
+import { Component, useEffect, useRef, useState } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { loadSharedStory } from '../utils/shareStory.js';
@@ -375,27 +375,19 @@ function PlayerInner() {
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [progress, setIsPlaying, usingTTS, narrator.playing, narrator.loading, ttsReady, done]);
 
-  // Recover story from localStorage if current is null (e.g. navigated from library)
+  // Recover story from localStorage if current is null and no shared link
+  // Use a timeout to avoid synchronous setState during React render cycle
   const recoveredRef = useRef(false);
-  useLayoutEffect(() => {
-    if (!current && !hasSharedId && !loadingShared && !recoveredRef.current) {
-      recoveredRef.current = true;
-      reloadLast();
-    }
+  useEffect(() => {
+    if (current || hasSharedId || loadingShared || recoveredRef.current) return;
+    recoveredRef.current = true;
+    // Delay to ensure React has finished its render cycle
+    const t = setTimeout(() => reloadLast(), 0);
+    return () => clearTimeout(t);
   }, [current, hasSharedId, loadingShared, reloadLast]);
 
   if (!current) {
-    // Still loading shared story from Firestore
-    if (loadingShared || hasSharedId) {
-      return (
-        <div className="flex h-screen flex-col items-center justify-center bg-bg-base px-6 text-center">
-          <div className="mb-4 inline-block h-8 w-8 animate-spin rounded-full border-2 border-gold border-t-transparent" />
-          <p className="text-sm text-ink-muted">Loading story...</p>
-        </div>
-      );
-    }
-
-    // Shared story failed to load
+    // Shared story failed to load — check BEFORE the loading check
     if (sharedFailed) {
       return (
         <div className="flex h-screen flex-col items-center justify-center bg-bg-base px-6 text-center">
@@ -403,6 +395,16 @@ function PlayerInner() {
           <h1 className="font-display text-xl font-bold text-gold">Story not found</h1>
           <p className="mt-2 text-sm text-ink-muted">This shared story link may have expired or doesn't exist.</p>
           <button onClick={() => navigate('/')} className="btn-primary mt-6">Go to home</button>
+        </div>
+      );
+    }
+
+    // Still loading shared story from Firestore, or recovering from localStorage
+    if (loadingShared || hasSharedId || !recoveredRef.current) {
+      return (
+        <div className="flex h-screen flex-col items-center justify-center bg-bg-base px-6 text-center">
+          <div className="mb-4 inline-block h-8 w-8 animate-spin rounded-full border-2 border-gold border-t-transparent" />
+          <p className="text-sm text-ink-muted">Loading story...</p>
         </div>
       );
     }
