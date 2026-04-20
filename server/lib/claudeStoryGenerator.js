@@ -226,6 +226,9 @@ STORY SHAPE
 - The middle must have one moment where things go WRONG — not scary wrong, just funny-problem wrong
 - ${childName} is always the hero. ${gender === 'girl' ? 'She figures' : gender === 'boy' ? 'He figures' : 'They figure'} things out ${gender === 'girl' ? 'herself' : gender === 'boy' ? 'himself' : 'themselves'}.
 - Supporting characters: ${allCharacters} — give each one a funny little personality quirk
+- USE WHAT CHARACTERS LOVE: If a character loves dinosaurs, put dinosaurs in the story. If they love cricket, weave cricket into the adventure. If they love space, set a scene in space. Their interests should shape the plot, not just be mentioned.
+- USE NICKNAMES: If the child calls someone "Dadu" or "Chiku", use that name in the story — it makes it feel like home.
+- USE THE RIGHT PRONOUNS: Respect each character's gender (he/him, she/her) as specified.
 - NEVER use stereotypical gender roles. Grandmothers are NOT always cooking in the kitchen. Grandfathers are NOT always reading newspapers. Women can be adventurous, strong, silly, inventive. Men can be gentle, nurturing, creative. Give every character surprising, non-stereotypical traits and activities. Break expectations.
 - End gently. Slow the words down. Make the sentences shorter and shorter. Let the world get quiet.
 
