@@ -118,7 +118,8 @@ export default function WhisperBox({ value, onChange, overrideValue, onToggleOve
                 onChange={(e) => onChange(e.target.value.slice(0, max))}
                 placeholder="e.g. They are scared of the thunder tonight, or they keep asking why the moon follows them home…"
                 rows={3}
-                className="field min-h-[88px] resize-none font-story text-[15px] leading-relaxed"
+                className="w-full min-h-[88px] resize-none rounded-2xl px-4 py-3 font-story text-[15px] leading-relaxed text-bg-base placeholder:text-bg-base/40 outline-none ring-1 ring-gold/30"
+                style={{ background: '#fef9e7' }}
               />
               <div className="mt-1 flex items-center justify-between text-[10px] uppercase tracking-wider text-ink-dim">
                 <span>Stays on this device. Never sent anywhere.</span>

@@ -4,6 +4,8 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { loadSharedStory } from '../utils/shareStory.js';
 import { storage, db, auth } from '../lib/firebase.js';
 
+import { getCachedAudio, setCachedAudio, pruneAudioCache } from '../utils/audioCache.js';
+
 // Upload audio blob to Firebase Storage and save URL back to story
 async function cacheAudioToStorage(storyId, blob) {
   if (!storage || !blob || !storyId) return;
@@ -221,12 +223,24 @@ function PlayerInner() {
       try {
         let audio;
 
-        // If story has cached audio URL, play directly — no TTS call
-        if (current.audioUrl) {
-          console.log('[My Sleepy Tale:Player] Playing cached audio');
+        // Priority 1: Check IndexedDB for locally cached blob (instant)
+        const localBlob = await getCachedAudio(current.id);
+        if (localBlob) {
+          console.log('[My Sleepy Tale:Player] Playing from local cache (instant)');
+          const url = URL.createObjectURL(localBlob);
+          audio = narrator.loadCached(url);
+        }
+        // Priority 2: Firebase Storage cached URL (fast download)
+        else if (current.audioUrl) {
+          console.log('[My Sleepy Tale:Player] Playing from Firebase cached URL');
           audio = narrator.loadCached(current.audioUrl);
-        } else {
-          // Generate fresh audio via TTS
+          // Also save to local IDB for next time (fire & forget)
+          fetch(current.audioUrl).then(r => r.blob()).then(blob => {
+            setCachedAudio(current.id, blob);
+          }).catch(() => {});
+        }
+        // Priority 3: Generate fresh audio via TTS
+        else {
           audio = await narrator.generate({
             text: current.text,
             narrator: narratorName,
@@ -236,10 +250,14 @@ function PlayerInner() {
             beliefs: profile?.beliefs || [],
           });
 
-          // Upload to Firebase Storage for future plays (fire and forget)
+          // Cache locally + to Firebase Storage (fire and forget)
           if (audio && current.id) {
-            cacheAudioToStorage(current.id, narrator.getBlob()).then(() => {
-              // Update the saved last-story in localStorage so reopened stories use cached audio
+            const blob = narrator.getBlob();
+            if (blob) {
+              setCachedAudio(current.id, blob);
+              pruneAudioCache(20);
+            }
+            cacheAudioToStorage(current.id, blob).then(() => {
               try {
                 const raw = localStorage.getItem('mst:lastStory');
                 if (raw) {
@@ -533,13 +551,6 @@ function PlayerInner() {
                     <line x1="12" y1="2" x2="12" y2="15" />
                   </svg>
                 </button>
-                <button
-                  onClick={() => setShowText((s) => !s)}
-                  className="grid h-10 w-10 place-items-center rounded-full bg-white/5 text-sm"
-                  title="Toggle text"
-                >
-                  {showText ? '🅣' : '☾'}
-                </button>
               </div>
             </div>
 
@@ -569,19 +580,10 @@ function PlayerInner() {
               </div>
             </div>
 
-            {/* Story text — scrolls in sync */}
-            <AnimatePresence>
-              {showText && (
-                <motion.div
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  exit={{ opacity: 0 }}
-                  className="mt-4 max-h-[45vh] overflow-y-auto rounded-2xl bg-black/30 p-4 font-story text-[15px] leading-relaxed text-ink-muted ring-1 ring-white/5"
-                >
-                  <HighlightedText text={current.text} progress={progress} />
-                </motion.div>
-              )}
-            </AnimatePresence>
+            {/* Story text — always visible, scrolls in sync */}
+            <div className="mt-4 max-h-[45vh] overflow-y-auto rounded-2xl bg-black/30 p-4 font-story text-[15px] leading-relaxed text-ink-muted ring-1 ring-white/5">
+              <HighlightedText text={current.text} progress={progress} />
+            </div>
 
             {/* Spacer */}
             <div className="flex-1" />
@@ -634,12 +636,10 @@ function PlayerInner() {
                   onClick={() => { if (usingTTS) narrator.seekBy(-15); }}
                   disabled={narrator.loading || !usingTTS}
                   aria-label="Rewind 15 seconds"
-                  className="grid h-12 w-12 place-items-center rounded-full bg-white/5 text-ink-muted transition active:scale-95 disabled:opacity-30"
+                  className="flex h-12 w-12 flex-col items-center justify-center rounded-full bg-white/5 text-ink-muted transition active:scale-95 disabled:opacity-30"
                 >
-                  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                    <path d="M11 17a5 5 0 1 0 0-10" /><polyline points="11 7 7 7 7 11" />
-                    <text x="13" y="15" fill="currentColor" stroke="none" fontSize="7" fontWeight="bold">15</text>
-                  </svg>
+                  <span className="text-[10px] font-bold leading-none">-15</span>
+                  <span className="text-[8px] leading-none mt-0.5">sec</span>
                 </button>
 
                 {/* Big play / pause / loading */}
@@ -672,17 +672,17 @@ function PlayerInner() {
                   onClick={() => { if (usingTTS) narrator.seekBy(15); }}
                   disabled={narrator.loading || !usingTTS}
                   aria-label="Forward 15 seconds"
-                  className="grid h-12 w-12 place-items-center rounded-full bg-white/5 text-ink-muted transition active:scale-95 disabled:opacity-30"
+                  className="flex h-12 w-12 flex-col items-center justify-center rounded-full bg-white/5 text-ink-muted transition active:scale-95 disabled:opacity-30"
                 >
-                  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                    <path d="M13 17a5 5 0 1 0 0-10" /><polyline points="13 7 17 7 17 11" />
-                    <text x="5" y="15" fill="currentColor" stroke="none" fontSize="7" fontWeight="bold">15</text>
-                  </svg>
+                  <span className="text-[10px] font-bold leading-none">+15</span>
+                  <span className="text-[8px] leading-none mt-0.5">sec</span>
                 </button>
               </div>
-              <div className="text-[10px] font-bold uppercase tracking-[0.18em] text-ink-muted">
-                {narrator.loading ? 'Preparing voice…' : isPlaying ? 'Tap to pause' : 'Tap to play'}
-              </div>
+              {narrator.loading && (
+                <div className="text-[10px] font-bold uppercase tracking-[0.18em] text-ink-muted">
+                  Preparing voice…
+                </div>
+              )}
 
               {/* Secondary controls — speed + restart */}
               <div className="mt-2 grid w-full grid-cols-2 gap-2">

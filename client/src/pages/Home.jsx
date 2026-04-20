@@ -453,7 +453,7 @@ export default function Home() {
 
       {/* CTA — sticky floating button, hidden in tradition mode */}
       {mode !== 'tradition' && (
-        <div className="fixed bottom-20 left-0 right-0 z-20 px-5 pointer-events-none">
+        <div className="fixed bottom-24 left-0 right-0 z-20 px-5 pointer-events-none">
           <div className="mx-auto max-w-lg pointer-events-auto">
             <motion.button
               whileTap={{ scale: 0.97 }}
