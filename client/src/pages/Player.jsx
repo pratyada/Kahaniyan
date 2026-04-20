@@ -230,7 +230,7 @@ function PlayerInner() {
         let audio;
 
         // Priority 1: Check IndexedDB for locally cached blob (instant)
-        const localBlob = await getCachedAudio(current.id);
+        const localBlob = current.id ? await getCachedAudio(current.id) : null;
         if (localBlob) {
           console.log('[My Sleepy Tale:Player] Playing from local cache (instant)');
           const url = URL.createObjectURL(localBlob);
@@ -477,7 +477,7 @@ function PlayerInner() {
                 <span className="text-4xl">{meta.emoji}</span>
               </motion.div>
               <div className="min-w-0 flex-1">
-                <h1 className="font-display text-xl font-bold text-ink">{current.title}</h1>
+                <h1 className="font-display text-xl font-bold text-ink">{current.title || 'Bedtime Story'}</h1>
               <p className="mt-1 text-xs text-ink-muted">
                 For {profile?.childName} · {current.estimatedMinutes} min · {current.voice}
               </p>

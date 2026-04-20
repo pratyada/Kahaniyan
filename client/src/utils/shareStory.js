@@ -47,7 +47,7 @@ export async function loadSharedStory(storyId) {
     const ref = doc(db, 'sharedStories', storyId);
     const snap = await getDoc(ref);
     if (!snap.exists()) return null;
-    return snap.data();
+    return { id: storyId, ...snap.data() };
   } catch {
     return null;
   }
