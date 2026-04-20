@@ -954,6 +954,7 @@ export default function Admin() {
                   className="rounded-xl bg-[#0f0f17] px-3 py-3 text-sm text-[#f0a500] outline-none ring-1 ring-white/5"
                 >
                   <option value="tester">🧪 Tester</option>
+                  <option value="investor">💰 Investor</option>
                   <option value="marketing">📣 Marketing</option>
                 </select>
                 <button
@@ -969,7 +970,7 @@ export default function Admin() {
                 </button>
               </div>
               <p className="mt-2 text-[11px] text-[#6e6a63]">
-                Testers get full app access for QA. Marketing gets analytics + sharing features.
+                Testers get full app access for QA. Investors can see the invest page. Marketing gets analytics + sharing.
                 You can pause or stop access anytime.
               </p>
             </div>
@@ -1002,11 +1003,11 @@ export default function Admin() {
                           <td className="px-4 py-3 font-mono text-xs text-[#f5f0e8]">{t.email}</td>
                           <td className="px-4 py-3">
                             <span className={`rounded-full px-2 py-0.5 text-[9px] font-bold uppercase ${
-                              t.role === 'tester'
-                                ? 'bg-[#539df5]/15 text-[#539df5]'
+                              t.role === 'tester' ? 'bg-[#539df5]/15 text-[#539df5]'
+                                : t.role === 'investor' ? 'bg-[#f0a500]/15 text-[#f0a500]'
                                 : 'bg-[#e8b4ff]/15 text-[#e8b4ff]'
                             }`}>
-                              {t.role === 'tester' ? '🧪 Tester' : '📣 Marketing'}
+                              {t.role === 'tester' ? '🧪 Tester' : t.role === 'investor' ? '💰 Investor' : '📣 Marketing'}
                             </span>
                           </td>
                           <td className="px-4 py-3 text-center">
