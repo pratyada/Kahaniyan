@@ -721,9 +721,9 @@ function HighlightedText({ text, progress }) {
   const words = text.split(/(\s+)/);
   const totalLen = text.length;
 
-  // Small lead so highlight stays with or slightly ahead of voice
-  const lead = 0.03;
-  const adjusted = Math.min(1, progress + lead);
+  // Lag the highlight slightly behind audio so it never runs ahead of the voice
+  const lag = 0.02;
+  const adjusted = Math.max(0, Math.min(1, progress - lag));
   const cutoff = Math.floor(totalLen * adjusted);
 
   // Auto-scroll to keep active word visible
@@ -757,11 +757,8 @@ function HighlightedText({ text, progress }) {
         const isRead = charCount <= cutoff;
         const isActive = !foundActive && start < cutoff && charCount > cutoff;
         if (isActive) foundActive = true;
-        // Also mark the last fully-read word as active if no partial word found
-        const isLastRead = !foundActive && isRead && charCount + 10 > cutoff;
 
-        if (isActive || isLastRead) {
-          if (isActive || isLastRead) foundActive = true;
+        if (isActive) {
           return (
             <span
               key={i}
