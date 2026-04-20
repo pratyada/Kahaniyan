@@ -2457,21 +2457,32 @@ function WisdomAudioPanel() {
 
   const generateOne = async (lesson) => {
     setGenerating(lesson.id);
-    setStatus(s => ({ ...s, [lesson.id]: 'generating...' }));
+    setStatus(s => ({ ...s, [lesson.id]: 'generating TTS...' }));
     try {
       const text = lesson.body.replace(/\{childName\}/g, 'little one').replace(/\{sibling\}/g, 'their friend').replace(/\{grandfather\}/g, 'Dada ji').replace(/\{grandmother\}/g, 'Nani ma').replace(/\{pet\}/g, 'their puppy');
+      // Generate audio via TTS API
       const res = await fetch('/api/generate-wisdom-audio', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ lessonId: lesson.id, text: text.slice(0, 4096) }),
+        body: JSON.stringify({ text: text.slice(0, 4096) }),
       });
-      const data = await res.json();
-      if (data.audioUrl) {
-        setUrls(u => ({ ...u, [lesson.id]: data.audioUrl }));
-        setStatus(s => ({ ...s, [lesson.id]: 'done' }));
-      } else {
-        setStatus(s => ({ ...s, [lesson.id]: data.error || 'failed' }));
-      }
+      if (!res.ok) { setStatus(s => ({ ...s, [lesson.id]: `TTS failed (${res.status})` })); setGenerating(null); return; }
+      const blob = await res.blob();
+
+      // Upload to Firebase Storage (client-side — same as regular stories)
+      setStatus(s => ({ ...s, [lesson.id]: 'uploading...' }));
+      const { ref, uploadBytes, getDownloadURL } = await import('firebase/storage');
+      const { storage, db: fireDb } = await import('../lib/firebase.js');
+      const storageRef = ref(storage, `wisdom-audio/${lesson.id}.opus`);
+      await uploadBytes(storageRef, blob, { contentType: 'audio/ogg' });
+      const audioUrl = await getDownloadURL(storageRef);
+
+      // Save URL to Firestore config
+      const { doc: fdoc, setDoc: fset } = await import('firebase/firestore');
+      await fset(fdoc(fireDb, 'config', 'wisdomAudio'), { [lesson.id]: audioUrl }, { merge: true });
+
+      setUrls(u => ({ ...u, [lesson.id]: audioUrl }));
+      setStatus(s => ({ ...s, [lesson.id]: 'done' }));
     } catch (e) {
       setStatus(s => ({ ...s, [lesson.id]: e.message }));
     }
