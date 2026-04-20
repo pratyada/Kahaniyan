@@ -36,13 +36,10 @@ function Shell() {
   const { profile, ready, accountStatus } = useFamilyProfile();
   const { current } = usePlayer();
   const { stationId } = useRadio();
-
-  // Wait for auth + profile to load
-  if (authLoading || !ready) return null;
-
-  // Login popup triggered when user tries to generate a story
-  const [loginTriggered, setLoginTriggered] = useState(false);
   const navigate = useNavigate();
+
+  // ALL hooks must be called before any conditional return
+  const [loginTriggered, setLoginTriggered] = useState(false);
 
   // Expose trigger globally so Home can call it
   useEffect(() => {
@@ -51,6 +48,9 @@ function Shell() {
     };
     if (user) setLoginTriggered(false);
   }, [isConfigured, user]);
+
+  // Wait for auth + profile to load
+  if (authLoading || !ready) return null;
 
   const needsAuth = false;
   const showLoginPopup = isConfigured && !user && loginTriggered;
