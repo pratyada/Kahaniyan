@@ -184,6 +184,19 @@ export default function Home() {
       plays._total = (plays._total || 0) + 1;
       localStorage.setItem(key, JSON.stringify(plays));
     } catch {}
+    // Start browser speech immediately (within user gesture context for mobile)
+    if ('speechSynthesis' in window && story.text) {
+      window.speechSynthesis.cancel();
+      const utterance = new SpeechSynthesisUtterance(story.text);
+      utterance.rate = 0.9;
+      utterance.pitch = 0.95;
+      const voices = window.speechSynthesis.getVoices();
+      const good = voices.find(v => v.name.toLowerCase().includes('google') || v.name.toLowerCase().includes('natural')) || voices[0];
+      if (good) utterance.voice = good;
+      window.speechSynthesis.speak(utterance);
+      // Store ref so Player can track it
+      window.__wisdomUtterance = utterance;
+    }
     load(story);
     navigate('/player');
   };
