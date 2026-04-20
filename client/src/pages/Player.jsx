@@ -355,6 +355,11 @@ function PlayerInner() {
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [progress, narrator.playing, narrator.loading, ttsReady, done]);
 
+  // Stop audio immediately if story has no text
+  useEffect(() => {
+    if (current && !current.text) clear();
+  }, [current, clear]);
+
   // Recover story from localStorage if current is null (e.g. navigated from library)
   const recoveredRef = useRef(false);
   useEffect(() => {
@@ -374,7 +379,6 @@ function PlayerInner() {
 
   const meta = valueMeta(current.value);
 
-  // If story has no text, stop everything and show error
   if (!current.text) {
     return (
       <div className="flex h-screen flex-col items-center justify-center bg-bg-base px-6 text-center">
