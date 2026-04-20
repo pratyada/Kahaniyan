@@ -131,7 +131,7 @@ export default function Player() {
 function PlayerInner() {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
-  const { current, clear, isPlaying, setIsPlaying, reloadLast, load } = usePlayer();
+  const { current, clear, isPlaying, setIsPlaying, reloadLast, load, setAudio } = usePlayer();
   const { profile } = useFamilyProfile();
   const webSpeech = useSpeech();
   const narrator = useNarrator();
@@ -279,6 +279,7 @@ function PlayerInner() {
         if (!audio) return; // aborted
         setUsingTTS(true);
         setTtsReady(true);
+        setAudio(audio); // register with global context so clear() can stop it
         audio.playbackRate = speed;
 
         audio.onplay = () => setIsPlaying(true);

@@ -1,8 +1,9 @@
-import { createContext, useContext, useState, useCallback, useEffect } from 'react';
+import { createContext, useContext, useState, useCallback, useEffect, useRef } from 'react';
 
 // Lightweight global player context — holds the currently loaded
 // story so the mini PlayerBar can render across routes.
-// Persists last story to localStorage so it's never lost.
+// Also holds a ref to the active audio element so it can be stopped
+// from anywhere (e.g. when user closes player after navigating away).
 const LAST_STORY_KEY = 'mst:lastStory';
 
 function saveStory(story) {
@@ -23,6 +24,7 @@ const PlayerCtx = createContext(null);
 export function PlayerProvider({ children }) {
   const [current, setCurrent] = useState(null); // story object
   const [isPlaying, setIsPlaying] = useState(false);
+  const audioRef = useRef(null); // global ref to active audio element
 
   const load = useCallback((story) => {
     setCurrent(story);
@@ -31,10 +33,21 @@ export function PlayerProvider({ children }) {
   }, []);
 
   const clear = useCallback(() => {
+    // Stop any playing audio before clearing
+    if (audioRef.current) {
+      try {
+        audioRef.current.pause();
+        audioRef.current.src = '';
+      } catch {}
+      audioRef.current = null;
+    }
     setCurrent(null);
     setIsPlaying(false);
     try { localStorage.removeItem(LAST_STORY_KEY); } catch {}
   }, []);
+
+  // Register/unregister the active audio element
+  const setAudio = useCallback((el) => { audioRef.current = el; }, []);
 
   // Expose method to reload last story if current is lost
   const reloadLast = useCallback(() => {
@@ -47,7 +60,7 @@ export function PlayerProvider({ children }) {
   }, []);
 
   return (
-    <PlayerCtx.Provider value={{ current, isPlaying, setIsPlaying, load, clear, reloadLast }}>
+    <PlayerCtx.Provider value={{ current, isPlaying, setIsPlaying, load, clear, reloadLast, setAudio, audioRef }}>
       {children}
     </PlayerCtx.Provider>
   );

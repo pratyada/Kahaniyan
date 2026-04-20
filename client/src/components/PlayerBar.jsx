@@ -5,14 +5,32 @@ import { valueMeta } from '../utils/constants.js';
 // Spotify-style mini player bar — sits above the bottom nav.
 export default function PlayerBar() {
   const navigate = useNavigate();
-  const { current, isPlaying, setIsPlaying } = usePlayer();
+  const { current, isPlaying, setIsPlaying, clear, audioRef } = usePlayer();
   if (!current) return null;
   const meta = valueMeta(current.value);
 
+  const togglePlay = (e) => {
+    e.stopPropagation();
+    const audio = audioRef?.current;
+    if (!audio) return;
+    if (isPlaying) {
+      audio.pause();
+      setIsPlaying(false);
+    } else {
+      audio.play().catch(() => {});
+      setIsPlaying(true);
+    }
+  };
+
+  const handleClose = (e) => {
+    e.stopPropagation();
+    clear();
+  };
+
   return (
-    <button
+    <div
       onClick={() => navigate('/player')}
-      className="absolute bottom-[72px] left-3 right-3 z-20 flex items-center gap-3 rounded-2xl bg-bg-elevated/95 px-3 py-2 shadow-lift backdrop-blur-xl active:scale-[0.99]"
+      className="absolute bottom-[72px] left-3 right-3 z-20 flex items-center gap-3 rounded-2xl bg-bg-elevated/95 px-3 py-2 shadow-lift backdrop-blur-xl active:scale-[0.99] cursor-pointer"
     >
       <div
         className="grid h-11 w-11 place-items-center rounded-xl text-xl"
@@ -27,10 +45,7 @@ export default function PlayerBar() {
         </div>
       </div>
       <span
-        onClick={(e) => {
-          e.stopPropagation();
-          setIsPlaying((p) => !p);
-        }}
+        onClick={togglePlay}
         aria-label={isPlaying ? 'Pause' : 'Play'}
         className="grid h-12 w-12 place-items-center rounded-full bg-gold text-bg-base shadow-glow"
       >
@@ -45,6 +60,13 @@ export default function PlayerBar() {
           </svg>
         )}
       </span>
-    </button>
+      <span
+        onClick={handleClose}
+        className="grid h-8 w-8 place-items-center rounded-full bg-white/5 text-xs text-ink-dim"
+        aria-label="Stop"
+      >
+        ✕
+      </span>
+    </div>
   );
 }
