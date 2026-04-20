@@ -313,11 +313,14 @@ function PlayerInner() {
 
   const progress = voice.progress;
 
-  // Cleanup on unmount
+  // Only stop audio on unmount if user explicitly closed (X button)
+  const closedRef = useRef(false);
   useEffect(() => {
     return () => {
-      narrator.stop();
-      webSpeech.stop();
+      if (closedRef.current) {
+        narrator.stop();
+        webSpeech.stop();
+      }
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -487,6 +490,7 @@ function PlayerInner() {
   };
 
   const handleClose = () => {
+    closedRef.current = true;
     if (usingTTS) narrator.stop();
     else webSpeech.stop();
     clear();
@@ -521,12 +525,24 @@ function PlayerInner() {
           >
             {/* Top bar */}
             <div className="mb-4 flex items-center justify-between">
-              <button
-                onClick={handleClose}
-                className="grid h-10 w-10 place-items-center rounded-full bg-white/5"
-              >
-                ✕
-              </button>
+              <div className="flex items-center gap-2">
+                {/* Back — keep audio playing, go explore the app */}
+                <button
+                  onClick={() => navigate(-1)}
+                  className="grid h-10 w-10 place-items-center rounded-full bg-white/5 text-sm"
+                  title="Keep playing & go back"
+                >
+                  ←
+                </button>
+                {/* Close — stop audio and clear story */}
+                <button
+                  onClick={handleClose}
+                  className="grid h-10 w-10 place-items-center rounded-full bg-white/5 text-xs text-ink-dim"
+                  title="Stop & close"
+                >
+                  ✕
+                </button>
+              </div>
               <div className="text-center">
                 <div className="text-[10px] uppercase tracking-[0.2em] text-ink-muted">
                   Now Playing
