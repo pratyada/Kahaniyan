@@ -139,12 +139,15 @@ export default function Home() {
     // Show upgrade modal as a hint but never hard-block generation.
     // Server will return 429 if the user is truly over limit.
     const selectedCharacters = characters.filter((c) => selectedCharIds.includes(c.id) || c.relation === 'self');
-    // Start gentle radio while story generates (Raag Nidra — sleep ritual sound)
+    // Navigate to player immediately — show generating state there
+    navigate('/player');
+
+    // Start gentle radio while story generates
     const raagNidra = RADIO_STATIONS.find(s => s.id === 'raag-nidra') || RADIO_STATIONS[0];
     try { radio.play(raagNidra); } catch {}
 
-    // Generate in background — user can navigate freely
-    console.log('[My Sleepy Tale] Generating story in background...', { value, duration, mode });
+    // Generate story — player will show loading until ready
+    if (mode === 'whisper' && whisper.trim()) saveRecentWhisper(whisper.trim());
     generate({
       profile,
       value,
@@ -156,17 +159,14 @@ export default function Home() {
       selectedCharacters: mode === 'cast' ? selectedCharacters : undefined,
     }).then((story) => {
       console.log('[My Sleepy Tale] Story generated:', story.title);
-      if (mode === 'whisper' && whisper.trim()) saveRecentWhisper(whisper.trim());
-      // Stop the ritual radio
       radio.stop();
-      // Load story + navigate to player
       load(story);
       try { navigator.vibrate?.([200, 100, 200]); } catch {}
-      setTimeout(() => navigate('/player'), 50);
     }).catch((e) => {
       console.error('[My Sleepy Tale] Story generation FAILED:', e);
       radio.stop();
       setStoryError(e.message || 'Could not generate story. Please try again.');
+      navigate('/');
     });
   };
 
@@ -217,20 +217,6 @@ export default function Home() {
       {/* Calm particles background */}
       <CalmParticles />
 
-      {/* Generating banner — non-blocking, user can still browse */}
-      <AnimatePresence>
-        {loading && (
-          <motion.div
-            initial={{ opacity: 0, y: -20 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -20 }}
-            className="mb-4 flex items-center gap-3 rounded-2xl bg-gold/10 p-3 ring-1 ring-gold/20"
-          >
-            <span className="inline-block h-4 w-4 animate-spin rounded-full border-2 border-gold border-t-transparent" />
-            <div className="text-xs font-bold text-gold">Weaving your story...</div>
-          </motion.div>
-        )}
-      </AnimatePresence>
 
       {/* HERO */}
       <header className="mb-8">

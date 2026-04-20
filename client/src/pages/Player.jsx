@@ -5,6 +5,7 @@ import { loadSharedStory } from '../utils/shareStory.js';
 import { storage, db, auth } from '../lib/firebase.js';
 
 import { getCachedAudio, setCachedAudio, pruneAudioCache } from '../utils/audioCache.js';
+import StoryLoading from '../components/StoryLoading.jsx';
 
 // Upload audio blob to Firebase Storage and save URL back to story
 async function cacheAudioToStorage(storyId, blob) {
@@ -363,12 +364,7 @@ function PlayerInner() {
   }, [current, reloadLast]);
 
   if (!current) {
-    return (
-      <div className="flex h-screen flex-col items-center justify-center bg-bg-base px-6 text-center">
-        <div className="mb-4 inline-block h-8 w-8 animate-spin rounded-full border-2 border-gold border-t-transparent" />
-        <p className="text-sm text-ink-muted">Loading story...</p>
-      </div>
-    );
+    return <StoryLoading />;
   }
 
   const meta = valueMeta(current.value);
