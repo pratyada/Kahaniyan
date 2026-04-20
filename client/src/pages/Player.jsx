@@ -130,7 +130,7 @@ export default function Player() {
 function SharedStoryGate() {
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
-  const { current, load } = usePlayer();
+  const { current, load, clear } = usePlayer();
   const sharedStoryId = searchParams.get('storyId') || '';
   const [status, setStatus] = useState(sharedStoryId ? 'loading' : 'ready'); // 'loading' | 'ready' | 'failed'
 
@@ -139,7 +139,7 @@ function SharedStoryGate() {
     let cancelled = false;
     loadSharedStory(sharedStoryId).then(async (story) => {
       if (cancelled) return;
-      if (!story) { setStatus('failed'); return; }
+      if (!story) { clear(); setStatus('failed'); return; }
       load(story);
       setStatus('ready');
       try {
@@ -147,7 +147,7 @@ function SharedStoryGate() {
         recordListen(sharedStoryId);
       } catch {}
     }).catch(() => {
-      if (!cancelled) setStatus('failed');
+      if (!cancelled) { clear(); setStatus('failed'); }
     });
     return () => { cancelled = true; };
   }, [sharedStoryId, current, load]);
@@ -167,7 +167,7 @@ function SharedStoryGate() {
         <div className="text-4xl mb-4">😔</div>
         <h1 className="font-display text-xl font-bold text-gold">Story not found</h1>
         <p className="mt-2 text-sm text-ink-muted">This story link may have expired or doesn't exist.</p>
-        <button onClick={() => navigate('/')} className="btn-primary mt-6">Go to home</button>
+        <button onClick={() => { clear(); navigate('/'); }} className="btn-primary mt-6">Go to home</button>
       </div>
     );
   }
@@ -374,14 +374,14 @@ function PlayerInner() {
 
   const meta = valueMeta(current.value);
 
-  // If story has no text, show error
+  // If story has no text, stop everything and show error
   if (!current.text) {
     return (
       <div className="flex h-screen flex-col items-center justify-center bg-bg-base px-6 text-center">
         <div className="text-4xl mb-4">😔</div>
         <h1 className="font-display text-xl font-bold text-gold">{current.title || 'Story'}</h1>
         <p className="mt-2 text-sm text-ink-muted">This story doesn't have any content to play.</p>
-        <button onClick={() => navigate('/')} className="btn-primary mt-6">Back to home</button>
+        <button onClick={() => { clear(); navigate('/'); }} className="btn-primary mt-6">Back to home</button>
       </div>
     );
   }
