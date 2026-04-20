@@ -941,13 +941,41 @@ export default function Admin() {
                 Add team member
               </h3>
               <div className="flex gap-2">
-                <input
-                  type="email"
-                  placeholder="Email address"
-                  value={newTeamEmail}
-                  onChange={(e) => setNewTeamEmail(e.target.value)}
-                  className="flex-1 rounded-xl bg-[#0f0f17] px-4 py-3 text-sm text-[#f5f0e8] placeholder-[#6e6a63] outline-none ring-1 ring-white/5 focus:ring-[#f0a500]"
-                />
+                <div className="relative flex-1">
+                  <input
+                    type="text"
+                    placeholder="Search by name or email..."
+                    value={newTeamEmail}
+                    onChange={(e) => setNewTeamEmail(e.target.value)}
+                    className="w-full rounded-xl bg-[#0f0f17] px-4 py-3 text-sm text-[#f5f0e8] placeholder-[#6e6a63] outline-none ring-1 ring-white/5 focus:ring-[#f0a500]"
+                  />
+                  {newTeamEmail.length >= 2 && (() => {
+                    const q = newTeamEmail.toLowerCase();
+                    const matches = allUsers.filter(u =>
+                      (u.email || '').toLowerCase().includes(q) ||
+                      (u.displayName || '').toLowerCase().includes(q)
+                    ).slice(0, 5);
+                    if (matches.length === 0 || (matches.length === 1 && matches[0].email === newTeamEmail)) return null;
+                    return (
+                      <div className="absolute left-0 right-0 top-full z-10 mt-1 rounded-xl bg-[#1a1a28] ring-1 ring-white/10 overflow-hidden">
+                        {matches.map(u => (
+                          <button key={u.uid} onClick={() => setNewTeamEmail(u.email || '')}
+                            className="flex w-full items-center gap-3 px-4 py-2.5 text-left hover:bg-white/5 transition">
+                            {u.photoURL ? (
+                              <img src={u.photoURL} className="h-6 w-6 rounded-full" referrerPolicy="no-referrer" />
+                            ) : (
+                              <div className="h-6 w-6 rounded-full bg-[#f0a500]/15 grid place-items-center text-[10px]">👤</div>
+                            )}
+                            <div>
+                              <div className="text-xs font-bold text-[#f5f0e8]">{u.displayName || u.email}</div>
+                              <div className="text-[10px] text-[#6e6a63]">{u.email}</div>
+                            </div>
+                          </button>
+                        ))}
+                      </div>
+                    );
+                  })()}
+                </div>
                 <select
                   value={newTeamRole}
                   onChange={(e) => setNewTeamRole(e.target.value)}
