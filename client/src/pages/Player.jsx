@@ -135,44 +135,44 @@ function PlayerInner() {
   const { profile } = useFamilyProfile();
   const webSpeech = useSpeech();
   const narrator = useNarrator();
-  const [loadingShared, setLoadingShared] = useState(false);
-  const [sharedPreview, setSharedPreview] = useState(null); // story preview for non-logged-in users
+  // Initialize loadingShared to true if URL has storyId — prevents flash of "no story"
+  const hasSharedId = searchParams.get('storyId');
+  const [loadingShared, setLoadingShared] = useState(!!hasSharedId);
+  const [sharedPreview, setSharedPreview] = useState(null);
   const [liked, setLiked] = useState(false);
   const { user } = useAuth();
 
   // Load shared story from URL if ?storyId= is present
   const sharedIdRef = useRef(null);
+  const loadRef = useRef(load);
+  loadRef.current = load;
   useEffect(() => {
     const storyId = searchParams.get('storyId');
-    if (!storyId || sharedIdRef.current === storyId) return;
-    // If current story is already this shared story, skip
-    if (current && current.id === storyId) return;
+    if (!storyId) { setLoadingShared(false); return; }
+    if (sharedIdRef.current === storyId) return;
     sharedIdRef.current = storyId;
     setLoadingShared(true);
     loadSharedStory(storyId).then((story) => {
-      if (story) {
-        if (user) {
-          load(story);
-          setLoadingShared(false);
-        } else {
-          setSharedPreview(story);
-          setLoadingShared(false);
-        }
-      } else {
-        setLoadingShared(false);
-      }
+      if (!story) { setLoadingShared(false); return; }
+      // Store the story — we'll load it once we know auth state
+      setSharedPreview(story);
+      setLoadingShared(false);
     }).catch(() => {
       setLoadingShared(false);
     });
-  }, [searchParams, load, user]);
+  // Only depend on searchParams — load the story data once
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [searchParams]);
 
-  // When user signs in after seeing preview, load the story
+  // Once we have the shared story AND know auth state, load or preview it
   useEffect(() => {
-    if (user && sharedPreview && !current) {
-      load(sharedPreview);
+    if (!sharedPreview) return;
+    if (user) {
+      loadRef.current(sharedPreview);
       setSharedPreview(null);
     }
-  }, [user, sharedPreview, current, load]);
+    // If user is null but auth is still loading, wait
+  }, [user, sharedPreview]);
 
   const [speed, setSpeed] = useState(1);
   const [showText, setShowText] = useState(true);
@@ -419,21 +419,26 @@ function PlayerInner() {
     );
   }
 
+  // Try recovering last story from localStorage (moved to effect to avoid setState during render)
+  const [triedReload, setTriedReload] = useState(false);
+  useEffect(() => {
+    if (!current && !loadingShared && !sharedPreview && !hasSharedId && !triedReload) {
+      setTriedReload(true);
+      reloadLast();
+    }
+  }, [current, loadingShared, sharedPreview, hasSharedId, triedReload, reloadLast]);
+
   if (!current) {
-    if (loadingShared) {
+    if (loadingShared || sharedPreview) {
       return (
         <div className="flex h-screen flex-col items-center justify-center bg-bg-base px-6 text-center">
           <div className="mb-4 inline-block h-8 w-8 animate-spin rounded-full border-2 border-gold border-t-transparent" />
-          <p className="text-sm text-ink-muted">Loading shared story...</p>
+          <p className="text-sm text-ink-muted">Loading story...</p>
         </div>
       );
     }
-    // Try recovering from localStorage — but not if we're loading a shared story
-    const hasSharedId = searchParams.get('storyId');
-    if (!hasSharedId) {
-      const lastStory = reloadLast();
-      if (lastStory) return null;
-    }
+    // Still trying to reload from localStorage
+    if (!triedReload) return null;
 
     return (
       <div className="flex h-screen flex-col items-center justify-center bg-bg-base px-6 text-center">
