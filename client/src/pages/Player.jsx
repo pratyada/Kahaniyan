@@ -355,6 +355,7 @@ function PlayerInner() {
 
   // When story ends, show done state then go back after a pause
   useEffect(() => {
+    if (!current) return; // no story loaded yet
     let ended = false;
     if (!usingTTS) {
       if (progress > 0 && progress >= 0.999) ended = true;
@@ -374,14 +375,13 @@ function PlayerInner() {
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [progress, setIsPlaying, usingTTS, narrator.playing, narrator.loading, ttsReady, done]);
 
-  // Try recovering last story from localStorage (moved to effect to avoid setState during render)
-  const [triedReload, setTriedReload] = useState(false);
+  // Try recovering last story from localStorage on mount (one-time)
+  const triedReloadRef = useRef(false);
   useEffect(() => {
-    if (!current && !loadingShared && !hasSharedId && !triedReload) {
-      setTriedReload(true);
-      reloadLast();
-    }
-  }, [current, loadingShared, hasSharedId, triedReload, reloadLast]);
+    if (current || loadingShared || hasSharedId || triedReloadRef.current) return;
+    triedReloadRef.current = true;
+    reloadLast();
+  }, [current, loadingShared, hasSharedId, reloadLast]);
 
   if (!current) {
     // Still loading shared story from Firestore
@@ -406,9 +406,15 @@ function PlayerInner() {
       );
     }
 
-    // No shared link — try localStorage reload
-    if (hasSharedId) return null; // waiting for shared story flow to complete
-    if (!triedReload) return null;
+    // Waiting for shared story or localStorage reload
+    if (hasSharedId || !triedReloadRef.current) {
+      return (
+        <div className="flex h-screen flex-col items-center justify-center bg-bg-base px-6 text-center">
+          <div className="mb-4 inline-block h-8 w-8 animate-spin rounded-full border-2 border-gold border-t-transparent" />
+          <p className="text-sm text-ink-muted">Loading story...</p>
+        </div>
+      );
+    }
 
     return (
       <div className="flex h-screen flex-col items-center justify-center bg-bg-base px-6 text-center">
