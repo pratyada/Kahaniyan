@@ -23,7 +23,7 @@ export default function StoryLoading() {
   }, []);
 
   return (
-    <div className="absolute inset-0 z-50 flex flex-col items-center justify-center bg-bg-base overflow-hidden">
+    <div className="absolute inset-0 z-50 flex flex-col items-center justify-center bg-bg-base/85 backdrop-blur-xl overflow-hidden">
       {/* Star field */}
       <div className="absolute inset-0">
         {Array.from({ length: 30 }).map((_, i) => (

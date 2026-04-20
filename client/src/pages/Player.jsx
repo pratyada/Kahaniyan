@@ -363,14 +363,11 @@ function PlayerInner() {
     setTimeout(() => reloadLast(), 0);
   }, [current, reloadLast]);
 
-  if (!current) {
-    return <StoryLoading />;
-  }
-
-  const meta = valueMeta(current.value);
+  const isGenerating = !current;
+  const meta = valueMeta(current?.value);
 
   // Stories without text can still play if they have cached audio
-  if (!current.text && !current.audioUrl) {
+  if (current && !current.text && !current.audioUrl) {
     return (
       <div className="flex h-screen flex-col items-center justify-center bg-bg-base px-6 text-center">
         <div className="text-4xl mb-4">😔</div>
@@ -422,6 +419,20 @@ function PlayerInner() {
     <div className="absolute inset-0 z-40 overflow-hidden bg-bg-base">
       <div className="aurora" />
       <div className="starfield" />
+
+      {/* Translucent generating overlay — player visible underneath */}
+      <AnimatePresence>
+        {isGenerating && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.5 }}
+          >
+            <StoryLoading />
+          </motion.div>
+        )}
+      </AnimatePresence>
 
       <AnimatePresence>
           <motion.div
@@ -486,11 +497,11 @@ function PlayerInner() {
                 <span className="text-4xl">{meta.emoji}</span>
               </motion.div>
               <div className="min-w-0 flex-1">
-                <h1 className="font-display text-xl font-bold text-ink">{current.title || 'Bedtime Story'}</h1>
+                <h1 className="font-display text-xl font-bold text-ink">{current?.title || 'Bedtime Story'}</h1>
               <p className="mt-1 text-xs text-ink-muted">
-                For {profile?.childName} · {current.estimatedMinutes} min · {current.voice}
+                For {profile?.childName}{current?.estimatedMinutes ? ` · ${current.estimatedMinutes} min` : ''}{current?.voice ? ` · ${current.voice}` : ''}
               </p>
-              {current.cast && current.cast.length > 0 && (
+              {current?.cast?.length > 0 && (
                 <p className="mt-1 truncate text-[10px] text-gold">
                   {current.cast.join(' · ')}
                 </p>
@@ -499,7 +510,7 @@ function PlayerInner() {
             </div>
 
             {/* Story text — always visible, scrolls in sync */}
-            {current.text && <HighlightedText text={current.text} progress={progress} />}
+            {current?.text && <HighlightedText text={current.text} progress={progress} />}
 
             {/* Spacer */}
             <div className="flex-1" />
