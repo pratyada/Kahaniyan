@@ -363,8 +363,14 @@ function PlayerInner() {
     setTimeout(() => reloadLast(), 0);
   }, [current, reloadLast]);
 
-  // Show overlay until story text AND audio are both ready
-  const isLoading = !current || (!ttsReady && !narrator.playing);
+  // Two-phase overlay:
+  // Phase 1: no story text yet → full overlay (70%)
+  // Phase 2: text arrived, audio generating → light overlay (30%), text readable
+  // Done: audio ready → overlay gone
+  const noStoryYet = !current;
+  const audioGenerating = current && !ttsReady && !narrator.playing;
+  const showOverlay = noStoryYet || audioGenerating;
+  const overlayPhase = noStoryYet ? 'generating' : audioGenerating ? 'audio' : 'done';
   const meta = valueMeta(current?.value);
 
   // Stories without text can still play if they have cached audio
@@ -421,16 +427,40 @@ function PlayerInner() {
       <div className="aurora" />
       <div className="starfield" />
 
-      {/* Translucent generating overlay — player visible underneath */}
+      {/* Two-phase overlay */}
       <AnimatePresence>
-        {isLoading && (
+        {showOverlay && (
           <motion.div
+            key="overlay"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.8 }}
+            className="absolute inset-0 z-50 pointer-events-none"
           >
-            <StoryLoading />
+            <div
+              className="absolute inset-0 flex flex-col items-center justify-center overflow-hidden transition-all duration-1000"
+              style={{
+                backgroundColor: overlayPhase === 'generating'
+                  ? 'rgba(10,10,15,0.70)'   // Phase 1: full overlay
+                  : 'rgba(10,10,15,0.30)',    // Phase 2: light, text readable
+                backdropFilter: overlayPhase === 'generating' ? 'blur(12px)' : 'blur(4px)',
+              }}
+            >
+              {overlayPhase === 'generating' ? (
+                <StoryLoading />
+              ) : (
+                /* Phase 2: light hint that audio is loading */
+                <motion.div
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  className="flex items-center gap-3 rounded-2xl bg-bg-base/80 px-5 py-3 shadow-lift backdrop-blur-xl"
+                >
+                  <span className="inline-block h-4 w-4 animate-spin rounded-full border-2 border-gold border-t-transparent" />
+                  <span className="text-xs font-bold text-gold">Preparing voice...</span>
+                </motion.div>
+              )}
+            </div>
           </motion.div>
         )}
       </AnimatePresence>
