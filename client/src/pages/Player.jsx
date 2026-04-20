@@ -370,7 +370,8 @@ function PlayerInner() {
 
   const meta = valueMeta(current.value);
 
-  if (!current.text) {
+  // Stories without text can still play if they have cached audio
+  if (!current.text && !current.audioUrl) {
     return (
       <div className="flex h-screen flex-col items-center justify-center bg-bg-base px-6 text-center">
         <div className="text-4xl mb-4">😔</div>
