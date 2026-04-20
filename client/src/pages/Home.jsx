@@ -60,7 +60,7 @@ export default function Home() {
   const navigate = useNavigate();
   const { profile } = useFamilyProfile();
   const { generate, loading } = useStoryGenerator();
-  const { load } = usePlayer();
+  const { load, clear } = usePlayer();
   const radio = useRadio();
   const { isUnlimited } = useAdmin();
   const isAdmin = isUnlimited; // backward compat for logging
@@ -139,6 +139,8 @@ export default function Home() {
     // Show upgrade modal as a hint but never hard-block generation.
     // Server will return 429 if the user is truly over limit.
     const selectedCharacters = characters.filter((c) => selectedCharIds.includes(c.id) || c.relation === 'self');
+    // Clear current story so Player doesn't recover old one from localStorage
+    clear();
     // Navigate to player immediately — show generating state there
     navigate('/player');
 
