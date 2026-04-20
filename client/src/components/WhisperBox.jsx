@@ -76,7 +76,7 @@ export default function WhisperBox({ value, onChange, overrideValue, onToggleOve
       <textarea
         value={value}
         onChange={(e) => onChange(e.target.value.slice(0, max))}
-        placeholder="Tell us what happened today — a worry, a win, a feeling — and we'll weave tonight's story around it..."
+        placeholder="Tell us what happened today — a worry, a win, a feeling — and we'll weave tonight's story around it. Your child's real day becomes a bedtime lesson."
         rows={4}
         className="w-full min-h-[100px] resize-none rounded-2xl px-4 py-3 font-story text-[15px] leading-relaxed text-bg-base placeholder:text-bg-base/40 outline-none ring-1 ring-gold/30"
         style={{ background: '#fef9e7' }}
