@@ -435,7 +435,7 @@ function PlayerInner() {
               <div className="flex items-center gap-2">
                 {/* Back — keep audio playing, go explore the app */}
                 <button
-                  onClick={() => navigate(-1)}
+                  onClick={() => navigate('/')}
                   className="grid h-10 w-10 place-items-center rounded-full bg-white/5 text-sm"
                   title="Keep playing & go back"
                 >

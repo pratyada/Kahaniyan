@@ -9,9 +9,17 @@ export async function shareStoryToFirestore(story, { beliefs, country } = {}) {
   const shareId = story.id;
   const ref = doc(db, 'sharedStories', shareId);
 
-  // Check if already shared
+  // If already shared, update any missing fields (e.g. text added later)
   const existing = await getDoc(ref);
   if (existing.exists()) {
+    const data = existing.data();
+    const updates = {};
+    if (!data.text && story.text) updates.text = story.text;
+    if (!data.title && story.title) updates.title = story.title;
+    if (!data.value && story.value) updates.value = story.value;
+    if (Object.keys(updates).length > 0) {
+      await setDoc(ref, updates, { merge: true });
+    }
     return `${window.location.origin}/player?storyId=${shareId}`;
   }
 
