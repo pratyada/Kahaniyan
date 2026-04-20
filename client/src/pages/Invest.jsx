@@ -142,13 +142,29 @@ export default function Invest() {
   const [investorModal, setInvestorModal] = useState(null);
   const [searchParams, setSearchParams] = useSearchParams();
 
-  // Access control — only admin or approved investors can see this page
+  // Access control — admin, secret code in URL, or approved in Firestore
+  const accessCode = searchParams.get('code') || '';
   useEffect(() => {
+    // Admin always has access
     if (isAdmin) { setAccessGranted(true); setAccessChecked(true); return; }
+    // Secret invite code — stored in Firestore config
+    if (accessCode) {
+      (async () => {
+        try {
+          const snap = await getDoc(doc(db, 'config', 'invest'));
+          const validCode = snap.exists() && snap.data().accessCode;
+          setAccessGranted(accessCode === validCode);
+        } catch {
+          setAccessGranted(false);
+        }
+        setAccessChecked(true);
+      })();
+      return;
+    }
+    // Check individual user approval
     if (!user || !db) { setAccessChecked(true); return; }
     (async () => {
       try {
-        // Check if user is in approved investors list
         const snap = await getDoc(doc(db, 'investAccess', user.uid));
         setAccessGranted(snap.exists() && snap.data().approved === true);
       } catch {
@@ -156,7 +172,7 @@ export default function Invest() {
       }
       setAccessChecked(true);
     })();
-  }, [user, isAdmin]);
+  }, [user, isAdmin, accessCode]);
 
   // Gate: show access request screen if not approved
   if (accessChecked && !accessGranted) {
