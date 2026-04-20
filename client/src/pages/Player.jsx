@@ -1,4 +1,4 @@
-import { Component, useEffect, useRef, useState } from 'react';
+import { Component, useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { loadSharedStory } from '../utils/shareStory.js';
@@ -374,6 +374,15 @@ function PlayerInner() {
     }
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [progress, setIsPlaying, usingTTS, narrator.playing, narrator.loading, ttsReady, done]);
+
+  // Recover story from localStorage if current is null (e.g. navigated from library)
+  const recoveredRef = useRef(false);
+  useLayoutEffect(() => {
+    if (!current && !hasSharedId && !loadingShared && !recoveredRef.current) {
+      recoveredRef.current = true;
+      reloadLast();
+    }
+  }, [current, hasSharedId, loadingShared, reloadLast]);
 
   if (!current) {
     // Still loading shared story from Firestore
