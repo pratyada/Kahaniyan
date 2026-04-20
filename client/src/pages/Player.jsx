@@ -131,7 +131,7 @@ export default function Player() {
 function PlayerInner() {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
-  const { current, clear, isPlaying, setIsPlaying, reloadLast, load, setAudio } = usePlayer();
+  const { current, clear, isPlaying, setIsPlaying, reloadLast, load, setAudio, audioRef: globalAudioRef } = usePlayer();
   const { profile } = useFamilyProfile();
   const webSpeech = useSpeech();
   const narrator = useNarrator();
@@ -207,6 +207,18 @@ function PlayerInner() {
     }
     if (startedRef.current) return;
     startedRef.current = true;
+
+    // If there's already a playing audio in global context (user navigated back),
+    // reconnect the narrator to it instead of creating a new one
+    const existingAudio = globalAudioRef?.current;
+    if (existingAudio && existingAudio.src && !existingAudio.ended && existingAudio.currentTime > 0) {
+      console.log('[My Sleepy Tale:Player] Reconnecting to existing audio');
+      narrator.reconnect(existingAudio);
+      setUsingTTS(true);
+      setTtsReady(true);
+      return;
+    }
+
     console.log('[My Sleepy Tale:Player] Starting playback:', current.title);
 
     const lang = current.language || profile?.language || 'English';
@@ -458,8 +470,8 @@ function PlayerInner() {
     setupMediaSession(current, meta, {
       play: () => { narrator.play(); setIsPlaying(true); },
       pause: () => { narrator.pause(); setIsPlaying(false); },
-      seekBackward: () => narrator.seekBy(-15),
-      seekForward: () => narrator.seekBy(15),
+      seekBackward: () => narrator.seekBy(-10),
+      seekForward: () => narrator.seekBy(10),
       stop: handleClose,
     });
   // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -598,12 +610,12 @@ function PlayerInner() {
               <div className="flex items-center gap-6">
                 {/* Rewind 15s */}
                 <button
-                  onClick={() => { if (usingTTS) narrator.seekBy(-15); }}
+                  onClick={() => { if (usingTTS) narrator.seekBy(-10); }}
                   disabled={narrator.loading || !usingTTS}
-                  aria-label="Rewind 15 seconds"
+                  aria-label="Rewind 10 seconds"
                   className="flex h-12 w-12 flex-col items-center justify-center rounded-full bg-white/5 text-ink-muted transition active:scale-95 disabled:opacity-30"
                 >
-                  <span className="text-[10px] font-bold leading-none">-15</span>
+                  <span className="text-[10px] font-bold leading-none">-10</span>
                   <span className="text-[8px] leading-none mt-0.5">sec</span>
                 </button>
 
@@ -634,12 +646,12 @@ function PlayerInner() {
 
                 {/* Forward 15s */}
                 <button
-                  onClick={() => { if (usingTTS) narrator.seekBy(15); }}
+                  onClick={() => { if (usingTTS) narrator.seekBy(10); }}
                   disabled={narrator.loading || !usingTTS}
-                  aria-label="Forward 15 seconds"
+                  aria-label="Forward 10 seconds"
                   className="flex h-12 w-12 flex-col items-center justify-center rounded-full bg-white/5 text-ink-muted transition active:scale-95 disabled:opacity-30"
                 >
-                  <span className="text-[10px] font-bold leading-none">+15</span>
+                  <span className="text-[10px] font-bold leading-none">+10</span>
                   <span className="text-[8px] leading-none mt-0.5">sec</span>
                 </button>
               </div>

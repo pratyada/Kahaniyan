@@ -183,6 +183,19 @@ export function useNarrator() {
     }
   }, [cleanup, setupAudio]);
 
+  // Reconnect to an existing audio element (e.g. when Player re-mounts)
+  const reconnect = useCallback((audio) => {
+    if (!audio) return;
+    setupAudio(audio);
+    setLoading(false);
+    setPlaying(!audio.paused);
+    if (isFinite(audio.duration) && audio.duration > 0) {
+      knownDurationRef.current = audio.duration;
+      setDuration(audio.duration);
+      setProgress(Math.min(1, audio.currentTime / audio.duration));
+    }
+  }, [setupAudio]);
+
   // Get the raw audio blob (for uploading to Storage after generation)
   const getBlob = useCallback(() => blobRef.current, []);
 
@@ -214,6 +227,7 @@ export function useNarrator() {
   return {
     generate,
     loadCached,
+    reconnect,
     getBlob,
     play,
     pause,

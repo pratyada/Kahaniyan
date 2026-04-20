@@ -12,7 +12,11 @@ export default function PlayerBar() {
   const togglePlay = (e) => {
     e.stopPropagation();
     const audio = audioRef?.current;
-    if (!audio) return;
+    if (!audio || !audio.src || audio.ended) {
+      // Audio element is stale — open player to re-init from cache
+      navigate('/player');
+      return;
+    }
     if (isPlaying) {
       audio.pause();
       setIsPlaying(false);
