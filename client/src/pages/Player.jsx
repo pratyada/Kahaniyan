@@ -363,7 +363,8 @@ function PlayerInner() {
     setTimeout(() => reloadLast(), 0);
   }, [current, reloadLast]);
 
-  const isGenerating = !current;
+  // Show overlay until story text AND audio are both ready
+  const isLoading = !current || (!ttsReady && !narrator.playing);
   const meta = valueMeta(current?.value);
 
   // Stories without text can still play if they have cached audio
@@ -422,12 +423,12 @@ function PlayerInner() {
 
       {/* Translucent generating overlay — player visible underneath */}
       <AnimatePresence>
-        {isGenerating && (
+        {isLoading && (
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            transition={{ duration: 0.5 }}
+            transition={{ duration: 0.8 }}
           >
             <StoryLoading />
           </motion.div>
