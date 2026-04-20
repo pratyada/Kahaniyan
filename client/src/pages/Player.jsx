@@ -118,51 +118,69 @@ function setupMediaSession(story, meta, handlers) {
   navigator.mediaSession.setActionHandler('stop', handlers.stop);
 }
 
+// Wrapper that handles shared story loading BEFORE mounting the heavy PlayerInner
 export default function Player() {
   return (
     <PlayerErrorBoundary>
-      <PlayerInner />
+      <SharedStoryGate />
     </PlayerErrorBoundary>
   );
 }
 
-const _rc = { count: 0, timer: null };
-function PlayerInner() {
-  _rc.count++;
-  if (!_rc.timer) _rc.timer = setTimeout(() => { console.log('[MST:Player] renders this cycle:', _rc.count); _rc.count = 0; _rc.timer = null; }, 0);
-
-  const navigate = useNavigate();
+function SharedStoryGate() {
   const [searchParams] = useSearchParams();
-  const { current, clear, isPlaying, setIsPlaying, reloadLast, load, setAudio, audioRef: globalAudioRef } = usePlayer();
-  const { profile } = useFamilyProfile();
-  const narrator = useNarrator();
-  // Extract storyId once as a stable string (searchParams object is recreated every render)
+  const navigate = useNavigate();
+  const { current, load } = usePlayer();
   const sharedStoryId = searchParams.get('storyId') || '';
-  const [loadingShared, setLoadingShared] = useState(!!sharedStoryId);
-  const { user } = useAuth();
+  const [status, setStatus] = useState(sharedStoryId ? 'loading' : 'ready'); // 'loading' | 'ready' | 'failed'
 
-  // Load shared story from URL — runs once per storyId
-  const loadRef = useRef(load);
-  loadRef.current = load;
-  const [sharedFailed, setSharedFailed] = useState(false);
   useEffect(() => {
-    console.log('[MST:fx1] shared story effect, id:', sharedStoryId);
-    if (!sharedStoryId) return;
-    setLoadingShared(true);
-    setSharedFailed(false);
+    if (!sharedStoryId || current) { setStatus('ready'); return; }
+    let cancelled = false;
     loadSharedStory(sharedStoryId).then(async (story) => {
-      if (!story) { setLoadingShared(false); setSharedFailed(true); return; }
-      loadRef.current(story);
-      setLoadingShared(false);
+      if (cancelled) return;
+      if (!story) { setStatus('failed'); return; }
+      load(story);
+      setStatus('ready');
       try {
         const { recordListen } = await import('../utils/shareStory.js');
         recordListen(sharedStoryId);
       } catch {}
     }).catch(() => {
-      setLoadingShared(false);
-      setSharedFailed(true);
+      if (!cancelled) setStatus('failed');
     });
-  }, [sharedStoryId]); // stable string dep — only fires once
+    return () => { cancelled = true; };
+  }, [sharedStoryId, current, load]);
+
+  if (status === 'loading') {
+    return (
+      <div className="flex h-screen flex-col items-center justify-center bg-bg-base px-6 text-center">
+        <div className="mb-4 inline-block h-8 w-8 animate-spin rounded-full border-2 border-gold border-t-transparent" />
+        <p className="text-sm text-ink-muted">Loading story...</p>
+      </div>
+    );
+  }
+
+  if (status === 'failed') {
+    return (
+      <div className="flex h-screen flex-col items-center justify-center bg-bg-base px-6 text-center">
+        <div className="text-4xl mb-4">😔</div>
+        <h1 className="font-display text-xl font-bold text-gold">Story not found</h1>
+        <p className="mt-2 text-sm text-ink-muted">This story link may have expired or doesn't exist.</p>
+        <button onClick={() => navigate('/')} className="btn-primary mt-6">Go to home</button>
+      </div>
+    );
+  }
+
+  return <PlayerInner />;
+}
+
+function PlayerInner() {
+  const navigate = useNavigate();
+  const { current, clear, isPlaying, setIsPlaying, reloadLast, load, setAudio, audioRef: globalAudioRef } = usePlayer();
+  const { profile } = useFamilyProfile();
+  const narrator = useNarrator();
+  const { user } = useAuth();
 
   const [speed, setSpeed] = useState(1);
   const [showText, setShowText] = useState(true);
@@ -171,7 +189,7 @@ function PlayerInner() {
   const startedRef = useRef(false);
 
   // Request notification permission on mount
-  useEffect(() => { console.log('[MST:fx2] notification perm'); requestNotificationPermission(); }, []);
+  useEffect(() => { requestNotificationPermission(); }, []);
 
   // Reset startedRef when story changes so auto-play fires for new stories
   const currentIdRef = useRef(null);
@@ -182,7 +200,6 @@ function PlayerInner() {
 
   // Auto-play when current story is available
   useEffect(() => {
-    console.log('[MST:fx3] auto-play effect, current:', !!current);
     if (!current) {
       console.warn('[My Sleepy Tale:Player] Waiting for story...');
       return;
@@ -325,7 +342,6 @@ function PlayerInner() {
 
   // When story ends, show done state then go back after a pause
   useEffect(() => {
-    console.log('[MST:fx5] end check, progress:', progress, 'playing:', narrator.playing, 'ttsReady:', ttsReady);
     if (!current || !ttsReady) return;
     const ended = progress >= 1 && !narrator.playing && !narrator.loading;
     if (ended && !done) {
@@ -339,47 +355,19 @@ function PlayerInner() {
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [progress, narrator.playing, narrator.loading, ttsReady, done]);
 
-  // Recover story from localStorage if current is null and no shared link
-  // Use a timeout to avoid synchronous setState during React render cycle
+  // Recover story from localStorage if current is null (e.g. navigated from library)
   const recoveredRef = useRef(false);
   useEffect(() => {
-    console.log('[MST:fx6] recover effect, current:', !!current, 'shared:', sharedStoryId, 'loading:', loadingShared);
-    if (current || sharedStoryId || loadingShared || recoveredRef.current) return;
+    if (current || recoveredRef.current) return;
     recoveredRef.current = true;
-    // Delay to ensure React has finished its render cycle
-    const t = setTimeout(() => reloadLast(), 0);
-    return () => clearTimeout(t);
-  }, [current, sharedStoryId, loadingShared, reloadLast]);
+    setTimeout(() => reloadLast(), 0);
+  }, [current, reloadLast]);
 
   if (!current) {
-    // Shared story failed to load — check BEFORE the loading check
-    if (sharedFailed) {
-      return (
-        <div className="flex h-screen flex-col items-center justify-center bg-bg-base px-6 text-center">
-          <div className="text-4xl mb-4">😔</div>
-          <h1 className="font-display text-xl font-bold text-gold">Story not found</h1>
-          <p className="mt-2 text-sm text-ink-muted">This shared story link may have expired or doesn't exist.</p>
-          <button onClick={() => navigate('/')} className="btn-primary mt-6">Go to home</button>
-        </div>
-      );
-    }
-
-    // Still loading shared story from Firestore, or recovering from localStorage
-    if (loadingShared || sharedStoryId || !recoveredRef.current) {
-      return (
-        <div className="flex h-screen flex-col items-center justify-center bg-bg-base px-6 text-center">
-          <div className="mb-4 inline-block h-8 w-8 animate-spin rounded-full border-2 border-gold border-t-transparent" />
-          <p className="text-sm text-ink-muted">Loading story...</p>
-        </div>
-      );
-    }
-
     return (
       <div className="flex h-screen flex-col items-center justify-center bg-bg-base px-6 text-center">
-        <div className="text-4xl mb-4">📖</div>
-        <h1 className="font-display text-xl font-bold text-gold">No story loaded</h1>
-        <p className="mt-2 text-sm text-ink-muted">Go back to Tonight and create a story.</p>
-        <button onClick={() => navigate('/')} className="btn-primary mt-6">Back to home</button>
+        <div className="mb-4 inline-block h-8 w-8 animate-spin rounded-full border-2 border-gold border-t-transparent" />
+        <p className="text-sm text-ink-muted">Loading story...</p>
       </div>
     );
   }
