@@ -177,8 +177,10 @@ export async function generateWithClaude({
     .filter((c) => c.relation !== 'self')
     .map((c) => {
       let desc = `${c.name} (${c.relation}`;
-      if (c.traits) desc += `, ${c.traits}`;
-      if (c.nickname) desc += `, called "${c.nickname}"`;
+      if (c.gender) desc += `, ${c.gender === 'boy' ? 'he/him' : c.gender === 'girl' ? 'she/her' : c.gender}`;
+      if (c.nickname) desc += `, ${childName} calls them "${c.nickname}"`;
+      if (c.tags?.length) desc += `, loves: ${c.tags.join(', ')}`;
+      else if (c.traits) desc += `, ${c.traits}`;
       return desc + ')';
     })
     .join(', ');

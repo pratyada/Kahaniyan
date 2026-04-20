@@ -10,7 +10,8 @@ import { hasConfig, db } from '../lib/firebase.js';
 const EXTRA_RELATIONS = [
   { key: 'pet', label: 'Pet', emoji: '🐶' },
   { key: 'imaginary', label: 'Imaginary friend', emoji: '🦄' },
-  { key: 'friend', label: 'Friend', emoji: '🧒' },
+  { key: 'friend-boy', label: 'Friend (he)', emoji: '👦' },
+  { key: 'friend-girl', label: 'Friend (she)', emoji: '👧' },
   { key: 'other', label: 'Other', emoji: '✨' },
 ];
 const BASE_RELATIONS = [...FAMILY_RELATIONS, ...EXTRA_RELATIONS];
@@ -57,12 +58,12 @@ export default function Characters() {
   const characters = profile.characters || [];
 
   const startNew = () => {
-    setDraft({ name: '', relation: 'sibling', traits: '', tags: [], emoji: RELATION_EMOJI.sibling, petType: 'dog', adventureName: '', nickname: '' });
+    setDraft({ name: '', relation: 'sibling', gender: '', traits: '', tags: [], emoji: RELATION_EMOJI.sibling, petType: 'dog', adventureName: '', nickname: '' });
     setEditing('new');
   };
 
   const startEdit = (c) => {
-    setDraft({ petType: 'dog', adventureName: '', tags: [], nickname: '', ...c });
+    setDraft({ petType: 'dog', adventureName: '', tags: [], nickname: '', gender: '', ...c });
     setEditing(c);
   };
 
@@ -70,10 +71,17 @@ export default function Characters() {
     if (!draft.name.trim()) return;
     let next;
     if (editing === 'new') {
+      // Auto-detect gender from relation type
+      const autoGender = draft.relation === 'friend-boy' ? 'boy'
+        : draft.relation === 'friend-girl' ? 'girl'
+        : ['mummy', 'dadi', 'nani', 'grandmother', 'chachi', 'mami', 'didi'].includes(draft.relation) ? 'girl'
+        : ['daddy', 'dada', 'nana', 'grandfather', 'chacha', 'mama', 'bhaiya'].includes(draft.relation) ? 'boy'
+        : draft.gender || '';
       const newChar = {
         id: `char_${Date.now()}_${Math.random().toString(36).slice(2, 6)}`,
         name: draft.name.trim(),
-        relation: draft.relation,
+        relation: draft.relation.replace('-boy', '').replace('-girl', ''), // normalize: friend-boy → friend
+        gender: autoGender,
         emoji: draft.emoji || RELATION_EMOJI[draft.relation] || '✨',
         traits: (draft.tags || []).join(', '),
         tags: draft.tags || [],
@@ -88,7 +96,8 @@ export default function Characters() {
           ? {
               ...c,
               name: draft.name.trim(),
-              relation: draft.relation,
+              relation: draft.relation.replace('-boy', '').replace('-girl', ''),
+              gender: draft.gender || c.gender || '',
               emoji: draft.emoji,
               traits: (draft.tags || []).join(', '),
               tags: draft.tags || [],
@@ -103,7 +112,7 @@ export default function Characters() {
     const legacyPatch = { characters: next };
     const selfChar = next.find((c) => c.relation === 'self');
     if (selfChar) legacyPatch.childName = selfChar.name;
-    const siblingChar = next.find((c) => ['sibling', 'bhaiya', 'didi', 'friend'].includes(c.relation));
+    const siblingChar = next.find((c) => ['sibling', 'bhaiya', 'didi', 'friend', 'friend-boy', 'friend-girl'].includes(c.relation));
     legacyPatch.sibling = siblingChar?.name || '';
     const grandpaChar = next.find((c) => ['dada', 'nana', 'grandfather', 'daddy', 'chacha', 'mama'].includes(c.relation));
     legacyPatch.grandfather = grandpaChar?.name || '';
@@ -122,7 +131,7 @@ export default function Characters() {
     const remaining = characters.filter((c) => c.id !== id);
     // Sync legacy fields after delete
     const legacyPatch = { characters: remaining };
-    const siblingChar = remaining.find((c) => ['sibling', 'bhaiya', 'didi', 'friend'].includes(c.relation));
+    const siblingChar = remaining.find((c) => ['sibling', 'bhaiya', 'didi', 'friend', 'friend-boy', 'friend-girl'].includes(c.relation));
     legacyPatch.sibling = siblingChar?.name || '';
     const grandpaChar = remaining.find((c) => ['dada', 'nana', 'grandfather', 'daddy', 'chacha', 'mama'].includes(c.relation));
     legacyPatch.grandfather = grandpaChar?.name || '';
@@ -177,8 +186,9 @@ export default function Characters() {
                     )}
                   </div>
                   <div className="text-[11px] text-ink-muted">
-                    {ALL_RELATIONS.find((r) => r.key === c.relation)?.label || c.relation}
-                    {c.nickname && ` · called "${c.nickname}"`}
+                    {ALL_RELATIONS.find((r) => r.key === c.relation || r.key === `${c.relation}-${c.gender === 'boy' ? 'boy' : 'girl'}`)?.label || c.relation}
+                    {c.gender && ` · ${c.gender === 'boy' ? 'he/him' : c.gender === 'girl' ? 'she/her' : ''}`}
+                    {c.nickname && ` · "${c.nickname}"`}
                     {petInfo && ` · ${petInfo.label}`}
                     {c.adventureName && ` · plays as "${c.adventureName}"`}
                   </div>
