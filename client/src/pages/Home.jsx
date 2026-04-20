@@ -84,11 +84,12 @@ export default function Home() {
   // Load pre-generated wisdom audio URLs from Firestore (one-time)
   const [wisdomAudioUrls, setWisdomAudioUrls] = useState({});
   useEffect(() => {
-    if (!db) return;
     (async () => {
       try {
+        const { db: fireDb } = await import('../lib/firebase.js');
+        if (!fireDb) return;
         const { doc: fdoc, getDoc: fget } = await import('firebase/firestore');
-        const snap = await fget(fdoc(db, 'config', 'wisdomAudio'));
+        const snap = await fget(fdoc(fireDb, 'config', 'wisdomAudio'));
         if (snap.exists()) setWisdomAudioUrls(snap.data());
       } catch {}
     })();
