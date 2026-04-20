@@ -46,12 +46,23 @@ export default async function handler(req, res) {
     const { getStorage } = await import('firebase-admin/storage');
 
     if (getApps().length === 0) {
-      initializeApp({
-        credential: cert({
+      const raw = process.env.FIREBASE_SERVICE_ACCOUNT;
+      let cred;
+      if (raw) {
+        try {
+          const sa = JSON.parse(raw);
+          cred = cert(sa);
+        } catch {}
+      }
+      if (!cred) {
+        cred = cert({
           projectId: process.env.FIREBASE_PROJECT_ID,
           clientEmail: process.env.FIREBASE_CLIENT_EMAIL,
           privateKey: (process.env.FIREBASE_PRIVATE_KEY || '').replace(/\\n/g, '\n'),
-        }),
+        });
+      }
+      initializeApp({
+        credential: cred,
         storageBucket: process.env.FIREBASE_STORAGE_BUCKET || process.env.VITE_FIREBASE_STORAGE_BUCKET,
       });
     }

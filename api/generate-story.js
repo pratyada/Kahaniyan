@@ -7,15 +7,19 @@ import { getFirestore } from 'firebase-admin/firestore';
 let db = null;
 try {
   if (getApps().length === 0) {
-    // In Vercel, we can use the project ID + auto-credentials
-    // Or a service account key set as FIREBASE_SERVICE_ACCOUNT env var
-    const serviceAccount = process.env.FIREBASE_SERVICE_ACCOUNT
-      ? JSON.parse(process.env.FIREBASE_SERVICE_ACCOUNT)
-      : null;
+    const raw = process.env.FIREBASE_SERVICE_ACCOUNT;
+    let serviceAccount = null;
+    if (raw) {
+      try {
+        serviceAccount = JSON.parse(raw);
+        // Validate required field
+        if (!serviceAccount.private_key) serviceAccount = null;
+      } catch { serviceAccount = null; }
+    }
 
     initializeApp(
       serviceAccount
-        ? { credential: cert(serviceAccount), projectId: process.env.FIREBASE_PROJECT_ID || 'qissaa-61a78' }
+        ? { credential: cert(serviceAccount), projectId: serviceAccount.project_id || process.env.FIREBASE_PROJECT_ID || 'qissaa-61a78' }
         : { projectId: process.env.FIREBASE_PROJECT_ID || 'qissaa-61a78' }
     );
   }
