@@ -156,7 +156,7 @@ function LibraryCard({ story, onPlay, onShare, onDelete, isSharing }) {
       <div className="flex items-center gap-2 border-t border-white/5 px-3 py-2">
         <button onClick={onShare} disabled={isSharing}
           className="flex items-center gap-1.5 rounded-full bg-gold/10 px-3 py-1.5 text-[11px] font-bold text-gold transition active:scale-95 disabled:opacity-50">
-          {isSharing ? <span className="inline-block h-3 w-3 animate-spin rounded-full border border-gold border-t-transparent" /> : '↗'} Share with community
+          {isSharing ? <span className="inline-block h-3 w-3 animate-spin rounded-full border border-gold border-t-transparent" /> : '↗'} Share
         </button>
         <button onClick={() => { if (confirm('Remove from library?')) onDelete(); }}
           className="flex items-center gap-1.5 rounded-full bg-white/5 px-3 py-1.5 text-[11px] font-bold text-ink-muted transition active:scale-95">
