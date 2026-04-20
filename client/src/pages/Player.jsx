@@ -135,40 +135,32 @@ function PlayerInner() {
   const { profile } = useFamilyProfile();
   const webSpeech = useSpeech();
   const narrator = useNarrator();
-  // Initialize loadingShared to true if URL has storyId — prevents flash of "no story"
-  const hasSharedId = searchParams.get('storyId');
-  const [loadingShared, setLoadingShared] = useState(!!hasSharedId);
+  // Extract storyId once as a stable string (searchParams object is recreated every render)
+  const sharedStoryId = searchParams.get('storyId') || '';
+  const [loadingShared, setLoadingShared] = useState(!!sharedStoryId);
   const { user } = useAuth();
 
-  // Load shared story from URL if ?storyId= is present
-  // Shared stories play for EVERYONE — no sign-in required
-  const sharedIdRef = useRef(null);
+  // Load shared story from URL — runs once per storyId
   const loadRef = useRef(load);
   loadRef.current = load;
   const [sharedFailed, setSharedFailed] = useState(false);
   useEffect(() => {
-    const storyId = searchParams.get('storyId');
-    if (!storyId) { setLoadingShared(false); return; }
-    if (sharedIdRef.current === storyId) return;
-    sharedIdRef.current = storyId;
+    if (!sharedStoryId) return;
     setLoadingShared(true);
     setSharedFailed(false);
-    loadSharedStory(storyId).then(async (story) => {
+    loadSharedStory(sharedStoryId).then(async (story) => {
       if (!story) { setLoadingShared(false); setSharedFailed(true); return; }
-      // Load directly — no auth required for shared stories
       loadRef.current(story);
       setLoadingShared(false);
-      // Track listen count (fire & forget)
       try {
         const { recordListen } = await import('../utils/shareStory.js');
-        recordListen(storyId);
+        recordListen(sharedStoryId);
       } catch {}
     }).catch(() => {
       setLoadingShared(false);
       setSharedFailed(true);
     });
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [searchParams]);
+  }, [sharedStoryId]); // stable string dep — only fires once
 
   const [speed, setSpeed] = useState(1);
   const [showText, setShowText] = useState(true);
@@ -379,12 +371,12 @@ function PlayerInner() {
   // Use a timeout to avoid synchronous setState during React render cycle
   const recoveredRef = useRef(false);
   useEffect(() => {
-    if (current || hasSharedId || loadingShared || recoveredRef.current) return;
+    if (current || sharedStoryId || loadingShared || recoveredRef.current) return;
     recoveredRef.current = true;
     // Delay to ensure React has finished its render cycle
     const t = setTimeout(() => reloadLast(), 0);
     return () => clearTimeout(t);
-  }, [current, hasSharedId, loadingShared, reloadLast]);
+  }, [current, sharedStoryId, loadingShared, reloadLast]);
 
   if (!current) {
     // Shared story failed to load — check BEFORE the loading check
@@ -400,7 +392,7 @@ function PlayerInner() {
     }
 
     // Still loading shared story from Firestore, or recovering from localStorage
-    if (loadingShared || hasSharedId || !recoveredRef.current) {
+    if (loadingShared || sharedStoryId || !recoveredRef.current) {
       return (
         <div className="flex h-screen flex-col items-center justify-center bg-bg-base px-6 text-center">
           <div className="mb-4 inline-block h-8 w-8 animate-spin rounded-full border-2 border-gold border-t-transparent" />
