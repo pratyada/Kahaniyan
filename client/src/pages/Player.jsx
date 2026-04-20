@@ -527,15 +527,15 @@ function PlayerInner() {
               >
                 <div className="h-1.5 w-full overflow-hidden rounded-full bg-white/10">
                   <div
-                    className="h-full bg-gold pointer-events-none rounded-full"
-                    style={{ width: `${Math.round(progress * 100)}%` }}
+                    className="h-full bg-gold pointer-events-none rounded-full will-change-[width]"
+                    style={{ width: `${(progress * 100).toFixed(2)}%`, transition: 'width 0.25s linear' }}
                   />
                 </div>
                 {/* Seek thumb */}
                 {ttsReady && (
                   <div
-                    className="absolute h-4 w-4 rounded-full bg-gold shadow-glow pointer-events-none"
-                    style={{ left: `calc(${Math.round(progress * 100)}% - 8px)` }}
+                    className="absolute h-4 w-4 rounded-full bg-gold shadow-glow pointer-events-none will-change-transform"
+                    style={{ left: `${(progress * 100).toFixed(2)}%`, transform: 'translateX(-50%)', transition: 'left 0.25s linear' }}
                   />
                 )}
               </div>
