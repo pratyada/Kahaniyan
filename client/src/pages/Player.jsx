@@ -146,19 +146,21 @@ function PlayerInner() {
   const sharedIdRef = useRef(null);
   const loadRef = useRef(load);
   loadRef.current = load;
+  const [sharedFailed, setSharedFailed] = useState(false);
   useEffect(() => {
     const storyId = searchParams.get('storyId');
     if (!storyId) { setLoadingShared(false); return; }
     if (sharedIdRef.current === storyId) return;
     sharedIdRef.current = storyId;
     setLoadingShared(true);
+    setSharedFailed(false);
     loadSharedStory(storyId).then((story) => {
-      if (!story) { setLoadingShared(false); return; }
-      // Store the story — we'll load it once we know auth state
+      if (!story) { setLoadingShared(false); setSharedFailed(true); return; }
       setSharedPreview(story);
       setLoadingShared(false);
     }).catch(() => {
       setLoadingShared(false);
+      setSharedFailed(true);
     });
   // Only depend on searchParams — load the story data once
   // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -171,7 +173,7 @@ function PlayerInner() {
       loadRef.current(sharedPreview);
       setSharedPreview(null);
     }
-    // If user is null but auth is still loading, wait
+    // If user is null, the preview screen will show (handled in render)
   }, [user, sharedPreview]);
 
   const [speed, setSpeed] = useState(1);
@@ -433,7 +435,8 @@ function PlayerInner() {
   }, [current, loadingShared, sharedPreview, hasSharedId, triedReload, reloadLast]);
 
   if (!current) {
-    if (loadingShared || sharedPreview) {
+    // Still loading shared story from Firestore
+    if (loadingShared) {
       return (
         <div className="flex h-screen flex-col items-center justify-center bg-bg-base px-6 text-center">
           <div className="mb-4 inline-block h-8 w-8 animate-spin rounded-full border-2 border-gold border-t-transparent" />
@@ -441,7 +444,24 @@ function PlayerInner() {
         </div>
       );
     }
-    // Still trying to reload from localStorage
+    // Shared story loaded, waiting for auth to decide load vs preview
+    if (sharedPreview && user) return null; // effect will call load() next render
+    // sharedPreview && !user is handled by the preview screen above
+
+    // Shared story failed to load
+    if (sharedFailed) {
+      return (
+        <div className="flex h-screen flex-col items-center justify-center bg-bg-base px-6 text-center">
+          <div className="text-4xl mb-4">😔</div>
+          <h1 className="font-display text-xl font-bold text-gold">Story not found</h1>
+          <p className="mt-2 text-sm text-ink-muted">This shared story link may have expired or doesn't exist.</p>
+          <button onClick={() => navigate('/')} className="btn-primary mt-6">Go to home</button>
+        </div>
+      );
+    }
+
+    // No shared link — try localStorage reload
+    if (hasSharedId) return null; // waiting for shared story flow to complete
     if (!triedReload) return null;
 
     return (
