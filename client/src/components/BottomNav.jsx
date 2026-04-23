@@ -1,10 +1,11 @@
 import { NavLink } from 'react-router-dom';
 import { useAuth } from '../hooks/useAuth.jsx';
+import { Moon, BookOpen, Radio, User } from 'lucide-react';
 
 const tabs = [
-  { to: '/', label: 'Tonight', icon: '🌙' },
-  { to: '/library', label: 'Library', icon: '📚' },
-  { to: '/radio', label: 'Radio', icon: '📻' },
+  { to: '/', label: 'Tonight', Icon: Moon },
+  { to: '/library', label: 'Library', Icon: BookOpen },
+  { to: '/radio', label: 'Radio', Icon: Radio },
 ];
 
 const MAIN_ORIGIN = 'https://mysleepytale.com';
@@ -32,9 +33,9 @@ export default function BottomNav() {
             {isSubdomain ? (
               <a
                 href={`${MAIN_ORIGIN}${t.to}`}
-                className="flex min-h-[56px] flex-col items-center justify-center gap-1 rounded-2xl py-2 transition text-ink-muted active:text-ink"
+                className="flex min-h-[56px] flex-col items-center justify-center gap-1.5 rounded-2xl py-2 transition text-ink-muted active:text-ink"
               >
-                <span className="text-2xl leading-none">{t.icon}</span>
+                <t.Icon size={22} strokeWidth={1.8} />
                 <span className="text-[10px] font-bold uppercase tracking-[0.14em]">
                   {t.label}
                 </span>
@@ -44,12 +45,12 @@ export default function BottomNav() {
                 to={t.to}
                 end={t.to === '/'}
                 className={({ isActive }) =>
-                  `flex min-h-[56px] flex-col items-center justify-center gap-1 rounded-2xl py-2 transition ${
+                  `flex min-h-[56px] flex-col items-center justify-center gap-1.5 rounded-2xl py-2 transition ${
                     isActive ? 'text-gold' : 'text-ink-muted active:text-ink'
                   }`
                 }
               >
-                <span className="text-2xl leading-none">{t.icon}</span>
+                <t.Icon size={22} strokeWidth={1.8} />
                 <span className="text-[10px] font-bold uppercase tracking-[0.14em]">
                   {t.label}
                 </span>
@@ -61,16 +62,16 @@ export default function BottomNav() {
           {isSubdomain ? (
             <a
               href={`${MAIN_ORIGIN}/settings`}
-              className="flex min-h-[56px] flex-col items-center justify-center gap-1 rounded-2xl py-2 transition text-ink-muted active:text-ink"
+              className="flex min-h-[56px] flex-col items-center justify-center gap-1.5 rounded-2xl py-2 transition text-ink-muted active:text-ink"
             >
-              <span className="text-2xl leading-none">⚙️</span>
+              <User size={22} strokeWidth={1.8} />
               <span className="text-[10px] font-bold uppercase tracking-[0.14em]">More</span>
             </a>
           ) : (
             <NavLink
               to="/settings"
               className={({ isActive }) =>
-                `flex min-h-[56px] flex-col items-center justify-center gap-1 rounded-2xl py-2 transition ${
+                `flex min-h-[56px] flex-col items-center justify-center gap-1.5 rounded-2xl py-2 transition ${
                   isActive ? 'text-gold' : 'text-ink-muted active:text-ink'
                 }`
               }
@@ -89,7 +90,7 @@ export default function BottomNav() {
                   </span>
                 )
               ) : (
-                <span className="text-2xl leading-none">⚙️</span>
+                <User size={22} strokeWidth={1.8} />
               )}
               <span className="text-[10px] font-bold uppercase tracking-[0.14em]">
                 {user ? 'Me' : 'More'}

@@ -1,6 +1,7 @@
 import { useNavigate } from 'react-router-dom';
 import { usePlayer } from '../hooks/usePlayer.jsx';
 import { valueMeta } from '../utils/constants.js';
+import { Play, Pause, X } from 'lucide-react';
 
 // Spotify-style mini player bar — sits above the bottom nav.
 export default function PlayerBar() {
@@ -13,7 +14,6 @@ export default function PlayerBar() {
     e.stopPropagation();
     const audio = audioRef?.current;
     if (!audio || !audio.src || audio.ended) {
-      // Audio element is stale — open player to re-init from cache
       navigate('/player');
       return;
     }
@@ -48,29 +48,20 @@ export default function PlayerBar() {
           {meta.label} · {current.estimatedMinutes} min
         </div>
       </div>
-      <span
+      <button
         onClick={togglePlay}
         aria-label={isPlaying ? 'Pause' : 'Play'}
-        className="grid h-12 w-12 place-items-center rounded-full bg-gold text-bg-base shadow-glow"
+        className="grid h-11 w-11 place-items-center rounded-full bg-gold text-bg-base shadow-glow transition active:scale-95"
       >
-        {isPlaying ? (
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
-            <rect x="6" y="4" width="4" height="16" rx="1.5" />
-            <rect x="14" y="4" width="4" height="16" rx="1.5" />
-          </svg>
-        ) : (
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
-            <path d="M8 5.5v13a1 1 0 0 0 1.55.83l10-6.5a1 1 0 0 0 0-1.66l-10-6.5A1 1 0 0 0 8 5.5z" />
-          </svg>
-        )}
-      </span>
-      <span
+        {isPlaying ? <Pause size={18} fill="currentColor" /> : <Play size={18} fill="currentColor" />}
+      </button>
+      <button
         onClick={handleClose}
-        className="grid h-8 w-8 place-items-center rounded-full bg-white/5 text-xs text-ink-dim"
+        className="grid h-8 w-8 place-items-center rounded-full bg-white/5 text-ink-dim transition hover:text-ink active:scale-95"
         aria-label="Stop"
       >
-        ✕
-      </span>
+        <X size={14} />
+      </button>
     </div>
   );
 }

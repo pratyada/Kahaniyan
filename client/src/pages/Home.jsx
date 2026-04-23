@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
+import { RefreshCw } from 'lucide-react';
 import PageTransition from '../components/PageTransition.jsx';
 import ValuePill from '../components/ValuePill.jsx';
 import UpgradeModal from '../components/UpgradeModal.jsx';
@@ -228,9 +229,9 @@ export default function Home() {
         {/* Reload */}
         <div className="mb-3 flex justify-end">
           <button onClick={() => window.location.reload()}
-            className="grid h-8 w-8 place-items-center rounded-full bg-white/5 text-ink-muted active:scale-95"
+            className="grid h-8 w-8 place-items-center rounded-full bg-white/5 text-ink-muted transition hover:text-ink active:scale-95 active:rotate-180"
             title="Refresh">
-            ↻
+            <RefreshCw size={14} />
           </button>
         </div>
         <div className="flex items-start justify-between">

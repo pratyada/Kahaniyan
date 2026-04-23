@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { Mic, Home, Gift, Map, Handshake, ChevronRight } from 'lucide-react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import PageTransition from '../components/PageTransition.jsx';
 import SectionCard from '../components/SectionCard.jsx';
@@ -96,7 +97,7 @@ export default function Settings() {
             Continue with Google
           </button>
           <div className="mt-10 w-full space-y-3">
-            <Tile icon="🤝" title="Invest" sub="Back this project" onClick={() => navigate('/invest')} />
+            <Tile icon={<Handshake size={18} />} title="Invest" sub="Back this project" onClick={() => navigate('/invest')} />
           <Tile icon="🪨" title="Kid slept?" sub="Stoned Age awaits" onClick={() => window.location.href = 'https://stonedage.mysleepytale.com'} />
             <Tile icon="✨" title="Guides" sub="Learn how it works" onClick={() => navigate('/guides')} />
           </div>
@@ -272,8 +273,8 @@ export default function Settings() {
         <div className="grid grid-cols-2 gap-2">
           <Tile icon="👨‍👩‍👧" title="Story cast" sub={`${profile.characters?.length || 0} chars`} onClick={() => navigate('/characters')} />
           <Tile icon="🪷" title="Wisdom Stories" sub="By belief" onClick={() => navigate('/lessons')} />
-          <Tile icon="🎙️" title="Voices" sub={`${voices.length} saved`} onClick={() => navigate('/voices')} />
-          <Tile icon="🏠" title="Edit family" sub="Name, age, belief" onClick={() => navigate('/family')} />
+          <Tile icon={<Mic size={18} />} title="Voices" sub={`${voices.length} saved`} onClick={() => navigate('/voices')} />
+          <Tile icon={<Home size={18} />} title="Edit family" sub="Name, age, belief" onClick={() => navigate('/family')} />
         </div>
       </SectionCard>
 
@@ -322,9 +323,9 @@ export default function Settings() {
       <SectionCard title="More">
         <div className="grid grid-cols-2 gap-2">
           <Tile icon="✨" title="Guides" sub="5 reads" onClick={() => navigate('/guides')} />
-          <Tile icon="🎁" title="Gift a Story Pack" sub="CA$9.99/mo" onClick={() => setGiftOpen(true)} />
-          <Tile icon="🛣️" title="Roadmap" sub="Build status" onClick={() => navigate('/roadmap')} />
-          <Tile icon="🤝" title="Invest" sub="Back this project" onClick={() => navigate('/invest')} />
+          <Tile icon={<Gift size={18} />} title="Gift a Story Pack" sub="CA$9.99/mo" onClick={() => setGiftOpen(true)} />
+          <Tile icon={<Map size={18} />} title="Roadmap" sub="Build status" onClick={() => navigate('/roadmap')} />
+          <Tile icon={<Handshake size={18} />} title="Invest" sub="Back this project" onClick={() => navigate('/invest')} />
           <Tile icon="🪨" title="Kid slept?" sub="Stoned Age awaits" onClick={() => window.location.href = 'https://stonedage.mysleepytale.com'} />
           {isAdmin && (
             <Tile icon="🔑" title="Admin" sub="Dashboard" onClick={() => navigate('/admin')} />
@@ -543,16 +544,20 @@ export default function Settings() {
 }
 
 function Tile({ icon, title, sub, onClick }) {
+  const isComponent = typeof icon === 'function' || (typeof icon === 'object' && icon !== null && icon.$$typeof);
   return (
     <button
       onClick={onClick}
-      className="flex items-center gap-2.5 rounded-2xl bg-bg-surface p-3 text-left ring-1 ring-white/5 transition active:scale-[0.98]"
+      className="flex items-center gap-3 rounded-2xl bg-bg-surface p-3 text-left ring-1 ring-white/5 transition active:scale-[0.98] hover:bg-bg-elevated"
     >
-      <span className="text-xl">{icon}</span>
-      <div className="min-w-0">
+      <div className="grid h-9 w-9 shrink-0 place-items-center rounded-xl bg-gold/10 text-gold">
+        {isComponent ? icon : <span className="text-lg">{icon}</span>}
+      </div>
+      <div className="min-w-0 flex-1">
         <div className="text-[12px] font-bold text-ink">{title}</div>
         <div className="text-[10px] text-ink-muted">{sub}</div>
       </div>
+      <ChevronRight size={14} className="shrink-0 text-ink-dim" />
     </button>
   );
 }
