@@ -411,7 +411,7 @@ export default function Home() {
                             <ValuePill key={`rec-${v}`} value={v} active={value === v} onClick={() => setValue(v)} />
                           ))}
                           {VALUES.filter((v) => !recommended.includes(v.key)).map((v) => (
-                            <ValuePill key={v.key} value={v.key} size="sm" active={value === v.key} onClick={() => setValue(v.key)} />
+                            <ValuePill key={v.key} value={v.key} active={value === v.key} onClick={() => setValue(v.key)} />
                           ))}
                         </div>
                       </div>
@@ -516,7 +516,7 @@ export default function Home() {
                           <ValuePill key={`rec2-${v}`} value={v} active={value === v} onClick={() => setValue(v)} />
                         ))}
                         {VALUES.filter((v) => !recommended.includes(v.key)).map((v) => (
-                          <ValuePill key={v.key} value={v.key} size="sm" active={value === v.key} onClick={() => setValue(v.key)} />
+                          <ValuePill key={v.key} value={v.key} active={value === v.key} onClick={() => setValue(v.key)} />
                         ))}
                       </div>
                     </div>
