@@ -142,8 +142,8 @@ export async function loadAndMergeLibrary() {
       .slice(0, MAX_STORIES);
 
     setLibraryLocal(result);
-    // Sync merged result back if cloud was behind
-    if (result.length > cloudLib.length) syncLibraryToFirestore(result);
+    // Always sync merged result back so coverImage and other fields persist
+    syncLibraryToFirestore(result);
 
     return result;
   } catch {
