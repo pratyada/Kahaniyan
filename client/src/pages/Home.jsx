@@ -234,8 +234,8 @@ export default function Home() {
           ) : (
             <div className="absolute inset-0" style={{ background: featuredArt.gradient }} />
           )}
-          {/* Dark overlay */}
-          <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/40 to-black/20" />
+          {/* Dark overlay — stronger so text stays readable over DALL-E images */}
+          <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/50 to-black/30" />
 
           {/* Moon play button */}
           <motion.button
@@ -329,7 +329,7 @@ export default function Home() {
                       <div className="absolute inset-0 transition-transform duration-500 group-hover:scale-105" style={{ background: art.gradient }} />
                     )}
                     {/* Dark overlay for text readability */}
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-black/10" />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/40 to-black/15" />
                     {/* Play button */}
                     <div className="absolute right-3 top-3 grid h-9 w-9 place-items-center rounded-full bg-black/30 backdrop-blur-sm text-white/80 transition group-hover:bg-white/20 group-hover:text-white">
                       <Play size={14} fill="currentColor" />

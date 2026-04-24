@@ -19,11 +19,22 @@ export default function Library() {
   const [filter, setFilter] = useState(null);
   const [sharing, setSharing] = useState(null);
   const [toast, setToast] = useState(null);
+  const [wisdomImageUrls, setWisdomImageUrls] = useState({});
 
   useEffect(() => {
     pruneArchive(archiveDaysFor(profile?.tier || 'free'));
     setLibrary(getLibrary());
     loadAndMergeLibrary().then((merged) => setLibrary(merged));
+    // Fetch DALL-E generated images
+    (async () => {
+      try {
+        const { db: fireDb } = await import('../lib/firebase.js');
+        if (!fireDb) return;
+        const { doc, getDoc } = await import('firebase/firestore');
+        const snap = await getDoc(doc(fireDb, 'config', 'wisdomImages'));
+        if (snap.exists()) setWisdomImageUrls(snap.data());
+      } catch {}
+    })();
   }, [profile?.tier]);
 
   const filtered = useMemo(
@@ -140,6 +151,7 @@ export default function Library() {
             >
               <LibraryCard
                 story={story}
+                wisdomImageUrls={wisdomImageUrls}
                 onPlay={() => { load(story); navigate('/player'); }}
                 onShare={() => handleShare(story)}
                 onDelete={() => handleDelete(story.id)}
@@ -155,17 +167,19 @@ export default function Library() {
   );
 }
 
-function LibraryCard({ story, onPlay, onShare, onDelete, isSharing }) {
+function LibraryCard({ story, wisdomImageUrls = {}, onPlay, onShare, onDelete, isSharing }) {
   const meta = valueMeta(story.value);
-  const art = getStoryArt(story.id?.replace('lesson_', '') || '');
+  const lessonKey = story.id?.replace('lesson_', '') || '';
+  const art = getStoryArt(lessonKey);
+  const imgSrc = wisdomImageUrls[lessonKey] || art.image;
   const date = new Date(story.createdAt).toLocaleDateString(undefined, { month: 'short', day: 'numeric' });
 
   return (
     <div className="group relative overflow-hidden rounded-2xl" style={{ border: '1px solid rgba(255,255,255,0.06)' }}>
       {/* Album art cover — tap to play */}
       <button onClick={onPlay} className="relative block w-full text-left" style={{ aspectRatio: '1 / 1' }}>
-        {art.image ? (
-          <img src={art.image} alt="" className="absolute inset-0 h-full w-full object-cover transition-transform duration-500 group-hover:scale-110" loading="lazy" />
+        {imgSrc ? (
+          <img src={imgSrc} alt="" className="absolute inset-0 h-full w-full object-cover transition-transform duration-500 group-hover:scale-110" loading="lazy" />
         ) : (
           <div className="absolute inset-0 transition-transform duration-500 group-hover:scale-105" style={{ background: art.gradient }} />
         )}
