@@ -208,11 +208,14 @@ export default function Home() {
       </motion.header>
 
       {/* ═══ THE MOON — Tonight's Featured Story ═══ */}
+      <AnimatePresence>
+      {!writeOpen && !castOpen && (
       <motion.section
         initial={{ opacity: 0, scale: 0.9 }}
         animate={{ opacity: 1, scale: 1 }}
-        transition={{ duration: 0.8, delay: 0.2 }}
-        className="mb-8"
+        exit={{ opacity: 0, height: 0, marginBottom: 0 }}
+        transition={{ duration: 0.4 }}
+        className="mb-8 overflow-hidden"
       >
         <div
           className="relative mx-auto flex flex-col items-center rounded-3xl p-6 overflow-hidden"
@@ -262,6 +265,8 @@ export default function Home() {
           </p>
         </div>
       </motion.section>
+      )}
+      </AnimatePresence>
 
       {/* ═══ WISDOM STORY CAROUSEL ═══ */}
       <AnimatePresence>
@@ -334,13 +339,18 @@ export default function Home() {
           </div>
         </div>
       </motion.section>
+      )}
+      </AnimatePresence>
 
       {/* ═══ WRITE YOUR OWN — Expandable ═══ */}
+      <AnimatePresence>
+      {!castOpen && (
       <motion.section
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.6, delay: 0.5 }}
-        className="mb-4"
+        exit={{ opacity: 0, height: 0, marginBottom: 0 }}
+        transition={{ duration: 0.3 }}
+        className="mb-4 overflow-hidden"
       >
         <button
           onClick={() => { setWriteOpen(!writeOpen); setCastOpen(false); }}
@@ -411,6 +421,8 @@ export default function Home() {
           )}
         </AnimatePresence>
       </motion.section>
+      )}
+      </AnimatePresence>
 
       {/* ═══ CHOOSE CAST — Expandable ═══ */}
       <motion.section
