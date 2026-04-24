@@ -10,6 +10,7 @@ import { useFamilyProfile } from '../hooks/useFamilyProfile.js';
 import { usePlayer } from '../hooks/usePlayer.jsx';
 import { VALUES, valueMeta } from '../utils/constants.js';
 import { getStoryArt } from '../utils/storyArt.js';
+import { useAdmin } from '../hooks/useAdmin.jsx';
 
 export default function Library() {
   const navigate = useNavigate();
@@ -19,6 +20,7 @@ export default function Library() {
   const [filter, setFilter] = useState(null);
   const [sharing, setSharing] = useState(null);
   const [toast, setToast] = useState(null);
+  const { isAdmin } = useAdmin();
   const [wisdomImageUrls, setWisdomImageUrls] = useState({});
 
   useEffect(() => {
@@ -138,7 +140,7 @@ export default function Library() {
               {library.length} {library.length === 1 ? 'story' : 'stories'} saved
             </p>
           </div>
-          {library.some((s) => !s.coverImage && !(s.id?.startsWith('lesson_') && wisdomImageUrls[s.id.slice(7)])) && (
+          {isAdmin && library.some((s) => !s.coverImage && !(s.id?.startsWith('lesson_') && wisdomImageUrls[s.id.slice(7)])) && (
             <button
               onClick={generateMissingImages}
               disabled={generatingImages}
@@ -160,28 +162,32 @@ export default function Library() {
         )}
       </AnimatePresence>
 
-      {/* Filter chips — only show values that exist in library */}
+      {/* Filter chips — horizontal scroll with fade hint */}
       {availableValues.length > 1 && (
-        <div className="mb-4 -mx-5 overflow-x-auto px-5">
-          <div className="flex w-max gap-2">
-            <button onClick={() => setFilter(null)}
-              className={`rounded-full px-3.5 py-1.5 text-xs font-bold transition active:scale-95 ${
-                !filter ? 'bg-gold text-bg-base' : 'bg-white/5 text-ink-muted ring-1 ring-white/10'
-              }`}>
-              All
-            </button>
-            {availableValues.map((v) => {
-              const meta = valueMeta(v.key);
-              return (
-                <button key={v.key} onClick={() => setFilter(filter === v.key ? null : v.key)}
-                  className={`rounded-full px-3.5 py-1.5 text-xs font-bold transition active:scale-95 ${
-                    filter === v.key ? 'bg-gold text-bg-base' : 'bg-white/5 text-ink-muted ring-1 ring-white/10'
-                  }`}>
-                  {meta.emoji} {meta.label}
-                </button>
-              );
-            })}
+        <div className="relative mb-4 -mx-5">
+          <div className="overflow-x-auto px-5 pb-1 scrollbar-hide" style={{ WebkitOverflowScrolling: 'touch' }}>
+            <div className="flex w-max gap-2 pr-8">
+              <button onClick={() => setFilter(null)}
+                className={`shrink-0 rounded-full px-3.5 py-1.5 text-xs font-bold transition active:scale-95 ${
+                  !filter ? 'bg-gold text-bg-base' : 'bg-white/5 text-ink-muted ring-1 ring-white/10'
+                }`}>
+                All
+              </button>
+              {availableValues.map((v) => {
+                const meta = valueMeta(v.key);
+                return (
+                  <button key={v.key} onClick={() => setFilter(filter === v.key ? null : v.key)}
+                    className={`shrink-0 rounded-full px-3.5 py-1.5 text-xs font-bold transition active:scale-95 ${
+                      filter === v.key ? 'bg-gold text-bg-base' : 'bg-white/5 text-ink-muted ring-1 ring-white/10'
+                    }`}>
+                    {meta.emoji} {meta.label}
+                  </button>
+                );
+              })}
+            </div>
           </div>
+          {/* Fade hint on right edge — signals more content to scroll */}
+          <div className="pointer-events-none absolute right-0 top-0 bottom-0 w-10 bg-gradient-to-l from-bg-base to-transparent" />
         </div>
       )}
 
