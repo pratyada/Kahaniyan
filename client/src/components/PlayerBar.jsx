@@ -1,3 +1,4 @@
+import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { usePlayer } from '../hooks/usePlayer.jsx';
 import { valueMeta } from '../utils/constants.js';
@@ -7,6 +8,21 @@ import { Play, Pause, X } from 'lucide-react';
 export default function PlayerBar() {
   const navigate = useNavigate();
   const { current, isPlaying, setIsPlaying, clear, audioRef } = usePlayer();
+  const [navHeight, setNavHeight] = useState(0);
+
+  // Measure the actual bottom nav height (including safe area)
+  useEffect(() => {
+    const measure = () => {
+      const nav = document.getElementById('bottom-nav');
+      if (nav) setNavHeight(nav.offsetHeight);
+    };
+    measure();
+    window.addEventListener('resize', measure);
+    // Re-measure after a short delay in case nav renders late
+    const t = setTimeout(measure, 200);
+    return () => { window.removeEventListener('resize', measure); clearTimeout(t); };
+  }, []);
+
   if (!current) return null;
   const meta = valueMeta(current.value);
 
@@ -35,7 +51,7 @@ export default function PlayerBar() {
     <div
       onClick={() => navigate('/player')}
       className="absolute left-3 right-3 z-20 mx-auto flex max-w-2xl items-center gap-3 rounded-2xl bg-bg-elevated/95 px-3 py-2 shadow-lift backdrop-blur-xl active:scale-[0.99] cursor-pointer"
-      style={{ bottom: 'calc(68px + env(safe-area-inset-bottom, 0px) + 8px)' }}
+      style={{ bottom: `${navHeight + 8}px` }}
     >
       <div
         className="grid h-11 w-11 place-items-center rounded-xl text-xl"

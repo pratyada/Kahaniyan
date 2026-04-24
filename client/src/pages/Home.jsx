@@ -554,8 +554,8 @@ export default function Home() {
 
       <UpgradeModal open={upgradeOpen} onClose={() => setUpgradeOpen(false)} reason={upgradeReason} />
 
-      {/* Bottom padding for nav */}
-      <div className="h-20" />
+      {/* Bottom padding for nav + player bar */}
+      <div className="h-40" />
     </PageTransition>
   );
 }

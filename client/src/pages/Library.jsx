@@ -236,7 +236,8 @@ export default function Library() {
         </div>
       )}
 
-      <div className="h-20" />
+      {/* Bottom spacer — clears bottom nav + player bar */}
+      <div className="h-40" />
     </PageTransition>
   );
 }
