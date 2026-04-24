@@ -169,9 +169,9 @@ export default function Library() {
 
 function LibraryCard({ story, wisdomImageUrls = {}, onPlay, onShare, onDelete, isSharing }) {
   const meta = valueMeta(story.value);
-  const lessonKey = story.id?.replace('lesson_', '') || '';
+  const lessonKey = story.id?.startsWith('lesson_') ? story.id.slice(7) : '';
   const art = getStoryArt(lessonKey);
-  const imgSrc = wisdomImageUrls[lessonKey] || art.image;
+  const imgSrc = story.coverImage || wisdomImageUrls[lessonKey] || wisdomImageUrls[story.id] || art.image;
   const date = new Date(story.createdAt).toLocaleDateString(undefined, { month: 'short', day: 'numeric' });
 
   return (

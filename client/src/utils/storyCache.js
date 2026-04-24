@@ -48,6 +48,13 @@ export function saveToLibrary(story) {
   syncLibraryToFirestore(next);
 }
 
+export function updateStoryInLibrary(storyId, updates) {
+  const list = getLibrary();
+  const next = list.map((s) => (s.id === storyId ? { ...s, ...updates } : s));
+  setLibraryLocal(next);
+  syncLibraryToFirestore(next);
+}
+
 export function removeFromLibrary(storyId) {
   const next = getLibrary().filter((s) => s.id !== storyId);
   setLibraryLocal(next);
