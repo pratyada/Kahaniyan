@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Play, Share2, Trash2, BookOpen } from 'lucide-react';
 import PageTransition from '../components/PageTransition.jsx';
-import { getLibrary, pruneArchive, removeFromLibrary, loadAndMergeLibrary } from '../utils/storyCache.js';
+import { getLibrary, pruneArchive, removeFromLibrary, loadAndMergeLibrary, updateStoryInLibrary } from '../utils/storyCache.js';
 import { shareStoryToFirestore } from '../utils/shareStory.js';
 import { archiveDaysFor } from '../utils/tierGate.js';
 import { useFamilyProfile } from '../hooks/useFamilyProfile.js';
@@ -68,6 +68,58 @@ export default function Library() {
 
   const showToast = (msg) => { setToast(msg); setTimeout(() => setToast(null), 2000); };
 
+  const [generatingImages, setGeneratingImages] = useState(false);
+  const [imageProgress, setImageProgress] = useState('');
+
+  const generateMissingImages = async () => {
+    const API_BASE = import.meta.env.VITE_API_BASE_URL || '';
+    const missing = library.filter((s) => {
+      if (s.coverImage) return false;
+      const lk = s.id?.startsWith('lesson_') ? s.id.slice(7) : '';
+      if (wisdomImageUrls[lk]) return false;
+      return true;
+    });
+    if (missing.length === 0) { showToast('All stories have images!'); return; }
+
+    setGeneratingImages(true);
+    let done = 0;
+    for (const story of missing) {
+      try {
+        setImageProgress(`${done + 1}/${missing.length}: ${story.title?.slice(0, 25)}...`);
+        const firstLine = (story.text || '').split('\n').find(l => l.trim()) || '';
+        const snippet = firstLine.slice(0, 120);
+        const prompt = `Scene from "${story.title}": ${snippet}`;
+
+        const res = await fetch(`${API_BASE}/api/generate-story-image`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ prompt }),
+        });
+        if (!res.ok) { done++; continue; }
+        const { imageUrl: dalleUrl } = await res.json();
+        if (!dalleUrl) { done++; continue; }
+
+        // Upload to Firebase Storage
+        const imgRes = await fetch(dalleUrl);
+        const imgBlob = await imgRes.blob();
+        const { ref, uploadBytes, getDownloadURL } = await import('firebase/storage');
+        const { storage } = await import('../lib/firebase.js');
+        const storageRef = ref(storage, `story-covers/${story.id}.png`);
+        await uploadBytes(storageRef, imgBlob, { contentType: 'image/png' });
+        const permanentUrl = await getDownloadURL(storageRef);
+
+        updateStoryInLibrary(story.id, { coverImage: permanentUrl });
+        setLibrary((prev) => prev.map((s) => s.id === story.id ? { ...s, coverImage: permanentUrl } : s));
+        done++;
+      } catch {
+        done++;
+      }
+    }
+    setGeneratingImages(false);
+    setImageProgress('');
+    showToast(`Generated ${done} images!`);
+  };
+
   // Unique values present in library for filter chips
   const availableValues = useMemo(() => {
     const vals = new Set(library.map((s) => s.value).filter(Boolean));
@@ -77,12 +129,25 @@ export default function Library() {
   return (
     <PageTransition className="page-scroll px-5 pt-10 safe-top">
       <header className="mb-5">
-        <h1 className="text-2xl font-bold text-ink" style={{ fontFamily: 'Fraunces, serif' }}>
-          {profile?.childName ? `${profile.childName}'s` : 'Your'} <span className="text-gold">Stories</span>
-        </h1>
-        <p className="mt-1 text-xs text-ink-muted" style={{ fontFamily: 'Nunito, sans-serif' }}>
-          {library.length} {library.length === 1 ? 'story' : 'stories'} saved
-        </p>
+        <div className="flex items-start justify-between">
+          <div>
+            <h1 className="text-2xl font-bold text-ink" style={{ fontFamily: 'Fraunces, serif' }}>
+              {profile?.childName ? `${profile.childName}'s` : 'Your'} <span className="text-gold">Stories</span>
+            </h1>
+            <p className="mt-1 text-xs text-ink-muted" style={{ fontFamily: 'Nunito, sans-serif' }}>
+              {library.length} {library.length === 1 ? 'story' : 'stories'} saved
+            </p>
+          </div>
+          {library.some((s) => !s.coverImage && !(s.id?.startsWith('lesson_') && wisdomImageUrls[s.id.slice(7)])) && (
+            <button
+              onClick={generateMissingImages}
+              disabled={generatingImages}
+              className="mt-1 rounded-full bg-[#539df5] px-3 py-1.5 text-[10px] font-bold text-white disabled:opacity-50"
+            >
+              {generatingImages ? imageProgress : 'Gen Images'}
+            </button>
+          )}
+        </div>
       </header>
 
       {/* Toast */}

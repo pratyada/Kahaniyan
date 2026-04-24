@@ -104,6 +104,7 @@ function syncLibraryToFirestore(stories) {
     createdAt: s.createdAt || '',
     whisper: s.whisper || null,
     plotType: s.plotType || '',
+    coverImage: s.coverImage || null,
   }));
   setDoc(doc(db, 'users', uid), { library: lightweight }, { merge: true }).catch(() => {});
 }
