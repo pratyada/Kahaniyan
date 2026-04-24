@@ -159,10 +159,10 @@ a {
     background-position: center;
     background-attachment: local;
   }
-  /* On desktop (768px+), full width */
+  /* On desktop (768px+), comfortable width centered */
   @media (min-width: 768px) {
     .phone-shell {
-      max-width: 100%;
+      max-width: 640px;
     }
   }
   .phone-shell::before {
@@ -183,12 +183,7 @@ a {
     @apply flex-1 overflow-y-auto overflow-x-hidden pb-32;
   }
 
-  /* Desktop: center content with max-width for readability */
-  @media (min-width: 768px) {
-    .page-scroll {
-      @apply mx-auto max-w-2xl;
-    }
-  }
+  /* Desktop: no separate constraint — shell handles width */
 }
 
 /* ───── Star-field animation (player background) ───── */
