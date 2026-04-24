@@ -2,6 +2,7 @@ import { useEffect, useMemo, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Play, Sparkles, ChevronDown, ChevronUp, Users, PenLine } from 'lucide-react';
+import { getStoryArt, getTraditionArt } from '../utils/storyArt.js';
 import PageTransition from '../components/PageTransition.jsx';
 import ValuePill from '../components/ValuePill.jsx';
 import UpgradeModal from '../components/UpgradeModal.jsx';
@@ -217,25 +218,20 @@ export default function Home() {
         transition={{ duration: 0.4 }}
         className="mb-8 overflow-hidden"
       >
+        {(() => {
+          const featuredArt = getStoryArt(tonightStory?.id);
+          return (
         <div
           className="relative mx-auto flex flex-col items-center rounded-3xl p-6 overflow-hidden"
           style={{
-            background: 'linear-gradient(135deg, rgba(240,165,0,0.08) 0%, rgba(58,42,74,0.15) 50%, rgba(10,10,15,0.9) 100%)',
-            border: '1px solid rgba(240,165,0,0.12)',
+            background: featuredArt.gradient,
+            border: '1px solid rgba(255,255,255,0.1)',
           }}
         >
-          {/* Decorative stars */}
-          <div className="absolute inset-0 overflow-hidden pointer-events-none">
-            {[...Array(12)].map((_, i) => (
-              <motion.div
-                key={i}
-                className="absolute h-1 w-1 rounded-full bg-gold/40"
-                style={{ left: `${10 + Math.random() * 80}%`, top: `${10 + Math.random() * 80}%` }}
-                animate={{ opacity: [0.2, 0.8, 0.2], scale: [0.5, 1, 0.5] }}
-                transition={{ duration: 2 + Math.random() * 3, repeat: Infinity, delay: Math.random() * 2 }}
-              />
-            ))}
-          </div>
+          {/* Noise texture */}
+          <div className="absolute inset-0 opacity-15" style={{ backgroundImage: 'url("data:image/svg+xml,%3Csvg viewBox=\'0 0 256 256\' xmlns=\'http://www.w3.org/2000/svg\'%3E%3Cfilter id=\'n\'%3E%3CfeTurbulence type=\'fractalNoise\' baseFrequency=\'0.9\' numOctaves=\'4\' stitchTiles=\'stitch\'/%3E%3C/filter%3E%3Crect width=\'100%25\' height=\'100%25\' filter=\'url(%23n)\' opacity=\'0.5\'/%3E%3C/svg%3E")', backgroundSize: '128px' }} />
+          {/* Large themed icon in background */}
+          <div className="absolute right-4 top-4 text-6xl opacity-15">{featuredArt.icon}</div>
 
           {/* Moon play button */}
           <motion.button
@@ -254,16 +250,18 @@ export default function Home() {
             <Play size={36} fill="rgba(10,10,15,0.9)" stroke="none" className="relative z-10 ml-1" />
           </motion.button>
 
-          <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-gold/70" style={{ fontFamily: 'Nunito, sans-serif' }}>
+          <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-white/60" style={{ fontFamily: 'Nunito, sans-serif' }}>
             Tonight's Story
           </p>
-          <h2 className="mt-1 text-center text-lg font-bold text-ink" style={{ fontFamily: 'Fraunces, serif' }}>
+          <h2 className="mt-1 text-center text-lg font-bold text-white" style={{ fontFamily: 'Fraunces, serif', textShadow: '0 1px 6px rgba(0,0,0,0.4)' }}>
             {tonightStory?.title}
           </h2>
-          <p className="mt-1 text-xs text-ink-muted">
-            {tonightTradition?.icon} {tonightTradition?.label} · {tonightStory?.durationMinutes} min
+          <p className="mt-1 text-xs text-white/60">
+            {tonightTradition?.label} · {tonightStory?.durationMinutes} min
           </p>
         </div>
+          );
+        })()}
       </motion.section>
       )}
       </AnimatePresence>
@@ -310,28 +308,36 @@ export default function Home() {
               }
               return list.map((lesson) => {
                 const tradition = TRADITIONS.find((t) => t.key === lesson.tradition);
+                const art = getStoryArt(lesson.id);
+                const tradArt = getTraditionArt(lesson.tradition);
                 return (
                   <motion.button
                     key={lesson.id}
-                    whileTap={{ scale: 0.97 }}
+                    whileTap={{ scale: 0.96 }}
                     onClick={() => playLesson(lesson)}
-                    className="group flex w-44 shrink-0 flex-col rounded-2xl p-3 text-left transition"
-                    style={{
-                      background: 'linear-gradient(145deg, rgba(255,255,255,0.03) 0%, rgba(240,165,0,0.04) 100%)',
-                      border: '1px solid rgba(255,255,255,0.06)',
-                    }}
+                    className="group relative flex w-48 shrink-0 flex-col justify-end overflow-hidden rounded-2xl p-3 text-left"
+                    style={{ minHeight: '11rem' }}
                   >
-                    <div className="mb-2 flex items-center justify-between">
-                      <span className="text-2xl">{tradition?.icon || '🌟'}</span>
-                      <span className="grid h-8 w-8 place-items-center rounded-full bg-gold/10 text-gold transition group-hover:bg-gold group-hover:text-bg-base">
-                        <Play size={12} fill="currentColor" />
-                      </span>
+                    {/* Gradient background */}
+                    <div className="absolute inset-0 transition-transform duration-500 group-hover:scale-105" style={{ background: art.gradient }} />
+                    {/* Noise texture overlay */}
+                    <div className="absolute inset-0 opacity-20" style={{ backgroundImage: 'url("data:image/svg+xml,%3Csvg viewBox=\'0 0 256 256\' xmlns=\'http://www.w3.org/2000/svg\'%3E%3Cfilter id=\'n\'%3E%3CfeTurbulence type=\'fractalNoise\' baseFrequency=\'0.9\' numOctaves=\'4\' stitchTiles=\'stitch\'/%3E%3C/filter%3E%3Crect width=\'100%25\' height=\'100%25\' filter=\'url(%23n)\' opacity=\'0.5\'/%3E%3C/svg%3E")', backgroundSize: '128px' }} />
+                    {/* Large themed icon */}
+                    <div className="absolute right-2 top-2 text-4xl opacity-30 transition-opacity group-hover:opacity-50">{art.icon}</div>
+                    {/* Play button */}
+                    <div className="absolute right-3 bottom-3 grid h-9 w-9 place-items-center rounded-full bg-white/20 backdrop-blur-sm text-white transition group-hover:bg-white/40">
+                      <Play size={14} fill="currentColor" />
                     </div>
-                    <p className="text-[9px] font-bold uppercase tracking-wider text-gold/60">{tradition?.label}</p>
-                    <p className="mt-0.5 line-clamp-2 text-sm font-bold leading-snug text-ink" style={{ fontFamily: 'Fraunces, serif' }}>
+                    {/* Tradition badge */}
+                    <div className="relative z-10 mb-1 inline-flex w-fit items-center gap-1 rounded-full px-2 py-0.5"
+                      style={{ background: `${tradArt.color}33` }}>
+                      <span className="text-[9px] font-bold text-white/90">{tradition?.label}</span>
+                    </div>
+                    {/* Title */}
+                    <p className="relative z-10 line-clamp-2 text-sm font-bold leading-snug text-white" style={{ fontFamily: 'Fraunces, serif', textShadow: '0 1px 4px rgba(0,0,0,0.5)' }}>
                       {lesson.title}
                     </p>
-                    <p className="mt-auto pt-2 text-[10px] text-ink-dim">{lesson.durationMinutes} min</p>
+                    <p className="relative z-10 mt-1 text-[10px] text-white/60">{lesson.durationMinutes} min</p>
                   </motion.button>
                 );
               });
