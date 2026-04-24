@@ -38,14 +38,14 @@ function fillTokens(text, profile, characters) {
 }
 
 // Pick tonight's featured story — rotates daily based on date
-function pickTonightStory(beliefs) {
+function pickTonightStory(beliefs, lessons) {
   const dayOfYear = Math.floor((Date.now() - new Date(new Date().getFullYear(), 0, 0)) / 86400000);
-  let pool = CULTURAL_LESSONS;
+  let pool = lessons || CULTURAL_LESSONS;
   if (beliefs?.length > 0) {
     const matched = pool.filter((l) => beliefs.includes(l.tradition));
     if (matched.length > 0) pool = matched;
   }
-  return pool[dayOfYear % pool.length];
+  return pool.length > 0 ? pool[dayOfYear % pool.length] : null;
 }
 
 export default function Home() {
@@ -73,19 +73,25 @@ export default function Home() {
   const [writeOpen, setWriteOpen] = useState(false);
   const [castOpen, setCastOpen] = useState(false);
 
-  // Pre-generated wisdom audio + images
+  // Pre-generated wisdom audio + images + custom stories from Firestore
   const [wisdomAudioUrls, setWisdomAudioUrls] = useState({});
   const [wisdomImageUrls, setWisdomImageUrls] = useState({});
+  const [customWisdomStories, setCustomWisdomStories] = useState([]);
   useEffect(() => {
     (async () => {
       try {
         const { db: fireDb } = await import('../lib/firebase.js');
         if (!fireDb) return;
-        const { doc: fdoc, getDoc: fget } = await import('firebase/firestore');
+        const { doc: fdoc, getDoc: fget, collection, getDocs } = await import('firebase/firestore');
         const snap = await fget(fdoc(fireDb, 'config', 'wisdomAudio'));
         if (snap.exists()) setWisdomAudioUrls(snap.data());
         const imgSnap = await fget(fdoc(fireDb, 'config', 'wisdomImages'));
         if (imgSnap.exists()) setWisdomImageUrls(imgSnap.data());
+        // Load custom wisdom stories from Firestore
+        const customSnap = await getDocs(collection(fireDb, 'wisdomStories'));
+        const custom = [];
+        customSnap.forEach(d => custom.push({ id: d.id, ...d.data() }));
+        setCustomWisdomStories(custom);
       } catch {}
     })();
   }, []);
@@ -93,21 +99,17 @@ export default function Home() {
   const maxDuration = maxDurationFor(tier, isUnlimited);
   const remaining = isUnlimited ? Infinity : tier === 'free' ? Math.max(0, 3 - storiesThisWeek()) : Infinity;
 
-  // Tonight's featured story
-  const tonightStory = useMemo(() => pickTonightStory(profile?.beliefs), [profile?.beliefs]);
-  const tonightTradition = TRADITIONS.find((t) => t.key === tonightStory?.tradition);
+  // Merge hardcoded + custom wisdom stories
+  const allLessons = useMemo(() => {
+    const merged = new Map();
+    CULTURAL_LESSONS.forEach(l => merged.set(l.id, l));
+    customWisdomStories.forEach(l => merged.set(l.id, l));
+    return [...merged.values()];
+  }, [customWisdomStories]);
 
-  // All wisdom stories for carousel (shuffled by user's beliefs)
-  const allWisdom = useMemo(() => {
-    let list = [...CULTURAL_LESSONS];
-    const beliefs = profile?.beliefs || [];
-    if (beliefs.length > 0) {
-      const matched = list.filter((l) => beliefs.includes(l.tradition));
-      const others = list.filter((l) => !beliefs.includes(l.tradition));
-      list = [...matched, ...others];
-    }
-    return list;
-  }, [profile?.beliefs]);
+  // Tonight's featured story
+  const tonightStory = useMemo(() => pickTonightStory(profile?.beliefs, allLessons), [profile?.beliefs, allLessons]);
+  const tonightTradition = TRADITIONS.find((t) => t.key === tonightStory?.tradition);
 
   const toggleChar = (id) => {
     setSelectedCharIds((prev) => {
@@ -300,7 +302,7 @@ export default function Home() {
         <div className="-mx-5 overflow-x-auto px-5 pb-2">
           <div className="flex w-max gap-3">
             {(() => {
-              const filtered = CULTURAL_LESSONS.filter((l) => l.theme === traditionTheme);
+              const filtered = allLessons.filter((l) => l.theme === traditionTheme);
               const beliefs = profile?.beliefs || [];
               let list = filtered;
               // Default: show only user's selected beliefs

@@ -159,10 +159,13 @@ a {
     background-position: center;
     background-attachment: local;
   }
-  /* On desktop (768px+), constrain content width for readability */
+  /* On desktop (768px+), constrain to phone-like width */
   @media (min-width: 768px) {
     .phone-shell {
-      max-width: 100%;
+      max-width: 430px;
+      border-left: 1px solid rgba(255,255,255,0.05);
+      border-right: 1px solid rgba(255,255,255,0.05);
+      box-shadow: 0 0 80px rgba(0,0,0,0.5);
     }
   }
   .phone-shell::before {

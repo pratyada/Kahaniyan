@@ -1829,7 +1829,7 @@ function StoryLab() {
     { key: 'ingredients', label: 'Story Ingredients', icon: '🧩' },
     { key: 'values', label: 'Value Delivery', icon: '💡' },
     { key: 'ages', label: 'Age Guides', icon: '🎂' },
-    { key: 'wisdom-audio', label: 'Wisdom Audio', icon: '🔊' },
+    { key: 'wisdom-audio', label: 'Wisdom Stories', icon: '📖' },
     { key: 'cache', label: `Cache (${cachedStories.length})`, icon: '📦' },
   ];
 
@@ -2442,14 +2442,33 @@ function WisdomAudioPanel() {
   const [status, setStatus] = useState({});
   const [generating, setGenerating] = useState(null);
   const [lessons, setLessons] = useState([]);
+  const [filterTradition, setFilterTradition] = useState('all');
+  const [filterTheme, setFilterTheme] = useState('all');
+  const [editing, setEditing] = useState(null); // lesson id being edited
+  const [addingNew, setAddingNew] = useState(false);
+  const [newStory, setNewStory] = useState({ id: '', tradition: 'hindu', theme: 'compassion-animals', title: '', body: '', source: '', durationMinutes: 8, imagePrompt: '' });
 
   useEffect(() => {
-    import('../data/culturalLessons.js').then(m => setLessons(m.CULTURAL_LESSONS));
+    // Load from both hardcoded + Firestore custom stories
     (async () => {
       try {
-        const { doc, getDoc } = await import('firebase/firestore');
+        const { CULTURAL_LESSONS, TRADITIONS, THEMES } = await import('../data/culturalLessons.js');
+        const { doc, getDoc, collection, getDocs } = await import('firebase/firestore');
         const { db } = await import('../lib/firebase.js');
-        if (!db) return;
+        if (!db) { setLessons(CULTURAL_LESSONS); return; }
+
+        // Load Firestore custom wisdom stories
+        const customSnap = await getDocs(collection(db, 'wisdomStories'));
+        const custom = [];
+        customSnap.forEach(d => custom.push({ id: d.id, ...d.data(), _isCustom: true }));
+
+        // Merge: custom stories override hardcoded ones with same id
+        const hardcoded = CULTURAL_LESSONS.map(l => ({ ...l, _isCustom: false }));
+        const merged = new Map();
+        hardcoded.forEach(l => merged.set(l.id, l));
+        custom.forEach(l => merged.set(l.id, l));
+        setLessons([...merged.values()]);
+
         const snap = await getDoc(doc(db, 'config', 'wisdomAudio'));
         if (snap.exists()) setUrls(snap.data());
         const imgSnap = await getDoc(doc(db, 'config', 'wisdomImages'));
@@ -2463,7 +2482,6 @@ function WisdomAudioPanel() {
     setStatus(s => ({ ...s, [lesson.id]: 'generating TTS...' }));
     try {
       const text = lesson.body.replace(/\{childName\}/g, 'little one').replace(/\{sibling\}/g, 'their friend').replace(/\{grandfather\}/g, 'Dada ji').replace(/\{grandmother\}/g, 'Nani ma').replace(/\{pet\}/g, 'their puppy');
-      // Generate audio via TTS API
       const res = await fetch('/api/generate-wisdom-audio', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -2471,43 +2489,25 @@ function WisdomAudioPanel() {
       });
       if (!res.ok) { setStatus(s => ({ ...s, [lesson.id]: `TTS failed (${res.status})` })); setGenerating(null); return; }
       const blob = await res.blob();
-
-      // Upload to Firebase Storage (client-side — same as regular stories)
       setStatus(s => ({ ...s, [lesson.id]: 'uploading...' }));
       const { ref, uploadBytes, getDownloadURL } = await import('firebase/storage');
       const { storage, db: fireDb } = await import('../lib/firebase.js');
       const storageRef = ref(storage, `wisdom-audio/${lesson.id}.opus`);
       await uploadBytes(storageRef, blob, { contentType: 'audio/ogg' });
       const audioUrl = await getDownloadURL(storageRef);
-
-      // Save URL to Firestore config
       const { doc: fdoc, setDoc: fset } = await import('firebase/firestore');
       await fset(fdoc(fireDb, 'config', 'wisdomAudio'), { [lesson.id]: audioUrl }, { merge: true });
-
       setUrls(u => ({ ...u, [lesson.id]: audioUrl }));
       setStatus(s => ({ ...s, [lesson.id]: 'done' }));
-    } catch (e) {
-      setStatus(s => ({ ...s, [lesson.id]: e.message }));
-    }
+    } catch (e) { setStatus(s => ({ ...s, [lesson.id]: e.message })); }
     setGenerating(null);
   };
 
-  const generateAll = async () => {
-    for (const lesson of lessons) {
-      if (urls[lesson.id]) continue;
-      await generateOne(lesson);
-    }
-  };
-
-  // Image generation via DALL-E 3
   const generateImage = async (lesson) => {
     setGenerating(lesson.id + '_img');
     setStatus(s => ({ ...s, [lesson.id]: 'generating image...' }));
     try {
-      const { getStoryArt } = await import('../utils/storyArt.js');
-      const art = getStoryArt(lesson.id);
-      const prompt = art.prompt || `A scene from the story "${lesson.title}"`;
-
+      const prompt = lesson.imagePrompt || `A children's storybook scene from "${lesson.title}"`;
       const res = await fetch('/api/generate-story-image', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -2515,8 +2515,6 @@ function WisdomAudioPanel() {
       });
       if (!res.ok) { setStatus(s => ({ ...s, [lesson.id]: `Image failed (${res.status})` })); setGenerating(null); return; }
       const { imageUrl: dalleUrl } = await res.json();
-
-      // Download the DALL-E image and upload to Firebase Storage (DALL-E URLs expire)
       setStatus(s => ({ ...s, [lesson.id]: 'uploading image...' }));
       const imgRes = await fetch(dalleUrl);
       const imgBlob = await imgRes.blob();
@@ -2525,51 +2523,137 @@ function WisdomAudioPanel() {
       const storageRef = ref(storage, `wisdom-images/${lesson.id}.png`);
       await uploadBytes(storageRef, imgBlob, { contentType: 'image/png' });
       const permanentUrl = await getDownloadURL(storageRef);
-
-      // Save to Firestore
       const { doc: fdoc, setDoc: fset } = await import('firebase/firestore');
       await fset(fdoc(fireDb, 'config', 'wisdomImages'), { [lesson.id]: permanentUrl }, { merge: true });
-
       setImageUrls(u => ({ ...u, [lesson.id]: permanentUrl }));
       setStatus(s => ({ ...s, [lesson.id]: 'done' }));
-    } catch (e) {
-      setStatus(s => ({ ...s, [lesson.id]: e.message }));
-    }
+    } catch (e) { setStatus(s => ({ ...s, [lesson.id]: e.message })); }
     setGenerating(null);
   };
 
-  const generateAllImages = async () => {
-    for (const lesson of lessons) {
-      if (imageUrls[lesson.id]) continue;
-      await generateImage(lesson);
-    }
+  const saveStory = async (story) => {
+    try {
+      const { doc, setDoc } = await import('firebase/firestore');
+      const { db } = await import('../lib/firebase.js');
+      if (!db) return;
+      await setDoc(doc(db, 'wisdomStories', story.id), {
+        ...story,
+        _isCustom: undefined,
+        updatedAt: Date.now(),
+      });
+      setLessons(prev => {
+        const exists = prev.find(l => l.id === story.id);
+        if (exists) return prev.map(l => l.id === story.id ? { ...story, _isCustom: true } : l);
+        return [{ ...story, _isCustom: true }, ...prev];
+      });
+      setEditing(null);
+      setAddingNew(false);
+    } catch (e) { alert('Save failed: ' + e.message); }
   };
+
+  const deleteStory = async (id) => {
+    if (!confirm('Delete this story permanently?')) return;
+    try {
+      const { doc, deleteDoc } = await import('firebase/firestore');
+      const { db } = await import('../lib/firebase.js');
+      if (!db) return;
+      await deleteDoc(doc(db, 'wisdomStories', id));
+      setLessons(prev => prev.filter(l => l.id !== id));
+    } catch (e) { alert('Delete failed: ' + e.message); }
+  };
+
+  const TRADITION_OPTIONS = ['all', 'hindu', 'muslim', 'christian', 'sikh', 'buddhist', 'jain', 'jewish'];
+  const THEME_OPTIONS = ['all', 'compassion-animals', 'courage', 'wisdom', 'honesty', 'sharing', 'humility', 'forgiveness'];
+
+  const filtered = lessons.filter(l => {
+    if (filterTradition !== 'all' && l.tradition !== filterTradition) return false;
+    if (filterTheme !== 'all' && l.theme !== filterTheme) return false;
+    return true;
+  });
 
   const cached = lessons.filter(l => urls[l.id]).length;
   const imagesCached = lessons.filter(l => imageUrls[l.id]).length;
 
   return (
     <div className="space-y-4">
+      {/* Header with stats */}
       <div className="flex items-center justify-between rounded-2xl bg-[#1a1a28] p-4">
         <div>
-          <h3 className="text-sm font-bold text-[#f5f0e8]">Wisdom Audio & Images</h3>
-          <p className="text-xs text-[#6e6a63]">Audio: {cached}/{lessons.length} · Images: {imagesCached}/{lessons.length}</p>
+          <h3 className="text-sm font-bold text-[#f5f0e8]">Wisdom Story Lab</h3>
+          <p className="text-xs text-[#6e6a63]">{lessons.length} stories · Audio: {cached} · Images: {imagesCached}</p>
         </div>
-        <div className="flex gap-2">
-          <button onClick={generateAllImages} disabled={!!generating}
-            className="rounded-full bg-[#539df5] px-4 py-2 text-xs font-bold text-white disabled:opacity-50">
-            {generating?.endsWith('_img') ? 'Generating...' : `${lessons.length - imagesCached} Images`}
-          </button>
-          <button onClick={generateAll} disabled={!!generating}
-            className="rounded-full bg-[#f0a500] px-4 py-2 text-xs font-bold text-[#0a0a0f] disabled:opacity-50">
-            {generating && !generating.endsWith('_img') ? 'Generating...' : `${lessons.length - cached} Audio`}
-          </button>
-        </div>
+        <button onClick={() => { setAddingNew(true); setEditing(null); setNewStory({ id: '', tradition: 'hindu', theme: 'compassion-animals', title: '', body: '', source: '', durationMinutes: 8, imagePrompt: '' }); }}
+          className="rounded-full bg-[#7ad9a1] px-4 py-2 text-xs font-bold text-[#0a0a0f]">
+          + Add Story
+        </button>
       </div>
+
+      {/* Filters */}
+      <div className="flex gap-2 flex-wrap">
+        <select value={filterTradition} onChange={e => setFilterTradition(e.target.value)}
+          className="rounded-lg bg-[#1a1a28] px-3 py-1.5 text-xs font-bold text-[#f0a500] outline-none ring-1 ring-white/10">
+          {TRADITION_OPTIONS.map(t => <option key={t} value={t}>{t === 'all' ? 'All Beliefs' : t.charAt(0).toUpperCase() + t.slice(1)}</option>)}
+        </select>
+        <select value={filterTheme} onChange={e => setFilterTheme(e.target.value)}
+          className="rounded-lg bg-[#1a1a28] px-3 py-1.5 text-xs font-bold text-[#539df5] outline-none ring-1 ring-white/10">
+          {THEME_OPTIONS.map(t => <option key={t} value={t}>{t === 'all' ? 'All Themes' : t.charAt(0).toUpperCase() + t.slice(1).replace('-', ' ')}</option>)}
+        </select>
+        <span className="rounded-lg bg-[#1a1a28] px-3 py-1.5 text-xs text-[#6e6a63]">{filtered.length} shown</span>
+      </div>
+
+      {/* Add / Edit form */}
+      {(addingNew || editing) && (() => {
+        const story = addingNew ? newStory : lessons.find(l => l.id === editing);
+        if (!story) return null;
+        const update = (field, val) => {
+          if (addingNew) setNewStory(prev => ({ ...prev, [field]: val }));
+          else setLessons(prev => prev.map(l => l.id === editing ? { ...l, [field]: val } : l));
+        };
+        return (
+          <div className="rounded-2xl bg-[#1a1a28] p-4 space-y-3 ring-1 ring-[#f0a500]/30">
+            <h4 className="text-xs font-bold text-[#f0a500]">{addingNew ? 'New Story' : 'Edit Story'}</h4>
+            {addingNew && (
+              <input value={story.id} onChange={e => update('id', e.target.value.toLowerCase().replace(/\s+/g, '_').replace(/[^a-z0-9_]/g, ''))}
+                placeholder="story_id (snake_case)" className="w-full rounded-lg bg-[#0a0a0f] px-3 py-2 text-xs text-[#f5f0e8] outline-none ring-1 ring-white/10" />
+            )}
+            <input value={story.title} onChange={e => update('title', e.target.value)}
+              placeholder="Story Title" className="w-full rounded-lg bg-[#0a0a0f] px-3 py-2 text-sm font-bold text-[#f5f0e8] outline-none ring-1 ring-white/10" />
+            <div className="flex gap-2">
+              <select value={story.tradition} onChange={e => update('tradition', e.target.value)}
+                className="flex-1 rounded-lg bg-[#0a0a0f] px-3 py-2 text-xs text-[#f5f0e8] outline-none ring-1 ring-white/10">
+                {TRADITION_OPTIONS.filter(t => t !== 'all').map(t => <option key={t} value={t}>{t}</option>)}
+              </select>
+              <select value={story.theme} onChange={e => update('theme', e.target.value)}
+                className="flex-1 rounded-lg bg-[#0a0a0f] px-3 py-2 text-xs text-[#f5f0e8] outline-none ring-1 ring-white/10">
+                {THEME_OPTIONS.filter(t => t !== 'all').map(t => <option key={t} value={t}>{t}</option>)}
+              </select>
+              <input type="number" value={story.durationMinutes} onChange={e => update('durationMinutes', parseInt(e.target.value) || 5)}
+                className="w-16 rounded-lg bg-[#0a0a0f] px-2 py-2 text-xs text-[#f5f0e8] outline-none ring-1 ring-white/10" placeholder="min" />
+            </div>
+            <input value={story.source || ''} onChange={e => update('source', e.target.value)}
+              placeholder="Source (e.g. Islamic tradition · Hadith)" className="w-full rounded-lg bg-[#0a0a0f] px-3 py-2 text-xs text-[#f5f0e8] outline-none ring-1 ring-white/10" />
+            <textarea value={story.body} onChange={e => update('body', e.target.value)}
+              placeholder="Story body (use {childName}, {sibling}, {grandfather}, {grandmother}, {pet} as placeholders)" rows={10}
+              className="w-full rounded-lg bg-[#0a0a0f] px-3 py-2 text-xs text-[#f5f0e8] outline-none ring-1 ring-white/10 leading-relaxed" />
+            <input value={story.imagePrompt || ''} onChange={e => update('imagePrompt', e.target.value)}
+              placeholder="DALL-E image prompt (optional — auto-generated if empty)" className="w-full rounded-lg bg-[#0a0a0f] px-3 py-2 text-xs text-[#f5f0e8] outline-none ring-1 ring-white/10" />
+            <div className="flex gap-2">
+              <button onClick={() => saveStory(addingNew ? newStory : story)}
+                disabled={!story.id || !story.title || !story.body}
+                className="rounded-full bg-[#7ad9a1] px-4 py-2 text-xs font-bold text-[#0a0a0f] disabled:opacity-50">
+                {addingNew ? 'Create & Publish' : 'Save Changes'}
+              </button>
+              <button onClick={() => { setAddingNew(false); setEditing(null); }}
+                className="rounded-full bg-white/5 px-4 py-2 text-xs font-bold text-[#6e6a63]">Cancel</button>
+            </div>
+          </div>
+        );
+      })()}
+
+      {/* Story list */}
       <div className="space-y-2">
-        {lessons.map(l => (
+        {filtered.map(l => (
           <div key={l.id} className="flex items-start gap-3 rounded-xl bg-[#1a1a28] p-3">
-            {/* Image preview */}
             <div className="h-14 w-14 shrink-0 overflow-hidden rounded-lg bg-[#0a0a0f]">
               {imageUrls[l.id] ? (
                 <img src={imageUrls[l.id]} alt="" className="h-full w-full object-cover" />
@@ -2578,10 +2662,12 @@ function WisdomAudioPanel() {
               )}
             </div>
             <div className="flex-1 min-w-0">
-              <div className="text-xs font-bold text-[#f5f0e8] truncate">{l.title}</div>
-              <div className="text-[10px] text-[#6e6a63]">{l.tradition}</div>
-              <div className="mt-1 flex items-center gap-2">
-                {/* Audio status */}
+              <div className="flex items-center gap-2">
+                <div className="text-xs font-bold text-[#f5f0e8] truncate flex-1">{l.title}</div>
+                {l._isCustom && <span className="text-[8px] rounded bg-[#f0a500]/20 text-[#f0a500] px-1.5 py-0.5 font-bold">CUSTOM</span>}
+              </div>
+              <div className="text-[10px] text-[#6e6a63]">{l.tradition} · {l.theme} · {l.durationMinutes}m</div>
+              <div className="mt-1 flex items-center gap-2 flex-wrap">
                 {urls[l.id] ? (
                   <span className="text-[9px] font-bold text-[#7ad9a1]">Audio ✓</span>
                 ) : (
@@ -2591,7 +2677,6 @@ function WisdomAudioPanel() {
                   </button>
                 )}
                 <span className="text-[#6e6a63]">·</span>
-                {/* Image status */}
                 {imageUrls[l.id] ? (
                   <span className="text-[9px] font-bold text-[#7ad9a1]">Image ✓</span>
                 ) : (
@@ -2599,6 +2684,16 @@ function WisdomAudioPanel() {
                     className="text-[9px] font-bold text-[#539df5] disabled:opacity-50">
                     {generating === l.id + '_img' ? '...' : 'Gen Image'}
                   </button>
+                )}
+                <span className="text-[#6e6a63]">·</span>
+                <button onClick={() => { setEditing(l.id); setAddingNew(false); }}
+                  className="text-[9px] font-bold text-[#e8b4ff]">Edit</button>
+                {l._isCustom && (
+                  <>
+                    <span className="text-[#6e6a63]">·</span>
+                    <button onClick={() => deleteStory(l.id)}
+                      className="text-[9px] font-bold text-red-400">Delete</button>
+                  </>
                 )}
               </div>
               {status[l.id] && status[l.id] !== 'done' && (
