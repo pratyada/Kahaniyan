@@ -12,3 +12,4 @@ client/.env.local
 client/dist/
 server/dist/
 .vercel
+.env*.local
