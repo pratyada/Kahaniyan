@@ -43,7 +43,7 @@ function pickTonightStory(beliefs) {
   let pool = CULTURAL_LESSONS;
   if (beliefs?.length > 0) {
     const matched = pool.filter((l) => beliefs.includes(l.tradition));
-    if (matched.length > 0) pool = [...matched, ...pool.filter((l) => !beliefs.includes(l.tradition))];
+    if (matched.length > 0) pool = matched;
   }
   return pool[dayOfYear % pool.length];
 }
@@ -303,11 +303,8 @@ export default function Home() {
               const filtered = CULTURAL_LESSONS.filter((l) => l.theme === traditionTheme);
               const beliefs = profile?.beliefs || [];
               let list = filtered;
-              if (beliefs.length > 0 && !profile?.onlyMyTradition) {
-                const matched = list.filter((l) => beliefs.includes(l.tradition));
-                const others = list.filter((l) => !beliefs.includes(l.tradition));
-                list = [...matched, ...others];
-              } else if (beliefs.length > 0 && profile?.onlyMyTradition) {
+              // Default: show only user's selected beliefs
+              if (beliefs.length > 0) {
                 list = list.filter((l) => beliefs.includes(l.tradition));
               }
               return list.map((lesson) => {
