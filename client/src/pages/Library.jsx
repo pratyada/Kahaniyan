@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Play, Share2, Trash2, BookOpen } from 'lucide-react';
@@ -73,6 +73,18 @@ export default function Library() {
   const [generatingImages, setGeneratingImages] = useState(false);
   const [imageProgress, setImageProgress] = useState('');
 
+  // Auto-generate missing images when ?gen=1 is in URL (admin use)
+  const autoGenRef = useRef(false);
+  useEffect(() => {
+    if (autoGenRef.current || !isAdmin || library.length === 0) return;
+    const params = new URLSearchParams(window.location.search);
+    if (params.get('gen') !== '1') return;
+    autoGenRef.current = true;
+    // Small delay to let wisdomImageUrls load
+    setTimeout(() => generateMissingImages(), 1500);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isAdmin, library]);
+
   const generateMissingImages = async () => {
     const API_BASE = import.meta.env.VITE_API_BASE_URL || '';
     const missing = library.filter((s) => {
@@ -137,10 +149,9 @@ export default function Library() {
               {profile?.childName ? `${profile.childName}'s` : 'Your'} <span className="text-gold">Stories</span>
             </h1>
             <p className="mt-1 text-xs text-ink-muted" style={{ fontFamily: 'Nunito, sans-serif' }}>
-              {library.length} {library.length === 1 ? 'story' : 'stories'} saved
+              {generatingImages ? imageProgress : `${library.length} ${library.length === 1 ? 'story' : 'stories'} saved`}
             </p>
           </div>
-{/* Gen Images moved to Admin panel — not shown here */}
         </div>
       </header>
 
