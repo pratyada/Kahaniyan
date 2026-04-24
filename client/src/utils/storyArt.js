@@ -77,6 +77,62 @@ const STORY_ART = {
     icon: '✏️', accent: '#e879f9',
     prompt: 'A clever minister drawing a line on the ground next to a longer line in a Mughal court, the emperor looking surprised, ornate palace setting',
   },
+  // ── New stories ──
+  prophet_ant_hill: {
+    gradient: 'linear-gradient(135deg, #1e3a5f 0%, #2d6a4f 40%, #95d5b2 100%)',
+    icon: '🐜', accent: '#95d5b2',
+    prompt: 'A kind man in white robes gently moving a fire away from a tiny ant hill in the desert, ants carrying their babies to safety, warm golden light',
+  },
+  prophet_thirsty_dog: {
+    gradient: 'linear-gradient(135deg, #1e3a5f 0%, #457b9d 40%, #a8dadc 100%)',
+    icon: '🐕', accent: '#a8dadc',
+    prompt: 'A woman in the desert filling her shoe with water from a well for a thirsty dog, warm sunset, palm trees, compassion scene',
+  },
+  good_samaritan: {
+    gradient: 'linear-gradient(135deg, #4a2545 0%, #6b3a6b 40%, #e8c8ff 100%)',
+    icon: '🤝', accent: '#c084fc',
+    prompt: 'A kind traveller kneeling to help an injured man on a dusty road, donkey waiting nearby, warm sunset light, Biblical landscape',
+  },
+  jesus_mustard_seed: {
+    gradient: 'linear-gradient(135deg, #2d6a4f 0%, #40916c 40%, #95d5b2 100%)',
+    icon: '🌱', accent: '#95d5b2',
+    prompt: 'A tiny golden seed in an open palm growing into an enormous tree with birds resting in its branches, magical transformation, warm light',
+  },
+  buddha_elephant: {
+    gradient: 'linear-gradient(135deg, #1a1a3e 0%, #2d2d5e 40%, #e2a94c 100%)',
+    icon: '🐘', accent: '#e2a94c',
+    prompt: 'A peaceful monk standing calmly as a large elephant bows its head gently before him, golden light, ancient Indian city background',
+  },
+  buddha_rice_bowl: {
+    gradient: 'linear-gradient(135deg, #2d3436 0%, #636e72 40%, #ffeaa7 100%)',
+    icon: '🍚', accent: '#ffeaa7',
+    prompt: 'A village girl offering a golden bowl of rice to a thin man sitting under a big tree, morning mist, lotus flowers, peaceful Indian village',
+  },
+  jain_true_wealth: {
+    gradient: 'linear-gradient(135deg, #4338ca 0%, #6366f1 40%, #a5b4fc 100%)',
+    icon: '💎', accent: '#a5b4fc',
+    prompt: 'A rich merchant removing his silk turban and placing it at the feet of a simple monk under a tree, golden light, transformation of pride to humility',
+  },
+  jain_spider_web: {
+    gradient: 'linear-gradient(135deg, #1e293b 0%, #475569 40%, #94a3b8 100%)',
+    icon: '🕸️', accent: '#94a3b8',
+    prompt: 'A tiny spider spinning a delicate web across a dark cave entrance, moonlight catching the silk strands, a king watching in wonder from inside',
+  },
+  jewish_one_good_deed: {
+    gradient: 'linear-gradient(135deg, #1e40af 0%, #3b82f6 40%, #93c5fd 100%)',
+    icon: '🗺️', accent: '#93c5fd',
+    prompt: 'A young boy piecing together a torn map on a wooden table, each piece glowing as it connects, warm lamplight, cozy study room',
+  },
+  jewish_two_pockets: {
+    gradient: 'linear-gradient(135deg, #1e293b 0%, #334155 40%, #fbbf24 100%)',
+    icon: '🧥', accent: '#fbbf24',
+    prompt: 'A wise old rabbi with a kind smile holding two small glowing pieces of paper, one in each hand, starry night sky, candlelight',
+  },
+  sikh_langar: {
+    gradient: 'linear-gradient(135deg, #78350f 0%, #b45309 40%, #fbbf24 100%)',
+    icon: '🍲', accent: '#fbbf24',
+    prompt: 'A young boy serving food to people sitting together on the floor in a golden temple kitchen, steam rising, warm community meal, Sikh Langar scene',
+  },
 };
 
 // Tradition-level art (for tradition badges/headers)

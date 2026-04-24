@@ -348,6 +348,291 @@ Akbar clapped. The court cheered. Birbal bowed.
 That night, {childName}, remember Birbal's line. When someone seems bigger or better than you, they have not made you smaller. You are exactly the same size you always were. And when you want to be greater, you do not need to shrink anyone else. Just draw your own longer line.`,
   },
 
+  // ═══ Additional stories to ensure 3+ per tradition ═══
+
+  // ── Muslim ──
+  {
+    id: 'prophet_ant_hill',
+    tradition: 'muslim',
+    theme: 'compassion-animals',
+    title: 'The Prophet and the Ant Hill',
+    durationMinutes: 8,
+    source: 'Islamic tradition · Hadith',
+    body: `One day, the Prophet Muhammad, peace be upon him, was travelling with his companions through the desert. They stopped to rest under a tree, and one of the men lit a small fire to cook food.
+
+But the fire was too close to an ant hill. Hundreds of tiny ants began rushing out, confused and frightened, running in circles.
+
+The Prophet, peace be upon him, saw this immediately. "Quickly!" he said. "Move the fire away! Who gave you the right to harm these creatures with fire?"
+
+The man moved the fire at once. The ants settled down. The hill was safe.
+
+The companions looked at each other. These were just ants — tiny, almost invisible. But the Prophet, peace be upon him, had noticed them before anyone else.
+
+That night, {childName}, remember that no creature is too small to deserve kindness. The Prophet, peace be upon him, taught us that even an ant has a family, a home, and a right to live in peace.`,
+  },
+  {
+    id: 'prophet_thirsty_dog',
+    tradition: 'muslim',
+    theme: 'sharing',
+    title: 'The Woman and the Thirsty Dog',
+    durationMinutes: 8,
+    source: 'Islamic tradition · Hadith of Abu Hurairah',
+    body: `The Prophet Muhammad, peace be upon him, once told a story to his companions.
+
+"There was a woman," he said, "who had done many wrong things in her life. But one hot day, she was walking through the desert and came upon a well. She climbed down and drank the cool water.
+
+When she climbed back up, she saw a dog sitting near the well, panting and licking the dry ground. The dog was dying of thirst.
+
+The woman looked at the dog. She looked at the well. She had no bucket, no rope, no cup.
+
+So she took off her shoe, climbed back down into the well, filled the shoe with water, and climbed back up — holding the shoe carefully in her teeth so she would not spill a drop.
+
+She placed the shoe of water in front of the dog, and the dog drank every last drop."
+
+The Prophet, peace be upon him, smiled and said, "For this single act of kindness, God forgave all her sins."
+
+That night, {childName}, remember the woman and the shoe full of water. You do not need to be perfect to be kind. One small act of mercy — even for a thirsty dog — can change everything.`,
+  },
+
+  // ── Christian ──
+  {
+    id: 'good_samaritan',
+    tradition: 'christian',
+    theme: 'sharing',
+    title: 'The Good Samaritan',
+    durationMinutes: 9,
+    source: 'Christian tradition · Gospel of Luke 10:25-37',
+    body: `One day, a man asked Jesus, "Who is my neighbour?"
+
+Jesus told a story.
+
+"A man was walking from Jerusalem to Jericho — a long, dusty, lonely road. Robbers attacked him. They took his clothes, beat him, and left him lying on the side of the road, half alive.
+
+A priest came walking down the same road. He saw the hurt man — and walked to the other side. He kept going.
+
+Then a Levite, a man of the temple, came along. He too saw the man — and walked to the other side.
+
+Then a Samaritan came by. Now, in those days, Samaritans and the hurt man's people did not get along at all. But when the Samaritan saw the man lying there, something moved in his heart.
+
+He stopped. He knelt down. He cleaned the man's wounds with oil and wine and wrapped them with cloth. He lifted the man onto his own donkey and brought him to an inn. He paid the innkeeper and said, 'Take care of him. Whatever more you spend, I will repay you when I return.'"
+
+Jesus looked at the man who had asked the question and said, "Which of these three was a neighbour to the man who was hurt?"
+
+The man answered quietly, "The one who showed mercy."
+
+"Go," said Jesus, "and do the same."
+
+That night, {childName}, remember that your neighbour is not just the person next door. Your neighbour is anyone who needs help — even someone very different from you.`,
+  },
+  {
+    id: 'jesus_mustard_seed',
+    tradition: 'christian',
+    theme: 'courage',
+    title: 'The Tiny Mustard Seed',
+    durationMinutes: 7,
+    source: 'Christian tradition · Gospel of Matthew 13:31-32',
+    body: `One afternoon, Jesus sat with a crowd of people near a lake. Children were playing nearby. Fishermen were mending their nets.
+
+Jesus reached into his pocket and held up something so small that the people in the back had to squint to see it.
+
+"What is that?" someone asked.
+
+"A mustard seed," said Jesus. "The smallest of all seeds."
+
+It was tiny — smaller than a grain of sand, almost invisible between his fingers.
+
+"But when this seed is planted," Jesus said, "it grows and grows. It becomes a tree so large that the birds of the sky come and rest in its branches."
+
+The people looked at each other. A tree? From that tiny thing?
+
+Jesus smiled. "Faith is like this seed. It may start as the smallest feeling in your heart — just a whisper, just a hope. But if you let it grow, it becomes something strong enough to shelter others."
+
+That night, {childName}, look at your hand. Imagine a tiny seed sitting right there in your palm. That seed is your kindness, your courage, your love. It feels small now. But one day, it will be a tree — and birds will rest in your branches.`,
+  },
+
+  // ── Buddhist ──
+  {
+    id: 'buddha_elephant',
+    tradition: 'buddhist',
+    theme: 'courage',
+    title: 'Buddha and the Angry Elephant',
+    durationMinutes: 8,
+    source: 'Buddhist tradition · Nalagiri elephant story',
+    body: `One day, a jealous man wanted to harm the Buddha. He had a plan — a terrible plan.
+
+He found the biggest, fiercest elephant in the kingdom. Its name was Nalagiri. The man fed Nalagiri strong drink until the elephant was wild with rage. Then he set the elephant loose on the road where the Buddha was walking.
+
+Nalagiri charged. The ground shook. People screamed and ran. Dust rose in clouds.
+
+But the Buddha did not run.
+
+He stood very still on the road. He looked at the charging elephant — not with fear, not with anger — but with something the elephant had never felt before.
+
+Compassion.
+
+As Nalagiri got closer — thundering, trumpeting, enormous — something changed. The elephant slowed. Its wild eyes softened. It stopped, just a few steps from the Buddha, and bowed its great head.
+
+The Buddha reached out and gently stroked Nalagiri's trunk. "You are not angry," he said softly. "You are in pain. I understand."
+
+The elephant knelt down, calm as a kitten.
+
+That night, {childName}, remember Nalagiri. When someone is angry or mean, they are usually hurting inside. And sometimes, the bravest thing is not to fight back — but to stand still, stay calm, and offer kindness instead.`,
+  },
+  {
+    id: 'buddha_rice_bowl',
+    tradition: 'buddhist',
+    theme: 'humility',
+    title: 'The Buddha and the Golden Rice Bowl',
+    durationMinutes: 7,
+    source: 'Buddhist tradition · Sujata\'s offering',
+    body: `Before the Buddha became the Buddha, he was a thin, tired man named Siddhartha. He had been fasting for weeks, eating almost nothing, trying to find the truth about life.
+
+One morning, a village girl named Sujata saw him sitting under a tree, weak and pale. She thought he was a spirit of the forest.
+
+She had prepared a special bowl of rice cooked in milk — golden, warm, and sweet — as an offering to the forest spirits.
+
+She knelt beside Siddhartha and offered him the bowl. "Please eat," she said.
+
+Siddhartha looked at the rice. He had been told that starving himself would make him wise. But he was so weak he could barely think.
+
+He took the bowl. He ate slowly. With each spoonful, strength returned to his body. His mind cleared. He could think again.
+
+"Thank you," he said to Sujata. And he meant it with his whole heart.
+
+That evening, sitting under the Bodhi tree with a full stomach and a clear mind, Siddhartha finally found what he had been searching for — enlightenment.
+
+And it all began with a girl, a bowl of rice, and the humility to accept help.
+
+That night, {childName}, remember Sujata's rice. It is not weakness to accept kindness. Sometimes the greatest wisdom begins with saying "thank you."`,
+  },
+
+  // ── Jain ──
+  {
+    id: 'jain_true_wealth',
+    tradition: 'jain',
+    theme: 'sharing',
+    title: 'The Merchant Who Gave Everything',
+    durationMinutes: 8,
+    source: 'Jain tradition · Story of Shrenik and Mahavira',
+    body: `In the city of Rajgriha, there lived a rich merchant named Shrenik. He had gold, jewels, warehouses of silk, and a palace with a hundred rooms.
+
+One day, Shrenik went to hear Mahavira speak. Mahavira was sitting under a tree, wearing nothing but simple white cloth, owning nothing at all.
+
+Shrenik asked, "Lord, I have given gold to temples. I have fed a thousand people. Am I generous?"
+
+Mahavira smiled gently. "Tell me, Shrenik — when you gave gold to the temple, did your heart feel lighter or heavier?"
+
+Shrenik thought carefully. "Heavier," he admitted. "I kept thinking about how much I had given away."
+
+Mahavira nodded. "Then you did not truly give. You only moved gold from one place to another. True giving is when you feel lighter — when the gift leaves your hand AND your mind."
+
+Shrenik sat quietly for a long time. Then he stood, removed his silk turban, and placed it at Mahavira's feet. And for the first time, he felt lighter.
+
+That night, {childName}, remember Shrenik's turban. Giving is not about how much you give. It is about how completely you let go. Even sharing one cookie with a true open heart is greater than giving a mountain of gold while counting every coin.`,
+  },
+  {
+    id: 'jain_spider_web',
+    tradition: 'jain',
+    theme: 'wisdom',
+    title: 'The Spider Who Saved a King',
+    durationMinutes: 7,
+    source: 'Jain folk tradition',
+    body: `Long ago, a Jain king was running from his enemies. He hid in a dark cave, exhausted and afraid. His army was defeated. His kingdom was lost.
+
+As he sat in the darkness, a tiny spider crawled across the cave entrance and began spinning a web. Strand by strand, carefully, slowly, the spider wove its silk across the opening.
+
+The king watched, too tired to care.
+
+Soon, the king's enemies arrived outside the cave. Their leader looked at the entrance and said, "No one has gone in here — look, the spider's web across the opening is unbroken. Let's search elsewhere."
+
+And they left.
+
+The king sat in the darkness, staring at the tiny spider who had saved his life. A creature so small he could crush it between two fingers had done what his entire army could not.
+
+He whispered, "Thank you."
+
+The spider did not answer. It simply continued its work, strand by strand.
+
+That night, {childName}, remember the spider's web. The smallest creatures can do the greatest things. And patience — building something strand by strand, even when no one is watching — is the quiet superpower that saves kingdoms.`,
+  },
+
+  // ── Jewish ──
+  {
+    id: 'jewish_one_good_deed',
+    tradition: 'jewish',
+    theme: 'courage',
+    title: 'The Boy Who Fixed the World',
+    durationMinutes: 8,
+    source: 'Jewish tradition · Tikkun Olam teaching',
+    body: `In an old Jewish village, a rabbi was teaching his students. One of them, a young boy, asked, "Rabbi, the world is so broken. There is sadness and hunger and cruelty. How can one person fix the whole world?"
+
+The rabbi smiled. He took a map of the world and tore it into tiny pieces. He scattered them on the table.
+
+"Here," he said. "Put the world back together."
+
+The boy stared at the mess of torn paper. It seemed impossible.
+
+But then he noticed something. On the back of the map was a picture — a picture of a person. Just one person.
+
+So instead of trying to figure out where all the countries went, the boy simply flipped each piece over and put the PERSON back together. When the person was whole, he flipped the paper over — and the world was whole too.
+
+The rabbi clapped. "You see?" he said. "When you fix the person, you fix the world. And you start with the one person you CAN fix — yourself."
+
+That night, {childName}, remember the torn map. You cannot fix the whole world tonight. But you can fix one small thing about yourself — be a little kinder, a little braver, a little more honest. And when you fix yourself, the world gets a little better too. This is called Tikkun Olam — repairing the world, one good deed at a time.`,
+  },
+  {
+    id: 'jewish_two_pockets',
+    tradition: 'jewish',
+    theme: 'humility',
+    title: 'The Two Pockets',
+    durationMinutes: 7,
+    source: 'Jewish tradition · Rabbi Simcha Bunim teaching',
+    body: `There was once a wise rabbi named Simcha Bunim. He always wore a coat with two pockets, and in each pocket, he kept a small piece of paper.
+
+One of his students asked, "Rabbi, what is written on those papers?"
+
+The rabbi reached into his right pocket and pulled out the first paper. It read: "The world was created for me."
+
+"This paper," said the rabbi, "is for the days when I feel small and worthless. When I think I don't matter. On those days, I read this and remember that I am important. The universe needed me enough to create me."
+
+Then he reached into his left pocket and pulled out the second paper. It read: "I am but dust and ashes."
+
+"And this paper," he said, "is for the days when I feel too proud. When I think I am better than everyone else. On those days, I read this and remember that I am just a tiny speck in a very, very big universe."
+
+The student thought for a moment. "But rabbi — which one is true?"
+
+The rabbi put both papers back in his pockets and smiled. "Both. Always both. The trick is knowing which pocket to reach into."
+
+That night, {childName}, imagine you have two pockets too. On days when you feel small, remember: the whole world needed YOU. And on days when you feel too big, remember: you are a tiny, beautiful speck in a universe full of tiny, beautiful specks. Both are true. Always both.`,
+  },
+
+  // ── Sikh ──
+  {
+    id: 'sikh_langar',
+    tradition: 'sikh',
+    theme: 'sharing',
+    title: 'Guru Nanak and the Langar',
+    durationMinutes: 8,
+    source: 'Sikh tradition · The first Langar',
+    body: `When Guru Nanak was young, his father gave him twenty silver coins. "Go to the market," his father said, "and make a good bargain. Buy something valuable."
+
+Guru Nanak took the coins and walked to the market. But on the way, he met a group of holy men sitting under a tree. They had not eaten in days. Their ribs showed through their skin. Their eyes were hollow with hunger.
+
+Guru Nanak stopped. He looked at the coins in his hand. He looked at the hungry men.
+
+He went to the market — but instead of buying silk or spices to sell for profit, he bought food. Rice, lentils, bread, and milk. He brought it all back and fed every single one of the hungry men until they were full.
+
+When he returned home with empty hands, his father was angry. "I told you to make a good bargain! You wasted all the money!"
+
+But Guru Nanak shook his head gently. "Father, there is no better bargain in the world than feeding someone who is hungry."
+
+His father stood quietly for a long moment. Then he understood.
+
+This is how Langar began — the Sikh tradition of the community kitchen, where anyone, rich or poor, king or beggar, can sit together on the floor and eat the same food. No one is turned away. Ever.
+
+That night, {childName}, remember Guru Nanak's twenty coins. The best thing you can ever buy is a meal for someone who has none.`,
+  },
+
 ];
 
 export const TRADITIONS = [
