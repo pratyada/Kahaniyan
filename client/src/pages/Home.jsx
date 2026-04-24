@@ -354,7 +354,7 @@ export default function Home() {
       )}
       </AnimatePresence>
 
-      {/* ═══ WRITE YOUR OWN — Expandable ═══ */}
+      {/* ═══ WRITE YOUR OWN — Expandable (content above, button below) ═══ */}
       <AnimatePresence>
       {!castOpen && (
       <motion.section
@@ -364,36 +364,7 @@ export default function Home() {
         transition={{ duration: 0.3 }}
         className="mb-4 overflow-hidden"
       >
-        <button
-          onClick={() => {
-            const opening = !writeOpen;
-            setWriteOpen(opening);
-            setCastOpen(false);
-            if (opening) {
-              setTimeout(() => {
-                const ta = document.querySelector('[data-whisper-textarea]');
-                if (ta) { ta.scrollIntoView({ behavior: 'smooth', block: 'start' }); ta.focus(); }
-              }, 450);
-            }
-          }}
-          className="flex w-full items-center justify-between rounded-2xl p-4 transition"
-          style={{
-            background: writeOpen ? 'linear-gradient(135deg, rgba(240,165,0,0.1), rgba(240,165,0,0.03))' : 'rgba(255,255,255,0.02)',
-            border: writeOpen ? '1px solid rgba(240,165,0,0.2)' : '1px solid rgba(255,255,255,0.05)',
-          }}
-        >
-          <div className="flex items-center gap-3">
-            <div className="grid h-10 w-10 place-items-center rounded-xl bg-gold/10 text-gold">
-              <PenLine size={18} />
-            </div>
-            <div className="text-left">
-              <p className="text-sm font-bold text-ink" style={{ fontFamily: 'Fraunces, serif' }}>Write my story</p>
-              <p className="text-[10px] text-ink-muted">Describe your child's day</p>
-            </div>
-          </div>
-          {writeOpen ? <ChevronUp size={16} className="text-gold" /> : <ChevronDown size={16} className="text-ink-dim" />}
-        </button>
-
+        {/* Expanded content — appears ABOVE the button */}
         <AnimatePresence>
           {writeOpen && (
             <motion.div
@@ -459,6 +430,37 @@ export default function Home() {
             </motion.div>
           )}
         </AnimatePresence>
+
+        {/* "Write my story" button — always at bottom of this section */}
+        <button
+          onClick={() => {
+            const opening = !writeOpen;
+            setWriteOpen(opening);
+            setCastOpen(false);
+            if (opening) {
+              setTimeout(() => {
+                const ta = document.querySelector('[data-whisper-textarea]');
+                if (ta) { ta.scrollIntoView({ behavior: 'smooth', block: 'start' }); ta.focus(); }
+              }, 450);
+            }
+          }}
+          className="flex w-full items-center justify-between rounded-2xl p-4 transition"
+          style={{
+            background: writeOpen ? 'linear-gradient(135deg, rgba(240,165,0,0.1), rgba(240,165,0,0.03))' : 'rgba(255,255,255,0.02)',
+            border: writeOpen ? '1px solid rgba(240,165,0,0.2)' : '1px solid rgba(255,255,255,0.05)',
+          }}
+        >
+          <div className="flex items-center gap-3">
+            <div className="grid h-10 w-10 place-items-center rounded-xl bg-gold/10 text-gold">
+              <PenLine size={18} />
+            </div>
+            <div className="text-left">
+              <p className="text-sm font-bold text-ink" style={{ fontFamily: 'Fraunces, serif' }}>Write my story</p>
+              <p className="text-[10px] text-ink-muted">Describe your child's day</p>
+            </div>
+          </div>
+          {writeOpen ? <ChevronUp size={16} className="text-gold" /> : <ChevronDown size={16} className="text-ink-dim" />}
+        </button>
       </motion.section>
       )}
       </AnimatePresence>
