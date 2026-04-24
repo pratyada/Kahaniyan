@@ -404,15 +404,18 @@ export default function Home() {
                 {!(whisper.trim() && whisperOverridesValue) && (
                   <section className="mb-6">
                     <h2 className="ui-label mb-3">What should the story teach?</h2>
-                    <div className="-mx-5 overflow-x-auto px-5">
-                      <div className="flex w-max gap-2">
-                        {recommended.map((v) => (
-                          <ValuePill key={`rec-${v}`} value={v} active={value === v} onClick={() => setValue(v)} />
-                        ))}
-                        {VALUES.filter((v) => !recommended.includes(v.key)).map((v) => (
-                          <ValuePill key={v.key} value={v.key} size="sm" active={value === v.key} onClick={() => setValue(v.key)} />
-                        ))}
+                    <div className="relative -mx-5">
+                      <div className="overflow-x-auto px-5 py-1 scrollbar-hide">
+                        <div className="flex w-max gap-2.5 pr-8">
+                          {recommended.map((v) => (
+                            <ValuePill key={`rec-${v}`} value={v} active={value === v} onClick={() => setValue(v)} />
+                          ))}
+                          {VALUES.filter((v) => !recommended.includes(v.key)).map((v) => (
+                            <ValuePill key={v.key} value={v.key} size="sm" active={value === v.key} onClick={() => setValue(v.key)} />
+                          ))}
+                        </div>
                       </div>
+                      <div className="pointer-events-none absolute right-0 top-0 bottom-0 w-10 bg-gradient-to-l from-bg-base to-transparent" />
                     </div>
                   </section>
                 )}
@@ -506,15 +509,18 @@ export default function Home() {
 
                 <section className="mb-6">
                   <h2 className="ui-label mb-3">What should the story teach?</h2>
-                  <div className="-mx-5 overflow-x-auto px-5">
-                    <div className="flex w-max gap-2">
-                      {recommended.map((v) => (
-                        <ValuePill key={`rec2-${v}`} value={v} active={value === v} onClick={() => setValue(v)} />
-                      ))}
-                      {VALUES.filter((v) => !recommended.includes(v.key)).map((v) => (
-                        <ValuePill key={v.key} value={v.key} size="sm" active={value === v.key} onClick={() => setValue(v.key)} />
-                      ))}
+                  <div className="relative -mx-5">
+                    <div className="overflow-x-auto px-5 py-1 scrollbar-hide">
+                      <div className="flex w-max gap-2.5 pr-8">
+                        {recommended.map((v) => (
+                          <ValuePill key={`rec2-${v}`} value={v} active={value === v} onClick={() => setValue(v)} />
+                        ))}
+                        {VALUES.filter((v) => !recommended.includes(v.key)).map((v) => (
+                          <ValuePill key={v.key} value={v.key} size="sm" active={value === v.key} onClick={() => setValue(v.key)} />
+                        ))}
+                      </div>
                     </div>
+                    <div className="pointer-events-none absolute right-0 top-0 bottom-0 w-10 bg-gradient-to-l from-bg-base to-transparent" />
                   </div>
                 </section>
 

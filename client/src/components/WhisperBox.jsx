@@ -4,12 +4,12 @@ import { useFamilyProfile } from '../hooks/useFamilyProfile.js';
 import { db } from '../lib/firebase.js';
 
 const DEFAULT_SUGGESTIONS = [
-  'They are scared of the dark tonight',
-  'First day of school tomorrow',
-  'Had a fight with their best friend',
-  'Lost their favourite toy',
-  'Wants to be an astronaut',
-  'Festival was today and they are very happy',
+  { text: 'They are scared of the dark tonight', icon: '🌙', bg: 'linear-gradient(135deg, #1a1a3e, #2d2d5e)' },
+  { text: 'First day of school tomorrow', icon: '🎒', bg: 'linear-gradient(135deg, #1e3a5f, #2980b9)' },
+  { text: 'Had a fight with their best friend', icon: '💔', bg: 'linear-gradient(135deg, #4a1942, #c0392b)' },
+  { text: 'Lost their favourite toy', icon: '🧸', bg: 'linear-gradient(135deg, #3d2b1f, #8b6914)' },
+  { text: 'Wants to be an astronaut', icon: '🚀', bg: 'linear-gradient(135deg, #0f0c29, #302b63)' },
+  { text: 'Festival was today and they are happy', icon: '🎉', bg: 'linear-gradient(135deg, #614385, #516395)' },
 ];
 
 function useQuickWhispers() {
@@ -26,14 +26,26 @@ function useQuickWhispers() {
         const snap = await getDoc(doc(db, 'config', 'storyLab'));
         if (snap.exists()) {
           const qw = snap.data().quickWhispers || {};
-          // Try exact match first, then belief-only, then defaults
           const exact = qw[`${belief}_${country}`]?.filter(Boolean);
-          if (exact?.length) { setWhispers(exact.slice(0, 6)); return; }
-          // Try any country for this belief
+          if (exact?.length) {
+            setWhispers(exact.slice(0, 6).map((t, i) => ({
+              text: t,
+              icon: DEFAULT_SUGGESTIONS[i]?.icon || '✨',
+              bg: DEFAULT_SUGGESTIONS[i]?.bg || 'linear-gradient(135deg, #1a1a2e, #16213e)',
+            })));
+            return;
+          }
           const beliefKeys = Object.keys(qw).filter((k) => k.startsWith(belief + '_'));
           for (const k of beliefKeys) {
             const vals = qw[k]?.filter(Boolean);
-            if (vals?.length) { setWhispers(vals.slice(0, 6)); return; }
+            if (vals?.length) {
+              setWhispers(vals.slice(0, 6).map((t, i) => ({
+                text: t,
+                icon: DEFAULT_SUGGESTIONS[i]?.icon || '✨',
+                bg: DEFAULT_SUGGESTIONS[i]?.bg || 'linear-gradient(135deg, #1a1a2e, #16213e)',
+              })));
+              return;
+            }
           }
         }
       } catch {}
@@ -76,9 +88,9 @@ export default function WhisperBox({ value, onChange, overrideValue, onToggleOve
       <textarea
         value={value}
         onChange={(e) => onChange(e.target.value.slice(0, max))}
-        placeholder="Tell us what happened today — a worry, a win, a feeling — and we'll weave tonight's story around it. Your child's real day becomes a bedtime lesson."
-        rows={4}
-        className="w-full min-h-[100px] resize-none rounded-2xl px-4 py-3 font-story text-[15px] leading-relaxed text-bg-base placeholder:text-bg-base/40 outline-none ring-1 ring-gold/30"
+        placeholder="Tell us what happened today — a worry, a win, a feeling — and we'll weave tonight's story around it."
+        rows={3}
+        className="w-full min-h-[80px] resize-none rounded-2xl px-4 py-3 font-story text-[15px] leading-relaxed text-bg-base placeholder:text-bg-base/40 outline-none ring-1 ring-gold/30"
         style={{ background: '#fef9e7' }}
       />
       <div className="mt-1 flex items-center justify-between text-[10px] uppercase tracking-wider text-ink-dim">
@@ -107,25 +119,39 @@ export default function WhisperBox({ value, onChange, overrideValue, onToggleOve
         </div>
       )}
 
-      {/* Quick suggestions */}
+      {/* Quick ideas — visual cards */}
       {!value.trim() && (
-        <div className="mt-3">
-          <div className="mb-2 text-[10px] font-bold uppercase tracking-[0.16em] text-ink-muted">
+        <div className="mt-4">
+          <div className="mb-2.5 text-[10px] font-bold uppercase tracking-[0.16em] text-ink-muted">
             Quick ideas
           </div>
-          <div className="flex flex-wrap gap-2">
-            {SUGGESTIONS.map((s) => (
-              <button key={s} type="button" onClick={() => onChange(s)}
-                className="rounded-full bg-bg-base px-3 py-1.5 text-[11px] text-ink-muted ring-1 ring-white/5 transition active:scale-95 hover:text-ink">
-                {s}
-              </button>
-            ))}
+          <div className="-mx-5 overflow-x-auto px-5 pb-1">
+            <div className="flex w-max gap-3 pr-8">
+              {SUGGESTIONS.map((s) => {
+                const text = typeof s === 'string' ? s : s.text;
+                const icon = typeof s === 'string' ? '✨' : s.icon;
+                const bg = typeof s === 'string' ? 'linear-gradient(135deg, #1a1a2e, #16213e)' : s.bg;
+                return (
+                  <button key={text} type="button" onClick={() => onChange(text)}
+                    className="group relative flex w-36 shrink-0 flex-col justify-end overflow-hidden rounded-2xl p-3 text-left transition active:scale-95"
+                    style={{ minHeight: '7rem' }}
+                  >
+                    <div className="absolute inset-0" style={{ background: bg }} />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent" />
+                    <span className="relative text-2xl mb-1.5">{icon}</span>
+                    <p className="relative text-[11px] font-bold leading-snug text-white line-clamp-3" style={{ fontFamily: 'Nunito, sans-serif' }}>
+                      {text}
+                    </p>
+                  </button>
+                );
+              })}
+            </div>
           </div>
         </div>
       )}
 
       {/* Override toggle */}
-      <label className="mt-3 flex cursor-pointer items-center justify-between gap-3 rounded-2xl bg-bg-surface p-3 ring-1 ring-white/5">
+      <label className="mt-4 flex cursor-pointer items-center justify-between gap-3 rounded-2xl bg-bg-surface p-3 ring-1 ring-white/5">
         <div className="min-w-0 flex-1">
           <div className="font-ui text-xs font-bold text-ink">Auto-pick the lesson</div>
           <div className="mt-0.5 text-[11px] text-ink-muted">
