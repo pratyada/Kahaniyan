@@ -140,15 +140,7 @@ export default function Library() {
               {library.length} {library.length === 1 ? 'story' : 'stories'} saved
             </p>
           </div>
-          {isAdmin && library.some((s) => !s.coverImage && !(s.id?.startsWith('lesson_') && wisdomImageUrls[s.id.slice(7)])) && (
-            <button
-              onClick={generateMissingImages}
-              disabled={generatingImages}
-              className="mt-1 rounded-full bg-[#539df5] px-3 py-1.5 text-[10px] font-bold text-white disabled:opacity-50"
-            >
-              {generatingImages ? imageProgress : 'Gen Images'}
-            </button>
-          )}
+{/* Gen Images moved to Admin panel — not shown here */}
         </div>
       </header>
 
