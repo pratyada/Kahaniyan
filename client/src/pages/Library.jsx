@@ -168,8 +168,8 @@ export default function Library() {
       {/* Filter chips — horizontal scroll with fade hint */}
       {availableValues.length > 1 && (
         <div className="relative mb-4 -mx-5">
-          <div className="overflow-x-auto px-5 pb-1 scrollbar-hide" style={{ WebkitOverflowScrolling: 'touch' }}>
-            <div className="flex w-max gap-2 pr-8">
+          <div className="overflow-x-auto px-5 py-1 scrollbar-hide" style={{ WebkitOverflowScrolling: 'touch' }}>
+            <div className="flex w-max gap-2.5 pr-8">
               <button onClick={() => setFilter(null)}
                 className={`shrink-0 rounded-full px-3.5 py-1.5 text-xs font-bold transition active:scale-95 ${
                   !filter ? 'bg-gold text-bg-base' : 'bg-white/5 text-ink-muted ring-1 ring-white/10'
