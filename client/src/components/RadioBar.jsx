@@ -1,3 +1,4 @@
+import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useRadio } from '../hooks/useRadio.jsx';
 import { RADIO_STATIONS } from '../data/radioStations.js';
@@ -6,10 +7,24 @@ export default function RadioBar() {
   const navigate = useNavigate();
   const { stationId, playing, loading, togglePlayPause, stop } = useRadio();
   const station = RADIO_STATIONS.find((s) => s.id === stationId);
+  const [navHeight, setNavHeight] = useState(0);
+
+  useEffect(() => {
+    const measure = () => {
+      const nav = document.getElementById('bottom-nav');
+      if (nav) setNavHeight(nav.offsetHeight);
+    };
+    measure();
+    window.addEventListener('resize', measure);
+    const t = setTimeout(measure, 200);
+    return () => { window.removeEventListener('resize', measure); clearTimeout(t); };
+  }, []);
+
   if (!station) return null;
 
   return (
-    <div className="absolute bottom-[72px] left-3 right-3 z-20 flex items-center gap-3 rounded-2xl bg-bg-elevated/95 px-3 py-2 shadow-lift backdrop-blur-xl">
+    <div className="absolute left-3 right-3 z-20 flex items-center gap-3 rounded-2xl bg-bg-elevated/95 px-3 py-2 shadow-lift backdrop-blur-xl"
+      style={{ bottom: `${navHeight + 8}px` }}>
       <button
         onClick={() => navigate('/radio')}
         className="flex min-w-0 flex-1 items-center gap-3 text-left active:scale-[0.99]"
