@@ -34,7 +34,8 @@ export default function PlayerBar() {
   return (
     <div
       onClick={() => navigate('/player')}
-      className="absolute bottom-[72px] left-3 right-3 z-20 mx-auto flex max-w-2xl items-center gap-3 rounded-2xl bg-bg-elevated/95 px-3 py-2 shadow-lift backdrop-blur-xl active:scale-[0.99] cursor-pointer"
+      className="absolute left-3 right-3 z-20 mx-auto flex max-w-2xl items-center gap-3 rounded-2xl bg-bg-elevated/95 px-3 py-2 shadow-lift backdrop-blur-xl active:scale-[0.99] cursor-pointer"
+      style={{ bottom: 'calc(60px + env(safe-area-inset-bottom, 0px) + 8px)' }}
     >
       <div
         className="grid h-11 w-11 place-items-center rounded-xl text-xl"
