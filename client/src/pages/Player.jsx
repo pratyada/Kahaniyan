@@ -115,7 +115,7 @@ function setupMediaSession(story, meta, handlers) {
     title: story.title,
     artist: story.voice || 'AI Narrator',
     album: 'My Sleepy Tale',
-    artwork: [{ src: '/favicon.svg', sizes: '192x192', type: 'image/png' }],
+    artwork: [{ src: story.coverImage || '/favicon.svg', sizes: '512x512', type: 'image/png' }],
   });
   navigator.mediaSession.setActionHandler('play', handlers.play);
   navigator.mediaSession.setActionHandler('pause', handlers.pause);
@@ -194,6 +194,20 @@ function PlayerInner() {
   const [done, setDone] = useState(false);
   const [ttsReady, setTtsReady] = useState(false);
   const startedRef = useRef(false);
+  const [wisdomImageUrls, setWisdomImageUrls] = useState({});
+
+  // Fetch wisdom images for background
+  useEffect(() => {
+    (async () => {
+      try {
+        const { db: fireDb } = await import('../lib/firebase.js');
+        if (!fireDb) return;
+        const { doc: fdoc, getDoc: fget } = await import('firebase/firestore');
+        const snap = await fget(fdoc(fireDb, 'config', 'wisdomImages'));
+        if (snap.exists()) setWisdomImageUrls(snap.data());
+      } catch {}
+    })();
+  }, []);
 
   // Request notification permission on mount
   useEffect(() => { requestNotificationPermission(); }, []);
@@ -432,10 +446,25 @@ function PlayerInner() {
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [current]);
 
+  // Resolve the best image for this story
+  const lessonKey = current?.id?.startsWith('lesson_') ? current.id.slice(7) : '';
+  const storyArtData = current?.id ? getStoryArt(lessonKey) : null;
+  const bgImage = current?.coverImage || wisdomImageUrls[lessonKey] || storyArtData?.image || null;
+
   return (
     <div className="absolute inset-0 z-40 overflow-hidden bg-bg-base">
-      <div className="aurora" />
-      <div className="starfield" />
+      {/* Dreamy blurred background image */}
+      {bgImage ? (
+        <>
+          <img src={bgImage} alt="" className="absolute inset-0 h-full w-full object-cover" style={{ filter: 'blur(40px) saturate(1.4) brightness(0.35)', transform: 'scale(1.2)' }} />
+          <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-black/60 to-black/80" />
+        </>
+      ) : (
+        <>
+          <div className="aurora" />
+          <div className="starfield" />
+        </>
+      )}
 
       {/* Two-phase overlay */}
       <AnimatePresence>
@@ -502,28 +531,23 @@ function PlayerInner() {
             </div>
 
             {/* Cover art — large, centered */}
-            {(() => {
-              const storyArt = current?.id ? getStoryArt(current.id.replace('lesson_', '')) : null;
-              return (
-                <motion.div
-                  initial={{ scale: 0.85, opacity: 0 }}
-                  animate={{ scale: 1, opacity: 1 }}
-                  transition={{ duration: 0.7, type: 'spring', stiffness: 100 }}
-                  className="relative mx-auto mb-4 h-36 w-36 overflow-hidden rounded-3xl shadow-lift"
-                  style={{
-                    boxShadow: `0 8px 40px ${meta.color}33, 0 0 80px ${meta.color}11`,
-                  }}
-                >
-                  {storyArt?.image ? (
-                    <img src={storyArt.image} alt="" className="absolute inset-0 h-full w-full object-cover" />
-                  ) : (
-                    <div className="absolute inset-0 grid place-items-center" style={{ background: storyArt?.gradient || `radial-gradient(circle at 30% 30%, ${meta.color}aa, ${meta.color}22 60%, transparent)` }}>
-                      <span className="text-5xl opacity-60">{storyArt?.icon || meta.emoji}</span>
-                    </div>
-                  )}
-                </motion.div>
-              );
-            })()}
+            <motion.div
+              initial={{ scale: 0.85, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              transition={{ duration: 0.7, type: 'spring', stiffness: 100 }}
+              className="relative mx-auto mb-4 h-36 w-36 overflow-hidden rounded-3xl shadow-lift"
+              style={{
+                boxShadow: `0 8px 40px ${meta.color}33, 0 0 80px ${meta.color}11`,
+              }}
+            >
+              {bgImage ? (
+                <img src={bgImage} alt="" className="absolute inset-0 h-full w-full object-cover" />
+              ) : (
+                <div className="absolute inset-0 grid place-items-center" style={{ background: storyArtData?.gradient || `radial-gradient(circle at 30% 30%, ${meta.color}aa, ${meta.color}22 60%, transparent)` }}>
+                  <span className="text-5xl opacity-60">{storyArtData?.icon || meta.emoji}</span>
+                </div>
+              )}
+            </motion.div>
 
             {/* Title + meta — centered */}
             <div className="mb-3 text-center">
