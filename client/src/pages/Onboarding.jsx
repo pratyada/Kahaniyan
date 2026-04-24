@@ -8,17 +8,8 @@ const makeSteps = (name) => {
   const n = name || 'your child';
   return [
     { key: 'childName', title: "What's your child's name?", placeholder: 'e.g. Arjun', type: 'text' },
-    { key: 'gender', title: `Is ${n} a boy or a girl?`, type: 'gender' },
     { key: 'age', title: `How old is ${n}?`, placeholder: '6', type: 'number' },
-    { key: 'country', title: `Where does ${n} live?`, type: 'country' },
-    { key: 'beliefs', title: `${n}'s family belief?`, subtitle: 'Pick one or more. Wisdom stories will come from these traditions.', type: 'beliefs', optional: true },
-    { key: 'motherName', title: `${n}'s mother's name?`, placeholder: 'optional — e.g. Meera', type: 'text', optional: true },
-    { key: 'fatherName', title: `${n}'s father's name?`, placeholder: 'optional — e.g. Raj', type: 'text', optional: true },
-    { key: 'sibling', title: `${n}'s sibling name?`, placeholder: 'optional — e.g. Priya', type: 'text', optional: true },
-    { key: 'grandfather', title: `${n}'s grandfather name?`, placeholder: 'optional — e.g. Dada ji', type: 'text', optional: true },
-    { key: 'grandmother', title: `${n}'s grandmother name?`, placeholder: 'optional — e.g. Nani ma', type: 'text', optional: true },
-    { key: 'pet', title: `${n}'s pet name?`, placeholder: 'optional — e.g. Bruno', type: 'text', optional: true },
-    { key: 'language', title: `Select preferred language`, subtitle: 'Your stories will be played in this language.', type: 'language' },
+    { key: 'language', title: 'Select preferred language', subtitle: 'Stories will be narrated in this language.', type: 'language' },
   ];
 };
 

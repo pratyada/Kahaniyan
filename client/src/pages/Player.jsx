@@ -1,7 +1,8 @@
 import { Component, useEffect, useRef, useState } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
-import { ArrowLeft, X, Share2, Play, Pause, RotateCcw, Loader2 } from 'lucide-react';
+import { ArrowLeft, X, Share2, Play, Pause, RotateCcw, Loader2, Timer } from 'lucide-react';
+import { getStoryArt } from '../utils/storyArt.js';
 import { loadSharedStory } from '../utils/shareStory.js';
 import { storage, db, auth } from '../lib/firebase.js';
 
@@ -480,67 +481,56 @@ function PlayerInner() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="relative z-10 flex h-full flex-col px-6 pt-6 pb-8 safe-top safe-bottom"
+            className="relative z-10 flex h-full flex-col px-5 pt-4 pb-6 safe-top safe-bottom"
           >
-            {/* Top bar */}
-            <div className="mb-4 flex items-center justify-between">
-              <div className="flex items-center gap-2">
-                <button
-                  onClick={() => navigate('/')}
-                  className="grid h-10 w-10 place-items-center rounded-full bg-white/5 text-ink-muted transition hover:text-ink active:scale-95"
-                  title="Back"
-                >
-                  <ArrowLeft size={18} />
+            {/* Top bar — minimal */}
+            <div className="mb-3 flex items-center justify-between">
+              <button
+                onClick={() => navigate('/')}
+                className="grid h-9 w-9 place-items-center rounded-full bg-white/5 text-ink-muted transition hover:text-ink active:scale-95"
+              >
+                <ArrowLeft size={16} />
+              </button>
+              <div className="flex items-center gap-1.5">
+                <button onClick={shareStory} className="grid h-9 w-9 place-items-center rounded-full bg-white/5 text-ink-muted transition hover:text-ink active:scale-95">
+                  <Share2 size={15} />
                 </button>
-                <button
-                  onClick={handleClose}
-                  className="grid h-10 w-10 place-items-center rounded-full bg-white/5 text-ink-dim transition hover:text-ink active:scale-95"
-                  title="Stop & close"
-                >
-                  <X size={16} />
-                </button>
-              </div>
-              <div className="text-center">
-                <div className="text-[10px] uppercase tracking-[0.2em] text-ink-muted">
-                  Now Playing
-                </div>
-                <div className="text-xs font-bold text-ink">{meta.label}</div>
-              </div>
-              <div className="flex items-center gap-2">
-                <button
-                  onClick={shareStory}
-                  className="grid h-10 w-10 place-items-center rounded-full bg-white/5 text-ink-muted transition hover:text-ink active:scale-95"
-                  title="Share"
-                >
-                  <Share2 size={18} />
+                <button onClick={handleClose} className="grid h-9 w-9 place-items-center rounded-full bg-white/5 text-ink-dim transition hover:text-ink active:scale-95">
+                  <X size={15} />
                 </button>
               </div>
             </div>
 
-            {/* Cover art — compact on mobile */}
-            <div className="flex items-center gap-4">
-              <motion.div
-                initial={{ scale: 0.9, opacity: 0 }}
-                animate={{ scale: 1, opacity: 1 }}
-                transition={{ duration: 0.6 }}
-                className="grid h-20 w-20 shrink-0 place-items-center rounded-2xl shadow-lift"
-                style={{
-                  background: `radial-gradient(circle at 30% 30%, ${meta.color}aa, ${meta.color}22 60%, transparent)`,
-                }}
-              >
-                <span className="text-4xl">{meta.emoji}</span>
-              </motion.div>
-              <div className="min-w-0 flex-1">
-                <h1 className="font-display text-xl font-bold text-ink">{current?.title || 'Bedtime Story'}</h1>
-              <p className="mt-1 text-xs text-ink-muted">
-                For {profile?.childName}{current?.estimatedMinutes ? ` · ${current.estimatedMinutes} min` : ''}{current?.voice ? ` · ${current.voice}` : ''}
+            {/* Cover art — large, centered */}
+            {(() => {
+              const storyArt = current?.id ? getStoryArt(current.id.replace('lesson_', '')) : null;
+              return (
+                <motion.div
+                  initial={{ scale: 0.85, opacity: 0 }}
+                  animate={{ scale: 1, opacity: 1 }}
+                  transition={{ duration: 0.7, type: 'spring', stiffness: 100 }}
+                  className="mx-auto mb-4 grid h-36 w-36 place-items-center overflow-hidden rounded-3xl shadow-lift"
+                  style={{
+                    background: storyArt?.gradient || `radial-gradient(circle at 30% 30%, ${meta.color}aa, ${meta.color}22 60%, transparent)`,
+                    boxShadow: `0 8px 40px ${meta.color}33, 0 0 80px ${meta.color}11`,
+                  }}
+                >
+                  <span className="text-5xl opacity-60">{storyArt?.icon || meta.emoji}</span>
+                </motion.div>
+              );
+            })()}
+
+            {/* Title + meta — centered */}
+            <div className="mb-3 text-center">
+              <h1 className="text-xl font-bold text-ink" style={{ fontFamily: 'Fraunces, serif' }}>
+                {current?.title || 'Bedtime Story'}
+              </h1>
+              <p className="mt-1 text-xs text-ink-muted" style={{ fontFamily: 'Nunito, sans-serif' }}>
+                For {profile?.childName}{current?.estimatedMinutes ? ` · ${current.estimatedMinutes} min` : ''}
               </p>
               {current?.cast?.length > 0 && (
-                <p className="mt-1 truncate text-[10px] text-gold">
-                  {current.cast.join(' · ')}
-                </p>
+                <p className="mt-0.5 text-[10px] text-gold/70">{current.cast.join(' · ')}</p>
               )}
-              </div>
             </div>
 
             {/* Story text — always visible, scrolls in sync */}
@@ -634,44 +624,24 @@ function PlayerInner() {
                   <span className="text-[8px] leading-none mt-0.5">sec</span>
                 </button>
               </div>
-              {narrator.loading && (
-                <div className="text-[10px] font-bold uppercase tracking-[0.18em] text-ink-muted">
-                  Preparing voice…
-                </div>
-              )}
-
-              {/* Secondary controls — speed + restart */}
-              <div className="mt-2 grid w-full grid-cols-2 gap-2">
+              {/* Secondary controls — inline row */}
+              <div className="mt-3 flex items-center justify-center gap-4">
                 <button
-                  onClick={() =>
-                    handleSpeedChange(SPEEDS[(SPEEDS.indexOf(speed) + 1) % SPEEDS.length])
-                  }
-                  aria-label="Change speed"
-                  className="flex flex-col items-center gap-1 rounded-2xl bg-white/5 py-3 ring-1 ring-white/10 transition active:scale-95"
+                  onClick={() => handleSpeedChange(SPEEDS[(SPEEDS.indexOf(speed) + 1) % SPEEDS.length])}
+                  className="rounded-full bg-white/5 px-3 py-1.5 text-xs font-bold text-gold ring-1 ring-white/10 transition active:scale-95"
                 >
-                  <span className="text-lg font-bold text-gold">{speed}x</span>
-                  <span className="text-[9px] font-bold uppercase tracking-wider text-ink-muted">
-                    Speed
-                  </span>
+                  {speed}x
                 </button>
 
                 <button
                   onClick={() => {
                     const audio = narrator.audioRef?.current;
-                    if (audio) {
-                      audio.currentTime = 0;
-                      audio.volume = 1;
-                      audio.play().catch(() => {});
-                    }
+                    if (audio) { audio.currentTime = 0; audio.volume = 1; audio.play().catch(() => {}); }
                     setIsPlaying(true);
                   }}
-                  aria-label="Restart story"
-                  className="flex flex-col items-center gap-1 rounded-2xl bg-white/5 py-3 ring-1 ring-white/10 transition active:scale-95"
+                  className="grid h-8 w-8 place-items-center rounded-full bg-white/5 text-ink-muted ring-1 ring-white/10 transition active:scale-95"
                 >
-                  <RotateCcw size={18} className="text-gold" />
-                  <span className="text-[9px] font-bold uppercase tracking-wider text-ink-muted">
-                    Restart
-                  </span>
+                  <RotateCcw size={14} />
                 </button>
               </div>
             </div>
