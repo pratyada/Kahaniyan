@@ -125,10 +125,17 @@ export async function loadAndMergeLibrary() {
       return localLib;
     }
 
-    // Merge: dedupe by id, sort by createdAt desc
+    // Merge: dedupe by id, combine fields (cloud coverImage wins), sort by createdAt desc
     const merged = new Map();
-    for (const s of [...localLib, ...cloudLib]) {
-      if (s.id && !merged.has(s.id)) merged.set(s.id, s);
+    for (const s of [...cloudLib, ...localLib]) {
+      if (!s.id) continue;
+      if (merged.has(s.id)) {
+        // Merge fields — keep existing but fill in missing ones (especially coverImage from cloud)
+        const existing = merged.get(s.id);
+        merged.set(s.id, { ...s, ...existing, coverImage: existing.coverImage || s.coverImage || null });
+      } else {
+        merged.set(s.id, s);
+      }
     }
     const result = [...merged.values()]
       .sort((a, b) => new Date(b.createdAt || 0) - new Date(a.createdAt || 0))
