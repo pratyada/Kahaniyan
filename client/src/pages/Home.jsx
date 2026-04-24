@@ -1,12 +1,11 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
-import { RefreshCw } from 'lucide-react';
+import { Play, Sparkles, ChevronDown, ChevronUp, Users, PenLine } from 'lucide-react';
 import PageTransition from '../components/PageTransition.jsx';
 import ValuePill from '../components/ValuePill.jsx';
 import UpgradeModal from '../components/UpgradeModal.jsx';
 import WhisperBox, { saveRecentWhisper } from '../components/WhisperBox.jsx';
-import CalmParticles from '../components/CalmParticles.jsx';
 import { trackStoryGenerated, trackWisdomStoryPlayed } from '../utils/analytics.js';
 import { useFamilyProfile } from '../hooks/useFamilyProfile.js';
 import { useStoryGenerator } from '../hooks/useStoryGenerator.js';
@@ -17,27 +16,6 @@ import { CULTURAL_LESSONS, TRADITIONS, THEMES } from '../data/culturalLessons.js
 import { RADIO_STATIONS } from '../data/radioStations.js';
 import { canGenerate, maxDurationFor, storiesThisWeek } from '../utils/tierGate.js';
 import { useAdmin } from '../hooks/useAdmin.jsx';
-
-const MODES = [
-  {
-    key: 'tradition',
-    icon: '🪷',
-    title: 'Wisdom story',
-    subtitle: 'Pre-written stories from your tradition. Free, instant, no waiting.',
-  },
-  {
-    key: 'whisper',
-    icon: '📜',
-    title: 'Write my story',
-    subtitle: 'Tell us how your child is feeling. We weave a story around it.',
-  },
-  {
-    key: 'cast',
-    icon: '👨‍👩‍👧',
-    title: 'Choose the cast',
-    subtitle: 'Pick 2–5 characters to star in tonight\'s story.',
-  },
-];
 
 function recommendedValueFor(age) {
   if (age <= 4) return ['sharing', 'kindness'];
@@ -58,6 +36,17 @@ function fillTokens(text, profile, characters) {
   return text.replace(/\{(\w+)\}/g, (_, k) => tokens[k] ?? `{${k}}`);
 }
 
+// Pick tonight's featured story — rotates daily based on date
+function pickTonightStory(beliefs) {
+  const dayOfYear = Math.floor((Date.now() - new Date(new Date().getFullYear(), 0, 0)) / 86400000);
+  let pool = CULTURAL_LESSONS;
+  if (beliefs?.length > 0) {
+    const matched = pool.filter((l) => beliefs.includes(l.tradition));
+    if (matched.length > 0) pool = [...matched, ...pool.filter((l) => !beliefs.includes(l.tradition))];
+  }
+  return pool[dayOfYear % pool.length];
+}
+
 export default function Home() {
   const navigate = useNavigate();
   const { profile } = useFamilyProfile();
@@ -65,14 +54,12 @@ export default function Home() {
   const { load, clear } = usePlayer();
   const radio = useRadio();
   const { isUnlimited } = useAdmin();
-  const isAdmin = isUnlimited; // backward compat for logging
 
   const tier = profile?.tier || 'free';
   const recommended = useMemo(() => recommendedValueFor(profile?.age || 6), [profile?.age]);
   const characters = profile?.characters || [];
   const nonProtagonist = characters.filter((c) => c.relation !== 'self');
 
-  const [mode, setMode] = useState('tradition');
   const [value, setValue] = useState(recommended[0]);
   const [duration, setDuration] = useState(2);
   const [whisper, setWhisper] = useState('');
@@ -82,7 +69,10 @@ export default function Home() {
   const [upgradeOpen, setUpgradeOpen] = useState(false);
   const [upgradeReason, setUpgradeReason] = useState('');
   const [storyError, setStoryError] = useState(null);
-  // Load pre-generated wisdom audio URLs from Firestore (one-time)
+  const [writeOpen, setWriteOpen] = useState(false);
+  const [castOpen, setCastOpen] = useState(false);
+
+  // Pre-generated wisdom audio
   const [wisdomAudioUrls, setWisdomAudioUrls] = useState({});
   useEffect(() => {
     (async () => {
@@ -97,81 +87,29 @@ export default function Home() {
   }, []);
 
   const maxDuration = maxDurationFor(tier, isUnlimited);
-  const used = storiesThisWeek();
-  const remaining = isUnlimited ? Infinity : tier === 'free' ? Math.max(0, 3 - used) : Infinity;
+  const remaining = isUnlimited ? Infinity : tier === 'free' ? Math.max(0, 3 - storiesThisWeek()) : Infinity;
+
+  // Tonight's featured story
+  const tonightStory = useMemo(() => pickTonightStory(profile?.beliefs), [profile?.beliefs]);
+  const tonightTradition = TRADITIONS.find((t) => t.key === tonightStory?.tradition);
+
+  // All wisdom stories for carousel (shuffled by user's beliefs)
+  const allWisdom = useMemo(() => {
+    let list = [...CULTURAL_LESSONS];
+    const beliefs = profile?.beliefs || [];
+    if (beliefs.length > 0) {
+      const matched = list.filter((l) => beliefs.includes(l.tradition));
+      const others = list.filter((l) => !beliefs.includes(l.tradition));
+      list = [...matched, ...others];
+    }
+    return list;
+  }, [profile?.beliefs]);
 
   const toggleChar = (id) => {
     setSelectedCharIds((prev) => {
       if (prev.includes(id)) return prev.filter((x) => x !== id);
       if (prev.length >= 5) return prev;
       return [...prev, id];
-    });
-  };
-
-  const lessonsForTradition = useMemo(() => {
-    let list = CULTURAL_LESSONS.filter((l) => l.theme === traditionTheme);
-    const beliefs = profile?.beliefs || [];
-    // Show ALL traditions by default. Only filter if user explicitly set beliefs
-    // AND opted for "only my tradition" in settings.
-    if (beliefs.length > 0 && profile?.onlyMyTradition) {
-      list = list.filter((l) => beliefs.includes(l.tradition));
-    } else if (beliefs.length > 0) {
-      // Prioritize user's beliefs first, then show all others
-      const matched = list.filter((l) => beliefs.includes(l.tradition));
-      const others = list.filter((l) => !beliefs.includes(l.tradition));
-      list = [...matched, ...others];
-    }
-    return list;
-  }, [traditionTheme, profile?.beliefs, profile?.onlyMyTradition, profile?.showCrossCulture]);
-
-  const handleStart = async () => {
-    setStoryError(null);
-    // If not signed in, trigger login popup
-    if (window.__triggerLogin) {
-      window.__triggerLogin();
-      // If popup was triggered (user not signed in), stop here
-      const { auth } = await import('../lib/firebase.js');
-      if (auth && !auth.currentUser) return;
-    }
-    if (!profile) {
-      setStoryError('Profile not loaded. Please try again.');
-      return;
-    }
-    // Client-side limits are soft — server enforces the real limits.
-    // Show upgrade modal as a hint but never hard-block generation.
-    // Server will return 429 if the user is truly over limit.
-    const selectedCharacters = characters.filter((c) => selectedCharIds.includes(c.id) || c.relation === 'self');
-    // Clear current story so Player doesn't recover old one from localStorage
-    clear();
-    // Navigate to player immediately — show generating state there
-    navigate('/player');
-
-    // Start gentle radio while story generates
-    const raagNidra = RADIO_STATIONS.find(s => s.id === 'raag-nidra') || RADIO_STATIONS[0];
-    try { radio.play(raagNidra); } catch {}
-
-    // Generate story — player will show loading until ready
-    if (mode === 'whisper' && whisper.trim()) saveRecentWhisper(whisper.trim());
-    generate({
-      profile,
-      value,
-      duration,
-      language: profile.language || 'English',
-      voice: profile.defaultVoice || 'AI Narrator',
-      whisper: mode === 'whisper' ? whisper : '',
-      whisperOverridesValue: mode === 'whisper' ? whisperOverridesValue : false,
-      selectedCharacters: mode === 'cast' ? selectedCharacters : undefined,
-    }).then((story) => {
-      console.log('[My Sleepy Tale] Story generated:', story.title);
-      trackStoryGenerated(mode, value, duration);
-      radio.stop();
-      load(story);
-      try { navigator.vibrate?.([200, 100, 200]); } catch {}
-    }).catch((e) => {
-      console.error('[My Sleepy Tale] Story generation FAILED:', e);
-      radio.stop();
-      setStoryError(e.message || 'Could not generate story. Please try again.');
-      navigate('/');
     });
   };
 
@@ -191,9 +129,8 @@ export default function Home() {
       source: lesson.source,
       createdAt: new Date().toISOString(),
       isWisdom: true,
-      audioUrl: pregenUrl, // pre-generated high-quality audio (if available)
+      audioUrl: pregenUrl,
     };
-    // Track play count locally (zero cost)
     try {
       const key = 'mst:wisdomPlays';
       const plays = JSON.parse(localStorage.getItem(key) || '{}');
@@ -206,6 +143,42 @@ export default function Home() {
     navigate('/player');
   };
 
+  const handleStart = async () => {
+    setStoryError(null);
+    if (window.__triggerLogin) {
+      window.__triggerLogin();
+      const { auth } = await import('../lib/firebase.js');
+      if (auth && !auth.currentUser) return;
+    }
+    if (!profile) { setStoryError('Profile not loaded.'); return; }
+
+    const selectedCharacters = characters.filter((c) => selectedCharIds.includes(c.id) || c.relation === 'self');
+    clear();
+    navigate('/player');
+
+    const raagNidra = RADIO_STATIONS.find(s => s.id === 'raag-nidra') || RADIO_STATIONS[0];
+    try { radio.play(raagNidra); } catch {}
+
+    if (whisper.trim()) saveRecentWhisper(whisper.trim());
+    generate({
+      profile, value, duration,
+      language: profile.language || 'English',
+      voice: profile.defaultVoice || 'AI Narrator',
+      whisper: writeOpen ? whisper : '',
+      whisperOverridesValue: writeOpen ? whisperOverridesValue : false,
+      selectedCharacters: castOpen ? selectedCharacters : undefined,
+    }).then((story) => {
+      trackStoryGenerated(writeOpen ? 'whisper' : castOpen ? 'cast' : 'quick', value, duration);
+      radio.stop();
+      load(story);
+      try { navigator.vibrate?.([200, 100, 200]); } catch {}
+    }).catch((e) => {
+      radio.stop();
+      setStoryError(e.message || 'Could not generate story.');
+      navigate('/');
+    });
+  };
+
   const greeting = (() => {
     const h = new Date().getHours();
     if (h < 12) return 'Good morning';
@@ -213,332 +186,361 @@ export default function Home() {
     return 'Good evening';
   })();
 
-  const valueMetaForActive = VALUES.find((v) => v.key === value);
-  const ctaDisabled =
-    loading ||
-    (mode === 'cast' && selectedCharIds.length === 0);
-
   return (
-    <PageTransition className="relative page-scroll px-5 pt-12 safe-top">
-      {/* Calm particles background */}
-      <CalmParticles />
+    <PageTransition className="relative page-scroll px-5 pt-10 safe-top">
+      {/* Ambient glow */}
+      <div className="pointer-events-none absolute -top-20 left-1/2 h-[300px] w-[300px] -translate-x-1/2 rounded-full opacity-30"
+        style={{ background: 'radial-gradient(circle, rgba(240,165,0,0.25) 0%, transparent 70%)' }} />
 
+      {/* ═══ HEADER ═══ */}
+      <motion.header
+        initial={{ opacity: 0, y: -10 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.6 }}
+        className="mb-6 text-center"
+      >
+        <p className="text-xs font-semibold uppercase tracking-[0.25em] text-ink-muted" style={{ fontFamily: 'Nunito, sans-serif' }}>
+          {greeting}
+        </p>
+        <h1 className="mt-1 text-2xl font-bold text-ink" style={{ fontFamily: 'Fraunces, serif' }}>
+          A story for <span className="text-gold">{profile?.childName || 'your child'}</span>
+        </h1>
+      </motion.header>
 
-      {/* HERO */}
-      <header className="mb-8">
-        {/* Reload */}
-        <div className="mb-3 flex justify-end">
-          <button onClick={() => window.location.reload()}
-            className="grid h-8 w-8 place-items-center rounded-full bg-white/5 text-ink-muted transition hover:text-ink active:scale-95 active:rotate-180"
-            title="Refresh">
-            <RefreshCw size={14} />
-          </button>
-        </div>
-        <div className="flex items-start justify-between">
-          <div>
-            <h1 className="display-title text-ink">
-              A story for <span className="text-gold">{profile?.childName || 'your child'}</span>
-            </h1>
-            <p className="mt-2 text-sm text-ink-muted">
-              What kind of bedtime story tonight?
-            </p>
+      {/* ═══ THE MOON — Tonight's Featured Story ═══ */}
+      <motion.section
+        initial={{ opacity: 0, scale: 0.9 }}
+        animate={{ opacity: 1, scale: 1 }}
+        transition={{ duration: 0.8, delay: 0.2 }}
+        className="mb-8"
+      >
+        <div
+          className="relative mx-auto flex flex-col items-center rounded-3xl p-6 overflow-hidden"
+          style={{
+            background: 'linear-gradient(135deg, rgba(240,165,0,0.08) 0%, rgba(58,42,74,0.15) 50%, rgba(10,10,15,0.9) 100%)',
+            border: '1px solid rgba(240,165,0,0.12)',
+          }}
+        >
+          {/* Decorative stars */}
+          <div className="absolute inset-0 overflow-hidden pointer-events-none">
+            {[...Array(12)].map((_, i) => (
+              <motion.div
+                key={i}
+                className="absolute h-1 w-1 rounded-full bg-gold/40"
+                style={{ left: `${10 + Math.random() * 80}%`, top: `${10 + Math.random() * 80}%` }}
+                animate={{ opacity: [0.2, 0.8, 0.2], scale: [0.5, 1, 0.5] }}
+                transition={{ duration: 2 + Math.random() * 3, repeat: Infinity, delay: Math.random() * 2 }}
+              />
+            ))}
           </div>
-          <div className="shrink-0 mt-1 inline-flex items-center gap-1.5 rounded-full bg-bg-surface px-2.5 py-1 ring-1 ring-white/5">
-            <span className="h-1.5 w-1.5 rounded-full bg-gold" />
-            <span className="text-[10px] font-bold uppercase tracking-wider text-ink-muted">
-              {isUnlimited
-                ? 'Unlimited'
-                : tier === 'free'
-                ? `${remaining} left`
-                : 'Unlimited'}
-            </span>
-          </div>
+
+          {/* Moon play button */}
+          <motion.button
+            onClick={() => playLesson(tonightStory)}
+            whileTap={{ scale: 0.95 }}
+            whileHover={{ scale: 1.05 }}
+            className="relative mb-4 grid h-28 w-28 place-items-center rounded-full"
+            style={{
+              background: 'radial-gradient(circle at 35% 35%, #ffd98a, #f0a500 50%, #b87f00)',
+              boxShadow: '0 0 60px rgba(240,165,0,0.35), 0 0 120px rgba(240,165,0,0.15), inset 0 -4px 12px rgba(0,0,0,0.2)',
+            }}
+          >
+            {/* Moon shadow */}
+            <div className="absolute inset-0 rounded-full"
+              style={{ background: 'radial-gradient(circle at 65% 40%, transparent 35%, rgba(10,10,15,0.7) 75%)' }} />
+            <Play size={36} fill="rgba(10,10,15,0.9)" stroke="none" className="relative z-10 ml-1" />
+          </motion.button>
+
+          <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-gold/70" style={{ fontFamily: 'Nunito, sans-serif' }}>
+            Tonight's Story
+          </p>
+          <h2 className="mt-1 text-center text-lg font-bold text-ink" style={{ fontFamily: 'Fraunces, serif' }}>
+            {tonightStory?.title}
+          </h2>
+          <p className="mt-1 text-xs text-ink-muted">
+            {tonightTradition?.icon} {tonightTradition?.label} · {tonightStory?.durationMinutes} min
+          </p>
         </div>
-      </header>
+      </motion.section>
 
-      {/* MODE PICKER */}
-      <div className="mb-6 grid grid-cols-3 gap-3">
-        {MODES.map((m) => (
-          <button
-            key={m.key}
-            onClick={() => setMode(m.key)}
-            className={`flex flex-col items-center gap-2 rounded-2xl p-4 text-center transition ${
-              mode === m.key
-                ? 'bg-gold text-bg-base shadow-glow'
-                : 'bg-bg-surface text-ink ring-1 ring-white/5'
-            }`}
+      {/* ═══ WISDOM STORY CAROUSEL ═══ */}
+      <AnimatePresence>
+      {!writeOpen && !castOpen && (
+      <motion.section
+        initial={{ opacity: 0, height: 0 }}
+        animate={{ opacity: 1, height: 'auto' }}
+        exit={{ opacity: 0, height: 0 }}
+        transition={{ duration: 0.3 }}
+        className="mb-8 overflow-hidden"
+      >
+        <div className="mb-3 flex items-center justify-between">
+          <h3 className="text-xs font-bold uppercase tracking-[0.2em] text-ink-muted" style={{ fontFamily: 'Nunito, sans-serif' }}>
+            Wisdom Stories
+          </h3>
+          {/* Theme filter */}
+          <select
+            value={traditionTheme}
+            onChange={(e) => setTraditionTheme(e.target.value)}
+            className="rounded-lg bg-bg-surface px-2 py-1 text-[10px] font-bold text-gold outline-none ring-1 ring-white/5"
           >
-            <span className="text-3xl">{m.icon}</span>
-            <span className="text-[11px] font-bold leading-tight">{m.title}</span>
-          </button>
-        ))}
-      </div>
+            {THEMES.map((t) => (
+              <option key={t.key} value={t.key}>{t.icon} {t.label}</option>
+            ))}
+          </select>
+        </div>
 
-      <p className="mb-6 text-[13px] text-ink-muted">
-        {MODES.find((m) => m.key === mode)?.subtitle}
-      </p>
-
-      <AnimatePresence mode="wait">
-        {/* ─── MODE 1: WHISPER ─── */}
-        {mode === 'whisper' && (
-          <motion.div
-            key="whisper"
-            initial={{ opacity: 0, y: 8 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -8 }}
-          >
-            <WhisperBox
-              value={whisper}
-              onChange={setWhisper}
-              overrideValue={whisperOverridesValue}
-              onToggleOverride={setWhisperOverridesValue}
-            />
-
-            {/* Hide value picker when whisper + override is active — the whisper chooses the value */}
-            {!(whisper.trim() && whisperOverridesValue) && (
-              <section className="mb-8">
-                <h2 className="ui-label mb-4">What should the story teach?</h2>
-                <div className="-mx-5 overflow-x-auto px-5">
-                  <div className="flex w-max gap-2">
-                    {recommended.map((v) => (
-                      <ValuePill key={`rec-${v}`} value={v} active={value === v} onClick={() => setValue(v)} />
-                    ))}
-                    {VALUES.filter((v) => !recommended.includes(v.key)).map((v) => (
-                      <ValuePill key={v.key} value={v.key} size="sm" active={value === v.key} onClick={() => setValue(v.key)} />
-                    ))}
-                  </div>
-                </div>
-              </section>
-            )}
-
-            <LengthStrip duration={duration} setDuration={setDuration} maxDuration={maxDuration} setUpgradeReason={setUpgradeReason} setUpgradeOpen={setUpgradeOpen} />
-          </motion.div>
-        )}
-
-        {/* ─── MODE 2: TRADITION (cultural lessons) ─── */}
-        {mode === 'tradition' && (
-          <motion.div
-            key="tradition"
-            initial={{ opacity: 0, y: 8 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -8 }}
-          >
-            <div className="mb-4 flex items-center gap-2 rounded-2xl bg-gold/10 p-3 ring-1 ring-gold/20">
-              <span className="text-xl">
-                {(profile?.beliefs?.[0] && RELIGIONS.find((r) => r.key === profile.beliefs[0])?.icon) || '🌏'}
-              </span>
-              <div className="text-[11px] text-ink-muted">
-                {profile?.beliefs?.length > 0
-                  ? `Beliefs: ${profile.beliefs
-                      .map((b) => RELIGIONS.find((r) => r.key === b)?.label)
-                      .filter(Boolean)
-                      .join(', ')}${
-                      profile?.showCrossCulture
-                        ? ' · plus other cultures'
-                        : ''
-                    }`
-                  : 'Showing wisdom from all traditions. Add your beliefs in More → Edit family.'}
-              </div>
-            </div>
-
-            {/* Theme tabs */}
-            <div className="mb-4 -mx-5 flex gap-2 overflow-x-auto px-5">
-              {THEMES.map((t) => (
-                <button
-                  key={t.key}
-                  onClick={() => setTraditionTheme(t.key)}
-                  className={`btn-pill shrink-0 px-4 py-2 text-sm font-bold ${
-                    traditionTheme === t.key
-                      ? 'bg-gold text-bg-base'
-                      : 'bg-bg-elevated text-ink-muted'
-                  }`}
-                >
-                  <span className="mr-1">{t.icon}</span>
-                  {t.label}
-                </button>
-              ))}
-            </div>
-
-            {/* Lessons list */}
-            <div className="space-y-2">
-              {lessonsForTradition.length === 0 ? (
-                <p className="rounded-2xl bg-bg-surface p-4 text-center text-xs text-ink-muted">
-                  No lessons yet for this theme.
-                </p>
-              ) : (
-                lessonsForTradition.map((lesson) => {
-                  const tradition = TRADITIONS.find((t) => t.key === lesson.tradition);
-                  return (
-                    <button
-                      key={lesson.id}
-                      onClick={() => playLesson(lesson)}
-                      className="group flex w-full items-center gap-3 rounded-2xl bg-bg-surface p-3 text-left shadow-card ring-1 ring-white/5 transition hover:bg-bg-elevated"
-                    >
-                      <div className="grid h-12 w-12 shrink-0 place-items-center rounded-2xl bg-gold/15 text-2xl">
-                        {tradition?.icon || '🌟'}
-                      </div>
-                      <div className="min-w-0 flex-1">
-                        <div className="text-[10px] font-bold uppercase tracking-[0.16em] text-gold">
-                          {tradition?.label}
-                        </div>
-                        <div className="mt-0.5 truncate font-ui text-sm font-bold text-ink">
-                          {lesson.title}
-                        </div>
-                      </div>
-                      <span className="grid h-9 w-9 shrink-0 place-items-center rounded-full bg-bg-card text-gold transition group-hover:bg-gold group-hover:text-bg-base">
-                        ▶
-                      </span>
-                    </button>
-                  );
-                })
-              )}
-            </div>
-          </motion.div>
-        )}
-
-        {/* ─── MODE 3: CHOOSE CAST ─── */}
-        {mode === 'cast' && (
-          <motion.div
-            key="cast"
-            initial={{ opacity: 0, y: 8 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -8 }}
-          >
-            <section className="mb-5">
-              <div className="mb-3 flex items-center justify-between">
-                <h2 className="ui-label">
-                  Cast · {selectedCharIds.length}/5 selected
-                </h2>
-                <button
-                  onClick={() => navigate('/characters')}
-                  className="text-[11px] font-bold uppercase tracking-wider text-gold hover:text-gold-bright"
-                >
-                  + Manage
-                </button>
-              </div>
-              {nonProtagonist.length === 0 ? (
-                <div className="card-elevated text-center">
-                  <div className="mb-2 text-3xl">👥</div>
-                  <p className="text-sm font-bold text-ink">No characters yet</p>
-                  <p className="mt-1 text-[11px] text-ink-muted">
-                    Add family members or imaginary friends to make stories more personal.
-                  </p>
-                  <button
-                    onClick={() => navigate('/characters')}
-                    className="btn-primary mt-4"
+        {/* Horizontal scroll cards */}
+        <div className="-mx-5 overflow-x-auto px-5 pb-2">
+          <div className="flex w-max gap-3">
+            {(() => {
+              const filtered = CULTURAL_LESSONS.filter((l) => l.theme === traditionTheme);
+              const beliefs = profile?.beliefs || [];
+              let list = filtered;
+              if (beliefs.length > 0 && !profile?.onlyMyTradition) {
+                const matched = list.filter((l) => beliefs.includes(l.tradition));
+                const others = list.filter((l) => !beliefs.includes(l.tradition));
+                list = [...matched, ...others];
+              } else if (beliefs.length > 0 && profile?.onlyMyTradition) {
+                list = list.filter((l) => beliefs.includes(l.tradition));
+              }
+              return list.map((lesson) => {
+                const tradition = TRADITIONS.find((t) => t.key === lesson.tradition);
+                return (
+                  <motion.button
+                    key={lesson.id}
+                    whileTap={{ scale: 0.97 }}
+                    onClick={() => playLesson(lesson)}
+                    className="group flex w-44 shrink-0 flex-col rounded-2xl p-3 text-left transition"
+                    style={{
+                      background: 'linear-gradient(145deg, rgba(255,255,255,0.03) 0%, rgba(240,165,0,0.04) 100%)',
+                      border: '1px solid rgba(255,255,255,0.06)',
+                    }}
                   >
-                    Add characters
-                  </button>
-                </div>
-              ) : (
-                <div className="-mx-5 overflow-x-auto px-5">
-                <div className="flex w-max gap-2">
-                  {nonProtagonist.map((c) => {
-                    const active = selectedCharIds.includes(c.id);
-                    const disabled = !active && selectedCharIds.length >= 5;
-                    return (
-                      <button
-                        key={c.id}
-                        onClick={() => toggleChar(c.id)}
-                        disabled={disabled}
-                        className={`flex w-20 shrink-0 flex-col items-center gap-1 rounded-2xl p-3 text-center transition disabled:opacity-40 ${
-                          active
-                            ? 'bg-gold text-bg-base shadow-glow'
-                            : 'bg-bg-surface text-ink ring-1 ring-white/5'
-                        }`}
-                      >
-                        <span className="text-2xl">{c.emoji || RELATION_EMOJI[c.relation]}</span>
-                        <span className="text-[11px] font-bold leading-tight">{c.name}</span>
-                      </button>
-                    );
-                  })}
-                </div>
-                </div>
-              )}
-            </section>
-
-            <section className="mb-8">
-              <h2 className="ui-label mb-4">What should the story teach?</h2>
-              <div className="-mx-5 overflow-x-auto px-5">
-                <div className="flex w-max gap-2">
-                  {recommended.map((v) => (
-                    <ValuePill key={`rec2-${v}`} value={v} active={value === v} onClick={() => setValue(v)} />
-                  ))}
-                  {VALUES.filter((v) => !recommended.includes(v.key)).map((v) => (
-                    <ValuePill key={v.key} value={v.key} size="sm" active={value === v.key} onClick={() => setValue(v.key)} />
-                  ))}
-                </div>
-              </div>
-            </section>
-
-            <LengthStrip duration={duration} setDuration={setDuration} maxDuration={maxDuration} setUpgradeReason={setUpgradeReason} setUpgradeOpen={setUpgradeOpen} />
-          </motion.div>
-        )}
-      </AnimatePresence>
-
-      {/* Spacer for sticky CTA */}
-      {mode !== 'tradition' && <div className="h-24" />}
-
-      {/* CTA — sticky floating button, hidden in tradition mode */}
-      {mode !== 'tradition' && (
-        <div className="fixed bottom-24 left-0 right-0 z-20 px-5 pointer-events-none">
-          <div className="mx-auto max-w-2xl pointer-events-auto">
-            <motion.button
-              whileTap={{ scale: 0.97 }}
-              onClick={handleStart}
-              disabled={ctaDisabled}
-              className="btn-primary w-full py-5 text-base disabled:opacity-40 shadow-[0_-4px_20px_rgba(240,165,0,0.3)]"
-            >
-              {loading ? (
-                <span className="inline-flex items-center gap-2">
-                  <span className="inline-block h-3 w-3 animate-pulse rounded-full bg-bg-base/70" />
-                  Weaving your story…
-                </span>
-              ) : (
-                <>
-                  <span>{valueMetaForActive?.emoji}</span>
-                  <span>Start Tonight's Story</span>
-                </>
-              )}
-            </motion.button>
-            {mode === 'cast' && selectedCharIds.length === 0 && (
-              <p className="mt-2 text-center text-[11px] text-ink-dim">
-                Pick at least one character to weave them in
-              </p>
-            )}
+                    <div className="mb-2 flex items-center justify-between">
+                      <span className="text-2xl">{tradition?.icon || '🌟'}</span>
+                      <span className="grid h-8 w-8 place-items-center rounded-full bg-gold/10 text-gold transition group-hover:bg-gold group-hover:text-bg-base">
+                        <Play size={12} fill="currentColor" />
+                      </span>
+                    </div>
+                    <p className="text-[9px] font-bold uppercase tracking-wider text-gold/60">{tradition?.label}</p>
+                    <p className="mt-0.5 line-clamp-2 text-sm font-bold leading-snug text-ink" style={{ fontFamily: 'Fraunces, serif' }}>
+                      {lesson.title}
+                    </p>
+                    <p className="mt-auto pt-2 text-[10px] text-ink-dim">{lesson.durationMinutes} min</p>
+                  </motion.button>
+                );
+              });
+            })()}
           </div>
         </div>
-      )}
+      </motion.section>
+
+      {/* ═══ WRITE YOUR OWN — Expandable ═══ */}
+      <motion.section
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.6, delay: 0.5 }}
+        className="mb-4"
+      >
+        <button
+          onClick={() => { setWriteOpen(!writeOpen); setCastOpen(false); }}
+          className="flex w-full items-center justify-between rounded-2xl p-4 transition"
+          style={{
+            background: writeOpen ? 'linear-gradient(135deg, rgba(240,165,0,0.1), rgba(240,165,0,0.03))' : 'rgba(255,255,255,0.02)',
+            border: writeOpen ? '1px solid rgba(240,165,0,0.2)' : '1px solid rgba(255,255,255,0.05)',
+          }}
+        >
+          <div className="flex items-center gap-3">
+            <div className="grid h-10 w-10 place-items-center rounded-xl bg-gold/10 text-gold">
+              <PenLine size={18} />
+            </div>
+            <div className="text-left">
+              <p className="text-sm font-bold text-ink" style={{ fontFamily: 'Fraunces, serif' }}>Write my story</p>
+              <p className="text-[10px] text-ink-muted">Describe your child's day</p>
+            </div>
+          </div>
+          {writeOpen ? <ChevronUp size={16} className="text-gold" /> : <ChevronDown size={16} className="text-ink-dim" />}
+        </button>
+
+        <AnimatePresence>
+          {writeOpen && (
+            <motion.div
+              initial={{ height: 0, opacity: 0 }}
+              animate={{ height: 'auto', opacity: 1 }}
+              exit={{ height: 0, opacity: 0 }}
+              transition={{ duration: 0.3 }}
+              className="overflow-hidden"
+            >
+              <div className="pt-4 px-1">
+                <WhisperBox
+                  value={whisper}
+                  onChange={setWhisper}
+                  overrideValue={whisperOverridesValue}
+                  onToggleOverride={setWhisperOverridesValue}
+                />
+
+                {!(whisper.trim() && whisperOverridesValue) && (
+                  <section className="mb-6">
+                    <h2 className="ui-label mb-3">What should the story teach?</h2>
+                    <div className="-mx-5 overflow-x-auto px-5">
+                      <div className="flex w-max gap-2">
+                        {recommended.map((v) => (
+                          <ValuePill key={`rec-${v}`} value={v} active={value === v} onClick={() => setValue(v)} />
+                        ))}
+                        {VALUES.filter((v) => !recommended.includes(v.key)).map((v) => (
+                          <ValuePill key={v.key} value={v.key} size="sm" active={value === v.key} onClick={() => setValue(v.key)} />
+                        ))}
+                      </div>
+                    </div>
+                  </section>
+                )}
+
+                <LengthStrip duration={duration} setDuration={setDuration} maxDuration={maxDuration} setUpgradeReason={setUpgradeReason} setUpgradeOpen={setUpgradeOpen} />
+
+                <motion.button
+                  whileTap={{ scale: 0.97 }}
+                  onClick={handleStart}
+                  disabled={loading}
+                  className="w-full rounded-2xl bg-gold py-4 text-center text-base font-bold text-bg-base shadow-[0_4px_24px_rgba(240,165,0,0.3)] transition disabled:opacity-40"
+                  style={{ fontFamily: 'Nunito, sans-serif' }}
+                >
+                  {loading ? 'Weaving...' : 'Start Tonight\'s Story'}
+                </motion.button>
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
+      </motion.section>
+
+      {/* ═══ CHOOSE CAST — Expandable ═══ */}
+      <motion.section
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.6, delay: 0.6 }}
+        className="mb-8"
+      >
+        <button
+          onClick={() => { setCastOpen(!castOpen); setWriteOpen(false); }}
+          className="flex w-full items-center justify-between rounded-2xl p-4 transition"
+          style={{
+            background: castOpen ? 'linear-gradient(135deg, rgba(240,165,0,0.1), rgba(240,165,0,0.03))' : 'rgba(255,255,255,0.02)',
+            border: castOpen ? '1px solid rgba(240,165,0,0.2)' : '1px solid rgba(255,255,255,0.05)',
+          }}
+        >
+          <div className="flex items-center gap-3">
+            <div className="grid h-10 w-10 place-items-center rounded-xl bg-gold/10 text-gold">
+              <Users size={18} />
+            </div>
+            <div className="text-left">
+              <p className="text-sm font-bold text-ink" style={{ fontFamily: 'Fraunces, serif' }}>Choose the cast</p>
+              <p className="text-[10px] text-ink-muted">Pick characters for tonight</p>
+            </div>
+          </div>
+          {castOpen ? <ChevronUp size={16} className="text-gold" /> : <ChevronDown size={16} className="text-ink-dim" />}
+        </button>
+
+        <AnimatePresence>
+          {castOpen && (
+            <motion.div
+              initial={{ height: 0, opacity: 0 }}
+              animate={{ height: 'auto', opacity: 1 }}
+              exit={{ height: 0, opacity: 0 }}
+              transition={{ duration: 0.3 }}
+              className="overflow-hidden"
+            >
+              <div className="pt-4 px-1">
+                <div className="mb-3 flex items-center justify-between">
+                  <span className="text-xs font-bold text-ink-muted">{selectedCharIds.length}/5 selected</span>
+                  <button onClick={() => navigate('/characters')} className="text-[11px] font-bold text-gold">+ Manage</button>
+                </div>
+
+                {nonProtagonist.length === 0 ? (
+                  <div className="rounded-2xl bg-bg-surface p-6 text-center ring-1 ring-white/5">
+                    <p className="text-sm font-bold text-ink">No characters yet</p>
+                    <p className="mt-1 text-[11px] text-ink-muted">Add family members to personalize stories</p>
+                    <button onClick={() => navigate('/characters')} className="mt-3 rounded-xl bg-gold px-4 py-2 text-sm font-bold text-bg-base">Add characters</button>
+                  </div>
+                ) : (
+                  <div className="-mx-5 overflow-x-auto px-5 mb-4">
+                    <div className="flex w-max gap-2">
+                      {nonProtagonist.map((c) => {
+                        const active = selectedCharIds.includes(c.id);
+                        return (
+                          <button key={c.id} onClick={() => toggleChar(c.id)} disabled={!active && selectedCharIds.length >= 5}
+                            className={`flex w-20 shrink-0 flex-col items-center gap-1 rounded-2xl p-3 text-center transition disabled:opacity-40 ${
+                              active ? 'bg-gold text-bg-base shadow-glow' : 'bg-bg-surface text-ink ring-1 ring-white/5'
+                            }`}
+                          >
+                            <span className="text-2xl">{c.emoji || RELATION_EMOJI[c.relation]}</span>
+                            <span className="text-[11px] font-bold leading-tight">{c.name}</span>
+                          </button>
+                        );
+                      })}
+                    </div>
+                  </div>
+                )}
+
+                <section className="mb-6">
+                  <h2 className="ui-label mb-3">What should the story teach?</h2>
+                  <div className="-mx-5 overflow-x-auto px-5">
+                    <div className="flex w-max gap-2">
+                      {recommended.map((v) => (
+                        <ValuePill key={`rec2-${v}`} value={v} active={value === v} onClick={() => setValue(v)} />
+                      ))}
+                      {VALUES.filter((v) => !recommended.includes(v.key)).map((v) => (
+                        <ValuePill key={v.key} value={v.key} size="sm" active={value === v.key} onClick={() => setValue(v.key)} />
+                      ))}
+                    </div>
+                  </div>
+                </section>
+
+                <LengthStrip duration={duration} setDuration={setDuration} maxDuration={maxDuration} setUpgradeReason={setUpgradeReason} setUpgradeOpen={setUpgradeOpen} />
+
+                <motion.button
+                  whileTap={{ scale: 0.97 }}
+                  onClick={handleStart}
+                  disabled={loading || selectedCharIds.length === 0}
+                  className="w-full rounded-2xl bg-gold py-4 text-center text-base font-bold text-bg-base shadow-[0_4px_24px_rgba(240,165,0,0.3)] transition disabled:opacity-40"
+                  style={{ fontFamily: 'Nunito, sans-serif' }}
+                >
+                  {loading ? 'Weaving...' : 'Start Tonight\'s Story'}
+                </motion.button>
+                {selectedCharIds.length === 0 && (
+                  <p className="mt-2 text-center text-[10px] text-ink-dim">Pick at least one character</p>
+                )}
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
+      </motion.section>
 
       {/* Error banner */}
       {storyError && (
-        <div className="mt-4 rounded-2xl bg-negative/10 p-4 ring-1 ring-negative/20">
+        <div className="mb-6 rounded-2xl bg-negative/10 p-4 ring-1 ring-negative/20">
           <div className="flex items-start gap-3">
-            <span className="text-xl">⚠️</span>
+            <Sparkles size={18} className="text-negative mt-0.5" />
             <div className="flex-1">
               <div className="text-sm font-bold text-negative">Story failed</div>
               <div className="mt-1 text-xs text-ink-muted">{storyError}</div>
             </div>
-            <button onClick={() => setStoryError(null)} className="text-ink-dim">✕</button>
+            <button onClick={() => setStoryError(null)} className="text-ink-dim text-xs">✕</button>
           </div>
         </div>
       )}
 
-      <UpgradeModal
-        open={upgradeOpen}
-        onClose={() => setUpgradeOpen(false)}
-        reason={upgradeReason}
-      />
+      <UpgradeModal open={upgradeOpen} onClose={() => setUpgradeOpen(false)} reason={upgradeReason} />
 
+      {/* Bottom padding for nav */}
+      <div className="h-20" />
     </PageTransition>
   );
 }
 
 function LengthStrip({ duration, setDuration, maxDuration, setUpgradeReason, setUpgradeOpen }) {
   return (
-    <section className="mb-8">
-      <span className="ui-label mb-3 block">Story length</span>
-      <div className="flex gap-1.5 rounded-pill bg-bg-surface p-1 ring-1 ring-white/5">
+    <section className="mb-6">
+      <span className="text-[10px] font-bold uppercase tracking-[0.15em] text-ink-muted block mb-2">Story length</span>
+      <div className="flex gap-1.5 rounded-2xl bg-bg-surface p-1 ring-1 ring-white/5">
         {DURATIONS.map((d) => {
           const locked = !!d.locked;
           const active = duration === d.minutes;
@@ -546,25 +548,15 @@ function LengthStrip({ duration, setDuration, maxDuration, setUpgradeReason, set
             <button
               key={d.minutes}
               onClick={() => {
-                if (locked) {
-                  setUpgradeReason(`${d.minutes} min stories require a paid plan.`);
-                  setUpgradeOpen(true);
-                } else {
-                  setDuration(d.minutes);
-                }
+                if (locked) { setUpgradeReason(`${d.minutes} min stories require a paid plan.`); setUpgradeOpen(true); }
+                else setDuration(d.minutes);
               }}
-              className={`relative flex-1 rounded-pill py-2.5 text-center text-xs font-bold transition ${
-                active
-                  ? 'bg-gold text-bg-base shadow-glow'
-                  : locked
-                  ? 'text-ink-dim'
-                  : 'text-ink-muted hover:text-ink'
+              className={`relative flex-1 rounded-xl py-2.5 text-center text-xs font-bold transition ${
+                active ? 'bg-gold text-bg-base shadow-glow' : locked ? 'text-ink-dim' : 'text-ink-muted hover:text-ink'
               }`}
             >
               {d.minutes}m
-              {locked && !active && (
-                <span className="ml-0.5 text-[8px] text-gold">🔒</span>
-              )}
+              {locked && !active && <span className="ml-0.5 text-[8px] text-gold">🔒</span>}
             </button>
           );
         })}
