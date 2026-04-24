@@ -2562,7 +2562,7 @@ function WisdomAudioPanel() {
     } catch (e) { alert('Delete failed: ' + e.message); }
   };
 
-  const TRADITION_OPTIONS = ['all', 'hindu', 'muslim', 'christian', 'sikh', 'buddhist', 'jain', 'jewish'];
+  const TRADITION_OPTIONS = ['all', 'hindu', 'muslim', 'christian', 'sikh', 'buddhist', 'jain', 'jewish', 'no-belief'];
   const THEME_OPTIONS = ['all', 'compassion-animals', 'courage', 'wisdom', 'honesty', 'sharing', 'humility', 'forgiveness'];
 
   const filtered = lessons.filter(l => {
@@ -2592,7 +2592,7 @@ function WisdomAudioPanel() {
       <div className="flex gap-2 flex-wrap">
         <select value={filterTradition} onChange={e => setFilterTradition(e.target.value)}
           className="rounded-lg bg-[#1a1a28] px-3 py-1.5 text-xs font-bold text-[#f0a500] outline-none ring-1 ring-white/10">
-          {TRADITION_OPTIONS.map(t => <option key={t} value={t}>{t === 'all' ? 'All Beliefs' : t.charAt(0).toUpperCase() + t.slice(1)}</option>)}
+          {TRADITION_OPTIONS.map(t => <option key={t} value={t}>{t === 'all' ? 'All Beliefs' : t === 'no-belief' ? 'No Belief' : t.charAt(0).toUpperCase() + t.slice(1)}</option>)}
         </select>
         <select value={filterTheme} onChange={e => setFilterTheme(e.target.value)}
           className="rounded-lg bg-[#1a1a28] px-3 py-1.5 text-xs font-bold text-[#539df5] outline-none ring-1 ring-white/10">

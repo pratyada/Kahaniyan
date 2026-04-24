@@ -643,6 +643,7 @@ export const TRADITIONS = [
   { key: 'buddhist', label: 'Buddhism', icon: '☸️' },
   { key: 'jain', label: 'Jainism', icon: '🪷' },
   { key: 'jewish', label: 'Judaism', icon: '✡️' },
+  { key: 'no-belief', label: 'Universal', icon: '🌍' },
 ];
 
 export const THEMES = [

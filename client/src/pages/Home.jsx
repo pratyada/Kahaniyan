@@ -42,8 +42,13 @@ function pickTonightStory(beliefs, lessons) {
   const dayOfYear = Math.floor((Date.now() - new Date(new Date().getFullYear(), 0, 0)) / 86400000);
   let pool = lessons || CULTURAL_LESSONS;
   if (beliefs?.length > 0) {
-    const matched = pool.filter((l) => beliefs.includes(l.tradition));
+    // Show stories matching user's beliefs + universal "no-belief" stories
+    const matched = pool.filter((l) => beliefs.includes(l.tradition) || l.tradition === 'no-belief');
     if (matched.length > 0) pool = matched;
+  } else {
+    // No beliefs selected — show "no-belief" stories, fallback to all
+    const universal = pool.filter((l) => l.tradition === 'no-belief');
+    if (universal.length > 0) pool = universal;
   }
   return pool.length > 0 ? pool[dayOfYear % pool.length] : null;
 }
@@ -305,9 +310,12 @@ export default function Home() {
               const filtered = allLessons.filter((l) => l.theme === traditionTheme);
               const beliefs = profile?.beliefs || [];
               let list = filtered;
-              // Default: show only user's selected beliefs
+              // Show user's beliefs + universal; if no beliefs, show universal only
               if (beliefs.length > 0) {
-                list = list.filter((l) => beliefs.includes(l.tradition));
+                list = list.filter((l) => beliefs.includes(l.tradition) || l.tradition === 'no-belief');
+              } else {
+                const universal = list.filter((l) => l.tradition === 'no-belief');
+                if (universal.length > 0) list = universal;
               }
               return list.map((lesson) => {
                 const tradition = TRADITIONS.find((t) => t.key === lesson.tradition);
