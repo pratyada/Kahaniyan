@@ -509,13 +509,18 @@ function PlayerInner() {
                   initial={{ scale: 0.85, opacity: 0 }}
                   animate={{ scale: 1, opacity: 1 }}
                   transition={{ duration: 0.7, type: 'spring', stiffness: 100 }}
-                  className="mx-auto mb-4 grid h-36 w-36 place-items-center overflow-hidden rounded-3xl shadow-lift"
+                  className="relative mx-auto mb-4 h-36 w-36 overflow-hidden rounded-3xl shadow-lift"
                   style={{
-                    background: storyArt?.gradient || `radial-gradient(circle at 30% 30%, ${meta.color}aa, ${meta.color}22 60%, transparent)`,
                     boxShadow: `0 8px 40px ${meta.color}33, 0 0 80px ${meta.color}11`,
                   }}
                 >
-                  <span className="text-5xl opacity-60">{storyArt?.icon || meta.emoji}</span>
+                  {storyArt?.image ? (
+                    <img src={storyArt.image} alt="" className="absolute inset-0 h-full w-full object-cover" />
+                  ) : (
+                    <div className="absolute inset-0 grid place-items-center" style={{ background: storyArt?.gradient || `radial-gradient(circle at 30% 30%, ${meta.color}aa, ${meta.color}22 60%, transparent)` }}>
+                      <span className="text-5xl opacity-60">{storyArt?.icon || meta.emoji}</span>
+                    </div>
+                  )}
                 </motion.div>
               );
             })()}

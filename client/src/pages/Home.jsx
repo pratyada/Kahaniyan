@@ -223,15 +223,16 @@ export default function Home() {
           return (
         <div
           className="relative mx-auto flex flex-col items-center rounded-3xl p-6 overflow-hidden"
-          style={{
-            background: featuredArt.gradient,
-            border: '1px solid rgba(255,255,255,0.1)',
-          }}
+          style={{ border: '1px solid rgba(255,255,255,0.1)' }}
         >
-          {/* Noise texture */}
-          <div className="absolute inset-0 opacity-15" style={{ backgroundImage: 'url("data:image/svg+xml,%3Csvg viewBox=\'0 0 256 256\' xmlns=\'http://www.w3.org/2000/svg\'%3E%3Cfilter id=\'n\'%3E%3CfeTurbulence type=\'fractalNoise\' baseFrequency=\'0.9\' numOctaves=\'4\' stitchTiles=\'stitch\'/%3E%3C/filter%3E%3Crect width=\'100%25\' height=\'100%25\' filter=\'url(%23n)\' opacity=\'0.5\'/%3E%3C/svg%3E")', backgroundSize: '128px' }} />
-          {/* Large themed icon in background */}
-          <div className="absolute right-4 top-4 text-6xl opacity-15">{featuredArt.icon}</div>
+          {/* Background image or gradient */}
+          {featuredArt.image ? (
+            <img src={featuredArt.image} alt="" className="absolute inset-0 h-full w-full object-cover" loading="lazy" />
+          ) : (
+            <div className="absolute inset-0" style={{ background: featuredArt.gradient }} />
+          )}
+          {/* Dark overlay */}
+          <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/40 to-black/20" />
 
           {/* Moon play button */}
           <motion.button
@@ -318,14 +319,16 @@ export default function Home() {
                     className="group relative flex w-48 shrink-0 flex-col justify-end overflow-hidden rounded-2xl p-3 text-left"
                     style={{ minHeight: '11rem' }}
                   >
-                    {/* Gradient background */}
-                    <div className="absolute inset-0 transition-transform duration-500 group-hover:scale-105" style={{ background: art.gradient }} />
-                    {/* Noise texture overlay */}
-                    <div className="absolute inset-0 opacity-20" style={{ backgroundImage: 'url("data:image/svg+xml,%3Csvg viewBox=\'0 0 256 256\' xmlns=\'http://www.w3.org/2000/svg\'%3E%3Cfilter id=\'n\'%3E%3CfeTurbulence type=\'fractalNoise\' baseFrequency=\'0.9\' numOctaves=\'4\' stitchTiles=\'stitch\'/%3E%3C/filter%3E%3Crect width=\'100%25\' height=\'100%25\' filter=\'url(%23n)\' opacity=\'0.5\'/%3E%3C/svg%3E")', backgroundSize: '128px' }} />
-                    {/* Large themed icon */}
-                    <div className="absolute right-2 top-2 text-4xl opacity-30 transition-opacity group-hover:opacity-50">{art.icon}</div>
+                    {/* Background image with gradient fallback */}
+                    {art.image ? (
+                      <img src={art.image} alt="" className="absolute inset-0 h-full w-full object-cover transition-transform duration-500 group-hover:scale-110" loading="lazy" />
+                    ) : (
+                      <div className="absolute inset-0 transition-transform duration-500 group-hover:scale-105" style={{ background: art.gradient }} />
+                    )}
+                    {/* Dark overlay for text readability */}
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-black/10" />
                     {/* Play button */}
-                    <div className="absolute right-3 bottom-3 grid h-9 w-9 place-items-center rounded-full bg-white/20 backdrop-blur-sm text-white transition group-hover:bg-white/40">
+                    <div className="absolute right-3 top-3 grid h-9 w-9 place-items-center rounded-full bg-black/30 backdrop-blur-sm text-white/80 transition group-hover:bg-white/20 group-hover:text-white">
                       <Play size={14} fill="currentColor" />
                     </div>
                     {/* Tradition badge */}

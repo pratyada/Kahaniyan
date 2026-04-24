@@ -164,10 +164,11 @@ function LibraryCard({ story, onPlay, onShare, onDelete, isSharing }) {
     <div className="group relative overflow-hidden rounded-2xl" style={{ border: '1px solid rgba(255,255,255,0.06)' }}>
       {/* Album art cover — tap to play */}
       <button onClick={onPlay} className="relative block w-full text-left" style={{ aspectRatio: '1 / 1' }}>
-        <div className="absolute inset-0 transition-transform duration-500 group-hover:scale-105" style={{ background: art.gradient }} />
-        <div className="absolute inset-0 opacity-15" style={{ backgroundImage: 'url("data:image/svg+xml,%3Csvg viewBox=\'0 0 256 256\' xmlns=\'http://www.w3.org/2000/svg\'%3E%3Cfilter id=\'n\'%3E%3CfeTurbulence type=\'fractalNoise\' baseFrequency=\'0.9\' numOctaves=\'4\' stitchTiles=\'stitch\'/%3E%3C/filter%3E%3Crect width=\'100%25\' height=\'100%25\' filter=\'url(%23n)\' opacity=\'0.5\'/%3E%3C/svg%3E")', backgroundSize: '128px' }} />
-        {/* Large icon */}
-        <div className="absolute right-3 top-3 text-3xl opacity-25">{art.icon}</div>
+        {art.image ? (
+          <img src={art.image} alt="" className="absolute inset-0 h-full w-full object-cover transition-transform duration-500 group-hover:scale-110" loading="lazy" />
+        ) : (
+          <div className="absolute inset-0 transition-transform duration-500 group-hover:scale-105" style={{ background: art.gradient }} />
+        )}
         {/* Play overlay */}
         <div className="absolute inset-0 flex items-center justify-center bg-black/0 transition group-hover:bg-black/20">
           <div className="grid h-12 w-12 place-items-center rounded-full bg-white/20 opacity-0 backdrop-blur-sm transition group-hover:opacity-100">
