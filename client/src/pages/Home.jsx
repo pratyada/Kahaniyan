@@ -354,105 +354,6 @@ export default function Home() {
       )}
       </AnimatePresence>
 
-      {/* ═══ WRITE YOUR OWN — Expandable ═══ */}
-      <AnimatePresence>
-      {!castOpen && (
-      <motion.section
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        exit={{ opacity: 0, height: 0, marginBottom: 0 }}
-        transition={{ duration: 0.3 }}
-        className="mb-4 overflow-hidden"
-      >
-        <button
-          onClick={() => { setWriteOpen(!writeOpen); setCastOpen(false); }}
-          className="flex w-full items-center justify-between rounded-2xl p-4 transition"
-          style={{
-            background: writeOpen ? 'linear-gradient(135deg, rgba(240,165,0,0.1), rgba(240,165,0,0.03))' : 'rgba(255,255,255,0.02)',
-            border: writeOpen ? '1px solid rgba(240,165,0,0.2)' : '1px solid rgba(255,255,255,0.05)',
-          }}
-        >
-          <div className="flex items-center gap-3">
-            <div className="grid h-10 w-10 place-items-center rounded-xl bg-gold/10 text-gold">
-              <PenLine size={18} />
-            </div>
-            <div className="text-left">
-              <p className="text-sm font-bold text-ink" style={{ fontFamily: 'Fraunces, serif' }}>Write my story</p>
-              <p className="text-[10px] text-ink-muted">Describe your child's day</p>
-            </div>
-          </div>
-          {writeOpen ? <ChevronUp size={16} className="text-gold" /> : <ChevronDown size={16} className="text-ink-dim" />}
-        </button>
-
-        <AnimatePresence>
-          {writeOpen && (
-            <motion.div
-              initial={{ height: 0, opacity: 0 }}
-              animate={{ height: 'auto', opacity: 1 }}
-              exit={{ height: 0, opacity: 0 }}
-              transition={{ duration: 0.3 }}
-              className="overflow-hidden"
-            >
-              <div className="pt-4 px-1">
-                <WhisperBox
-                  value={whisper}
-                  onChange={setWhisper}
-                  overrideValue={whisperOverridesValue}
-                  onToggleOverride={setWhisperOverridesValue}
-                />
-
-                {/* Auto-pick toggle */}
-                <label className="mb-5 flex cursor-pointer items-center justify-between gap-3 rounded-2xl bg-bg-surface p-3 ring-1 ring-white/5">
-                  <div className="min-w-0 flex-1">
-                    <div className="font-ui text-xs font-bold text-ink">Auto-pick the lesson</div>
-                    <div className="mt-0.5 text-[11px] text-ink-muted">
-                      {whisperOverridesValue ? 'We\'ll choose the best value for you' : 'Pick a value below'}
-                    </div>
-                  </div>
-                  <span onClick={(e) => { e.preventDefault(); setWhisperOverridesValue(!whisperOverridesValue); }}
-                    className={`relative inline-flex h-7 w-12 shrink-0 items-center rounded-full transition ${whisperOverridesValue ? 'bg-gold' : 'bg-bg-card ring-1 ring-white/10'}`}>
-                    <span className={`inline-block h-5 w-5 transform rounded-full bg-bg-base transition ${whisperOverridesValue ? 'translate-x-6' : 'translate-x-1'}`} />
-                  </span>
-                </label>
-
-                {!whisperOverridesValue && (
-                  <section className="mb-6">
-                    <h2 className="ui-label mb-3">What should the story teach?</h2>
-                    <div className="relative -mx-5">
-                      <div className="overflow-x-auto px-5 py-1 scrollbar-hide">
-                        <div className="flex w-max gap-2.5 pr-8">
-                          {recommended.map((v) => (
-                            <ValuePill key={`rec-${v}`} value={v} active={value === v} onClick={() => setValue(v)} />
-                          ))}
-                          {VALUES.filter((v) => !recommended.includes(v.key)).map((v) => (
-                            <ValuePill key={v.key} value={v.key} active={value === v.key} onClick={() => setValue(v.key)} />
-                          ))}
-                        </div>
-                      </div>
-                      <div className="pointer-events-none absolute right-0 top-0 bottom-0 w-10 bg-gradient-to-l from-bg-base to-transparent" />
-                    </div>
-                  </section>
-                )}
-
-                <LengthStrip duration={duration} setDuration={setDuration} maxDuration={maxDuration} setUpgradeReason={setUpgradeReason} setUpgradeOpen={setUpgradeOpen} />
-
-                <motion.button
-                  whileTap={{ scale: 0.97 }}
-                  onClick={handleStart}
-                  disabled={loading}
-                  className="w-full rounded-2xl bg-gold py-4 text-center text-base font-bold text-bg-base shadow-[0_4px_24px_rgba(240,165,0,0.3)] transition disabled:opacity-40"
-                  style={{ fontFamily: 'Nunito, sans-serif' }}
-                >
-                  {loading ? 'Weaving...' : 'Start Tonight\'s Story'}
-                </motion.button>
-              </div>
-            </motion.div>
-          )}
-        </AnimatePresence>
-      </motion.section>
-      )}
-      </AnimatePresence>
-
       {/* ═══ CHOOSE CAST — Expandable ═══ */}
       <motion.section
         initial={{ opacity: 0, y: 20 }}
@@ -557,6 +458,114 @@ export default function Home() {
           )}
         </AnimatePresence>
       </motion.section>
+
+      {/* ═══ WRITE YOUR OWN — Expandable ═══ */}
+      <AnimatePresence>
+      {!castOpen && (
+      <motion.section
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        exit={{ opacity: 0, height: 0, marginBottom: 0 }}
+        transition={{ duration: 0.3 }}
+        className="mb-4 overflow-hidden"
+      >
+        <button
+          onClick={() => {
+            setWriteOpen(!writeOpen);
+            setCastOpen(false);
+            if (!writeOpen) {
+              setTimeout(() => {
+                const ta = document.querySelector('[data-whisper-textarea]');
+                if (ta) { ta.scrollIntoView({ behavior: 'smooth', block: 'center' }); ta.focus(); }
+              }, 400);
+            }
+          }}
+          className="flex w-full items-center justify-between rounded-2xl p-4 transition"
+          style={{
+            background: writeOpen ? 'linear-gradient(135deg, rgba(240,165,0,0.1), rgba(240,165,0,0.03))' : 'rgba(255,255,255,0.02)',
+            border: writeOpen ? '1px solid rgba(240,165,0,0.2)' : '1px solid rgba(255,255,255,0.05)',
+          }}
+        >
+          <div className="flex items-center gap-3">
+            <div className="grid h-10 w-10 place-items-center rounded-xl bg-gold/10 text-gold">
+              <PenLine size={18} />
+            </div>
+            <div className="text-left">
+              <p className="text-sm font-bold text-ink" style={{ fontFamily: 'Fraunces, serif' }}>Write my story</p>
+              <p className="text-[10px] text-ink-muted">Describe your child's day</p>
+            </div>
+          </div>
+          {writeOpen ? <ChevronUp size={16} className="text-gold" /> : <ChevronDown size={16} className="text-ink-dim" />}
+        </button>
+
+        <AnimatePresence>
+          {writeOpen && (
+            <motion.div
+              initial={{ height: 0, opacity: 0 }}
+              animate={{ height: 'auto', opacity: 1 }}
+              exit={{ height: 0, opacity: 0 }}
+              transition={{ duration: 0.3 }}
+              className="overflow-hidden"
+            >
+              <div className="pt-4 px-1">
+                <WhisperBox
+                  value={whisper}
+                  onChange={setWhisper}
+                  overrideValue={whisperOverridesValue}
+                  onToggleOverride={setWhisperOverridesValue}
+                />
+
+                {/* Auto-pick toggle */}
+                <label className="mb-5 flex cursor-pointer items-center justify-between gap-3 rounded-2xl bg-bg-surface p-3 ring-1 ring-white/5">
+                  <div className="min-w-0 flex-1">
+                    <div className="font-ui text-xs font-bold text-ink">Auto-pick the lesson</div>
+                    <div className="mt-0.5 text-[11px] text-ink-muted">
+                      {whisperOverridesValue ? 'We\'ll choose the best value for you' : 'Pick a value below'}
+                    </div>
+                  </div>
+                  <span onClick={(e) => { e.preventDefault(); setWhisperOverridesValue(!whisperOverridesValue); }}
+                    className={`relative inline-flex h-7 w-12 shrink-0 items-center rounded-full transition ${whisperOverridesValue ? 'bg-gold' : 'bg-bg-card ring-1 ring-white/10'}`}>
+                    <span className={`inline-block h-5 w-5 transform rounded-full bg-bg-base transition ${whisperOverridesValue ? 'translate-x-6' : 'translate-x-1'}`} />
+                  </span>
+                </label>
+
+                {!whisperOverridesValue && (
+                  <section className="mb-6">
+                    <h2 className="ui-label mb-3">What should the story teach?</h2>
+                    <div className="relative -mx-5">
+                      <div className="overflow-x-auto px-5 py-1 scrollbar-hide">
+                        <div className="flex w-max gap-2.5 pr-8">
+                          {recommended.map((v) => (
+                            <ValuePill key={`rec-${v}`} value={v} active={value === v} onClick={() => setValue(v)} />
+                          ))}
+                          {VALUES.filter((v) => !recommended.includes(v.key)).map((v) => (
+                            <ValuePill key={v.key} value={v.key} active={value === v.key} onClick={() => setValue(v.key)} />
+                          ))}
+                        </div>
+                      </div>
+                      <div className="pointer-events-none absolute right-0 top-0 bottom-0 w-10 bg-gradient-to-l from-bg-base to-transparent" />
+                    </div>
+                  </section>
+                )}
+
+                <LengthStrip duration={duration} setDuration={setDuration} maxDuration={maxDuration} setUpgradeReason={setUpgradeReason} setUpgradeOpen={setUpgradeOpen} />
+
+                <motion.button
+                  whileTap={{ scale: 0.97 }}
+                  onClick={handleStart}
+                  disabled={loading}
+                  className="w-full rounded-2xl bg-gold py-4 text-center text-base font-bold text-bg-base shadow-[0_4px_24px_rgba(240,165,0,0.3)] transition disabled:opacity-40"
+                  style={{ fontFamily: 'Nunito, sans-serif' }}
+                >
+                  {loading ? 'Weaving...' : 'Start Tonight\'s Story'}
+                </motion.button>
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
+      </motion.section>
+      )}
+      </AnimatePresence>
 
       {/* Error banner */}
       {storyError && (
