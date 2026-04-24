@@ -1,14 +1,15 @@
 import { useEffect, useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
+import { Play, Share2, Trash2, BookOpen } from 'lucide-react';
 import PageTransition from '../components/PageTransition.jsx';
-import ValuePill from '../components/ValuePill.jsx';
 import { getLibrary, pruneArchive, removeFromLibrary, loadAndMergeLibrary } from '../utils/storyCache.js';
 import { shareStoryToFirestore } from '../utils/shareStory.js';
 import { archiveDaysFor } from '../utils/tierGate.js';
 import { useFamilyProfile } from '../hooks/useFamilyProfile.js';
 import { usePlayer } from '../hooks/usePlayer.jsx';
 import { VALUES, valueMeta } from '../utils/constants.js';
+import { getStoryArt } from '../utils/storyArt.js';
 
 export default function Library() {
   const navigate = useNavigate();
@@ -21,7 +22,6 @@ export default function Library() {
 
   useEffect(() => {
     pruneArchive(archiveDaysFor(profile?.tier || 'free'));
-    // Load local first (instant), then merge with Firestore (cross-device)
     setLibrary(getLibrary());
     loadAndMergeLibrary().then((merged) => setLibrary(merged));
   }, [profile?.tier]);
@@ -44,11 +44,7 @@ export default function Library() {
         country: profile?.country || '',
       });
       if (navigator.share) {
-        await navigator.share({
-          title: `${story.title} — My Sleepy Tale`,
-          text: `Listen to this bedtime story! "${story.title}"`,
-          url,
-        });
+        await navigator.share({ title: `${story.title} — My Sleepy Tale`, text: `Listen to this bedtime story!`, url });
       } else {
         await navigator.clipboard.writeText(url);
         showToast('Link copied!');
@@ -59,18 +55,23 @@ export default function Library() {
     setSharing(null);
   };
 
-  const showToast = (msg) => {
-    setToast(msg);
-    setTimeout(() => setToast(null), 2000);
-  };
+  const showToast = (msg) => { setToast(msg); setTimeout(() => setToast(null), 2000); };
+
+  // Unique values present in library for filter chips
+  const availableValues = useMemo(() => {
+    const vals = new Set(library.map((s) => s.value).filter(Boolean));
+    return VALUES.filter((v) => vals.has(v.key));
+  }, [library]);
 
   return (
     <PageTransition className="page-scroll px-5 pt-10 safe-top">
-      <header className="mb-4">
-        <p className="ui-label">Library</p>
-        <h1 className="display-title mt-1 text-ink">
-          Stories <span className="text-gold">{profile?.childName}</span> has heard
+      <header className="mb-5">
+        <h1 className="text-2xl font-bold text-ink" style={{ fontFamily: 'Fraunces, serif' }}>
+          {profile?.childName ? `${profile.childName}'s` : 'Your'} <span className="text-gold">Stories</span>
         </h1>
+        <p className="mt-1 text-xs text-ink-muted" style={{ fontFamily: 'Nunito, sans-serif' }}>
+          {library.length} {library.length === 1 ? 'story' : 'stories'} saved
+        </p>
       </header>
 
       {/* Toast */}
@@ -83,84 +84,114 @@ export default function Library() {
         )}
       </AnimatePresence>
 
-      {/* Filters */}
-      <div className="mb-4 -mx-5 overflow-x-auto px-5">
-        <div className="flex w-max gap-2">
-          <button onClick={() => setFilter(null)}
-            className={`btn-pill px-4 py-2 text-sm font-bold ${!filter ? 'bg-gold text-bg-base' : 'bg-bg-elevated text-ink'}`}>
-            All
-          </button>
-          {VALUES.map((v) => (
-            <ValuePill key={v.key} value={v.key} size="sm" active={filter === v.key}
-              onClick={() => setFilter(filter === v.key ? null : v.key)} />
-          ))}
+      {/* Filter chips — only show values that exist in library */}
+      {availableValues.length > 1 && (
+        <div className="mb-4 -mx-5 overflow-x-auto px-5">
+          <div className="flex w-max gap-2">
+            <button onClick={() => setFilter(null)}
+              className={`rounded-full px-3.5 py-1.5 text-xs font-bold transition active:scale-95 ${
+                !filter ? 'bg-gold text-bg-base' : 'bg-white/5 text-ink-muted ring-1 ring-white/10'
+              }`}>
+              All
+            </button>
+            {availableValues.map((v) => {
+              const meta = valueMeta(v.key);
+              return (
+                <button key={v.key} onClick={() => setFilter(filter === v.key ? null : v.key)}
+                  className={`rounded-full px-3.5 py-1.5 text-xs font-bold transition active:scale-95 ${
+                    filter === v.key ? 'bg-gold text-bg-base' : 'bg-white/5 text-ink-muted ring-1 ring-white/10'
+                  }`}>
+                  {meta.emoji} {meta.label}
+                </button>
+              );
+            })}
+          </div>
         </div>
-      </div>
-
-      <p className="mb-3 text-xs text-ink-muted">
-        {filtered.length} {filtered.length === 1 ? 'story' : 'stories'} · tap to replay · share with community
-      </p>
+      )}
 
       {filtered.length === 0 ? (
-        <div className="card-elevated mt-8 text-center">
-          <div className="mb-4 text-5xl">📖</div>
-          <p className="font-display text-xl font-bold text-ink">
-            {library.length === 0 ? 'Your library is empty' : 'No stories with that value yet'}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="mt-12 flex flex-col items-center text-center"
+        >
+          <div className="mb-4 grid h-20 w-20 place-items-center rounded-full bg-gold/10">
+            <BookOpen size={32} className="text-gold" />
+          </div>
+          <p className="text-lg font-bold text-ink" style={{ fontFamily: 'Fraunces, serif' }}>
+            {library.length === 0 ? 'Your library is empty' : 'No stories match'}
           </p>
           <p className="mt-2 text-sm text-ink-muted">
-            {library.length === 0 ? "Tap Tonight to weave your child's first bedtime story." : 'Try a different filter.'}
+            {library.length === 0 ? 'Tap the moon on Tonight to play your first story.' : 'Try a different filter.'}
           </p>
-          <button onClick={() => navigate('/')} className="btn-primary mt-5">
-            {library.length === 0 ? 'Weave first story' : 'Back to Tonight'}
+          <button onClick={() => navigate('/')}
+            className="mt-5 rounded-2xl bg-gold px-6 py-3 text-sm font-bold text-bg-base transition active:scale-95">
+            Go to Tonight
           </button>
-        </div>
+        </motion.div>
       ) : (
-        <div className="space-y-3">
-          {filtered.map((story) => (
-            <LibraryCard key={story.id} story={story}
-              onPlay={() => { load(story); navigate('/player'); }}
-              onShare={() => handleShare(story)}
-              onDelete={() => handleDelete(story.id)}
-              isSharing={sharing === story.id} />
+        <div className="grid grid-cols-2 gap-3">
+          {filtered.map((story, i) => (
+            <motion.div
+              key={story.id}
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: i * 0.05 }}
+            >
+              <LibraryCard
+                story={story}
+                onPlay={() => { load(story); navigate('/player'); }}
+                onShare={() => handleShare(story)}
+                onDelete={() => handleDelete(story.id)}
+                isSharing={sharing === story.id}
+              />
+            </motion.div>
           ))}
         </div>
       )}
 
+      <div className="h-20" />
     </PageTransition>
   );
 }
 
 function LibraryCard({ story, onPlay, onShare, onDelete, isSharing }) {
   const meta = valueMeta(story.value);
+  const art = getStoryArt(story.id?.replace('lesson_', '') || '');
   const date = new Date(story.createdAt).toLocaleDateString(undefined, { month: 'short', day: 'numeric' });
 
   return (
-    <div className="rounded-2xl bg-bg-surface shadow-card">
-      <button onClick={onPlay} className="flex w-full items-center gap-3 p-3 text-left">
-        <div className="relative grid h-16 w-16 shrink-0 place-items-center overflow-hidden rounded-xl text-2xl"
-          style={{ background: `linear-gradient(135deg, ${meta.color}55, ${meta.color}11)` }}>
-          <span>{meta.emoji}</span>
-        </div>
-        <div className="min-w-0 flex-1">
-          <div className="truncate font-ui text-sm font-bold text-ink">{story.title || 'Untitled Story'}</div>
-          <div className="mt-1 flex items-center gap-2 text-xs text-ink-muted">
-            <span>{meta.label}</span>
-            <span className="h-1 w-1 rounded-full bg-ink-dim" />
-            <span>{story.estimatedMinutes || '?'} min</span>
-            <span className="h-1 w-1 rounded-full bg-ink-dim" />
-            <span>{date}</span>
+    <div className="group relative overflow-hidden rounded-2xl" style={{ border: '1px solid rgba(255,255,255,0.06)' }}>
+      {/* Album art cover — tap to play */}
+      <button onClick={onPlay} className="relative block w-full text-left" style={{ aspectRatio: '1 / 1' }}>
+        <div className="absolute inset-0 transition-transform duration-500 group-hover:scale-105" style={{ background: art.gradient }} />
+        <div className="absolute inset-0 opacity-15" style={{ backgroundImage: 'url("data:image/svg+xml,%3Csvg viewBox=\'0 0 256 256\' xmlns=\'http://www.w3.org/2000/svg\'%3E%3Cfilter id=\'n\'%3E%3CfeTurbulence type=\'fractalNoise\' baseFrequency=\'0.9\' numOctaves=\'4\' stitchTiles=\'stitch\'/%3E%3C/filter%3E%3Crect width=\'100%25\' height=\'100%25\' filter=\'url(%23n)\' opacity=\'0.5\'/%3E%3C/svg%3E")', backgroundSize: '128px' }} />
+        {/* Large icon */}
+        <div className="absolute right-3 top-3 text-3xl opacity-25">{art.icon}</div>
+        {/* Play overlay */}
+        <div className="absolute inset-0 flex items-center justify-center bg-black/0 transition group-hover:bg-black/20">
+          <div className="grid h-12 w-12 place-items-center rounded-full bg-white/20 opacity-0 backdrop-blur-sm transition group-hover:opacity-100">
+            <Play size={20} fill="white" stroke="none" />
           </div>
         </div>
-        <span className="grid h-10 w-10 shrink-0 place-items-center rounded-full bg-bg-card text-gold">▶</span>
+        {/* Bottom info */}
+        <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent p-3 pt-8">
+          <p className="line-clamp-2 text-sm font-bold leading-snug text-white" style={{ fontFamily: 'Fraunces, serif', textShadow: '0 1px 3px rgba(0,0,0,0.5)' }}>
+            {story.title || 'Untitled Story'}
+          </p>
+          <p className="mt-0.5 text-[10px] text-white/60">{meta.label} · {story.estimatedMinutes || '?'}m · {date}</p>
+        </div>
       </button>
-      <div className="flex items-center gap-2 border-t border-white/5 px-3 py-2">
+      {/* Actions row */}
+      <div className="flex items-center gap-1 bg-bg-surface/80 px-2 py-1.5">
         <button onClick={onShare} disabled={isSharing}
-          className="flex items-center gap-1.5 rounded-full bg-gold/10 px-3 py-1.5 text-[11px] font-bold text-gold transition active:scale-95 disabled:opacity-50">
-          {isSharing ? <span className="inline-block h-3 w-3 animate-spin rounded-full border border-gold border-t-transparent" /> : '↗'} Share
+          className="flex items-center gap-1 rounded-full px-2.5 py-1 text-[10px] font-bold text-gold transition active:scale-95 disabled:opacity-50">
+          <Share2 size={11} /> Share
         </button>
-        <button onClick={() => { if (confirm('Remove from library?')) onDelete(); }}
-          className="flex items-center gap-1.5 rounded-full bg-white/5 px-3 py-1.5 text-[11px] font-bold text-ink-muted transition active:scale-95">
-          Remove
+        <div className="flex-1" />
+        <button onClick={() => { if (confirm('Remove?')) onDelete(); }}
+          className="grid h-7 w-7 place-items-center rounded-full text-ink-dim transition hover:text-negative active:scale-95">
+          <Trash2 size={12} />
         </button>
       </div>
     </div>
