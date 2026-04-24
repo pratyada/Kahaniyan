@@ -73,8 +73,9 @@ export default function Home() {
   const [writeOpen, setWriteOpen] = useState(false);
   const [castOpen, setCastOpen] = useState(false);
 
-  // Pre-generated wisdom audio
+  // Pre-generated wisdom audio + images
   const [wisdomAudioUrls, setWisdomAudioUrls] = useState({});
+  const [wisdomImageUrls, setWisdomImageUrls] = useState({});
   useEffect(() => {
     (async () => {
       try {
@@ -83,6 +84,8 @@ export default function Home() {
         const { doc: fdoc, getDoc: fget } = await import('firebase/firestore');
         const snap = await fget(fdoc(fireDb, 'config', 'wisdomAudio'));
         if (snap.exists()) setWisdomAudioUrls(snap.data());
+        const imgSnap = await fget(fdoc(fireDb, 'config', 'wisdomImages'));
+        if (imgSnap.exists()) setWisdomImageUrls(imgSnap.data());
       } catch {}
     })();
   }, []);
@@ -225,9 +228,9 @@ export default function Home() {
           className="relative mx-auto flex flex-col items-center rounded-3xl p-6 overflow-hidden"
           style={{ border: '1px solid rgba(255,255,255,0.1)' }}
         >
-          {/* Background image or gradient */}
-          {featuredArt.image ? (
-            <img src={featuredArt.image} alt="" className="absolute inset-0 h-full w-full object-cover" loading="lazy" />
+          {/* Background image: Firestore DALL-E > hardcoded > gradient */}
+          {(wisdomImageUrls[tonightStory?.id] || featuredArt.image) ? (
+            <img src={wisdomImageUrls[tonightStory?.id] || featuredArt.image} alt="" className="absolute inset-0 h-full w-full object-cover" loading="lazy" />
           ) : (
             <div className="absolute inset-0" style={{ background: featuredArt.gradient }} />
           )}
@@ -319,9 +322,9 @@ export default function Home() {
                     className="group relative flex w-48 shrink-0 flex-col justify-end overflow-hidden rounded-2xl p-3 text-left"
                     style={{ minHeight: '11rem' }}
                   >
-                    {/* Background image with gradient fallback */}
-                    {art.image ? (
-                      <img src={art.image} alt="" className="absolute inset-0 h-full w-full object-cover transition-transform duration-500 group-hover:scale-110" loading="lazy" />
+                    {/* Background image: Firestore DALL-E > hardcoded > gradient */}
+                    {(wisdomImageUrls[lesson.id] || art.image) ? (
+                      <img src={wisdomImageUrls[lesson.id] || art.image} alt="" className="absolute inset-0 h-full w-full object-cover transition-transform duration-500 group-hover:scale-110" loading="lazy" />
                     ) : (
                       <div className="absolute inset-0 transition-transform duration-500 group-hover:scale-105" style={{ background: art.gradient }} />
                     )}

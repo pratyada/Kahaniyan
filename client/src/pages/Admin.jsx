@@ -2438,6 +2438,7 @@ function LabSelect({ label, value, onChange, options }) {
 
 function WisdomAudioPanel() {
   const [urls, setUrls] = useState({});
+  const [imageUrls, setImageUrls] = useState({});
   const [status, setStatus] = useState({});
   const [generating, setGenerating] = useState(null);
   const [lessons, setLessons] = useState([]);
@@ -2451,6 +2452,8 @@ function WisdomAudioPanel() {
         if (!db) return;
         const snap = await getDoc(doc(db, 'config', 'wisdomAudio'));
         if (snap.exists()) setUrls(snap.data());
+        const imgSnap = await getDoc(doc(db, 'config', 'wisdomImages'));
+        if (imgSnap.exists()) setImageUrls(imgSnap.data());
       } catch {}
     })();
   }, []);
@@ -2496,41 +2499,112 @@ function WisdomAudioPanel() {
     }
   };
 
+  // Image generation via DALL-E 3
+  const generateImage = async (lesson) => {
+    setGenerating(lesson.id + '_img');
+    setStatus(s => ({ ...s, [lesson.id]: 'generating image...' }));
+    try {
+      const { getStoryArt } = await import('../utils/storyArt.js');
+      const art = getStoryArt(lesson.id);
+      const prompt = art.prompt || `A scene from the story "${lesson.title}"`;
+
+      const res = await fetch('/api/generate-story-image', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ prompt }),
+      });
+      if (!res.ok) { setStatus(s => ({ ...s, [lesson.id]: `Image failed (${res.status})` })); setGenerating(null); return; }
+      const { imageUrl: dalleUrl } = await res.json();
+
+      // Download the DALL-E image and upload to Firebase Storage (DALL-E URLs expire)
+      setStatus(s => ({ ...s, [lesson.id]: 'uploading image...' }));
+      const imgRes = await fetch(dalleUrl);
+      const imgBlob = await imgRes.blob();
+      const { ref, uploadBytes, getDownloadURL } = await import('firebase/storage');
+      const { storage, db: fireDb } = await import('../lib/firebase.js');
+      const storageRef = ref(storage, `wisdom-images/${lesson.id}.png`);
+      await uploadBytes(storageRef, imgBlob, { contentType: 'image/png' });
+      const permanentUrl = await getDownloadURL(storageRef);
+
+      // Save to Firestore
+      const { doc: fdoc, setDoc: fset } = await import('firebase/firestore');
+      await fset(fdoc(fireDb, 'config', 'wisdomImages'), { [lesson.id]: permanentUrl }, { merge: true });
+
+      setImageUrls(u => ({ ...u, [lesson.id]: permanentUrl }));
+      setStatus(s => ({ ...s, [lesson.id]: 'done' }));
+    } catch (e) {
+      setStatus(s => ({ ...s, [lesson.id]: e.message }));
+    }
+    setGenerating(null);
+  };
+
+  const generateAllImages = async () => {
+    for (const lesson of lessons) {
+      if (imageUrls[lesson.id]) continue;
+      await generateImage(lesson);
+    }
+  };
+
   const cached = lessons.filter(l => urls[l.id]).length;
+  const imagesCached = lessons.filter(l => imageUrls[l.id]).length;
 
   return (
     <div className="space-y-4">
       <div className="flex items-center justify-between rounded-2xl bg-[#1a1a28] p-4">
         <div>
-          <h3 className="text-sm font-bold text-[#f5f0e8]">Pre-generate Wisdom Audio</h3>
-          <p className="text-xs text-[#6e6a63]">{cached}/{lessons.length} cached. One-time cost, then free forever.</p>
+          <h3 className="text-sm font-bold text-[#f5f0e8]">Wisdom Audio & Images</h3>
+          <p className="text-xs text-[#6e6a63]">Audio: {cached}/{lessons.length} · Images: {imagesCached}/{lessons.length}</p>
         </div>
-        <button onClick={generateAll} disabled={!!generating}
-          className="rounded-full bg-[#f0a500] px-5 py-2 text-xs font-bold text-[#0a0a0f] disabled:opacity-50">
-          {generating ? 'Generating...' : `Generate ${lessons.length - cached} Missing`}
-        </button>
+        <div className="flex gap-2">
+          <button onClick={generateAllImages} disabled={!!generating}
+            className="rounded-full bg-[#539df5] px-4 py-2 text-xs font-bold text-white disabled:opacity-50">
+            {generating?.endsWith('_img') ? 'Generating...' : `${lessons.length - imagesCached} Images`}
+          </button>
+          <button onClick={generateAll} disabled={!!generating}
+            className="rounded-full bg-[#f0a500] px-4 py-2 text-xs font-bold text-[#0a0a0f] disabled:opacity-50">
+            {generating && !generating.endsWith('_img') ? 'Generating...' : `${lessons.length - cached} Audio`}
+          </button>
+        </div>
       </div>
       <div className="space-y-2">
         {lessons.map(l => (
-          <div key={l.id} className="flex items-center gap-3 rounded-xl bg-[#1a1a28] p-3">
+          <div key={l.id} className="flex items-start gap-3 rounded-xl bg-[#1a1a28] p-3">
+            {/* Image preview */}
+            <div className="h-14 w-14 shrink-0 overflow-hidden rounded-lg bg-[#0a0a0f]">
+              {imageUrls[l.id] ? (
+                <img src={imageUrls[l.id]} alt="" className="h-full w-full object-cover" />
+              ) : (
+                <div className="grid h-full w-full place-items-center text-lg opacity-30">🖼️</div>
+              )}
+            </div>
             <div className="flex-1 min-w-0">
               <div className="text-xs font-bold text-[#f5f0e8] truncate">{l.title}</div>
               <div className="text-[10px] text-[#6e6a63]">{l.tradition}</div>
-            </div>
-            {urls[l.id] ? (
-              <div className="flex items-center gap-2">
-                <audio src={urls[l.id]} controls className="h-8 w-32" />
-                <span className="text-[10px] font-bold text-[#7ad9a1]">Cached</span>
+              <div className="mt-1 flex items-center gap-2">
+                {/* Audio status */}
+                {urls[l.id] ? (
+                  <span className="text-[9px] font-bold text-[#7ad9a1]">Audio ✓</span>
+                ) : (
+                  <button onClick={() => generateOne(l)} disabled={!!generating}
+                    className="text-[9px] font-bold text-[#f0a500] disabled:opacity-50">
+                    {generating === l.id ? '...' : 'Gen Audio'}
+                  </button>
+                )}
+                <span className="text-[#6e6a63]">·</span>
+                {/* Image status */}
+                {imageUrls[l.id] ? (
+                  <span className="text-[9px] font-bold text-[#7ad9a1]">Image ✓</span>
+                ) : (
+                  <button onClick={() => generateImage(l)} disabled={!!generating}
+                    className="text-[9px] font-bold text-[#539df5] disabled:opacity-50">
+                    {generating === l.id + '_img' ? '...' : 'Gen Image'}
+                  </button>
+                )}
               </div>
-            ) : (
-              <button onClick={() => generateOne(l)} disabled={!!generating}
-                className="shrink-0 rounded-full bg-[#f0a500]/15 px-3 py-1 text-[10px] font-bold text-[#f0a500] disabled:opacity-50">
-                {generating === l.id ? 'Generating...' : 'Generate'}
-              </button>
-            )}
-            {status[l.id] && status[l.id] !== 'done' && (
-              <span className="text-[9px] text-[#6e6a63]">{status[l.id]}</span>
-            )}
+              {status[l.id] && status[l.id] !== 'done' && (
+                <div className="mt-0.5 text-[9px] text-[#6e6a63]">{status[l.id]}</div>
+              )}
+            </div>
           </div>
         ))}
       </div>
