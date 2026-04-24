@@ -401,7 +401,21 @@ export default function Home() {
                   onToggleOverride={setWhisperOverridesValue}
                 />
 
-                {!(whisper.trim() && whisperOverridesValue) && (
+                {/* Auto-pick toggle */}
+                <label className="mb-5 flex cursor-pointer items-center justify-between gap-3 rounded-2xl bg-bg-surface p-3 ring-1 ring-white/5">
+                  <div className="min-w-0 flex-1">
+                    <div className="font-ui text-xs font-bold text-ink">Auto-pick the lesson</div>
+                    <div className="mt-0.5 text-[11px] text-ink-muted">
+                      {whisperOverridesValue ? 'We\'ll choose the best value for you' : 'Pick a value below'}
+                    </div>
+                  </div>
+                  <span onClick={(e) => { e.preventDefault(); setWhisperOverridesValue(!whisperOverridesValue); }}
+                    className={`relative inline-flex h-7 w-12 shrink-0 items-center rounded-full transition ${whisperOverridesValue ? 'bg-gold' : 'bg-bg-card ring-1 ring-white/10'}`}>
+                    <span className={`inline-block h-5 w-5 transform rounded-full bg-bg-base transition ${whisperOverridesValue ? 'translate-x-6' : 'translate-x-1'}`} />
+                  </span>
+                </label>
+
+                {!whisperOverridesValue && (
                   <section className="mb-6">
                     <h2 className="ui-label mb-3">What should the story teach?</h2>
                     <div className="relative -mx-5">
