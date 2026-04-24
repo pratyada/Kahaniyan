@@ -114,7 +114,7 @@ export default function WhisperBox({ value, onChange, overrideValue, onToggleOve
         data-whisper-textarea
         value={value}
         onChange={(e) => onChange(e.target.value.slice(0, max))}
-        onFocus={(e) => { setTimeout(() => e.target.scrollIntoView({ behavior: 'smooth', block: 'center' }), 300); }}
+        onFocus={() => {}}
         placeholder="Tell us what happened today — a worry, a win, a feeling — and we'll weave tonight's story around it."
         rows={3}
         className="w-full min-h-[80px] resize-none rounded-2xl px-4 py-3 font-story leading-relaxed text-bg-base placeholder:text-bg-base/40 outline-none ring-1 ring-gold/30"

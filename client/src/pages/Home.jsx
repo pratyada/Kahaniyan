@@ -369,8 +369,8 @@ export default function Home() {
             if (opening) {
               setTimeout(() => {
                 const ta = document.querySelector('[data-whisper-textarea]');
-                if (ta) { ta.scrollIntoView({ behavior: 'smooth', block: 'start' }); ta.focus(); }
-              }, 450);
+                if (ta) ta.focus({ preventScroll: true });
+              }, 400);
             }
           }}
           className="flex w-full items-center justify-between rounded-2xl p-4 transition"
