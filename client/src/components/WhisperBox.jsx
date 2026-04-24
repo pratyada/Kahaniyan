@@ -4,13 +4,37 @@ import { useFamilyProfile } from '../hooks/useFamilyProfile.js';
 import { db } from '../lib/firebase.js';
 
 const DEFAULT_SUGGESTIONS = [
-  { text: 'They are scared of the dark tonight', icon: '🌙', bg: 'linear-gradient(135deg, #1a1a3e, #2d2d5e)' },
-  { text: 'First day of school tomorrow', icon: '🎒', bg: 'linear-gradient(135deg, #1e3a5f, #2980b9)' },
-  { text: 'Had a fight with their best friend', icon: '💔', bg: 'linear-gradient(135deg, #4a1942, #c0392b)' },
-  { text: 'Lost their favourite toy', icon: '🧸', bg: 'linear-gradient(135deg, #3d2b1f, #8b6914)' },
-  { text: 'Wants to be an astronaut', icon: '🚀', bg: 'linear-gradient(135deg, #0f0c29, #302b63)' },
-  { text: 'Festival was today and they are happy', icon: '🎉', bg: 'linear-gradient(135deg, #614385, #516395)' },
+  { text: 'They are scared of the dark tonight', key: 'scared_dark', bg: 'linear-gradient(135deg, #1a1a3e, #2d2d5e)' },
+  { text: 'First day of school tomorrow', key: 'first_school', bg: 'linear-gradient(135deg, #1e3a5f, #2980b9)' },
+  { text: 'Had a fight with their best friend', key: 'friend_fight', bg: 'linear-gradient(135deg, #4a1942, #c0392b)' },
+  { text: 'Lost their favourite toy', key: 'lost_toy', bg: 'linear-gradient(135deg, #3d2b1f, #8b6914)' },
+  { text: 'Wants to be an astronaut', key: 'astronaut', bg: 'linear-gradient(135deg, #0f0c29, #302b63)' },
+  { text: 'Festival was today and they are happy', key: 'festival', bg: 'linear-gradient(135deg, #614385, #516395)' },
 ];
+
+// Fetch idea images from Firestore
+let _ideaImagesCache = null;
+let _ideaFetchPromise = null;
+function useIdeaImages() {
+  const [images, setImages] = useState(_ideaImagesCache || {});
+  useEffect(() => {
+    if (_ideaImagesCache) { setImages(_ideaImagesCache); return; }
+    if (!_ideaFetchPromise) {
+      _ideaFetchPromise = (async () => {
+        try {
+          const { db: fireDb } = await import('../lib/firebase.js');
+          if (!fireDb) return {};
+          const { doc, getDoc } = await import('firebase/firestore');
+          const snap = await getDoc(doc(fireDb, 'config', 'ideaImages'));
+          _ideaImagesCache = snap.exists() ? snap.data() : {};
+          return _ideaImagesCache;
+        } catch { return {}; }
+      })();
+    }
+    _ideaFetchPromise.then((imgs) => setImages(imgs));
+  }, []);
+  return images;
+}
 
 function useQuickWhispers() {
   const { profile } = useFamilyProfile();
@@ -78,6 +102,7 @@ export { saveRecentWhisper };
 
 export default function WhisperBox({ value, onChange, overrideValue, onToggleOverride }) {
   const SUGGESTIONS = useQuickWhispers();
+  const ideaImages = useIdeaImages();
   const [recents, setRecents] = useState(getRecentWhispers);
   const charCount = value.length;
   const max = 1000;
@@ -126,27 +151,34 @@ export default function WhisperBox({ value, onChange, overrideValue, onToggleOve
           <div className="mb-2.5 text-[10px] font-bold uppercase tracking-[0.16em] text-ink-muted">
             Quick ideas
           </div>
-          <div className="-mx-5 overflow-x-auto px-5 pb-1">
-            <div className="flex w-max gap-3 pr-8">
-              {SUGGESTIONS.map((s) => {
-                const text = typeof s === 'string' ? s : s.text;
-                const icon = typeof s === 'string' ? '✨' : s.icon;
-                const bg = typeof s === 'string' ? 'linear-gradient(135deg, #1a1a2e, #16213e)' : s.bg;
-                return (
-                  <button key={text} type="button" onClick={() => onChange(text)}
-                    className="group relative flex w-36 shrink-0 flex-col justify-end overflow-hidden rounded-2xl p-3 text-left transition active:scale-95"
-                    style={{ minHeight: '7rem' }}
-                  >
-                    <div className="absolute inset-0" style={{ background: bg }} />
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent" />
-                    <span className="relative text-2xl mb-1.5">{icon}</span>
-                    <p className="relative text-[11px] font-bold leading-snug text-white line-clamp-3" style={{ fontFamily: 'Nunito, sans-serif' }}>
-                      {text}
-                    </p>
-                  </button>
-                );
-              })}
+          <div className="relative -mx-5">
+            <div className="overflow-x-auto px-5 pb-1 scrollbar-hide">
+              <div className="flex w-max gap-3 pr-8">
+                {SUGGESTIONS.map((s) => {
+                  const text = typeof s === 'string' ? s : s.text;
+                  const key = typeof s === 'string' ? '' : s.key;
+                  const bg = typeof s === 'string' ? 'linear-gradient(135deg, #1a1a2e, #16213e)' : s.bg;
+                  const imgSrc = ideaImages[key];
+                  return (
+                    <button key={text} type="button" onClick={() => onChange(text)}
+                      className="group relative flex w-36 shrink-0 flex-col justify-end overflow-hidden rounded-2xl p-3 text-left transition active:scale-95"
+                      style={{ minHeight: '8rem' }}
+                    >
+                      {imgSrc ? (
+                        <img src={imgSrc} alt="" className="absolute inset-0 h-full w-full object-cover transition-transform duration-500 group-hover:scale-110" loading="lazy" />
+                      ) : (
+                        <div className="absolute inset-0" style={{ background: bg }} />
+                      )}
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent" />
+                      <p className="relative text-[11px] font-bold leading-snug text-white line-clamp-3" style={{ fontFamily: 'Nunito, sans-serif', textShadow: '0 1px 4px rgba(0,0,0,0.6)' }}>
+                        {text}
+                      </p>
+                    </button>
+                  );
+                })}
+              </div>
             </div>
+            <div className="pointer-events-none absolute right-0 top-0 bottom-0 w-10 bg-gradient-to-l from-bg-base to-transparent" />
           </div>
         </div>
       )}
