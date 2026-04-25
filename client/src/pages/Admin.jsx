@@ -2450,6 +2450,7 @@ function WisdomAudioPanel() {
   const [filterTheme, setFilterTheme] = useState('all');
   const [editing, setEditing] = useState(null); // lesson id being edited
   const [addingNew, setAddingNew] = useState(false);
+  const [search, setSearch] = useState('');
   const [newStory, setNewStory] = useState({ id: '', tradition: 'hindu', theme: 'compassion-animals', title: '', body: '', source: '', durationMinutes: 8, imagePrompt: '' });
 
   useEffect(() => {
@@ -2581,6 +2582,10 @@ function WisdomAudioPanel() {
   const filtered = lessons.filter(l => {
     if (filterTradition !== 'all' && l.tradition !== filterTradition) return false;
     if (filterTheme !== 'all' && l.theme !== filterTheme) return false;
+    if (search.trim()) {
+      const q = search.toLowerCase();
+      if (!l.title?.toLowerCase().includes(q) && !l.id?.toLowerCase().includes(q) && !l.source?.toLowerCase().includes(q)) return false;
+    }
     return true;
   });
 
@@ -2609,20 +2614,14 @@ function WisdomAudioPanel() {
         </div>
       </div>
 
-      {/* ── Filters + Add ── */}
-      <div className="flex items-center gap-3 flex-wrap rounded-xl bg-[#1a1a28] p-3 ring-1 ring-white/5">
-        <select value={filterTradition} onChange={e => setFilterTradition(e.target.value)}
-          className="rounded-lg bg-[#0a0a0f] px-3 py-2 text-xs font-bold text-[#f0a500] outline-none ring-1 ring-white/10">
-          {TRADITION_OPTIONS.map(t => <option key={t.key} value={t.key}>{t.icon} {t.label}</option>)}
-        </select>
-        <select value={filterTheme} onChange={e => setFilterTheme(e.target.value)}
-          className="rounded-lg bg-[#0a0a0f] px-3 py-2 text-xs font-bold text-[#539df5] outline-none ring-1 ring-white/10">
-          {THEME_OPTIONS.map(t => <option key={t} value={t}>{t === 'all' ? 'All Themes' : t.charAt(0).toUpperCase() + t.slice(1).replace('-', ' ')}</option>)}
-        </select>
-        <span className="text-xs text-[#6e6a63]">{filtered.length} stories</span>
-        <div className="flex-1" />
+      {/* ── Search + Add ── */}
+      <div className="flex items-center gap-3 rounded-xl bg-[#1a1a28] p-3 ring-1 ring-white/5">
+        <input value={search} onChange={e => setSearch(e.target.value)}
+          placeholder="Search by title, id, or source..."
+          className="flex-1 rounded-lg bg-[#0a0a0f] px-4 py-2 text-xs text-[#f5f0e8] outline-none ring-1 ring-white/10 placeholder:text-[#6e6a63]" />
+        <span className="text-xs text-[#6e6a63] shrink-0">{filtered.length} stories</span>
         <button onClick={() => { setAddingNew(true); setEditing(null); setNewStory({ id: '', tradition: 'hindu', theme: 'compassion-animals', title: '', body: '', source: '', durationMinutes: 8, imagePrompt: '' }); }}
-          className="rounded-lg bg-[#7ad9a1] px-4 py-2 text-xs font-bold text-[#0a0a0f]">
+          className="shrink-0 rounded-lg bg-[#7ad9a1] px-4 py-2 text-xs font-bold text-[#0a0a0f]">
           + Add Story
         </button>
       </div>
@@ -2682,20 +2681,30 @@ function WisdomAudioPanel() {
 
       {/* ── Table ── */}
       <div className="rounded-xl bg-[#1a1a28] ring-1 ring-white/5 overflow-hidden">
-        {/* Table header */}
-        <div className="grid grid-cols-[48px_1fr_100px_100px_80px_80px_80px_120px] gap-2 px-4 py-3 border-b border-white/5 text-[10px] font-bold uppercase tracking-wider text-[#6e6a63]">
+        {/* Table header with inline filters */}
+        <div className="grid grid-cols-[48px_1fr_120px_120px_80px_80px_80px_120px] gap-2 px-4 py-2.5 border-b border-white/5 items-center">
           <div></div>
-          <div>Story</div>
-          <div>Belief</div>
-          <div>Theme</div>
-          <div>Audio</div>
-          <div>Image</div>
-          <div>Voice</div>
-          <div>Actions</div>
+          <div className="text-[10px] font-bold uppercase tracking-wider text-[#6e6a63]">Story</div>
+          <div>
+            <select value={filterTradition} onChange={e => setFilterTradition(e.target.value)}
+              className="w-full rounded bg-[#0a0a0f] px-2 py-1 text-[10px] font-bold text-[#f0a500] outline-none ring-1 ring-white/10">
+              {TRADITION_OPTIONS.map(t => <option key={t.key} value={t.key}>{t.key === 'all' ? '▼ Belief' : t.icon + ' ' + t.label}</option>)}
+            </select>
+          </div>
+          <div>
+            <select value={filterTheme} onChange={e => setFilterTheme(e.target.value)}
+              className="w-full rounded bg-[#0a0a0f] px-2 py-1 text-[10px] font-bold text-[#539df5] outline-none ring-1 ring-white/10">
+              {THEME_OPTIONS.map(t => <option key={t} value={t}>{t === 'all' ? '▼ Theme' : t.charAt(0).toUpperCase() + t.slice(1).replace('-', ' ')}</option>)}
+            </select>
+          </div>
+          <div className="text-[10px] font-bold uppercase tracking-wider text-[#6e6a63]">Audio</div>
+          <div className="text-[10px] font-bold uppercase tracking-wider text-[#6e6a63]">Image</div>
+          <div className="text-[10px] font-bold uppercase tracking-wider text-[#6e6a63]">Voice</div>
+          <div className="text-[10px] font-bold uppercase tracking-wider text-[#6e6a63]">Actions</div>
         </div>
         {/* Table rows */}
         {filtered.map((l, i) => (
-          <div key={l.id} className={`grid grid-cols-[48px_1fr_100px_100px_80px_80px_80px_120px] gap-2 px-4 py-3 items-center ${i % 2 === 0 ? 'bg-white/[0.02]' : ''} hover:bg-white/[0.04] transition`}>
+          <div key={l.id} className={`grid grid-cols-[48px_1fr_120px_120px_80px_80px_80px_120px] gap-2 px-4 py-3 items-center ${i % 2 === 0 ? 'bg-white/[0.02]' : ''} hover:bg-white/[0.04] transition`}>
             {/* Image */}
             <div className="h-10 w-10 shrink-0 overflow-hidden rounded-lg bg-[#0a0a0f]">
               {imageUrls[l.id] ? (
