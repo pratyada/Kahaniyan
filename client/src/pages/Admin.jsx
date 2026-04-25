@@ -2588,33 +2588,46 @@ function WisdomAudioPanel() {
   const imagesCached = lessons.filter(l => imageUrls[l.id]).length;
 
   return (
-    <div className="space-y-4">
-      {/* Header with stats */}
-      <div className="flex items-center justify-between rounded-2xl bg-[#1a1a28] p-4">
-        <div>
-          <h3 className="text-sm font-bold text-[#f5f0e8]">Wisdom Story Lab</h3>
-          <p className="text-xs text-[#6e6a63]">{lessons.length} stories · Audio: {cached} · Images: {imagesCached}</p>
+    <div className="space-y-5">
+      {/* ── Dashboard Header ── */}
+      <div className="grid grid-cols-4 gap-3">
+        <div className="rounded-xl bg-[#1a1a28] p-4 ring-1 ring-white/5">
+          <div className="text-2xl font-bold text-[#f5f0e8]">{lessons.length}</div>
+          <div className="text-[10px] font-bold uppercase tracking-wider text-[#6e6a63]">Total Stories</div>
         </div>
+        <div className="rounded-xl bg-[#1a1a28] p-4 ring-1 ring-white/5">
+          <div className="text-2xl font-bold text-[#7ad9a1]">{cached}</div>
+          <div className="text-[10px] font-bold uppercase tracking-wider text-[#6e6a63]">Audio Ready</div>
+        </div>
+        <div className="rounded-xl bg-[#1a1a28] p-4 ring-1 ring-white/5">
+          <div className="text-2xl font-bold text-[#539df5]">{imagesCached}</div>
+          <div className="text-[10px] font-bold uppercase tracking-wider text-[#6e6a63]">Images Ready</div>
+        </div>
+        <div className="rounded-xl bg-[#1a1a28] p-4 ring-1 ring-white/5">
+          <div className="text-2xl font-bold text-[#f0a500]">{lessons.length - Math.min(cached, imagesCached)}</div>
+          <div className="text-[10px] font-bold uppercase tracking-wider text-[#6e6a63]">Incomplete</div>
+        </div>
+      </div>
+
+      {/* ── Filters + Add ── */}
+      <div className="flex items-center gap-3 flex-wrap rounded-xl bg-[#1a1a28] p-3 ring-1 ring-white/5">
+        <select value={filterTradition} onChange={e => setFilterTradition(e.target.value)}
+          className="rounded-lg bg-[#0a0a0f] px-3 py-2 text-xs font-bold text-[#f0a500] outline-none ring-1 ring-white/10">
+          {TRADITION_OPTIONS.map(t => <option key={t.key} value={t.key}>{t.icon} {t.label}</option>)}
+        </select>
+        <select value={filterTheme} onChange={e => setFilterTheme(e.target.value)}
+          className="rounded-lg bg-[#0a0a0f] px-3 py-2 text-xs font-bold text-[#539df5] outline-none ring-1 ring-white/10">
+          {THEME_OPTIONS.map(t => <option key={t} value={t}>{t === 'all' ? 'All Themes' : t.charAt(0).toUpperCase() + t.slice(1).replace('-', ' ')}</option>)}
+        </select>
+        <span className="text-xs text-[#6e6a63]">{filtered.length} stories</span>
+        <div className="flex-1" />
         <button onClick={() => { setAddingNew(true); setEditing(null); setNewStory({ id: '', tradition: 'hindu', theme: 'compassion-animals', title: '', body: '', source: '', durationMinutes: 8, imagePrompt: '' }); }}
-          className="rounded-full bg-[#7ad9a1] px-4 py-2 text-xs font-bold text-[#0a0a0f]">
+          className="rounded-lg bg-[#7ad9a1] px-4 py-2 text-xs font-bold text-[#0a0a0f]">
           + Add Story
         </button>
       </div>
 
-      {/* Filters */}
-      <div className="flex gap-2 flex-wrap">
-        <select value={filterTradition} onChange={e => setFilterTradition(e.target.value)}
-          className="rounded-lg bg-[#1a1a28] px-3 py-1.5 text-xs font-bold text-[#f0a500] outline-none ring-1 ring-white/10">
-          {TRADITION_OPTIONS.map(t => <option key={t.key} value={t.key}>{t.icon} {t.label}</option>)}
-        </select>
-        <select value={filterTheme} onChange={e => setFilterTheme(e.target.value)}
-          className="rounded-lg bg-[#1a1a28] px-3 py-1.5 text-xs font-bold text-[#539df5] outline-none ring-1 ring-white/10">
-          {THEME_OPTIONS.map(t => <option key={t} value={t}>{t === 'all' ? 'All Themes' : t.charAt(0).toUpperCase() + t.slice(1).replace('-', ' ')}</option>)}
-        </select>
-        <span className="rounded-lg bg-[#1a1a28] px-3 py-1.5 text-xs text-[#6e6a63]">{filtered.length} shown</span>
-      </div>
-
-      {/* Add / Edit form */}
+      {/* ── Add / Edit form ── */}
       {(addingNew || editing) && (() => {
         const story = addingNew ? newStory : lessons.find(l => l.id === editing);
         if (!story) return null;
@@ -2623,105 +2636,140 @@ function WisdomAudioPanel() {
           else setLessons(prev => prev.map(l => l.id === editing ? { ...l, [field]: val } : l));
         };
         return (
-          <div className="rounded-2xl bg-[#1a1a28] p-4 space-y-3 ring-1 ring-[#f0a500]/30">
-            <h4 className="text-xs font-bold text-[#f0a500]">{addingNew ? 'New Story' : 'Edit Story'}</h4>
+          <div className="rounded-xl bg-[#1a1a28] p-5 space-y-3 ring-2 ring-[#f0a500]/30">
+            <div className="flex items-center justify-between">
+              <h4 className="text-sm font-bold text-[#f0a500]">{addingNew ? 'New Story' : `Editing: ${story.title}`}</h4>
+              <button onClick={() => { setAddingNew(false); setEditing(null); }}
+                className="text-xs text-[#6e6a63] hover:text-[#f5f0e8]">✕ Close</button>
+            </div>
             {addingNew && (
               <input value={story.id} onChange={e => update('id', e.target.value.toLowerCase().replace(/\s+/g, '_').replace(/[^a-z0-9_]/g, ''))}
-                placeholder="story_id (snake_case)" className="w-full rounded-lg bg-[#0a0a0f] px-3 py-2 text-xs text-[#f5f0e8] outline-none ring-1 ring-white/10" />
+                placeholder="story_id (snake_case)" className="w-full rounded-lg bg-[#0a0a0f] px-3 py-2.5 text-xs text-[#f5f0e8] outline-none ring-1 ring-white/10" />
             )}
             <input value={story.title} onChange={e => update('title', e.target.value)}
-              placeholder="Story Title" className="w-full rounded-lg bg-[#0a0a0f] px-3 py-2 text-sm font-bold text-[#f5f0e8] outline-none ring-1 ring-white/10" />
-            <div className="flex gap-2">
+              placeholder="Story Title" className="w-full rounded-lg bg-[#0a0a0f] px-3 py-2.5 text-sm font-bold text-[#f5f0e8] outline-none ring-1 ring-white/10" />
+            <div className="grid grid-cols-3 gap-2">
               <select value={story.tradition} onChange={e => update('tradition', e.target.value)}
-                className="flex-1 rounded-lg bg-[#0a0a0f] px-3 py-2 text-xs text-[#f5f0e8] outline-none ring-1 ring-white/10">
+                className="rounded-lg bg-[#0a0a0f] px-3 py-2.5 text-xs text-[#f5f0e8] outline-none ring-1 ring-white/10">
                 {TRADITION_OPTIONS.filter(t => t.key !== 'all').map(t => <option key={t.key} value={t.key}>{t.icon} {t.label}</option>)}
               </select>
               <select value={story.theme} onChange={e => update('theme', e.target.value)}
-                className="flex-1 rounded-lg bg-[#0a0a0f] px-3 py-2 text-xs text-[#f5f0e8] outline-none ring-1 ring-white/10">
+                className="rounded-lg bg-[#0a0a0f] px-3 py-2.5 text-xs text-[#f5f0e8] outline-none ring-1 ring-white/10">
                 {THEME_OPTIONS.filter(t => t !== 'all').map(t => <option key={t} value={t}>{t}</option>)}
               </select>
               <input type="number" value={story.durationMinutes} onChange={e => update('durationMinutes', parseInt(e.target.value) || 5)}
-                className="w-16 rounded-lg bg-[#0a0a0f] px-2 py-2 text-xs text-[#f5f0e8] outline-none ring-1 ring-white/10" placeholder="min" />
+                className="rounded-lg bg-[#0a0a0f] px-3 py-2.5 text-xs text-[#f5f0e8] outline-none ring-1 ring-white/10" placeholder="Duration (min)" />
             </div>
             <input value={story.source || ''} onChange={e => update('source', e.target.value)}
-              placeholder="Source (e.g. Islamic tradition · Hadith)" className="w-full rounded-lg bg-[#0a0a0f] px-3 py-2 text-xs text-[#f5f0e8] outline-none ring-1 ring-white/10" />
+              placeholder="Source (e.g. Islamic tradition · Hadith)" className="w-full rounded-lg bg-[#0a0a0f] px-3 py-2.5 text-xs text-[#f5f0e8] outline-none ring-1 ring-white/10" />
             <textarea value={story.body} onChange={e => update('body', e.target.value)}
-              placeholder="Story body (use {childName}, {sibling}, {grandfather}, {grandmother}, {pet} as placeholders)" rows={10}
-              className="w-full rounded-lg bg-[#0a0a0f] px-3 py-2 text-xs text-[#f5f0e8] outline-none ring-1 ring-white/10 leading-relaxed" />
+              placeholder="Story body (use {childName}, {sibling}, {grandfather}, {grandmother}, {pet} as placeholders)" rows={12}
+              className="w-full rounded-lg bg-[#0a0a0f] px-3 py-3 text-sm text-[#f5f0e8] outline-none ring-1 ring-white/10 leading-relaxed" />
             <input value={story.imagePrompt || ''} onChange={e => update('imagePrompt', e.target.value)}
-              placeholder="DALL-E image prompt (optional — auto-generated if empty)" className="w-full rounded-lg bg-[#0a0a0f] px-3 py-2 text-xs text-[#f5f0e8] outline-none ring-1 ring-white/10" />
-            <div className="flex gap-2">
+              placeholder="DALL-E image prompt (optional)" className="w-full rounded-lg bg-[#0a0a0f] px-3 py-2.5 text-xs text-[#f5f0e8] outline-none ring-1 ring-white/10" />
+            <div className="flex gap-2 pt-1">
               <button onClick={() => saveStory(addingNew ? newStory : story)}
                 disabled={!story.id || !story.title || !story.body}
-                className="rounded-full bg-[#7ad9a1] px-4 py-2 text-xs font-bold text-[#0a0a0f] disabled:opacity-50">
+                className="rounded-lg bg-[#7ad9a1] px-5 py-2.5 text-xs font-bold text-[#0a0a0f] disabled:opacity-50">
                 {addingNew ? 'Create & Publish' : 'Save Changes'}
               </button>
               <button onClick={() => { setAddingNew(false); setEditing(null); }}
-                className="rounded-full bg-white/5 px-4 py-2 text-xs font-bold text-[#6e6a63]">Cancel</button>
+                className="rounded-lg bg-white/5 px-5 py-2.5 text-xs font-bold text-[#6e6a63]">Cancel</button>
             </div>
           </div>
         );
       })()}
 
-      {/* Story list */}
-      <div className="space-y-2">
-        {filtered.map(l => (
-          <div key={l.id} className="flex items-start gap-3 rounded-xl bg-[#1a1a28] p-3">
-            <div className="h-14 w-14 shrink-0 overflow-hidden rounded-lg bg-[#0a0a0f]">
+      {/* ── Table ── */}
+      <div className="rounded-xl bg-[#1a1a28] ring-1 ring-white/5 overflow-hidden">
+        {/* Table header */}
+        <div className="grid grid-cols-[48px_1fr_100px_100px_80px_80px_80px_120px] gap-2 px-4 py-3 border-b border-white/5 text-[10px] font-bold uppercase tracking-wider text-[#6e6a63]">
+          <div></div>
+          <div>Story</div>
+          <div>Belief</div>
+          <div>Theme</div>
+          <div>Audio</div>
+          <div>Image</div>
+          <div>Voice</div>
+          <div>Actions</div>
+        </div>
+        {/* Table rows */}
+        {filtered.map((l, i) => (
+          <div key={l.id} className={`grid grid-cols-[48px_1fr_100px_100px_80px_80px_80px_120px] gap-2 px-4 py-3 items-center ${i % 2 === 0 ? 'bg-white/[0.02]' : ''} hover:bg-white/[0.04] transition`}>
+            {/* Image */}
+            <div className="h-10 w-10 shrink-0 overflow-hidden rounded-lg bg-[#0a0a0f]">
               {imageUrls[l.id] ? (
                 <img src={imageUrls[l.id]} alt="" className="h-full w-full object-cover" />
               ) : (
-                <div className="grid h-full w-full place-items-center text-lg opacity-30">🖼️</div>
+                <div className="grid h-full w-full place-items-center text-sm opacity-30">🖼️</div>
               )}
             </div>
-            <div className="flex-1 min-w-0">
+            {/* Title */}
+            <div className="min-w-0">
               <div className="flex items-center gap-2">
-                <div className="text-xs font-bold text-[#f5f0e8] truncate flex-1">{l.title}</div>
-                {l._isCustom && <span className="text-[8px] rounded bg-[#f0a500]/20 text-[#f0a500] px-1.5 py-0.5 font-bold">CUSTOM</span>}
+                <span className="text-xs font-bold text-[#f5f0e8] truncate">{l.title}</span>
+                {l._isCustom && <span className="text-[7px] rounded bg-[#f0a500]/20 text-[#f0a500] px-1 py-0.5 font-bold shrink-0">CUSTOM</span>}
               </div>
-              <div className="text-[10px] text-[#6e6a63]">{l.tradition} · {l.theme} · {l.durationMinutes}m</div>
-              {/* Voice + Model selection */}
-              <div className="mt-1 flex items-center gap-1.5 flex-wrap">
-                <select value={getVoiceFor(l.id)} onChange={e => setVoiceSelections(prev => ({ ...prev, [l.id]: { ...prev[l.id], voice: e.target.value } }))}
-                  className="rounded bg-[#0a0a0f] px-1.5 py-0.5 text-[9px] font-bold text-[#f0a500] outline-none ring-1 ring-white/10">
-                  {VOICE_OPTIONS.map(v => <option key={v} value={v}>{v}</option>)}
-                </select>
-                <select value={getModelFor(l.id)} onChange={e => setVoiceSelections(prev => ({ ...prev, [l.id]: { ...prev[l.id], model: e.target.value } }))}
-                  className="rounded bg-[#0a0a0f] px-1.5 py-0.5 text-[9px] font-bold text-[#539df5] outline-none ring-1 ring-white/10">
-                  {MODEL_OPTIONS.map(m => <option key={m} value={m}>{m}</option>)}
-                </select>
-                <button onClick={() => generateOne(l)} disabled={!!generating}
-                  className="text-[9px] font-bold text-[#f0a500] disabled:opacity-50">
-                  {generating === l.id ? '...' : urls[l.id] ? 'Re-gen' : 'Gen Audio'}
-                </button>
-                {urls[l.id] && <span className="text-[9px] font-bold text-[#7ad9a1]">✓</span>}
-              </div>
-              <div className="mt-1 flex items-center gap-2 flex-wrap">
-                {imageUrls[l.id] ? (
-                  <span className="text-[9px] font-bold text-[#7ad9a1]">Image ✓</span>
-                ) : (
-                  <button onClick={() => generateImage(l)} disabled={!!generating}
-                    className="text-[9px] font-bold text-[#539df5] disabled:opacity-50">
-                    {generating === l.id + '_img' ? '...' : 'Gen Image'}
-                  </button>
-                )}
-                <span className="text-[#6e6a63]">·</span>
-                <button onClick={() => { setEditing(l.id); setAddingNew(false); }}
-                  className="text-[9px] font-bold text-[#e8b4ff]">Edit</button>
-                {l._isCustom && (
-                  <>
-                    <span className="text-[#6e6a63]">·</span>
-                    <button onClick={() => deleteStory(l.id)}
-                      className="text-[9px] font-bold text-red-400">Delete</button>
-                  </>
-                )}
-              </div>
+              <div className="text-[10px] text-[#6e6a63] truncate">{l.source || l.id}</div>
               {status[l.id] && status[l.id] !== 'done' && (
-                <div className="mt-0.5 text-[9px] text-[#6e6a63]">{status[l.id]}</div>
+                <div className="text-[9px] text-[#f0a500] mt-0.5">{status[l.id]}</div>
+              )}
+            </div>
+            {/* Belief */}
+            <div className="text-[11px] text-[#a8a39a]">{TRADITION_OPTIONS.find(t => t.key === l.tradition)?.icon} {l.tradition}</div>
+            {/* Theme */}
+            <div className="text-[11px] text-[#a8a39a]">{l.theme?.replace('-', ' ')}</div>
+            {/* Audio status */}
+            <div>
+              {urls[l.id] ? (
+                <span className="inline-flex items-center gap-1 rounded-full bg-[#7ad9a1]/10 px-2 py-0.5 text-[9px] font-bold text-[#7ad9a1]">✓ Ready</span>
+              ) : (
+                <span className="inline-flex items-center gap-1 rounded-full bg-red-400/10 px-2 py-0.5 text-[9px] font-bold text-red-400">Missing</span>
+              )}
+            </div>
+            {/* Image status */}
+            <div>
+              {imageUrls[l.id] ? (
+                <span className="inline-flex items-center gap-1 rounded-full bg-[#7ad9a1]/10 px-2 py-0.5 text-[9px] font-bold text-[#7ad9a1]">✓ Ready</span>
+              ) : (
+                <span className="inline-flex items-center gap-1 rounded-full bg-red-400/10 px-2 py-0.5 text-[9px] font-bold text-red-400">Missing</span>
+              )}
+            </div>
+            {/* Voice selector */}
+            <div>
+              <select value={getVoiceFor(l.id)} onChange={e => setVoiceSelections(prev => ({ ...prev, [l.id]: { ...prev[l.id], voice: e.target.value } }))}
+                className="w-full rounded bg-[#0a0a0f] px-1.5 py-1 text-[10px] font-bold text-[#f0a500] outline-none ring-1 ring-white/10">
+                {VOICE_OPTIONS.map(v => <option key={v} value={v}>{v}</option>)}
+              </select>
+            </div>
+            {/* Actions */}
+            <div className="flex items-center gap-1.5">
+              <button onClick={() => generateOne(l)} disabled={!!generating}
+                className="rounded bg-[#f0a500]/10 px-2 py-1 text-[9px] font-bold text-[#f0a500] hover:bg-[#f0a500]/20 disabled:opacity-30">
+                {generating === l.id ? '...' : urls[l.id] ? 'Re-gen' : 'Audio'}
+              </button>
+              {!imageUrls[l.id] && (
+                <button onClick={() => generateImage(l)} disabled={!!generating}
+                  className="rounded bg-[#539df5]/10 px-2 py-1 text-[9px] font-bold text-[#539df5] hover:bg-[#539df5]/20 disabled:opacity-30">
+                  {generating === l.id + '_img' ? '...' : 'Image'}
+                </button>
+              )}
+              <button onClick={() => { setEditing(l.id); setAddingNew(false); }}
+                className="rounded bg-[#e8b4ff]/10 px-2 py-1 text-[9px] font-bold text-[#e8b4ff] hover:bg-[#e8b4ff]/20">
+                Edit
+              </button>
+              {l._isCustom && (
+                <button onClick={() => deleteStory(l.id)}
+                  className="rounded bg-red-400/10 px-2 py-1 text-[9px] font-bold text-red-400 hover:bg-red-400/20">
+                  Del
+                </button>
               )}
             </div>
           </div>
         ))}
+        {filtered.length === 0 && (
+          <div className="px-4 py-8 text-center text-sm text-[#6e6a63]">No stories match the current filters</div>
+        )}
       </div>
     </div>
   );
