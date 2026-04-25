@@ -2562,7 +2562,7 @@ function WisdomAudioPanel() {
     } catch (e) { alert('Delete failed: ' + e.message); }
   };
 
-  const TRADITION_OPTIONS = [{ key: 'all', label: 'All Beliefs', icon: '' }, ...RELIGIONS, { key: 'no-belief', label: 'No Belief', icon: '🌍' }];
+  const TRADITION_OPTIONS = [{ key: 'all', label: 'All Beliefs', icon: '' }, ...RELIGIONS];
   const THEME_OPTIONS = ['all', 'compassion-animals', 'courage', 'wisdom', 'honesty', 'sharing', 'humility', 'forgiveness'];
 
   const filtered = lessons.filter(l => {

@@ -42,12 +42,12 @@ function pickTonightStory(beliefs, lessons) {
   const dayOfYear = Math.floor((Date.now() - new Date(new Date().getFullYear(), 0, 0)) / 86400000);
   let pool = lessons || CULTURAL_LESSONS;
   if (beliefs?.length > 0) {
-    // Show stories matching user's beliefs + universal "no-belief" stories
-    const matched = pool.filter((l) => beliefs.includes(l.tradition) || l.tradition === 'no-belief');
+    // Show stories matching user's beliefs + universal stories
+    const matched = pool.filter((l) => beliefs.includes(l.tradition) || l.tradition === 'universal');
     if (matched.length > 0) pool = matched;
   } else {
-    // No beliefs selected — show "no-belief" stories, fallback to all
-    const universal = pool.filter((l) => l.tradition === 'no-belief');
+    // No beliefs selected — show universal stories, fallback to all
+    const universal = pool.filter((l) => l.tradition === 'universal');
     if (universal.length > 0) pool = universal;
   }
   return pool.length > 0 ? pool[dayOfYear % pool.length] : null;
@@ -312,9 +312,9 @@ export default function Home() {
               let list = filtered;
               // Show user's beliefs + universal; if no beliefs, show universal only
               if (beliefs.length > 0) {
-                list = list.filter((l) => beliefs.includes(l.tradition) || l.tradition === 'no-belief');
+                list = list.filter((l) => beliefs.includes(l.tradition) || l.tradition === 'universal');
               } else {
-                const universal = list.filter((l) => l.tradition === 'no-belief');
+                const universal = list.filter((l) => l.tradition === 'universal');
                 if (universal.length > 0) list = universal;
               }
               return list.map((lesson) => {

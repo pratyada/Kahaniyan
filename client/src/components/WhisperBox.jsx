@@ -42,7 +42,7 @@ function useQuickWhispers() {
 
   useEffect(() => {
     if (!db || !profile) return;
-    const belief = profile.beliefs?.[0] || 'secular';
+    const belief = profile.beliefs?.[0] || 'universal';
     const country = profile.country || 'OTHER';
     (async () => {
       try {
