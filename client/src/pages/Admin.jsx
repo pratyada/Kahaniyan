@@ -2562,7 +2562,7 @@ function WisdomAudioPanel() {
     } catch (e) { alert('Delete failed: ' + e.message); }
   };
 
-  const TRADITION_OPTIONS = ['all', 'hindu', 'muslim', 'christian', 'sikh', 'buddhist', 'jain', 'jewish', 'no-belief'];
+  const TRADITION_OPTIONS = [{ key: 'all', label: 'All Beliefs', icon: '' }, ...RELIGIONS, { key: 'no-belief', label: 'No Belief', icon: '🌍' }];
   const THEME_OPTIONS = ['all', 'compassion-animals', 'courage', 'wisdom', 'honesty', 'sharing', 'humility', 'forgiveness'];
 
   const filtered = lessons.filter(l => {
@@ -2592,7 +2592,7 @@ function WisdomAudioPanel() {
       <div className="flex gap-2 flex-wrap">
         <select value={filterTradition} onChange={e => setFilterTradition(e.target.value)}
           className="rounded-lg bg-[#1a1a28] px-3 py-1.5 text-xs font-bold text-[#f0a500] outline-none ring-1 ring-white/10">
-          {TRADITION_OPTIONS.map(t => <option key={t} value={t}>{t === 'all' ? 'All Beliefs' : t === 'no-belief' ? 'No Belief' : t.charAt(0).toUpperCase() + t.slice(1)}</option>)}
+          {TRADITION_OPTIONS.map(t => <option key={t.key} value={t.key}>{t.icon} {t.label}</option>)}
         </select>
         <select value={filterTheme} onChange={e => setFilterTheme(e.target.value)}
           className="rounded-lg bg-[#1a1a28] px-3 py-1.5 text-xs font-bold text-[#539df5] outline-none ring-1 ring-white/10">
@@ -2621,7 +2621,7 @@ function WisdomAudioPanel() {
             <div className="flex gap-2">
               <select value={story.tradition} onChange={e => update('tradition', e.target.value)}
                 className="flex-1 rounded-lg bg-[#0a0a0f] px-3 py-2 text-xs text-[#f5f0e8] outline-none ring-1 ring-white/10">
-                {TRADITION_OPTIONS.filter(t => t !== 'all').map(t => <option key={t} value={t}>{t}</option>)}
+                {TRADITION_OPTIONS.filter(t => t.key !== 'all').map(t => <option key={t.key} value={t.key}>{t.icon} {t.label}</option>)}
               </select>
               <select value={story.theme} onChange={e => update('theme', e.target.value)}
                 className="flex-1 rounded-lg bg-[#0a0a0f] px-3 py-2 text-xs text-[#f5f0e8] outline-none ring-1 ring-white/10">
