@@ -1680,7 +1680,7 @@ const DEFAULT_VALUE_DELIVERY = [
 const API_BASE = import.meta.env?.VITE_API_BASE_URL || '';
 
 function StoryLab() {
-  const [subTab, setSubTab] = useState('playground');
+  const [subTab, setSubTab] = useState('wisdom-audio');
   const [saving, setSaving] = useState(false);
   const [lastSaved, setLastSaved] = useState(null);
 
@@ -1821,6 +1821,8 @@ function StoryLab() {
   };
 
   const SUB_TABS = [
+    { key: 'wisdom-audio', label: 'Wisdom Stories', icon: '📖' },
+    { key: 'voice-feedback', label: 'Voice Feedback', icon: '🎙️' },
     { key: 'rules', label: 'Global Rules', icon: '🛡️' },
     { key: 'playground', label: 'Playground', icon: '🎮' },
     { key: 'archetypes', label: 'Characters', icon: '👥' },
@@ -1829,8 +1831,6 @@ function StoryLab() {
     { key: 'ingredients', label: 'Story Ingredients', icon: '🧩' },
     { key: 'values', label: 'Value Delivery', icon: '💡' },
     { key: 'ages', label: 'Age Guides', icon: '🎂' },
-    { key: 'wisdom-audio', label: 'Wisdom Stories', icon: '📖' },
-    { key: 'voice-feedback', label: 'Voice Feedback', icon: '🎙️' },
     { key: 'cache', label: `Cache (${cachedStories.length})`, icon: '📦' },
   ];
 
