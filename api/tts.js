@@ -1,47 +1,46 @@
 // OpenAI Text-to-Speech with smart voice routing by country + belief.
-// 6 voices: alloy, echo, fable, nova, onyx, shimmer
-// ~12x cheaper than ElevenLabs. No voice cloning (added later).
+// 13 voices across tts-1 and gpt-4o-mini-tts models.
 
 const OPENAI_KEY = process.env.OPENAI_API_KEY;
 
 // Voice mapping by region + narrator role
-// OpenAI voices: alloy (neutral), echo (male), fable (british),
-// nova (warm female), onyx (deep male), shimmer (soft female)
+// tts-1 voices: alloy, ash, coral, echo, fable, nova, onyx, sage, shimmer
+// gpt-4o-mini-tts adds: ballad, verse, marin, cedar (+ style instructions)
 const VOICES = {
   indian: {
-    narrator: 'nova',       // warm female — best for storytelling
-    mummy: 'nova',
-    daddy: 'onyx',          // deep, comforting male
-    grandfather: 'echo',    // mature male
-    grandmother: 'shimmer', // soft, gentle female
+    narrator: { voice: 'sage', model: 'tts-1' },          // calm, perfect for bedtime
+    mummy: { voice: 'coral', model: 'tts-1' },            // warm female
+    daddy: { voice: 'ash', model: 'tts-1' },              // warm male
+    grandfather: { voice: 'echo', model: 'tts-1' },       // mature male
+    grandmother: { voice: 'shimmer', model: 'tts-1' },    // soft female
   },
   british: {
-    narrator: 'fable',      // british-accented
-    mummy: 'shimmer',
-    daddy: 'fable',
-    grandfather: 'echo',
-    grandmother: 'shimmer',
+    narrator: { voice: 'fable', model: 'tts-1' },         // british accent
+    mummy: { voice: 'shimmer', model: 'tts-1' },
+    daddy: { voice: 'fable', model: 'tts-1' },
+    grandfather: { voice: 'echo', model: 'tts-1' },
+    grandmother: { voice: 'shimmer', model: 'tts-1' },
   },
   western: {
-    narrator: 'nova',
-    mummy: 'nova',
-    daddy: 'onyx',
-    grandfather: 'echo',
-    grandmother: 'shimmer',
+    narrator: { voice: 'sage', model: 'tts-1' },          // calm storyteller
+    mummy: { voice: 'coral', model: 'tts-1' },            // warm female
+    daddy: { voice: 'ash', model: 'tts-1' },              // warm male
+    grandfather: { voice: 'echo', model: 'tts-1' },
+    grandmother: { voice: 'shimmer', model: 'tts-1' },
   },
   arabic: {
-    narrator: 'onyx',
-    mummy: 'nova',
-    daddy: 'onyx',
-    grandfather: 'echo',
-    grandmother: 'shimmer',
+    narrator: { voice: 'onyx', model: 'tts-1' },          // deep, resonant
+    mummy: { voice: 'coral', model: 'tts-1' },
+    daddy: { voice: 'onyx', model: 'tts-1' },
+    grandfather: { voice: 'echo', model: 'tts-1' },
+    grandmother: { voice: 'shimmer', model: 'tts-1' },
   },
   australian: {
-    narrator: 'fable',
-    mummy: 'shimmer',
-    daddy: 'fable',
-    grandfather: 'echo',
-    grandmother: 'shimmer',
+    narrator: { voice: 'fable', model: 'tts-1' },
+    mummy: { voice: 'coral', model: 'tts-1' },
+    daddy: { voice: 'fable', model: 'tts-1' },
+    grandfather: { voice: 'echo', model: 'tts-1' },
+    grandmother: { voice: 'shimmer', model: 'tts-1' },
   },
 };
 
@@ -72,7 +71,8 @@ function pickVoice(narrator, country, beliefs) {
     region = COUNTRY_TO_REGION[country] || 'western';
   }
   const role = NARRATOR_TO_ROLE[narrator] || 'narrator';
-  return (VOICES[region] || VOICES.western)[role] || 'nova';
+  const entry = (VOICES[region] || VOICES.western)[role] || VOICES.western.narrator;
+  return entry;
 }
 
 export default async function handler(req, res) {
@@ -97,12 +97,10 @@ export default async function handler(req, res) {
     return res.status(400).json({ error: 'Text too short' });
   }
 
-  // Cap text — OpenAI TTS max is 4096 chars per request.
-  // For longer stories, split into chunks.
   const maxChars = 4096;
   const trimmedText = text.slice(0, maxChars);
 
-  const voice = pickVoice(narrator, country, beliefs);
+  const { voice, model } = pickVoice(narrator, country, beliefs);
 
   try {
     const response = await fetch('https://api.openai.com/v1/audio/speech', {
@@ -112,7 +110,7 @@ export default async function handler(req, res) {
         'Authorization': `Bearer ${OPENAI_KEY}`,
       },
       body: JSON.stringify({
-        model: 'tts-1',      // Standard quality — warmer, more natural for storytelling
+        model,
         input: trimmedText,
         voice,
         speed: Math.max(0.25, Math.min(4.0, speed)),
@@ -134,6 +132,7 @@ export default async function handler(req, res) {
     res.setHeader('Content-Type', 'audio/ogg');
     res.setHeader('Cache-Control', 'public, max-age=86400');
     res.setHeader('X-Voice-Used', voice);
+    res.setHeader('X-Model-Used', model);
 
     const reader = response.body.getReader();
     while (true) {

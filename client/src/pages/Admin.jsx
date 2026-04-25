@@ -1830,6 +1830,7 @@ function StoryLab() {
     { key: 'values', label: 'Value Delivery', icon: '💡' },
     { key: 'ages', label: 'Age Guides', icon: '🎂' },
     { key: 'wisdom-audio', label: 'Wisdom Stories', icon: '📖' },
+    { key: 'voice-feedback', label: 'Voice Feedback', icon: '🎙️' },
     { key: 'cache', label: `Cache (${cachedStories.length})`, icon: '📦' },
   ];
 
@@ -2271,6 +2272,9 @@ function StoryLab() {
       {/* ══════ WISDOM AUDIO ══════ */}
       {subTab === 'wisdom-audio' && <WisdomAudioPanel />}
 
+      {/* ══════ VOICE FEEDBACK ══════ */}
+      {subTab === 'voice-feedback' && <VoiceFeedbackPanel />}
+
       {/* ══════ STORY CACHE ══════ */}
       {subTab === 'cache' && (() => {
         const filtered = cachedStories.filter((s) => {
@@ -2477,15 +2481,24 @@ function WisdomAudioPanel() {
     })();
   }, []);
 
+  const [voiceSelections, setVoiceSelections] = useState({}); // { lessonId: { voice, model } }
+  const VOICE_OPTIONS = ['sage', 'nova', 'coral', 'ash', 'echo', 'fable', 'onyx', 'shimmer', 'alloy', 'ballad', 'verse', 'marin', 'cedar'];
+  const MODEL_OPTIONS = ['tts-1', 'tts-1-hd', 'gpt-4o-mini-tts'];
+
+  const getVoiceFor = (id) => voiceSelections[id]?.voice || 'sage';
+  const getModelFor = (id) => voiceSelections[id]?.model || 'tts-1';
+
   const generateOne = async (lesson) => {
     setGenerating(lesson.id);
-    setStatus(s => ({ ...s, [lesson.id]: 'generating TTS...' }));
+    const voice = getVoiceFor(lesson.id);
+    const model = getModelFor(lesson.id);
+    setStatus(s => ({ ...s, [lesson.id]: `generating ${voice}/${model}...` }));
     try {
       const text = lesson.body.replace(/\{childName\}/g, 'little one').replace(/\{sibling\}/g, 'their friend').replace(/\{grandfather\}/g, 'Dada ji').replace(/\{grandmother\}/g, 'Nani ma').replace(/\{pet\}/g, 'their puppy');
       const res = await fetch('/api/generate-wisdom-audio', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ text: text.slice(0, 4096) }),
+        body: JSON.stringify({ text: text.slice(0, 4096), voice, model }),
       });
       if (!res.ok) { setStatus(s => ({ ...s, [lesson.id]: `TTS failed (${res.status})` })); setGenerating(null); return; }
       const blob = await res.blob();
@@ -2667,16 +2680,23 @@ function WisdomAudioPanel() {
                 {l._isCustom && <span className="text-[8px] rounded bg-[#f0a500]/20 text-[#f0a500] px-1.5 py-0.5 font-bold">CUSTOM</span>}
               </div>
               <div className="text-[10px] text-[#6e6a63]">{l.tradition} · {l.theme} · {l.durationMinutes}m</div>
+              {/* Voice + Model selection */}
+              <div className="mt-1 flex items-center gap-1.5 flex-wrap">
+                <select value={getVoiceFor(l.id)} onChange={e => setVoiceSelections(prev => ({ ...prev, [l.id]: { ...prev[l.id], voice: e.target.value } }))}
+                  className="rounded bg-[#0a0a0f] px-1.5 py-0.5 text-[9px] font-bold text-[#f0a500] outline-none ring-1 ring-white/10">
+                  {VOICE_OPTIONS.map(v => <option key={v} value={v}>{v}</option>)}
+                </select>
+                <select value={getModelFor(l.id)} onChange={e => setVoiceSelections(prev => ({ ...prev, [l.id]: { ...prev[l.id], model: e.target.value } }))}
+                  className="rounded bg-[#0a0a0f] px-1.5 py-0.5 text-[9px] font-bold text-[#539df5] outline-none ring-1 ring-white/10">
+                  {MODEL_OPTIONS.map(m => <option key={m} value={m}>{m}</option>)}
+                </select>
+                <button onClick={() => generateOne(l)} disabled={!!generating}
+                  className="text-[9px] font-bold text-[#f0a500] disabled:opacity-50">
+                  {generating === l.id ? '...' : urls[l.id] ? 'Re-gen' : 'Gen Audio'}
+                </button>
+                {urls[l.id] && <span className="text-[9px] font-bold text-[#7ad9a1]">✓</span>}
+              </div>
               <div className="mt-1 flex items-center gap-2 flex-wrap">
-                {urls[l.id] ? (
-                  <span className="text-[9px] font-bold text-[#7ad9a1]">Audio ✓</span>
-                ) : (
-                  <button onClick={() => generateOne(l)} disabled={!!generating}
-                    className="text-[9px] font-bold text-[#f0a500] disabled:opacity-50">
-                    {generating === l.id ? '...' : 'Gen Audio'}
-                  </button>
-                )}
-                <span className="text-[#6e6a63]">·</span>
                 {imageUrls[l.id] ? (
                   <span className="text-[9px] font-bold text-[#7ad9a1]">Image ✓</span>
                 ) : (
@@ -2700,6 +2720,68 @@ function WisdomAudioPanel() {
                 <div className="mt-0.5 text-[9px] text-[#6e6a63]">{status[l.id]}</div>
               )}
             </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+function VoiceFeedbackPanel() {
+  const [feedback, setFeedback] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    (async () => {
+      try {
+        const { collection, getDocs, query, orderBy, limit } = await import('firebase/firestore');
+        const { db } = await import('../lib/firebase.js');
+        if (!db) return;
+        const snap = await getDocs(query(collection(db, 'voiceFeedback'), orderBy('createdAt', 'desc'), limit(100)));
+        const list = [];
+        snap.forEach(d => list.push({ id: d.id, ...d.data() }));
+        setFeedback(list);
+      } catch {}
+      setLoading(false);
+    })();
+  }, []);
+
+  if (loading) return <div className="text-sm text-[#6e6a63]">Loading feedback...</div>;
+  if (feedback.length === 0) return <div className="rounded-2xl bg-[#1a1a28] p-6 text-center text-sm text-[#6e6a63]">No voice feedback yet. Users will rate after stories finish playing.</div>;
+
+  const avg = (feedback.reduce((s, f) => s + (f.rating || 0), 0) / feedback.length).toFixed(1);
+  const byVoice = {};
+  feedback.forEach(f => {
+    const v = f.voice || 'AI Narrator';
+    if (!byVoice[v]) byVoice[v] = { total: 0, count: 0 };
+    byVoice[v].total += f.rating || 0;
+    byVoice[v].count++;
+  });
+
+  return (
+    <div className="space-y-4">
+      <div className="rounded-2xl bg-[#1a1a28] p-4">
+        <h3 className="text-sm font-bold text-[#f5f0e8]">Voice Quality Feedback</h3>
+        <p className="text-xs text-[#6e6a63]">{feedback.length} ratings · Avg: <span className="text-[#f0a500] font-bold">{avg}/5</span></p>
+        <div className="mt-3 flex flex-wrap gap-2">
+          {Object.entries(byVoice).map(([voice, data]) => (
+            <div key={voice} className="rounded-xl bg-[#0a0a0f] px-3 py-2 ring-1 ring-white/5">
+              <div className="text-[10px] font-bold text-[#f5f0e8]">{voice}</div>
+              <div className="text-[9px] text-[#6e6a63]">{(data.total / data.count).toFixed(1)}/5 · {data.count} ratings</div>
+            </div>
+          ))}
+        </div>
+      </div>
+      <div className="space-y-1.5">
+        {feedback.slice(0, 50).map(f => (
+          <div key={f.id} className="flex items-center gap-3 rounded-xl bg-[#1a1a28] px-3 py-2">
+            <div className="text-lg">{f.rating >= 4 ? '🤩' : f.rating >= 3 ? '🙂' : '😕'}</div>
+            <div className="flex-1 min-w-0">
+              <div className="text-[10px] font-bold text-[#f5f0e8] truncate">{f.storyTitle}</div>
+              <div className="text-[9px] text-[#6e6a63]">{f.voice} · {f.tradition} · {f.language} · {f.country}</div>
+            </div>
+            <div className="text-sm font-bold text-[#f0a500]">{f.rating}/5</div>
+            <div className="text-[8px] text-[#6e6a63]">{new Date(f.createdAt).toLocaleDateString()}</div>
           </div>
         ))}
       </div>

@@ -363,7 +363,10 @@ function PlayerInner() {
     }
   };
 
-  // When story ends, show done state then go back after a pause
+  // When story ends, show feedback popup
+  const [showFeedback, setShowFeedback] = useState(false);
+  const [feedbackRating, setFeedbackRating] = useState(0);
+
   useEffect(() => {
     if (!current || !ttsReady) return;
     const ended = progress >= 1 && !narrator.playing && !narrator.loading;
@@ -371,13 +374,43 @@ function PlayerInner() {
       setDone(true);
       setIsPlaying(false);
       import('../utils/analytics.js').then(({ trackAudioCompleted }) => trackAudioCompleted(current?.id, current?.estimatedMinutes)).catch(() => {});
-      setTimeout(() => {
-        narrator.stop();
-        navigate('/');
-      }, 3000);
+      // Show feedback popup instead of auto-navigating
+      setTimeout(() => setShowFeedback(true), 800);
     }
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [progress, narrator.playing, narrator.loading, ttsReady, done]);
+
+  const submitFeedback = async (rating) => {
+    setFeedbackRating(rating);
+    try {
+      const { db: fireDb } = await import('../lib/firebase.js');
+      const { auth: fireAuth } = await import('../lib/firebase.js');
+      if (!fireDb) return;
+      const { collection, addDoc } = await import('firebase/firestore');
+      await addDoc(collection(fireDb, 'voiceFeedback'), {
+        storyId: current?.id || '',
+        storyTitle: current?.title || '',
+        voice: current?.voice || 'AI Narrator',
+        tradition: current?.tradition || '',
+        language: current?.language || 'English',
+        country: profile?.country || '',
+        beliefs: profile?.beliefs || [],
+        rating,
+        uid: fireAuth?.currentUser?.uid || '',
+        createdAt: new Date().toISOString(),
+      });
+    } catch {}
+    // Go home after a short pause
+    setTimeout(() => {
+      narrator.stop();
+      navigate('/');
+    }, 1200);
+  };
+
+  const skipFeedback = () => {
+    narrator.stop();
+    navigate('/');
+  };
 
   // Recover story from localStorage if current is null (e.g. navigated from library)
   const recoveredRef = useRef(false);
@@ -677,6 +710,62 @@ function PlayerInner() {
 
 
           </motion.div>
+      </AnimatePresence>
+
+      {/* Voice feedback popup — shown after story ends */}
+      <AnimatePresence>
+        {showFeedback && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="absolute inset-0 z-[60] flex items-center justify-center bg-black/60 backdrop-blur-sm"
+          >
+            <motion.div
+              initial={{ scale: 0.85, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              exit={{ scale: 0.85, opacity: 0 }}
+              className="mx-6 w-full max-w-sm rounded-3xl bg-bg-elevated p-6 text-center shadow-lift ring-1 ring-white/10"
+            >
+              {feedbackRating === 0 ? (
+                <>
+                  <div className="text-3xl mb-3">🌙</div>
+                  <h3 className="text-lg font-bold text-ink" style={{ fontFamily: 'Fraunces, serif' }}>
+                    How was the voice?
+                  </h3>
+                  <p className="mt-1 text-xs text-ink-muted">Your feedback helps us pick better voices</p>
+                  <div className="mt-5 flex justify-center gap-2">
+                    {[1, 2, 3, 4, 5].map((star) => (
+                      <button
+                        key={star}
+                        onClick={() => submitFeedback(star)}
+                        className="grid h-12 w-12 place-items-center rounded-xl bg-white/5 text-xl transition hover:bg-gold/20 active:scale-90 ring-1 ring-white/10"
+                      >
+                        {star <= 2 ? '😕' : star <= 3 ? '🙂' : star <= 4 ? '😊' : '🤩'}
+                      </button>
+                    ))}
+                  </div>
+                  <div className="mt-2 flex justify-between px-2 text-[9px] text-ink-dim">
+                    <span>Not great</span>
+                    <span>Amazing</span>
+                  </div>
+                  <button onClick={skipFeedback}
+                    className="mt-4 text-[11px] text-ink-dim">
+                    Skip
+                  </button>
+                </>
+              ) : (
+                <>
+                  <div className="text-4xl mb-2">{feedbackRating >= 4 ? '💛' : '🙏'}</div>
+                  <h3 className="text-lg font-bold text-gold" style={{ fontFamily: 'Fraunces, serif' }}>
+                    {feedbackRating >= 4 ? 'Thank you!' : 'We\'ll do better!'}
+                  </h3>
+                  <p className="mt-1 text-xs text-ink-muted">Sweet dreams tonight</p>
+                </>
+              )}
+            </motion.div>
+          </motion.div>
+        )}
       </AnimatePresence>
     </div>
   );
