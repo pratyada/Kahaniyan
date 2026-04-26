@@ -43,7 +43,16 @@ export const ROADMAP = [
     mvp: true,
     status: 'shipped',
     notes:
-      'Added 8 compassion-to-animals stories from Hindu, Islamic, Christian, Sikh and Buddhist traditions.',
+      'Full wisdom story library: 22 Hindu stories across 7 themes (compassion, courage, wisdom, honesty, sharing, humility, forgiveness) from Ramayana, Mahabharata, Panchatantra & more. Plus stories from Islamic, Christian, Sikh, Buddhist, Jain & Jewish traditions.',
+  },
+  {
+    id: 'bulk-media-generation',
+    title: 'Admin bulk audio + image generation for wisdom stories',
+    impact: 'high',
+    mvp: true,
+    status: 'shipped',
+    notes:
+      'One-click bulk generation in Story Lab: filter by belief/theme, then generate all audio (OpenAI TTS-HD) and cover images (DALL-E 3) at once. Includes progress tracking and stop control.',
   },
   {
     id: 'white-noise',

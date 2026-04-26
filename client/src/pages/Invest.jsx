@@ -497,7 +497,7 @@ export default function Invest() {
                     {[
                       { feature: 'Child\'s real name in story', us: '✅', calm: '❌', moshi: '❌', yt: '❌' },
                       { feature: 'Family members as characters', us: '✅', calm: '❌', moshi: '❌', yt: '❌' },
-                      { feature: 'Cultural / religious stories', us: '✅ 7 traditions', calm: '❌', moshi: '❌', yt: 'Fragmented' },
+                      { feature: 'Cultural / religious stories', us: '✅ 7 traditions · 40+ stories', calm: '❌', moshi: '❌', yt: 'Fragmented' },
                       { feature: 'Fresh stories every night', us: '✅ Always new', calm: '❌ Pre-recorded', moshi: '❌ Pre-recorded', yt: '❌' },
                       { feature: 'Parent whisper (today\'s mood)', us: '✅', calm: '❌', moshi: '❌', yt: '❌' },
                       { feature: 'Voice cloning (family)', us: '🔜 Planned', calm: '❌', moshi: '❌', yt: '❌' },
