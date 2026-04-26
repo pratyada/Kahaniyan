@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useAdmin } from '../hooks/useAdmin.jsx';
@@ -2486,6 +2486,10 @@ function WisdomAudioPanel() {
   const VOICE_OPTIONS = ['sage', 'nova', 'coral', 'ash', 'echo', 'fable', 'onyx', 'shimmer', 'alloy', 'ballad', 'verse', 'marin', 'cedar'];
   const MODEL_OPTIONS = ['tts-1', 'tts-1-hd', 'gpt-4o-mini-tts'];
 
+  const [bulkRunning, setBulkRunning] = useState(false);
+  const [bulkProgress, setBulkProgress] = useState('');
+  const bulkAbort = useRef(false);
+
   const getVoiceFor = (id) => voiceSelections[id]?.voice || 'sage';
   const getModelFor = (id) => voiceSelections[id]?.model || 'tts-1';
 
@@ -2543,6 +2547,35 @@ function WisdomAudioPanel() {
       setStatus(s => ({ ...s, [lesson.id]: 'done' }));
     } catch (e) { setStatus(s => ({ ...s, [lesson.id]: e.message })); }
     setGenerating(null);
+  };
+
+  const bulkGenerate = async (type) => {
+    bulkAbort.current = false;
+    setBulkRunning(true);
+    const targets = filtered.filter(l =>
+      type === 'audio' ? !urls[l.id] : type === 'image' ? !imageUrls[l.id] : (!urls[l.id] || !imageUrls[l.id])
+    );
+    for (let i = 0; i < targets.length; i++) {
+      if (bulkAbort.current) { setBulkProgress('Stopped'); break; }
+      const l = targets[i];
+      if (type === 'all' || type === 'audio') {
+        if (!urls[l.id]) {
+          setBulkProgress(`Audio ${i + 1}/${targets.length}: ${l.title}`);
+          await generateOne(l);
+          await new Promise(r => setTimeout(r, 500));
+        }
+      }
+      if (bulkAbort.current) { setBulkProgress('Stopped'); break; }
+      if (type === 'all' || type === 'image') {
+        if (!imageUrls[l.id]) {
+          setBulkProgress(`Image ${i + 1}/${targets.length}: ${l.title}`);
+          await generateImage(l);
+          await new Promise(r => setTimeout(r, 500));
+        }
+      }
+    }
+    if (!bulkAbort.current) setBulkProgress(`Done! ${targets.length} stories processed`);
+    setBulkRunning(false);
   };
 
   const saveStory = async (story) => {
@@ -2624,6 +2657,30 @@ function WisdomAudioPanel() {
           className="shrink-0 rounded-lg bg-[#7ad9a1] px-4 py-2 text-xs font-bold text-[#0a0a0f]">
           + Add Story
         </button>
+      </div>
+
+      {/* ── Bulk Generate ── */}
+      <div className="flex items-center gap-2 rounded-xl bg-[#1a1a28] p-3 ring-1 ring-white/5">
+        <span className="text-[10px] font-bold uppercase tracking-wider text-[#6e6a63] shrink-0">Bulk Generate ({filtered.filter(l => !urls[l.id] || !imageUrls[l.id]).length} incomplete):</span>
+        <button onClick={() => bulkGenerate('audio')} disabled={bulkRunning || !!generating}
+          className="rounded-lg bg-[#f0a500]/10 px-4 py-2 text-xs font-bold text-[#f0a500] hover:bg-[#f0a500]/20 disabled:opacity-30">
+          All Audio
+        </button>
+        <button onClick={() => bulkGenerate('image')} disabled={bulkRunning || !!generating}
+          className="rounded-lg bg-[#539df5]/10 px-4 py-2 text-xs font-bold text-[#539df5] hover:bg-[#539df5]/20 disabled:opacity-30">
+          All Images
+        </button>
+        <button onClick={() => bulkGenerate('all')} disabled={bulkRunning || !!generating}
+          className="rounded-lg bg-[#7ad9a1]/10 px-4 py-2 text-xs font-bold text-[#7ad9a1] hover:bg-[#7ad9a1]/20 disabled:opacity-30">
+          Audio + Images
+        </button>
+        {bulkRunning && (
+          <button onClick={() => { bulkAbort.current = true; }}
+            className="rounded-lg bg-red-400/10 px-4 py-2 text-xs font-bold text-red-400 hover:bg-red-400/20">
+            Stop
+          </button>
+        )}
+        {bulkProgress && <span className="text-[10px] text-[#f0a500] truncate ml-auto">{bulkProgress}</span>}
       </div>
 
       {/* ── Add / Edit form ── */}
