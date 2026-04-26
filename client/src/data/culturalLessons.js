@@ -348,6 +348,402 @@ Akbar clapped. The court cheered. Birbal bowed.
 That night, {childName}, remember Birbal's line. When someone seems bigger or better than you, they have not made you smaller. You are exactly the same size you always were. And when you want to be greater, you do not need to shrink anyone else. Just draw your own longer line.`,
   },
 
+  // ─── HINDU — compassion-animals (additional) ─────────────
+  {
+    id: 'ganesha_mouse',
+    tradition: 'hindu',
+    theme: 'compassion-animals',
+    title: 'Ganesha and the Little Mouse',
+    durationMinutes: 8,
+    source: 'Hindu tradition · Ganesha Purana',
+    body: `Of all the gods in heaven, Lord Ganesha was the mightiest. He had the head of an elephant, arms as strong as mountains, and a belly full of the wisdom of the universe.
+
+And yet, when it came time to choose a vehicle — the creature that would carry him wherever he went — Ganesha did not pick an eagle, a lion, or a stallion.
+
+He picked a mouse.
+
+A tiny, brown, whiskered mouse named Mushika.
+
+The other gods laughed. "A mouse? For the great Ganesha? He will crush the poor thing!"
+
+But Ganesha smiled. He bent down — this enormous, powerful god — and spoke to the little mouse very gently. "Will you carry me, little one?"
+
+Mushika looked up at the god towering above him. His tiny heart was beating fast. But he nodded.
+
+And from that day on, Mushika carried Ganesha everywhere. Through forests, across rivers, over mountains. The mouse never complained. And Ganesha never once made the mouse feel small.
+
+Because Ganesha understood something the other gods did not: it is the smallest creatures who carry the greatest love.
+
+That night, {childName}, remember Ganesha and his mouse. True power is not about being the biggest or the strongest. It is about being gentle enough to trust the smallest creature with your heart — and wise enough to see the greatness hiding inside them.`,
+  },
+  {
+    id: 'hindu_cow_sage',
+    tradition: 'hindu',
+    theme: 'compassion-animals',
+    title: 'The Sage and the Injured Deer',
+    durationMinutes: 8,
+    source: 'Hindu tradition · forest hermitage tales',
+    body: `Deep in a forest, where sunlight fell in golden coins through the trees, there lived an old sage. He spent his days in prayer, eating only fruits and roots, and speaking kindly to every creature that crossed his path.
+
+One rainy night, a young deer stumbled into his hut. Its leg was bleeding. It had been chased by hunters and had barely escaped. The deer collapsed near the fire, shaking with fear.
+
+The sage did not hesitate. He tore a strip of cloth from his own shawl — his only shawl — and bandaged the deer's leg. He gave it water from his only pot. He gave it fruit from his only basket. He stayed awake all night, stroking its head and humming a soft bhajan until the deer stopped trembling.
+
+In the morning, the hunters arrived. "Old man, have you seen a deer? We have been tracking it all night."
+
+The sage looked at them calmly. "The forest is full of deer. But this one is under my protection. You will not touch it."
+
+The hunters looked at the frail old man and laughed. But something in his eyes — something steady and fearless — made them turn and leave.
+
+The deer stayed with the sage for many weeks until its leg healed. Then one morning, it walked to the edge of the clearing, looked back once, and disappeared into the trees.
+
+That night, {childName}, remember the sage and his torn shawl. When a creature is hurt and afraid, you do not ask whether it is worth saving. You just save it. That is dharma — the oldest law of the heart.`,
+  },
+
+  // ─── HINDU — honesty ─────────────────────────────────────
+  {
+    id: 'krishna_butter',
+    tradition: 'hindu',
+    theme: 'honesty',
+    title: 'Krishna and the Pot of Butter',
+    durationMinutes: 10,
+    source: 'Hindu folk tradition · Krishna Leela',
+    body: `When Krishna was a small mischievous boy in Vrindavan, he loved butter more than anything in the world. His mother Yashoda would scold him gently: "Krishna! Stop sneaking butter from the pots!"
+
+One day, all the village mothers came running to Yashoda. "Your son ate our butter again!" they cried. "He climbed on our shelves! He shared it with the monkeys!"
+
+Yashoda was tired of these complaints. She marched up to little Krishna and looked at him sternly. "Krishna," she said, "did you eat the butter?"
+
+Krishna looked up at her with his big dark eyes, his cheeks dusted with white, and shook his head. "No, mother."
+
+"Open your mouth," said Yashoda, suspicious.
+
+Little Krishna slowly opened his mouth. And inside his small mouth, Yashoda saw — not butter — but the entire universe. Stars, planets, mountains, oceans, all the gods and all the children of all the worlds, swirling together inside the mouth of her little boy.
+
+Yashoda gasped. She fell to her knees. And Krishna, seeing how frightened she was, made her forget what she had seen, so that she could go on loving him as her ordinary little son.
+
+But the lesson stayed in the air, like a soft breeze: even the smallest lie is a kind of forgetting who you really are. Krishna was the universe itself, but he hid it behind a small fib about butter. The next time Yashoda asked him a question, Krishna told the truth.
+
+That night, {childName}, remember little blue Krishna with butter on his face. When you tell a lie, you are not just hiding something from another person — you are hiding from the bigness inside you. The truth is what makes your inside as wide as the sky.`,
+  },
+  {
+    id: 'harishchandra_promise',
+    tradition: 'hindu',
+    theme: 'honesty',
+    title: 'King Harishchandra and the Promise',
+    durationMinutes: 10,
+    source: 'Hindu tradition · Markandeya Purana',
+    body: `Long ago, there lived a king named Harishchandra. He was known across the land for one thing above all else: he never, ever told a lie.
+
+The sage Vishwamitra wanted to test him. He came to the king and asked for a gift. "I will give you anything," said Harishchandra, for a king must keep his word.
+
+Vishwamitra asked for the king's entire kingdom — every palace, every field, every coin.
+
+Harishchandra gave it all away. He walked out of his own palace with only the clothes on his back, his wife Shaivya, and his young son.
+
+But Vishwamitra was not finished. "You still owe me a fee," he said. "Pay it, or your word is broken."
+
+Harishchandra had nothing. To pay the debt, he sold himself as a servant at the cremation grounds — the place where the dead are burned. His wife was sold as a servant to another household. They were separated.
+
+Day after day, Harishchandra worked in the burning grounds, covered in ash, hungry and heartbroken. People who had once bowed to him now walked past without a glance.
+
+But he never lied. Not once. Not even to make his suffering easier.
+
+At last, the gods themselves came down. They had been watching all along. "Harishchandra," they said, "your truth is greater than any kingdom. Take back everything — your crown, your family, your land."
+
+And he did. Not because he had been clever, but because he had been honest when honesty cost him everything.
+
+That night, {childName}, remember Harishchandra. Anyone can tell the truth when it is easy. The real test comes when the truth is hard, when it costs you something. That is when honesty becomes courage.`,
+  },
+  {
+    id: 'yudhishthira_half_truth',
+    tradition: 'hindu',
+    theme: 'honesty',
+    title: 'Yudhishthira and the Chariot That Sank',
+    durationMinutes: 9,
+    source: 'Hindu tradition · Mahabharata',
+    body: `Yudhishthira was the eldest of the five Pandava brothers, and he was famous for one extraordinary thing: his chariot never touched the ground. It always floated, just a little, above the earth — because Yudhishthira had never told a lie. His truthfulness was so pure that even gravity respected it.
+
+But during the great war of Kurukshetra, something happened.
+
+The Pandavas needed to defeat a powerful warrior named Dronacharya. Drona could not be beaten in battle — he was too skilled. But he had one weakness: his son Ashwatthama. If Drona believed his son was dead, his heart would break and he would stop fighting.
+
+So a plan was made. An elephant named Ashwatthama was killed. And then Yudhishthira was asked to announce: "Ashwatthama is dead."
+
+Yudhishthira said the words: "Ashwatthama is dead." Then, very quietly, he added: "…the elephant." But the drums of war were loud, and no one heard the last part.
+
+Drona's heart shattered. He laid down his weapons. And the battle turned.
+
+But something else happened too. Yudhishthira's chariot — the one that had floated above the ground his entire life — sank. It touched the earth with a heavy thud.
+
+One half-truth. That was all it took.
+
+Yudhishthira won the war that day, but he carried the weight of that moment for the rest of his life.
+
+That night, {childName}, remember the chariot that sank. A half-truth is still a whole lie. And the ground always knows the difference.`,
+  },
+
+  // ─── HINDU — sharing ──────────────────────────────────────
+  {
+    id: 'sudama_poha',
+    tradition: 'hindu',
+    theme: 'sharing',
+    title: 'Sudama and the Handful of Poha',
+    durationMinutes: 10,
+    source: 'Hindu tradition · Bhagavata Purana',
+    body: `Sudama was a poor Brahmin who lived in a tiny hut with his wife. They often had nothing to eat. But Sudama had one treasure that no amount of poverty could take away: a childhood friendship with Krishna, who was now the King of Dwaraka.
+
+One day, Sudama's wife said, "Go to Krishna. He is your friend. He will help us." She tied a small bundle of flattened rice — poha — in a torn cloth. It was all they had.
+
+Sudama walked for days. When he reached the golden gates of Dwaraka, he felt ashamed. His clothes were torn. His feet were dusty. And his gift — a handful of poha — seemed foolish next to Krishna's palaces of gold.
+
+But when Krishna saw Sudama, he ran to him. He washed Sudama's tired feet with his own hands. He sat Sudama on his own throne. He held Sudama's hands like they were made of something precious.
+
+"What have you brought me?" Krishna asked, eyes twinkling.
+
+Sudama tried to hide the poha. But Krishna snatched the bundle, opened it, and ate the flattened rice with more joy than he had ever shown eating a royal feast.
+
+"This," Krishna said, chewing happily, "is the best thing anyone has ever given me. Because you gave me everything you had."
+
+When Sudama returned home, his tiny hut had become a beautiful house. His empty pots were full. His children were fed.
+
+But Sudama knew the real gift was not the house. It was the moment Krishna ate his poha — the moment when having nothing was enough, because it was given with love.
+
+That night, {childName}, remember Sudama's poha. The size of the gift does not matter. What matters is that you gave it with your whole heart.`,
+  },
+  {
+    id: 'draupadi_akshaya_patra',
+    tradition: 'hindu',
+    theme: 'sharing',
+    title: 'Draupadi and the Vessel That Never Emptied',
+    durationMinutes: 9,
+    source: 'Hindu tradition · Mahabharata',
+    body: `When the Pandavas were sent into exile in the forest, they had nothing — no palace, no servants, no kitchen. But the Sun God, pleased with Yudhishthira's goodness, gave Draupadi a magical vessel called the Akshaya Patra.
+
+The vessel had one rule: as long as Draupadi had not yet eaten her own meal, it would produce as much food as anyone needed. But the moment she ate, it would stop until the next day.
+
+So every day, Draupadi cooked and served. She fed her five husbands first. Then the sages who visited. Then any traveller, any beggar, any stranger who wandered to their forest home. She fed everyone before herself.
+
+One afternoon, the sage Durvasa — famous for his terrible temper — arrived with ten thousand students. "Feed us all," he demanded, "or I will curse you."
+
+But Draupadi had already eaten. The vessel was empty. She was terrified.
+
+She prayed to Krishna. Krishna appeared, smiling. He looked into the vessel and found one tiny grain of rice and a scrap of vegetable stuck to the side.
+
+He ate it.
+
+And at that exact moment, across the river, Durvasa and all ten thousand students suddenly felt completely full. Their stomachs were satisfied. They quietly left, embarrassed to ask for more.
+
+One grain of rice, offered with faith, had fed ten thousand.
+
+That night, {childName}, remember Draupadi's vessel. Sharing is not about having a lot to give. It is about giving first, eating last, and trusting that love will fill whatever is empty.`,
+  },
+  {
+    id: 'karna_golden_armour',
+    tradition: 'hindu',
+    theme: 'sharing',
+    title: 'Karna and the Golden Armour',
+    durationMinutes: 10,
+    source: 'Hindu tradition · Mahabharata',
+    body: `Karna was born with something no other warrior had: golden armour and earrings that were fused to his skin, given to him by his father, the Sun God. As long as Karna wore them, no weapon could kill him. He was invincible.
+
+Everyone knew this. Including Karna's enemies.
+
+Before the great war, the god Indra came to Karna disguised as an old Brahmin. "I have heard you are the most generous man alive," Indra said. "They say you never refuse anyone who asks. Is it true?"
+
+Karna nodded. "Ask me anything."
+
+Indra smiled. "Give me your golden armour and your earrings."
+
+Karna's charioteer grabbed his arm. "Don't! He is Indra in disguise! Without the armour, you will die in the war!"
+
+Karna knew. He had known the moment the old man appeared. He knew exactly what he was giving away, and exactly what it would cost him.
+
+He peeled the golden armour from his own skin. It hurt — the armour was part of his body. Blood ran down his chest. He removed the earrings too, and placed everything into Indra's hands.
+
+"Take them," said Karna. "A promise is a promise. And I would rather die generous than live as someone who broke his word."
+
+Even Indra's eyes filled with tears. He gave Karna a powerful weapon in return — but both knew it would not be enough.
+
+Karna went to war without his armour. And he fought like a lion.
+
+That night, {childName}, remember Karna's golden armour. The most generous people do not give what is easy to give. They give what costs them the most — and they give it anyway.`,
+  },
+
+  // ─── HINDU — humility ─────────────────────────────────────
+  {
+    id: 'ram_shabari_berries',
+    tradition: 'hindu',
+    theme: 'humility',
+    title: 'Ram and Shabari\'s Half-Eaten Berries',
+    durationMinutes: 9,
+    source: 'Hindu tradition · Ramayana',
+    body: `In a small hut at the edge of a forest lived an old woman named Shabari. She was poor. She belonged to a tribe that most people looked down upon. She had no education, no fine clothes, and no gold.
+
+But Shabari had one thing: faith. Her guru had told her, long ago, "One day, Lord Ram will come to visit you. Wait for him."
+
+So Shabari waited. Every single morning, she went into the forest and picked the sweetest berries she could find. She tasted each one first — biting into it to make sure it was sweet enough — and kept only the best ones. The sour ones she threw away.
+
+Years passed. Her hair turned white. Her back bent. But every morning, she picked berries and waited.
+
+Then one day, Ram came.
+
+He walked into her clearing with his brother Lakshman. Shabari could not believe her eyes. She fell at his feet, weeping with joy.
+
+With trembling hands, she offered him the berries — the ones she had already bitten into.
+
+Lakshman frowned. "These berries are half-eaten. They are unclean."
+
+But Ram picked up a berry, put it in his mouth, and smiled. "These are the sweetest berries I have ever tasted," he said. "Because each one was chosen with love."
+
+He ate every single one.
+
+The whole forest — the trees, the birds, the river — seemed to pause in that moment. A king was eating half-bitten berries from the hands of a poor old woman. And he was calling them the sweetest thing he had ever tasted.
+
+That night, {childName}, remember Shabari. It does not matter who you are or what you have. What matters is the love behind what you give. And remember Ram — a true king kneels before love, no matter what form it takes.`,
+  },
+  {
+    id: 'hanuman_chest',
+    tradition: 'hindu',
+    theme: 'humility',
+    title: 'Hanuman\'s Heart',
+    durationMinutes: 8,
+    source: 'Hindu tradition · Ramayana',
+    body: `After the great war was won and Ram returned to Ayodhya as king, there was a grand celebration. Gifts were given to everyone who had helped — jewels, land, titles, gold.
+
+Sita gave Hanuman a beautiful necklace of pearls. It was the finest necklace in the kingdom.
+
+Hanuman looked at it. Then, one by one, he began cracking the pearls open with his teeth and peering inside each one.
+
+The courtiers gasped. "What are you doing? That necklace is priceless!"
+
+Hanuman set the broken pearls down gently. "I was looking for Ram and Sita inside them," he said simply. "If Ram and Sita are not inside, then what is it worth to me?"
+
+Someone in the court laughed. "If that is your logic, then are Ram and Sita inside your own body?"
+
+Hanuman looked at the man. Then, without a word, he placed both hands on his chest and tore it open.
+
+And there, inside Hanuman's heart — shining like the morning sun — were Ram and Sita. Sitting together. Glowing.
+
+The entire court fell silent. Every person knelt.
+
+Hanuman closed his chest, bowed to Ram, and went back to his place — at Ram's feet. He wanted no throne. No title. No reward. Only to serve.
+
+That night, {childName}, remember Hanuman. The strongest person in the room was also the most humble. He did not want gold or glory. He only wanted to love — and that made him the richest person in all of creation.`,
+  },
+  {
+    id: 'shiva_kannappa',
+    tradition: 'hindu',
+    theme: 'humility',
+    title: 'Kannappa and the Eyes of Devotion',
+    durationMinutes: 9,
+    source: 'Hindu tradition · Periya Puranam',
+    body: `In the forests of southern India, there lived a tribal hunter named Kannappa. He did not know the scriptures. He could not read or write. He had never entered a temple in his life.
+
+But one day, deep in the forest, he found a small stone Shiva lingam — a sacred symbol of Lord Shiva — sitting alone under a tree. Something in Kannappa's heart stirred. He did not understand why, but he felt an overwhelming love for that small stone.
+
+From that day, Kannappa visited the lingam every morning. He brought water — not in a sacred pot, but in his mouth, because he had nothing else. He brought flowers — tangled in his messy hair, because he had no basket. He brought food — meat he had hunted, because he had nothing else to offer.
+
+The temple priests were horrified. "This is all wrong! He brings impure things! He touches the sacred stone with dirty hands!"
+
+But Shiva did not care about rituals. Shiva saw only love.
+
+One morning, Kannappa noticed that the lingam was weeping — tears of blood from one of its carved eyes. Without thinking, Kannappa plucked out his own eye and pressed it onto the stone. The bleeding stopped.
+
+Then the other eye began to weep. Kannappa did not hesitate. He lifted his foot and placed it where the second eye was, so he could find the spot even after going blind, and began to pluck out his second eye.
+
+At that moment, Shiva appeared. He caught Kannappa's hand. "Stop," he said, his voice trembling with love. "Your devotion has no equal. You gave what no one else would give."
+
+Shiva restored both of Kannappa's eyes and held him close.
+
+That night, {childName}, remember Kannappa. You do not need to be perfect to be loved. You do not need fancy words or expensive gifts. You only need a heart that gives everything it has — messy, imperfect, and completely real.`,
+  },
+
+  // ─── HINDU — forgiveness ──────────────────────────────────
+  {
+    id: 'ram_vibhishana',
+    tradition: 'hindu',
+    theme: 'forgiveness',
+    title: 'Ram and the Enemy\'s Brother',
+    durationMinutes: 9,
+    source: 'Hindu tradition · Ramayana',
+    body: `During the great war between Ram and the demon king Ravana, something unexpected happened. Ravana's own brother, Vibhishana, came to Ram's camp.
+
+The monkey generals were suspicious. "It is a trick!" said Sugriva. "He is Ravana's brother. He will betray us. Send him away — or worse."
+
+Others agreed. "He is the enemy. How can we trust him?"
+
+Ram listened quietly. Then he said, "Bring Vibhishana to me."
+
+Vibhishana walked into the camp, trembling. He knelt before Ram. "I have left my brother," he said, "because what he is doing is wrong. I know you have no reason to trust me. I am the enemy's blood."
+
+Ram looked at him for a long, quiet moment. Then he did something that stunned everyone.
+
+He embraced Vibhishana.
+
+"Anyone who comes to me seeking shelter," said Ram, "I will never turn away. Even if all the world says you are my enemy, one honest step towards goodness is enough. You are not your brother's choices. You are your own."
+
+Ram gave Vibhishana a seat of honour. He treated him like family. And when the war was over, he crowned Vibhishana as the new king of Lanka.
+
+Not as a reward. But as a message to the world: forgiveness is not weakness. It is the courage to see the good in someone when everyone else sees only the bad.
+
+That night, {childName}, remember Vibhishana's trembling knees and Ram's open arms. When someone is brave enough to say "I was wrong," be brave enough to say "You are welcome here."`,
+  },
+  {
+    id: 'sage_scorpion',
+    tradition: 'hindu',
+    theme: 'forgiveness',
+    title: 'The Sage and the Scorpion',
+    durationMinutes: 7,
+    source: 'Hindu folk tradition · ancient parable',
+    body: `An old sage was sitting by a river when he saw a scorpion struggling in the water. It was drowning.
+
+The sage reached down and gently lifted the scorpion out of the water. The scorpion stung him. The sage's hand burned with pain, and he dropped the scorpion — right back into the river.
+
+The sage reached down again. He picked up the scorpion. It stung him again. He dropped it again.
+
+A young man watching from the bank shouted, "Old man, are you mad? The scorpion stings you every time! Why do you keep saving it?"
+
+The sage picked up the scorpion a third time. It stung him a third time. But this time, he managed to place it safely on dry land before letting go.
+
+He looked at the young man, his hand red and swollen, and said, "The scorpion stings because that is its nature. I save because that is mine. Why should I give up my nature just because someone else cannot give up theirs?"
+
+The young man was quiet for a very long time.
+
+That night, {childName}, remember the sage's swollen hand. Some people will sting you. Some people cannot help it. But you can always choose who you are — not in response to their nature, but in honour of your own. Forgiveness is not about what the other person deserves. It is about what kind of person you choose to be.`,
+  },
+  {
+    id: 'krishna_hundred_chances',
+    tradition: 'hindu',
+    theme: 'forgiveness',
+    title: 'Krishna and the Hundred Chances',
+    durationMinutes: 9,
+    source: 'Hindu tradition · Mahabharata / Bhagavata Purana',
+    body: `There was a king named Shishupala who hated Krishna. Nobody knew exactly why — perhaps jealousy, perhaps old anger. But Shishupala insulted Krishna at every chance he got. In public. In court. In front of thousands.
+
+He called Krishna names. He mocked his flute. He laughed at his crown. He challenged his honour.
+
+Krishna's friends were furious. "Why do you allow this?" they asked. "You are the Lord of the universe. You could stop him with a single glance."
+
+But Krishna only smiled. "I made a promise to his mother," he said. "I promised I would forgive Shishupala one hundred times."
+
+So Krishna counted. Every insult. Every mockery. Every cruel word.
+
+One. Five. Twenty. Fifty. Seventy-five. Ninety.
+
+Each time, Krishna forgave. Not because he was weak — but because he had given his word.
+
+The whole court watched, stunned, as the insults kept coming and Krishna kept forgiving.
+
+Ninety-seven. Ninety-eight. Ninety-nine.
+
+On the hundredth insult, Krishna stood. His eyes were not angry. They were sad. "I gave you a hundred chances," he said softly. "A hundred doors to walk through. A hundred moments to choose kindness. You chose none of them."
+
+And then, only then, did Krishna act.
+
+That night, {childName}, remember Krishna's hundred chances. Forgiveness is not foolishness. It is patience — long, steady, powerful patience. But even patience has a number. The lesson is not just for the one being forgiven. It is also for you: when someone gives you a chance to be kind, take it. Do not wait for the hundredth door to close.`,
+  },
+
   // ═══ Additional stories to ensure 3+ per tradition ═══
 
   // ── Muslim ──
