@@ -2628,7 +2628,7 @@ function WisdomAudioPanel() {
   return (
     <div className="space-y-5">
       {/* ── Dashboard Header ── */}
-      <div className="grid grid-cols-4 gap-3">
+      <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
         <div className="rounded-xl bg-[#1a1a28] p-4 ring-1 ring-white/5">
           <div className="text-2xl font-bold text-[#f5f0e8]">{lessons.length}</div>
           <div className="text-[10px] font-bold uppercase tracking-wider text-[#6e6a63]">Total Stories</div>
@@ -2660,8 +2660,8 @@ function WisdomAudioPanel() {
       </div>
 
       {/* ── Bulk Generate ── */}
-      <div className="flex items-center gap-2 rounded-xl bg-[#1a1a28] p-3 ring-1 ring-white/5">
-        <span className="text-[10px] font-bold uppercase tracking-wider text-[#6e6a63] shrink-0">Bulk Generate ({filtered.filter(l => !urls[l.id] || !imageUrls[l.id]).length} incomplete):</span>
+      <div className="flex flex-wrap items-center gap-2 rounded-xl bg-[#1a1a28] p-3 ring-1 ring-white/5">
+        <span className="text-[10px] font-bold uppercase tracking-wider text-[#6e6a63] w-full sm:w-auto">Bulk Generate ({filtered.filter(l => !urls[l.id] || !imageUrls[l.id]).length} incomplete)</span>
         <button onClick={() => bulkGenerate('audio')} disabled={bulkRunning || !!generating}
           className="rounded-lg bg-[#f0a500]/10 px-4 py-2 text-xs font-bold text-[#f0a500] hover:bg-[#f0a500]/20 disabled:opacity-30">
           All Audio
@@ -2704,7 +2704,7 @@ function WisdomAudioPanel() {
             )}
             <input value={story.title} onChange={e => update('title', e.target.value)}
               placeholder="Story Title" className="w-full rounded-lg bg-[#0a0a0f] px-3 py-2.5 text-sm font-bold text-[#f5f0e8] outline-none ring-1 ring-white/10" />
-            <div className="grid grid-cols-3 gap-2">
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-2">
               <select value={story.tradition} onChange={e => update('tradition', e.target.value)}
                 className="rounded-lg bg-[#0a0a0f] px-3 py-2.5 text-xs text-[#f5f0e8] outline-none ring-1 ring-white/10">
                 {TRADITION_OPTIONS.filter(t => t.key !== 'all').map(t => <option key={t.key} value={t.key}>{t.icon} {t.label}</option>)}
@@ -2736,97 +2736,77 @@ function WisdomAudioPanel() {
         );
       })()}
 
-      {/* ── Table ── */}
-      <div className="rounded-xl bg-[#1a1a28] ring-1 ring-white/5 overflow-hidden">
-        {/* Table header with inline filters */}
-        <div className="grid grid-cols-[48px_1fr_120px_120px_80px_80px_80px_120px] gap-2 px-4 py-2.5 border-b border-white/5 items-center">
-          <div></div>
-          <div className="text-[10px] font-bold uppercase tracking-wider text-[#6e6a63]">Story</div>
-          <div>
-            <select value={filterTradition} onChange={e => setFilterTradition(e.target.value)}
-              className="w-full rounded bg-[#0a0a0f] px-2 py-1 text-[10px] font-bold text-[#f0a500] outline-none ring-1 ring-white/10">
-              {TRADITION_OPTIONS.map(t => <option key={t.key} value={t.key}>{t.key === 'all' ? '▼ Belief' : t.icon + ' ' + t.label}</option>)}
-            </select>
-          </div>
-          <div>
-            <select value={filterTheme} onChange={e => setFilterTheme(e.target.value)}
-              className="w-full rounded bg-[#0a0a0f] px-2 py-1 text-[10px] font-bold text-[#539df5] outline-none ring-1 ring-white/10">
-              {THEME_OPTIONS.map(t => <option key={t} value={t}>{t === 'all' ? '▼ Theme' : t.charAt(0).toUpperCase() + t.slice(1).replace('-', ' ')}</option>)}
-            </select>
-          </div>
-          <div className="text-[10px] font-bold uppercase tracking-wider text-[#6e6a63]">Audio</div>
-          <div className="text-[10px] font-bold uppercase tracking-wider text-[#6e6a63]">Image</div>
-          <div className="text-[10px] font-bold uppercase tracking-wider text-[#6e6a63]">Voice</div>
-          <div className="text-[10px] font-bold uppercase tracking-wider text-[#6e6a63]">Actions</div>
-        </div>
-        {/* Table rows */}
-        {filtered.map((l, i) => (
-          <div key={l.id} className={`grid grid-cols-[48px_1fr_120px_120px_80px_80px_80px_120px] gap-2 px-4 py-3 items-center ${i % 2 === 0 ? 'bg-white/[0.02]' : ''} hover:bg-white/[0.04] transition`}>
-            {/* Image */}
-            <div className="h-10 w-10 shrink-0 overflow-hidden rounded-lg bg-[#0a0a0f]">
-              {imageUrls[l.id] ? (
-                <img src={imageUrls[l.id]} alt="" className="h-full w-full object-cover" />
-              ) : (
-                <div className="grid h-full w-full place-items-center text-sm opacity-30">🖼️</div>
-              )}
-            </div>
-            {/* Title */}
-            <div className="min-w-0">
-              <div className="flex items-center gap-2">
-                <span className="text-xs font-bold text-[#f5f0e8] truncate">{l.title}</span>
-                {l._isCustom && <span className="text-[7px] rounded bg-[#f0a500]/20 text-[#f0a500] px-1 py-0.5 font-bold shrink-0">CUSTOM</span>}
+      {/* ── Filters ── */}
+      <div className="flex flex-wrap gap-2 rounded-xl bg-[#1a1a28] p-3 ring-1 ring-white/5">
+        <select value={filterTradition} onChange={e => setFilterTradition(e.target.value)}
+          className="flex-1 min-w-[120px] rounded-lg bg-[#0a0a0f] px-3 py-2 text-xs font-bold text-[#f0a500] outline-none ring-1 ring-white/10">
+          {TRADITION_OPTIONS.map(t => <option key={t.key} value={t.key}>{t.key === 'all' ? '▼ All Beliefs' : t.icon + ' ' + t.label}</option>)}
+        </select>
+        <select value={filterTheme} onChange={e => setFilterTheme(e.target.value)}
+          className="flex-1 min-w-[120px] rounded-lg bg-[#0a0a0f] px-3 py-2 text-xs font-bold text-[#539df5] outline-none ring-1 ring-white/10">
+          {THEME_OPTIONS.map(t => <option key={t} value={t}>{t === 'all' ? '▼ All Themes' : t.charAt(0).toUpperCase() + t.slice(1).replace('-', ' ')}</option>)}
+        </select>
+      </div>
+
+      {/* ── Story Cards (mobile-friendly) ── */}
+      <div className="space-y-2">
+        {filtered.map((l) => (
+          <div key={l.id} className="rounded-xl bg-[#1a1a28] p-3 ring-1 ring-white/5">
+            {/* Top row: image + title + status badges */}
+            <div className="flex items-start gap-3">
+              <div className="h-12 w-12 shrink-0 overflow-hidden rounded-lg bg-[#0a0a0f]">
+                {imageUrls[l.id] ? (
+                  <img src={imageUrls[l.id]} alt="" className="h-full w-full object-cover" />
+                ) : (
+                  <div className="grid h-full w-full place-items-center text-lg opacity-30">🖼️</div>
+                )}
               </div>
-              <div className="text-[10px] text-[#6e6a63] truncate">{l.source || l.id}</div>
-              {status[l.id] && status[l.id] !== 'done' && (
-                <div className="text-[9px] text-[#f0a500] mt-0.5">{status[l.id]}</div>
-              )}
+              <div className="min-w-0 flex-1">
+                <div className="flex items-center gap-2 flex-wrap">
+                  <span className="text-xs font-bold text-[#f5f0e8]">{l.title}</span>
+                  {l._isCustom && <span className="text-[7px] rounded bg-[#f0a500]/20 text-[#f0a500] px-1 py-0.5 font-bold shrink-0">CUSTOM</span>}
+                </div>
+                <div className="text-[10px] text-[#6e6a63] truncate mt-0.5">{l.source || l.id}</div>
+                <div className="flex items-center gap-2 mt-1.5 flex-wrap">
+                  <span className="text-[10px] text-[#a8a39a]">{TRADITION_OPTIONS.find(t => t.key === l.tradition)?.icon} {l.tradition}</span>
+                  <span className="text-[10px] text-[#a8a39a]">{l.theme?.replace('-', ' ')}</span>
+                  {urls[l.id] ? (
+                    <span className="inline-flex items-center rounded-full bg-[#7ad9a1]/10 px-2 py-0.5 text-[8px] font-bold text-[#7ad9a1]">Audio ✓</span>
+                  ) : (
+                    <span className="inline-flex items-center rounded-full bg-red-400/10 px-2 py-0.5 text-[8px] font-bold text-red-400">No audio</span>
+                  )}
+                  {imageUrls[l.id] ? (
+                    <span className="inline-flex items-center rounded-full bg-[#7ad9a1]/10 px-2 py-0.5 text-[8px] font-bold text-[#7ad9a1]">Image ✓</span>
+                  ) : (
+                    <span className="inline-flex items-center rounded-full bg-red-400/10 px-2 py-0.5 text-[8px] font-bold text-red-400">No image</span>
+                  )}
+                </div>
+                {status[l.id] && status[l.id] !== 'done' && (
+                  <div className="text-[9px] text-[#f0a500] mt-1">{status[l.id]}</div>
+                )}
+              </div>
             </div>
-            {/* Belief */}
-            <div className="text-[11px] text-[#a8a39a]">{TRADITION_OPTIONS.find(t => t.key === l.tradition)?.icon} {l.tradition}</div>
-            {/* Theme */}
-            <div className="text-[11px] text-[#a8a39a]">{l.theme?.replace('-', ' ')}</div>
-            {/* Audio status */}
-            <div>
-              {urls[l.id] ? (
-                <span className="inline-flex items-center gap-1 rounded-full bg-[#7ad9a1]/10 px-2 py-0.5 text-[9px] font-bold text-[#7ad9a1]">✓ Ready</span>
-              ) : (
-                <span className="inline-flex items-center gap-1 rounded-full bg-red-400/10 px-2 py-0.5 text-[9px] font-bold text-red-400">Missing</span>
-              )}
-            </div>
-            {/* Image status */}
-            <div>
-              {imageUrls[l.id] ? (
-                <span className="inline-flex items-center gap-1 rounded-full bg-[#7ad9a1]/10 px-2 py-0.5 text-[9px] font-bold text-[#7ad9a1]">✓ Ready</span>
-              ) : (
-                <span className="inline-flex items-center gap-1 rounded-full bg-red-400/10 px-2 py-0.5 text-[9px] font-bold text-red-400">Missing</span>
-              )}
-            </div>
-            {/* Voice selector */}
-            <div>
+            {/* Bottom row: voice + actions */}
+            <div className="flex items-center gap-2 mt-3 flex-wrap">
               <select value={getVoiceFor(l.id)} onChange={e => setVoiceSelections(prev => ({ ...prev, [l.id]: { ...prev[l.id], voice: e.target.value } }))}
-                className="w-full rounded bg-[#0a0a0f] px-1.5 py-1 text-[10px] font-bold text-[#f0a500] outline-none ring-1 ring-white/10">
+                className="rounded-lg bg-[#0a0a0f] px-2.5 py-1.5 text-[10px] font-bold text-[#f0a500] outline-none ring-1 ring-white/10">
                 {VOICE_OPTIONS.map(v => <option key={v} value={v}>{v}</option>)}
               </select>
-            </div>
-            {/* Actions */}
-            <div className="flex items-center gap-1.5">
               <button onClick={() => generateOne(l)} disabled={!!generating}
-                className="rounded bg-[#f0a500]/10 px-2 py-1 text-[9px] font-bold text-[#f0a500] hover:bg-[#f0a500]/20 disabled:opacity-30">
-                {generating === l.id ? '...' : urls[l.id] ? 'Re-gen' : 'Audio'}
+                className="rounded-lg bg-[#f0a500]/10 px-3 py-1.5 text-[10px] font-bold text-[#f0a500] hover:bg-[#f0a500]/20 disabled:opacity-30">
+                {generating === l.id ? '...' : urls[l.id] ? 'Re-gen Audio' : 'Gen Audio'}
               </button>
-              {!imageUrls[l.id] && (
-                <button onClick={() => generateImage(l)} disabled={!!generating}
-                  className="rounded bg-[#539df5]/10 px-2 py-1 text-[9px] font-bold text-[#539df5] hover:bg-[#539df5]/20 disabled:opacity-30">
-                  {generating === l.id + '_img' ? '...' : 'Image'}
-                </button>
-              )}
+              <button onClick={() => generateImage(l)} disabled={!!generating}
+                className="rounded-lg bg-[#539df5]/10 px-3 py-1.5 text-[10px] font-bold text-[#539df5] hover:bg-[#539df5]/20 disabled:opacity-30">
+                {generating === l.id + '_img' ? '...' : imageUrls[l.id] ? 'Re-gen Image' : 'Gen Image'}
+              </button>
               <button onClick={() => { setEditing(l.id); setAddingNew(false); }}
-                className="rounded bg-[#e8b4ff]/10 px-2 py-1 text-[9px] font-bold text-[#e8b4ff] hover:bg-[#e8b4ff]/20">
+                className="rounded-lg bg-[#e8b4ff]/10 px-3 py-1.5 text-[10px] font-bold text-[#e8b4ff] hover:bg-[#e8b4ff]/20">
                 Edit
               </button>
               {l._isCustom && (
                 <button onClick={() => deleteStory(l.id)}
-                  className="rounded bg-red-400/10 px-2 py-1 text-[9px] font-bold text-red-400 hover:bg-red-400/20">
+                  className="rounded-lg bg-red-400/10 px-3 py-1.5 text-[10px] font-bold text-red-400 hover:bg-red-400/20">
                   Del
                 </button>
               )}
@@ -2834,7 +2814,7 @@ function WisdomAudioPanel() {
           </div>
         ))}
         {filtered.length === 0 && (
-          <div className="px-4 py-8 text-center text-sm text-[#6e6a63]">No stories match the current filters</div>
+          <div className="rounded-xl bg-[#1a1a28] px-4 py-8 text-center text-sm text-[#6e6a63] ring-1 ring-white/5">No stories match the current filters</div>
         )}
       </div>
     </div>
