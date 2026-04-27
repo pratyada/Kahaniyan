@@ -77,6 +77,77 @@ const STORY_ART = {
     icon: '✏️', accent: '#e879f9',
     prompt: 'A clever minister drawing a line on the ground next to a longer line in a Mughal court, the emperor looking surprised, ornate palace setting',
   },
+  // ── Hindu batch 2 ──
+  ganesha_mouse: {
+    gradient: 'linear-gradient(135deg, #b45309 0%, #d97706 40%, #fcd34d 100%)',
+    icon: '🐭', accent: '#fcd34d',
+    prompt: 'A gentle elephant-headed god bending down to speak to a tiny brown mouse, golden temple backdrop, warm sunset light, Indian mythology style',
+  },
+  hindu_cow_sage: {
+    gradient: 'linear-gradient(135deg, #14532d 0%, #166534 40%, #86efac 100%)',
+    icon: '🦌', accent: '#86efac',
+    prompt: 'An old sage in a forest hut bandaging the leg of a wounded deer by firelight, warm golden glow, lush green forest, peaceful Indian hermitage',
+  },
+  krishna_butter: {
+    gradient: 'linear-gradient(135deg, #1e3a5f 0%, #2563eb 40%, #fde68a 100%)',
+    icon: '🧈', accent: '#fde68a',
+    prompt: 'A mischievous blue-skinned boy with butter on his cheeks being scolded by his loving mother, clay pots of butter, cozy Indian village kitchen',
+  },
+  harishchandra_promise: {
+    gradient: 'linear-gradient(135deg, #44403c 0%, #78716c 40%, #fbbf24 100%)',
+    icon: '👑', accent: '#fbbf24',
+    prompt: 'A noble king walking away from his golden palace with nothing but the clothes on his back, dramatic sunset, dignity in sacrifice, Indian epic style',
+  },
+  yudhishthira_half_truth: {
+    gradient: 'linear-gradient(135deg, #1e1b4b 0%, #3730a3 40%, #a5b4fc 100%)',
+    icon: '⚖️', accent: '#a5b4fc',
+    prompt: 'A majestic chariot sinking to touch the ground as a warrior looks down in sorrow, battlefield in background, dramatic golden light, Mahabharata scene',
+  },
+  sudama_poha: {
+    gradient: 'linear-gradient(135deg, #422006 0%, #92400e 40%, #fcd34d 100%)',
+    icon: '🍚', accent: '#fcd34d',
+    prompt: 'A poor man with a small bundle of rice meeting a king in a golden palace, the king washing his feet, warm emotional scene, Indian mythology',
+  },
+  draupadi_akshaya_patra: {
+    gradient: 'linear-gradient(135deg, #7c2d12 0%, #c2410c 40%, #fed7aa 100%)',
+    icon: '🫕', accent: '#fed7aa',
+    prompt: 'A woman serving food from a magical golden vessel in a forest clearing, many people being fed, warm light, abundance from simplicity, Indian epic style',
+  },
+  karna_golden_armour: {
+    gradient: 'linear-gradient(135deg, #78350f 0%, #b45309 40%, #fbbf24 100%)',
+    icon: '🛡️', accent: '#fbbf24',
+    prompt: 'A warrior peeling golden armour from his own body to give to a disguised god, blood and gold mixing, dramatic sacrifice, Mahabharata epic scene',
+  },
+  ram_shabari_berries: {
+    gradient: 'linear-gradient(135deg, #14532d 0%, #15803d 40%, #bbf7d0 100%)',
+    icon: '🫐', accent: '#bbf7d0',
+    prompt: 'An old woman offering half-eaten berries to a divine prince who eats them with joy, simple forest hut, warm golden light, devotion and humility',
+  },
+  hanuman_chest: {
+    gradient: 'linear-gradient(135deg, #7c2d12 0%, #dc2626 40%, #fca5a5 100%)',
+    icon: '❤️', accent: '#fca5a5',
+    prompt: 'A powerful monkey warrior tearing open his chest to reveal a divine couple glowing inside his heart, royal court gasping, epic Indian mythology scene',
+  },
+  shiva_kannappa: {
+    gradient: 'linear-gradient(135deg, #1e293b 0%, #475569 40%, #e2e8f0 100%)',
+    icon: '👁️', accent: '#e2e8f0',
+    prompt: 'A tribal hunter offering his eye to a sacred stone in a forest, divine light appearing, raw devotion, southern Indian temple forest setting',
+  },
+  ram_vibhishana: {
+    gradient: 'linear-gradient(135deg, #1e3a5f 0%, #1d4ed8 40%, #93c5fd 100%)',
+    icon: '🤗', accent: '#93c5fd',
+    prompt: 'A noble prince embracing a trembling man who kneels before him while warriors watch in surprise, warm golden light, Ramayana epic scene',
+  },
+  sage_scorpion: {
+    gradient: 'linear-gradient(135deg, #422006 0%, #78350f 40%, #fdba74 100%)',
+    icon: '🦂', accent: '#fdba74',
+    prompt: 'An old sage by a river gently lifting a scorpion from the water with his bare hand, sunset reflection on water, peaceful Indian riverside',
+  },
+  krishna_hundred_chances: {
+    gradient: 'linear-gradient(135deg, #312e81 0%, #4338ca 40%, #c4b5fd 100%)',
+    icon: '💯', accent: '#c4b5fd',
+    prompt: 'A serene blue-skinned god standing calmly in a royal court as an angry king shouts insults, patience and grace, dramatic Indian court scene',
+  },
   // ── New stories ──
   prophet_ant_hill: {
     gradient: 'linear-gradient(135deg, #1e3a5f 0%, #2d6a4f 40%, #95d5b2 100%)',

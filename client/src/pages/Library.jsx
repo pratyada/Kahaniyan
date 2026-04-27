@@ -253,10 +253,9 @@ function LibraryCard({ story, wisdomImageUrls = {}, onPlay, onShare, onDelete, i
     <div className="group relative overflow-hidden rounded-2xl" style={{ border: '1px solid rgba(255,255,255,0.06)' }}>
       {/* Album art cover — tap to play */}
       <button onClick={onPlay} className="relative block w-full text-left" style={{ aspectRatio: '1 / 1' }}>
-        {imgSrc ? (
-          <img src={imgSrc} alt="" className="absolute inset-0 h-full w-full object-cover transition-transform duration-500 group-hover:scale-110" loading="lazy" />
-        ) : (
-          <div className="absolute inset-0 transition-transform duration-500 group-hover:scale-105" style={{ background: art.gradient }} />
+        <div className="absolute inset-0 transition-transform duration-500 group-hover:scale-105" style={{ background: art.gradient }} />
+        {imgSrc && (
+          <img src={imgSrc} alt="" className="absolute inset-0 h-full w-full object-cover transition-transform duration-500 group-hover:scale-110" loading="lazy" onError={(e) => { e.target.style.display = 'none'; }} />
         )}
         {/* Play overlay */}
         <div className="absolute inset-0 flex items-center justify-center bg-black/0 transition group-hover:bg-black/20">

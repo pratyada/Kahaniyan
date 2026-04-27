@@ -235,11 +235,10 @@ export default function Home() {
           className="relative mx-auto flex flex-col items-center rounded-3xl p-6 overflow-hidden"
           style={{ border: '1px solid rgba(255,255,255,0.1)' }}
         >
-          {/* Background image: Firestore DALL-E > hardcoded > gradient */}
-          {(wisdomImageUrls[tonightStory?.id] || featuredArt.image) ? (
-            <img src={wisdomImageUrls[tonightStory?.id] || featuredArt.image} alt="" className="absolute inset-0 h-full w-full object-cover" loading="lazy" />
-          ) : (
-            <div className="absolute inset-0" style={{ background: featuredArt.gradient }} />
+          {/* Background: gradient always present, image overlays if available */}
+          <div className="absolute inset-0" style={{ background: featuredArt.gradient }} />
+          {(wisdomImageUrls[tonightStory?.id] || featuredArt.image) && (
+            <img src={wisdomImageUrls[tonightStory?.id] || featuredArt.image} alt="" className="absolute inset-0 h-full w-full object-cover" loading="lazy" onError={(e) => { e.target.style.display = 'none'; }} />
           )}
           {/* Dark overlay — stronger so text stays readable over DALL-E images */}
           <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/50 to-black/30" />
@@ -329,11 +328,10 @@ export default function Home() {
                     className="group relative flex w-48 shrink-0 flex-col justify-end overflow-hidden rounded-2xl p-3 text-left"
                     style={{ minHeight: '11rem' }}
                   >
-                    {/* Background image: Firestore DALL-E > hardcoded > gradient */}
-                    {(wisdomImageUrls[lesson.id] || art.image) ? (
-                      <img src={wisdomImageUrls[lesson.id] || art.image} alt="" className="absolute inset-0 h-full w-full object-cover transition-transform duration-500 group-hover:scale-110" loading="lazy" />
-                    ) : (
-                      <div className="absolute inset-0 transition-transform duration-500 group-hover:scale-105" style={{ background: art.gradient }} />
+                    {/* Background: gradient always present, image overlays if available */}
+                    <div className="absolute inset-0 transition-transform duration-500 group-hover:scale-105" style={{ background: art.gradient }} />
+                    {(wisdomImageUrls[lesson.id] || art.image) && (
+                      <img src={wisdomImageUrls[lesson.id] || art.image} alt="" className="absolute inset-0 h-full w-full object-cover transition-transform duration-500 group-hover:scale-110" loading="lazy" onError={(e) => { e.target.style.display = 'none'; }} />
                     )}
                     {/* Dark overlay for text readability */}
                     <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/40 to-black/15" />

@@ -487,15 +487,13 @@ function PlayerInner() {
   return (
     <div className="absolute inset-0 z-40 overflow-hidden bg-bg-base">
       {/* Dreamy blurred background image */}
-      {bgImage ? (
+      {/* Aurora/starfield always present as base, image overlays when available */}
+      <div className="aurora" />
+      <div className="starfield" />
+      {bgImage && (
         <>
-          <img src={bgImage} alt="" className="absolute inset-0 h-full w-full object-cover" style={{ filter: 'blur(40px) saturate(1.4) brightness(0.35)', transform: 'scale(1.2)' }} />
+          <img src={bgImage} alt="" className="absolute inset-0 h-full w-full object-cover" style={{ filter: 'blur(40px) saturate(1.4) brightness(0.35)', transform: 'scale(1.2)' }} onError={(e) => { e.target.style.display = 'none'; }} />
           <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-black/60 to-black/80" />
-        </>
-      ) : (
-        <>
-          <div className="aurora" />
-          <div className="starfield" />
         </>
       )}
 
@@ -573,12 +571,11 @@ function PlayerInner() {
                 boxShadow: `0 8px 40px ${meta.color}33, 0 0 80px ${meta.color}11`,
               }}
             >
-              {bgImage ? (
-                <img src={bgImage} alt="" className="absolute inset-0 h-full w-full object-cover" />
-              ) : (
-                <div className="absolute inset-0 grid place-items-center" style={{ background: storyArtData?.gradient || `radial-gradient(circle at 30% 30%, ${meta.color}aa, ${meta.color}22 60%, transparent)` }}>
-                  <span className="text-5xl opacity-60">{storyArtData?.icon || meta.emoji}</span>
-                </div>
+              <div className="absolute inset-0 grid place-items-center" style={{ background: storyArtData?.gradient || `radial-gradient(circle at 30% 30%, ${meta.color}aa, ${meta.color}22 60%, transparent)` }}>
+                <span className="text-5xl opacity-60">{storyArtData?.icon || meta.emoji}</span>
+              </div>
+              {bgImage && (
+                <img src={bgImage} alt="" className="absolute inset-0 h-full w-full object-cover" onError={(e) => { e.target.style.display = 'none'; }} />
               )}
             </motion.div>
 
