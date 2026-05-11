@@ -77,16 +77,22 @@ export function storiesThisWeek() {
   return u.timestamps.filter((t) => t >= cutoff).length;
 }
 
+// Mother's Day promo: free unlimited until May 20, 2026
+const PROMO_END = new Date('2026-05-21T00:00:00').getTime();
+function isPromoActive() { return Date.now() < PROMO_END; }
+
 export function canGenerate(tierKey, isAdmin = false) {
-  if (isAdmin) return true;
+  if (isAdmin || isPromoActive()) return true;
   const tier = TIERS[tierKey] || TIERS.free;
   return storiesThisWeek() < tier.storiesPerWeek;
 }
 
 export function maxDurationFor(tierKey, isAdmin = false) {
-  if (isAdmin) return 60;
+  if (isAdmin || isPromoActive()) return 30;
   return (TIERS[tierKey] || TIERS.free).maxDuration;
 }
+
+export { isPromoActive };
 
 export function archiveDaysFor(tierKey) {
   return (TIERS[tierKey] || TIERS.free).archiveDays;

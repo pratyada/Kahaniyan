@@ -204,6 +204,11 @@ const STORY_ART = {
     icon: '🍲', accent: '#fbbf24',
     prompt: 'A young boy serving food to people sitting together on the floor in a golden temple kitchen, steam rising, warm community meal, Sikh Langar scene',
   },
+  mothers_day_toronto: {
+    gradient: 'linear-gradient(135deg, #ec4899 0%, #f472b6 40%, #fce7f3 100%)',
+    icon: '🌷', accent: '#f472b6',
+    prompt: 'A child handing a bright yellow tulip to their mother on a sunny Toronto waterfront bench, CN Tower in background, cherry blossoms, spring sunshine, heartwarming',
+  },
 };
 
 // Tradition-level art (for tradition badges/headers)

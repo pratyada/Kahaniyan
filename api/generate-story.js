@@ -28,6 +28,10 @@ try {
   console.warn('Firebase Admin init failed — running without server-side enforcement:', e.message);
 }
 
+// Mother's Day promo: free unlimited until May 20, 2026
+const PROMO_END = new Date('2026-05-21T00:00:00').getTime();
+const isPromoActive = () => Date.now() < PROMO_END;
+
 // Tier limits
 const TIER_LIMITS = {
   free: { storiesPerWeek: 3, maxDuration: 5 },
@@ -61,6 +65,7 @@ async function getRole(uid) {
 
 async function enforceUsageLimits(uid, requestedDuration) {
   if (!db || !uid) return { allowed: true }; // no enforcement if no DB
+  if (isPromoActive()) return { allowed: true, tier: 'promo' }; // Mother's Day promo
 
   try {
     // Admins and active testers get unlimited access

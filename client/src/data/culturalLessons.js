@@ -1029,6 +1029,39 @@ This is how Langar began — the Sikh tradition of the community kitchen, where 
 That night, {childName}, remember Guru Nanak's twenty coins. The best thing you can ever buy is a meal for someone who has none.`,
   },
 
+  // ── Mother's Day Special (May 2026) — Toronto / Canada ──
+  {
+    id: 'mothers_day_toronto',
+    tradition: 'universal',
+    theme: 'gratitude',
+    title: 'The Tulips That Said Thank You',
+    durationMinutes: 8,
+    source: 'Original · Mother\'s Day 2026 · Toronto',
+    body: `It was the second Sunday of May, and spring had finally arrived in Toronto. The cherry blossoms along High Park were bursting pink, and the CN Tower sparkled in the morning sun like a giant birthday candle for the city.
+
+At Jean Lumb Public School on Brunel Court, the children had a secret. For two whole weeks, Mrs. Chen's class had been working on a surprise — and today was the day.
+
+{childName}'s class had planted tulip bulbs back in November, when the ground was cold and hard. "They won't grow until spring," Mrs. Chen had said. "Just like love — you plant it now, and trust that it will bloom when the time is right."
+
+All winter, {childName} had wondered if the tulips were still alive under the frozen soil. But this morning, when the class walked outside, there they were — red, yellow, pink, and orange — standing tall in the school garden like a choir of colour.
+
+Each child picked one tulip for their mother.
+
+{childName} chose a yellow one — bright as sunshine — because that's what Mummy felt like. Warm and bright, even on the coldest February morning when she walked {childName} to school through the snow.
+
+After school, {childName}'s family took the streetcar down to the waterfront. The Blue Jays were playing at Rogers Centre, and you could hear the crowd cheering through the open roof. The harbour was full of sailboats, and the islands sat green and still across the water.
+
+They stopped at a bench facing the lake. {childName} held out the yellow tulip. "This is for you, Mummy. I planted it in November. It waited all winter just for today."
+
+Mummy held the tulip close. Her eyes got shiny. She didn't say anything for a moment — she just pulled {childName} into a hug so tight that {childName} could hear her heartbeat.
+
+"You know what this tulip reminds me of?" Mummy whispered. "You. You grew slowly, patiently, through all the hard days. And now look at you — blooming."
+
+That evening, they walked through the Distillery District where buskers played guitar and the old brick buildings glowed orange in the sunset. {childName} held Mummy's hand the whole way.
+
+That night, {childName}, remember the yellow tulip. You don't need money or fancy gifts to make your mother's heart full. Sometimes the most beautiful gift is something you planted with your own hands, waited for with patience, and gave with love. Happy Mother's Day.`,
+  },
+
 ];
 
 export const TRADITIONS = [
