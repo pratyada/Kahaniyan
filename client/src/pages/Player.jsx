@@ -263,11 +263,8 @@ function PlayerInner() {
           audio = narrator.loadCached(current.audioUrl);
         }
 
-        // Priority 3: Wisdom stories without pre-generated audio — use paid TTS once, cache it
-        // (Pre-generated wisdom stories already have audioUrl and are handled by Priority 2)
-
-        // Priority 4: Generate via paid TTS API (non-wisdom stories)
-        if (!audio && current.text && !current.isWisdom) {
+        // Priority 3: Generate via TTS API (wisdom stories without pre-gen audio, or custom stories)
+        if (!audio && current.text) {
           audio = await narrator.generate({
             text: current.text,
             narrator: narratorName,
