@@ -102,52 +102,57 @@ function Shell() {
   // Voice recording link — public, no auth, no shell
   if (location.pathname.startsWith('/record/')) return <RecordVoice />;
 
+  const showNav = !isPlayerRoute && !isOnboardingRoute && !isLoginRoute;
+
   return (
     <div className="phone-shell">
-      <AnimatePresence mode="wait">
-        <Routes location={location} key={location.pathname}>
-          <Route path="/login" element={<Login />} />
-          <Route
-            path="/"
-            element={
-              // Before sign-in: always show Home (Tonight) so the visitor sees the app
-              // After sign-in: if no profile yet, go to onboarding
-              !user ? <Home /> :
-              onboarded ? <Home /> :
-              <Navigate to="/onboarding" replace />
-            }
-          />
-          <Route path="/onboarding" element={<Onboarding />} />
-          <Route path="/player" element={<Player />} />
-          <Route path="/library" element={<Library />} />
-          <Route path="/radio" element={<Radio />} />
-          <Route path="/lessons" element={<CulturalLessons />} />
-          <Route path="/voices" element={<VoiceStudio />} />
-          <Route path="/characters" element={<Characters />} />
-          <Route path="/family" element={<EditFamily />} />
-          <Route path="/guides" element={<Guides />} />
-          <Route path="/settings" element={<Settings />} />
-          <Route path="/roadmap" element={<Roadmap />} />
-          <Route path="/admin" element={<Admin />} />
-          <Route path="*" element={<Navigate to="/" replace />} />
-        </Routes>
-      </AnimatePresence>
+      {/* Sidebar nav (desktop) / Bottom nav (mobile) */}
+      {showNav && <BottomNav />}
 
-      {/* Mini player bar */}
-      {current && !isPlayerRoute && !isOnboardingRoute && !isLoginRoute && <PlayerBar />}
+      {/* Main content area */}
+      <div className="app-content">
+        <AnimatePresence mode="wait">
+          <Routes location={location} key={location.pathname}>
+            <Route path="/login" element={<Login />} />
+            <Route
+              path="/"
+              element={
+                // Before sign-in: always show Home (Tonight) so the visitor sees the app
+                // After sign-in: if no profile yet, go to onboarding
+                !user ? <Home /> :
+                onboarded ? <Home /> :
+                <Navigate to="/onboarding" replace />
+              }
+            />
+            <Route path="/onboarding" element={<Onboarding />} />
+            <Route path="/player" element={<Player />} />
+            <Route path="/library" element={<Library />} />
+            <Route path="/radio" element={<Radio />} />
+            <Route path="/lessons" element={<CulturalLessons />} />
+            <Route path="/voices" element={<VoiceStudio />} />
+            <Route path="/characters" element={<Characters />} />
+            <Route path="/family" element={<EditFamily />} />
+            <Route path="/guides" element={<Guides />} />
+            <Route path="/settings" element={<Settings />} />
+            <Route path="/roadmap" element={<Roadmap />} />
+            <Route path="/admin" element={<Admin />} />
+            <Route path="*" element={<Navigate to="/" replace />} />
+          </Routes>
+        </AnimatePresence>
 
-      {/* Radio mini bar */}
-      {stationId && !isOnboardingRoute && !isPlayerRoute && !isRadioRoute && !isLoginRoute && !current && <RadioBar />}
+        {/* Mini player bar */}
+        {current && !isPlayerRoute && !isOnboardingRoute && !isLoginRoute && <PlayerBar />}
 
-      {/* Bottom nav */}
-      {!isPlayerRoute && !isOnboardingRoute && !isLoginRoute && <BottomNav />}
+        {/* Radio mini bar */}
+        {stationId && !isOnboardingRoute && !isPlayerRoute && !isRadioRoute && !isLoginRoute && !current && <RadioBar />}
 
-      {/* Login popup — appears after 5 seconds if user isn't signed in */}
-      <AnimatePresence>
-        {showLoginPopup && !isLoginRoute && (
-          <LoginPopup onLogin={() => navigate('/login')} />
-        )}
-      </AnimatePresence>
+        {/* Login popup — appears after 5 seconds if user isn't signed in */}
+        <AnimatePresence>
+          {showLoginPopup && !isLoginRoute && (
+            <LoginPopup onLogin={() => navigate('/login')} />
+          )}
+        </AnimatePresence>
+      </div>
     </div>
   );
 }

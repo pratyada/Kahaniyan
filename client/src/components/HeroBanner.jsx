@@ -20,7 +20,7 @@ export default function HeroBanner({ story, imageUrl, onPlay }) {
       className="mb-6 overflow-hidden"
     >
       <div
-        className="relative mx-auto flex flex-col items-center rounded-3xl p-6 overflow-hidden"
+        className="relative mx-auto flex flex-col items-center rounded-3xl p-6 lg:p-10 lg:flex-row lg:gap-8 overflow-hidden"
         style={{ border: '1px solid rgba(255,255,255,0.1)', minHeight: '14rem' }}
       >
         {/* Background gradient */}

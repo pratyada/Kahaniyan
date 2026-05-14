@@ -264,7 +264,7 @@ export default function Library() {
 
           {/* All Stories grid (or filtered results) */}
           <ShelfSection title={filter ? `${valueMeta(filter).emoji} ${valueMeta(filter).label}` : 'All Stories'}>
-            <div className="grid grid-cols-2 gap-3">
+            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-3">
               {filtered.map((story, i) => renderTile(story, i))}
             </div>
           </ShelfSection>

@@ -29,7 +29,7 @@ export default function BottomSheet({ open, onClose, children, className = '' })
             onDragEnd={(_, info) => {
               if (info.offset.y > 100 || info.velocity.y > 500) onClose();
             }}
-            className={`fixed bottom-0 left-0 right-0 z-50 mx-auto max-w-[640px] rounded-t-3xl bg-bg-elevated ${className}`}
+            className={`fixed bottom-0 left-0 right-0 z-50 mx-auto max-w-[640px] rounded-t-3xl lg:rounded-3xl lg:bottom-auto lg:top-1/2 lg:left-1/2 lg:-translate-x-1/2 lg:-translate-y-1/2 bg-bg-elevated shadow-lift ${className}`}
             style={{ maxHeight: '85vh' }}
           >
             {/* Drag handle */}

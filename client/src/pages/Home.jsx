@@ -102,12 +102,12 @@ export default function Home() {
         initial={{ opacity: 0, y: -10 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6 }}
-        className="mb-6 text-center"
+        className="mb-6 text-center lg:text-left"
       >
         <p className="text-xs font-semibold uppercase tracking-[0.25em] text-ink-muted" style={{ fontFamily: 'Nunito, sans-serif' }}>
           {greeting}
         </p>
-        <h1 className="mt-1 text-2xl font-bold text-ink" style={{ fontFamily: 'Fraunces, serif' }}>
+        <h1 className="mt-1 text-2xl lg:text-3xl font-bold text-ink" style={{ fontFamily: 'Fraunces, serif' }}>
           A story for <span className="text-gold">{profile?.childName || 'your child'}</span>
         </h1>
       </motion.header>

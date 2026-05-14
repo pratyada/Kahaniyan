@@ -150,7 +150,7 @@ a {
            focus:ring-gold;
   }
 
-  /* App shell — full screen on all devices */
+  /* App shell — responsive: mobile full-screen, desktop with sidebar */
   .phone-shell {
     @apply relative mx-auto flex h-[100dvh] w-full flex-col overflow-hidden;
     background-color: var(--bg-base);
@@ -159,10 +159,11 @@ a {
     background-position: center;
     background-attachment: local;
   }
-  /* On desktop (768px+), comfortable width centered */
-  @media (min-width: 768px) {
+  /* Desktop (1024px+): horizontal layout with sidebar space */
+  @media (min-width: 1024px) {
     .phone-shell {
-      max-width: 640px;
+      flex-direction: row;
+      max-width: none;
     }
   }
   .phone-shell::before {
@@ -178,12 +179,25 @@ a {
     z-index: 1;
   }
 
+  /* Main content area — fills space next to sidebar on desktop */
+  .app-content {
+    @apply flex flex-1 flex-col overflow-hidden;
+  }
+
   /* Page scroll area above bottom nav */
   .page-scroll {
     @apply flex-1 overflow-y-auto overflow-x-hidden pb-32;
   }
-
-  /* Desktop: no separate constraint — shell handles width */
+  /* Desktop: wider content, less bottom padding (no bottom nav) */
+  @media (min-width: 1024px) {
+    .page-scroll {
+      padding-bottom: 2rem;
+      max-width: 1200px;
+      margin-left: auto;
+      margin-right: auto;
+      width: 100%;
+    }
+  }
 }
 
 /* ───── Star-field animation (player background) ───── */

@@ -17,7 +17,7 @@ export default function StoryTile({ lesson, imageUrl, plays, onPlay }) {
     <motion.button
       whileTap={{ scale: 0.96 }}
       onClick={() => onPlay(lesson)}
-      className="group relative flex w-40 shrink-0 snap-start flex-col justify-end overflow-hidden rounded-2xl text-left"
+      className="group relative flex w-40 lg:w-48 shrink-0 snap-start flex-col justify-end overflow-hidden rounded-2xl text-left"
       style={{ aspectRatio: '2/3' }}
     >
       {/* Background gradient */}
