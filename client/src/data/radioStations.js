@@ -25,10 +25,11 @@ export const RADIO_STATIONS = [
   {
     id: 'raag-nidra',
     name: 'Raag Nidra',
-    tagline: 'Hindustani Classical · India',
+    tagline: 'Indian Ambient · Goa',
     description:
-      'Slow night ragas — Bageshri, Yaman, Malkauns — the music elders use to slip children into sleep across North India.',
-    stream: 'https://stream.zeno.fm/f3wvbbqmdg8uv',
+      'Suburbs of Goa — Indian classical meets ambient electronica. Sitar, tabla, and dreamy pads for a hypnotic bedtime drift.',
+    stream: 'https://ice1.somafm.com/suburbsofgoa-128-mp3',
+    fallback: 'https://ice2.somafm.com/suburbsofgoa-128-mp3',
     accent: '#f0a500',
     icon: '🪕',
     bestFor: 'deep sleep',
@@ -129,11 +130,11 @@ export const RADIO_STATIONS = [
   {
     id: 'arabic-oud',
     name: 'Oud Dreams',
-    tagline: 'Arabic · Classical',
+    tagline: 'World · Celtic Ambient',
     description:
-      'Gentle oud melodies and maqam scales — the soul of Middle Eastern music for a peaceful, dreamy night.',
-    stream: 'https://ice1.somafm.com/suburbsofgoa-128-mp3',
-    fallback: 'https://ice2.somafm.com/suburbsofgoa-128-mp3',
+      'Celtic harps, Middle Eastern strings, and gentle world fusion — a dreamy blanket of sound from ancient traditions.',
+    stream: 'https://ice1.somafm.com/thistle-128-mp3',
+    fallback: 'https://ice2.somafm.com/thistle-128-mp3',
     accent: '#fbbf24',
     icon: '🎵',
     bestFor: 'bedtime calm',
@@ -144,11 +145,11 @@ export const RADIO_STATIONS = [
   {
     id: 'piano-dreams',
     name: 'Piano Dreams',
-    tagline: 'Piano · Classical',
+    tagline: 'Vocals · Ambient',
     description:
-      'Solo piano — Chopin nocturnes, Debussy, and Einaudi. The most elegant way to drift off to sleep.',
-    stream: 'https://ice1.somafm.com/illinois-128-mp3',
-    fallback: 'https://ice2.somafm.com/illinois-128-mp3',
+      'Gentle female vocals floating over lush ambient pads — Elizabeth Fraser, Julee Cruise, and ethereal dream pop for the softest landing into sleep.',
+    stream: 'https://ice1.somafm.com/lush-128-mp3',
+    fallback: 'https://ice2.somafm.com/lush-128-mp3',
     accent: '#e8b4ff',
     icon: '🎹',
     bestFor: 'gentle sleep',
