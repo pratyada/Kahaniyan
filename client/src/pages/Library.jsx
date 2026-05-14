@@ -1,48 +1,64 @@
+// Library — user's saved stories with shelf rows + grid.
+
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Play, Share2, Trash2, BookOpen } from 'lucide-react';
+import { BookOpen } from 'lucide-react';
 import PageTransition from '../components/PageTransition.jsx';
+import ShelfSection from '../components/shelves/ShelfSection.jsx';
+import ShelfRow from '../components/shelves/ShelfRow.jsx';
+import LibraryTile from '../components/cards/LibraryTile.jsx';
 import { getLibrary, pruneArchive, removeFromLibrary, loadAndMergeLibrary, updateStoryInLibrary } from '../utils/storyCache.js';
 import { shareStoryToFirestore } from '../utils/shareStory.js';
 import { archiveDaysFor } from '../utils/tierGate.js';
 import { useFamilyProfile } from '../hooks/useFamilyProfile.js';
 import { usePlayer } from '../hooks/usePlayer.jsx';
 import { VALUES, valueMeta } from '../utils/constants.js';
-import { getStoryArt } from '../utils/storyArt.js';
 import { useAdmin } from '../hooks/useAdmin.jsx';
+import { useWisdomData } from '../hooks/useWisdomData.js';
 
 export default function Library() {
   const navigate = useNavigate();
   const { profile } = useFamilyProfile();
   const { load } = usePlayer();
+  const { isAdmin } = useAdmin();
+  const { wisdomImageUrls } = useWisdomData();
   const [library, setLibrary] = useState([]);
   const [filter, setFilter] = useState(null);
   const [sharing, setSharing] = useState(null);
   const [toast, setToast] = useState(null);
-  const { isAdmin } = useAdmin();
-  const [wisdomImageUrls, setWisdomImageUrls] = useState({});
+  const [generatingImages, setGeneratingImages] = useState(false);
+  const [imageProgress, setImageProgress] = useState('');
 
   useEffect(() => {
     pruneArchive(archiveDaysFor(profile?.tier || 'free'));
     setLibrary(getLibrary());
     loadAndMergeLibrary().then((merged) => setLibrary(merged));
-    // Fetch DALL-E generated images
-    (async () => {
-      try {
-        const { db: fireDb } = await import('../lib/firebase.js');
-        if (!fireDb) return;
-        const { doc, getDoc } = await import('firebase/firestore');
-        const snap = await getDoc(doc(fireDb, 'config', 'wisdomImages'));
-        if (snap.exists()) setWisdomImageUrls(snap.data());
-      } catch {}
-    })();
   }, [profile?.tier]);
 
   const filtered = useMemo(
     () => (filter ? library.filter((s) => s.value === filter) : library),
     [library, filter]
   );
+
+  // Recently played — last 8 stories sorted by date
+  const recentStories = useMemo(
+    () => [...library].sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt)).slice(0, 8),
+    [library]
+  );
+
+  // Group by value for shelf rows
+  const valueGroups = useMemo(() => {
+    const groups = {};
+    library.forEach((s) => {
+      const key = s.value || 'kindness';
+      if (!groups[key]) groups[key] = [];
+      groups[key].push(s);
+    });
+    return Object.entries(groups)
+      .filter(([, stories]) => stories.length >= 2)
+      .map(([key, stories]) => ({ key, meta: valueMeta(key), stories }));
+  }, [library]);
 
   const handleDelete = (storyId) => {
     removeFromLibrary(storyId);
@@ -57,7 +73,7 @@ export default function Library() {
         country: profile?.country || '',
       });
       if (navigator.share) {
-        await navigator.share({ title: `${story.title} — My Sleepy Tale`, text: `Listen to this bedtime story!`, url });
+        await navigator.share({ title: `${story.title} — My Sleepy Tale`, text: 'Listen to this bedtime story!', url });
       } else {
         await navigator.clipboard.writeText(url);
         showToast('Link copied!');
@@ -70,9 +86,6 @@ export default function Library() {
 
   const showToast = (msg) => { setToast(msg); setTimeout(() => setToast(null), 2000); };
 
-  const [generatingImages, setGeneratingImages] = useState(false);
-  const [imageProgress, setImageProgress] = useState('');
-
   // Auto-generate missing images when ?gen=1 is in URL (admin use)
   const autoGenRef = useRef(false);
   useEffect(() => {
@@ -80,7 +93,6 @@ export default function Library() {
     const params = new URLSearchParams(window.location.search);
     if (params.get('gen') !== '1') return;
     autoGenRef.current = true;
-    // Small delay to let wisdomImageUrls load
     setTimeout(() => generateMissingImages(), 1500);
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isAdmin, library]);
@@ -100,10 +112,8 @@ export default function Library() {
     for (const story of missing) {
       try {
         setImageProgress(`${done + 1}/${missing.length}: ${story.title?.slice(0, 25)}...`);
-        const firstLine = (story.text || '').split('\n').find(l => l.trim()) || '';
-        const snippet = firstLine.slice(0, 120);
-        const prompt = `Scene from "${story.title}": ${snippet}`;
-
+        const firstLine = (story.text || '').split('\n').find((l) => l.trim()) || '';
+        const prompt = `Scene from "${story.title}": ${firstLine.slice(0, 120)}`;
         const res = await fetch(`${API_BASE}/api/generate-story-image`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
@@ -113,7 +123,7 @@ export default function Library() {
         const data = await res.json();
         let imgBlob;
         if (data.imageBase64) {
-          const bytes = Uint8Array.from(atob(data.imageBase64), c => c.charCodeAt(0));
+          const bytes = Uint8Array.from(atob(data.imageBase64), (c) => c.charCodeAt(0));
           imgBlob = new Blob([bytes], { type: 'image/png' });
         } else if (data.imageUrl) {
           const imgFetch = await fetch(data.imageUrl);
@@ -124,38 +134,45 @@ export default function Library() {
         const storageRef = ref(storage, `story-covers/${story.id}.png`);
         await uploadBytes(storageRef, imgBlob, { contentType: 'image/png' });
         const permanentUrl = await getDownloadURL(storageRef);
-
         updateStoryInLibrary(story.id, { coverImage: permanentUrl });
-        setLibrary((prev) => prev.map((s) => s.id === story.id ? { ...s, coverImage: permanentUrl } : s));
+        setLibrary((prev) => prev.map((s) => (s.id === story.id ? { ...s, coverImage: permanentUrl } : s)));
         done++;
-      } catch {
-        done++;
-      }
+      } catch { done++; }
     }
     setGeneratingImages(false);
     setImageProgress('');
     showToast(`Generated ${done} images!`);
   };
 
-  // Unique values present in library for filter chips
   const availableValues = useMemo(() => {
     const vals = new Set(library.map((s) => s.value).filter(Boolean));
     return VALUES.filter((v) => vals.has(v.key));
   }, [library]);
 
+  const playStory = (story) => { load(story); navigate('/player'); };
+
+  const renderTile = (story, i) => (
+    <motion.div key={story.id} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: i * 0.05 }}>
+      <LibraryTile
+        story={story}
+        wisdomImageUrls={wisdomImageUrls}
+        onPlay={() => playStory(story)}
+        onShare={() => handleShare(story)}
+        onDelete={() => handleDelete(story.id)}
+        isSharing={sharing === story.id}
+      />
+    </motion.div>
+  );
+
   return (
     <PageTransition className="page-scroll px-5 pt-10 safe-top">
       <header className="mb-5">
-        <div className="flex items-start justify-between">
-          <div>
-            <h1 className="text-2xl font-bold text-ink" style={{ fontFamily: 'Fraunces, serif' }}>
-              {profile?.childName ? `${profile.childName}'s` : 'Your'} <span className="text-gold">Stories</span>
-            </h1>
-            <p className="mt-1 text-xs text-ink-muted" style={{ fontFamily: 'Nunito, sans-serif' }}>
-              {generatingImages ? imageProgress : `${library.length} ${library.length === 1 ? 'story' : 'stories'} saved`}
-            </p>
-          </div>
-        </div>
+        <h1 className="text-2xl font-bold text-ink" style={{ fontFamily: 'Fraunces, serif' }}>
+          {profile?.childName ? `${profile.childName}'s` : 'Your'} <span className="text-gold">Stories</span>
+        </h1>
+        <p className="mt-1 text-xs text-ink-muted" style={{ fontFamily: 'Nunito, sans-serif' }}>
+          {generatingImages ? imageProgress : `${library.length} ${library.length === 1 ? 'story' : 'stories'} saved`}
+        </p>
       </header>
 
       {/* Toast */}
@@ -168,7 +185,7 @@ export default function Library() {
         )}
       </AnimatePresence>
 
-      {/* Filter chips — horizontal scroll with fade hint */}
+      {/* Filter chips */}
       {availableValues.length > 1 && (
         <div className="relative mb-4 -mx-5">
           <div className="overflow-x-auto px-5 py-1 scrollbar-hide" style={{ WebkitOverflowScrolling: 'touch' }}>
@@ -176,116 +193,85 @@ export default function Library() {
               <button onClick={() => setFilter(null)}
                 className={`shrink-0 rounded-full px-3.5 py-1.5 text-xs font-bold transition active:scale-95 ${
                   !filter ? 'bg-gold text-bg-base' : 'bg-white/5 text-ink-muted ring-1 ring-white/10'
-                }`}>
-                All
-              </button>
+                }`}>All</button>
               {availableValues.map((v) => {
                 const meta = valueMeta(v.key);
                 return (
                   <button key={v.key} onClick={() => setFilter(filter === v.key ? null : v.key)}
                     className={`shrink-0 rounded-full px-3.5 py-1.5 text-xs font-bold transition active:scale-95 ${
                       filter === v.key ? 'bg-gold text-bg-base' : 'bg-white/5 text-ink-muted ring-1 ring-white/10'
-                    }`}>
-                    {meta.emoji} {meta.label}
-                  </button>
+                    }`}>{meta.emoji} {meta.label}</button>
                 );
               })}
             </div>
           </div>
-          {/* Fade hint on right edge — signals more content to scroll */}
           <div className="pointer-events-none absolute right-0 top-0 bottom-0 w-10 bg-gradient-to-l from-bg-base to-transparent" />
         </div>
       )}
 
-      {filtered.length === 0 ? (
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          className="mt-12 flex flex-col items-center text-center"
-        >
+      {library.length === 0 ? (
+        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="mt-12 flex flex-col items-center text-center">
           <div className="mb-4 grid h-20 w-20 place-items-center rounded-full bg-gold/10">
             <BookOpen size={32} className="text-gold" />
           </div>
-          <p className="text-lg font-bold text-ink" style={{ fontFamily: 'Fraunces, serif' }}>
-            {library.length === 0 ? 'Your library is empty' : 'No stories match'}
-          </p>
-          <p className="mt-2 text-sm text-ink-muted">
-            {library.length === 0 ? 'Tap the moon on Tonight to play your first story.' : 'Try a different filter.'}
-          </p>
-          <button onClick={() => navigate('/')}
-            className="mt-5 rounded-2xl bg-gold px-6 py-3 text-sm font-bold text-bg-base transition active:scale-95">
+          <p className="text-lg font-bold text-ink" style={{ fontFamily: 'Fraunces, serif' }}>Your library is empty</p>
+          <p className="mt-2 text-sm text-ink-muted">Tap the moon on Tonight to play your first story.</p>
+          <button onClick={() => navigate('/')} className="mt-5 rounded-2xl bg-gold px-6 py-3 text-sm font-bold text-bg-base transition active:scale-95">
             Go to Tonight
           </button>
         </motion.div>
       ) : (
-        <div className="grid grid-cols-2 gap-3">
-          {filtered.map((story, i) => (
-            <motion.div
-              key={story.id}
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: i * 0.05 }}
-            >
-              <LibraryCard
-                story={story}
-                wisdomImageUrls={wisdomImageUrls}
-                onPlay={() => { load(story); navigate('/player'); }}
-                onShare={() => handleShare(story)}
-                onDelete={() => handleDelete(story.id)}
-                isSharing={sharing === story.id}
-              />
-            </motion.div>
+        <>
+          {/* Recently Played shelf */}
+          {!filter && recentStories.length > 2 && (
+            <ShelfSection title="Recently Played">
+              <ShelfRow>
+                {recentStories.map((story) => (
+                  <div key={story.id} className="w-40 shrink-0 snap-start">
+                    <LibraryTile
+                      story={story}
+                      wisdomImageUrls={wisdomImageUrls}
+                      onPlay={() => playStory(story)}
+                      onShare={() => handleShare(story)}
+                      onDelete={() => handleDelete(story.id)}
+                      isSharing={sharing === story.id}
+                    />
+                  </div>
+                ))}
+              </ShelfRow>
+            </ShelfSection>
+          )}
+
+          {/* Value-grouped shelves (only when no filter active) */}
+          {!filter && valueGroups.map(({ key, meta, stories }) => (
+            <ShelfSection key={key} title={`${meta.emoji} ${meta.label} Stories`}>
+              <ShelfRow>
+                {stories.map((story) => (
+                  <div key={story.id} className="w-40 shrink-0 snap-start">
+                    <LibraryTile
+                      story={story}
+                      wisdomImageUrls={wisdomImageUrls}
+                      onPlay={() => playStory(story)}
+                      onShare={() => handleShare(story)}
+                      onDelete={() => handleDelete(story.id)}
+                      isSharing={sharing === story.id}
+                    />
+                  </div>
+                ))}
+              </ShelfRow>
+            </ShelfSection>
           ))}
-        </div>
+
+          {/* All Stories grid (or filtered results) */}
+          <ShelfSection title={filter ? `${valueMeta(filter).emoji} ${valueMeta(filter).label}` : 'All Stories'}>
+            <div className="grid grid-cols-2 gap-3">
+              {filtered.map((story, i) => renderTile(story, i))}
+            </div>
+          </ShelfSection>
+        </>
       )}
 
-      {/* Bottom spacer — clears bottom nav + player bar */}
       <div className="h-40" />
     </PageTransition>
-  );
-}
-
-function LibraryCard({ story, wisdomImageUrls = {}, onPlay, onShare, onDelete, isSharing }) {
-  const meta = valueMeta(story.value);
-  const lessonKey = story.id?.startsWith('lesson_') ? story.id.slice(7) : '';
-  const art = getStoryArt(lessonKey);
-  const imgSrc = story.coverImage || wisdomImageUrls[lessonKey] || wisdomImageUrls[story.id] || art.image;
-  const date = new Date(story.createdAt).toLocaleDateString(undefined, { month: 'short', day: 'numeric' });
-
-  return (
-    <div className="group relative overflow-hidden rounded-2xl" style={{ border: '1px solid rgba(255,255,255,0.06)' }}>
-      {/* Album art cover — tap to play */}
-      <button onClick={onPlay} className="relative block w-full text-left" style={{ aspectRatio: '1 / 1' }}>
-        <div className="absolute inset-0 transition-transform duration-500 group-hover:scale-105" style={{ background: art.gradient }} />
-        {imgSrc && (
-          <img src={imgSrc} alt="" className="absolute inset-0 h-full w-full object-cover transition-transform duration-500 group-hover:scale-110" loading="lazy" onError={(e) => { e.target.style.display = 'none'; }} />
-        )}
-        {/* Play overlay */}
-        <div className="absolute inset-0 flex items-center justify-center bg-black/0 transition group-hover:bg-black/20">
-          <div className="grid h-12 w-12 place-items-center rounded-full bg-white/20 opacity-0 backdrop-blur-sm transition group-hover:opacity-100">
-            <Play size={20} fill="white" stroke="none" />
-          </div>
-        </div>
-        {/* Bottom info */}
-        <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent p-3 pt-8">
-          <p className="line-clamp-2 text-sm font-bold leading-snug text-white" style={{ fontFamily: 'Fraunces, serif', textShadow: '0 1px 3px rgba(0,0,0,0.5)' }}>
-            {story.title || 'Untitled Story'}
-          </p>
-          <p className="mt-0.5 text-[10px] text-white/60">{meta.label} · {story.estimatedMinutes || '?'}m · {date}</p>
-        </div>
-      </button>
-      {/* Actions row */}
-      <div className="flex items-center gap-1 bg-bg-surface/80 px-2 py-1.5">
-        <button onClick={onShare} disabled={isSharing}
-          className="flex items-center gap-1 rounded-full px-2.5 py-1 text-[10px] font-bold text-gold transition active:scale-95 disabled:opacity-50">
-          <Share2 size={11} /> Share
-        </button>
-        <div className="flex-1" />
-        <button onClick={() => { if (confirm('Remove?')) onDelete(); }}
-          className="grid h-7 w-7 place-items-center rounded-full text-ink-dim transition hover:text-negative active:scale-95">
-          <Trash2 size={12} />
-        </button>
-      </div>
-    </div>
   );
 }
