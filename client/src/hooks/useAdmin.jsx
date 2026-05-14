@@ -28,7 +28,10 @@ export function AdminProvider({ children }) {
         if (snap.exists()) {
           const emails = snap.data().adminEmails || [];
           setAdminEmails(emails);
-          setIsAdmin(emails.includes(user.email));
+          const userEmail = (user.email || '').toLowerCase();
+          const match = emails.some(e => (e || '').toLowerCase() === userEmail);
+          console.log('[Admin] email:', userEmail, 'adminEmails:', emails, 'match:', match);
+          setIsAdmin(match);
         } else {
           // First time — no config doc exists. Make the current user admin.
           const emails = [user.email];
@@ -37,7 +40,7 @@ export function AdminProvider({ children }) {
           setIsAdmin(true);
         }
       } catch (e) {
-        console.warn('Admin check failed', e);
+        console.error('[Admin] Check FAILED:', e.code, e.message);
         setIsAdmin(false);
       }
       setLoading(false);
