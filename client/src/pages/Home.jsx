@@ -257,15 +257,15 @@ export default function Home() {
         </h1>
       </motion.header>
 
-      {/* ═══ FEATURED BANNER — Tonight's Story ═══ */}
+      {/* ═══ TONIGHT'S PICK — Hero Banner ═══ */}
       <AnimatePresence>
       {!writeOpen && !castOpen && tonightStory && (
       <motion.section
-        initial={{ opacity: 0, scale: 0.95 }}
-        animate={{ opacity: 1, scale: 1 }}
-        exit={{ opacity: 0, height: 0, marginBottom: 0 }}
+        initial={{ opacity: 0, y: 10 }}
+        animate={{ opacity: 1, y: 0 }}
+        exit={{ opacity: 0, height: 0 }}
         transition={{ duration: 0.4 }}
-        className="mb-6 px-5 overflow-hidden"
+        className="mb-7 px-5 overflow-hidden"
       >
         {(() => {
           const featuredArt = getStoryArt(tonightStory?.id);
@@ -276,38 +276,35 @@ export default function Home() {
           onClick={() => playLesson(tonightStory)}
           whileTap={{ scale: 0.98 }}
           className="relative w-full overflow-hidden rounded-3xl text-left"
-          style={{ minHeight: '13rem' }}
+          style={{ minHeight: '14rem' }}
         >
           <div className="absolute inset-0" style={{ background: featuredArt.gradient }} />
           {imgSrc && <img src={imgSrc} alt="" className="absolute inset-0 h-full w-full object-cover" loading="lazy" onError={(e) => { e.target.style.display = 'none'; }} />}
-          <div className="absolute inset-0 bg-gradient-to-r from-black/85 via-black/50 to-black/20" />
+          <div className="absolute inset-0 bg-gradient-to-r from-black/90 via-black/60 to-black/20" />
 
-          <div className="relative z-10 flex h-full flex-col justify-end p-5" style={{ minHeight: '13rem' }}>
-            {/* Plays badge */}
+          <div className="relative z-10 flex h-full flex-col justify-end p-5" style={{ minHeight: '14rem' }}>
             <div className="mb-auto flex items-center gap-2">
-              <div className="flex items-center gap-1 rounded-full bg-gold/90 px-2.5 py-1">
+              <div className="flex items-center gap-1 rounded-full bg-gold px-2.5 py-1">
                 <Headphones size={10} className="text-bg-base" />
                 <span className="text-[10px] font-bold text-bg-base">{formatPlays(plays)} plays</span>
               </div>
-              <div className="rounded-full bg-white/10 backdrop-blur-sm px-2.5 py-1">
-                <span className="text-[10px] font-bold text-white/80">{tonightTradition?.label}</span>
+              <div className="rounded-full bg-white/15 backdrop-blur-sm px-2.5 py-1">
+                <span className="text-[10px] font-bold text-white/90">{tonightTradition?.label}</span>
               </div>
             </div>
 
-            <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-gold" style={{ fontFamily: 'Nunito, sans-serif' }}>
-              Tonight's Story
+            <p className="text-[10px] font-bold uppercase tracking-[0.25em] text-gold/80" style={{ fontFamily: 'Nunito, sans-serif' }}>
+              Tonight's Pick
             </p>
             <h2 className="mt-1 text-xl font-bold text-white leading-snug" style={{ fontFamily: 'Fraunces, serif', textShadow: '0 2px 8px rgba(0,0,0,0.5)' }}>
               {tonightStory?.title}
             </h2>
-            <div className="mt-2 flex items-center gap-3">
-              <div className="flex items-center gap-1.5 text-white/60">
-                <Clock size={11} />
-                <span className="text-[11px]">{tonightStory?.durationMinutes} min</span>
+            <div className="mt-2.5 flex items-center gap-3">
+              <div className="flex h-11 items-center gap-2 rounded-full bg-gold pl-4 pr-5 shadow-glow">
+                <Play size={14} fill="rgba(10,10,15,0.9)" stroke="none" />
+                <span className="text-xs font-bold text-bg-base">Play Now</span>
               </div>
-              <div className="grid h-10 w-10 place-items-center rounded-full bg-gold shadow-glow">
-                <Play size={16} fill="rgba(10,10,15,0.9)" stroke="none" className="ml-0.5" />
-              </div>
+              <span className="text-[11px] text-white/50">{tonightStory?.durationMinutes} min</span>
             </div>
           </div>
         </motion.button>
@@ -317,65 +314,40 @@ export default function Home() {
       )}
       </AnimatePresence>
 
-      {/* ═══ TRENDING NOW ═══ */}
-      <AnimatePresence>
-      {!writeOpen && !castOpen && trending.length > 0 && (
-      <motion.section
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        exit={{ opacity: 0, height: 0 }}
-        transition={{ duration: 0.3 }}
-        className="mb-6 overflow-hidden"
-      >
-        <div className="mb-3 flex items-center justify-between px-5">
-          <div className="flex items-center gap-2">
-            <TrendingUp size={14} className="text-gold" />
-            <h3 className="text-xs font-bold uppercase tracking-[0.15em] text-ink" style={{ fontFamily: 'Nunito, sans-serif' }}>
-              Trending Now
-            </h3>
-          </div>
-        </div>
-        <div className="overflow-x-auto px-5 pb-2 scrollbar-hide">
-          <div className="flex w-max gap-3 pr-5">
-            {trending.map((lesson, i) => (
-              <StoryShelfCard key={lesson.id} lesson={lesson} rank={i + 1} wisdomImageUrls={wisdomImageUrls} onPlay={playLesson} />
-            ))}
-          </div>
-        </div>
-      </motion.section>
-      )}
-      </AnimatePresence>
+      {/* ═══ SHELVES — only when not in write/cast mode ═══ */}
+      {!writeOpen && !castOpen && (
+      <>
+        {/* Top Picks for {childName} */}
+        <ShelfRow
+          title={`Top Picks for ${profile?.childName || 'You'}`}
+          icon={<Sparkles size={14} className="text-gold" />}
+          stories={trending.slice(0, 8)}
+          wisdomImageUrls={wisdomImageUrls}
+          onPlay={playLesson}
+        />
 
-      {/* ═══ THEME SHELVES ═══ */}
-      <AnimatePresence>
-      {!writeOpen && !castOpen && shelves.map((shelf, si) => (
-      <motion.section
-        key={shelf.key}
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        exit={{ opacity: 0, height: 0 }}
-        transition={{ duration: 0.3, delay: si * 0.05 }}
-        className="mb-6 overflow-hidden"
-      >
-        <div className="mb-3 flex items-center justify-between px-5">
-          <div className="flex items-center gap-2">
-            <span className="text-sm">{shelf.icon}</span>
-            <h3 className="text-xs font-bold uppercase tracking-[0.15em] text-ink" style={{ fontFamily: 'Nunito, sans-serif' }}>
-              {shelf.label} Stories
-            </h3>
-          </div>
-          <span className="text-[10px] font-bold text-ink-dim">{shelf.stories.length}</span>
-        </div>
-        <div className="overflow-x-auto px-5 pb-2 scrollbar-hide">
-          <div className="flex w-max gap-3 pr-5">
-            {shelf.stories.map((lesson) => (
-              <StoryShelfCard key={lesson.id} lesson={lesson} wisdomImageUrls={wisdomImageUrls} onPlay={playLesson} />
-            ))}
-          </div>
-        </div>
-      </motion.section>
-      ))}
-      </AnimatePresence>
+        {/* Popular on My Sleepy Tale */}
+        <ShelfRow
+          title="Popular on My Sleepy Tale"
+          icon={<TrendingUp size={14} className="text-[#f472b6]" />}
+          stories={trending.slice(3, 13)}
+          wisdomImageUrls={wisdomImageUrls}
+          onPlay={playLesson}
+          showRank
+        />
+
+        {/* Theme shelves */}
+        {shelves.map((shelf) => (
+          <ShelfRow
+            key={shelf.key}
+            title={`${shelf.icon} ${shelf.label} Stories`}
+            stories={shelf.stories}
+            wisdomImageUrls={wisdomImageUrls}
+            onPlay={playLesson}
+          />
+        ))}
+      </>
+      )}
 
       {/* px-5 wrapper for the sections below */}
       <div className="px-5">
@@ -647,8 +619,33 @@ function LengthStrip({ duration, setDuration, maxDuration, setUpgradeReason, set
   );
 }
 
-// Pocket FM-style story card for shelf carousels
-function StoryShelfCard({ lesson, rank, wisdomImageUrls, onPlay }) {
+// Shelf row — section title + horizontal scroll
+function ShelfRow({ title, icon, stories, wisdomImageUrls, onPlay, showRank }) {
+  if (!stories || stories.length === 0) return null;
+  return (
+    <section className="mb-7">
+      <div className="mb-3 flex items-center justify-between px-5">
+        <div className="flex items-center gap-2">
+          {icon}
+          <h3 className="text-[13px] font-bold text-ink" style={{ fontFamily: 'Nunito, sans-serif' }}>
+            {title}
+          </h3>
+        </div>
+        <ChevronRight size={16} className="text-ink-dim" />
+      </div>
+      <div className="overflow-x-auto px-5 pb-2 scrollbar-hide">
+        <div className="flex w-max gap-3 pr-5">
+          {stories.map((lesson, i) => (
+            <StoryCard key={lesson.id} lesson={lesson} rank={showRank ? i + 1 : null} wisdomImageUrls={wisdomImageUrls} onPlay={onPlay} />
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+// Pocket FM-style story card
+function StoryCard({ lesson, rank, wisdomImageUrls, onPlay }) {
   const art = getStoryArt(lesson.id);
   const tradArt = getTraditionArt(lesson.tradition);
   const tradition = TRADITIONS.find((t) => t.key === lesson.tradition);
@@ -659,42 +656,43 @@ function StoryShelfCard({ lesson, rank, wisdomImageUrls, onPlay }) {
     <motion.button
       whileTap={{ scale: 0.96 }}
       onClick={() => onPlay(lesson)}
-      className="group relative flex w-36 shrink-0 flex-col overflow-hidden rounded-2xl text-left ring-1 ring-white/5"
+      className="group relative flex w-[140px] shrink-0 flex-col overflow-hidden rounded-2xl text-left bg-[#12121a] ring-1 ring-white/[0.06] transition hover:ring-gold/30"
     >
-      {/* Cover image */}
-      <div className="relative w-full overflow-hidden" style={{ aspectRatio: '3 / 4' }}>
+      {/* Cover */}
+      <div className="relative w-full overflow-hidden" style={{ aspectRatio: '1 / 1' }}>
         <div className="absolute inset-0" style={{ background: art.gradient }} />
-        {imgSrc && <img src={imgSrc} alt="" className="absolute inset-0 h-full w-full object-cover transition-transform duration-500 group-hover:scale-110" loading="lazy" onError={(e) => { e.target.style.display = 'none'; }} />}
-        <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
+        {imgSrc && <img src={imgSrc} alt="" className="absolute inset-0 h-full w-full object-cover transition-transform duration-500 group-hover:scale-105" loading="lazy" onError={(e) => { e.target.style.display = 'none'; }} />}
+        <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent" />
 
-        {/* Rank badge (for trending) */}
-        {rank && (
-          <div className="absolute left-2 top-2 grid h-6 w-6 place-items-center rounded-full bg-gold text-[10px] font-bold text-bg-base shadow-lg">
-            {rank}
+        {/* Rank */}
+        {rank && rank <= 5 && (
+          <div className="absolute left-1.5 top-1.5 grid h-5 w-5 place-items-center rounded-md bg-gold text-[9px] font-bold text-bg-base shadow-lg">
+            #{rank}
           </div>
         )}
 
-        {/* Play button overlay */}
-        <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition">
-          <div className="grid h-10 w-10 place-items-center rounded-full bg-gold/90 shadow-glow">
-            <Play size={14} fill="rgba(10,10,15,0.9)" stroke="none" className="ml-0.5" />
+        {/* Play count badge */}
+        <div className="absolute bottom-1.5 left-1.5 flex items-center gap-1 rounded-md bg-black/60 backdrop-blur-sm px-1.5 py-0.5">
+          <Headphones size={8} className="text-white/70" />
+          <span className="text-[8px] font-bold text-white/80">{formatPlays(plays)}</span>
+        </div>
+
+        {/* Play button on hover */}
+        <div className="absolute inset-0 flex items-center justify-center bg-black/0 group-hover:bg-black/20 transition">
+          <div className="grid h-9 w-9 place-items-center rounded-full bg-gold/0 group-hover:bg-gold/90 transition scale-75 group-hover:scale-100 opacity-0 group-hover:opacity-100">
+            <Play size={12} fill="rgba(10,10,15,0.9)" stroke="none" className="ml-0.5" />
           </div>
         </div>
       </div>
 
       {/* Info */}
-      <div className="flex flex-col gap-1 p-2.5 bg-[#12121a]">
-        <p className="line-clamp-2 text-[11px] font-bold leading-snug text-ink" style={{ fontFamily: 'Fraunces, serif' }}>
+      <div className="flex flex-col gap-0.5 p-2.5">
+        <p className="line-clamp-2 text-[11px] font-bold leading-tight text-ink" style={{ fontFamily: 'Fraunces, serif' }}>
           {lesson.title}
         </p>
-        <div className="flex items-center gap-1.5">
-          <span className="text-[9px] font-bold" style={{ color: tradArt.color }}>{tradition?.label}</span>
-          <span className="text-[#6e6a63]">·</span>
-          <span className="text-[9px] text-ink-dim">{lesson.durationMinutes}m</span>
-        </div>
-        <div className="flex items-center gap-1 text-ink-dim">
-          <Headphones size={9} />
-          <span className="text-[9px] font-bold">{formatPlays(plays)} plays</span>
+        <div className="flex items-center gap-1">
+          <span className="text-[9px]" style={{ color: tradArt.color }}>{tradition?.icon}</span>
+          <span className="text-[9px] text-ink-dim">{lesson.durationMinutes} min</span>
         </div>
       </div>
     </motion.button>
