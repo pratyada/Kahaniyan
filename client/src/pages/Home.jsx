@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Play, Sparkles, ChevronDown, ChevronUp, ChevronRight, Users, PenLine, Headphones, TrendingUp, Clock } from 'lucide-react';
+import { Play, Sparkles, ChevronDown, ChevronUp, ChevronRight, Users, PenLine } from 'lucide-react';
 import { getStoryArt, getTraditionArt } from '../utils/storyArt.js';
 import PageTransition from '../components/PageTransition.jsx';
 import ValuePill from '../components/ValuePill.jsx';
@@ -334,7 +334,7 @@ export default function Home() {
           <div className="relative z-10 flex h-full flex-col justify-end p-5" style={{ minHeight: '14rem' }}>
             <div className="mb-auto flex items-center gap-2">
               <div className="flex items-center gap-1 rounded-full bg-gold px-2.5 py-1">
-                <Headphones size={10} className="text-bg-base" />
+                <span className="text-[10px]">🎧</span>
                 <span className="text-[10px] font-bold text-bg-base">{formatPlays(plays)} plays</span>
               </div>
               <div className="rounded-full bg-white/15 backdrop-blur-sm px-2.5 py-1">
@@ -378,7 +378,7 @@ export default function Home() {
         {/* Popular on My Sleepy Tale */}
         <ShelfRow
           title="Popular on My Sleepy Tale"
-          icon={<TrendingUp size={14} className="text-[#f472b6]" />}
+          icon={<span className="text-sm">🔥</span>}
           stories={trending.slice(3, 13)}
           wisdomImageUrls={wisdomImageUrls}
           onPlay={playLesson}
@@ -722,7 +722,7 @@ function StoryCard({ lesson, rank, wisdomImageUrls, onPlay }) {
 
         {/* Play count badge */}
         <div className="absolute bottom-1.5 left-1.5 flex items-center gap-1 rounded-md bg-black/60 backdrop-blur-sm px-1.5 py-0.5">
-          <Headphones size={8} className="text-white/70" />
+          ▶
           <span className="text-[8px] font-bold text-white/80">{formatPlays(plays)}</span>
         </div>
 
