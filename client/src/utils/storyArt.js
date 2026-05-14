@@ -251,7 +251,7 @@ const STORY_ART = {
   universal_lighthouse_keeper: {
     gradient: 'linear-gradient(135deg, #1e3a5f 0%, #2563eb 40%, #fbbf24 100%)',
     icon: '🏠', accent: '#fbbf24',
-    image: U('1507003211169-0a1dd7228f2d'), // lighthouse night
+    image: U('1507924538820-ede94a04019d'), // lighthouse on rocky coast
     prompt: 'A tiny lighthouse on a rocky island at night, its golden beam cutting through a wild storm, a small boat following the light to safety',
   },
   universal_garden_of_mistakes: {
