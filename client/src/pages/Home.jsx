@@ -46,8 +46,6 @@ function fetchWisdomData() {
   })();
   return _wisdomFetchPromise;
 }
-// Start fetching immediately when module loads (before component mounts)
-fetchWisdomData();
 
 function recommendedValueFor(age) {
   if (age <= 4) return ['sharing', 'kindness'];
@@ -125,10 +123,10 @@ export default function Home() {
   const [writeOpen, setWriteOpen] = useState(false);
   const [castOpen, setCastOpen] = useState(false);
 
-  // Pre-generated wisdom audio + images + custom stories — uses module-level cache
-  const [wisdomAudioUrls, setWisdomAudioUrls] = useState(_wisdomCache?.audio || {});
-  const [wisdomImageUrls, setWisdomImageUrls] = useState(_wisdomCache?.images || {});
-  const [customWisdomStories, setCustomWisdomStories] = useState(_wisdomCache?.custom || []);
+  // Pre-generated wisdom audio + images + custom stories — cached at module level
+  const [wisdomAudioUrls, setWisdomAudioUrls] = useState({});
+  const [wisdomImageUrls, setWisdomImageUrls] = useState({});
+  const [customWisdomStories, setCustomWisdomStories] = useState([]);
   useEffect(() => {
     fetchWisdomData().then(({ audio, images, custom }) => {
       setWisdomAudioUrls(audio);
