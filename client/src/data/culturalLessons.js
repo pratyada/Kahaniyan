@@ -1062,6 +1062,323 @@ That evening, they walked through the Distillery District where buskers played g
 That night, {childName}, remember the yellow tulip. You don't need money or fancy gifts to make your mother's heart full. Sometimes the most beautiful gift is something you planted with your own hands, waited for with patience, and gave with love. Happy Mother's Day.`,
   },
 
+  // ═══ UNIVERSAL STORIES — for users with no belief selected ═══
+
+  {
+    id: 'universal_lighthouse_keeper',
+    tradition: 'universal',
+    theme: 'courage',
+    title: 'The Lighthouse Keeper Who Was Afraid of Storms',
+    durationMinutes: 8,
+    source: 'Original · Universal',
+    body: `On a tiny island at the edge of the sea, there lived a lighthouse keeper named Milo. His job was simple: keep the light burning so ships could find their way home through the dark.
+
+But Milo had a secret. He was terrified of storms.
+
+Every time the sky turned grey and the wind began to howl, Milo would hide under his desk, hands over his ears, heart pounding. The waves would crash against the rocks like angry giants, and the whole lighthouse would shake.
+
+One night, the worst storm in a hundred years arrived. Rain fell sideways. Lightning split the sky. And through his window, Milo saw something that made his blood run cold — a tiny fishing boat, tossing in the waves, its light flickering.
+
+There were children on that boat.
+
+Milo looked at the stairs leading up to the lamp room. The wind was screaming. The lighthouse was swaying. Every part of him wanted to hide.
+
+But those children needed his light.
+
+So Milo did something he had never done before. He climbed the stairs during a storm. One step. Then another. His legs were shaking. His hands were sweating. But he kept climbing.
+
+At the top, he lit the great lamp. The beam cut through the rain like a golden sword. And slowly, carefully, the little fishing boat followed the light — around the rocks, past the reef, into the calm harbour.
+
+The next morning, the children's father came to the lighthouse. He shook Milo's hand and said, "You saved my family."
+
+Milo wanted to say, "I was terrified the whole time." But the father smiled and said, "I know. That's what made it brave."
+
+That night, {childName}, remember Milo on the stairs. Being brave doesn't mean you're not scared. It means you climb anyway — because someone needs your light.`,
+  },
+  {
+    id: 'universal_garden_of_mistakes',
+    tradition: 'universal',
+    theme: 'honesty',
+    title: 'The Garden Where Mistakes Grew Flowers',
+    durationMinutes: 7,
+    source: 'Original · Universal',
+    body: `In a village between two hills, there was a garden unlike any other. It was called the Honest Garden, and it had one magical rule: every time someone told the truth about a mistake they had made, a flower grew.
+
+But if someone told a lie to cover up a mistake, a weed appeared instead.
+
+A girl named Zara walked past the garden every day on her way to school. One morning, she accidentally knocked over her teacher's favourite mug. It shattered into a dozen pieces.
+
+No one saw it happen.
+
+Zara's heart was pounding. She could walk away. She could blame the wind. She could say she never touched it.
+
+But that evening, she walked into the Honest Garden and whispered to the soil: "I broke Mrs. Rao's mug. I was scared to tell her. But I did it."
+
+The ground trembled. And right where Zara stood, a flower bloomed — bright orange, with petals that glowed like little flames. It was the most beautiful flower in the entire garden.
+
+The next day, Zara told her teacher the truth. Mrs. Rao was quiet for a moment. Then she said, "Thank you for telling me, Zara. The mug can be replaced. Your honesty cannot."
+
+Over the years, Zara visited the garden many times. She admitted when she forgot her homework. She admitted when she said something unkind. She admitted when she was wrong.
+
+And her corner of the garden became the most beautiful of all — not because she never made mistakes, but because she never hid from them.
+
+That night, {childName}, remember Zara's garden. Mistakes are seeds. Lies turn them into weeds. But the truth — even when it's hard — turns them into flowers.`,
+  },
+  {
+    id: 'universal_invisible_boy',
+    tradition: 'universal',
+    theme: 'compassion-animals',
+    title: 'The Invisible Boy and the Stray Dog',
+    durationMinutes: 8,
+    source: 'Original · Universal',
+    body: `There was a boy named Kai who felt invisible. At school, no one picked him for their team. At lunch, no one saved him a seat. At recess, no one called his name.
+
+Kai wasn't mean or strange or quiet. He was just... overlooked. Like a book on the bottom shelf that nobody reaches for.
+
+One rainy afternoon, walking home alone, Kai found a dog. It was small, wet, and shivering under a bench. Its ribs showed through its fur. One of its ears was torn.
+
+The dog looked up at Kai with big brown eyes, and something passed between them — a silent understanding. They were both invisible.
+
+Kai took off his jacket and wrapped it around the dog. He carried it home. He gave it rice and warm water. He dried its fur with a towel and named it Shadow — because it followed him everywhere, like a shadow made of love.
+
+Every day after school, Kai and Shadow walked through the neighbourhood. And a strange thing began to happen. People started noticing Kai — not because he had changed, but because Shadow had a way of making everyone smile.
+
+"What a sweet dog!" the shopkeeper said. "Can I pet him?" a little girl asked. "You're the boy with the rescue dog," the librarian said with a warm nod.
+
+Kai was no longer invisible. And it wasn't because of anything loud or impressive. It was because he had stopped to care for someone even more invisible than himself.
+
+That night, {childName}, remember Kai and Shadow. When you feel unseen, look around — there might be someone who feels even more unseen. And when you help them, something magical happens: you both become visible.`,
+  },
+  {
+    id: 'universal_patience_river',
+    tradition: 'universal',
+    theme: 'patience',
+    title: 'The River That Carved a Canyon',
+    durationMinutes: 7,
+    source: 'Original · Universal',
+    body: `Once, a young river was born high in the mountains. It was small and eager, tumbling over rocks, rushing past trees, desperate to reach the sea.
+
+But between the mountain and the sea stood an enormous wall of stone — a cliff so tall that even the eagles couldn't see its top.
+
+"Move!" said the river. The stone didn't move.
+
+"I'll go around you!" said the river. But the stone stretched for miles in every direction.
+
+"I'll jump over you!" said the river. But the cliff was too high.
+
+The river sat at the base of the stone and cried. "I'll never reach the sea," it whispered.
+
+But an old oak tree on the bank said, "Little river, you don't need to move the stone today. Just keep flowing."
+
+So the river flowed. Day after day. Week after week. Year after year. Century after century.
+
+And something miraculous happened — so slowly that no one noticed at first. The water wore a groove into the stone. The groove became a crack. The crack became a passage. The passage became a valley.
+
+And after a thousand years, the river had carved a canyon — deeper and more beautiful than anything the mountain had ever seen. Birds nested in its walls. Flowers grew in its crevices. The whole world came to marvel at it.
+
+And at the bottom, the little river flowed peacefully toward the sea.
+
+The stone hadn't moved. The river hadn't stopped. Patience had done what force could not.
+
+That night, {childName}, remember the river. When something feels impossible — a hard subject at school, a skill you can't master, a problem that won't budge — don't give up. Just keep flowing. One day, you'll look back and see the canyon you carved.`,
+  },
+  {
+    id: 'universal_sharing_blanket',
+    tradition: 'universal',
+    theme: 'sharing',
+    title: 'The Blanket That Grew',
+    durationMinutes: 7,
+    source: 'Original · Universal',
+    body: `In a cold mountain village, an old woman named Nana had one blanket. It was blue with white stars, soft as clouds, and just big enough for one person.
+
+One winter night, there was a knock at her door. A young traveller stood shivering in the snow. "Please," he said, "may I share your fire?"
+
+Nana let him in. But the fire was small and the night was freezing. The traveller's teeth were chattering.
+
+Nana looked at her blanket — her only blanket. Then she looked at the boy. She tore the blanket in half and gave him a piece.
+
+"But now yours is too small!" said the traveller.
+
+Nana smiled. "Warmth shared is warmth doubled."
+
+In the morning, the traveller left. But when Nana looked at her half-blanket, something impossible had happened. It was whole again. Not just whole — it was bigger than before, with even more stars.
+
+The next week, a mother and child came to her door. Nana tore the blanket again and shared it. In the morning, it grew back larger.
+
+This kept happening. Every time Nana shared her blanket, it returned bigger. Soon it was large enough to cover her entire house. Then her yard. Then the whole village.
+
+On the coldest night of the year, every person in the village slept under Nana's blanket — the blanket that had started as a scrap big enough for one.
+
+That night, {childName}, remember Nana's blanket. When you share what you have — even when it feels like it's not enough — it has a way of growing. A cookie split in half. A toy lent to a friend. A kind word when someone is sad. These things don't make you have less. They make the world have more.`,
+  },
+  {
+    id: 'universal_respect_old_tree',
+    tradition: 'universal',
+    theme: 'respect',
+    title: 'The Oldest Tree in Town',
+    durationMinutes: 8,
+    source: 'Original · Universal',
+    body: `In the middle of the town square stood an enormous oak tree. It was so old that nobody could remember when it was planted. Its trunk was wider than a car. Its branches shaded the entire playground.
+
+Most people walked past it without a second glance. "It's just a tree," they said.
+
+But a girl named Amara noticed something. Every day after school, she would sit under the oak and do her homework. And she began to notice things.
+
+She noticed that birds nested in its branches — robins, sparrows, a family of cardinals. She noticed that squirrels stored their acorns in its roots. She noticed that on hot days, the entire playground was cool because of its shade. She noticed that when the wind blew, the leaves made a sound like gentle applause.
+
+One day, the town council announced they were going to cut down the oak to build a parking lot.
+
+Amara stood up at the town meeting — the youngest person in the room — and said: "Before you cut it down, let me tell you what this tree does."
+
+She listed everything: the birds it housed, the shade it gave, the air it cleaned, the beauty it brought. She had counted 47 species of insects that lived in its bark. She had measured its shadow — it cooled the playground by 8 degrees on summer days.
+
+The room was silent. Then an old man in the back stood up. "I carved my initials in that tree when I was ten," he said. "My father carved his when he was ten. That tree has been here longer than any of us."
+
+The council voted to keep the tree. And they put a small plaque at its base: "Respected by Amara, who took the time to look."
+
+That night, {childName}, remember the oak. Respect doesn't mean fear. It means paying attention. It means seeing the value in things that others walk past — old trees, quiet people, the janitor at school, the grandparent in the corner. Everyone and everything has a story. Respect is the act of listening to it.`,
+  },
+  {
+    id: 'universal_forgiveness_kite',
+    tradition: 'universal',
+    theme: 'forgiveness',
+    title: 'The Boy Who Let Go of the String',
+    durationMinutes: 7,
+    source: 'Original · Universal',
+    body: `Ravi and Sam were best friends. They did everything together — climbed trees, built forts, shared lunches, told secrets.
+
+Then one day, Sam said something mean. Really mean. He said it in front of the whole class, and everyone laughed. Ravi's face turned red. His eyes stung. He walked home alone.
+
+For weeks, Ravi held onto his anger like a kite string pulled tight. He replayed the words in his head. He imagined all the things he should have said back. He avoided Sam in the hallways. The anger felt like a heavy stone in his chest.
+
+One Saturday, Ravi went to the park to fly his kite. But the wind was strange — it kept pulling the kite sideways, tangling the string around Ravi's hand. The more he held on, the more the string cut into his fingers.
+
+An old woman on a bench watched him struggle. "You know," she said, "sometimes the bravest thing you can do is let go of the string."
+
+Ravi looked at his red, sore fingers. He looked at the kite, pulling and twisting. And he opened his hand.
+
+The kite shot up into the sky — free, beautiful, dancing. And Ravi's hand stopped hurting.
+
+That evening, Ravi knocked on Sam's door. Sam looked surprised. And scared.
+
+"What you said really hurt me," said Ravi. "I've been angry for weeks."
+
+"I know," whispered Sam. "I'm so sorry. I don't know why I said it."
+
+"I'm not saying it was okay," said Ravi. "But I don't want to carry it anymore."
+
+They didn't hug. They didn't laugh. But they sat on Sam's porch and watched the sunset. And something loosened in Ravi's chest — like a knot finally coming undone.
+
+That night, {childName}, remember Ravi's kite string. Forgiveness doesn't mean what happened was okay. It means you choose to stop letting it hurt you. You open your hand, and you let the kite fly.`,
+  },
+  {
+    id: 'universal_wisdom_two_wolves',
+    tradition: 'universal',
+    theme: 'wisdom',
+    title: 'The Two Wolves Inside You',
+    durationMinutes: 6,
+    source: 'Original · Universal · Inspired by Cherokee parable',
+    body: `One evening, a grandmother sat by the fire with her grandchild. The flames crackled and danced, and shadows played on the walls.
+
+"Tell me a story, Grandma," said the child.
+
+The grandmother smiled. "I will tell you the most important story I know."
+
+She leaned forward. "Inside every person, there are two wolves. They live right here." She placed her hand over her heart.
+
+"The first wolf is made of anger, jealousy, greed, lies, and cruelty. When you feel like pushing someone down, or taking what isn't yours, or saying something to hurt — that is the first wolf growling."
+
+The child's eyes grew wide.
+
+"The second wolf is made of kindness, patience, truth, love, and courage. When you feel like helping someone up, or sharing your last bite, or standing up for someone weaker — that is the second wolf howling."
+
+The grandmother paused.
+
+"These two wolves fight inside you every single day."
+
+The child thought for a long moment. Then asked the question that every child asks: "Grandma, which wolf wins?"
+
+The grandmother looked into the fire, and the flames reflected in her old, wise eyes.
+
+"The one you feed."
+
+The room was quiet. Outside, the wind rustled the trees. Inside, something settled in the child's heart — a truth so simple it would take a lifetime to fully understand.
+
+That night, {childName}, remember the two wolves. Every day, you choose which one to feed. Every kind word is a meal for the good wolf. Every mean thought is a meal for the other. You are the one who decides which wolf grows stronger. Choose wisely, little one.`,
+  },
+  {
+    id: 'universal_humility_mountain',
+    tradition: 'universal',
+    theme: 'humility',
+    title: 'The Mountain That Learned to Bow',
+    durationMinutes: 7,
+    source: 'Original · Universal',
+    body: `Long ago, the tallest mountain in the world was very proud. "I am the greatest!" it boomed. "I touch the clouds! I can see every ocean! No one is higher than me!"
+
+The rivers below were quiet. The valleys said nothing. Even the wind just sighed and moved on.
+
+But a small hill nearby — barely taller than a house — spoke up. "Excuse me, Mountain. May I ask you something?"
+
+"What could a tiny hill possibly ask ME?" laughed the mountain.
+
+"Where do the flowers grow?"
+
+The mountain looked at its own peak — barren, covered in ice and snow. Nothing grew there. It was too high, too cold, too proud to let anything soft survive.
+
+Then the hill said, "And where do the children play?"
+
+The mountain thought. Children never climbed to its peak. It was too dangerous, too far, too harsh. Children played on the hills, in the valleys, by the rivers.
+
+"Where do the birds build their nests?"
+
+Not on the mountain's frozen summit. They nested in the trees on the lower hills.
+
+"Where do people build their homes?"
+
+Not on the peak. In the valleys. Near the rivers. On the gentle hills.
+
+The mountain was silent for a very long time. Then, slowly, it understood. Being the tallest didn't mean being the most important. The hill, the valley, the river — they were where life actually happened.
+
+A thousand years later, the mountain's peak began to erode. Wind and rain wore it down, bit by bit. And where the stone crumbled, soil formed. And in that soil, for the first time in the mountain's long life, a single flower bloomed.
+
+The mountain smiled. It had finally learned that growing down can be just as beautiful as growing up.
+
+That night, {childName}, remember the mountain and the hill. You don't need to be the tallest, the loudest, or the best. The people who matter most are often the quiet ones — the ones who make room for flowers, and children, and birds. Humility isn't thinking less of yourself. It's thinking of yourself less.`,
+  },
+  {
+    id: 'universal_bravery_first_step',
+    tradition: 'universal',
+    theme: 'courage',
+    title: 'The Girl Who Walked Into the Dark',
+    durationMinutes: 7,
+    source: 'Original · Universal',
+    body: `There was a girl named Luna who was afraid of the dark. Not a little afraid — so afraid that she slept with three nightlights, the door open, and the hallway light on.
+
+Every night, the same thing happened. She would lie in bed, stare at the ceiling, and imagine all the terrible things hiding in the shadows.
+
+One evening, the power went out. Every light in the house went dark. Luna's heart began to race.
+
+"Mummy!" she called. But Mummy was downstairs, and the stairs were dark.
+
+Luna sat in her bed, frozen. The darkness pressed in from every side. She could hear her own breathing. She could hear the house creaking. She could hear... silence.
+
+And in that silence, she heard something else. A tiny voice — not outside, but inside her own chest. It whispered: "What if the dark isn't full of monsters? What if it's full of nothing at all?"
+
+Luna put one foot on the floor. Then the other. She stood up in the complete darkness. She couldn't see her hand in front of her face.
+
+She took one step. Then another. She touched the wall and followed it to the door. She found the hallway. She found the bannister. She walked down the stairs, one step at a time, in total darkness.
+
+At the bottom, Mummy was sitting with a candle. "Luna! You came down by yourself?"
+
+Luna nodded. Her hands were shaking. Her heart was still pounding. But she had done it.
+
+And here is the secret Luna discovered that night: the dark was not full of monsters. It was full of nothing. The only thing that had been scaring her was her own imagination. And her imagination, it turned out, was far scarier than the dark itself.
+
+From that night on, Luna still kept one nightlight on — not because she needed it, but because she liked the way it made the shadows dance.
+
+That night, {childName}, remember Luna on the stairs. The scariest part of anything is the moment before you start. The first step into the dark. The first word to a stranger. The first day at a new school. But once you take that step, you discover something wonderful: you were brave enough all along.`,
+  },
+
 ];
 
 export const TRADITIONS = [

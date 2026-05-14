@@ -204,6 +204,57 @@ const STORY_ART = {
     icon: '🍲', accent: '#fbbf24',
     prompt: 'A young boy serving food to people sitting together on the floor in a golden temple kitchen, steam rising, warm community meal, Sikh Langar scene',
   },
+  // ── Universal stories ──
+  universal_lighthouse_keeper: {
+    gradient: 'linear-gradient(135deg, #1e3a5f 0%, #2563eb 40%, #fbbf24 100%)',
+    icon: '🏠', accent: '#fbbf24',
+    prompt: 'A tiny lighthouse on a rocky island at night, its golden beam cutting through a wild storm, a small boat following the light to safety',
+  },
+  universal_garden_of_mistakes: {
+    gradient: 'linear-gradient(135deg, #064e3b 0%, #10b981 40%, #fcd34d 100%)',
+    icon: '🌸', accent: '#10b981',
+    prompt: 'A magical garden where bright orange flowers bloom from the ground wherever a girl stands, glowing soil, enchanted garden at sunset',
+  },
+  universal_invisible_boy: {
+    gradient: 'linear-gradient(135deg, #1e1b4b 0%, #6366f1 40%, #a78bfa 100%)',
+    icon: '🐕', accent: '#a78bfa',
+    prompt: 'A lonely boy wrapping his jacket around a small shivering stray dog under a bench in the rain, warm lamplight, compassion scene',
+  },
+  universal_patience_river: {
+    gradient: 'linear-gradient(135deg, #164e63 0%, #0891b2 40%, #a5f3fc 100%)',
+    icon: '🏞️', accent: '#0891b2',
+    prompt: 'A tiny stream of water slowly carving through a massive cliff face over time, creating a beautiful canyon, golden light streaming through',
+  },
+  universal_sharing_blanket: {
+    gradient: 'linear-gradient(135deg, #1e1b4b 0%, #4f46e5 40%, #e0e7ff 100%)',
+    icon: '🧣', accent: '#818cf8',
+    prompt: 'An old woman tearing her starry blue blanket in half to share with a shivering traveller by a small fire, snowy mountain village night',
+  },
+  universal_respect_old_tree: {
+    gradient: 'linear-gradient(135deg, #14532d 0%, #15803d 40%, #86efac 100%)',
+    icon: '🌳', accent: '#22c55e',
+    prompt: 'A girl hugging an enormous ancient oak tree in a town square, birds nesting in branches, dappled golden sunlight, community gathering',
+  },
+  universal_forgiveness_kite: {
+    gradient: 'linear-gradient(135deg, #7c2d12 0%, #ea580c 40%, #fed7aa 100%)',
+    icon: '🪁', accent: '#ea580c',
+    prompt: 'A boy opening his hand to release a kite string, the kite soaring free into a golden sunset sky, feeling of release and peace',
+  },
+  universal_wisdom_two_wolves: {
+    gradient: 'linear-gradient(135deg, #1c1917 0%, #57534e 40%, #f59e0b 100%)',
+    icon: '🐺', accent: '#f59e0b',
+    prompt: 'A grandmother and grandchild sitting by a glowing fireplace, two wolf spirits made of light and shadow facing each other above the flames',
+  },
+  universal_humility_mountain: {
+    gradient: 'linear-gradient(135deg, #1e293b 0%, #64748b 40%, #bbf7d0 100%)',
+    icon: '⛰️', accent: '#64748b',
+    prompt: 'A proud tall mountain with a bare icy peak looking down at a small green hill covered in flowers and children playing, humbling contrast',
+  },
+  universal_bravery_first_step: {
+    gradient: 'linear-gradient(135deg, #1a1a3e 0%, #312e81 40%, #c4b5fd 100%)',
+    icon: '🌙', accent: '#8b5cf6',
+    prompt: 'A small girl taking her first brave step down dark stairs holding onto the bannister, a tiny warm glow from a candle at the bottom',
+  },
   mothers_day_toronto: {
     gradient: 'linear-gradient(135deg, #ec4899 0%, #f472b6 40%, #fce7f3 100%)',
     icon: '🌷', accent: '#f472b6',
