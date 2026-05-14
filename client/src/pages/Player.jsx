@@ -318,6 +318,8 @@ function PlayerInner() {
       } catch (e) {
         console.warn('[My Sleepy Tale:Player] TTS failed:', e.message);
         setIsPlaying(false);
+        setTtsReady(true); // unblock UI so user sees the story text at least
+        narrator.setError?.(e.message || 'Audio generation failed. You can still read the story.');
       }
     };
 
