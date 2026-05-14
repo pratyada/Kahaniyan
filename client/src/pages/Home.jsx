@@ -16,6 +16,7 @@ import TrendingShelf from '../components/shelves/TrendingShelf.jsx';
 import SkeletonShelf from '../components/SkeletonShelf.jsx';
 import { useFamilyProfile } from '../hooks/useFamilyProfile.js';
 import { usePlayer } from '../hooks/usePlayer.jsx';
+import { useAuth } from '../hooks/useAuth.jsx';
 import { useWisdomData } from '../hooks/useWisdomData.js';
 import { pickTonightStory, playLesson, recommendedValueFor } from '../utils/storyHelpers.js';
 import { buildTraditionShelves, buildThemeShelves, buildAgeShelf } from '../utils/shelfBuilder.js';
@@ -24,6 +25,7 @@ export default function Home() {
   const navigate = useNavigate();
   const { profile } = useFamilyProfile();
   const { load } = usePlayer();
+  const { user } = useAuth();
   const { wisdomAudioUrls, wisdomImageUrls, allLessons, loading: dataLoading } = useWisdomData();
 
   const [createOpen, setCreateOpen] = useState(false);
@@ -69,14 +71,13 @@ export default function Home() {
   }, [allLessons, beliefs]);
 
   const handlePlay = (lesson) => {
-    playLesson(lesson, profile, wisdomAudioUrls, load, navigate);
+    playLesson(lesson, profile, wisdomAudioUrls, load, navigate, user);
   };
 
   const handleContinuePlay = (entry) => {
-    // Find the full lesson for this entry
     const lesson = allLessons.find((l) => `lesson_${l.id}` === entry.storyId || l.id === entry.storyId);
     if (lesson) {
-      playLesson(lesson, profile, wisdomAudioUrls, load, navigate);
+      playLesson(lesson, profile, wisdomAudioUrls, load, navigate, user);
     } else {
       navigate('/player');
     }

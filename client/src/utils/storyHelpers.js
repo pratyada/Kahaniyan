@@ -36,7 +36,40 @@ export function pickTonightStory(beliefs, lessons) {
   return pool.length > 0 ? pool[dayOfYear % pool.length] : null;
 }
 
-export function playLesson(lesson, profile, wisdomAudioUrls, loadPlayer, navigate) {
+// Guest play gate — allows 2 free plays per device, then requires sign-in.
+// Returns true if the guest can play, false if they need to sign in.
+const GUEST_PLAYS_KEY = 'mst:guestPlays';
+const FREE_PLAYS = 2;
+
+export function getGuestPlaysUsed() {
+  try {
+    return parseInt(localStorage.getItem(GUEST_PLAYS_KEY) || '0', 10);
+  } catch {
+    return 0;
+  }
+}
+
+function incrementGuestPlays() {
+  try {
+    const count = getGuestPlaysUsed() + 1;
+    localStorage.setItem(GUEST_PLAYS_KEY, String(count));
+  } catch {}
+}
+
+export function canGuestPlay() {
+  return getGuestPlaysUsed() < FREE_PLAYS;
+}
+
+export function playLesson(lesson, profile, wisdomAudioUrls, loadPlayer, navigate, user) {
+  // If no user signed in, check guest play limit
+  if (!user) {
+    if (!canGuestPlay()) {
+      if (window.__triggerLogin) window.__triggerLogin();
+      return false;
+    }
+    incrementGuestPlays();
+  }
+
   const filledText = fillTokens(lesson.body, profile);
   const pregenUrl = wisdomAudioUrls?.[lesson.id] || null;
   const story = {

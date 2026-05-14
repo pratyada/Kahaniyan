@@ -10,6 +10,7 @@ import VersionFooter from '../components/VersionFooter.jsx';
 import { TRADITIONS, THEMES } from '../data/culturalLessons.js';
 import { useFamilyProfile } from '../hooks/useFamilyProfile.js';
 import { usePlayer } from '../hooks/usePlayer.jsx';
+import { useAuth } from '../hooks/useAuth.jsx';
 import { useWisdomData } from '../hooks/useWisdomData.js';
 import { playLesson } from '../utils/storyHelpers.js';
 import { buildTraditionShelves, buildThemeShelves } from '../utils/shelfBuilder.js';
@@ -18,6 +19,7 @@ export default function CulturalLessons() {
   const navigate = useNavigate();
   const { profile } = useFamilyProfile();
   const { load } = usePlayer();
+  const { user } = useAuth();
   const { wisdomAudioUrls, wisdomImageUrls, allLessons } = useWisdomData();
   const [activeTheme, setActiveTheme] = useState(null);
 
@@ -59,7 +61,7 @@ export default function CulturalLessons() {
   }, [activeTheme, traditionShelves, themeShelves]);
 
   const handlePlay = (lesson) => {
-    playLesson(lesson, profile, wisdomAudioUrls, load, navigate);
+    playLesson(lesson, profile, wisdomAudioUrls, load, navigate, user);
   };
 
   return (
