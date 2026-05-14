@@ -110,12 +110,15 @@ export default function Library() {
           body: JSON.stringify({ prompt }),
         });
         if (!res.ok) { done++; continue; }
-        const { imageUrl: dalleUrl } = await res.json();
-        if (!dalleUrl) { done++; continue; }
-
-        // Upload to Firebase Storage
-        const imgRes = await fetch(dalleUrl);
-        const imgBlob = await imgRes.blob();
+        const data = await res.json();
+        let imgBlob;
+        if (data.imageBase64) {
+          const bytes = Uint8Array.from(atob(data.imageBase64), c => c.charCodeAt(0));
+          imgBlob = new Blob([bytes], { type: 'image/png' });
+        } else if (data.imageUrl) {
+          const imgFetch = await fetch(data.imageUrl);
+          imgBlob = await imgFetch.blob();
+        } else { done++; continue; }
         const { ref, uploadBytes, getDownloadURL } = await import('firebase/storage');
         const { storage } = await import('../lib/firebase.js');
         const storageRef = ref(storage, `story-covers/${story.id}.png`);

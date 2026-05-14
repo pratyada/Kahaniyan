@@ -1,6 +1,6 @@
-// Generate a story cover image via DALL-E 3.
-// POST /api/generate-story-image { lessonId, prompt }
-// Returns image URL. Client handles Firebase Storage upload.
+// Generate a story cover image via OpenAI gpt-image-1.
+// POST /api/generate-story-image { prompt }
+// Returns base64 image data. Client handles Firebase Storage upload.
 
 const OPENAI_KEY = process.env.OPENAI_API_KEY;
 
@@ -19,25 +19,32 @@ export default async function handler(req, res) {
         'Authorization': `Bearer ${OPENAI_KEY}`,
       },
       body: JSON.stringify({
-        model: 'dall-e-3',
+        model: 'gpt-image-1',
         prompt: `Children's bedtime storybook illustration, soft watercolor style, warm dreamy colors, no text or words anywhere in the image: ${prompt}`,
         n: 1,
         size: '1024x1024',
-        quality: 'standard',
+        quality: 'low',
       }),
     });
 
     if (!response.ok) {
       const err = await response.text();
-      console.error('DALL-E error:', response.status, err);
+      console.error('Image gen error:', response.status, err);
       return res.status(response.status).json({ error: `Image generation failed (${response.status})` });
     }
 
     const data = await response.json();
-    const imageUrl = data.data?.[0]?.url;
-    if (!imageUrl) return res.status(500).json({ error: 'No image URL returned' });
+    // gpt-image-1 returns base64, dall-e-3 returned url — handle both
+    const imageUrl = data.data?.[0]?.url || null;
+    const b64 = data.data?.[0]?.b64_json || null;
 
-    return res.json({ imageUrl });
+    if (b64) {
+      return res.json({ imageBase64: b64 });
+    } else if (imageUrl) {
+      return res.json({ imageUrl });
+    } else {
+      return res.status(500).json({ error: 'No image data returned' });
+    }
   } catch (err) {
     console.error('Generate image error:', err);
     return res.status(500).json({ error: err.message });

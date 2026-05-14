@@ -21,12 +21,17 @@ async function generateCoverImage(story) {
       body: JSON.stringify({ prompt }),
     });
     if (!res.ok) return null;
-    const { imageUrl: dalleUrl } = await res.json();
-    if (!dalleUrl) return null;
+    const data = await res.json();
 
-    // Download DALL-E image and upload to Firebase Storage (DALL-E URLs expire)
-    const imgRes = await fetch(dalleUrl);
-    const imgBlob = await imgRes.blob();
+    // Handle both base64 (gpt-image-1) and URL (dall-e-3) responses
+    let imgBlob;
+    if (data.imageBase64) {
+      const bytes = Uint8Array.from(atob(data.imageBase64), c => c.charCodeAt(0));
+      imgBlob = new Blob([bytes], { type: 'image/png' });
+    } else if (data.imageUrl) {
+      const imgRes = await fetch(data.imageUrl);
+      imgBlob = await imgRes.blob();
+    } else return null;
 
     const { ref, uploadBytes, getDownloadURL } = await import('firebase/storage');
     const storageRef = ref(storage, `story-covers/${story.id}.png`);

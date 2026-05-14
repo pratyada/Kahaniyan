@@ -2532,10 +2532,16 @@ function WisdomAudioPanel() {
         body: JSON.stringify({ prompt }),
       });
       if (!res.ok) { setStatus(s => ({ ...s, [lesson.id]: `Image failed (${res.status})` })); setGenerating(null); return; }
-      const { imageUrl: dalleUrl } = await res.json();
+      const data = await res.json();
       setStatus(s => ({ ...s, [lesson.id]: 'uploading image...' }));
-      const imgRes = await fetch(dalleUrl);
-      const imgBlob = await imgRes.blob();
+      let imgBlob;
+      if (data.imageBase64) {
+        const bytes = Uint8Array.from(atob(data.imageBase64), c => c.charCodeAt(0));
+        imgBlob = new Blob([bytes], { type: 'image/png' });
+      } else if (data.imageUrl) {
+        const imgRes = await fetch(data.imageUrl);
+        imgBlob = await imgRes.blob();
+      } else { setStatus(s => ({ ...s, [lesson.id]: 'No image data' })); setGenerating(null); return; }
       const { ref, uploadBytes, getDownloadURL } = await import('firebase/storage');
       const { storage, db: fireDb } = await import('../lib/firebase.js');
       const storageRef = ref(storage, `wisdom-images/${lesson.id}.png`);
