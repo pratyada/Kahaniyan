@@ -93,15 +93,21 @@ export function useNarrator() {
     return audio;
   }, [ensureKeepalive, stopKeepalive]);
 
-  // Load from a cached audio URL — no TTS call needed
+  // Load from a cached audio URL — no TTS call needed, plays as soon as enough data buffered
   const loadCached = useCallback((audioUrl) => {
     cleanup();
     setLoading(true);
     setError(null);
 
-    const audio = new Audio(audioUrl);
+    const audio = new Audio();
+    audio.preload = 'auto';
+    audio.crossOrigin = 'anonymous';
+    audio.src = audioUrl;
     setupAudio(audio);
-    setLoading(false);
+    // Mark ready as soon as we can play (don't wait for full download)
+    audio.oncanplay = () => setLoading(false);
+    // Fallback: if canplay doesn't fire within 500ms, unblock anyway
+    setTimeout(() => setLoading(false), 500);
     return audio;
   }, [cleanup, setupAudio]);
 

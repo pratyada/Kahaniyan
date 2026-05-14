@@ -18,6 +18,37 @@ import { RADIO_STATIONS } from '../data/radioStations.js';
 import { canGenerate, maxDurationFor, storiesThisWeek } from '../utils/tierGate.js';
 import { useAdmin } from '../hooks/useAdmin.jsx';
 
+// Module-level cache — fetch once, reuse across remounts
+let _wisdomCache = null;
+let _wisdomFetchPromise = null;
+function fetchWisdomData() {
+  if (_wisdomCache) return Promise.resolve(_wisdomCache);
+  if (_wisdomFetchPromise) return _wisdomFetchPromise;
+  _wisdomFetchPromise = (async () => {
+    try {
+      const { db: fireDb } = await import('../lib/firebase.js');
+      if (!fireDb) return { audio: {}, images: {}, custom: [] };
+      const { doc, getDoc, collection, getDocs } = await import('firebase/firestore');
+      const [audioSnap, imgSnap, customSnap] = await Promise.all([
+        getDoc(doc(fireDb, 'config', 'wisdomAudio')),
+        getDoc(doc(fireDb, 'config', 'wisdomImages')),
+        getDocs(collection(fireDb, 'wisdomStories')),
+      ]);
+      const custom = [];
+      customSnap.forEach(d => custom.push({ id: d.id, ...d.data() }));
+      _wisdomCache = {
+        audio: audioSnap.exists() ? audioSnap.data() : {},
+        images: imgSnap.exists() ? imgSnap.data() : {},
+        custom,
+      };
+      return _wisdomCache;
+    } catch { return { audio: {}, images: {}, custom: [] }; }
+  })();
+  return _wisdomFetchPromise;
+}
+// Start fetching immediately when module loads (before component mounts)
+fetchWisdomData();
+
 function recommendedValueFor(age) {
   if (age <= 4) return ['sharing', 'kindness'];
   if (age <= 7) return ['honesty', 'respect', 'gratitude'];
@@ -94,27 +125,16 @@ export default function Home() {
   const [writeOpen, setWriteOpen] = useState(false);
   const [castOpen, setCastOpen] = useState(false);
 
-  // Pre-generated wisdom audio + images + custom stories from Firestore
-  const [wisdomAudioUrls, setWisdomAudioUrls] = useState({});
-  const [wisdomImageUrls, setWisdomImageUrls] = useState({});
-  const [customWisdomStories, setCustomWisdomStories] = useState([]);
+  // Pre-generated wisdom audio + images + custom stories — uses module-level cache
+  const [wisdomAudioUrls, setWisdomAudioUrls] = useState(_wisdomCache?.audio || {});
+  const [wisdomImageUrls, setWisdomImageUrls] = useState(_wisdomCache?.images || {});
+  const [customWisdomStories, setCustomWisdomStories] = useState(_wisdomCache?.custom || []);
   useEffect(() => {
-    (async () => {
-      try {
-        const { db: fireDb } = await import('../lib/firebase.js');
-        if (!fireDb) return;
-        const { doc: fdoc, getDoc: fget, collection, getDocs } = await import('firebase/firestore');
-        const snap = await fget(fdoc(fireDb, 'config', 'wisdomAudio'));
-        if (snap.exists()) setWisdomAudioUrls(snap.data());
-        const imgSnap = await fget(fdoc(fireDb, 'config', 'wisdomImages'));
-        if (imgSnap.exists()) setWisdomImageUrls(imgSnap.data());
-        // Load custom wisdom stories from Firestore
-        const customSnap = await getDocs(collection(fireDb, 'wisdomStories'));
-        const custom = [];
-        customSnap.forEach(d => custom.push({ id: d.id, ...d.data() }));
-        setCustomWisdomStories(custom);
-      } catch {}
-    })();
+    fetchWisdomData().then(({ audio, images, custom }) => {
+      setWisdomAudioUrls(audio);
+      setWisdomImageUrls(images);
+      setCustomWisdomStories(custom);
+    });
   }, []);
 
   const maxDuration = maxDurationFor(tier, isUnlimited);
@@ -139,6 +159,37 @@ export default function Home() {
       return [...prev, id];
     });
   };
+
+  // Preload audio for visible stories so they play instantly
+  const preloadedRef = useRef(new Set());
+  useEffect(() => {
+    // Preload tonight's story + first few trending
+    const toPreload = [tonightStory, ...trending.slice(0, 3)].filter(Boolean);
+    toPreload.forEach((lesson) => {
+      if (preloadedRef.current.has(lesson.id)) return;
+      const audioUrl = wisdomAudioUrls[lesson.id];
+      if (!audioUrl) return;
+      preloadedRef.current.add(lesson.id);
+      // Use link preload for browser-level caching
+      const link = document.createElement('link');
+      link.rel = 'prefetch';
+      link.href = audioUrl;
+      link.as = 'fetch';
+      link.crossOrigin = 'anonymous';
+      document.head.appendChild(link);
+    });
+  }, [tonightStory, trending, wisdomAudioUrls]);
+
+  // Preload cover images for visible stories
+  useEffect(() => {
+    const toPreload = [tonightStory, ...trending.slice(0, 6)].filter(Boolean);
+    toPreload.forEach((lesson) => {
+      const imgUrl = wisdomImageUrls[lesson.id];
+      if (!imgUrl) return;
+      const img = new Image();
+      img.src = imgUrl;
+    });
+  }, [tonightStory, trending, wisdomImageUrls]);
 
   const playLesson = (lesson) => {
     const filledText = fillTokens(lesson.body, profile);
