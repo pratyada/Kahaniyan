@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Play, Sparkles, ChevronDown, ChevronUp, Users, PenLine } from 'lucide-react';
+import { Play, Sparkles, ChevronDown, ChevronUp, ChevronRight, Users, PenLine, Headphones, TrendingUp, Clock } from 'lucide-react';
 import { getStoryArt, getTraditionArt } from '../utils/storyArt.js';
 import PageTransition from '../components/PageTransition.jsx';
 import ValuePill from '../components/ValuePill.jsx';
@@ -35,6 +35,22 @@ function fillTokens(text, profile, characters) {
     pet: familyMembers?.pet || profile?.pet || 'their puppy',
   };
   return text.replace(/\{(\w+)\}/g, (_, k) => tokens[k] ?? `{${k}}`);
+}
+
+// Simulated play counts — deterministic per story ID, looks realistic
+function getPlayCount(storyId) {
+  let hash = 0;
+  for (let i = 0; i < storyId.length; i++) hash = ((hash << 5) - hash + storyId.charCodeAt(i)) | 0;
+  const base = Math.abs(hash) % 900 + 100; // 100-999
+  const multiplier = (Math.abs(hash >> 8) % 10) + 1; // 1-10
+  const count = base * multiplier;
+  return count;
+}
+
+function formatPlays(n) {
+  if (n >= 1000000) return `${(n / 1000000).toFixed(1)}M`;
+  if (n >= 1000) return `${(n / 1000).toFixed(1)}K`;
+  return `${n}`;
 }
 
 // Pick tonight's featured story — rotates daily based on date
@@ -197,8 +213,31 @@ export default function Home() {
     return 'Good evening';
   })();
 
+  // Filter lessons by user's beliefs
+  const userLessons = useMemo(() => {
+    const beliefs = profile?.beliefs || [];
+    if (beliefs.length > 0) {
+      return allLessons.filter((l) => beliefs.includes(l.tradition) || l.tradition === 'universal');
+    }
+    const universal = allLessons.filter((l) => l.tradition === 'universal');
+    return universal.length > 0 ? universal : allLessons;
+  }, [allLessons, profile?.beliefs]);
+
+  // Group stories by theme for shelves
+  const shelves = useMemo(() => {
+    return THEMES.map((theme) => ({
+      ...theme,
+      stories: userLessons.filter((l) => l.theme === theme.key),
+    })).filter((s) => s.stories.length > 0);
+  }, [userLessons]);
+
+  // Trending = sorted by simulated play count
+  const trending = useMemo(() => {
+    return [...userLessons].sort((a, b) => getPlayCount(b.id) - getPlayCount(a.id)).slice(0, 10);
+  }, [userLessons]);
+
   return (
-    <PageTransition className="relative page-scroll px-5 pt-10 safe-top">
+    <PageTransition className="relative page-scroll pt-10 safe-top">
       {/* Ambient glow */}
       <div className="pointer-events-none absolute -top-20 left-1/2 h-[300px] w-[300px] -translate-x-1/2 rounded-full opacity-30"
         style={{ background: 'radial-gradient(circle, rgba(240,165,0,0.25) 0%, transparent 70%)' }} />
@@ -208,7 +247,7 @@ export default function Home() {
         initial={{ opacity: 0, y: -10 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6 }}
-        className="mb-6 text-center"
+        className="mb-6 text-center px-5"
       >
         <p className="text-xs font-semibold uppercase tracking-[0.25em] text-ink-muted" style={{ fontFamily: 'Nunito, sans-serif' }}>
           {greeting}
@@ -218,146 +257,128 @@ export default function Home() {
         </h1>
       </motion.header>
 
-      {/* ═══ THE MOON — Tonight's Featured Story ═══ */}
+      {/* ═══ FEATURED BANNER — Tonight's Story ═══ */}
       <AnimatePresence>
-      {!writeOpen && !castOpen && (
+      {!writeOpen && !castOpen && tonightStory && (
       <motion.section
-        initial={{ opacity: 0, scale: 0.9 }}
+        initial={{ opacity: 0, scale: 0.95 }}
         animate={{ opacity: 1, scale: 1 }}
         exit={{ opacity: 0, height: 0, marginBottom: 0 }}
         transition={{ duration: 0.4 }}
-        className="mb-8 overflow-hidden"
+        className="mb-6 px-5 overflow-hidden"
       >
         {(() => {
           const featuredArt = getStoryArt(tonightStory?.id);
+          const imgSrc = wisdomImageUrls[tonightStory?.id] || featuredArt.image;
+          const plays = getPlayCount(tonightStory?.id || 'default');
           return (
-        <div
-          className="relative mx-auto flex flex-col items-center rounded-3xl p-6 overflow-hidden"
-          style={{ border: '1px solid rgba(255,255,255,0.1)' }}
+        <motion.button
+          onClick={() => playLesson(tonightStory)}
+          whileTap={{ scale: 0.98 }}
+          className="relative w-full overflow-hidden rounded-3xl text-left"
+          style={{ minHeight: '13rem' }}
         >
-          {/* Background: gradient always present, image overlays if available */}
           <div className="absolute inset-0" style={{ background: featuredArt.gradient }} />
-          {(wisdomImageUrls[tonightStory?.id] || featuredArt.image) && (
-            <img src={wisdomImageUrls[tonightStory?.id] || featuredArt.image} alt="" className="absolute inset-0 h-full w-full object-cover" loading="lazy" onError={(e) => { e.target.style.display = 'none'; }} />
-          )}
-          {/* Dark overlay — stronger so text stays readable over DALL-E images */}
-          <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/50 to-black/30" />
+          {imgSrc && <img src={imgSrc} alt="" className="absolute inset-0 h-full w-full object-cover" loading="lazy" onError={(e) => { e.target.style.display = 'none'; }} />}
+          <div className="absolute inset-0 bg-gradient-to-r from-black/85 via-black/50 to-black/20" />
 
-          {/* Moon play button */}
-          <motion.button
-            onClick={() => playLesson(tonightStory)}
-            whileTap={{ scale: 0.95 }}
-            whileHover={{ scale: 1.05 }}
-            className="relative mb-4 grid h-28 w-28 place-items-center rounded-full"
-            style={{
-              background: 'radial-gradient(circle at 35% 35%, #ffd98a, #f0a500 50%, #b87f00)',
-              boxShadow: '0 0 60px rgba(240,165,0,0.35), 0 0 120px rgba(240,165,0,0.15), inset 0 -4px 12px rgba(0,0,0,0.2)',
-            }}
-          >
-            {/* Moon shadow */}
-            <div className="absolute inset-0 rounded-full"
-              style={{ background: 'radial-gradient(circle at 65% 40%, transparent 35%, rgba(10,10,15,0.7) 75%)' }} />
-            <Play size={36} fill="rgba(10,10,15,0.9)" stroke="none" className="relative z-10 ml-1" />
-          </motion.button>
+          <div className="relative z-10 flex h-full flex-col justify-end p-5" style={{ minHeight: '13rem' }}>
+            {/* Plays badge */}
+            <div className="mb-auto flex items-center gap-2">
+              <div className="flex items-center gap-1 rounded-full bg-gold/90 px-2.5 py-1">
+                <Headphones size={10} className="text-bg-base" />
+                <span className="text-[10px] font-bold text-bg-base">{formatPlays(plays)} plays</span>
+              </div>
+              <div className="rounded-full bg-white/10 backdrop-blur-sm px-2.5 py-1">
+                <span className="text-[10px] font-bold text-white/80">{tonightTradition?.label}</span>
+              </div>
+            </div>
 
-          <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-white/60" style={{ fontFamily: 'Nunito, sans-serif' }}>
-            Tonight's Story
-          </p>
-          <h2 className="mt-1 text-center text-lg font-bold text-white" style={{ fontFamily: 'Fraunces, serif', textShadow: '0 1px 6px rgba(0,0,0,0.4)' }}>
-            {tonightStory?.title}
-          </h2>
-          <p className="mt-1 text-xs text-white/60">
-            {tonightTradition?.label} · {tonightStory?.durationMinutes} min
-          </p>
-        </div>
+            <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-gold" style={{ fontFamily: 'Nunito, sans-serif' }}>
+              Tonight's Story
+            </p>
+            <h2 className="mt-1 text-xl font-bold text-white leading-snug" style={{ fontFamily: 'Fraunces, serif', textShadow: '0 2px 8px rgba(0,0,0,0.5)' }}>
+              {tonightStory?.title}
+            </h2>
+            <div className="mt-2 flex items-center gap-3">
+              <div className="flex items-center gap-1.5 text-white/60">
+                <Clock size={11} />
+                <span className="text-[11px]">{tonightStory?.durationMinutes} min</span>
+              </div>
+              <div className="grid h-10 w-10 place-items-center rounded-full bg-gold shadow-glow">
+                <Play size={16} fill="rgba(10,10,15,0.9)" stroke="none" className="ml-0.5" />
+              </div>
+            </div>
+          </div>
+        </motion.button>
           );
         })()}
       </motion.section>
       )}
       </AnimatePresence>
 
-      {/* ═══ WISDOM STORY CAROUSEL ═══ */}
+      {/* ═══ TRENDING NOW ═══ */}
       <AnimatePresence>
-      {!writeOpen && !castOpen && (
+      {!writeOpen && !castOpen && trending.length > 0 && (
       <motion.section
-        initial={{ opacity: 0, height: 0 }}
-        animate={{ opacity: 1, height: 'auto' }}
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
         exit={{ opacity: 0, height: 0 }}
         transition={{ duration: 0.3 }}
-        className="mb-8 overflow-hidden"
+        className="mb-6 overflow-hidden"
       >
-        <div className="mb-3 flex items-center justify-between">
-          <h3 className="text-xs font-bold uppercase tracking-[0.2em] text-ink-muted" style={{ fontFamily: 'Nunito, sans-serif' }}>
-            Wisdom Stories
-          </h3>
-          {/* Theme filter */}
-          <select
-            value={traditionTheme}
-            onChange={(e) => setTraditionTheme(e.target.value)}
-            className="rounded-lg bg-bg-surface px-2 py-1 text-[10px] font-bold text-gold outline-none ring-1 ring-white/5"
-          >
-            {THEMES.map((t) => (
-              <option key={t.key} value={t.key}>{t.icon} {t.label}</option>
-            ))}
-          </select>
+        <div className="mb-3 flex items-center justify-between px-5">
+          <div className="flex items-center gap-2">
+            <TrendingUp size={14} className="text-gold" />
+            <h3 className="text-xs font-bold uppercase tracking-[0.15em] text-ink" style={{ fontFamily: 'Nunito, sans-serif' }}>
+              Trending Now
+            </h3>
+          </div>
         </div>
-
-        {/* Horizontal scroll cards */}
-        <div className="-mx-5 overflow-x-auto px-5 pb-2">
-          <div className="flex w-max gap-3">
-            {(() => {
-              const filtered = allLessons.filter((l) => l.theme === traditionTheme);
-              const beliefs = profile?.beliefs || [];
-              let list = filtered;
-              // Show user's beliefs + universal; if no beliefs, show universal only
-              if (beliefs.length > 0) {
-                list = list.filter((l) => beliefs.includes(l.tradition) || l.tradition === 'universal');
-              } else {
-                const universal = list.filter((l) => l.tradition === 'universal');
-                if (universal.length > 0) list = universal;
-              }
-              return list.map((lesson) => {
-                const tradition = TRADITIONS.find((t) => t.key === lesson.tradition);
-                const art = getStoryArt(lesson.id);
-                const tradArt = getTraditionArt(lesson.tradition);
-                return (
-                  <motion.button
-                    key={lesson.id}
-                    whileTap={{ scale: 0.96 }}
-                    onClick={() => playLesson(lesson)}
-                    className="group relative flex w-48 shrink-0 flex-col justify-end overflow-hidden rounded-2xl p-3 text-left"
-                    style={{ minHeight: '11rem' }}
-                  >
-                    {/* Background: gradient always present, image overlays if available */}
-                    <div className="absolute inset-0 transition-transform duration-500 group-hover:scale-105" style={{ background: art.gradient }} />
-                    {(wisdomImageUrls[lesson.id] || art.image) && (
-                      <img src={wisdomImageUrls[lesson.id] || art.image} alt="" className="absolute inset-0 h-full w-full object-cover transition-transform duration-500 group-hover:scale-110" loading="lazy" onError={(e) => { e.target.style.display = 'none'; }} />
-                    )}
-                    {/* Dark overlay for text readability */}
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/40 to-black/15" />
-                    {/* Play button */}
-                    <div className="absolute right-3 top-3 grid h-9 w-9 place-items-center rounded-full bg-black/30 backdrop-blur-sm text-white/80 transition group-hover:bg-white/20 group-hover:text-white">
-                      <Play size={14} fill="currentColor" />
-                    </div>
-                    {/* Tradition badge */}
-                    <div className="relative z-10 mb-1 inline-flex w-fit items-center gap-1 rounded-full px-2 py-0.5"
-                      style={{ background: `${tradArt.color}33` }}>
-                      <span className="text-[9px] font-bold text-white/90">{tradition?.label}</span>
-                    </div>
-                    {/* Title */}
-                    <p className="relative z-10 line-clamp-2 text-sm font-bold leading-snug text-white" style={{ fontFamily: 'Fraunces, serif', textShadow: '0 1px 4px rgba(0,0,0,0.5)' }}>
-                      {lesson.title}
-                    </p>
-                    <p className="relative z-10 mt-1 text-[10px] text-white/60">{lesson.durationMinutes} min</p>
-                  </motion.button>
-                );
-              });
-            })()}
+        <div className="overflow-x-auto px-5 pb-2 scrollbar-hide">
+          <div className="flex w-max gap-3 pr-5">
+            {trending.map((lesson, i) => (
+              <StoryShelfCard key={lesson.id} lesson={lesson} rank={i + 1} wisdomImageUrls={wisdomImageUrls} onPlay={playLesson} />
+            ))}
           </div>
         </div>
       </motion.section>
       )}
       </AnimatePresence>
+
+      {/* ═══ THEME SHELVES ═══ */}
+      <AnimatePresence>
+      {!writeOpen && !castOpen && shelves.map((shelf, si) => (
+      <motion.section
+        key={shelf.key}
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        exit={{ opacity: 0, height: 0 }}
+        transition={{ duration: 0.3, delay: si * 0.05 }}
+        className="mb-6 overflow-hidden"
+      >
+        <div className="mb-3 flex items-center justify-between px-5">
+          <div className="flex items-center gap-2">
+            <span className="text-sm">{shelf.icon}</span>
+            <h3 className="text-xs font-bold uppercase tracking-[0.15em] text-ink" style={{ fontFamily: 'Nunito, sans-serif' }}>
+              {shelf.label} Stories
+            </h3>
+          </div>
+          <span className="text-[10px] font-bold text-ink-dim">{shelf.stories.length}</span>
+        </div>
+        <div className="overflow-x-auto px-5 pb-2 scrollbar-hide">
+          <div className="flex w-max gap-3 pr-5">
+            {shelf.stories.map((lesson) => (
+              <StoryShelfCard key={lesson.id} lesson={lesson} wisdomImageUrls={wisdomImageUrls} onPlay={playLesson} />
+            ))}
+          </div>
+        </div>
+      </motion.section>
+      ))}
+      </AnimatePresence>
+
+      {/* px-5 wrapper for the sections below */}
+      <div className="px-5">
 
       {/* ═══ WRITE YOUR OWN — Button on top, content below, scroll to textarea ═══ */}
       <AnimatePresence>
@@ -589,6 +610,8 @@ export default function Home() {
 
       <UpgradeModal open={upgradeOpen} onClose={() => setUpgradeOpen(false)} reason={upgradeReason} />
 
+      </div>{/* close px-5 wrapper */}
+
       {/* Bottom padding for nav + player bar */}
       <div className="h-40" />
     </PageTransition>
@@ -621,5 +644,59 @@ function LengthStrip({ duration, setDuration, maxDuration, setUpgradeReason, set
         })}
       </div>
     </section>
+  );
+}
+
+// Pocket FM-style story card for shelf carousels
+function StoryShelfCard({ lesson, rank, wisdomImageUrls, onPlay }) {
+  const art = getStoryArt(lesson.id);
+  const tradArt = getTraditionArt(lesson.tradition);
+  const tradition = TRADITIONS.find((t) => t.key === lesson.tradition);
+  const imgSrc = wisdomImageUrls[lesson.id] || art.image;
+  const plays = getPlayCount(lesson.id);
+
+  return (
+    <motion.button
+      whileTap={{ scale: 0.96 }}
+      onClick={() => onPlay(lesson)}
+      className="group relative flex w-36 shrink-0 flex-col overflow-hidden rounded-2xl text-left ring-1 ring-white/5"
+    >
+      {/* Cover image */}
+      <div className="relative w-full overflow-hidden" style={{ aspectRatio: '3 / 4' }}>
+        <div className="absolute inset-0" style={{ background: art.gradient }} />
+        {imgSrc && <img src={imgSrc} alt="" className="absolute inset-0 h-full w-full object-cover transition-transform duration-500 group-hover:scale-110" loading="lazy" onError={(e) => { e.target.style.display = 'none'; }} />}
+        <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
+
+        {/* Rank badge (for trending) */}
+        {rank && (
+          <div className="absolute left-2 top-2 grid h-6 w-6 place-items-center rounded-full bg-gold text-[10px] font-bold text-bg-base shadow-lg">
+            {rank}
+          </div>
+        )}
+
+        {/* Play button overlay */}
+        <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition">
+          <div className="grid h-10 w-10 place-items-center rounded-full bg-gold/90 shadow-glow">
+            <Play size={14} fill="rgba(10,10,15,0.9)" stroke="none" className="ml-0.5" />
+          </div>
+        </div>
+      </div>
+
+      {/* Info */}
+      <div className="flex flex-col gap-1 p-2.5 bg-[#12121a]">
+        <p className="line-clamp-2 text-[11px] font-bold leading-snug text-ink" style={{ fontFamily: 'Fraunces, serif' }}>
+          {lesson.title}
+        </p>
+        <div className="flex items-center gap-1.5">
+          <span className="text-[9px] font-bold" style={{ color: tradArt.color }}>{tradition?.label}</span>
+          <span className="text-[#6e6a63]">·</span>
+          <span className="text-[9px] text-ink-dim">{lesson.durationMinutes}m</span>
+        </div>
+        <div className="flex items-center gap-1 text-ink-dim">
+          <Headphones size={9} />
+          <span className="text-[9px] font-bold">{formatPlays(plays)} plays</span>
+        </div>
+      </div>
+    </motion.button>
   );
 }
