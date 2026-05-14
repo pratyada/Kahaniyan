@@ -53,7 +53,7 @@ export default function BottomNav() {
             </div>
             <div>
               <p className="text-sm font-bold text-ink" style={{ fontFamily: 'Fraunces, serif' }}>Kahaniyan</p>
-              <p className="text-[10px] text-ink-muted">My Sleepy Tale</p>
+              <p className="text-[10px] text-ink-muted">End every day with a new lesson</p>
             </div>
           </div>
         </div>
