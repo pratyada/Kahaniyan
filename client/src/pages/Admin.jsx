@@ -2792,6 +2792,12 @@ function WisdomAudioPanel() {
                 )}
               </div>
             </div>
+            {/* Audio preview player */}
+            {urls[l.id] && (
+              <div className="mt-2">
+                <audio controls preload="none" src={urls[l.id]} className="w-full h-8" style={{ filter: 'invert(1) hue-rotate(180deg)', opacity: 0.7 }} />
+              </div>
+            )}
             {/* Bottom row: voice + actions */}
             <div className="flex items-center gap-2 mt-3 flex-wrap">
               <select value={getVoiceFor(l.id)} onChange={e => setVoiceSelections(prev => ({ ...prev, [l.id]: { ...prev[l.id], voice: e.target.value } }))}
