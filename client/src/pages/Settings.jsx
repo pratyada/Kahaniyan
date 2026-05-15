@@ -97,7 +97,6 @@ export default function Settings() {
             Continue with Google
           </button>
           <div className="mt-10 w-full space-y-3">
-            <Tile icon={<Handshake size={18} />} title="Invest" sub="Back this project" onClick={() => navigate('/invest')} />
           <Tile icon="🪨" title="Kid slept?" sub="Stoned Age awaits" onClick={() => window.location.href = 'https://stonedage.mysleepytale.com'} />
             <Tile icon="✨" title="Guides" sub="Learn how it works" onClick={() => navigate('/guides')} />
           </div>
@@ -325,7 +324,6 @@ export default function Settings() {
           <Tile icon="✨" title="Guides" sub="5 reads" onClick={() => navigate('/guides')} />
           <Tile icon={<Gift size={18} />} title="Gift a Story Pack" sub="CA$9.99/mo" onClick={() => setGiftOpen(true)} />
           <Tile icon={<Map size={18} />} title="Roadmap" sub="Build status" onClick={() => navigate('/roadmap')} />
-          <Tile icon={<Handshake size={18} />} title="Invest" sub="Back this project" onClick={() => navigate('/invest')} />
           <Tile icon="🪨" title="Kid slept?" sub="Stoned Age awaits" onClick={() => window.location.href = 'https://stonedage.mysleepytale.com'} />
           {isAdmin && (
             <Tile icon="🔑" title="Admin" sub="Dashboard" onClick={() => navigate('/admin')} />
