@@ -77,9 +77,9 @@ export default function ShareCardSheet({ open, onClose, story, imageUrl }) {
         Share this story
       </p>
 
-      {/* Card preview (scaled down) */}
-      <div className="mx-auto mb-5 overflow-hidden rounded-2xl" style={{ maxWidth: 270 }}>
-        <div style={{ transform: 'scale(0.75)', transformOrigin: 'top left', width: 360, height: 480 }}>
+      {/* Card preview (compact — scaled to fit without scrolling) */}
+      <div className="mx-auto mb-4 overflow-hidden rounded-xl" style={{ width: 216, height: 192 }}>
+        <div style={{ transform: 'scale(0.6)', transformOrigin: 'top left', width: 360, height: 320 }}>
           <ShareableStoryCard
             ref={cardRef}
             story={story}
@@ -89,6 +89,10 @@ export default function ShareCardSheet({ open, onClose, story, imageUrl }) {
           />
         </div>
       </div>
+      {/* Story title under preview */}
+      <p className="mb-4 text-center text-sm font-bold text-ink line-clamp-1" style={{ fontFamily: 'Fraunces, serif' }}>
+        {story?.title}
+      </p>
 
       {/* Primary action: Share (opens native share sheet) */}
       <motion.button
