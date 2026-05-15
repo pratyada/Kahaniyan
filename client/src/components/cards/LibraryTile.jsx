@@ -4,8 +4,12 @@
 import { Play, Share2, Trash2 } from 'lucide-react';
 import { valueMeta } from '../../utils/constants.js';
 import { getStoryArt } from '../../utils/storyArt.js';
+import ReflectionBadge from './ReflectionBadge.jsx';
+import { useReflections } from '../../utils/reflectionStore.js';
 
 export default function LibraryTile({ story, wisdomImageUrls = {}, onPlay, onShare, onDelete, isSharing }) {
+  const { getReflection } = useReflections();
+  const reflection = getReflection(story.id);
   const meta = valueMeta(story.value);
   const lessonKey = story.id?.startsWith('lesson_') ? story.id.slice(7) : '';
   const art = getStoryArt(lessonKey);
@@ -14,6 +18,8 @@ export default function LibraryTile({ story, wisdomImageUrls = {}, onPlay, onSha
 
   return (
     <div className="group relative overflow-hidden rounded-2xl" style={{ border: '1px solid rgba(255,255,255,0.06)' }}>
+      {/* Reflection badge */}
+      <ReflectionBadge reflection={reflection} />
       {/* Album art cover — tap to play */}
       <button onClick={onPlay} className="relative block w-full text-left" style={{ aspectRatio: '1 / 1' }}>
         <div className="absolute inset-0 transition-transform duration-500 group-hover:scale-105" style={{ background: art.gradient }} />

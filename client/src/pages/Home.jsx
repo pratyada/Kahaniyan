@@ -14,6 +14,9 @@ import StoryTile from '../components/cards/StoryTile.jsx';
 import ContinueListeningShelf from '../components/shelves/ContinueListeningShelf.jsx';
 import TrendingShelf from '../components/shelves/TrendingShelf.jsx';
 import SkeletonShelf from '../components/SkeletonShelf.jsx';
+import StreakBadge from '../components/StreakBadge.jsx';
+import MilestoneCelebration from '../components/MilestoneCelebration.jsx';
+import MorningRecapShelf from '../components/shelves/MorningRecapShelf.jsx';
 import { useFamilyProfile } from '../hooks/useFamilyProfile.js';
 import { usePlayer } from '../hooks/usePlayer.jsx';
 import { useAuth } from '../hooks/useAuth.jsx';
@@ -112,6 +115,12 @@ export default function Home() {
           A story for <span className="text-gold">{profile?.childName || 'your child'}</span>
         </h1>
       </motion.header>
+
+      {/* Learning streak */}
+      <StreakBadge />
+
+      {/* Morning recap (before noon only) */}
+      <MorningRecapShelf />
 
       {/* Hero — Tonight's Featured Story */}
       <HeroBanner
@@ -212,6 +221,9 @@ export default function Home() {
 
       {/* Bottom padding for nav + player bar */}
       <div className="h-40" />
+
+      {/* Milestone celebration overlay */}
+      <MilestoneCelebration />
     </PageTransition>
   );
 }

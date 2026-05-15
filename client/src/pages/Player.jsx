@@ -83,6 +83,9 @@ import { useAuth } from '../hooks/useAuth.jsx';
 import { useFamilyProfile } from '../hooks/useFamilyProfile.js';
 import { useNarrator } from '../hooks/useNarrator.js';
 import { valueMeta } from '../utils/constants.js';
+import { useStreak } from '../hooks/useStreak.js';
+import PostStoryReflection from '../components/PostStoryReflection.jsx';
+import ShareCardSheet from '../components/ShareCardSheet.jsx';
 
 const SPEEDS = [0.8, 1, 1.2];
 
@@ -188,6 +191,7 @@ function PlayerInner() {
   const { profile } = useFamilyProfile();
   const narrator = useNarrator();
   const { user } = useAuth();
+  const { recordPlay } = useStreak();
 
   const [speed, setSpeed] = useState(1);
   const [showText, setShowText] = useState(true);
@@ -370,7 +374,9 @@ function PlayerInner() {
     }
   };
 
-  // When story ends, show feedback popup
+  // When story ends, show reflection → share card → feedback
+  const [showReflection, setShowReflection] = useState(false);
+  const [showShareCard, setShowShareCard] = useState(false);
   const [showFeedback, setShowFeedback] = useState(false);
   const [feedbackRating, setFeedbackRating] = useState(0);
 
@@ -380,9 +386,9 @@ function PlayerInner() {
     if (ended && !done) {
       setDone(true);
       setIsPlaying(false);
+      recordPlay(); // increment learning streak
       import('../utils/analytics.js').then(({ trackAudioCompleted }) => trackAudioCompleted(current?.id, current?.estimatedMinutes)).catch(() => {});
-      // Show feedback popup instead of auto-navigating
-      setTimeout(() => setShowFeedback(true), 800);
+      setTimeout(() => setShowReflection(true), 800);
     }
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [progress, narrator.playing, narrator.loading, ttsReady, done]);
@@ -717,6 +723,32 @@ function PlayerInner() {
       </AnimatePresence>
 
       {/* Voice feedback popup — shown after story ends */}
+      {/* Post-story reflection */}
+      <AnimatePresence>
+        {showReflection && current && (
+          <PostStoryReflection
+            story={current}
+            onComplete={() => {
+              setShowReflection(false);
+              setShowShareCard(true);
+            }}
+            onDefer={() => {
+              narrator.stop();
+              navigate('/');
+            }}
+          />
+        )}
+      </AnimatePresence>
+
+      {/* Shareable story card (after reflection) */}
+      <ShareCardSheet
+        open={showShareCard}
+        onClose={() => { setShowShareCard(false); setShowFeedback(true); }}
+        story={current}
+        imageUrl={wisdomImageUrls[current?.id?.startsWith('lesson_') ? current.id.slice(7) : current?.id]}
+      />
+
+      {/* Voice feedback (after share card) */}
       <AnimatePresence>
         {showFeedback && (
           <motion.div

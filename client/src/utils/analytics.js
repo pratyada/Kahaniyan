@@ -66,3 +66,21 @@ export function trackAudioCompleted(storyId, durationMinutes) {
 export function trackError(errorType, message) {
   trackEvent('app_error', 'technical', `${errorType}: ${message}`, 1);
 }
+
+// ─── Learning features ───
+
+export function trackStreakDay(streakCount) {
+  trackEvent('streak_day', 'retention', `day_${streakCount}`, streakCount);
+}
+
+export function trackReflectionCompleted(storyId, questionCount) {
+  trackEvent('reflection_completed', 'learning', storyId, questionCount);
+}
+
+export function trackReflectionDeferred(storyId) {
+  trackEvent('reflection_deferred', 'learning', storyId, 1);
+}
+
+export function trackStoryCardShared(storyId) {
+  trackEvent('story_card_shared', 'growth', storyId, 1);
+}
