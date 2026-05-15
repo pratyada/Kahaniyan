@@ -9,7 +9,7 @@ export async function shareStoryToFirestore(story, { beliefs, country } = {}) {
   const shareId = story.id;
   const ref = doc(db, 'sharedStories', shareId);
 
-  // If already shared, update any missing fields (e.g. text added later)
+  // If already shared, update any missing fields
   const existing = await getDoc(ref);
   if (existing.exists()) {
     const data = existing.data();
@@ -17,6 +17,8 @@ export async function shareStoryToFirestore(story, { beliefs, country } = {}) {
     if (!data.text && story.text) updates.text = story.text;
     if (!data.title && story.title) updates.title = story.title;
     if (!data.value && story.value) updates.value = story.value;
+    if (!data.audioUrl && story.audioUrl) updates.audioUrl = story.audioUrl;
+    if (!data.tradition && story.tradition) updates.tradition = story.tradition;
     if (Object.keys(updates).length > 0) {
       await setDoc(ref, updates, { merge: true });
     }
@@ -38,6 +40,12 @@ export async function shareStoryToFirestore(story, { beliefs, country } = {}) {
     createdAt: story.createdAt || new Date().toISOString(),
     sharedBy: auth?.currentUser?.uid || 'anonymous',
     sharedAt: new Date().toISOString(),
+    // Audio URL so recipients can play instantly
+    ...(story.audioUrl ? { audioUrl: story.audioUrl } : {}),
+    // Tradition + theme for wisdom stories
+    ...(story.tradition ? { tradition: story.tradition } : {}),
+    ...(story.source ? { source: story.source } : {}),
+    ...(story.isWisdom ? { isWisdom: true } : {}),
     // Metadata for discovery
     beliefs: beliefs || [],
     country: country || '',
