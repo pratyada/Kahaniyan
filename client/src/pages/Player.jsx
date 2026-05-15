@@ -745,7 +745,6 @@ function PlayerInner() {
         open={showShareCard}
         onClose={() => { setShowShareCard(false); setShowFeedback(true); }}
         story={current}
-        imageUrl={wisdomImageUrls[current?.id?.startsWith('lesson_') ? current.id.slice(7) : current?.id]}
       />
 
       {/* Voice feedback (after share card) */}
