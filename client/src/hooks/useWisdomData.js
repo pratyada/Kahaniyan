@@ -1,13 +1,28 @@
 // Shared hook for fetching wisdom audio URLs, image URLs, and custom stories from Firestore.
-// Used by Home, Library, and Lessons pages to avoid duplicate fetches.
+// Caches to localStorage for instant display on remount (no image flash).
 
 import { useEffect, useMemo, useState } from 'react';
 import { CULTURAL_LESSONS } from '../data/culturalLessons.js';
 
+const CACHE_KEYS = {
+  audio: 'mst:cache:wisdomAudio',
+  images: 'mst:cache:wisdomImages',
+  custom: 'mst:cache:customStories',
+};
+
+function readCache(key) {
+  try { return JSON.parse(localStorage.getItem(key)); } catch { return null; }
+}
+
+function writeCache(key, data) {
+  try { localStorage.setItem(key, JSON.stringify(data)); } catch {}
+}
+
 export function useWisdomData() {
-  const [wisdomAudioUrls, setWisdomAudioUrls] = useState({});
-  const [wisdomImageUrls, setWisdomImageUrls] = useState({});
-  const [customWisdomStories, setCustomWisdomStories] = useState([]);
+  // Initialize from localStorage cache — instant, no flash
+  const [wisdomAudioUrls, setWisdomAudioUrls] = useState(() => readCache(CACHE_KEYS.audio) || {});
+  const [wisdomImageUrls, setWisdomImageUrls] = useState(() => readCache(CACHE_KEYS.images) || {});
+  const [customWisdomStories, setCustomWisdomStories] = useState(() => readCache(CACHE_KEYS.custom) || []);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -25,12 +40,22 @@ export function useWisdomData() {
         ]);
 
         if (cancelled) return;
-        if (audioSnap.exists()) setWisdomAudioUrls(audioSnap.data());
-        if (imgSnap.exists()) setWisdomImageUrls(imgSnap.data());
+
+        if (audioSnap.exists()) {
+          const data = audioSnap.data();
+          setWisdomAudioUrls(data);
+          writeCache(CACHE_KEYS.audio, data);
+        }
+        if (imgSnap.exists()) {
+          const data = imgSnap.data();
+          setWisdomImageUrls(data);
+          writeCache(CACHE_KEYS.images, data);
+        }
 
         const custom = [];
         customSnap.forEach((d) => custom.push({ id: d.id, ...d.data() }));
         setCustomWisdomStories(custom);
+        writeCache(CACHE_KEYS.custom, custom);
       } catch {} finally {
         if (!cancelled) setLoading(false);
       }
