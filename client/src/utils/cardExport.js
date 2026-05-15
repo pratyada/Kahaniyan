@@ -1,25 +1,37 @@
-// Export a DOM element as a shareable image + share via native share sheet.
+// Export story card as image + share via native APIs.
 
 export async function exportCardAsImage(domElement) {
-  if (!domElement) return null;
+  if (!domElement) { console.warn('Card: no DOM element'); return null; }
 
   try {
+    // Clone the element and strip external images (they taint the canvas)
+    const clone = domElement.cloneNode(true);
+    clone.querySelectorAll('img').forEach((img) => img.remove());
+    // Position off-screen for rendering
+    clone.style.position = 'fixed';
+    clone.style.left = '-9999px';
+    clone.style.top = '0';
+    document.body.appendChild(clone);
+
     const { default: html2canvas } = await import('html2canvas');
-    const canvas = await html2canvas(domElement, {
+    const canvas = await html2canvas(clone, {
       backgroundColor: '#0a0a0f',
       scale: 2,
       useCORS: false,
-      allowTaint: true,
+      allowTaint: false,
       logging: false,
-      // Skip cross-origin images that would taint the canvas
-      onclone: (doc) => {
-        // Remove crossOrigin attributes so images render with taint allowed
-        doc.querySelectorAll('img[crossorigin]').forEach((img) => {
-          img.removeAttribute('crossorigin');
-        });
-      },
+      width: 360,
+      height: 640,
     });
-    return new Promise((resolve) => canvas.toBlob(resolve, 'image/png'));
+
+    document.body.removeChild(clone);
+
+    return new Promise((resolve) => {
+      canvas.toBlob((blob) => {
+        if (!blob) console.warn('Card: canvas.toBlob returned null');
+        resolve(blob);
+      }, 'image/png');
+    });
   } catch (e) {
     console.warn('Card export failed:', e.message);
     return null;
@@ -27,7 +39,6 @@ export async function exportCardAsImage(domElement) {
 }
 
 export async function getStoryShareUrl(story, profile) {
-  // Save to Firestore so the shared link works for recipients
   try {
     const { shareStoryToFirestore } = await import('./shareStory.js');
     const url = await shareStoryToFirestore(story, {
@@ -36,7 +47,6 @@ export async function getStoryShareUrl(story, profile) {
     });
     return url;
   } catch {
-    // Fallback: direct link (may not work if story isn't in Firestore)
     return `${window.location.origin}/player?storyId=${story?.id || ''}`;
   }
 }
@@ -51,52 +61,64 @@ export async function shareStoryCard(blob, story, childName, profile) {
   const url = await getStoryShareUrl(story, profile);
   const text = getShareText(story, childName);
   const title = `${story?.title} — My Sleepy Tale`;
+  const fullText = `${text}\n\n🔗 ${url}`;
 
-  // Priority 1: Web Share API with image file (WhatsApp, iMessage, Instagram, etc.)
+  // Priority 1: Web Share API with image file
   if (blob) {
-    const file = new File([blob], `${story?.title || 'story'}.png`, { type: 'image/png' });
-    if (navigator.canShare?.({ files: [file] })) {
-      try {
-        await navigator.share({
-          title,
-          text: `${text}\n\n${url}`,
-          files: [file],
-        });
+    try {
+      const file = new File([blob], `MySleepyTale-${(story?.title || 'story').replace(/[^a-zA-Z0-9]/g, '_')}.png`, { type: 'image/png' });
+      if (navigator.canShare?.({ files: [file] })) {
+        await navigator.share({ title, text: fullText, files: [file] });
         return 'shared';
-      } catch (e) {
-        if (e.name === 'AbortError') return 'cancelled';
-        // Fall through to share without image
       }
+    } catch (e) {
+      if (e.name === 'AbortError') return 'cancelled';
+      console.warn('Share with file failed:', e.message);
     }
   }
 
-  // Priority 2: Web Share API without image (text + link only)
+  // Priority 2: Web Share API text-only
   if (navigator.share) {
     try {
       await navigator.share({ title, text, url });
       return 'shared';
     } catch (e) {
       if (e.name === 'AbortError') return 'cancelled';
+      console.warn('Share text failed:', e.message);
     }
   }
 
-  // Priority 3: Copy link to clipboard
+  // Priority 3: Copy to clipboard
   try {
-    await navigator.clipboard.writeText(`${text}\n${url}`);
+    await navigator.clipboard.writeText(fullText);
     return 'copied';
   } catch {
     return 'failed';
   }
 }
 
-export function downloadCardImage(blob, story) {
-  if (!blob) return;
+export async function downloadCardImage(blob, story) {
+  if (!blob) return false;
+
+  // On mobile: use Web Share API to "Save Image" (saves to gallery)
+  try {
+    const file = new File([blob], `MySleepyTale-${(story?.title || 'story').replace(/[^a-zA-Z0-9]/g, '_')}.png`, { type: 'image/png' });
+    if (navigator.canShare?.({ files: [file] })) {
+      await navigator.share({ files: [file] });
+      return true;
+    }
+  } catch (e) {
+    if (e.name === 'AbortError') return false;
+  }
+
+  // Fallback: download via <a> tag (desktop browsers)
   const url = URL.createObjectURL(blob);
   const a = document.createElement('a');
   a.href = url;
-  a.download = `${story?.title || 'story'}.png`;
+  a.download = `MySleepyTale-${(story?.title || 'story').replace(/[^a-zA-Z0-9]/g, '_')}.png`;
   document.body.appendChild(a);
   a.click();
   document.body.removeChild(a);
-  URL.revokeObjectURL(url);
+  setTimeout(() => URL.revokeObjectURL(url), 1000);
+  return true;
 }

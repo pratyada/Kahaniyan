@@ -24,10 +24,16 @@ export default function ShareCardSheet({ open, onClose, story, imageUrl }) {
 
   const showToast = (msg) => { setToast(msg); setTimeout(() => setToast(null), 2500); };
 
+  const getBlob = async () => {
+    const blob = await exportCardAsImage(cardRef.current);
+    if (!blob) console.warn('ShareCard: exportCardAsImage returned null');
+    return blob;
+  };
+
   const handleShare = async () => {
     setBusy(true);
     try {
-      const blob = await exportCardAsImage(cardRef.current);
+      const blob = await getBlob();
       const result = await shareStoryCard(blob, story, profile?.childName, profile);
       if (result === 'shared') {
         trackStoryCardShared(story?.id);
@@ -35,35 +41,48 @@ export default function ShareCardSheet({ open, onClose, story, imageUrl }) {
         setTimeout(onClose, 800);
       } else if (result === 'copied') {
         trackStoryCardShared(story?.id);
-        showToast('Link copied to clipboard!');
+        showToast('Link & text copied! Paste in any chat.');
+      } else if (result === 'failed') {
+        showToast('Could not share. Try Copy Link below.');
       }
-    } catch {}
+    } catch (e) {
+      console.warn('Share failed:', e);
+      showToast('Something went wrong. Try Copy Link.');
+    }
     setBusy(false);
   };
 
   const handleSave = async () => {
     setBusy(true);
     try {
-      const blob = await exportCardAsImage(cardRef.current);
+      const blob = await getBlob();
       if (blob) {
-        downloadCardImage(blob, story);
-        trackStoryCardShared(story?.id);
-        showToast('Image saved!');
+        const saved = await downloadCardImage(blob, story);
+        if (saved) {
+          trackStoryCardShared(story?.id);
+          showToast('Saved!');
+        }
       } else {
         showToast('Could not generate image');
       }
-    } catch {}
+    } catch (e) {
+      console.warn('Save failed:', e);
+      showToast('Could not save image');
+    }
     setBusy(false);
   };
 
   const handleCopyLink = async () => {
+    setBusy(true);
     try {
       const url = await getStoryShareUrl(story, profile);
       await navigator.clipboard.writeText(url);
-      showToast('Link copied!');
+      showToast('Link copied! Paste in WhatsApp, SMS, etc.');
+      trackStoryCardShared(story?.id);
     } catch {
       showToast('Could not copy');
     }
+    setBusy(false);
   };
 
   return (
