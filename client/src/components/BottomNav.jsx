@@ -52,8 +52,8 @@ export default function BottomNav() {
               <Sparkles size={18} className="text-gold" />
             </div>
             <div>
-              <p className="text-sm font-bold text-ink" style={{ fontFamily: 'Fraunces, serif' }}>Kahaniyan</p>
-              <p className="text-[10px] text-ink-muted">End every day with a new lesson</p>
+              <p className="text-sm font-bold text-ink" style={{ fontFamily: 'Fraunces, serif' }}>My Sleepy Tale</p>
+              <p className="text-[10px] text-ink-muted">Microlearning to complete your day</p>
             </div>
           </div>
         </div>
