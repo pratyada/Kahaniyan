@@ -1,20 +1,26 @@
-// Share card sheet — preview + share/save/copy actions.
+// Share card sheet — big preview + motivating share flow.
 
 import { useRef, useState } from 'react';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import BottomSheet from './BottomSheet.jsx';
 import ShareableStoryCard from './ShareableStoryCard.jsx';
 import { exportCardAsImage, shareStoryCard, downloadCardImage, getStoryShareUrl } from '../utils/cardExport.js';
 import { extractMoral } from '../utils/moralExtractor.js';
+import { useReflections } from '../utils/reflectionStore.js';
 import { useFamilyProfile } from '../hooks/useFamilyProfile.js';
 import { trackStoryCardShared } from '../utils/analytics.js';
 
 export default function ShareCardSheet({ open, onClose, story, imageUrl }) {
   const cardRef = useRef(null);
   const { profile } = useFamilyProfile();
+  const { getReflection } = useReflections();
   const [busy, setBusy] = useState(false);
   const [toast, setToast] = useState(null);
   const { moral } = extractMoral(story);
+
+  // Get the feeling emoji from reflection
+  const reflection = getReflection(story?.id);
+  const feeling = reflection?.answers?.find((a) => a.type === 'emoji')?.answer;
 
   const showToast = (msg) => { setToast(msg); setTimeout(() => setToast(null), 2500); };
 
@@ -63,71 +69,79 @@ export default function ShareCardSheet({ open, onClose, story, imageUrl }) {
   return (
     <BottomSheet open={open} onClose={onClose}>
       {/* Toast */}
-      {toast && (
-        <motion.div
-          initial={{ opacity: 0, y: -10 }}
-          animate={{ opacity: 1, y: 0 }}
-          className="mb-4 rounded-full bg-gold px-4 py-2 text-center text-xs font-bold text-bg-base"
-        >
-          {toast}
-        </motion.div>
-      )}
+      <AnimatePresence>
+        {toast && (
+          <motion.div
+            initial={{ opacity: 0, y: -10 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0 }}
+            className="mb-3 rounded-full bg-gold px-4 py-2 text-center text-xs font-bold text-bg-base"
+          >
+            {toast}
+          </motion.div>
+        )}
+      </AnimatePresence>
 
-      <p className="mb-4 text-center text-[10px] font-bold uppercase tracking-[0.2em] text-gold/60">
-        Share this story
-      </p>
+      {/* Motivating header */}
+      <div className="mb-4 text-center">
+        <p className="text-lg font-bold text-ink" style={{ fontFamily: 'Fraunces, serif' }}>
+          Share tonight's story
+        </p>
+        <p className="mt-1 text-xs text-ink-muted">
+          Inspire another family's bedtime routine
+        </p>
+      </div>
 
-      {/* Card preview (compact — scaled to fit without scrolling) */}
-      <div className="mx-auto mb-4 overflow-hidden rounded-xl" style={{ width: 216, height: 192 }}>
-        <div style={{ transform: 'scale(0.6)', transformOrigin: 'top left', width: 360, height: 320 }}>
+      {/* Card preview — prominent, centered */}
+      <motion.div
+        initial={{ scale: 0.9, opacity: 0 }}
+        animate={{ scale: 1, opacity: 1 }}
+        transition={{ type: 'spring', damping: 20 }}
+        className="mx-auto mb-5 overflow-hidden rounded-2xl shadow-lift"
+        style={{ width: 270, height: 480 }}
+      >
+        <div style={{ transform: 'scale(0.75)', transformOrigin: 'top left', width: 360, height: 640 }}>
           <ShareableStoryCard
             ref={cardRef}
             story={story}
             moral={moral}
             childName={profile?.childName}
             imageUrl={imageUrl}
+            feeling={feeling}
           />
         </div>
-      </div>
-      {/* Story title under preview */}
-      <p className="mb-4 text-center text-sm font-bold text-ink line-clamp-1" style={{ fontFamily: 'Fraunces, serif' }}>
-        {story?.title}
-      </p>
+      </motion.div>
 
-      {/* Primary action: Share (opens native share sheet) */}
+      {/* Primary: Share */}
       <motion.button
         whileTap={{ scale: 0.97 }}
         onClick={handleShare}
         disabled={busy}
-        className="mb-3 w-full rounded-2xl bg-gold py-4 text-center text-sm font-bold text-bg-base shadow-glow transition disabled:opacity-50"
+        className="mb-2 w-full rounded-2xl bg-gold py-4 text-center text-base font-bold text-bg-base shadow-glow transition disabled:opacity-50"
+        style={{ fontFamily: 'Nunito, sans-serif' }}
       >
-        {busy ? 'Preparing...' : '📤 Share to WhatsApp, SMS, Instagram...'}
+        {busy ? 'Preparing...' : 'Share with friends & family'}
       </motion.button>
 
-      {/* Secondary actions row */}
-      <div className="flex gap-2 mb-3">
-        <motion.button
-          whileTap={{ scale: 0.97 }}
+      {/* Secondary row */}
+      <div className="flex gap-2 mb-2">
+        <button
           onClick={handleSave}
           disabled={busy}
-          className="flex-1 rounded-2xl bg-white/5 py-3 text-center text-xs font-bold text-ink ring-1 ring-white/10 transition disabled:opacity-50"
+          className="flex-1 rounded-xl bg-white/5 py-3 text-center text-[11px] font-bold text-ink-muted ring-1 ring-white/10 transition active:scale-97 disabled:opacity-50"
         >
-          💾 Save Image
-        </motion.button>
-        <motion.button
-          whileTap={{ scale: 0.97 }}
+          Save Image
+        </button>
+        <button
           onClick={handleCopyLink}
-          className="flex-1 rounded-2xl bg-white/5 py-3 text-center text-xs font-bold text-ink ring-1 ring-white/10 transition"
+          className="flex-1 rounded-xl bg-white/5 py-3 text-center text-[11px] font-bold text-ink-muted ring-1 ring-white/10 transition active:scale-97"
         >
-          🔗 Copy Link
-        </motion.button>
+          Copy Link
+        </button>
       </div>
 
-      <button
-        onClick={onClose}
-        className="w-full text-center text-[11px] font-bold text-ink-dim py-2"
-      >
-        Skip
+      <button onClick={onClose} className="w-full py-2 text-center text-[11px] text-ink-dim">
+        Maybe later
       </button>
     </BottomSheet>
   );
