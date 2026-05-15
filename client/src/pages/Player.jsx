@@ -257,13 +257,21 @@ function PlayerInner() {
           const url = URL.createObjectURL(localBlob);
           audio = narrator.loadCached(url);
         }
-        // Priority 2: Firebase Storage cached URL — Audio() can play cross-origin directly
+        // Priority 2: Firebase Storage cached URL
         else if (current.audioUrl) {
           console.log('[My Sleepy Tale:Player] Playing cached audio from Firebase');
           audio = narrator.loadCached(current.audioUrl);
+          // Wait briefly to see if audio actually loads, fallback to TTS if not
+          await new Promise((resolve) => {
+            let resolved = false;
+            audio.oncanplay = () => { if (!resolved) { resolved = true; resolve(); } };
+            audio.onerror = () => { if (!resolved) { resolved = true; audio = null; } resolve(); };
+            setTimeout(() => { if (!resolved) { resolved = true; resolve(); } }, 5000);
+          });
+          if (!audio) console.warn('[My Sleepy Tale:Player] Cached audio failed, falling back to TTS');
         }
 
-        // Priority 3: Generate via TTS API (wisdom stories without pre-gen audio, or custom stories)
+        // Priority 3: Generate via TTS API (fallback if cached audio failed or no pre-gen)
         if (!audio && current.text) {
           audio = await narrator.generate({
             text: current.text,

@@ -101,13 +101,22 @@ export function useNarrator() {
 
     const audio = new Audio();
     audio.preload = 'auto';
-    audio.crossOrigin = 'anonymous';
+    // Only set crossOrigin for blob URLs — Firebase Storage URLs fail with CORS
+    if (audioUrl.startsWith('blob:')) {
+      audio.crossOrigin = 'anonymous';
+    }
     audio.src = audioUrl;
     setupAudio(audio);
+
+    // Surface load errors (bad URL, CORS, network)
+    audio.onerror = () => {
+      setLoading(false);
+      setError('Could not load audio. Trying text-to-speech...');
+    };
     // Mark ready as soon as we can play (don't wait for full download)
-    audio.oncanplay = () => setLoading(false);
-    // Fallback: if canplay doesn't fire within 500ms, unblock anyway
-    setTimeout(() => setLoading(false), 500);
+    audio.oncanplay = () => { setLoading(false); setError(null); };
+    // Fallback: if canplay doesn't fire within 3s, unblock
+    setTimeout(() => setLoading(false), 3000);
     return audio;
   }, [cleanup, setupAudio]);
 
