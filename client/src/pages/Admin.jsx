@@ -135,15 +135,10 @@ export default function Admin() {
   }, [tab, feedbackLoaded, isAdmin]);
 
   const TABS = [
-    { key: 'overview', label: 'Overview', icon: '📊' },
-    { key: 'storylab', label: 'Story Lab', icon: '🧪' },
-    { key: 'feedback', label: `Feedback (${feedbackLoaded ? feedbackList.length : '…'})`, icon: '💬' },
-    { key: 'users', label: `Users (${allUsers.length})`, icon: '👤' },
-    { key: 'usage', label: 'Usage & Costs', icon: '💰' },
-    { key: 'team', label: `Team (${team.length})`, icon: '👥' },
-    { key: 'emails', label: `Emails (${allEmails.length})`, icon: '📧' },
-    { key: 'investors', label: 'Investors', icon: '🤝' },
-    { key: 'admins', label: 'Admins', icon: '🔑' },
+    { key: 'overview', label: 'Dashboard', icon: '📊' },
+    { key: 'storylab', label: 'Story Studio', icon: '🧪' },
+    { key: 'feedback', label: 'Curators', icon: '✍️' },
+    { key: 'users', label: 'Settings', icon: '⚙️' },
   ];
 
   return (
@@ -444,46 +439,7 @@ export default function Admin() {
         )}
 
         {/* ═══ FEEDBACK ═══ */}
-        {tab === 'feedback' && (
-          <div className="space-y-4">
-            <div className="rounded-2xl bg-[#1a1a28] p-6">
-              <h3 className="mb-1 text-sm font-bold text-[#f5f0e8]">User Feedback</h3>
-              <p className="mb-4 text-xs text-[#6e6a63]">
-                Thoughts shared by users from the "Share your thoughts" button in Settings. {feedbackList.length} total.
-              </p>
-            </div>
-            {feedbackList.length === 0 ? (
-              <div className="flex items-center justify-center rounded-2xl bg-[#1a1a28] p-12">
-                <div className="text-center">
-                  <div className="mb-3 text-4xl">💬</div>
-                  <p className="text-sm text-[#a8a39a]">No feedback yet</p>
-                </div>
-              </div>
-            ) : (
-              <div className="space-y-3">
-                {feedbackList.map((fb) => (
-                  <div key={fb.id} className="rounded-xl bg-[#1a1a28] p-4">
-                    <div className="flex items-center justify-between mb-2">
-                      <div className="flex items-center gap-2">
-                        <span className="text-lg">💬</span>
-                        <div>
-                          <div className="text-sm font-bold text-[#f5f0e8]">{fb.displayName || 'Anonymous'}</div>
-                          <div className="text-[10px] text-[#6e6a63]">{fb.email || 'No email'}</div>
-                        </div>
-                      </div>
-                      <div className="text-[10px] text-[#6e6a63]">
-                        {fb.createdAt ? new Date(fb.createdAt).toLocaleString() : 'Unknown date'}
-                      </div>
-                    </div>
-                    <div className="rounded-lg bg-[#0f0f17] p-3 text-sm leading-relaxed text-[#f5f0e8]/80">
-                      {fb.text}
-                    </div>
-                  </div>
-                ))}
-              </div>
-            )}
-          </div>
-        )}
+        {tab === 'feedback' && <CuratorSubmissionsPanel />}
 
         {/* ═══ USERS ═══ */}
         {tab === 'users' && (
@@ -1821,18 +1777,8 @@ function StoryLab() {
   };
 
   const SUB_TABS = [
-    { key: 'wisdom-audio', label: 'Wisdom Stories', icon: '📖' },
-    { key: 'collections', label: 'Collections', icon: '🎬' },
-    { key: 'voice-feedback', label: 'Voice Feedback', icon: '🎙️' },
-    { key: 'rules', label: 'Global Rules', icon: '🛡️' },
-    { key: 'playground', label: 'Playground', icon: '🎮' },
-    { key: 'archetypes', label: 'Characters', icon: '👥' },
-    { key: 'culture', label: 'Cultural Library', icon: '🌍' },
-    { key: 'whispers', label: 'Quick Whispers', icon: '💭' },
-    { key: 'ingredients', label: 'Story Ingredients', icon: '🧩' },
-    { key: 'values', label: 'Value Delivery', icon: '💡' },
-    { key: 'ages', label: 'Age Guides', icon: '🎂' },
-    { key: 'cache', label: `Cache (${cachedStories.length})`, icon: '📦' },
+    { key: 'wisdom-audio', label: 'Wisdom Stories (51)', icon: '📖' },
+    { key: 'collections', label: 'Collections (48)', icon: '🎬' },
   ];
 
   return (
@@ -2834,6 +2780,125 @@ function WisdomAudioPanel() {
           <div className="rounded-xl bg-[#1a1a28] px-4 py-8 text-center text-sm text-[#6e6a63] ring-1 ring-white/5">No stories match the current filters</div>
         )}
       </div>
+    </div>
+  );
+}
+
+function CuratorSubmissionsPanel() {
+  const [submissions, setSubmissions] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [filter, setFilter] = useState('pending');
+
+  useEffect(() => {
+    (async () => {
+      try {
+        const { db } = await import('../lib/firebase.js');
+        if (!db) return;
+        const { collection, getDocs, query, orderBy } = await import('firebase/firestore');
+        const q = query(collection(db, 'creatorStories'), orderBy('submittedAt', 'desc'));
+        const snap = await getDocs(q);
+        const list = [];
+        snap.forEach((d) => list.push({ id: d.id, ...d.data() }));
+        setSubmissions(list);
+      } catch {}
+      setLoading(false);
+    })();
+  }, []);
+
+  const updateStatus = async (id, newStatus) => {
+    try {
+      const { db } = await import('../lib/firebase.js');
+      const { doc, updateDoc } = await import('firebase/firestore');
+      await updateDoc(doc(db, 'creatorStories', id), { status: newStatus });
+      setSubmissions(prev => prev.map(s => s.id === id ? { ...s, status: newStatus } : s));
+    } catch {}
+  };
+
+  const filtered = submissions.filter(s => filter === 'all' ? true : s.status === filter);
+  const counts = { pending: submissions.filter(s => s.status === 'pending').length, published: submissions.filter(s => s.status === 'published').length, rejected: submissions.filter(s => s.status === 'rejected').length };
+
+  if (loading) return <div className="text-center py-12 text-[#6e6a63]">Loading submissions...</div>;
+
+  return (
+    <div className="space-y-4">
+      {/* Stats */}
+      <div className="grid grid-cols-3 gap-3">
+        <div className="rounded-xl bg-[#1a1a28] p-4 ring-1 ring-white/5 text-center">
+          <div className="text-2xl font-bold text-[#f0a500]">{counts.pending}</div>
+          <div className="text-[10px] text-[#6e6a63]">Pending Review</div>
+        </div>
+        <div className="rounded-xl bg-[#1a1a28] p-4 ring-1 ring-white/5 text-center">
+          <div className="text-2xl font-bold text-[#7ad9a1]">{counts.published}</div>
+          <div className="text-[10px] text-[#6e6a63]">Published</div>
+        </div>
+        <div className="rounded-xl bg-[#1a1a28] p-4 ring-1 ring-white/5 text-center">
+          <div className="text-2xl font-bold text-red-400">{counts.rejected}</div>
+          <div className="text-[10px] text-[#6e6a63]">Rejected</div>
+        </div>
+      </div>
+
+      {/* Filter */}
+      <div className="flex gap-2">
+        {['pending', 'published', 'rejected', 'all'].map(f => (
+          <button key={f} onClick={() => setFilter(f)}
+            className={`rounded-lg px-3 py-1.5 text-xs font-bold capitalize ${filter === f ? 'bg-[#f0a500] text-[#0a0a0f]' : 'bg-white/5 text-[#a8a39a] ring-1 ring-white/10'}`}>
+            {f} {f !== 'all' ? `(${counts[f] || 0})` : `(${submissions.length})`}
+          </button>
+        ))}
+      </div>
+
+      {/* Submissions */}
+      {filtered.length === 0 ? (
+        <div className="text-center py-12"><div className="text-4xl mb-3">✍️</div><p className="text-sm text-[#a8a39a]">No {filter} submissions</p></div>
+      ) : filtered.map(s => (
+        <div key={s.id} className="rounded-xl bg-[#1a1a28] p-4 ring-1 ring-white/5">
+          <div className="flex items-start justify-between gap-3 mb-2">
+            <div>
+              <h4 className="text-sm font-bold text-[#f5f0e8]">{s.title}</h4>
+              <p className="text-[10px] text-[#6e6a63]">by {s.authorName} · {s.tradition} · {s.theme} · {(s.body || '').split(/\s+/).length} words</p>
+              <p className="text-[10px] text-[#6e6a63]">{new Date(s.submittedAt).toLocaleDateString()}</p>
+            </div>
+            <span className={`shrink-0 rounded-full px-2 py-0.5 text-[9px] font-bold ${
+              s.status === 'published' ? 'bg-green-500/10 text-green-400' :
+              s.status === 'rejected' ? 'bg-red-500/10 text-red-400' :
+              'bg-[#f0a500]/10 text-[#f0a500]'
+            }`}>{s.status}</span>
+          </div>
+
+          {/* Story preview */}
+          <div className="rounded-lg bg-[#0f0f17] p-3 mb-3 text-xs text-[#a8a39a] leading-relaxed max-h-32 overflow-y-auto">
+            {(s.body || '').slice(0, 500)}{(s.body || '').length > 500 ? '...' : ''}
+          </div>
+
+          {/* Actions */}
+          <div className="flex gap-2">
+            {s.status === 'pending' && (
+              <>
+                <button onClick={() => updateStatus(s.id, 'published')}
+                  className="rounded-lg bg-[#7ad9a1]/10 px-3 py-1.5 text-[10px] font-bold text-[#7ad9a1]">
+                  ✓ Approve & Publish
+                </button>
+                <button onClick={() => updateStatus(s.id, 'rejected')}
+                  className="rounded-lg bg-red-400/10 px-3 py-1.5 text-[10px] font-bold text-red-400">
+                  ✗ Reject
+                </button>
+              </>
+            )}
+            {s.status === 'rejected' && (
+              <button onClick={() => updateStatus(s.id, 'published')}
+                className="rounded-lg bg-[#7ad9a1]/10 px-3 py-1.5 text-[10px] font-bold text-[#7ad9a1]">
+                Reconsider → Publish
+              </button>
+            )}
+            {s.status === 'published' && (
+              <button onClick={() => updateStatus(s.id, 'rejected')}
+                className="rounded-lg bg-red-400/10 px-3 py-1.5 text-[10px] font-bold text-red-400">
+                Unpublish
+              </button>
+            )}
+          </div>
+        </div>
+      ))}
     </div>
   );
 }
