@@ -58,15 +58,50 @@ export async function shareStoryToFirestore(story, { beliefs, country } = {}) {
 }
 
 export async function loadSharedStory(storyId) {
-  if (!db || !storyId) return null;
-  try {
-    const ref = doc(db, 'sharedStories', storyId);
-    const snap = await getDoc(ref);
-    if (!snap.exists()) return null;
-    return { id: storyId, ...snap.data() };
-  } catch {
-    return null;
+  if (!storyId) return null;
+
+  // Try Firestore shared stories first
+  if (db) {
+    try {
+      const ref = doc(db, 'sharedStories', storyId);
+      const snap = await getDoc(ref);
+      if (snap.exists()) return { id: storyId, ...snap.data() };
+    } catch {}
   }
+
+  // Fallback: check if it's a wisdom story (lesson_xxx) — load from local data
+  const lessonId = storyId.startsWith('lesson_') ? storyId.slice(7) : storyId;
+  try {
+    const { CULTURAL_LESSONS } = await import('../data/culturalLessons.js');
+    const lesson = CULTURAL_LESSONS.find((l) => l.id === lessonId || l.id === storyId);
+    if (lesson) {
+      // Also try to get pre-gen audio URL
+      let audioUrl = null;
+      if (db) {
+        try {
+          const audioSnap = await getDoc(doc(db, 'config', 'wisdomAudio'));
+          if (audioSnap.exists()) audioUrl = audioSnap.data()[lesson.id] || null;
+        } catch {}
+      }
+      return {
+        id: `lesson_${lesson.id}`,
+        title: lesson.title,
+        text: lesson.body,
+        wordCount: lesson.body.split(/\s+/).length,
+        estimatedMinutes: lesson.durationMinutes,
+        value: 'kindness',
+        language: 'English',
+        voice: 'AI Narrator',
+        tradition: lesson.tradition,
+        source: lesson.source,
+        createdAt: new Date().toISOString(),
+        isWisdom: true,
+        audioUrl,
+      };
+    }
+  } catch {}
+
+  return null;
 }
 
 // Like / unlike a shared story
