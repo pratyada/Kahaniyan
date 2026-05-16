@@ -321,6 +321,7 @@ export default function Settings() {
       {/* ─── MORE ─── */}
       <SectionCard title="More">
         <div className="grid grid-cols-2 gap-2">
+          <Tile icon="✍️" title="Become a Creator" sub="Write & earn" onClick={() => navigate('/creator')} />
           <Tile icon="✨" title="Guides" sub="5 reads" onClick={() => navigate('/guides')} />
           <Tile icon={<Gift size={18} />} title="Gift a Story Pack" sub="CA$9.99/mo" onClick={() => setGiftOpen(true)} />
           <Tile icon={<Map size={18} />} title="Roadmap" sub="Build status" onClick={() => navigate('/roadmap')} />
