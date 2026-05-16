@@ -2665,9 +2665,9 @@ function WisdomAudioPanel() {
         </button>
       </div>
 
-      {/* ── Bulk Generate ── */}
+      {/* ── Bulk Generate (OpenAI) ── */}
       <div className="flex flex-wrap items-center gap-2 rounded-xl bg-[#1a1a28] p-3 ring-1 ring-white/5">
-        <span className="text-[10px] font-bold uppercase tracking-wider text-[#6e6a63] w-full sm:w-auto">Bulk Generate ({filtered.filter(l => !urls[l.id] || !imageUrls[l.id]).length} incomplete)</span>
+        <span className="text-[10px] font-bold uppercase tracking-wider text-[#6e6a63] w-full sm:w-auto">OpenAI Bulk ({filtered.filter(l => !urls[l.id] || !imageUrls[l.id]).length} incomplete)</span>
         <button onClick={() => bulkGenerate('audio')} disabled={bulkRunning || !!generating}
           className="rounded-lg bg-[#f0a500]/10 px-4 py-2 text-xs font-bold text-[#f0a500] hover:bg-[#f0a500]/20 disabled:opacity-30">
           All Audio
@@ -2688,6 +2688,9 @@ function WisdomAudioPanel() {
         )}
         {bulkProgress && <span className="text-[10px] text-[#f0a500] truncate ml-auto">{bulkProgress}</span>}
       </div>
+
+      {/* ── ElevenLabs Premium Audio ── */}
+      <ElevenLabsPanel filtered={filtered} urls={urls} setUrls={setUrls} generating={generating} setGenerating={setGenerating} setStatus={setStatus} />
 
       {/* ── Add / Edit form ── */}
       {(addingNew || editing) && (() => {
@@ -2829,6 +2832,140 @@ function WisdomAudioPanel() {
           <div className="rounded-xl bg-[#1a1a28] px-4 py-8 text-center text-sm text-[#6e6a63] ring-1 ring-white/5">No stories match the current filters</div>
         )}
       </div>
+    </div>
+  );
+}
+
+function ElevenLabsPanel({ filtered, urls, setUrls, generating, setGenerating, setStatus }) {
+  const ELEVEN_VOICES = [
+    { key: 'george', label: '🎭 George — Warm Storyteller (British)' },
+    { key: 'lily', label: '🌸 Lily — Velvety Actress (British)' },
+    { key: 'sarah', label: '✨ Sarah — Mature, Reassuring (American)' },
+    { key: 'brian', label: '🎵 Brian — Deep, Comforting (American)' },
+    { key: 'bill', label: '📖 Bill — Wise, Mature (American)' },
+    { key: 'muskaan', label: '🇮🇳 Muskaan — Hindi (Indian)' },
+    { key: 'alice', label: '📚 Alice — Clear Educator (British)' },
+    { key: 'river', label: '🌊 River — Relaxed, Neutral' },
+    { key: 'jessica', label: '🌟 Jessica — Playful, Warm' },
+  ];
+
+  const [defaultVoice, setDefaultVoice] = useState('george');
+  const [indianVoice] = useState('muskaan');
+  const [bulkRunning, setBulkRunning] = useState(false);
+  const [progress, setProgress] = useState('');
+  const [previewUrl, setPreviewUrl] = useState(null);
+  const abortRef = useRef(false);
+
+  const API_BASE = import.meta.env.VITE_API_BASE_URL || '';
+
+  const getVoiceForStory = (story) => {
+    // Indian traditions → Muskaan
+    if (['hindu', 'sikh', 'jain', 'buddhist'].includes(story.tradition)) return indianVoice;
+    // Others → random between george, lily, sarah
+    const pool = ['george', 'lily', 'sarah'];
+    const hash = (story.id || '').split('').reduce((a, c) => a + c.charCodeAt(0), 0);
+    return pool[hash % pool.length];
+  };
+
+  const previewVoice = async (voice) => {
+    setPreviewUrl(null);
+    try {
+      const res = await fetch(`${API_BASE}/api/generate-elevenlabs-audio`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ text: 'That night, little one, remember: every act of kindness counts. Every grain. Every drop. Every soul.', voice }),
+      });
+      if (!res.ok) return;
+      const blob = await res.blob();
+      setPreviewUrl(URL.createObjectURL(blob));
+    } catch {}
+  };
+
+  const generateOneEL = async (story) => {
+    const voice = getVoiceForStory(story);
+    const text = (story.body || '').replace(/\{childName\}/g, 'little one').replace(/\{sibling\}/g, 'their friend').replace(/\{pet\}/g, 'their puppy').replace(/\{grandfather\}/g, 'Dada ji').replace(/\{grandmother\}/g, 'Nani ma');
+    if (!text || text.length < 50) return;
+
+    setStatus(s => ({ ...s, [story.id]: `11Labs: ${voice}...` }));
+    try {
+      const res = await fetch(`${API_BASE}/api/generate-elevenlabs-audio`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ text: text.slice(0, 10000), voice }),
+      });
+      if (!res.ok) { setStatus(s => ({ ...s, [story.id]: `11Labs failed (${res.status})` })); return; }
+      const blob = await res.blob();
+      setStatus(s => ({ ...s, [story.id]: 'uploading...' }));
+
+      const { ref, uploadBytes, getDownloadURL } = await import('firebase/storage');
+      const { storage, db: fireDb } = await import('../lib/firebase.js');
+      const storageRef = ref(storage, `wisdom-audio/${story.id}.mp3`);
+      await uploadBytes(storageRef, blob, { contentType: 'audio/mpeg' });
+      const audioUrl = await getDownloadURL(storageRef);
+      const { doc: fdoc, setDoc: fset } = await import('firebase/firestore');
+      await fset(fdoc(fireDb, 'config', 'wisdomAudio'), { [story.id]: audioUrl }, { merge: true });
+      setUrls(u => ({ ...u, [story.id]: audioUrl }));
+      setStatus(s => ({ ...s, [story.id]: `✓ ${voice}` }));
+    } catch (e) { setStatus(s => ({ ...s, [story.id]: e.message })); }
+  };
+
+  const bulkGenerateEL = async () => {
+    abortRef.current = false;
+    setBulkRunning(true);
+    const targets = filtered.filter(l => !urls[l.id]);
+    for (let i = 0; i < targets.length; i++) {
+      if (abortRef.current) { setProgress('Stopped'); break; }
+      const l = targets[i];
+      setProgress(`${i + 1}/${targets.length}: ${l.title}`);
+      setGenerating(l.id);
+      await generateOneEL(l);
+      setGenerating(null);
+      await new Promise(r => setTimeout(r, 1000)); // rate limit safety
+    }
+    if (!abortRef.current) setProgress(`Done! ${targets.length} stories`);
+    setBulkRunning(false);
+  };
+
+  const missingCount = filtered.filter(l => !urls[l.id]).length;
+
+  return (
+    <div className="rounded-xl bg-[#1a1a28] p-4 ring-1 ring-[#7ad9a1]/20 space-y-3">
+      <div className="flex items-center justify-between">
+        <span className="text-xs font-bold text-[#7ad9a1]">⚡ ElevenLabs Premium Audio</span>
+        <span className="text-[9px] text-[#6e6a63]">{missingCount} stories need audio</span>
+      </div>
+
+      {/* Voice config */}
+      <div className="flex flex-wrap gap-2 items-center">
+        <select value={defaultVoice} onChange={e => setDefaultVoice(e.target.value)}
+          className="rounded-lg bg-[#0a0a0f] px-3 py-2 text-[10px] font-bold text-[#7ad9a1] outline-none ring-1 ring-white/10">
+          {ELEVEN_VOICES.map(v => <option key={v.key} value={v.key}>{v.label}</option>)}
+        </select>
+        <button onClick={() => previewVoice(defaultVoice)}
+          className="rounded-lg bg-[#7ad9a1]/10 px-3 py-1.5 text-[10px] font-bold text-[#7ad9a1]">
+          Preview
+        </button>
+        <span className="text-[9px] text-[#6e6a63]">Indian stories → Muskaan | Others → George/Lily/Sarah (random)</span>
+      </div>
+
+      {/* Preview player */}
+      {previewUrl && <audio controls src={previewUrl} className="w-full h-8" style={{ filter: 'invert(1) hue-rotate(180deg)', opacity: 0.7 }} />}
+
+      {/* Bulk generate */}
+      <div className="flex flex-wrap gap-2 items-center">
+        <button onClick={bulkGenerateEL} disabled={bulkRunning || !!generating}
+          className="rounded-lg bg-[#7ad9a1] px-4 py-2 text-xs font-bold text-[#0a0a0f] hover:bg-[#6bc491] disabled:opacity-30">
+          Generate All with ElevenLabs ({missingCount})
+        </button>
+        {bulkRunning && (
+          <button onClick={() => { abortRef.current = true; }}
+            className="rounded-lg bg-red-400/10 px-4 py-2 text-xs font-bold text-red-400">Stop</button>
+        )}
+        {progress && <span className="text-[10px] text-[#7ad9a1] truncate">{progress}</span>}
+      </div>
+
+      {/* Per-story generate button (uses ElevenLabs voice assignment) */}
+      <p className="text-[9px] text-[#6e6a63]">Each story row also has a voice assignment. Use the per-story "Gen Audio" for OpenAI or use this panel for ElevenLabs premium.</p>
     </div>
   );
 }
