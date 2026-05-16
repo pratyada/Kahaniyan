@@ -5,7 +5,7 @@ import { useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import PageTransition from '../components/PageTransition.jsx';
-import HeroBanner from '../components/HeroBanner.jsx';
+import HeroSlider from '../components/HeroSlider.jsx';
 import CreateFAB from '../components/CreateFAB.jsx';
 import CreateSheet from '../components/CreateSheet.jsx';
 import ShelfSection from '../components/shelves/ShelfSection.jsx';
@@ -36,11 +36,21 @@ export default function Home() {
   const beliefs = profile?.beliefs || [];
   const age = profile?.age || 6;
 
-  // Tonight's featured story
-  const tonightStory = useMemo(
-    () => pickTonightStory(beliefs, allLessons),
-    [beliefs, allLessons]
-  );
+  // Featured stories for hero slider (5 stories, rotates daily)
+  const featuredStories = useMemo(() => {
+    let pool = allLessons.filter(
+      (l) => beliefs.length > 0
+        ? beliefs.includes(l.tradition) || l.tradition === 'universal'
+        : true
+    );
+    if (pool.length < 5) pool = allLessons;
+    const day = Math.floor(Date.now() / 86400000);
+    return pool
+      .map((l, i) => ({ l, sort: ((i * 2654435761 + day * 3) >>> 0) % 10000 }))
+      .sort((a, b) => a.sort - b.sort)
+      .map((x) => x.l)
+      .slice(0, 5);
+  }, [allLessons, beliefs]);
 
   // Build all shelves
   const traditionShelves = useMemo(
@@ -122,10 +132,10 @@ export default function Home() {
       {/* Morning recap (before noon only) */}
       <MorningRecapShelf />
 
-      {/* Hero — Tonight's Featured Story */}
-      <HeroBanner
-        story={tonightStory}
-        imageUrl={wisdomImageUrls[tonightStory?.id]}
+      {/* Hero slider — Pocket FM style */}
+      <HeroSlider
+        stories={featuredStories}
+        wisdomImageUrls={wisdomImageUrls}
         onPlay={handlePlay}
       />
 
