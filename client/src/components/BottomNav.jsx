@@ -5,7 +5,7 @@ import { useAuth } from '../hooks/useAuth.jsx';
 import { Moon, Feather, Radio, User, Sparkles } from 'lucide-react';
 
 const tabs = [
-  { to: '/', label: 'Tonight', Icon: Moon },
+  { to: '/', label: 'Home', Icon: Moon },
   { to: '/library', label: 'Curation', Icon: Feather },
   { to: '/radio', label: 'Radio', Icon: Radio },
 ];
