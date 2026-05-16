@@ -106,9 +106,14 @@ export default function CreateSheet({ open, onClose }) {
           <TabButton active={tab === 'cast'} onClick={() => setTab('cast')} icon={<Users size={14} />} label="Cast" />
         </div>
 
-        {/* Write tab */}
+        {/* Write tab — input first (thumb-reach), options below */}
         {tab === 'write' && (
           <div>
+            {/* Start button at top for visibility */}
+            <StartButton loading={loading} onClick={handleStart} />
+
+            <div className="my-4" />
+
             <WhisperBox
               value={whisper}
               onChange={setWhisper}
@@ -148,7 +153,6 @@ export default function CreateSheet({ open, onClose }) {
               setUpgradeOpen={setUpgradeOpen}
             />
 
-            <StartButton loading={loading} onClick={handleStart} />
           </div>
         )}
 
