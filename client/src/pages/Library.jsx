@@ -1,18 +1,14 @@
-// Curation — listen to community stories OR become a creator.
-// Two tabs: Listen (browse stories) and Create (submit + earn).
+// Curation — Create stories (left tab) or Listen to creations (right tab).
+// Guests can browse everything. Submit requires sign-in.
 
 import { useEffect, useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Feather, Play, Headphones } from 'lucide-react';
+import { Feather, Headphones } from 'lucide-react';
 import PageTransition from '../components/PageTransition.jsx';
 import ShelfSection from '../components/shelves/ShelfSection.jsx';
 import ShelfRow from '../components/shelves/ShelfRow.jsx';
-import LibraryTile from '../components/cards/LibraryTile.jsx';
 import StoryTile from '../components/cards/StoryTile.jsx';
-import { getLibrary, pruneArchive, removeFromLibrary, loadAndMergeLibrary } from '../utils/storyCache.js';
-import { shareStoryToFirestore } from '../utils/shareStory.js';
-import { archiveDaysFor } from '../utils/tierGate.js';
 import { useFamilyProfile } from '../hooks/useFamilyProfile.js';
 import { usePlayer } from '../hooks/usePlayer.jsx';
 import { useAuth } from '../hooks/useAuth.jsx';
@@ -26,10 +22,8 @@ export default function Library() {
   const { load } = usePlayer();
   const { user } = useAuth();
   const { wisdomAudioUrls, wisdomImageUrls, allLessons } = useWisdomData();
-  const [tab, setTab] = useState('listen');
-  const [library, setLibrary] = useState([]);
+  const [tab, setTab] = useState('create');
   const [toast, setToast] = useState(null);
-  const [sharing, setSharing] = useState(null);
 
   // Creator state
   const [myStories, setMyStories] = useState([]);
@@ -41,35 +35,38 @@ export default function Library() {
   const [body, setBody] = useState('');
   const [submitting, setSubmitting] = useState(false);
 
-  useEffect(() => {
-    pruneArchive(archiveDaysFor(profile?.tier || 'free'));
-    setLibrary(getLibrary());
-    loadAndMergeLibrary().then((merged) => setLibrary(merged));
-  }, [profile?.tier]);
+  // Published community stories
+  const [publishedStories, setPublishedStories] = useState([]);
 
-  // Load creator data
+  // Load creator data + published stories
   useEffect(() => {
-    if (!user) return;
     (async () => {
       try {
         const { db } = await import('../lib/firebase.js');
         if (!db) return;
-        const { collection, query, where, getDocs, doc, getDoc } = await import('firebase/firestore');
-        const myQ = query(collection(db, 'creatorStories'), where('authorUid', '==', user.uid));
-        const mySnap = await getDocs(myQ);
-        const stories = [];
-        mySnap.forEach((d) => stories.push({ id: d.id, ...d.data() }));
-        setMyStories(stories.sort((a, b) => new Date(b.submittedAt) - new Date(a.submittedAt)));
-        const creditDoc = await getDoc(doc(db, 'creatorCredits', user.uid));
-        if (creditDoc.exists()) setCredits(creditDoc.data().total || 0);
+        const { collection, query, where, getDocs, doc, getDoc, orderBy, limit } = await import('firebase/firestore');
+
+        // Published community stories (for Listen tab)
+        const pubQ = query(collection(db, 'creatorStories'), where('status', '==', 'published'), orderBy('views', 'desc'), limit(50));
+        const pubSnap = await getDocs(pubQ);
+        const pub = [];
+        pubSnap.forEach((d) => pub.push({ id: d.id, ...d.data() }));
+        setPublishedStories(pub);
+
+        // My submissions (if logged in)
+        if (user) {
+          const myQ = query(collection(db, 'creatorStories'), where('authorUid', '==', user.uid));
+          const mySnap = await getDocs(myQ);
+          const stories = [];
+          mySnap.forEach((d) => stories.push({ id: d.id, ...d.data() }));
+          setMyStories(stories.sort((a, b) => new Date(b.submittedAt) - new Date(a.submittedAt)));
+
+          const creditDoc = await getDoc(doc(db, 'creatorCredits', user.uid));
+          if (creditDoc.exists()) setCredits(creditDoc.data().total || 0);
+        }
       } catch {}
     })();
   }, [user]);
-
-  const recentStories = useMemo(
-    () => [...library].sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt)).slice(0, 8),
-    [library]
-  );
 
   // Community stories grouped by tradition
   const communityByTradition = useMemo(() => {
@@ -93,29 +90,13 @@ export default function Library() {
     playLesson(lesson, profile, wisdomAudioUrls, load, navigate, user);
   };
 
-  const handlePlayLibrary = (story) => { load(story); navigate('/player'); };
-
-  const handleShare = async (story) => {
-    setSharing(story.id);
-    try {
-      const url = await shareStoryToFirestore(story, { beliefs: profile?.beliefs || [], country: profile?.country || '' });
-      if (navigator.share) {
-        await navigator.share({ title: `${story.title} — My Sleepy Tale`, text: 'Listen to this bedtime story!', url });
-      } else {
-        await navigator.clipboard.writeText(url);
-        showToast('Link copied!');
-      }
-    } catch (e) { if (e.name !== 'AbortError') showToast('Could not share'); }
-    setSharing(null);
-  };
-
-  const handleDelete = (storyId) => {
-    removeFromLibrary(storyId);
-    setLibrary((prev) => prev.filter((s) => s.id !== storyId));
-  };
-
   const handleSubmit = async () => {
-    if (!user) { showToast('Please sign in first'); return; }
+    // MUST be logged in to submit
+    if (!user) {
+      if (window.__triggerLogin) window.__triggerLogin();
+      else navigate('/login');
+      return;
+    }
     if (!title.trim() || !body.trim()) { showToast('Title and story are required'); return; }
     const wordCount = body.trim().split(/\s+/).length;
     if (wordCount < 200) { showToast(`Need at least 200 words (${wordCount} now)`); return; }
@@ -135,7 +116,7 @@ export default function Library() {
       });
       showToast('Submitted! We\'ll review within 48 hours.');
       setTitle(''); setBody(''); setSource('');
-      // Refresh my stories
+      // Refresh
       const { query: q, where: w, getDocs: gd } = await import('firebase/firestore');
       const myQ = q(collection(db, 'creatorStories'), w('authorUid', '==', user.uid));
       const snap = await gd(myQ);
@@ -166,78 +147,30 @@ export default function Library() {
           <span className="text-gold">Curation</span>
         </h1>
         <p className="mt-1 text-xs text-ink-muted">
-          Listen to community stories or create your own
+          Create stories for the community or listen to what others have shared
         </p>
       </header>
 
-      {/* Tab bar */}
+      {/* Tab bar — Create LEFT, Listen RIGHT */}
       <div className="mb-5 flex gap-1 rounded-2xl bg-bg-surface p-1 ring-1 ring-white/5">
-        <button onClick={() => setTab('listen')}
-          className={`flex flex-1 items-center justify-center gap-1.5 rounded-xl py-2.5 text-xs font-bold transition ${
-            tab === 'listen' ? 'bg-gold text-bg-base' : 'text-ink-muted'
-          }`}>
-          <Headphones size={14} /> Listen
-        </button>
         <button onClick={() => setTab('create')}
           className={`flex flex-1 items-center justify-center gap-1.5 rounded-xl py-2.5 text-xs font-bold transition ${
             tab === 'create' ? 'bg-gold text-bg-base' : 'text-ink-muted'
           }`}>
           <Feather size={14} /> Create
         </button>
+        <button onClick={() => setTab('listen')}
+          className={`flex flex-1 items-center justify-center gap-1.5 rounded-xl py-2.5 text-xs font-bold transition ${
+            tab === 'listen' ? 'bg-gold text-bg-base' : 'text-ink-muted'
+          }`}>
+          <Headphones size={14} /> Listen
+        </button>
       </div>
-
-      {/* ═══ LISTEN TAB ═══ */}
-      {tab === 'listen' && (
-        <>
-          {/* Recently Played */}
-          {recentStories.length > 0 && (
-            <ShelfSection title="Recently Played">
-              <ShelfRow>
-                {recentStories.map((story) => (
-                  <div key={story.id} className="w-40 shrink-0 snap-start">
-                    <LibraryTile
-                      story={story} wisdomImageUrls={wisdomImageUrls}
-                      onPlay={() => handlePlayLibrary(story)}
-                      onShare={() => handleShare(story)}
-                      onDelete={() => handleDelete(story.id)}
-                      isSharing={sharing === story.id}
-                    />
-                  </div>
-                ))}
-              </ShelfRow>
-            </ShelfSection>
-          )}
-
-          {/* Community stories by tradition */}
-          {communityByTradition.map(({ key, label, stories }) => (
-            <ShelfSection key={key} title={label}>
-              <ShelfRow>
-                {stories.map((lesson) => (
-                  <StoryTile
-                    key={lesson.id} lesson={lesson}
-                    imageUrl={wisdomImageUrls[lesson.id]}
-                    onPlay={handlePlay}
-                  />
-                ))}
-              </ShelfRow>
-            </ShelfSection>
-          ))}
-
-          {/* Empty state */}
-          {recentStories.length === 0 && communityByTradition.length === 0 && (
-            <div className="mt-12 text-center">
-              <div className="text-5xl mb-4">📖</div>
-              <p className="text-lg font-bold text-ink" style={{ fontFamily: 'Fraunces, serif' }}>No stories yet</p>
-              <p className="mt-2 text-sm text-ink-muted">Play a story from Tonight to start your collection.</p>
-            </div>
-          )}
-        </>
-      )}
 
       {/* ═══ CREATE TAB ═══ */}
       {tab === 'create' && (
         <>
-          {/* Hero message */}
+          {/* Hero */}
           <div className="mb-5 rounded-2xl bg-gradient-to-br from-gold/10 to-gold/3 p-5 ring-1 ring-gold/20">
             <h2 className="text-lg font-bold text-ink" style={{ fontFamily: 'Fraunces, serif' }}>
               No story should go untold
@@ -247,11 +180,6 @@ export default function Library() {
               Write them here — we'll narrate them for thousands of kids.
               Earn credits for every listen.
             </p>
-            {!user && (
-              <button onClick={() => navigate('/login')} className="mt-3 rounded-xl bg-gold px-4 py-2 text-sm font-bold text-bg-base">
-                Sign in to create
-              </button>
-            )}
             {user && credits > 0 && (
               <div className="mt-3 inline-flex items-center gap-2 rounded-full bg-gold/10 px-3 py-1">
                 <span className="text-xs font-bold text-gold">{credits} credits earned</span>
@@ -259,10 +187,11 @@ export default function Library() {
             )}
           </div>
 
-          {/* My stories */}
-          {myStories.length > 0 && (
-            <ShelfSection title={`My Creations (${myStories.length})`}>
-              <div className="space-y-2 mb-6">
+          {/* My stories (if logged in) */}
+          {user && myStories.length > 0 && (
+            <div className="mb-5">
+              <h3 className="text-xs font-bold text-ink-muted uppercase tracking-wider mb-2">My Creations ({myStories.length})</h3>
+              <div className="space-y-2">
                 {myStories.map((s) => (
                   <div key={s.id} className="flex items-center gap-3 rounded-xl bg-bg-surface p-3 ring-1 ring-white/5">
                     <div className="min-w-0 flex-1">
@@ -280,54 +209,108 @@ export default function Library() {
                   </div>
                 ))}
               </div>
+            </div>
+          )}
+
+          {/* Submission form — available to all, but submit requires login */}
+          <div className="space-y-4">
+            <h3 className="text-sm font-bold text-ink">Write a new story</h3>
+
+            <input value={title} onChange={(e) => setTitle(e.target.value)}
+              placeholder="Story title (e.g. The Monkey and the Crocodile)"
+              className="field" />
+
+            <div className="flex gap-3">
+              <select value={tradition} onChange={(e) => setTradition(e.target.value)} className="field flex-1 text-sm">
+                {RELIGIONS.map((r) => <option key={r.key} value={r.key}>{r.icon} {r.label}</option>)}
+              </select>
+              <select value={theme} onChange={(e) => setTheme(e.target.value)} className="field flex-1 text-sm">
+                <option value="compassion-animals">Compassion</option>
+                <option value="courage">Courage</option>
+                <option value="wisdom">Wisdom</option>
+                <option value="honesty">Honesty</option>
+                <option value="sharing">Sharing</option>
+                <option value="humility">Humility</option>
+                <option value="forgiveness">Forgiveness</option>
+              </select>
+            </div>
+
+            <input value={source} onChange={(e) => setSource(e.target.value)}
+              placeholder="Source (e.g. Panchatantra folk tradition)" className="field" />
+
+            <div>
+              <textarea value={body} onChange={(e) => setBody(e.target.value)}
+                placeholder={'Write your story here...\n\nEnd with: "That night, {childName}, remember..."'}
+                className="field h-48 resize-y" />
+              <p className="mt-1 text-[10px] text-ink-dim">
+                {wordCount} words {wordCount > 0 && wordCount < 200 ? `(need ${200 - wordCount} more)` : ''}
+              </p>
+            </div>
+
+            <motion.button whileTap={{ scale: 0.97 }} onClick={handleSubmit}
+              disabled={submitting || wordCount < 200 || !title.trim()}
+              className="w-full rounded-2xl bg-gold py-4 text-base font-bold text-bg-base shadow-glow transition disabled:opacity-40">
+              {!user ? '🔒 Sign in to Submit' : submitting ? 'Submitting...' : 'Submit for Review'}
+            </motion.button>
+
+            {!user && (
+              <p className="text-center text-[10px] text-ink-dim">
+                You can write your story now — sign in when ready to submit
+              </p>
+            )}
+
+            <div className="rounded-xl bg-bg-surface p-3 ring-1 ring-white/5 text-[10px] text-ink-muted leading-relaxed">
+              <strong className="text-ink">Tips:</strong> End with "That night, {'{childName}'}, remember..." •
+              Use {'{childName}'}, {'{sibling}'}, {'{pet}'} as placeholders •
+              800-2000 words ideal • Teach ONE clear value
+            </div>
+          </div>
+        </>
+      )}
+
+      {/* ═══ LISTEN TAB ═══ */}
+      {tab === 'listen' && (
+        <>
+          {/* Published community stories */}
+          {publishedStories.length > 0 && (
+            <ShelfSection title="✨ Community Creations" subtitle="Stories from creators like you">
+              <ShelfRow>
+                {publishedStories.map((story) => (
+                  <StoryTile
+                    key={story.id}
+                    lesson={story}
+                    imageUrl={wisdomImageUrls[story.id]}
+                    onPlay={() => handlePlay(story)}
+                  />
+                ))}
+              </ShelfRow>
             </ShelfSection>
           )}
 
-          {/* Submission form */}
-          {user && (
-            <div className="space-y-4">
-              <h3 className="text-sm font-bold text-ink">Write a new story</h3>
+          {/* All stories by tradition */}
+          {communityByTradition.map(({ key, label, stories }) => (
+            <ShelfSection key={key} title={label}>
+              <ShelfRow>
+                {stories.map((lesson) => (
+                  <StoryTile
+                    key={lesson.id} lesson={lesson}
+                    imageUrl={wisdomImageUrls[lesson.id]}
+                    onPlay={() => handlePlay(lesson)}
+                  />
+                ))}
+              </ShelfRow>
+            </ShelfSection>
+          ))}
 
-              <input value={title} onChange={(e) => setTitle(e.target.value)}
-                placeholder="Story title (e.g. The Monkey and the Crocodile)"
-                className="field" />
-
-              <div className="flex gap-3">
-                <select value={tradition} onChange={(e) => setTradition(e.target.value)} className="field flex-1 text-sm">
-                  {RELIGIONS.map((r) => <option key={r.key} value={r.key}>{r.icon} {r.label}</option>)}
-                </select>
-                <select value={theme} onChange={(e) => setTheme(e.target.value)} className="field flex-1 text-sm">
-                  <option value="compassion-animals">Compassion</option>
-                  <option value="courage">Courage</option>
-                  <option value="wisdom">Wisdom</option>
-                  <option value="honesty">Honesty</option>
-                  <option value="sharing">Sharing</option>
-                  <option value="humility">Humility</option>
-                  <option value="forgiveness">Forgiveness</option>
-                </select>
-              </div>
-
-              <input value={source} onChange={(e) => setSource(e.target.value)}
-                placeholder="Source (e.g. Panchatantra folk tradition)" className="field" />
-
-              <div>
-                <textarea value={body} onChange={(e) => setBody(e.target.value)}
-                  placeholder={'Write your story here...\n\nEnd with: "That night, {childName}, remember..."'}
-                  className="field h-48 resize-y" />
-                <p className="mt-1 text-[10px] text-ink-dim">{wordCount} words {wordCount > 0 && wordCount < 200 ? `(need ${200 - wordCount} more)` : ''}</p>
-              </div>
-
-              <motion.button whileTap={{ scale: 0.97 }} onClick={handleSubmit}
-                disabled={submitting || wordCount < 200 || !title.trim()}
-                className="w-full rounded-2xl bg-gold py-4 text-base font-bold text-bg-base shadow-glow transition disabled:opacity-40">
-                {submitting ? 'Submitting...' : 'Submit for Review'}
-              </motion.button>
-
-              <div className="rounded-xl bg-bg-surface p-3 ring-1 ring-white/5 text-[10px] text-ink-muted leading-relaxed">
-                <strong className="text-ink">Tips:</strong> End with "That night, {'{childName}'}, remember..." •
-                Use {'{childName}'}, {'{sibling}'}, {'{pet}'} as placeholders •
-                800-2000 words ideal • Teach ONE clear value
-              </div>
+          {/* Empty state */}
+          {publishedStories.length === 0 && communityByTradition.length === 0 && (
+            <div className="mt-12 text-center">
+              <div className="text-5xl mb-4">📖</div>
+              <p className="text-lg font-bold text-ink" style={{ fontFamily: 'Fraunces, serif' }}>No stories yet</p>
+              <p className="mt-2 text-sm text-ink-muted">Be the first to create a story!</p>
+              <button onClick={() => setTab('create')} className="mt-4 rounded-2xl bg-gold px-6 py-3 text-sm font-bold text-bg-base">
+                Start Creating
+              </button>
             </div>
           )}
         </>
