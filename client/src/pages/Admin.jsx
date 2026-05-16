@@ -2845,9 +2845,27 @@ function CollectionsPanel() {
   const [generating, setGenerating] = useState(null);
   const [search, setSearch] = useState('');
   const [collectionFilter, setCollectionFilter] = useState('all');
+  const [selected, setSelected] = useState(new Set());
+  const [bulkVoice, setBulkVoice] = useState('george');
   const bulkAbort = useRef(false);
   const [bulkRunning, setBulkRunning] = useState(false);
   const [bulkProgress, setBulkProgress] = useState('');
+
+  const ELEVEN_VOICES = [
+    { key: 'george', label: '🎭 George — Warm Storyteller' },
+    { key: 'lily', label: '🌸 Lily — Velvety Actress' },
+    { key: 'sarah', label: '✨ Sarah — Mature, Reassuring' },
+    { key: 'brian', label: '🎵 Brian — Deep, Comforting' },
+    { key: 'bill', label: '📖 Bill — Wise, Mature' },
+    { key: 'muskaan', label: '🇮🇳 Muskaan — Hindi' },
+    { key: 'alice', label: '📚 Alice — Clear Educator' },
+    { key: 'river', label: '🌊 River — Relaxed, Neutral' },
+    { key: 'jessica', label: '🌟 Jessica — Playful, Warm' },
+  ];
+
+  const toggleSelect = (id) => setSelected(prev => { const s = new Set(prev); s.has(id) ? s.delete(id) : s.add(id); return s; });
+  const selectAll = () => setSelected(new Set(filtered.map(s => s.id)));
+  const selectNone = () => setSelected(new Set());
 
   // Load collection stories + their audio/image URLs from Firestore
   useEffect(() => {
@@ -2878,9 +2896,9 @@ function CollectionsPanel() {
 
   const API_BASE = import.meta.env.VITE_API_BASE_URL || '';
 
-  const generateAudio = async (story) => {
+  const generateAudio = async (story, forceVoice) => {
     setGenerating(story.id);
-    const voice = ['hindu', 'sikh', 'jain', 'buddhist'].includes(story.tradition) ? 'muskaan' : ['george', 'lily', 'sarah'][(story.id || '').split('').reduce((a, c) => a + c.charCodeAt(0), 0) % 3];
+    const voice = forceVoice || (['hindu', 'sikh', 'jain', 'buddhist'].includes(story.tradition) ? 'muskaan' : ['george', 'lily', 'sarah'][(story.id || '').split('').reduce((a, c) => a + c.charCodeAt(0), 0) % 3]);
     setStatus(s => ({ ...s, [story.id]: `11Labs: ${voice}...` }));
     try {
       const text = (story.body || '').replace(/\{childName\}/g, 'little one').replace(/\{sibling\}/g, 'their friend').replace(/\{pet\}/g, 'their puppy');
@@ -2939,16 +2957,17 @@ function CollectionsPanel() {
   const bulkGenerate = async (type) => {
     bulkAbort.current = false;
     setBulkRunning(true);
-    const targets = filtered.filter(s => type === 'audio' ? !urls[s.id] : type === 'image' ? !imageUrls[s.id] : (!urls[s.id] || !imageUrls[s.id]));
-    for (let i = 0; i < targets.length; i++) {
+    // Use selected stories if any, otherwise use filtered stories missing content
+    const pool = selected.size > 0 ? filtered.filter(s => selected.has(s.id)) : filtered.filter(s => type === 'audio' ? !urls[s.id] : type === 'image' ? !imageUrls[s.id] : (!urls[s.id] || !imageUrls[s.id]));
+    for (let i = 0; i < pool.length; i++) {
       if (bulkAbort.current) break;
-      const s = targets[i];
-      setBulkProgress(`${i + 1}/${targets.length}: ${s.title}`);
-      if ((type === 'audio' || type === 'all') && !urls[s.id]) { await generateAudio(s); await new Promise(r => setTimeout(r, 1000)); }
+      const s = pool[i];
+      setBulkProgress(`${i + 1}/${pool.length}: ${s.title}`);
+      if ((type === 'audio' || type === 'all')) { await generateAudio(s, bulkVoice); await new Promise(r => setTimeout(r, 1000)); }
       if (bulkAbort.current) break;
-      if ((type === 'image' || type === 'all') && !imageUrls[s.id]) { await generateImage(s); await new Promise(r => setTimeout(r, 500)); }
+      if ((type === 'image' || type === 'all')) { await generateImage(s); await new Promise(r => setTimeout(r, 500)); }
     }
-    setBulkProgress(bulkAbort.current ? 'Stopped' : `Done! ${targets.length} processed`);
+    setBulkProgress(bulkAbort.current ? 'Stopped' : `Done! ${pool.length} processed`);
     setBulkRunning(false);
   };
 
@@ -2986,24 +3005,54 @@ function CollectionsPanel() {
         <span className="text-xs text-[#6e6a63]">{filtered.length} stories</span>
       </div>
 
-      {/* Bulk */}
-      <div className="flex flex-wrap items-center gap-2 rounded-xl bg-[#1a1a28] p-3 ring-1 ring-[#7ad9a1]/20">
-        <span className="text-[10px] font-bold text-[#7ad9a1]">⚡ ElevenLabs Bulk</span>
-        <button onClick={() => bulkGenerate('audio')} disabled={bulkRunning || !!generating}
-          className="rounded-lg bg-[#7ad9a1]/10 px-4 py-2 text-xs font-bold text-[#7ad9a1] disabled:opacity-30">All Audio</button>
-        <button onClick={() => bulkGenerate('image')} disabled={bulkRunning || !!generating}
-          className="rounded-lg bg-[#539df5]/10 px-4 py-2 text-xs font-bold text-[#539df5] disabled:opacity-30">All Images</button>
-        <button onClick={() => bulkGenerate('all')} disabled={bulkRunning || !!generating}
-          className="rounded-lg bg-[#f0a500]/10 px-4 py-2 text-xs font-bold text-[#f0a500] disabled:opacity-30">Audio + Images</button>
-        {bulkRunning && <button onClick={() => { bulkAbort.current = true; }} className="rounded-lg bg-red-400/10 px-3 py-2 text-xs font-bold text-red-400">Stop</button>}
-        {bulkProgress && <span className="text-[10px] text-[#7ad9a1] truncate ml-auto">{bulkProgress}</span>}
+      {/* Bulk — Select + Voice + Generate */}
+      <div className="rounded-xl bg-[#1a1a28] p-4 ring-1 ring-[#7ad9a1]/20 space-y-3">
+        <div className="flex items-center justify-between">
+          <span className="text-xs font-bold text-[#7ad9a1]">⚡ ElevenLabs Bulk Generate</span>
+          <span className="text-[9px] text-[#6e6a63]">{selected.size > 0 ? `${selected.size} selected` : 'All without audio'}</span>
+        </div>
+
+        {/* Selection controls */}
+        <div className="flex items-center gap-2 flex-wrap">
+          <button onClick={selectAll} className="rounded-lg bg-white/5 px-3 py-1.5 text-[10px] font-bold text-ink-muted ring-1 ring-white/10">Select All ({filtered.length})</button>
+          <button onClick={selectNone} className="rounded-lg bg-white/5 px-3 py-1.5 text-[10px] font-bold text-ink-muted ring-1 ring-white/10">Select None</button>
+          <button onClick={() => setSelected(new Set(filtered.filter(s => !urls[s.id]).map(s => s.id)))} className="rounded-lg bg-white/5 px-3 py-1.5 text-[10px] font-bold text-ink-muted ring-1 ring-white/10">Select Missing Audio</button>
+        </div>
+
+        {/* Voice picker */}
+        <div className="flex items-center gap-2">
+          <span className="text-[10px] text-[#6e6a63]">Voice:</span>
+          <select value={bulkVoice} onChange={e => setBulkVoice(e.target.value)}
+            className="rounded-lg bg-[#0a0a0f] px-3 py-2 text-[10px] font-bold text-[#7ad9a1] outline-none ring-1 ring-white/10">
+            {ELEVEN_VOICES.map(v => <option key={v.key} value={v.key}>{v.label}</option>)}
+          </select>
+        </div>
+
+        {/* Generate buttons */}
+        <div className="flex flex-wrap gap-2 items-center">
+          <button onClick={() => bulkGenerate('audio')} disabled={bulkRunning || !!generating}
+            className="rounded-lg bg-[#7ad9a1] px-4 py-2 text-xs font-bold text-[#0a0a0f] disabled:opacity-30">
+            Generate Audio ({selected.size || filtered.filter(s => !urls[s.id]).length})
+          </button>
+          <button onClick={() => bulkGenerate('image')} disabled={bulkRunning || !!generating}
+            className="rounded-lg bg-[#539df5]/20 px-4 py-2 text-xs font-bold text-[#539df5] disabled:opacity-30">Gen Images</button>
+          <button onClick={() => bulkGenerate('all')} disabled={bulkRunning || !!generating}
+            className="rounded-lg bg-[#f0a500]/10 px-4 py-2 text-xs font-bold text-[#f0a500] disabled:opacity-30">Audio + Images</button>
+          {bulkRunning && <button onClick={() => { bulkAbort.current = true; }} className="rounded-lg bg-red-400/10 px-3 py-2 text-xs font-bold text-red-400">Stop</button>}
+        </div>
+        {bulkProgress && <span className="text-[10px] text-[#7ad9a1]">{bulkProgress}</span>}
       </div>
 
       {/* Story list */}
       <div className="space-y-2">
         {filtered.map(s => (
-          <div key={s.id} className="rounded-xl bg-[#1a1a28] p-3 ring-1 ring-white/5">
+          <div key={s.id} className={`rounded-xl bg-[#1a1a28] p-3 ring-1 ${selected.has(s.id) ? 'ring-[#7ad9a1]/40' : 'ring-white/5'}`}>
             <div className="flex items-start gap-3">
+              {/* Checkbox */}
+              <button onClick={() => toggleSelect(s.id)}
+                className={`mt-1 grid h-5 w-5 shrink-0 place-items-center rounded border transition ${selected.has(s.id) ? 'border-[#7ad9a1] bg-[#7ad9a1] text-[#0a0a0f]' : 'border-white/20 text-transparent'}`}>
+                {selected.has(s.id) && <span className="text-[10px] font-bold">✓</span>}
+              </button>
               <div className="h-12 w-12 shrink-0 overflow-hidden rounded-lg bg-[#0a0a0f]">
                 {imageUrls[s.id] ? <img src={imageUrls[s.id]} alt="" className="h-full w-full object-cover" /> : <div className="grid h-full w-full place-items-center text-lg opacity-30">🖼️</div>}
               </div>
