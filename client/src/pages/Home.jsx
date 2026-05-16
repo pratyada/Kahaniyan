@@ -34,7 +34,7 @@ export default function Home() {
   const { wisdomAudioUrls, wisdomImageUrls, allLessons, loading: dataLoading } = useWisdomData();
 
   const [createOpen, setCreateOpen] = useState(false);
-  const [activeTheme, setActiveTheme] = useState(null);
+  const [activeTheme, setActiveTheme] = useState('compassion-animals');
 
   const beliefs = profile?.beliefs || [];
   const age = profile?.age || 6;
