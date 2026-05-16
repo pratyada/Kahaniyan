@@ -34,6 +34,7 @@ export default function Home() {
   const { wisdomAudioUrls, wisdomImageUrls, allLessons, loading: dataLoading } = useWisdomData();
 
   const [createOpen, setCreateOpen] = useState(false);
+  const [activeTheme, setActiveTheme] = useState(null);
 
   const beliefs = profile?.beliefs || [];
   const age = profile?.age || 6;
@@ -184,26 +185,42 @@ export default function Home() {
         onPlay={handlePlay}
       />
 
-      {/* Theme filter — browse by value (above religion) */}
+      {/* Browse by Value — interactive filter + story row */}
       <section className="mb-6">
         <h3 className="mb-3 text-sm font-bold text-ink" style={{ fontFamily: 'Fraunces, serif' }}>
           Browse by Value
         </h3>
-        <div className="-mx-5 flex gap-2 overflow-x-auto px-5 pb-2 scrollbar-hide">
+        <div className="-mx-5 flex gap-2 overflow-x-auto px-5 pb-3 scrollbar-hide">
           {THEMES.map((t) => (
             <button
               key={t.key}
-              onClick={() => {
-                const el = document.getElementById(`theme-shelf-${t.key}`);
-                if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
-              }}
-              className="shrink-0 flex items-center gap-1.5 rounded-full bg-white/5 px-4 py-2 text-xs font-bold text-ink-muted ring-1 ring-white/10 transition active:scale-95 active:bg-gold/10 active:text-gold active:ring-gold/20"
+              onClick={() => setActiveTheme(activeTheme === t.key ? null : t.key)}
+              className={`shrink-0 flex items-center gap-1.5 rounded-full px-4 py-2 text-xs font-bold transition active:scale-95 ${
+                activeTheme === t.key
+                  ? 'bg-gold text-bg-base shadow-glow'
+                  : 'bg-white/5 text-ink-muted ring-1 ring-white/10'
+              }`}
             >
               <span>{t.icon}</span>
               <span>{t.label}</span>
             </button>
           ))}
         </div>
+        {activeTheme && (
+          <ShelfRow>
+            {allLessons
+              .filter((l) => l.theme === activeTheme)
+              .filter((l) => beliefs.length > 0 ? beliefs.includes(l.tradition) || l.tradition === 'universal' : true)
+              .map((lesson) => (
+                <StoryTile
+                  key={lesson.id}
+                  lesson={lesson}
+                  imageUrl={wisdomImageUrls[lesson.id]}
+                  onPlay={handlePlay}
+                />
+              ))}
+          </ShelfRow>
+        )}
       </section>
 
       {/* Age-based shelf */}
