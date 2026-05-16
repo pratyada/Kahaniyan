@@ -2,11 +2,11 @@
 
 import { NavLink } from 'react-router-dom';
 import { useAuth } from '../hooks/useAuth.jsx';
-import { Moon, BookOpen, Radio, User, Sparkles } from 'lucide-react';
+import { Moon, Feather, Radio, User, Sparkles } from 'lucide-react';
 
 const tabs = [
   { to: '/', label: 'Tonight', Icon: Moon },
-  { to: '/library', label: 'Library', Icon: BookOpen },
+  { to: '/library', label: 'Curation', Icon: Feather },
   { to: '/radio', label: 'Radio', Icon: Radio },
 ];
 
