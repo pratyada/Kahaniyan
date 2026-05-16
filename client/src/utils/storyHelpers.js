@@ -3,6 +3,7 @@
 import { CULTURAL_LESSONS, TRADITIONS } from '../data/culturalLessons.js';
 import { mapCharactersToFamilyMembers } from './constants.js';
 import { trackWisdomStoryPlayed } from './analytics.js';
+import { saveToLibrary } from './storyCache.js';
 
 export function recommendedValueFor(age) {
   if (age <= 4) return ['sharing', 'kindness'];
@@ -95,6 +96,7 @@ export function playLesson(lesson, profile, wisdomAudioUrls, loadPlayer, navigat
     localStorage.setItem(key, JSON.stringify(plays));
   } catch {}
   trackWisdomStoryPlayed(lesson.id, lesson.tradition);
+  saveToLibrary(story);
   loadPlayer(story);
   navigate('/player');
 }
