@@ -172,15 +172,23 @@ function wrapText(ctx, text, x, y, maxW, lineH) {
 // ── Share helpers ──
 
 export async function getStoryShareUrl(story, profile) {
-  try {
-    const { shareStoryToFirestore } = await import('./shareStory.js');
-    return await shareStoryToFirestore(story, {
-      beliefs: profile?.beliefs || [],
-      country: profile?.country || '',
-    });
-  } catch {
-    return `${window.location.origin}/player?storyId=${story?.id || ''}`;
+  // Use /api/share/ URL — serves dynamic OG tags for WhatsApp/iMessage previews
+  const storyId = story?.id || '';
+  const apiBase = import.meta.env.VITE_API_BASE_URL || '';
+  const shareUrl = `${apiBase}/api/share?id=${storyId}`;
+
+  // Also save to Firestore for non-wisdom stories
+  if (!story?.isWisdom) {
+    try {
+      const { shareStoryToFirestore } = await import('./shareStory.js');
+      await shareStoryToFirestore(story, {
+        beliefs: profile?.beliefs || [],
+        country: profile?.country || '',
+      });
+    } catch {}
   }
+
+  return shareUrl;
 }
 
 export function getShareText(story, childName) {
