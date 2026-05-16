@@ -17,6 +17,7 @@ import SkeletonShelf from '../components/SkeletonShelf.jsx';
 import StreakBadge from '../components/StreakBadge.jsx';
 import MilestoneCelebration from '../components/MilestoneCelebration.jsx';
 import MorningRecapShelf from '../components/shelves/MorningRecapShelf.jsx';
+import SEOHead from '../components/SEOHead.jsx';
 import { useFamilyProfile } from '../hooks/useFamilyProfile.js';
 import { usePlayer } from '../hooks/usePlayer.jsx';
 import { useAuth } from '../hooks/useAuth.jsx';
@@ -105,6 +106,11 @@ export default function Home() {
 
   return (
     <PageTransition className="relative page-scroll px-5 pt-10 safe-top">
+      <SEOHead
+        title="Bedtime Stories for Kids — Personalized & Cultural"
+        description="The #1 bedtime story app for multicultural families in Toronto. Hindu, Muslim, Sikh, Christian stories with your child's name. Free to start."
+        path="/"
+      />
       {/* Ambient glow */}
       <div
         className="pointer-events-none absolute -top-20 left-1/2 h-[300px] w-[300px] -translate-x-1/2 rounded-full opacity-30"
