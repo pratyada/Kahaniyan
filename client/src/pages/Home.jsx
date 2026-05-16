@@ -22,6 +22,7 @@ import { useFamilyProfile } from '../hooks/useFamilyProfile.js';
 import { usePlayer } from '../hooks/usePlayer.jsx';
 import { useAuth } from '../hooks/useAuth.jsx';
 import { useWisdomData } from '../hooks/useWisdomData.js';
+import { THEMES } from '../data/culturalLessons.js';
 import { pickTonightStory, playLesson, recommendedValueFor } from '../utils/storyHelpers.js';
 import { buildTraditionShelves, buildThemeShelves, buildAgeShelf } from '../utils/shelfBuilder.js';
 
@@ -183,6 +184,28 @@ export default function Home() {
         onPlay={handlePlay}
       />
 
+      {/* Theme filter — browse by value (above religion) */}
+      <section className="mb-6">
+        <h3 className="mb-3 text-sm font-bold text-ink" style={{ fontFamily: 'Fraunces, serif' }}>
+          Browse by Value
+        </h3>
+        <div className="-mx-5 flex gap-2 overflow-x-auto px-5 pb-2 scrollbar-hide">
+          {THEMES.map((t) => (
+            <button
+              key={t.key}
+              onClick={() => {
+                const el = document.getElementById(`theme-shelf-${t.key}`);
+                if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+              }}
+              className="shrink-0 flex items-center gap-1.5 rounded-full bg-white/5 px-4 py-2 text-xs font-bold text-ink-muted ring-1 ring-white/10 transition active:scale-95 active:bg-gold/10 active:text-gold active:ring-gold/20"
+            >
+              <span>{t.icon}</span>
+              <span>{t.label}</span>
+            </button>
+          ))}
+        </div>
+      </section>
+
       {/* Age-based shelf */}
       {ageShelf && (
         <ShelfSection title={ageShelf.title}>
@@ -215,9 +238,10 @@ export default function Home() {
         </ShelfSection>
       ))}
 
-      {/* Theme shelves */}
+      {/* Theme shelves (with scroll anchors for filter buttons) */}
       {themeShelves.map((shelf) => (
-        <ShelfSection key={shelf.id} title={shelf.title}>
+        <div key={shelf.id} id={`theme-shelf-${shelf.id.replace('theme-', '')}`}>
+        <ShelfSection title={shelf.title}>
           <ShelfRow>
             {shelf.stories.map((lesson) => (
               <StoryTile
@@ -229,6 +253,7 @@ export default function Home() {
             ))}
           </ShelfRow>
         </ShelfSection>
+        </div>
       ))}
 
       {/* Create Story FAB + Sheet */}
