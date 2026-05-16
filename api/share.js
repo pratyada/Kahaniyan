@@ -29,13 +29,16 @@ const STORIES = {
 };
 
 export default function handler(req, res) {
-  // Extract storyId from path: /api/share/lesson_krishna_squirrel or /api/share?id=xxx
-  const url = new URL(req.url || '', `http://${req.headers?.host || 'localhost'}`);
-  let storyId = url.searchParams.get('id') || '';
+  // Get storyId from query params (Lambda passes req.query)
+  let storyId = req.query?.id || '';
 
-  // Also try path-based: /api/share/lesson_xxx
-  const pathMatch = (req.url || '').match(/\/api\/share\/(.+?)(\?|$)/);
-  if (pathMatch) storyId = pathMatch[1];
+  // Also try URL parsing as fallback
+  if (!storyId && req.url) {
+    try {
+      const url = new URL(req.url, `http://${req.headers?.host || 'localhost'}`);
+      storyId = url.searchParams.get('id') || '';
+    } catch {}
+  }
 
   const lessonId = storyId.startsWith('lesson_') ? storyId.slice(7) : storyId;
   const story = STORIES[lessonId];
