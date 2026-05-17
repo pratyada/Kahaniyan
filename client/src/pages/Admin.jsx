@@ -2449,7 +2449,7 @@ function WisdomAudioPanel() {
     setStatus(s => ({ ...s, [lesson.id]: `generating ${voice}/${model}...` }));
     try {
       const text = lesson.body.replace(/\{childName\}/g, 'little one').replace(/\{sibling\}/g, 'their friend').replace(/\{grandfather\}/g, 'Dada ji').replace(/\{grandmother\}/g, 'Nani ma').replace(/\{pet\}/g, 'their puppy');
-      const res = await fetch('/api/generate-wisdom-audio', {
+      const res = await fetch(`${API_BASE}/api/generate-wisdom-audio`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ text: text.slice(0, 4096), voice, model }),
@@ -2475,7 +2475,7 @@ function WisdomAudioPanel() {
     setStatus(s => ({ ...s, [lesson.id]: 'generating image...' }));
     try {
       const prompt = lesson.imagePrompt || `A children's storybook scene from "${lesson.title}"`;
-      const res = await fetch('/api/generate-story-image', {
+      const res = await fetch(`${API_BASE}/api/generate-story-image`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ prompt }),
