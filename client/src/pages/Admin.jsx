@@ -2492,7 +2492,14 @@ function WisdomAudioPanel() {
     setGenerating(lesson.id + '_img');
     setStatus(s => ({ ...s, [lesson.id]: 'generating image...' }));
     try {
-      const prompt = lesson.imagePrompt || `A children's storybook scene from "${lesson.title}"`;
+      // Use standardized prompt framework
+      let prompt;
+      try {
+        const { getStoryPrompt } = await import('../utils/imagePrompts.js');
+        prompt = getStoryPrompt(lesson.id, 'thumbnail');
+      } catch {
+        prompt = lesson.imagePrompt || `A children's storybook scene from "${lesson.title}"`;
+      }
       const res = await fetch(`${API_BASE}/api/generate-story-image`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -3042,7 +3049,13 @@ function CollectionsPanel() {
     setGenerating(story.id + '_img');
     setStatus(s => ({ ...s, [story.id]: 'generating image...' }));
     try {
-      const prompt = `A children's storybook illustration for "${story.title}". Warm, colorful, bedtime style.`;
+      let prompt;
+      try {
+        const { getStoryPrompt } = await import('../utils/imagePrompts.js');
+        prompt = getStoryPrompt(story.id, 'thumbnail');
+      } catch {
+        prompt = `A children's storybook illustration for "${story.title}". Warm, colorful, bedtime style.`;
+      }
       const res = await fetch(`${API_BASE}/api/generate-story-image`, {
         method: 'POST', headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ prompt }),
