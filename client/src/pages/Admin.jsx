@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useAdmin } from '../hooks/useAdmin.jsx';
 import { useAuth } from '../hooks/useAuth.jsx';
+import { COLLECTIONS as COLLECTIONS_DATA } from '../data/collections.js';
 import { RELIGIONS, COUNTRIES, VALUES, DURATIONS, LANGUAGES } from '../utils/constants.js';
 import { APP_NAME, APP_VERSION } from '../utils/version.js';
 import { GA_MEASUREMENT_ID, db } from '../lib/firebase.js';
@@ -2947,8 +2948,7 @@ function CollectionsPanel() {
     })();
   }, []);
 
-  const { COLLECTIONS } = require('../data/collections.js');
-  const allStories = COLLECTIONS.flatMap(c => c.stories.map(s => ({ ...s, collection: c.id, collectionTitle: c.title })));
+  const allStories = COLLECTIONS_DATA.flatMap(c => c.stories.map(s => ({ ...s, collection: c.id, collectionTitle: c.title })));
 
   const filtered = allStories.filter(s => {
     if (collectionFilter !== 'all' && s.collection !== collectionFilter) return false;
@@ -3063,7 +3063,7 @@ function CollectionsPanel() {
         <select value={collectionFilter} onChange={e => setCollectionFilter(e.target.value)}
           className="rounded-lg bg-[#0a0a0f] px-3 py-2 text-xs text-[#f5f0e8] outline-none ring-1 ring-white/10">
           <option value="all">All Collections</option>
-          {COLLECTIONS.map(c => <option key={c.id} value={c.id}>{c.title}</option>)}
+          {COLLECTIONS_DATA.map(c => <option key={c.id} value={c.id}>{c.title}</option>)}
         </select>
         <input value={search} onChange={e => setSearch(e.target.value)} placeholder="Search..."
           className="flex-1 rounded-lg bg-[#0a0a0f] px-3 py-2 text-xs text-[#f5f0e8] outline-none ring-1 ring-white/10" />
