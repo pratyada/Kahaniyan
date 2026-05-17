@@ -176,39 +176,45 @@ export default function Home() {
         )}
       </section>
 
-      {/* Collection focus — when opened via /collection/:id */}
-      {collectionId && (() => {
+      {/* Collection focus — ONLY this collection when opened via /collection/:id */}
+      {collectionId ? (() => {
         const focusCol = COLLECTIONS.find((c) => c.id === collectionId);
-        if (!focusCol) return null;
+        if (!focusCol) return <div className="text-center py-12"><p className="text-ink-muted">Collection not found</p><button onClick={() => navigate('/')} className="mt-3 rounded-xl bg-gold px-4 py-2 text-sm font-bold text-bg-base">Go Home</button></div>;
         return (
-          <div className="mb-6">
-            <button onClick={() => navigate('/')} className="mb-3 text-[11px] font-bold uppercase tracking-wider text-ink-muted">← Back to Home</button>
-            <ShelfSection title={focusCol.title} subtitle={focusCol.subtitle}>
-              <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
-                {focusCol.stories.map((story) => (
-                  <StoryTile key={story.id} lesson={story} imageUrl={wisdomImageUrls[story.id]} onPlay={() => handlePlayCollection(story)} />
-                ))}
-              </div>
-            </ShelfSection>
+          <div>
+            <button onClick={() => navigate('/')} className="mb-4 flex items-center gap-1 text-[11px] font-bold uppercase tracking-wider text-ink-muted hover:text-ink">
+              ← Back to Home
+            </button>
+            <div className="mb-4">
+              <h2 className="text-xl font-bold text-ink" style={{ fontFamily: 'Fraunces, serif' }}>{focusCol.title}</h2>
+              <p className="mt-1 text-xs text-ink-muted">{focusCol.subtitle} · {focusCol.stories.length} stories</p>
+            </div>
+            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
+              {focusCol.stories.map((story) => (
+                <StoryTile key={story.id} lesson={story} imageUrl={wisdomImageUrls[story.id]} onPlay={() => handlePlayCollection(story)} />
+              ))}
+            </div>
           </div>
         );
-      })()}
-
-      {/* 4-11. Collections */}
-      {COLLECTIONS.map((col) => (
-        <ShelfSection key={col.id} title={col.title} subtitle={col.subtitle}>
-          <ShelfRow>
-            {col.stories.map((story) => (
-              <StoryTile
-                key={story.id}
-                lesson={story}
-                imageUrl={wisdomImageUrls[story.id]}
-                onPlay={() => handlePlayCollection(story)}
-              />
-            ))}
-          </ShelfRow>
-        </ShelfSection>
-      ))}
+      })() : (
+        <>
+          {/* 4-11. Collections (normal home view) */}
+          {COLLECTIONS.map((col) => (
+            <ShelfSection key={col.id} title={col.title} subtitle={col.subtitle}>
+              <ShelfRow>
+                {col.stories.map((story) => (
+                  <StoryTile
+                    key={story.id}
+                    lesson={story}
+                    imageUrl={wisdomImageUrls[story.id]}
+                    onPlay={() => handlePlayCollection(story)}
+                  />
+                ))}
+              </ShelfRow>
+            </ShelfSection>
+          ))}
+        </>
+      )}
 
       {/* Create Story FAB + Sheet */}
       <CreateFAB onClick={() => setCreateOpen(true)} />
