@@ -1,27 +1,19 @@
 // Curation — Create stories (left tab) or Listen to creations (right tab).
 // Guests can browse everything. Submit requires sign-in.
 
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Feather, Headphones } from 'lucide-react';
 import PageTransition from '../components/PageTransition.jsx';
-import ShelfSection from '../components/shelves/ShelfSection.jsx';
-import ShelfRow from '../components/shelves/ShelfRow.jsx';
-import StoryTile from '../components/cards/StoryTile.jsx';
 import { useFamilyProfile } from '../hooks/useFamilyProfile.js';
-import { usePlayer } from '../hooks/usePlayer.jsx';
 import { useAuth } from '../hooks/useAuth.jsx';
-import { useWisdomData } from '../hooks/useWisdomData.js';
-import { playLesson } from '../utils/storyHelpers.js';
 import { RELIGIONS } from '../utils/constants.js';
 
 export default function Library() {
   const navigate = useNavigate();
   const { profile } = useFamilyProfile();
-  const { load } = usePlayer();
   const { user } = useAuth();
-  const { wisdomAudioUrls, wisdomImageUrls, allLessons } = useWisdomData();
   const [tab, setTab] = useState('create');
   const [toast, setToast] = useState(null);
 
@@ -35,8 +27,6 @@ export default function Library() {
   const [body, setBody] = useState('');
   const [submitting, setSubmitting] = useState(false);
 
-  // Published community stories
-  const [publishedStories, setPublishedStories] = useState([]);
 
   // Load creator data + published stories
   useEffect(() => {
@@ -44,14 +34,7 @@ export default function Library() {
       try {
         const { db } = await import('../lib/firebase.js');
         if (!db) return;
-        const { collection, query, where, getDocs, doc, getDoc, orderBy, limit } = await import('firebase/firestore');
-
-        // Published community stories (for Listen tab)
-        const pubQ = query(collection(db, 'creatorStories'), where('status', '==', 'published'), orderBy('views', 'desc'), limit(50));
-        const pubSnap = await getDocs(pubQ);
-        const pub = [];
-        pubSnap.forEach((d) => pub.push({ id: d.id, ...d.data() }));
-        setPublishedStories(pub);
+        const { collection, query, where, getDocs, doc, getDoc } = await import('firebase/firestore');
 
         // My submissions (if logged in)
         if (user) {
@@ -68,27 +51,7 @@ export default function Library() {
     })();
   }, [user]);
 
-  // Community stories grouped by tradition
-  const communityByTradition = useMemo(() => {
-    const groups = {};
-    allLessons.forEach((l) => {
-      const key = l.tradition || 'universal';
-      if (!groups[key]) groups[key] = [];
-      groups[key].push(l);
-    });
-    return Object.entries(groups)
-      .filter(([, stories]) => stories.length >= 2)
-      .map(([key, stories]) => {
-        const meta = RELIGIONS.find((r) => r.key === key);
-        return { key, label: meta ? `${meta.icon} ${meta.label}` : key, stories };
-      });
-  }, [allLessons]);
-
   const showToast = (msg) => { setToast(msg); setTimeout(() => setToast(null), 3000); };
-
-  const handlePlay = (lesson) => {
-    playLesson(lesson, profile, wisdomAudioUrls, load, navigate, user);
-  };
 
   const handleSubmit = async () => {
     // MUST be logged in to submit
@@ -151,7 +114,7 @@ export default function Library() {
         </p>
       </header>
 
-      {/* Tab bar — Create LEFT, Listen RIGHT */}
+      {/* Tab bar — Create LEFT, My Creations RIGHT */}
       <div className="mb-5 flex gap-1 rounded-2xl bg-bg-surface p-1 ring-1 ring-white/5">
         <button onClick={() => setTab('create')}
           className={`flex flex-1 items-center justify-center gap-1.5 rounded-xl py-2.5 text-xs font-bold transition ${
@@ -163,7 +126,7 @@ export default function Library() {
           className={`flex flex-1 items-center justify-center gap-1.5 rounded-xl py-2.5 text-xs font-bold transition ${
             tab === 'listen' ? 'bg-gold text-bg-base' : 'text-ink-muted'
           }`}>
-          <Headphones size={14} /> Listen
+          <Headphones size={14} /> My Creations
         </button>
       </div>
 
@@ -268,49 +231,70 @@ export default function Library() {
         </>
       )}
 
-      {/* ═══ LISTEN TAB ═══ */}
+      {/* ═══ MY CREATIONS TAB ═══ */}
       {tab === 'listen' && (
         <>
-          {/* Published community stories */}
-          {publishedStories.length > 0 && (
-            <ShelfSection title="✨ Community Creations" subtitle="Stories from creators like you">
-              <ShelfRow>
-                {publishedStories.map((story) => (
-                  <StoryTile
-                    key={story.id}
-                    lesson={story}
-                    imageUrl={wisdomImageUrls[story.id]}
-                    onPlay={() => handlePlay(story)}
-                  />
-                ))}
-              </ShelfRow>
-            </ShelfSection>
-          )}
-
-          {/* All stories by tradition */}
-          {communityByTradition.map(({ key, label, stories }) => (
-            <ShelfSection key={key} title={label}>
-              <ShelfRow>
-                {stories.map((lesson) => (
-                  <StoryTile
-                    key={lesson.id} lesson={lesson}
-                    imageUrl={wisdomImageUrls[lesson.id]}
-                    onPlay={() => handlePlay(lesson)}
-                  />
-                ))}
-              </ShelfRow>
-            </ShelfSection>
-          ))}
-
-          {/* Empty state */}
-          {publishedStories.length === 0 && communityByTradition.length === 0 && (
+          {!user ? (
             <div className="mt-12 text-center">
-              <div className="text-5xl mb-4">📖</div>
-              <p className="text-lg font-bold text-ink" style={{ fontFamily: 'Fraunces, serif' }}>No stories yet</p>
-              <p className="mt-2 text-sm text-ink-muted">Be the first to create a story!</p>
+              <div className="text-5xl mb-4">🔒</div>
+              <p className="text-lg font-bold text-ink" style={{ fontFamily: 'Fraunces, serif' }}>Sign in to see your creations</p>
+              <p className="mt-2 text-sm text-ink-muted">Your submitted stories will appear here.</p>
+              <button onClick={() => navigate('/login')} className="mt-4 rounded-2xl bg-gold px-6 py-3 text-sm font-bold text-bg-base">
+                Sign In
+              </button>
+            </div>
+          ) : myStories.length === 0 ? (
+            <div className="mt-12 text-center">
+              <div className="text-5xl mb-4">✍️</div>
+              <p className="text-lg font-bold text-ink" style={{ fontFamily: 'Fraunces, serif' }}>No creations yet</p>
+              <p className="mt-2 text-sm text-ink-muted">Write your first story and it will show up here.</p>
               <button onClick={() => setTab('create')} className="mt-4 rounded-2xl bg-gold px-6 py-3 text-sm font-bold text-bg-base">
                 Start Creating
               </button>
+            </div>
+          ) : (
+            <div className="space-y-3">
+              {/* Credits */}
+              {credits > 0 && (
+                <div className="flex items-center justify-between rounded-xl bg-gold/10 p-4 ring-1 ring-gold/20 mb-4">
+                  <span className="text-sm font-bold text-ink">Total Credits</span>
+                  <span className="text-lg font-bold text-gold">{credits}</span>
+                </div>
+              )}
+
+              {/* Story list */}
+              {myStories.map((s) => (
+                <div key={s.id} className="rounded-xl bg-bg-surface p-4 ring-1 ring-white/5">
+                  <div className="flex items-start justify-between gap-3">
+                    <div className="min-w-0 flex-1">
+                      <h3 className="text-sm font-bold text-ink">{s.title}</h3>
+                      <p className="text-[10px] text-ink-muted mt-0.5">
+                        {s.tradition} · {s.theme?.replace('-', ' ')} · {(s.body || '').split(/\s+/).length} words
+                      </p>
+                      <p className="text-[10px] text-ink-dim mt-0.5">
+                        Submitted {new Date(s.submittedAt).toLocaleDateString()}
+                      </p>
+                    </div>
+                    <span className={`shrink-0 rounded-full px-2.5 py-1 text-[10px] font-bold ${
+                      s.status === 'published' ? 'bg-green-500/10 text-green-400' :
+                      s.status === 'rejected' ? 'bg-red-500/10 text-red-400' :
+                      'bg-gold/10 text-gold'
+                    }`}>{s.status}</span>
+                  </div>
+                  {s.status === 'published' && (
+                    <div className="mt-2 flex items-center gap-4 text-[11px] text-ink-muted">
+                      <span>👁 {s.views || 0} plays</span>
+                      <span>⭐ {s.creditsEarned || 0} credits</span>
+                    </div>
+                  )}
+                  {s.status === 'pending' && (
+                    <p className="mt-2 text-[10px] text-gold/70">Under review — we'll notify you within 48 hours</p>
+                  )}
+                  {s.status === 'rejected' && (
+                    <p className="mt-2 text-[10px] text-red-400/70">This story didn't meet our guidelines. Try again with a different story.</p>
+                  )}
+                </div>
+              ))}
             </div>
           )}
         </>
