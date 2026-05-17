@@ -11,7 +11,6 @@ import ShelfSection from '../components/shelves/ShelfSection.jsx';
 import ShelfRow from '../components/shelves/ShelfRow.jsx';
 import StoryTile from '../components/cards/StoryTile.jsx';
 import TrendingShelf from '../components/shelves/TrendingShelf.jsx';
-import SkeletonShelf from '../components/SkeletonShelf.jsx';
 import StreakBadge from '../components/StreakBadge.jsx';
 import MilestoneCelebration from '../components/MilestoneCelebration.jsx';
 import MorningRecapShelf from '../components/shelves/MorningRecapShelf.jsx';
@@ -138,11 +137,8 @@ export default function Home() {
       {/* Hero slider */}
       <HeroSlider stories={featuredStories} wisdomImageUrls={wisdomImageUrls} onPlay={handlePlay} />
 
-      {/* Loading skeletons */}
-      {dataLoading && <><SkeletonShelf /><SkeletonShelf /><SkeletonShelf count={3} /></>}
-
-      {/* 1. Tonight's Picks */}
-      {!dataLoading && tonightPicks.length > 0 && (
+      {/* 1. Tonight's Picks — render immediately from hardcoded data */}
+      {tonightPicks.length > 0 && (
         <ShelfSection title={`✨ Tonight's Picks for ${profile?.childName || 'You'}`}>
           <ShelfRow>
             {tonightPicks.map((lesson) => (
