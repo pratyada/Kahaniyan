@@ -3166,23 +3166,20 @@ function ElevenLabsPanel({ filtered, urls, setUrls, generating, setGenerating, s
     { key: 'jessica', label: '🌟 Jessica — Playful, Warm' },
   ];
 
-  const [defaultVoice, setDefaultVoice] = useState('george');
-  const [indianVoice] = useState('muskaan');
+  const [bulkVoice, setBulkVoice] = useState('george');
+  const [selected, setSelected] = useState(new Set());
   const [bulkRunning, setBulkRunning] = useState(false);
   const [progress, setProgress] = useState('');
   const [previewUrl, setPreviewUrl] = useState(null);
   const abortRef = useRef(false);
 
-  const API_BASE = import.meta.env.VITE_API_BASE_URL || '';
+  const toggleSelect = (id) => setSelected(prev => { const s = new Set(prev); s.has(id) ? s.delete(id) : s.add(id); return s; });
+  const selectAll = () => setSelected(new Set(filtered.map(s => s.id)));
+  const selectNone = () => setSelected(new Set());
+  const selectIndian = () => setSelected(new Set(filtered.filter(s => ['hindu', 'sikh', 'jain', 'buddhist'].includes(s.tradition)).map(s => s.id)));
+  const selectMissing = () => setSelected(new Set(filtered.filter(s => !urls[s.id]).map(s => s.id)));
 
-  const getVoiceForStory = (story) => {
-    // Indian traditions → Muskaan
-    if (['hindu', 'sikh', 'jain', 'buddhist'].includes(story.tradition)) return indianVoice;
-    // Others → random between george, lily, sarah
-    const pool = ['george', 'lily', 'sarah'];
-    const hash = (story.id || '').split('').reduce((a, c) => a + c.charCodeAt(0), 0);
-    return pool[hash % pool.length];
-  };
+  const API_BASE = import.meta.env.VITE_API_BASE_URL || '';
 
   const previewVoice = async (voice) => {
     setPreviewUrl(null);
@@ -3198,8 +3195,8 @@ function ElevenLabsPanel({ filtered, urls, setUrls, generating, setGenerating, s
     } catch {}
   };
 
-  const generateOneEL = async (story) => {
-    const voice = getVoiceForStory(story);
+  const generateOneEL = async (story, forceVoice) => {
+    const voice = forceVoice || bulkVoice;
     const text = (story.body || '').replace(/\{childName\}/g, 'little one').replace(/\{sibling\}/g, 'their friend').replace(/\{pet\}/g, 'their puppy').replace(/\{grandfather\}/g, 'Dada ji').replace(/\{grandmother\}/g, 'Nani ma');
     if (!text || text.length < 50) return;
 
@@ -3229,13 +3226,13 @@ function ElevenLabsPanel({ filtered, urls, setUrls, generating, setGenerating, s
   const bulkGenerateEL = async () => {
     abortRef.current = false;
     setBulkRunning(true);
-    const targets = filtered.filter(l => !urls[l.id]);
+    const targets = selected.size > 0 ? filtered.filter(l => selected.has(l.id)) : filtered.filter(l => !urls[l.id]);
     for (let i = 0; i < targets.length; i++) {
       if (abortRef.current) { setProgress('Stopped'); break; }
       const l = targets[i];
       setProgress(`${i + 1}/${targets.length}: ${l.title}`);
       setGenerating(l.id);
-      await generateOneEL(l);
+      await generateOneEL(l, bulkVoice);
       setGenerating(null);
       await new Promise(r => setTimeout(r, 1000)); // rate limit safety
     }
@@ -3249,30 +3246,50 @@ function ElevenLabsPanel({ filtered, urls, setUrls, generating, setGenerating, s
     <div className="rounded-xl bg-[#1a1a28] p-4 ring-1 ring-[#7ad9a1]/20 space-y-3">
       <div className="flex items-center justify-between">
         <span className="text-xs font-bold text-[#7ad9a1]">⚡ ElevenLabs Premium Audio</span>
-        <span className="text-[9px] text-[#6e6a63]">{missingCount} stories need audio</span>
+        <span className="text-[9px] text-[#6e6a63]">{selected.size > 0 ? `${selected.size} selected` : `${missingCount} need audio`}</span>
       </div>
 
-      {/* Voice config */}
+      {/* Quick select buttons */}
       <div className="flex flex-wrap gap-2 items-center">
-        <select value={defaultVoice} onChange={e => setDefaultVoice(e.target.value)}
+        <button onClick={selectIndian} className="rounded-lg bg-[#f0a500]/10 px-3 py-1.5 text-[10px] font-bold text-[#f0a500]">🇮🇳 Select Indian</button>
+        <button onClick={selectMissing} className="rounded-lg bg-white/5 px-3 py-1.5 text-[10px] font-bold text-ink-muted ring-1 ring-white/10">Select Missing</button>
+        <button onClick={selectAll} className="rounded-lg bg-white/5 px-3 py-1.5 text-[10px] font-bold text-ink-muted ring-1 ring-white/10">All ({filtered.length})</button>
+        <button onClick={selectNone} className="rounded-lg bg-white/5 px-3 py-1.5 text-[10px] font-bold text-ink-muted ring-1 ring-white/10">None</button>
+      </div>
+
+      {/* Selected stories list */}
+      {selected.size > 0 && (
+        <div className="flex flex-wrap gap-1 max-h-20 overflow-y-auto">
+          {filtered.filter(l => selected.has(l.id)).map(l => (
+            <span key={l.id} onClick={() => toggleSelect(l.id)}
+              className="shrink-0 rounded-full bg-[#7ad9a1]/10 px-2 py-0.5 text-[8px] font-bold text-[#7ad9a1] cursor-pointer hover:bg-red-400/10 hover:text-red-400">
+              {l.title.slice(0, 25)}{l.title.length > 25 ? '...' : ''} ✕
+            </span>
+          ))}
+        </div>
+      )}
+
+      {/* Voice picker */}
+      <div className="flex flex-wrap gap-2 items-center">
+        <span className="text-[10px] text-[#6e6a63]">Voice:</span>
+        <select value={bulkVoice} onChange={e => setBulkVoice(e.target.value)}
           className="rounded-lg bg-[#0a0a0f] px-3 py-2 text-[10px] font-bold text-[#7ad9a1] outline-none ring-1 ring-white/10">
           {ELEVEN_VOICES.map(v => <option key={v.key} value={v.key}>{v.label}</option>)}
         </select>
-        <button onClick={() => previewVoice(defaultVoice)}
+        <button onClick={() => previewVoice(bulkVoice)}
           className="rounded-lg bg-[#7ad9a1]/10 px-3 py-1.5 text-[10px] font-bold text-[#7ad9a1]">
           Preview
         </button>
-        <span className="text-[9px] text-[#6e6a63]">Indian stories → Muskaan | Others → George/Lily/Sarah (random)</span>
       </div>
 
       {/* Preview player */}
       {previewUrl && <audio controls src={previewUrl} className="w-full h-8" style={{ filter: 'invert(1) hue-rotate(180deg)', opacity: 0.7 }} />}
 
-      {/* Bulk generate */}
+      {/* Generate button */}
       <div className="flex flex-wrap gap-2 items-center">
         <button onClick={bulkGenerateEL} disabled={bulkRunning || !!generating}
           className="rounded-lg bg-[#7ad9a1] px-4 py-2 text-xs font-bold text-[#0a0a0f] hover:bg-[#6bc491] disabled:opacity-30">
-          Generate All with ElevenLabs ({missingCount})
+          Generate with {ELEVEN_VOICES.find(v => v.key === bulkVoice)?.label.split('—')[0] || bulkVoice} ({selected.size || missingCount})
         </button>
         {bulkRunning && (
           <button onClick={() => { abortRef.current = true; }}
@@ -3280,9 +3297,6 @@ function ElevenLabsPanel({ filtered, urls, setUrls, generating, setGenerating, s
         )}
         {progress && <span className="text-[10px] text-[#7ad9a1] truncate">{progress}</span>}
       </div>
-
-      {/* Per-story generate button (uses ElevenLabs voice assignment) */}
-      <p className="text-[9px] text-[#6e6a63]">Each story row also has a voice assignment. Use the per-story "Gen Audio" for OpenAI or use this panel for ElevenLabs premium.</p>
     </div>
   );
 }
