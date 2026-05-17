@@ -436,14 +436,9 @@ export default function Admin() {
                 </div>
               </div>
             )}
-          </div>
-        )}
-
-        {/* ═══ FEEDBACK ═══ */}
-        {tab === 'feedback' && <CuratorSubmissionsPanel />}
-
-        {/* ═══ USERS ═══ */}
-        {tab === 'users' && (
+          {/* ═══ USERS TABLE (inside Dashboard) ═══ */}
+          <div className="mt-8">
+            <h3 className="text-lg font-bold text-[#f5f0e8] mb-4">Users</h3>
           <div>
             {/* Search */}
             <div className="mb-4">
@@ -687,7 +682,15 @@ export default function Admin() {
               })()}
             </AnimatePresence>
           </div>
+          </div>
+          </div>
         )}
+
+        {/* ═══ FEEDBACK ═══ */}
+        {tab === 'feedback' && <CuratorSubmissionsPanel />}
+
+        {/* ═══ SETTINGS ═══ */}
+        {tab === 'users' && <StoryLab showSettingsTabs />}
 
         {/* ═══ USAGE & COSTS ═══ */}
         {tab === 'usage' && (
@@ -1636,8 +1639,8 @@ const DEFAULT_VALUE_DELIVERY = [
 
 const API_BASE = import.meta.env?.VITE_API_BASE_URL || '';
 
-function StoryLab() {
-  const [subTab, setSubTab] = useState('wisdom-audio');
+function StoryLab({ showSettingsTabs }) {
+  const [subTab, setSubTab] = useState(showSettingsTabs ? 'rules' : 'wisdom-audio');
   const [saving, setSaving] = useState(false);
   const [lastSaved, setLastSaved] = useState(null);
 
@@ -1777,10 +1780,23 @@ function StoryLab() {
     setPgGenerating(false);
   };
 
-  const SUB_TABS = [
+  const STUDIO_TABS = [
     { key: 'wisdom-audio', label: 'Wisdom Stories (51)', icon: '📖' },
     { key: 'collections', label: 'Collections (48)', icon: '🎬' },
   ];
+
+  const SETTINGS_TABS = [
+    { key: 'rules', label: 'Global Rules', icon: '🛡️' },
+    { key: 'archetypes', label: 'Characters', icon: '👥' },
+    { key: 'culture', label: 'Cultural Library', icon: '🌍' },
+    { key: 'whispers', label: 'Quick Whispers', icon: '💭' },
+    { key: 'ingredients', label: 'Story Ingredients', icon: '🧩' },
+    { key: 'values', label: 'Value Delivery', icon: '💡' },
+    { key: 'ages', label: 'Age Guides', icon: '🎂' },
+    { key: 'voice-feedback', label: 'Voice Feedback', icon: '🎙️' },
+  ];
+
+  const SUB_TABS = showSettingsTabs ? SETTINGS_TABS : STUDIO_TABS;
 
   return (
     <div className="space-y-6">
