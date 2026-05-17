@@ -348,9 +348,70 @@ const TRADITION_ART = {
   },
 };
 
+// Colorful fallback gradients for collection stories
+const COLLECTION_GRADIENTS = {
+  col_loyal: 'linear-gradient(135deg, #92400e 0%, #f59e0b 50%, #fcd34d 100%)',
+  col_lost: 'linear-gradient(135deg, #9a3412 0%, #f97316 50%, #fed7aa 100%)',
+  col_brave: 'linear-gradient(135deg, #1e3a5f 0%, #3b82f6 50%, #93c5fd 100%)',
+  col_parrot: 'linear-gradient(135deg, #065f46 0%, #10b981 50%, #6ee7b7 100%)',
+  col_elephant: 'linear-gradient(135deg, #78350f 0%, #b45309 50%, #fbbf24 100%)',
+  col_turtle: 'linear-gradient(135deg, #064e3b 0%, #059669 50%, #34d399 100%)',
+  col_fire: 'linear-gradient(135deg, #991b1b 0%, #ef4444 50%, #fca5a5 100%)',
+  col_bicycle: 'linear-gradient(135deg, #1e40af 0%, #3b82f6 50%, #bfdbfe 100%)',
+  col_train: 'linear-gradient(135deg, #4c1d95 0%, #7c3aed 50%, #c4b5fd 100%)',
+  col_ambulance: 'linear-gradient(135deg, #166534 0%, #22c55e 50%, #86efac 100%)',
+  col_rocket: 'linear-gradient(135deg, #1e1b4b 0%, #4f46e5 50%, #a5b4fc 100%)',
+  col_school: 'linear-gradient(135deg, #92400e 0%, #d97706 50%, #fde68a 100%)',
+  col_invisible: 'linear-gradient(135deg, #312e81 0%, #6366f1 50%, #c7d2fe 100%)',
+  col_kindness: 'linear-gradient(135deg, #78350f 0%, #f0a500 50%, #fcd34d 100%)',
+  col_truth: 'linear-gradient(135deg, #1e3a5f 0%, #0ea5e9 50%, #7dd3fc 100%)',
+  col_patience: 'linear-gradient(135deg, #4c1d95 0%, #8b5cf6 50%, #ddd6fe 100%)',
+  col_empathy: 'linear-gradient(135deg, #831843 0%, #ec4899 50%, #fbcfe8 100%)',
+  col_forgiveness: 'linear-gradient(135deg, #064e3b 0%, #14b8a6 50%, #99f6e4 100%)',
+  col_lion: 'linear-gradient(135deg, #78350f 0%, #d97706 50%, #fbbf24 100%)',
+  col_ant: 'linear-gradient(135deg, #166534 0%, #4ade80 50%, #bbf7d0 100%)',
+  col_tortoise: 'linear-gradient(135deg, #1e3a5f 0%, #0891b2 50%, #67e8f9 100%)',
+  col_sun: 'linear-gradient(135deg, #92400e 0%, #f59e0b 50%, #fef3c7 100%)',
+  col_brain: 'linear-gradient(135deg, #312e81 0%, #7c3aed 50%, #e9d5ff 100%)',
+  col_ocean: 'linear-gradient(135deg, #1e3a5f 0%, #0284c7 50%, #7dd3fc 100%)',
+  col_cricket: 'linear-gradient(135deg, #166534 0%, #16a34a 50%, #86efac 100%)',
+  col_swimmer: 'linear-gradient(135deg, #1e40af 0%, #2563eb 50%, #93c5fd 100%)',
+  col_soccer: 'linear-gradient(135deg, #065f46 0%, #059669 50%, #6ee7b7 100%)',
+  col_fair: 'linear-gradient(135deg, #92400e 0%, #ea580c 50%, #fed7aa 100%)',
+  col_basketball: 'linear-gradient(135deg, #7c2d12 0%, #f97316 50%, #fdba74 100%)',
+  col_marathon: 'linear-gradient(135deg, #4c1d95 0%, #9333ea 50%, #d8b4fe 100%)',
+  col_grandpa: 'linear-gradient(135deg, #422006 0%, #78350f 50%, #fbbf24 100%)',
+  col_new_sibling: 'linear-gradient(135deg, #831843 0%, #db2777 50%, #f9a8d4 100%)',
+  col_moms: 'linear-gradient(135deg, #be123c 0%, #f43f5e 50%, #fda4af 100%)',
+  col_dads: 'linear-gradient(135deg, #1e3a5f 0%, #1d4ed8 50%, #93c5fd 100%)',
+  col_grandma: 'linear-gradient(135deg, #78350f 0%, #a16207 50%, #fde68a 100%)',
+  col_family: 'linear-gradient(135deg, #4c1d95 0%, #7c3aed 50%, #ddd6fe 100%)',
+  col_moon: 'linear-gradient(135deg, #1e1b4b 0%, #312e81 50%, #c4b5fd 100%)',
+  col_mars: 'linear-gradient(135deg, #7f1d1d 0%, #dc2626 50%, #fca5a5 100%)',
+  col_saturn: 'linear-gradient(135deg, #78350f 0%, #d97706 50%, #fef3c7 100%)',
+  col_pluto: 'linear-gradient(135deg, #1e293b 0%, #475569 50%, #cbd5e1 100%)',
+  col_earth: 'linear-gradient(135deg, #064e3b 0%, #059669 50%, #6ee7b7 100%)',
+  col_shooting: 'linear-gradient(135deg, #1e1b4b 0%, #4f46e5 50%, #fbbf24 100%)',
+  col_japan: 'linear-gradient(135deg, #831843 0%, #ec4899 50%, #fce7f3 100%)',
+  col_canada: 'linear-gradient(135deg, #991b1b 0%, #ef4444 50%, #fecaca 100%)',
+  col_india: 'linear-gradient(135deg, #92400e 0%, #f59e0b 50%, #fef3c7 100%)',
+  col_egypt: 'linear-gradient(135deg, #78350f 0%, #d97706 50%, #fcd34d 100%)',
+  col_brazil: 'linear-gradient(135deg, #064e3b 0%, #10b981 50%, #6ee7b7 100%)',
+  col_toronto: 'linear-gradient(135deg, #991b1b 0%, #dc2626 50%, #fca5a5 100%)',
+};
+
 export function getStoryArt(lessonId) {
-  return STORY_ART[lessonId] || {
-    gradient: 'linear-gradient(135deg, #1a1a2e 0%, #16213e 40%, #f0a500 100%)',
+  if (STORY_ART[lessonId]) return STORY_ART[lessonId];
+
+  // Collection story fallback — match by prefix
+  if (lessonId?.startsWith('col_')) {
+    const prefix = lessonId.split('_').slice(0, 2).join('_');
+    const gradient = COLLECTION_GRADIENTS[prefix] || COLLECTION_GRADIENTS[lessonId] || 'linear-gradient(135deg, #4c1d95 0%, #7c3aed 50%, #f0a500 100%)';
+    return { gradient, icon: '✨', accent: '#f0a500' };
+  }
+
+  return {
+    gradient: 'linear-gradient(135deg, #4c1d95 0%, #7c3aed 50%, #f0a500 100%)',
     icon: '✨',
     accent: '#f0a500',
   };
