@@ -329,7 +329,8 @@ export default function Settings() {
           {isAdmin && (
             <Tile icon="🔑" title="Admin" sub="Dashboard" onClick={() => navigate('/admin')} />
           )}
-          <Tile icon="📋" title="What's new" sub="v0.0.10" onClick={() => setReleasesOpen(true)} />
+          <Tile icon="📋" title="What's new" sub="v0.1.1" onClick={() => setReleasesOpen(true)} />
+          <Tile icon="📝" title="Blog" sub="Tips & stories" onClick={() => window.location.href = '/blog/'} />
         </div>
       </SectionCard>
 
