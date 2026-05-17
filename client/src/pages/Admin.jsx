@@ -2766,15 +2766,44 @@ function WisdomAudioPanel() {
                 <audio controls preload="none" src={urls[l.id]} className="w-full h-8" style={{ filter: 'invert(1) hue-rotate(180deg)', opacity: 0.7 }} />
               </div>
             )}
-            {/* Bottom row: voice + actions */}
+            {/* Bottom row: actions */}
             <div className="flex items-center gap-2 mt-3 flex-wrap">
-              <select value={getVoiceFor(l.id)} onChange={e => setVoiceSelections(prev => ({ ...prev, [l.id]: { ...prev[l.id], voice: e.target.value } }))}
-                className="rounded-lg bg-[#0a0a0f] px-2.5 py-1.5 text-[10px] font-bold text-[#f0a500] outline-none ring-1 ring-white/10">
-                {VOICE_OPTIONS.map(v => <option key={v} value={v}>{v}</option>)}
+              {/* ElevenLabs — pick voice + generate in one row */}
+              <select value={voiceSelections[l.id]?.elVoice || (['hindu','sikh','jain','buddhist'].includes(l.tradition) ? 'muskaan' : 'george')}
+                onChange={e => setVoiceSelections(prev => ({ ...prev, [l.id]: { ...prev[l.id], elVoice: e.target.value } }))}
+                className="rounded-lg bg-[#0a0a0f] px-2 py-1.5 text-[10px] font-bold text-[#7ad9a1] outline-none ring-1 ring-[#7ad9a1]/20">
+                <option value="george">George</option>
+                <option value="lily">Lily</option>
+                <option value="sarah">Sarah</option>
+                <option value="muskaan">Muskaan 🇮🇳</option>
+                <option value="brian">Brian</option>
+                <option value="bill">Bill</option>
+                <option value="alice">Alice</option>
               </select>
-              <button onClick={() => generateOne(l)} disabled={!!generating}
-                className="rounded-lg bg-[#f0a500]/10 px-3 py-1.5 text-[10px] font-bold text-[#f0a500] hover:bg-[#f0a500]/20 disabled:opacity-30">
-                {generating === l.id ? '...' : urls[l.id] ? 'Re-gen Audio' : 'Gen Audio'}
+              <button onClick={async () => {
+                const voice = voiceSelections[l.id]?.elVoice || (['hindu','sikh','jain','buddhist'].includes(l.tradition) ? 'muskaan' : 'george');
+                setGenerating(l.id);
+                setStatus(s => ({ ...s, [l.id]: `11Labs: ${voice}...` }));
+                try {
+                  const text = l.body.replace(/\{childName\}/g, 'little one').replace(/\{sibling\}/g, 'their friend').replace(/\{pet\}/g, 'their puppy').replace(/\{grandfather\}/g, 'Dada ji').replace(/\{grandmother\}/g, 'Nani ma');
+                  const res = await fetch(`${API_BASE}/api/generate-elevenlabs-audio`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ text: text.slice(0, 10000), voice }) });
+                  if (!res.ok) { setStatus(s => ({ ...s, [l.id]: `Failed (${res.status})` })); setGenerating(null); return; }
+                  const blob = await res.blob();
+                  setStatus(s => ({ ...s, [l.id]: 'uploading...' }));
+                  const { ref, uploadBytes, getDownloadURL } = await import('firebase/storage');
+                  const { storage, db: fireDb } = await import('../lib/firebase.js');
+                  const storageRef = ref(storage, `wisdom-audio/${l.id}.mp3`);
+                  await uploadBytes(storageRef, blob, { contentType: 'audio/mpeg' });
+                  const audioUrl = await getDownloadURL(storageRef);
+                  const { doc: fdoc, setDoc: fset } = await import('firebase/firestore');
+                  await fset(fdoc(fireDb, 'config', 'wisdomAudio'), { [l.id]: audioUrl }, { merge: true });
+                  setUrls(u => ({ ...u, [l.id]: audioUrl }));
+                  setStatus(s => ({ ...s, [l.id]: `✓ ${voice}` }));
+                } catch (e) { setStatus(s => ({ ...s, [l.id]: e.message })); }
+                setGenerating(null);
+              }} disabled={!!generating}
+                className="rounded-lg bg-[#7ad9a1]/10 px-3 py-1.5 text-[10px] font-bold text-[#7ad9a1] hover:bg-[#7ad9a1]/20 disabled:opacity-30">
+                {generating === l.id ? '...' : '⚡ 11Labs'}
               </button>
               <button onClick={() => generateImage(l)} disabled={!!generating}
                 className="rounded-lg bg-[#539df5]/10 px-3 py-1.5 text-[10px] font-bold text-[#539df5] hover:bg-[#539df5]/20 disabled:opacity-30">
