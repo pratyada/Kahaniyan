@@ -7,6 +7,7 @@ import { Play, Info } from 'lucide-react';
 import { getStoryArt, getTraditionArt } from '../utils/storyArt.js';
 import { TRADITIONS } from '../data/culturalLessons.js';
 import { extractMoral } from '../utils/moralExtractor.js';
+import { getPlayCount, getRating, formatCount } from '../utils/socialProof.js';
 
 const ROTATE_INTERVAL = 6000; // 6 seconds per slide
 
@@ -130,9 +131,16 @@ export default function HeroSlider({ stories, wisdomImageUrls, onPlay, onInfo })
               {story.title}
             </h2>
 
+            {/* Stats — plays + rating */}
+            <div className="mb-2 flex items-center gap-3 text-[11px] text-white/70">
+              <span className="font-bold">▶ {formatCount(getPlayCount(story.id))} plays</span>
+              <span>⭐ {getRating(story.id)}</span>
+              <span>{story.durationMinutes} min</span>
+            </div>
+
             {/* Subtitle — moral excerpt */}
-            <p className="text-[11px] lg:text-xs text-white/60 leading-relaxed line-clamp-2 mb-4 max-w-[85%]">
-              {moralShort || `${story.durationMinutes} min · ${story.source || ''}`}
+            <p className="text-[11px] lg:text-xs text-white/50 leading-relaxed line-clamp-2 mb-3 max-w-[85%]">
+              {moralShort || story.source || ''}
             </p>
 
             {/* Buttons */}

@@ -20,7 +20,6 @@ export default function TrendingShelf({ allLessons, wisdomImageUrls, onPlay }) {
             key={lesson.id}
             lesson={lesson}
             imageUrl={wisdomImageUrls?.[lesson.id]}
-            plays={playCounts[lesson.id]}
             onPlay={onPlay}
           />
         ))}
