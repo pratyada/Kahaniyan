@@ -18,7 +18,7 @@ export default function StoryTile({ lesson, imageUrl, plays, onPlay }) {
       whileTap={{ scale: 0.96 }}
       onClick={() => onPlay(lesson)}
       className="group relative flex w-40 lg:w-48 shrink-0 snap-start flex-col justify-end overflow-hidden rounded-2xl text-left"
-      style={{ aspectRatio: '2/3' }}
+      style={{ aspectRatio: '2/3', minHeight: 240 }}
     >
       {/* Background gradient */}
       <div
@@ -35,7 +35,7 @@ export default function StoryTile({ lesson, imageUrl, plays, onPlay }) {
         />
       )}
       {/* Dark overlay for text */}
-      <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-black/10" />
+      <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
 
       {/* Play button */}
       <div className="absolute right-2.5 top-2.5 grid h-8 w-8 place-items-center rounded-full bg-black/30 text-white/80 backdrop-blur-sm transition group-hover:bg-white/20 group-hover:text-white">
