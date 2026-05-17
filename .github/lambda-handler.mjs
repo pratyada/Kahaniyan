@@ -3,6 +3,12 @@
 
 const ROUTES = {};
 
+const CORS = {
+  'Access-Control-Allow-Origin': '*',
+  'Access-Control-Allow-Methods': 'GET,POST,PUT,DELETE,OPTIONS',
+  'Access-Control-Allow-Headers': '*',
+};
+
 // Dynamic import of route handlers
 async function loadHandler(name) {
   if (!ROUTES[name]) {
@@ -14,27 +20,38 @@ async function loadHandler(name) {
 export async function handler(event) {
   const path = event.rawPath || event.requestContext?.http?.path || '/';
   const method = event.requestContext?.http?.method || event.httpMethod || 'GET';
-  
+
+  // Handle OPTIONS preflight
+  if (method === 'OPTIONS') {
+    return { statusCode: 200, headers: CORS, body: '' };
+  }
+
   // Extract route name from /api/{routeName}
   const match = path.match(/^\/api\/(.+?)(\?.*)?$/);
   if (!match) {
-    return { statusCode: 404, body: JSON.stringify({ error: 'Not found' }) };
+    return { statusCode: 404, headers: CORS, body: JSON.stringify({ error: 'Not found' }) };
   }
   const routeName = match[1];
 
   // Build req/res adapter
   const body = event.body ? (event.isBase64Encoded ? Buffer.from(event.body, 'base64').toString() : event.body) : null;
   const headers = event.headers || {};
-  
+
+  let parsedBody = {};
+  if (body) {
+    try { parsedBody = JSON.parse(body); } catch { parsedBody = {}; }
+  }
+
   const req = {
     method,
     headers,
-    body: body ? JSON.parse(body) : {},
+    body: parsedBody,
     query: event.queryStringParameters || {},
+    url: path + (event.rawQueryString ? '?' + event.rawQueryString : ''),
   };
 
   let statusCode = 200;
-  let responseHeaders = { 'Content-Type': 'application/json' };
+  let responseHeaders = { 'Content-Type': 'application/json', ...CORS };
   let responseBody = '';
   let responseChunks = [];
 
@@ -50,7 +67,7 @@ export async function handler(event) {
   try {
     const handlerFn = await loadHandler(routeName);
     await handlerFn(req, res);
-    
+
     // If binary response (audio/image), return base64
     if (responseChunks.length > 0) {
       const buffer = Buffer.concat(responseChunks.map(c => Buffer.isBuffer(c) ? c : Buffer.from(c)));
@@ -61,10 +78,10 @@ export async function handler(event) {
         isBase64Encoded: true,
       };
     }
-    
+
     return { statusCode, headers: responseHeaders, body: responseBody };
   } catch (e) {
     console.error('Lambda error:', e);
-    return { statusCode: 500, body: JSON.stringify({ error: e.message }) };
+    return { statusCode: 500, headers: CORS, body: JSON.stringify({ error: e.message }) };
   }
 }
