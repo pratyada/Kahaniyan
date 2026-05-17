@@ -118,6 +118,31 @@ export default function Home() {
       <div className="pointer-events-none absolute -top-20 left-1/2 h-[300px] w-[300px] -translate-x-1/2 rounded-full opacity-30"
         style={{ background: 'radial-gradient(circle, rgba(240,165,0,0.25) 0%, transparent 70%)' }} />
 
+      {/* Collection focus — show ONLY this collection, skip everything else */}
+      {collectionId && (() => {
+        const focusCol = COLLECTIONS.find((c) => c.id === collectionId);
+        if (!focusCol) return <div className="text-center py-12"><p className="text-ink-muted">Collection not found</p><button onClick={() => navigate('/')} className="mt-3 rounded-xl bg-gold px-4 py-2 text-sm font-bold text-bg-base">Go Home</button></div>;
+        return (
+          <>
+            <button onClick={() => navigate('/')} className="mb-4 flex items-center gap-1 text-[11px] font-bold uppercase tracking-wider text-ink-muted hover:text-ink">
+              ← Back to Home
+            </button>
+            <div className="mb-4">
+              <h2 className="text-xl font-bold text-ink" style={{ fontFamily: 'Fraunces, serif' }}>{focusCol.title}</h2>
+              <p className="mt-1 text-xs text-ink-muted">{focusCol.subtitle} · {focusCol.stories.length} stories</p>
+            </div>
+            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
+              {focusCol.stories.map((story) => (
+                <StoryTile key={story.id} lesson={story} imageUrl={wisdomImageUrls[story.id]} onPlay={() => handlePlayCollection(story)} />
+              ))}
+            </div>
+            <div className="h-40" />
+          </>
+        );
+      })()}
+
+      {/* Normal home — only when no collection is focused */}
+      {!collectionId && (<>
       {/* Header */}
       <motion.header initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }}
         className="mb-6 text-center lg:text-left">
@@ -176,29 +201,7 @@ export default function Home() {
         )}
       </section>
 
-      {/* Collection focus — ONLY this collection when opened via /collection/:id */}
-      {collectionId ? (() => {
-        const focusCol = COLLECTIONS.find((c) => c.id === collectionId);
-        if (!focusCol) return <div className="text-center py-12"><p className="text-ink-muted">Collection not found</p><button onClick={() => navigate('/')} className="mt-3 rounded-xl bg-gold px-4 py-2 text-sm font-bold text-bg-base">Go Home</button></div>;
-        return (
-          <div>
-            <button onClick={() => navigate('/')} className="mb-4 flex items-center gap-1 text-[11px] font-bold uppercase tracking-wider text-ink-muted hover:text-ink">
-              ← Back to Home
-            </button>
-            <div className="mb-4">
-              <h2 className="text-xl font-bold text-ink" style={{ fontFamily: 'Fraunces, serif' }}>{focusCol.title}</h2>
-              <p className="mt-1 text-xs text-ink-muted">{focusCol.subtitle} · {focusCol.stories.length} stories</p>
-            </div>
-            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
-              {focusCol.stories.map((story) => (
-                <StoryTile key={story.id} lesson={story} imageUrl={wisdomImageUrls[story.id]} onPlay={() => handlePlayCollection(story)} />
-              ))}
-            </div>
-          </div>
-        );
-      })() : (
-        <>
-          {/* 4-11. Collections (normal home view) */}
+      {/* 4-11. Collections (normal home view) */}
           {COLLECTIONS.map((col) => (
             <ShelfSection key={col.id} title={col.title} subtitle={col.subtitle}>
               <ShelfRow>
@@ -213,8 +216,6 @@ export default function Home() {
               </ShelfRow>
             </ShelfSection>
           ))}
-        </>
-      )}
 
       {/* Create Story FAB + Sheet */}
       <CreateFAB onClick={() => setCreateOpen(true)} />
@@ -225,6 +226,7 @@ export default function Home() {
 
       {/* Milestone celebration overlay */}
       <MilestoneCelebration />
+      </>)}  {/* end !collectionId */}
     </PageTransition>
   );
 }
