@@ -2408,6 +2408,7 @@ function LabSelect({ label, value, onChange, options }) {
 function WisdomAudioPanel() {
   const [urls, setUrls] = useState({});
   const [imageUrls, setImageUrls] = useState({});
+  const [dataReady, setDataReady] = useState(false);
   const [status, setStatus] = useState({});
   const [generating, setGenerating] = useState(null);
   const [lessons, setLessons] = useState([]);
@@ -2443,7 +2444,8 @@ function WisdomAudioPanel() {
         if (snap.exists()) setUrls(snap.data());
         const imgSnap = await getDoc(doc(db, 'config', 'wisdomImages'));
         if (imgSnap.exists()) setImageUrls(imgSnap.data());
-      } catch {}
+        setDataReady(true);
+      } catch { setDataReady(true); }
     })();
   }, []);
 
@@ -2605,15 +2607,15 @@ function WisdomAudioPanel() {
           <div className="text-[10px] font-bold uppercase tracking-wider text-[#6e6a63]">Total Stories</div>
         </div>
         <div className="rounded-xl bg-[#1a1a28] p-4 ring-1 ring-white/5">
-          <div className="text-2xl font-bold text-[#7ad9a1]">{cached}</div>
+          <div className={`text-2xl font-bold ${dataReady ? 'text-[#7ad9a1]' : 'text-[#f0a500] animate-pulse'}`}>{dataReady ? cached : '...'}</div>
           <div className="text-[10px] font-bold uppercase tracking-wider text-[#6e6a63]">Audio Ready</div>
         </div>
         <div className="rounded-xl bg-[#1a1a28] p-4 ring-1 ring-white/5">
-          <div className="text-2xl font-bold text-[#539df5]">{imagesCached}</div>
+          <div className={`text-2xl font-bold ${dataReady ? 'text-[#539df5]' : 'text-[#f0a500] animate-pulse'}`}>{dataReady ? imagesCached : '...'}</div>
           <div className="text-[10px] font-bold uppercase tracking-wider text-[#6e6a63]">Images Ready</div>
         </div>
         <div className="rounded-xl bg-[#1a1a28] p-4 ring-1 ring-white/5">
-          <div className="text-2xl font-bold text-[#f0a500]">{lessons.length - Math.min(cached, imagesCached)}</div>
+          <div className={`text-2xl font-bold ${dataReady ? 'text-[#f0a500]' : 'text-[#f0a500] animate-pulse'}`}>{dataReady ? lessons.length - Math.min(cached, imagesCached) : '...'}</div>
           <div className="text-[10px] font-bold uppercase tracking-wider text-[#6e6a63]">Incomplete</div>
         </div>
       </div>
@@ -2746,11 +2748,15 @@ function WisdomAudioPanel() {
                   <span className="text-[10px] text-[#a8a39a]">{l.theme?.replace('-', ' ')}</span>
                   {urls[l.id] ? (
                     <span className="inline-flex items-center rounded-full bg-[#7ad9a1]/10 px-2 py-0.5 text-[8px] font-bold text-[#7ad9a1]">Audio ✓</span>
+                  ) : !dataReady ? (
+                    <span className="inline-flex items-center rounded-full bg-[#f0a500]/10 px-2 py-0.5 text-[8px] font-bold text-[#f0a500] animate-pulse">Loading...</span>
                   ) : (
                     <span className="inline-flex items-center rounded-full bg-red-400/10 px-2 py-0.5 text-[8px] font-bold text-red-400">No audio</span>
                   )}
                   {imageUrls[l.id] ? (
                     <span className="inline-flex items-center rounded-full bg-[#7ad9a1]/10 px-2 py-0.5 text-[8px] font-bold text-[#7ad9a1]">Image ✓</span>
+                  ) : !dataReady ? (
+                    <span className="inline-flex items-center rounded-full bg-[#f0a500]/10 px-2 py-0.5 text-[8px] font-bold text-[#f0a500] animate-pulse">Loading...</span>
                   ) : (
                     <span className="inline-flex items-center rounded-full bg-red-400/10 px-2 py-0.5 text-[8px] font-bold text-red-400">No image</span>
                   )}
