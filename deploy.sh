@@ -39,6 +39,7 @@ echo "⚡ Deploying API..."
 rm -rf /tmp/lambda-pkg /tmp/lambda.zip
 mkdir -p /tmp/lambda-pkg
 cp -r api /tmp/lambda-pkg/api
+cp -r server /tmp/lambda-pkg/server
 cp .github/lambda-handler.mjs /tmp/lambda-pkg/index.mjs
 cd /tmp/lambda-pkg
 echo '{"type":"module","dependencies":{"stripe":"^14.0.0"}}' > package.json
