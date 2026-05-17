@@ -170,12 +170,12 @@ export default function Admin() {
 
       <div className="mx-auto max-w-7xl px-6 py-6">
         {/* ─── TABS ─── */}
-        <div className="mb-6 flex gap-1 rounded-2xl bg-[#1a1a28] p-1">
+        <div className="mb-6 grid grid-cols-4 gap-1 rounded-2xl bg-[#1a1a28] p-1">
           {TABS.map((t) => (
             <button
               key={t.key}
               onClick={() => setTab(t.key)}
-              className={`flex items-center gap-2 rounded-xl px-5 py-3 text-sm font-bold transition ${
+              className={`flex flex-col items-center gap-1 rounded-xl px-2 py-3 text-[11px] sm:text-sm sm:flex-row sm:gap-2 sm:px-5 font-bold transition ${
                 tab === t.key
                   ? 'bg-[#f0a500] text-[#0f0f17]'
                   : 'text-[#a8a39a] hover:text-[#f5f0e8]'
