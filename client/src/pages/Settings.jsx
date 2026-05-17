@@ -330,7 +330,12 @@ export default function Settings() {
             <Tile icon="🔑" title="Admin" sub="Dashboard" onClick={() => navigate('/admin')} />
           )}
           <Tile icon="📋" title="What's new" sub="v0.1.1" onClick={() => setReleasesOpen(true)} />
-          <Tile icon="📝" title="Blog" sub="Tips & stories" onClick={() => window.location.href = '/blog/'} />
+        </div>
+      </SectionCard>
+
+      <SectionCard title="Blog">
+        <div className="grid grid-cols-1 gap-2">
+          <Tile icon="📝" title="Read Our Blog" sub="Child psychology, parenting tips & bedtime guides" onClick={() => window.location.href = '/blog/'} />
         </div>
       </SectionCard>
 
