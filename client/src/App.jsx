@@ -137,6 +137,7 @@ function Shell() {
             <Route path="/guides" element={<Guides />} />
             <Route path="/settings" element={<Settings />} />
             <Route path="/roadmap" element={<Roadmap />} />
+            <Route path="/collection/:collectionId" element={<Home />} />
             <Route path="/creator" element={<Creator />} />
             <Route path="/admin" element={<Admin />} />
             <Route path="*" element={<Navigate to="/" replace />} />

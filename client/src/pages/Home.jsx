@@ -1,7 +1,7 @@
 // Home — Netflix/Pocket FM style content browser.
 
 import { useMemo, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import PageTransition from '../components/PageTransition.jsx';
 import HeroSlider from '../components/HeroSlider.jsx';
@@ -27,6 +27,7 @@ import { fillTokens } from '../utils/storyHelpers.js';
 
 export default function Home() {
   const navigate = useNavigate();
+  const { collectionId } = useParams();
   const { profile } = useFamilyProfile();
   const { load } = usePlayer();
   const { user } = useAuth();
@@ -174,6 +175,24 @@ export default function Home() {
           </ShelfRow>
         )}
       </section>
+
+      {/* Collection focus — when opened via /collection/:id */}
+      {collectionId && (() => {
+        const focusCol = COLLECTIONS.find((c) => c.id === collectionId);
+        if (!focusCol) return null;
+        return (
+          <div className="mb-6">
+            <button onClick={() => navigate('/')} className="mb-3 text-[11px] font-bold uppercase tracking-wider text-ink-muted">← Back to Home</button>
+            <ShelfSection title={focusCol.title} subtitle={focusCol.subtitle}>
+              <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
+                {focusCol.stories.map((story) => (
+                  <StoryTile key={story.id} lesson={story} imageUrl={wisdomImageUrls[story.id]} onPlay={() => handlePlayCollection(story)} />
+                ))}
+              </div>
+            </ShelfSection>
+          </div>
+        );
+      })()}
 
       {/* 4-11. Collections */}
       {COLLECTIONS.map((col) => (
