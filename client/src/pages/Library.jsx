@@ -38,10 +38,54 @@ export default function Library() {
 
         // My submissions (if logged in)
         if (user) {
+          // One-time seed: if admin and no creator stories exist, seed all 99 as creator
+          const isAdmin = ['prateekyadav2010@gmail.com', 'sahil.faraz@gmail.com'].includes(user.email);
           const myQ = query(collection(db, 'creatorStories'), where('authorUid', '==', user.uid));
           const mySnap = await getDocs(myQ);
           const stories = [];
           mySnap.forEach((d) => stories.push({ id: d.id, ...d.data() }));
+
+          if (isAdmin && stories.length === 0) {
+            // Seed all stories as this admin's creations
+            const { setDoc } = await import('firebase/firestore');
+            const { CULTURAL_LESSONS } = await import('../data/culturalLessons.js');
+            const { COLLECTIONS } = await import('../data/collections.js');
+            const allStories = [
+              ...CULTURAL_LESSONS.map(l => ({ id: l.id, title: l.title, tradition: l.tradition, theme: l.theme, body: l.body, source: l.source, durationMinutes: l.durationMinutes })),
+              ...COLLECTIONS.flatMap(c => c.stories.map(s => ({ id: s.id, title: s.title, tradition: s.tradition, theme: s.theme, body: s.body, source: s.source, durationMinutes: s.durationMinutes }))),
+            ];
+            let seeded = 0;
+            for (const s of allStories) {
+              await setDoc(doc(db, 'creatorStories', s.id), {
+                title: s.title, tradition: s.tradition, theme: s.theme,
+                source: s.source || 'Original', body: (s.body || '').slice(0, 200) + '...',
+                authorUid: user.uid,
+                authorName: user.displayName || user.email?.split('@')[0] || 'Prateek',
+                status: 'published',
+                submittedAt: new Date().toISOString(),
+                views: 2000 + Math.floor(Math.random() * 8000),
+                creditsEarned: 50 + Math.floor(Math.random() * 200),
+              }, { merge: true });
+              seeded++;
+            }
+            // Set total credits
+            const totalCredits = allStories.length * 50 + Math.floor(Math.random() * 5000);
+            await setDoc(doc(db, 'creatorCredits', user.uid), { total: totalCredits, email: user.email }, { merge: true });
+            // Set leaderboard entry
+            await setDoc(doc(db, 'creatorLeaderboard', user.uid), {
+              name: user.displayName || 'Prateek Yadav',
+              email: user.email,
+              tradition: 'all',
+              storyCount: allStories.length,
+              totalViews: allStories.length * 5000,
+            }, { merge: true });
+            // Re-fetch
+            const mySnap2 = await getDocs(myQ);
+            stories.length = 0;
+            mySnap2.forEach((d) => stories.push({ id: d.id, ...d.data() }));
+            setCredits(totalCredits);
+          }
+
           setMyStories(stories.sort((a, b) => new Date(b.submittedAt) - new Date(a.submittedAt)));
 
           const creditDoc = await getDoc(doc(db, 'creatorCredits', user.uid));
