@@ -42,7 +42,7 @@ cp -r api /tmp/lambda-pkg/api
 cp -r server /tmp/lambda-pkg/server
 cp .github/lambda-handler.mjs /tmp/lambda-pkg/index.mjs
 cd /tmp/lambda-pkg
-echo '{"type":"module","dependencies":{"stripe":"^14.0.0"}}' > package.json
+echo '{"type":"module","dependencies":{"stripe":"^14.0.0","firebase-admin":"^13.0.0"}}' > package.json
 npm install --production --quiet 2>/dev/null
 zip -r /tmp/lambda.zip . -x "*.DS_Store" > /dev/null
 cd - > /dev/null
