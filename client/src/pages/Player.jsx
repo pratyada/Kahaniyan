@@ -518,7 +518,7 @@ function PlayerInner() {
   const bgImage = current?.coverImage || wisdomImageUrls[lessonKey] || storyArtData?.image || null;
 
   return (
-    <div className="absolute inset-0 z-40 overflow-hidden bg-bg-base">
+    <div className="absolute inset-0 z-40 overflow-hidden bg-bg-base" style={{ touchAction: 'pan-y' }}>
       {/* Dreamy blurred background image */}
       {/* Aurora/starfield always present as base, image overlays when available */}
       <div className="aurora" />
@@ -641,14 +641,30 @@ function PlayerInner() {
             <div className="mt-4">
               <div
                 className="relative h-6 w-full cursor-pointer flex items-center"
+                style={{ touchAction: 'none' }}
                 onClick={(e) => {
                   if (!ttsReady) return;
                   const rect = e.currentTarget.getBoundingClientRect();
                   const fraction = Math.max(0, Math.min(1, (e.clientX - rect.left) / rect.width));
                   narrator.seek(fraction);
                 }}
+                onMouseDown={(e) => {
+                  if (!ttsReady) return;
+                  e.preventDefault();
+                  const bar = e.currentTarget;
+                  const seek = (ev) => {
+                    const rect = bar.getBoundingClientRect();
+                    narrator.seek(Math.max(0, Math.min(1, (ev.clientX - rect.left) / rect.width)));
+                  };
+                  seek(e);
+                  const onMove = (ev) => { ev.preventDefault(); seek(ev); };
+                  const onUp = () => { window.removeEventListener('mousemove', onMove); window.removeEventListener('mouseup', onUp); };
+                  window.addEventListener('mousemove', onMove);
+                  window.addEventListener('mouseup', onUp);
+                }}
                 onTouchMove={(e) => {
                   if (!ttsReady) return;
+                  e.preventDefault();
                   const rect = e.currentTarget.getBoundingClientRect();
                   const fraction = Math.max(0, Math.min(1, (e.touches[0].clientX - rect.left) / rect.width));
                   narrator.seek(fraction);
