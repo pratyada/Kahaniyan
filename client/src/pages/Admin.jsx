@@ -2825,6 +2825,24 @@ function WisdomAudioPanel() {
                 className="rounded-lg bg-[#539df5]/10 px-3 py-1.5 text-[10px] font-bold text-[#539df5] hover:bg-[#539df5]/20 disabled:opacity-30">
                 {generating === l.id + '_img' ? '...' : imageUrls[l.id] ? 'Re-gen Image' : 'Gen Image'}
               </button>
+              <label className="rounded-lg bg-[#e8b4ff]/10 px-3 py-1.5 text-[10px] font-bold text-[#e8b4ff] cursor-pointer hover:bg-[#e8b4ff]/20">
+                📤 Upload
+                <input type="file" accept="image/*" className="hidden" onChange={async (e) => {
+                  const file = e.target.files?.[0]; if (!file) return;
+                  setGenerating(l.id + '_upload'); setStatus(s => ({ ...s, [l.id]: 'uploading...' }));
+                  try {
+                    const { ref, uploadBytes, getDownloadURL } = await import('firebase/storage');
+                    const { storage, db: fireDb } = await import('../lib/firebase.js');
+                    const storageRef = ref(storage, `wisdom-images/${l.id}.png`);
+                    await uploadBytes(storageRef, file, { contentType: file.type });
+                    const url = await getDownloadURL(storageRef);
+                    const { doc: fdoc, setDoc: fset } = await import('firebase/firestore');
+                    await fset(fdoc(fireDb, 'config', 'wisdomImages'), { [l.id]: url }, { merge: true });
+                    setImageUrls(u => ({ ...u, [l.id]: url })); setStatus(s => ({ ...s, [l.id]: '✓ uploaded' }));
+                  } catch (err) { setStatus(s => ({ ...s, [l.id]: err.message })); }
+                  setGenerating(null); e.target.value = '';
+                }} />
+              </label>
               <button onClick={() => { setEditing(l.id); setAddingNew(false); }}
                 className="rounded-lg bg-[#e8b4ff]/10 px-3 py-1.5 text-[10px] font-bold text-[#e8b4ff] hover:bg-[#e8b4ff]/20">
                 Edit
@@ -3139,8 +3157,30 @@ function SeriesPanel() {
                   </button>
                   <button onClick={() => generateImage(ep)} disabled={!!generating}
                     className="rounded-lg bg-[#539df5]/10 px-3 py-1.5 text-[10px] font-bold text-[#539df5] disabled:opacity-30">
-                    {generating === ep.id + '_img' ? '...' : '🖼️ Image'}
+                    {generating === ep.id + '_img' ? '...' : '🖼️ AI Image'}
                   </button>
+                  <label className="rounded-lg bg-[#e8b4ff]/10 px-3 py-1.5 text-[10px] font-bold text-[#e8b4ff] cursor-pointer hover:bg-[#e8b4ff]/20">
+                    📤 Upload
+                    <input type="file" accept="image/*" className="hidden" onChange={async (e) => {
+                      const file = e.target.files?.[0];
+                      if (!file) return;
+                      setGenerating(ep.id + '_upload');
+                      setStatus(s => ({ ...s, [ep.id]: 'uploading...' }));
+                      try {
+                        const { ref, uploadBytes, getDownloadURL } = await import('firebase/storage');
+                        const { storage, db: fireDb } = await import('../lib/firebase.js');
+                        const storageRef = ref(storage, `wisdom-images/${ep.id}.png`);
+                        await uploadBytes(storageRef, file, { contentType: file.type });
+                        const url = await getDownloadURL(storageRef);
+                        const { doc: fdoc, setDoc: fset } = await import('firebase/firestore');
+                        await fset(fdoc(fireDb, 'config', 'wisdomImages'), { [ep.id]: url }, { merge: true });
+                        setImageUrls(u => ({ ...u, [ep.id]: url }));
+                        setStatus(s => ({ ...s, [ep.id]: '✓ uploaded' }));
+                      } catch (err) { setStatus(s => ({ ...s, [ep.id]: err.message })); }
+                      setGenerating(null);
+                      e.target.value = '';
+                    }} />
+                  </label>
                 </div>
               </div>
             ))}
@@ -3402,6 +3442,24 @@ function CollectionsPanel() {
                 className="rounded-lg bg-[#539df5]/10 px-3 py-1.5 text-[10px] font-bold text-[#539df5] disabled:opacity-30">
                 {generating === s.id + '_img' ? '...' : imageUrls[s.id] ? 'Re-gen Image' : 'Gen Image'}
               </button>
+              <label className="rounded-lg bg-[#e8b4ff]/10 px-3 py-1.5 text-[10px] font-bold text-[#e8b4ff] cursor-pointer hover:bg-[#e8b4ff]/20">
+                📤 Upload
+                <input type="file" accept="image/*" className="hidden" onChange={async (e) => {
+                  const file = e.target.files?.[0]; if (!file) return;
+                  setGenerating(s.id + '_upload'); setStatus(st => ({ ...st, [s.id]: 'uploading...' }));
+                  try {
+                    const { ref, uploadBytes, getDownloadURL } = await import('firebase/storage');
+                    const { storage, db: fireDb } = await import('../lib/firebase.js');
+                    const storageRef = ref(storage, `wisdom-images/${s.id}.png`);
+                    await uploadBytes(storageRef, file, { contentType: file.type });
+                    const url = await getDownloadURL(storageRef);
+                    const { doc: fdoc, setDoc: fset } = await import('firebase/firestore');
+                    await fset(fdoc(fireDb, 'config', 'wisdomImages'), { [s.id]: url }, { merge: true });
+                    setImageUrls(u => ({ ...u, [s.id]: url })); setStatus(st => ({ ...st, [s.id]: '✓ uploaded' }));
+                  } catch (err) { setStatus(st => ({ ...st, [s.id]: err.message })); }
+                  setGenerating(null); e.target.value = '';
+                }} />
+              </label>
             </div>
           </div>
         ))}
