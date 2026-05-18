@@ -54,12 +54,19 @@ export default function Home() {
   const beliefs = profile?.beliefs || [];
   const age = profile?.age || 6;
 
+  // Filter: guests/universal see only universal stories, belief users see their tradition + universal
+  const filterByBelief = (lesson) => {
+    if (beliefs.length > 0 && !beliefs.includes('universal')) {
+      return beliefs.includes(lesson.tradition) || lesson.tradition === 'universal';
+    }
+    // No beliefs or universal only — show ONLY universal (no religious stories)
+    return lesson.tradition === 'universal' || !lesson.tradition;
+  };
+
   // Featured stories for hero slider
   const featuredStories = useMemo(() => {
-    let pool = allLessons.filter(
-      (l) => beliefs.length > 0 ? beliefs.includes(l.tradition) || l.tradition === 'universal' : true
-    );
-    if (pool.length < 5) pool = allLessons;
+    let pool = allLessons.filter(filterByBelief);
+    if (pool.length < 5) pool = allLessons.filter(l => l.tradition === 'universal');
     const day = Math.floor(Date.now() / 86400000);
     return pool
       .map((l, i) => ({ l, sort: ((i * 2654435761 + day * 3) >>> 0) % 10000 }))
@@ -70,9 +77,7 @@ export default function Home() {
 
   // Tonight's picks
   const tonightPicks = useMemo(() => {
-    let pool = allLessons.filter(
-      (l) => beliefs.length > 0 ? beliefs.includes(l.tradition) || l.tradition === 'universal' : true
-    );
+    let pool = allLessons.filter(filterByBelief);
     const day = Math.floor(Date.now() / 86400000);
     return pool
       .map((l, i) => ({ l, sort: ((i * 2654435761 + day * 7) >>> 0) % 1000 }))
@@ -86,7 +91,7 @@ export default function Home() {
     if (!activeTheme) return [];
     return allLessons
       .filter((l) => l.theme === activeTheme)
-      .filter((l) => beliefs.length > 0 ? beliefs.includes(l.tradition) || l.tradition === 'universal' : true);
+      .filter(filterByBelief);
   }, [activeTheme, allLessons, beliefs]);
 
   const handlePlay = (lesson) => {
