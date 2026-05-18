@@ -86,6 +86,8 @@ import { valueMeta } from '../utils/constants.js';
 import { useStreak } from '../hooks/useStreak.js';
 import PostStoryReflection from '../components/PostStoryReflection.jsx';
 import ShareCardSheet from '../components/ShareCardSheet.jsx';
+import { useSeriesProgress } from '../hooks/useSeriesProgress.js';
+import { SERIES } from '../data/series.js';
 
 const SPEEDS = [0.8, 1, 1.2];
 
@@ -192,6 +194,7 @@ function PlayerInner() {
   const narrator = useNarrator();
   const { user } = useAuth();
   const { recordPlay } = useStreak();
+  const { markEpisodeComplete } = useSeriesProgress();
 
   const [speed, setSpeed] = useState(1);
   const [showText, setShowText] = useState(true);
@@ -387,6 +390,10 @@ function PlayerInner() {
       setDone(true);
       setIsPlaying(false);
       recordPlay(); // increment learning streak
+      // Mark series episode complete if applicable
+      if (current?.seriesId && current?.episodeId) {
+        markEpisodeComplete(current.seriesId, current.episodeId);
+      }
       import('../utils/analytics.js').then(({ trackAudioCompleted }) => trackAudioCompleted(current?.id, current?.estimatedMinutes)).catch(() => {});
       setTimeout(() => setShowReflection(true), 800);
     }

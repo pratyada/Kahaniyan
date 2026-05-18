@@ -20,6 +20,7 @@ import RecordVoice from './pages/RecordVoice.jsx';
 import Invest from './pages/Invest.jsx';
 import StonedAge from './pages/StonedAge.jsx';
 import Creator from './pages/Creator.jsx';
+import SeriesDetail from './pages/SeriesDetail.jsx';
 import BottomNav from './components/BottomNav.jsx';
 import PlayerBar from './components/PlayerBar.jsx';
 import RadioBar from './components/RadioBar.jsx';
@@ -138,6 +139,7 @@ function Shell() {
             <Route path="/settings" element={<Settings />} />
             <Route path="/roadmap" element={<Roadmap />} />
             <Route path="/collection/:collectionId" element={<Home />} />
+            <Route path="/series/:seriesId" element={<SeriesDetail />} />
             <Route path="/creator" element={<Creator />} />
             <Route path="/admin" element={<Admin />} />
             <Route path="*" element={<Navigate to="/" replace />} />

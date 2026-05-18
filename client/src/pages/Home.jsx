@@ -15,6 +15,7 @@ import StreakBadge from '../components/StreakBadge.jsx';
 import MilestoneCelebration from '../components/MilestoneCelebration.jsx';
 import MorningRecapShelf from '../components/shelves/MorningRecapShelf.jsx';
 import SEOHead from '../components/SEOHead.jsx';
+import SeriesShelf from '../components/shelves/SeriesShelf.jsx';
 import { useFamilyProfile } from '../hooks/useFamilyProfile.js';
 import { usePlayer } from '../hooks/usePlayer.jsx';
 import { useAuth } from '../hooks/useAuth.jsx';
@@ -197,6 +198,9 @@ export default function Home() {
 
       {/* 2. Trending */}
       <TrendingShelf allLessons={allLessons} wisdomImageUrls={wisdomImageUrls} onPlay={handlePlay} />
+
+      {/* Series */}
+      <SeriesShelf />
 
       {/* 3. Browse by Value — interactive filter */}
       <section className="mb-6">
