@@ -2986,6 +2986,7 @@ function CuratorSubmissionsPanel() {
 function SeriesPanel() {
   const [urls, setUrls] = useState({});
   const [imageUrls, setImageUrls] = useState({});
+  const [galleryUrls, setGalleryUrls] = useState({}); // { storyId: [url1, url2, ...] }
   const [status, setStatus] = useState({});
   const [generating, setGenerating] = useState(null);
   const [bulkRunning, setBulkRunning] = useState(false);
@@ -3009,6 +3010,8 @@ function SeriesPanel() {
         if (snap.exists()) setUrls(snap.data());
         const imgSnap = await getDoc(doc(db, 'config', 'wisdomImages'));
         if (imgSnap.exists()) setImageUrls(imgSnap.data());
+        const galSnap = await getDoc(doc(db, 'config', 'wisdomGallery'));
+        if (galSnap.exists()) setGalleryUrls(galSnap.data());
         setDataReady(true);
       } catch { setDataReady(true); }
     })();
@@ -3160,28 +3163,48 @@ function SeriesPanel() {
                     {generating === ep.id + '_img' ? '...' : '🖼️ AI Image'}
                   </button>
                   <label className="rounded-lg bg-[#e8b4ff]/10 px-3 py-1.5 text-[10px] font-bold text-[#e8b4ff] cursor-pointer hover:bg-[#e8b4ff]/20">
-                    📤 Upload
-                    <input type="file" accept="image/*" className="hidden" onChange={async (e) => {
-                      const file = e.target.files?.[0];
-                      if (!file) return;
+                    📤 Upload ({(galleryUrls[ep.id] || []).length})
+                    <input type="file" accept="image/*" multiple className="hidden" onChange={async (e) => {
+                      const files = Array.from(e.target.files || []);
+                      if (files.length === 0) return;
                       setGenerating(ep.id + '_upload');
-                      setStatus(s => ({ ...s, [ep.id]: 'uploading...' }));
+                      setStatus(s => ({ ...s, [ep.id]: `uploading ${files.length} photos...` }));
                       try {
                         const { ref, uploadBytes, getDownloadURL } = await import('firebase/storage');
                         const { storage, db: fireDb } = await import('../lib/firebase.js');
-                        const storageRef = ref(storage, `wisdom-images/${ep.id}.png`);
-                        await uploadBytes(storageRef, file, { contentType: file.type });
-                        const url = await getDownloadURL(storageRef);
+                        const existing = galleryUrls[ep.id] || [];
+                        const newUrls = [];
+                        for (let i = 0; i < files.length; i++) {
+                          setStatus(s => ({ ...s, [ep.id]: `uploading ${i+1}/${files.length}...` }));
+                          const storageRef = ref(storage, `story-gallery/${ep.id}/${Date.now()}_${i}.${files[i].name.split('.').pop()}`);
+                          await uploadBytes(storageRef, files[i], { contentType: files[i].type });
+                          const url = await getDownloadURL(storageRef);
+                          newUrls.push(url);
+                        }
+                        const allUrls = [...existing, ...newUrls];
                         const { doc: fdoc, setDoc: fset } = await import('firebase/firestore');
-                        await fset(fdoc(fireDb, 'config', 'wisdomImages'), { [ep.id]: url }, { merge: true });
-                        setImageUrls(u => ({ ...u, [ep.id]: url }));
-                        setStatus(s => ({ ...s, [ep.id]: '✓ uploaded' }));
+                        await fset(fdoc(fireDb, 'config', 'wisdomGallery'), { [ep.id]: allUrls }, { merge: true });
+                        setGalleryUrls(u => ({ ...u, [ep.id]: allUrls }));
+                        // Set first image as cover if none exists
+                        if (!imageUrls[ep.id] && allUrls.length > 0) {
+                          await fset(fdoc(fireDb, 'config', 'wisdomImages'), { [ep.id]: allUrls[0] }, { merge: true });
+                          setImageUrls(u => ({ ...u, [ep.id]: allUrls[0] }));
+                        }
+                        setStatus(s => ({ ...s, [ep.id]: `✓ ${allUrls.length} photos` }));
                       } catch (err) { setStatus(s => ({ ...s, [ep.id]: err.message })); }
                       setGenerating(null);
                       e.target.value = '';
                     }} />
                   </label>
                 </div>
+                {/* Gallery thumbnails */}
+                {(galleryUrls[ep.id] || []).length > 0 && (
+                  <div className="mt-2 flex gap-1.5 overflow-x-auto pb-1">
+                    {(galleryUrls[ep.id] || []).map((url, i) => (
+                      <img key={i} src={url} alt="" className="h-12 w-12 shrink-0 rounded-lg object-cover ring-1 ring-white/10" />
+                    ))}
+                  </div>
+                )}
               </div>
             ))}
           </div>

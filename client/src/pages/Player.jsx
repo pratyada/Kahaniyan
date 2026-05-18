@@ -88,6 +88,7 @@ import PostStoryReflection from '../components/PostStoryReflection.jsx';
 import ShareCardSheet from '../components/ShareCardSheet.jsx';
 import { useSeriesProgress } from '../hooks/useSeriesProgress.js';
 import { SERIES } from '../data/series.js';
+import StoryGallery from '../components/StoryGallery.jsx';
 
 const SPEEDS = [0.8, 1, 1.2];
 
@@ -613,6 +614,12 @@ function PlayerInner() {
             </div>
 
             {/* Story text — always visible, scrolls in sync */}
+            {/* Photo gallery — swipe through story images */}
+            <StoryGallery
+              storyId={current?.id?.startsWith('lesson_') ? current.id.slice(7) : current?.id}
+              coverImage={wisdomImageUrls[current?.id?.startsWith('lesson_') ? current.id.slice(7) : current?.id]}
+            />
+
             {current?.text && <HighlightedText text={current.text} progress={progress} />}
 
             {/* Spacer */}
