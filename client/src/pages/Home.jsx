@@ -100,7 +100,8 @@ export default function Home() {
 
   const handlePlayCollection = (story) => {
     // Collection stories are inline objects — load directly
-    const filledText = fillTokens(story.body || '', profile);
+    // Guest: use generic name, not cached profile name
+    const filledText = fillTokens(story.body || '', user ? profile : null);
     const storyObj = {
       id: story.id,
       title: story.title,
@@ -170,7 +171,7 @@ export default function Home() {
           {greeting}
         </p>
         <h1 className="mt-1 text-2xl lg:text-3xl font-bold text-ink" style={{ fontFamily: 'Fraunces, serif' }}>
-          A story for <span className="text-gold">{profile?.childName || 'your child'}</span>
+          A story for <span className="text-gold">{user ? (profile?.childName || 'your child') : 'your child'}</span>
         </h1>
       </motion.header>
 
@@ -185,7 +186,7 @@ export default function Home() {
 
       {/* 1. Tonight's Picks — render immediately from hardcoded data */}
       {tonightPicks.length > 0 && (
-        <ShelfSection title={`✨ Tonight's Picks for ${profile?.childName || 'You'}`}>
+        <ShelfSection title={`✨ Tonight's Picks for ${user ? (profile?.childName || 'You') : 'You'}`}>
           <ShelfRow>
             {tonightPicks.map((lesson) => (
               <StoryTile key={lesson.id} lesson={lesson} imageUrl={wisdomImageUrls[lesson.id]} onPlay={handlePlay} />

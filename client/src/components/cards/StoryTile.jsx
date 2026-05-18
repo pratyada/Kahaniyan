@@ -12,6 +12,9 @@ export default function StoryTile({ lesson, imageUrl, onPlay }) {
   const tradition = TRADITIONS.find((t) => t.key === lesson.tradition);
   const plays = getPlayCount(lesson.id);
   const rating = getRating(lesson.id);
+  // Calculate real duration from word count (~150 words per minute narration)
+  const wordCount = (lesson.body || '').split(/\s+/).filter(Boolean).length;
+  const realDuration = wordCount > 0 ? Math.max(1, Math.round(wordCount / 150)) : lesson.durationMinutes;
 
   return (
     <motion.button
@@ -61,7 +64,7 @@ export default function StoryTile({ lesson, imageUrl, onPlay }) {
         <div className="mt-1 flex items-center gap-1.5 text-[9px] text-white/60">
           <span>⭐ {rating}</span>
           <span>·</span>
-          <span>{lesson.durationMinutes} min</span>
+          <span>{realDuration} min</span>
         </div>
       </div>
     </motion.button>
