@@ -35,7 +35,7 @@ export default function Home() {
 
   const [createOpen, setCreateOpen] = useState(false);
   const [activeTheme, setActiveTheme] = useState('compassion-animals');
-  const [visibleCollections, setVisibleCollections] = useState(3);
+  const [visibleCollections, setVisibleCollections] = useState(8);
 
   // Load more collections as user scrolls
   useEffect(() => {
