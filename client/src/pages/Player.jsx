@@ -771,19 +771,24 @@ function PlayerInner() {
                 whileTap={{ scale: 0.97 }}
                 onClick={() => {
                   const ep = nextSeriesEpisode;
+                  const sid = current?.seriesId;
                   setNextSeriesEpisode(null);
                   narrator.stop();
-                  const filledText = fillTokens(ep.body || '', user ? profile : null);
-                  load({
-                    id: ep.id, title: ep.title, text: filledText,
-                    wordCount: filledText.split(/\s+/).length,
-                    estimatedMinutes: ep.durationMinutes, value: ep.value || 'courage',
-                    language: profile?.language || 'English', voice: 'AI Narrator',
-                    tradition: ep.tradition, source: ep.source,
-                    createdAt: new Date().toISOString(), isWisdom: true,
-                    seriesId: current?.seriesId, episodeId: ep.id,
-                  });
-                  setDone(false); setTtsReady(false); startedRef.current = false;
+                  clear(); // fully reset player state
+                  // Small delay to let clear() propagate, then load new episode
+                  setTimeout(() => {
+                    const filledText = fillTokens(ep.body || '', user ? profile : null);
+                    load({
+                      id: ep.id, title: ep.title, text: filledText,
+                      wordCount: filledText.split(/\s+/).length,
+                      estimatedMinutes: ep.durationMinutes, value: ep.value || 'courage',
+                      language: profile?.language || 'English', voice: 'AI Narrator',
+                      tradition: ep.tradition, source: ep.source,
+                      createdAt: new Date().toISOString(), isWisdom: true,
+                      seriesId: sid, episodeId: ep.id,
+                    });
+                    setDone(false); setTtsReady(false); startedRef.current = false;
+                  }, 100);
                 }}
                 className="mt-4 w-full rounded-2xl bg-gold py-4 text-base font-bold text-bg-base shadow-glow"
               >
