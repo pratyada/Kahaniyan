@@ -27,6 +27,7 @@ export default function StoryTile({ lesson, imageUrl, onPlay }) {
       {(imageUrl || art.image) && (
         <img src={imageUrl || art.image} alt=""
           className="absolute inset-0 h-full w-full object-cover transition-transform duration-500 group-hover:scale-110"
+          loading="lazy" decoding="async"
           onError={(e) => { e.target.style.display = 'none'; }} />
       )}
       {/* Dark overlay */}

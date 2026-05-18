@@ -1,6 +1,6 @@
 // Home — Netflix/Pocket FM style content browser.
 
-import { useMemo, useState } from 'react';
+import { useMemo, useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import PageTransition from '../components/PageTransition.jsx';
@@ -35,6 +35,21 @@ export default function Home() {
 
   const [createOpen, setCreateOpen] = useState(false);
   const [activeTheme, setActiveTheme] = useState('compassion-animals');
+  const [visibleCollections, setVisibleCollections] = useState(3);
+
+  // Load more collections as user scrolls
+  useEffect(() => {
+    if (collectionId) return;
+    const handleScroll = () => {
+      const scrollBottom = window.innerHeight + window.scrollY;
+      const docHeight = document.documentElement.scrollHeight;
+      if (scrollBottom > docHeight - 800 && visibleCollections < COLLECTIONS.length) {
+        setVisibleCollections(v => Math.min(v + 2, COLLECTIONS.length));
+      }
+    };
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, [visibleCollections, collectionId]);
 
   const beliefs = profile?.beliefs || [];
   const age = profile?.age || 6;
@@ -201,8 +216,8 @@ export default function Home() {
         )}
       </section>
 
-      {/* 4-11. Collections (normal home view) */}
-          {COLLECTIONS.map((col) => (
+      {/* 4-11. Collections (lazy-loaded as user scrolls) */}
+          {COLLECTIONS.slice(0, visibleCollections).map((col) => (
             <ShelfSection key={col.id} title={col.title} subtitle={col.subtitle}>
               <ShelfRow>
                 {col.stories.map((story) => (
