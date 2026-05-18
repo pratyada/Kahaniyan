@@ -519,4 +519,167 @@ That night, {childName}, remember Pluto. Being small does not mean being unimpor
       },
     ],
   },
+  {
+    id: 'rainbow-kindergarten',
+    title: 'Rainbow Kindergarten Adventures',
+    icon: '🌈',
+    gradient: 'linear-gradient(135deg, #7c3aed 0%, #f472b6 50%, #fbbf24 100%)',
+    description: 'The Rainbow batch from JLPS explores Toronto — shapes at Canoe Landing, a concert, and a hike at Evergreen Brick Works.',
+    ageRange: '4-6',
+    totalEpisodes: 3,
+    episodes: [
+      {
+        id: 'rk_ep1_canoe', episodeNumber: 1, title: 'Shapes at Canoe Landing',
+        subtitle: 'The Rainbow batch visits Canoe Landing Park and discovers shapes everywhere.',
+        tradition: 'universal', theme: 'wisdom', durationMinutes: 5,
+        source: 'Rainbow Kindergarten · Episode 1',
+        body: `It was a Tuesday morning and the Rainbow batch was buzzing. Ms. Patel clapped twice. "Line up, Rainbow class! Today we're walking to Canoe Landing Park!"
+
+Twenty little backpacks bounced out the door of JLPS. {childName} was near the front, holding the buddy rope with one hand and pointing at everything with the other.
+
+"Look! A triangle!" {childName} shouted, pointing at a rooftop.
+
+Ms. Patel smiled. "That's right! Today's mission: find every shape you can at the park. Circles, triangles, squares, rectangles — and if you find a shape that has NO name, you get to name it yourself."
+
+Canoe Landing Park was just a short walk away. The moment they arrived, the shapes were everywhere.
+
+{childName} found a circle first — the big round fountain in the middle of the park. The water spun in circles inside a circle. "A circle inside a circle is still a circle," {childName} said. Ms. Patel wrote that down.
+
+Then Aarav found the giant red canoe sculpture. "It's a... half oval?" he said, tilting his head. "Or a crescent? Or a BOAT shape?"
+
+"Boat shape!" the class yelled together. That became the official name. Ms. Patel wrote it in the class notebook: BOAT SHAPE — discovered by Aarav.
+
+Priya found rectangles in the wooden benches. Rohan found triangles in the climbing structure. Meera found hexagons in the concrete tiles on the ground. "Six sides!" she counted on her fingers.
+
+But {childName} was looking for something special. Not circles or squares. Something nobody had found yet.
+
+Near the edge of the park, where the grass met the sidewalk, {childName} looked down and saw it: a shadow. The shadow of a tree branch on the ground. It wasn't a circle. It wasn't a square. It was a wobbly, stretchy, wiggly shape that changed every time the wind blew.
+
+"Ms. Patel! I found a shape!"
+
+"What shape is it?"
+
+{childName} thought very carefully. "It's a... WIND shape. It only exists when the wind blows."
+
+Ms. Patel kneeled down. "You know what, {childName}? I think you just discovered something. Some shapes don't stay still. They move. They change. And they're only there if you're paying attention."
+
+She wrote in the notebook: WIND SHAPE — discovered by {childName}. Only visible to those who look carefully.
+
+On the walk back, {childName} kept looking down at shadows. Each one was different. Each one moved. Each one was a shape that would never exist again.
+
+That night, {childName}, remember the Wind Shape. The world is full of things that most people walk right past. Shapes in shadows. Patterns in puddles. Pictures in clouds. The best discoveries don't need a name. They just need someone who stops to look.`,
+      },
+      {
+        id: 'rk_ep2_concert', episodeNumber: 2, title: 'What a Wonderful World',
+        subtitle: 'The Rainbow batch performs their first concert — and one kid almost doesn\'t sing.',
+        tradition: 'universal', theme: 'courage', durationMinutes: 5,
+        source: 'Rainbow Kindergarten · Episode 2',
+        body: `The Rainbow batch had been practicing for three weeks. The Spring Concert. One song. Four minutes. Every parent in the audience.
+
+The song was "What a Wonderful World."
+
+Ms. Patel had given every child a part. Some sang the words. Some played shakers. Some held up painted pictures of trees, skies, and rainbows at the right moment.
+
+{childName} had the most important part: the opening line. Alone. Into the microphone. Before anyone else started.
+
+"I see trees of green... red roses too..."
+
+In practice, {childName} sang it perfectly. Every time. Loud and clear. Ms. Patel said: "You have a gift, {childName}."
+
+But today was different. Today the gym was full. Hundreds of eyes. Cameras. Grandparents in the front row. Mummies wiping tears before the song even started.
+
+{childName} peeked through the curtain. So. Many. People.
+
+"I can't do it," {childName} whispered to {sibling}'s friend Aarav, who was standing next to the curtain holding a painted rainbow.
+
+"Why not?"
+
+"What if I forget the words?"
+
+Aarav thought about this. "Then just hum. Nobody will know the difference."
+
+Ms. Patel gathered the Rainbow batch behind the curtain. "Listen. This is not about being perfect. This is about being together. When you walk out there, look at ME. Not the audience. Just me. And sing like we're in our classroom."
+
+The curtain opened. The lights were bright. The gym was silent.
+
+{childName} walked to the microphone. Two hundred people. Cameras. Silence.
+
+{childName} looked at the audience. Too many eyes. Throat tight. Words gone.
+
+Then {childName} looked at Ms. Patel. Standing at the side. Smiling. Mouthing the first word silently: "I..."
+
+"I see trees of green," {childName} sang. Quietly at first. Then louder. "Red roses too. I see them bloom... for me and you."
+
+The shakers started. The painted pictures went up. Twenty voices joined in: "And I think to myself... what a wonderful world."
+
+{childName}'s voice was not the loudest. But it was the first. And sometimes, being the one who starts — even when you're scared — is the bravest thing of all.
+
+After the concert, Mummy hugged {childName} so tight. "You were wonderful."
+
+"I almost didn't sing."
+
+"But you did. That's all that matters."
+
+That night, {childName}, remember the Spring Concert. Being brave is not about being perfect. It's about starting. Even when your voice shakes. Even when there are two hundred eyes. Even when the words almost don't come. You start. And the rest follows.`,
+      },
+      {
+        id: 'rk_ep3_brickworks', episodeNumber: 3, title: 'The Hike at Brick Works',
+        subtitle: 'The Rainbow batch explores Evergreen Brick Works — turtles, birds, bats, and a home made of sticks.',
+        tradition: 'universal', theme: 'compassion-animals', durationMinutes: 6,
+        source: 'Rainbow Kindergarten · Episode 3',
+        body: `The yellow school bus rumbled down Bayview Avenue. The Rainbow batch pressed their faces against the windows. "Are we there yet? Are we there yet?"
+
+Evergreen Brick Works appeared like a hidden world — old brick buildings covered in ivy, a pond shining in the sun, and trails disappearing into tall trees.
+
+"Today," said the nature guide, whose name was Turtle Tom, "we are going to learn how animals build their homes. And then YOU are going to build one too."
+
+The class gasped. BUILD a home? Out of STICKS?
+
+The hike started on the forest trail. Within five minutes, Turtle Tom stopped. "Look down. Very carefully."
+
+{childName} looked. On a flat rock near the pond, a small turtle was sunbathing. Its shell was dark green with yellow stripes. It was no bigger than {childName}'s hand.
+
+"This is a Midland Painted Turtle," said Turtle Tom. "She's been coming to this exact rock for maybe fifteen years. This is her home."
+
+"But it's just a rock," said Aarav.
+
+"Home isn't always a building. For this turtle, home is a warm rock by a safe pond. She lays her eggs in the sandy soil over there." He pointed to a small roped-off area. "We protect that area so nobody steps on the eggs. Each egg is smaller than a grape. If even one person walks there..."
+
+The class went silent. Twenty children suddenly looking at their own feet, making sure they were nowhere near the sand.
+
+Further up the trail, Turtle Tom pointed to a tree with a small hole. "Hear that?" A faint chirping. "Baby birds. A Black-capped Chickadee built her nest inside that hole. She pulled fur from animals, bits of moss, even spider silk to make it soft."
+
+"Spider silk?" {childName} whispered, amazed.
+
+"The softest building material in nature. She's a better architect than most humans."
+
+At the next stop, they looked UP. High in a dead tree, hanging upside down in a crack: bats. Three little brown bats, sleeping.
+
+"Bats sleep all day and fly all night," Turtle Tom said. "They eat thousands of mosquitoes. Without bats, this park would be unbearable in summer."
+
+Priya shuddered. "But they're scary."
+
+"They're shy," said Turtle Tom. "They've never once bothered a human. They just hang there, sleep, and eat bugs. Pretty good neighbors, honestly."
+
+After the hike, Turtle Tom brought the class to a clearing. "Now it's YOUR turn. Build a home. Using only sticks, leaves, and mud. A home big enough for a small animal to hide in."
+
+The Rainbow batch exploded into action. {childName} and Aarav teamed up. They found long sticks and leaned them against a log, making a triangle — a tent shape. They filled the gaps with leaves. They packed mud on the bottom to keep out rain.
+
+Meera's group built a circle of stones with a stick roof. Priya's group dug a shallow hole and covered it with bark — "like the turtle," Priya said.
+
+When they finished, Turtle Tom inspected each one. He placed a small stuffed animal inside each shelter to see if it would stay dry, warm, and hidden.
+
+{childName}'s shelter passed. The stuffed rabbit inside was dry, warm, and invisible from outside.
+
+"You know what you just did?" Turtle Tom said. "You thought like an animal. You asked: what does this creature NEED? Not what looks pretty. What keeps it safe."
+
+On the bus ride home, {childName} pressed against the window again. But this time, instead of looking at buildings and cars, {childName} looked at trees. And saw holes where birds might live. Saw rocks where turtles might rest. Saw cracks where bats might sleep.
+
+The whole city was full of tiny homes. You just had to know where to look.
+
+That night, {childName}, remember the hike at Brick Works. Every creature on Earth needs the same thing you need: a safe place to rest. A warm spot. A home. The turtle's home is a rock. The bird's home is a hole lined with spider silk. The bat's home is a crack in a dead tree. And your home is wherever the people who love you are. Protect every home you find — no matter how small. Because to someone tiny, that rock is everything.`,
+      },
+    ],
+  },
 ];
+
