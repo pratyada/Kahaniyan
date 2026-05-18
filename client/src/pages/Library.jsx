@@ -187,37 +187,7 @@ export default function Library() {
               Write them here — we'll narrate them for thousands of kids.
               Earn credits for every listen.
             </p>
-            {user && credits > 0 && (
-              <div className="mt-3 inline-flex items-center gap-2 rounded-full bg-gold/10 px-3 py-1">
-                <span className="text-xs font-bold text-gold">{credits} credits earned</span>
-              </div>
-            )}
           </div>
-
-          {/* My stories (if logged in) */}
-          {user && myStories.length > 0 && (
-            <div className="mb-5">
-              <h3 className="text-xs font-bold text-ink-muted uppercase tracking-wider mb-2">My Creations ({myStories.length})</h3>
-              <div className="space-y-2">
-                {myStories.map((s) => (
-                  <div key={s.id} className="flex items-center gap-3 rounded-xl bg-bg-surface p-3 ring-1 ring-white/5">
-                    <div className="min-w-0 flex-1">
-                      <p className="text-sm font-bold text-ink truncate">{s.title}</p>
-                      <p className="text-[10px] text-ink-muted">{s.tradition} · {s.body?.split(/\s+/).length || 0} words</p>
-                    </div>
-                    <span className={`shrink-0 rounded-full px-2 py-0.5 text-[9px] font-bold ${
-                      s.status === 'published' ? 'bg-green-500/10 text-green-400' :
-                      s.status === 'rejected' ? 'bg-red-500/10 text-red-400' :
-                      'bg-gold/10 text-gold'
-                    }`}>{s.status}</span>
-                    {s.status === 'published' && (
-                      <span className="text-[10px] text-ink-muted">{s.views || 0} plays</span>
-                    )}
-                  </div>
-                ))}
-              </div>
-            </div>
-          )}
 
           {/* Submission form — available to all, but submit requires login */}
           <div className="space-y-4">
