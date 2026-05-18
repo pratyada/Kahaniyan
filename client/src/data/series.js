@@ -530,44 +530,54 @@ That night, {childName}, remember Pluto. Being small does not mean being unimpor
     episodes: [
       {
         id: 'rk_ep1_canoe', episodeNumber: 1, title: 'Shapes at Canoe Landing',
-        subtitle: 'The Rainbow batch visits Canoe Landing Park and discovers shapes everywhere.',
+        subtitle: 'Mr. Zak and Shelagh take the Rainbow batch on a community walk to find shapes.',
         tradition: 'universal', theme: 'wisdom', durationMinutes: 5,
         source: 'Rainbow Kindergarten · Episode 1',
-        body: `It was a Tuesday morning and the Rainbow batch was buzzing. Ms. Patel clapped twice. "Line up, Rainbow class! Today we're walking to Canoe Landing Park!"
+        body: `It was a Tuesday morning and the Rainbow batch was buzzing. Mr. Zak clapped twice and Shelagh held up the buddy rope. "Rainbow class! Today is our community walk to Canoe Landing Park! We're going on a shape hunt!"
 
-Twenty little backpacks bounced out the door of JLPS. {childName} was near the front, holding the buddy rope with one hand and pointing at everything with the other.
+The parent volunteers were already lined up at the door — mums and dads with cameras and water bottles, ready to help. Twenty little backpacks bounced out the door of Jean Lumb Public School. {childName} grabbed the buddy rope near the front, eyes already scanning everything.
 
-"Look! A triangle!" {childName} shouted, pointing at a rooftop.
+"I see a rectangle!" {childName} shouted, pointing at a window on the building across the street.
 
-Ms. Patel smiled. "That's right! Today's mission: find every shape you can at the park. Circles, triangles, squares, rectangles — and if you find a shape that has NO name, you get to name it yourself."
+Mr. Zak grinned. "That's one! Today's mission: find every shape you can. Squares, rectangles, circles, triangles, rhombus, trapezium — and 3D shapes too. Spheres, cuboids, cylinders. If you spot one, shout it out!"
 
-Canoe Landing Park was just a short walk away. The moment they arrived, the shapes were everywhere.
+Shelagh added: "And parent volunteers — please take photos of every shape the kids find. We're making a shape book when we get back!"
 
-{childName} found a circle first — the big round fountain in the middle of the park. The water spun in circles inside a circle. "A circle inside a circle is still a circle," {childName} said. Ms. Patel wrote that down.
+The walk to Canoe Landing Park took just a few minutes. The moment they arrived, shapes were everywhere.
 
-Then Aarav found the giant red canoe sculpture. "It's a... half oval?" he said, tilting his head. "Or a crescent? Or a BOAT shape?"
+{childName} found a circle first — the round base of a lamp post. "Circle!" Then another circle — a drain cover in the ground. "Another circle! Circles are EVERYWHERE!"
 
-"Boat shape!" the class yelled together. That became the official name. Ms. Patel wrote it in the class notebook: BOAT SHAPE — discovered by Aarav.
+One of the students pointed at the football field. "Mr. Zak! The field is a rectangle!" Mr. Zak walked to the edge and held out his arms. "How do you know it's a rectangle and not a square?" The student thought hard. "Because it's longer this way than that way!" "Perfect," said Mr. Zak.
 
-Priya found rectangles in the wooden benches. Rohan found triangles in the climbing structure. Meera found hexagons in the concrete tiles on the ground. "Six sides!" she counted on her fingers.
+Shelagh gathered a group near the climbing structure. "Look at this bolt," she said, pointing at a hexagonal bolt on the railing. "How many sides?" The kids counted together. "Six! Hexagon!"
 
-But {childName} was looking for something special. Not circles or squares. Something nobody had found yet.
+Then someone spotted the giant red canoe sculpture in the middle of the park. "What shape is THAT?" the kids asked.
 
-Near the edge of the park, where the grass met the sidewalk, {childName} looked down and saw it: a shadow. The shadow of a tree branch on the ground. It wasn't a circle. It wasn't a square. It was a wobbly, stretchy, wiggly shape that changed every time the wind blew.
+"It's like a... half oval?" one student said. "Or a crescent?"
 
-"Ms. Patel! I found a shape!"
+Mr. Zak laughed. "Some shapes are hard to name. And that's okay. In math, we sometimes call that a curved 3D shape."
 
-"What shape is it?"
+A parent volunteer knelt down near the concrete path tiles. "Hey kids, come look at this!" The tiles were arranged in a pattern — squares and triangles fitting together like a puzzle. "That's called a tessellation," Shelagh explained. "Shapes that fit together with no gaps."
 
-{childName} thought very carefully. "It's a... WIND shape. It only exists when the wind blows."
+{childName} was on a mission. Cylinder — found it in a rubbish bin. Sphere — found it in a ball left on the grass. Cuboid — the park bench seat was a perfect cuboid. Trapezium — the side view of a slide had a trapezium shape.
 
-Ms. Patel kneeled down. "You know what, {childName}? I think you just discovered something. Some shapes don't stay still. They move. They change. And they're only there if you're paying attention."
+Then {childName} looked up. Way up. The CN Tower rose above the downtown buildings like a giant needle poking the sky. "Mr. Zak! What shape is the CN Tower?"
 
-She wrote in the notebook: WIND SHAPE — discovered by {childName}. Only visible to those who look carefully.
+Mr. Zak looked up and smiled. "That's a great question. The base is a hexagon — six sides. The shaft is a cylinder. And the observation pod at the top? That's kind of a... what do you think?"
 
-On the walk back, {childName} kept looking down at shadows. Each one was different. Each one moved. Each one was a shape that would never exist again.
+{childName} squinted. "A sphere? No... a disc. A flat cylinder!"
 
-That night, {childName}, remember the Wind Shape. The world is full of things that most people walk right past. Shapes in shadows. Patterns in puddles. Pictures in clouds. The best discoveries don't need a name. They just need someone who stops to look.`,
+"Brilliant," said Mr. Zak.
+
+The parent volunteers were snapping photos of everything — kids pointing at shapes, kids measuring things with their hands, kids lying on the ground looking at tiles. One parent said: "I never noticed how many shapes are in this park until today."
+
+On the walk back to Jean Lumb Public School, the students counted shapes the whole way. Rectangles in doors. Squares in windows. Triangles in rooftops. Cylinders in pipes. Circles in wheels.
+
+Back in the classroom, Mr. Zak and Shelagh pinned the photos on the board. "Look what we found today," Shelagh said. "47 shapes. On one community walk. In one park."
+
+{childName} looked at the board and felt proud. The world was full of shapes — hiding in plain sight.
+
+That night, {childName}, remember the community walk. Math is not just in textbooks. It's in lamp posts and drain covers and park benches and the CN Tower. Shapes are the language the world is built in. And now you can read it — everywhere you look.`,
       },
       {
         id: 'rk_ep2_concert', episodeNumber: 2, title: 'What a Wonderful World',
@@ -578,13 +588,13 @@ That night, {childName}, remember the Wind Shape. The world is full of things th
 
 The song was "What a Wonderful World."
 
-Ms. Patel had given every child a part. Some sang the words. Some played shakers. Some held up painted pictures of trees, skies, and rainbows at the right moment.
+Mr. Zak and Shelagh had given every child a part. Some sang the words. Some played shakers. Some held up painted pictures of trees, skies, and rainbows at the right moment.
 
 {childName} had the most important part: the opening line. Alone. Into the microphone. Before anyone else started.
 
 "I see trees of green... red roses too..."
 
-In practice, {childName} sang it perfectly. Every time. Loud and clear. Ms. Patel said: "You have a gift, {childName}."
+In practice, {childName} sang it perfectly. Every time. Loud and clear. Mr. Zak said: "You have a gift, {childName}."
 
 But today was different. Today the gym was full. Hundreds of eyes. Cameras. Grandparents in the front row. Mummies wiping tears before the song even started.
 
@@ -598,7 +608,7 @@ But today was different. Today the gym was full. Hundreds of eyes. Cameras. Gran
 
 Aarav thought about this. "Then just hum. Nobody will know the difference."
 
-Ms. Patel gathered the Rainbow batch behind the curtain. "Listen. This is not about being perfect. This is about being together. When you walk out there, look at ME. Not the audience. Just me. And sing like we're in our classroom."
+Mr. Zak and Shelagh gathered the Rainbow batch behind the curtain. Mr. Zak said: "Listen. This is not about being perfect. This is about being together. When you walk out there, look at ME. Not the audience. Just me. And sing like we're in our classroom."
 
 The curtain opened. The lights were bright. The gym was silent.
 
@@ -606,7 +616,7 @@ The curtain opened. The lights were bright. The gym was silent.
 
 {childName} looked at the audience. Too many eyes. Throat tight. Words gone.
 
-Then {childName} looked at Ms. Patel. Standing at the side. Smiling. Mouthing the first word silently: "I..."
+Then {childName} looked at Mr. Zak. Standing at the side. Smiling. Mouthing the first word silently: "I..."
 
 "I see trees of green," {childName} sang. Quietly at first. Then louder. "Red roses too. I see them bloom... for me and you."
 
@@ -624,10 +634,10 @@ That night, {childName}, remember the Spring Concert. Being brave is not about b
       },
       {
         id: 'rk_ep3_brickworks', episodeNumber: 3, title: 'The Hike at Brick Works',
-        subtitle: 'The Rainbow batch explores Evergreen Brick Works — turtles, birds, bats, and a home made of sticks.',
+        subtitle: 'Mr. Zak and Shelagh take the Rainbow batch on a field trip to Evergreen Brick Works.',
         tradition: 'universal', theme: 'compassion-animals', durationMinutes: 6,
         source: 'Rainbow Kindergarten · Episode 3',
-        body: `The yellow school bus rumbled down Bayview Avenue. The Rainbow batch pressed their faces against the windows. "Are we there yet? Are we there yet?"
+        body: `The yellow school bus rumbled down Bayview Avenue. Mr. Zak and Shelagh sat at the front, counting heads. The Rainbow batch pressed their faces against the windows. "Are we there yet? Are we there yet?"
 
 Evergreen Brick Works appeared like a hidden world — old brick buildings covered in ivy, a pond shining in the sun, and trails disappearing into tall trees.
 
