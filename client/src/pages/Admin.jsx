@@ -3157,17 +3157,21 @@ function CollectionsPanel() {
           </select>
         </div>
 
-        {/* Generate buttons */}
+        {/* Generate buttons — big, clear, separate */}
         <div className="flex flex-wrap gap-2 items-center">
           <button onClick={() => bulkGenerate('audio')} disabled={bulkRunning || !!generating}
-            className="rounded-lg bg-[#7ad9a1] px-4 py-2 text-xs font-bold text-[#0a0a0f] disabled:opacity-30">
-            Generate Audio ({selected.size || filtered.filter(s => !urls[s.id]).length})
+            className="rounded-lg bg-[#7ad9a1] px-4 py-2.5 text-xs font-bold text-[#0a0a0f] disabled:opacity-30">
+            🔊 Generate Audio ({selected.size || filtered.filter(s => !urls[s.id]).length})
           </button>
           <button onClick={() => bulkGenerate('image')} disabled={bulkRunning || !!generating}
-            className="rounded-lg bg-[#539df5]/20 px-4 py-2 text-xs font-bold text-[#539df5] disabled:opacity-30">Gen Images</button>
+            className="rounded-lg bg-[#539df5] px-4 py-2.5 text-xs font-bold text-[#0a0a0f] disabled:opacity-30">
+            🖼️ Generate Images ({selected.size || filtered.filter(s => !imageUrls[s.id]).length})
+          </button>
           <button onClick={() => bulkGenerate('all')} disabled={bulkRunning || !!generating}
-            className="rounded-lg bg-[#f0a500]/10 px-4 py-2 text-xs font-bold text-[#f0a500] disabled:opacity-30">Audio + Images</button>
-          {bulkRunning && <button onClick={() => { bulkAbort.current = true; }} className="rounded-lg bg-red-400/10 px-3 py-2 text-xs font-bold text-red-400">Stop</button>}
+            className="rounded-lg bg-[#f0a500] px-4 py-2.5 text-xs font-bold text-[#0a0a0f] disabled:opacity-30">
+            All ({selected.size || filtered.filter(s => !urls[s.id] || !imageUrls[s.id]).length})
+          </button>
+          {bulkRunning && <button onClick={() => { bulkAbort.current = true; }} className="rounded-lg bg-red-400 px-4 py-2.5 text-xs font-bold text-[#0a0a0f]">⏹ Stop</button>}
         </div>
         {bulkProgress && <span className="text-[10px] text-[#7ad9a1]">{bulkProgress}</span>}
       </div>
