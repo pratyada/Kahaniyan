@@ -172,21 +172,21 @@ function wrapText(ctx, text, x, y, maxW, lineH) {
 // ── Share helpers ──
 
 export async function getStoryShareUrl(story, profile) {
-  // Use /api/share/ URL — serves dynamic OG tags for WhatsApp/iMessage previews
+  // Use mysleepytale.com domain — CloudFront routes /api/share to Lambda
+  // This gives clean branded URLs in WhatsApp instead of raw API Gateway
   const storyId = story?.id || '';
-  const apiBase = import.meta.env.VITE_API_BASE_URL || '';
-  const shareUrl = `${apiBase}/api/share?id=${storyId}`;
+  // Use player URL with storyId — WhatsApp shows OG tags from index.html
+  // The story loads from Firestore/local data when opened
+  const shareUrl = `https://mysleepytale.com/player?storyId=${storyId}`;
 
-  // Also save to Firestore for non-wisdom stories
-  if (!story?.isWisdom) {
-    try {
-      const { shareStoryToFirestore } = await import('./shareStory.js');
-      await shareStoryToFirestore(story, {
-        beliefs: profile?.beliefs || [],
-        country: profile?.country || '',
-      });
-    } catch {}
-  }
+  // Also save to Firestore so the story is accessible via shared link
+  try {
+    const { shareStoryToFirestore } = await import('./shareStory.js');
+    await shareStoryToFirestore(story, {
+      beliefs: profile?.beliefs || [],
+      country: profile?.country || '',
+    });
+  } catch {}
 
   return shareUrl;
 }

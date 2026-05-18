@@ -71,7 +71,8 @@ export function playLesson(lesson, profile, wisdomAudioUrls, loadPlayer, navigat
     incrementGuestPlays();
   }
 
-  const filledText = fillTokens(lesson.body, profile);
+  // Guest: use generic names, not the last logged-in child's name
+  const filledText = fillTokens(lesson.body, user ? profile : null);
   const pregenUrl = wisdomAudioUrls?.[lesson.id] || null;
   const story = {
     id: `lesson_${lesson.id}`,
