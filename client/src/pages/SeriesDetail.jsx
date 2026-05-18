@@ -1,5 +1,6 @@
 // Series detail page — shows all episodes with progress.
 
+import { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { Play, CheckCircle } from 'lucide-react';
@@ -19,6 +20,23 @@ export default function SeriesDetail() {
   const { user } = useAuth();
   const { profile } = useFamilyProfile();
   const { getSeriesProgress, isEpisodeComplete } = useSeriesProgress();
+  const [galleryImages, setGalleryImages] = useState({});
+  const [coverImages, setCoverImages] = useState({});
+
+  // Load gallery + cover images from Firestore
+  useEffect(() => {
+    (async () => {
+      try {
+        const { db } = await import('../lib/firebase.js');
+        if (!db) return;
+        const { doc, getDoc } = await import('firebase/firestore');
+        const galSnap = await getDoc(doc(db, 'config', 'wisdomGallery'));
+        if (galSnap.exists()) setGalleryImages(galSnap.data());
+        const imgSnap = await getDoc(doc(db, 'config', 'wisdomImages'));
+        if (imgSnap.exists()) setCoverImages(imgSnap.data());
+      } catch {}
+    })();
+  }, []);
 
   const series = SERIES.find((s) => s.id === seriesId);
   if (!series) {
@@ -59,12 +77,31 @@ export default function SeriesDetail() {
   // Find next episode to play
   const nextEpisode = series.episodes.find((ep) => !isEpisodeComplete(series.id, ep.id));
 
+  // Collect all gallery + cover images across episodes for collage
+  const allPhotos = series.episodes.flatMap(ep => {
+    const gallery = galleryImages[ep.id] || [];
+    const cover = coverImages[ep.id];
+    return cover && !gallery.includes(cover) ? [cover, ...gallery] : gallery;
+  });
+
   return (
     <PageTransition className="page-scroll safe-top">
-      {/* Hero header */}
-      <div className="relative overflow-hidden" style={{ minHeight: 240 }}>
-        <div className="absolute inset-0" style={{ background: series.gradient }} />
-        <div className="absolute inset-0 bg-gradient-to-t from-bg-base via-bg-base/60 to-transparent" />
+      {/* Hero header with photo collage */}
+      <div className="relative overflow-hidden" style={{ minHeight: allPhotos.length > 0 ? 280 : 240 }}>
+        {/* Photo collage background */}
+        {allPhotos.length > 0 ? (
+          <div className="absolute inset-0 grid gap-0.5" style={{
+            gridTemplateColumns: allPhotos.length >= 3 ? '1fr 1fr 1fr' : allPhotos.length === 2 ? '1fr 1fr' : '1fr',
+            gridTemplateRows: allPhotos.length > 3 ? '1fr 1fr' : '1fr',
+          }}>
+            {allPhotos.slice(0, 6).map((url, i) => (
+              <img key={i} src={url} alt="" className="h-full w-full object-cover" onError={(e) => { e.target.style.display = 'none'; }} />
+            ))}
+          </div>
+        ) : (
+          <div className="absolute inset-0" style={{ background: series.gradient }} />
+        )}
+        <div className="absolute inset-0 bg-gradient-to-t from-bg-base via-bg-base/70 to-bg-base/30" />
 
         <div className="relative px-5 pt-10 pb-6">
           <button onClick={() => navigate('/')}
@@ -137,40 +174,58 @@ export default function SeriesDetail() {
               initial={{ opacity: 0, y: 12 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: i * 0.08 }}
-              className={`w-full flex items-start gap-3 rounded-2xl p-4 text-left transition ${
-                isNext
-                  ? 'bg-gold/10 ring-1 ring-gold/30'
-                  : done
-                  ? 'bg-bg-surface/50 ring-1 ring-white/5'
-                  : 'bg-bg-surface ring-1 ring-white/5'
+              className={`w-full overflow-hidden rounded-2xl text-left transition ${
+                isNext ? 'ring-2 ring-gold/50' : 'ring-1 ring-white/5'
               }`}
             >
-              {/* Episode number */}
-              <div className={`grid h-10 w-10 shrink-0 place-items-center rounded-xl text-sm font-bold ${
-                done ? 'bg-gold/20 text-gold' : isNext ? 'bg-gold text-bg-base' : 'bg-white/5 text-ink-muted'
-              }`}>
-                {done ? <CheckCircle size={18} /> : ep.episodeNumber}
-              </div>
+              {/* Episode cover image */}
+              {(() => {
+                const epImg = coverImages[ep.id] || (galleryImages[ep.id] || [])[0];
+                return epImg ? (
+                  <div className="relative h-32 w-full">
+                    <img src={epImg} alt="" className="h-full w-full object-cover" onError={(e) => { e.target.style.display = 'none'; }} />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent" />
+                    <div className={`absolute top-2 left-2 grid h-7 w-7 place-items-center rounded-full text-[11px] font-bold ${
+                      done ? 'bg-gold text-bg-base' : 'bg-black/50 text-white backdrop-blur-sm'
+                    }`}>
+                      {done ? <CheckCircle size={14} /> : ep.episodeNumber}
+                    </div>
+                    <div className={`absolute bottom-2 right-2 grid h-9 w-9 place-items-center rounded-full ${
+                      isNext ? 'bg-gold text-bg-base' : 'bg-black/40 text-white backdrop-blur-sm'
+                    }`}>
+                      <Play size={14} fill="currentColor" />
+                    </div>
+                  </div>
+                ) : (
+                  <div className="relative h-24 w-full" style={{ background: series.gradient }}>
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
+                    <div className={`absolute top-2 left-2 grid h-7 w-7 place-items-center rounded-full text-[11px] font-bold ${
+                      done ? 'bg-gold text-bg-base' : 'bg-black/50 text-white'
+                    }`}>
+                      {done ? <CheckCircle size={14} /> : ep.episodeNumber}
+                    </div>
+                    <div className={`absolute bottom-2 right-2 grid h-9 w-9 place-items-center rounded-full ${
+                      isNext ? 'bg-gold text-bg-base' : 'bg-white/10 text-white'
+                    }`}>
+                      <Play size={14} fill="currentColor" />
+                    </div>
+                  </div>
+                );
+              })()}
 
-              {/* Content */}
-              <div className="flex-1 min-w-0">
+              {/* Content below image */}
+              <div className={`p-3 ${done ? 'bg-bg-surface/50' : isNext ? 'bg-gold/5' : 'bg-bg-surface'}`}>
                 <p className={`text-sm font-bold ${done ? 'text-ink-muted' : 'text-ink'}`}
                   style={{ fontFamily: 'Fraunces, serif' }}>
                   {ep.title}
                 </p>
-                <p className="text-[11px] text-ink-muted mt-0.5 line-clamp-1">{ep.subtitle}</p>
+                <p className="text-[10px] text-ink-muted mt-0.5 line-clamp-1">{ep.subtitle}</p>
                 <div className="mt-1.5 flex items-center gap-2 text-[9px] text-ink-dim">
                   <span>▶ {formatCount(plays)}</span>
                   <span>⭐ {rating}</span>
                   <span>{realDuration} min</span>
+                  {(galleryImages[ep.id] || []).length > 0 && <span>📷 {(galleryImages[ep.id] || []).length}</span>}
                 </div>
-              </div>
-
-              {/* Play icon */}
-              <div className={`grid h-9 w-9 shrink-0 place-items-center rounded-full ${
-                isNext ? 'bg-gold text-bg-base' : 'bg-white/5 text-ink-muted'
-              }`}>
-                <Play size={14} fill="currentColor" />
               </div>
             </motion.button>
           );
