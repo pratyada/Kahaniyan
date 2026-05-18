@@ -533,205 +533,101 @@ That night, {childName}, remember Pluto. Being small does not mean being unimpor
         subtitle: 'Mr. Zak and Shelagh take the Rainbow batch on a community walk to find shapes.',
         tradition: 'universal', theme: 'wisdom', durationMinutes: 5,
         source: 'Rainbow Kindergarten · Episode 1',
-        body: `It was a Tuesday morning and the Rainbow batch was buzzing. Mr. Zak clapped twice and Shelagh held up the buddy rope. "Rainbow class! Today is our community walk to Canoe Landing Park! We're going on a shape hunt!"
+        body: `Mr. Zak clapped twice and Shelagh held up the buddy rope. "Rainbow class! Community walk to Canoe Landing Park! We're going on a shape hunt!"
 
-The parent volunteers were already lined up at the door — mums and dads with cameras and water bottles, ready to help. Twenty little backpacks bounced out the door of Jean Lumb Public School. {childName} grabbed the buddy rope near the front, eyes already scanning everything.
+Twenty backpacks bounced out the door of Jean Lumb Public School. Parent volunteers had cameras ready. {childName} grabbed the buddy rope, eyes scanning everything.
 
-"I see a rectangle!" {childName} shouted, pointing at a window on the building across the street.
+"I see a rectangle!" {childName} shouted, pointing at a window.
 
-Mr. Zak grinned. "That's one! Today's mission: find every shape you can. Squares, rectangles, circles, triangles, rhombus, trapezium — and 3D shapes too. Spheres, cuboids, cylinders. If you spot one, shout it out!"
+"That's one!" said Mr. Zak. "Find every shape you can — squares, rectangles, circles, triangles, rhombus, trapezium, and 3D shapes too — spheres, cuboids, cylinders!"
 
-Shelagh added: "And parent volunteers — please take photos of every shape the kids find. We're making a shape book when we get back!"
+At the park, shapes were everywhere. {childName} found circles in lamp posts and drain covers. Someone spotted the football field. "It's a rectangle!" Mr. Zak asked: "How do you know it's not a square?" "Because it's longer this way than that way!"
 
-The walk to Canoe Landing Park took just a few minutes. The moment they arrived, shapes were everywhere.
+Shelagh pointed at a hexagonal bolt. "How many sides?" "Six! Hexagon!"
 
-{childName} found a circle first — the round base of a lamp post. "Circle!" Then another circle — a drain cover in the ground. "Another circle! Circles are EVERYWHERE!"
+The giant red canoe sculpture stumped everyone. "It's a curved 3D shape," Mr. Zak said. "Some shapes are hard to name — and that's okay."
 
-One of the students pointed at the football field. "Mr. Zak! The field is a rectangle!" Mr. Zak walked to the edge and held out his arms. "How do you know it's a rectangle and not a square?" The student thought hard. "Because it's longer this way than that way!" "Perfect," said Mr. Zak.
+{childName} went on a mission. Cylinder — the rubbish bin. Sphere — a ball on the grass. Cuboid — the park bench. Trapezium — the side of a slide.
 
-Shelagh gathered a group near the climbing structure. "Look at this bolt," she said, pointing at a hexagonal bolt on the railing. "How many sides?" The kids counted together. "Six! Hexagon!"
+Then {childName} looked up at the CN Tower rising above downtown. "What shape is that, Mr. Zak?"
 
-Then someone spotted the giant red canoe sculpture in the middle of the park. "What shape is THAT?" the kids asked.
+"The base is a hexagon. The shaft is a cylinder. And the pod at the top?"
 
-"It's like a... half oval?" one student said. "Or a crescent?"
-
-Mr. Zak laughed. "Some shapes are hard to name. And that's okay. In math, we sometimes call that a curved 3D shape."
-
-A parent volunteer knelt down near the concrete path tiles. "Hey kids, come look at this!" The tiles were arranged in a pattern — squares and triangles fitting together like a puzzle. "That's called a tessellation," Shelagh explained. "Shapes that fit together with no gaps."
-
-{childName} was on a mission. Cylinder — found it in a rubbish bin. Sphere — found it in a ball left on the grass. Cuboid — the park bench seat was a perfect cuboid. Trapezium — the side view of a slide had a trapezium shape.
-
-Then {childName} looked up. Way up. The CN Tower rose above the downtown buildings like a giant needle poking the sky. "Mr. Zak! What shape is the CN Tower?"
-
-Mr. Zak looked up and smiled. "That's a great question. The base is a hexagon — six sides. The shaft is a cylinder. And the observation pod at the top? That's kind of a... what do you think?"
-
-{childName} squinted. "A sphere? No... a disc. A flat cylinder!"
+{childName} squinted. "A flat cylinder!"
 
 "Brilliant," said Mr. Zak.
 
-The parent volunteers were snapping photos of everything — kids pointing at shapes, kids measuring things with their hands, kids lying on the ground looking at tiles. One parent said: "I never noticed how many shapes are in this park until today."
+Parent volunteers snapped photos of everything. Back at Jean Lumb, Shelagh pinned them on the board. "47 shapes. One walk. One park."
 
-On the walk back to Jean Lumb Public School, the students counted shapes the whole way. Rectangles in doors. Squares in windows. Triangles in rooftops. Cylinders in pipes. Circles in wheels.
-
-Back in the classroom, Mr. Zak and Shelagh pinned the photos on the board. "Look what we found today," Shelagh said. "47 shapes. On one community walk. In one park."
-
-{childName} looked at the board and felt proud. The world was full of shapes — hiding in plain sight.
-
-That night, {childName}, remember the community walk. Math is not just in textbooks. It's in lamp posts and drain covers and park benches and the CN Tower. Shapes are the language the world is built in. And now you can read it — everywhere you look.`,
+That night, {childName}, remember the community walk. Math is not just in textbooks. It's in lamp posts and park benches and the CN Tower. Shapes are the language the world is built in. And now you can read it — everywhere you look.`,
       },
       {
         id: 'rk_ep2_concert', episodeNumber: 2, title: 'What a Wonderful World',
         subtitle: 'The Rainbow batch performs their first concert at Jean Lumb PS.',
         tradition: 'universal', theme: 'courage', durationMinutes: 5,
         source: 'Rainbow Kindergarten · Episode 2',
-        body: `The Rainbow batch had been practicing for three weeks. Their very first concert at Jean Lumb Public School. One song. Four minutes. Every parent, grandparent, and sibling in the audience.
+        body: `The Rainbow batch had been practicing for three weeks. Their very first concert at Jean Lumb Public School. The song: "What a Wonderful World."
 
-The song was "What a Wonderful World" — and Mr. Zak had told them why they chose it. "This song was written by Louis Armstrong," he said. "He wanted to remind people that even when the world feels big and busy, there is beauty everywhere. Trees, skies, rainbows, friends. That's what we want to share with our families tonight."
+Mr. Zak told them why they chose it. "Louis Armstrong wrote this to remind us there is beauty everywhere — trees, skies, rainbows, friends. That's what we want to share tonight."
 
-For two weeks, the Rainbow batch had been working on something special: their hats. Each child had made a globe hat — a round hat with planet Earth painted in the centre, covered in blue oceans and green continents. Some had glitter. Some had stickers of clouds. {childName}'s hat had a tiny gold star on top, because "Earth deserves a star."
+Each child had made a special globe hat — planet Earth painted on a round hat, covered in blue oceans and green continents. {childName} had a hat that had a tiny gold star on top.
 
-Mr. Zak and Shelagh had arranged the class in three rows on the stage. The tallest kids in the back, the smallest in the front. Everyone wearing their Earth hats. Twenty little globes on twenty little heads.
+Mr. Zak and Shelagh arranged the class in three rows on stage. Twenty little globes on twenty little heads.
 
-Behind the curtain, {childName}'s heart was pounding. Through a gap in the fabric, {childName} could see the gym. It was FULL. Hundreds of parents sitting in rows. Cameras out. Phones up. Grandparents in the front row already dabbing their eyes, and the show hadn't even started yet.
+Behind the curtain, {childName} felt a heart was pounding. The gym was FULL. Hundreds of parents. Cameras. Grandparents already crying.
 
 "I'm nervous," {childName} whispered.
 
-Mr. Zak kneeled down to {childName}'s level. "You know what? I'm nervous too. Every single time. But here's the secret — when we sing together, the nervousness turns into something else. It turns into magic. Trust me."
+Mr. Zak kneeled down. "Me too. Every time. But when we sing together, nervousness turns into magic."
 
-Shelagh adjusted a few hats, straightened a few collars, and gave everyone a thumbs up. "Remember your actions. When we sing 'trees of green,' we sway like trees. When we sing 'skies of blue,' we point up. When we sing 'wonderful world,' we open our arms wide. Mr. Zak and I will be right there doing the actions with you."
+Shelagh said: "Remember your actions. 'Trees of green' — sway like trees. 'Skies of blue' — point up. 'Wonderful world' — arms wide open. We'll do the actions with you."
 
-The curtain opened.
+The curtain opened. The gym went silent.
 
-The lights were warm and bright. The gym went silent. Hundreds of eyes looked at twenty children in Earth hats, standing in three rows, looking both terrified and beautiful.
+The Rainbow batch began to sing. "I see trees of green... red roses too..." Twenty voices, some loud, some whispery, all together. Mr. Zak did every action from the side. Shelagh mouthed every word from the other side.
 
-Mr. Zak raised his hand. The music started — gentle, slow, the opening chords filling the gym.
+"And I think to myself..." The class paused, then — arms wide open — "WHAT A WONDERFUL WORLD."
 
-And the Rainbow batch began to sing.
+Some hats were crooked. One had slipped over a child's eyes. Nobody cared. It was perfect.
 
-"I see trees of green... red roses too..." Twenty small voices, some loud, some whispery, all together. They swayed like trees, just as Shelagh had taught them.
-
-"I see them bloom... for me and you..." {childName} could see Mummy in the third row, holding up a phone with one hand and wiping a tear with the other.
-
-"And I think to myself..." The whole class paused, just like they had practised, and then — together, arms wide open — "WHAT A WONDERFUL WORLD."
-
-Mr. Zak was doing every action alongside them from the side of the stage. Shelagh was mouthing every word from the other side. The kids looked at their teachers, not the crowd, and sang like they were back in their classroom.
-
-"The colours of the rainbow... so pretty in the sky..." The children pointed at their Earth hats. Some hats were slightly crooked. One had slipped over a child's eyes. Nobody cared. It was perfect.
-
-"Are also on the faces... of people going by..." The kids waved at the audience. The audience waved back. Someone in the back row laughed — the good kind of laugh, the kind that comes from pure joy.
-
-The final notes played. The Rainbow batch held their last pose — arms wide, Earth hats on, twenty little globes facing the world.
-
-Silence.
-
-Then the gym ERUPTED. Every parent stood up. Clapping, cheering, crying. Phones still recording. Grandparents openly weeping. Someone shouted: "BRAVO!"
-
-Mr. Zak wiped his eyes quickly — he thought nobody saw, but {childName} saw. Shelagh was clapping alongside the parents.
-
-Backstage, the Rainbow batch jumped up and down. "We did it! We did it!"
-
-{childName}'s hat had slipped sideways during the performance. The gold star was hanging over one ear. But Mummy said it was the most beautiful thing she had ever seen.
+The final note played. Silence. Then the gym ERUPTED. Every parent standing, clapping, crying. Mr. Zak wiped his eyes.
 
 "You were wonderful," Mummy said.
 
 "We ALL were," {childName} said.
 
-That night, {childName}, remember the concert. Twenty kids in homemade Earth hats sang one song about a wonderful world — and for four minutes, every person in that gym believed it. You don't need to be perfect to make something beautiful. You just need to show up, wear your hat, and sing with your whole heart.
-
-That night, {childName}, remember the Spring Concert. Being brave is not about being perfect. It's about starting. Even when your voice shakes. Even when there are two hundred eyes. Even when the words almost don't come. You start. And the rest follows.`,
+That night, {childName}, remember the concert. Twenty kids in homemade Earth hats sang one song — and for four minutes, every person believed the world was wonderful. You do not need to be perfect. You just need to show up and sing with your whole heart.`,
       },
       {
         id: 'rk_ep3_brickworks', episodeNumber: 3, title: 'The Field Trip to Brick Works',
         subtitle: 'The first field trip! Two classes board the yellow bus for Evergreen Brick Works.',
         tradition: 'universal', theme: 'compassion-animals', durationMinutes: 6,
         source: 'Rainbow Kindergarten · Episode 3',
-        body: `This was it. The first REAL field trip. Not a community walk. A FIELD TRIP. With a yellow school bus.
+        body: `The first REAL field trip! At 9:15, two kindergarten classes boarded the yellow school bus outside Jean Lumb Public School. Mr. Zak and Shelagh counted heads. Two parent volunteers wore orange vests.
 
-At 9:15 in the morning, two kindergarten classes lined up outside Jean Lumb Public School. The Rainbow batch and the other kindergarten class — almost forty kids in total. Mr. Zak and Shelagh were at the front, holding clipboards and counting heads. Two parent volunteers were there too, wearing bright orange safety vests and carrying first aid kits.
+The bus rumbled down Bayview Avenue. {childName} had wide eyes — the seats were bouncy, the windows were huge, the engine rumbled like a sleeping dinosaur.
 
-"Has everyone got their lunch? Water bottle? Buddy?" Mr. Zak called out.
+Evergreen Brick Works appeared like a hidden world — a 130-year-old brick factory turned nature park, with ivy-covered buildings and paths disappearing into the Toronto ravines.
 
-"YES MR. ZAK!" forty voices shouted.
+First: building homes with sticks. The guides said: "Animals use what nature gives them — sticks, leaves, mud. Build a shelter for a small animal!" {childName} leaned sticks against a log to make a tent shape, stuffed leaves in the gaps, and packed mud at the bottom. Mr. Zak showed how crossing sticks in an X makes roofs stronger.
 
-The yellow school bus pulled up. {childName}'s eyes went wide. It was enormous. And yellow. SO yellow. The doors opened with a loud PSSSHHH and the stairs looked like they went up forever.
+After lunch came the turtle conservatory. Two real Midland Painted Turtles sat inside — dark green shells with yellow and red markings. "They lay eggs in sandy soil," the guide said. "Each egg is smaller than a grape."
 
-{childName} climbed aboard. The seats were high and bouncy. The windows were huge. The engine rumbled underneath like a sleeping dinosaur. This was the best thing that had ever happened.
+"Would you like to touch one? One finger only."
 
-The bus rumbled down Bayview Avenue. Kids bouncing in their seats. Parent volunteers counting heads again. Mr. Zak and Shelagh sitting near the front, going over the schedule. "Stick building first, then lunch, then the turtle conservatory, then the nature walk around the pond."
+{childName} reached out and touched the shell. Hard, smooth, warm. The turtle blinked slowly. "I touched a TURTLE," {childName} whispered.
 
-Evergreen Brick Works appeared through the trees like a hidden world. It was a 130-year-old brick factory that had been turned into a nature park — old brick buildings covered in green ivy, tall chimneys reaching into the sky, and paths disappearing into Toronto's beautiful ravines.
+The group split in two for a walk around the pond. The group spotted Turtle Island — more than thirty turtles sunbathing, piled on rocks. "They're cold-blooded," the guide said. "Even turtles know how to share."
 
-Two nature guides were waiting at the entrance. "Welcome, Jean Lumb!" they said. "Today you're going to learn how animals build their homes — and then YOU are going to build one too."
+They saw the bat house — hundreds of bats sleeping inside. "They eat thousands of mosquitoes. Best neighbours ever." Then the guide pointed at a plant with three shiny leaves. "Poison ivy. THREE leaves — let it BE!"
 
-The kids gasped. BUILD a home?
-
-The guides led them to a clearing in the forest. "Animals don't have hammers or nails," one guide explained. "They use what nature gives them: sticks, leaves, mud, bark, moss. Your job: build a shelter big enough for a small animal to hide in. You can only use things you find on the ground."
-
-The Rainbow batch exploded into action. {childName} found long sticks and leaned them against a fallen log, making a triangle shape — like a tent. Other kids stuffed leaves into the gaps to block wind. Someone packed mud along the bottom to keep out rain. Shelagh helped one group weave thin branches together. Mr. Zak showed another group how to make the roof stronger by crossing sticks in an X pattern.
-
-"Why are sticks so important?" Mr. Zak asked.
-
-"Because they're strong AND bendy!" {childName} said.
-
-"Exactly. Nature's building material. Free, everywhere, and perfectly designed."
-
-The guides inspected each shelter and gave every team a thumbs up. "You just thought like an animal," they said. "You asked: what does this creature NEED? Not what looks pretty. What keeps it safe."
-
-After all that building, everyone was hungry. The kids sat on logs and benches and ate their lunches in the sunshine. Sandwiches, juice boxes, apple slices. Parent volunteers passed out extra water. {childName} traded a cookie for a cheese stick. Fair deal.
-
-After lunch came the part everyone had been waiting for: the turtle conservatory.
-
-The group walked into a special indoor area where the Evergreen team cared for turtles. Two real Midland Painted Turtles were there — their shells dark green with bright yellow and red markings.
-
-"These turtles have been living in the Don Valley for years," the guide said. "We protect them here because their habitat is shrinking. They lay their eggs in sandy soil near the pond, and if people walk on that area, the eggs get crushed. Each egg is smaller than a grape."
-
-The room went quiet. Forty kids suddenly VERY aware of their feet.
-
-"Now — would you like to touch one?"
-
-The room went UN-quiet. "YES!"
-
-"One finger only. Gently. On the shell."
-
-One by one, the kids stepped forward. Some were nervous. Some were excited. Some were both — what {childName} called "nexcited."
-
-{childName} reached out one finger and touched the turtle's shell. It was hard and smooth and warm. The turtle didn't move. It just blinked slowly, as if to say: "I've been here for thirty years. You're fine."
-
-"I touched a turtle," {childName} whispered. "I actually touched a TURTLE."
-
-Then came the nature walk around the pond. The group split into two: one group went left around the pond with Mr. Zak and a parent volunteer, the other went right with Shelagh and the guides.
-
-{childName}'s group went right. Within minutes, they spotted Turtle Island — a small rocky island in the middle of the pond where more than thirty turtles were sunbathing. Painted turtles, Snapping turtles, tiny baby turtles stacked on top of big ones.
-
-"Turtles are cold-blooded," the guide explained. "They need the sun to warm up. That's why they pile on those rocks. It's their version of a hot bath."
-
-"Why do they pile on top of each other?" someone asked.
-
-"Because there are more turtles than rocks. They share. Even turtles know how to share."
-
-The guide pointed out how mother turtles dig nests in the sandy banks, lay their eggs, and then LEAVE. "The babies hatch on their own and crawl to the water by themselves. No mummy to help. That's how tough baby turtles are."
-
-Further along the trail, the group stopped at the bat house — a tall wooden box on a pole. "Hundreds of bats sleep inside during the day," the guide said. "At night, they fly out and eat thousands of mosquitoes. Without bats, summer in Toronto would be unbearable."
-
-Some kids thought bats were scary. The guide said: "They're actually very shy. They've never once bothered a human. They just sleep, fly, and eat bugs. Best neighbours you could ask for."
-
-Then the guide pointed at a plant with three shiny leaves. "See that? That's poison ivy. THREE leaves — let it BE. Never touch it. It makes your skin very itchy and red."
-
-Everyone took three steps back. Mr. Zak took a photo of it. "Good to know what it looks like so you can avoid it," he said.
-
-The group also saw wildflowers, ferns, and herbs growing along the trail. "These are native plants," the guide said. "They've been growing in this ravine for hundreds of years, long before Toronto was a city."
-
-The two groups met back at the meeting point. Forty kids, buzzing with stories. "We saw THIRTY turtles!" "We touched the shell!" "There are BATS!" "Poison ivy has THREE leaves!"
-
-By 1:30, everyone was back on the yellow school bus. Tired. Happy. A little muddy. {childName} pressed against the window one more time, but this time, instead of looking at buildings and cars, {childName} was looking at trees. Wondering which ones had birds inside. Wondering which rocks had turtles underneath. Wondering where the bats were sleeping.
-
-The bus pulled up to Jean Lumb Public School at 1:35. The kids tumbled out, running toward their parents who were waiting at the pickup area.
+By 1:30, everyone was back on the bus. Tired, happy, a little muddy.
 
 "How was it?" Mummy asked.
 
 {childName} held up one finger. "I touched a turtle. With THIS finger. And it blinked at me."
 
-That night, {childName}, remember the field trip to Evergreen Brick Works. The turtles who share their sunny rocks. The bats who eat mosquitoes so we don't have to. The baby turtles who crawl to the water all by themselves. And the poison ivy with three shiny leaves — let it BE. The world is full of tiny creatures living their tiny lives, in their tiny homes, right next to ours. All they need is for us to notice them, respect them, and step carefully.`,
+That night, {childName}, remember the field trip. The turtles who share their sunny rocks. The bats who eat mosquitoes. The baby turtles who crawl to water all by themselves. The world is full of tiny creatures in tiny homes, right next to ours. All they need is for us to step carefully.`,
       },
     ],
   },
