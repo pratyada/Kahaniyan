@@ -29,7 +29,9 @@ export default function BottomSheet({ open, onClose, children, className = '' })
             onDragEnd={(_, info) => {
               if (info.offset.y > 100 || info.velocity.y > 500) onClose();
             }}
-            className={`fixed bottom-0 left-0 right-0 z-50 mx-auto max-w-[640px] rounded-t-3xl lg:rounded-3xl lg:bottom-auto lg:top-1/2 lg:left-1/2 lg:-translate-x-1/2 lg:-translate-y-1/2 bg-bg-elevated shadow-lift ${className}`}
+            className={`fixed z-50 mx-auto max-w-[640px] bg-bg-elevated shadow-lift ${className}
+              bottom-0 left-0 right-0 rounded-t-3xl
+              lg:bottom-auto lg:left-1/2 lg:top-1/2 lg:right-auto lg:-translate-x-1/2 lg:-translate-y-1/2 lg:rounded-3xl lg:w-[90vw]`}
             style={{ maxHeight: '85vh' }}
           >
             {/* Drag handle */}

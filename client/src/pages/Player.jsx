@@ -378,10 +378,11 @@ function PlayerInner() {
     }
   };
 
-  // When story ends, show reflection → share card → feedback
+  // When story ends, show reflection → share card → feedback (or next episode for series)
   const [showReflection, setShowReflection] = useState(false);
   const [showShareCard, setShowShareCard] = useState(false);
   const [showFeedback, setShowFeedback] = useState(false);
+  const [nextSeriesEpisode, setNextSeriesEpisode] = useState(null);
   const [feedbackRating, setFeedbackRating] = useState(0);
 
   useEffect(() => {
@@ -396,6 +397,17 @@ function PlayerInner() {
         markEpisodeComplete(current.seriesId, current.episodeId);
       }
       import('../utils/analytics.js').then(({ trackAudioCompleted }) => trackAudioCompleted(current?.id, current?.estimatedMinutes)).catch(() => {});
+
+      // Series episode → skip reflection, show next episode prompt
+      if (current?.seriesId) {
+        const seriesData = SERIES.find(s => s.id === current.seriesId);
+        const currentIdx = seriesData?.episodes.findIndex(e => e.id === current.episodeId);
+        const nextEp = seriesData?.episodes[currentIdx + 1];
+        if (nextEp) {
+          setTimeout(() => setNextSeriesEpisode(nextEp), 800);
+          return;
+        }
+      }
       setTimeout(() => setShowReflection(true), 800);
     }
   // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -737,6 +749,55 @@ function PlayerInner() {
       </AnimatePresence>
 
       {/* Voice feedback popup — shown after story ends */}
+      {/* Next Episode prompt (series only) */}
+      <AnimatePresence>
+        {nextSeriesEpisode && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="absolute inset-0 z-[60] flex items-center justify-center bg-black/70 backdrop-blur-sm px-6"
+          >
+            <motion.div
+              initial={{ scale: 0.9, y: 20 }}
+              animate={{ scale: 1, y: 0 }}
+              className="w-full max-w-sm rounded-3xl bg-bg-elevated p-6 text-center shadow-lift ring-1 ring-white/10"
+            >
+              <div className="text-3xl mb-3">🎉</div>
+              <h3 className="text-lg font-bold text-ink" style={{ fontFamily: 'Fraunces, serif' }}>Episode Complete!</h3>
+              <p className="mt-2 text-xs text-ink-muted">Up next:</p>
+              <p className="mt-1 text-sm font-bold text-gold">Ep {nextSeriesEpisode.episodeNumber}: {nextSeriesEpisode.title}</p>
+              <motion.button
+                whileTap={{ scale: 0.97 }}
+                onClick={() => {
+                  const ep = nextSeriesEpisode;
+                  setNextSeriesEpisode(null);
+                  narrator.stop();
+                  const filledText = fillTokens(ep.body || '', user ? profile : null);
+                  load({
+                    id: ep.id, title: ep.title, text: filledText,
+                    wordCount: filledText.split(/\s+/).length,
+                    estimatedMinutes: ep.durationMinutes, value: ep.value || 'courage',
+                    language: profile?.language || 'English', voice: 'AI Narrator',
+                    tradition: ep.tradition, source: ep.source,
+                    createdAt: new Date().toISOString(), isWisdom: true,
+                    seriesId: current?.seriesId, episodeId: ep.id,
+                  });
+                  setDone(false); setTtsReady(false); startedRef.current = false;
+                }}
+                className="mt-4 w-full rounded-2xl bg-gold py-4 text-base font-bold text-bg-base shadow-glow"
+              >
+                ▶ Play Next Episode
+              </motion.button>
+              <button onClick={() => { setNextSeriesEpisode(null); narrator.stop(); navigate('/'); }}
+                className="mt-3 text-[11px] text-ink-dim">
+                Back to Home
+              </button>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
       {/* Post-story reflection */}
       <AnimatePresence>
         {showReflection && current && (

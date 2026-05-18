@@ -9,9 +9,11 @@ import { useFamilyProfile } from '../hooks/useFamilyProfile.js';
 import { trackStoryCardShared } from '../utils/analytics.js';
 import { getStoryArt } from '../utils/storyArt.js';
 import { TRADITIONS } from '../data/culturalLessons.js';
+import { useWisdomData } from '../hooks/useWisdomData.js';
 
 export default function ShareCardSheet({ open, onClose, story }) {
   const { profile } = useFamilyProfile();
+  const { wisdomImageUrls } = useWisdomData();
   const [busy, setBusy] = useState(null); // 'share' | 'save' | 'copy' | null
   const [toast, setToast] = useState(null);
   const { moral } = extractMoral(story);
@@ -84,7 +86,7 @@ export default function ShareCardSheet({ open, onClose, story }) {
         )}
       </AnimatePresence>
 
-      {/* Card preview — CSS-only, no canvas needed for preview */}
+      {/* Card preview with story image */}
       <motion.div
         initial={{ scale: 0.9, opacity: 0 }}
         animate={{ scale: 1, opacity: 1 }}
@@ -95,6 +97,14 @@ export default function ShareCardSheet({ open, onClose, story }) {
           position: 'relative',
         }}
       >
+        {/* Story image */}
+        {(() => {
+          const imgId = story?.id?.startsWith('lesson_') ? story.id.slice(7) : story?.id;
+          const imgUrl = wisdomImageUrls?.[imgId] || wisdomImageUrls?.[story?.id];
+          return imgUrl ? (
+            <img src={imgUrl} alt="" className="absolute inset-0 h-full w-full object-cover" onError={(e) => { e.target.style.display = 'none'; }} />
+          ) : null;
+        })()}
         {/* Dark overlay */}
         <div style={{
           position: 'absolute', inset: 0,
