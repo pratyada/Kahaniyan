@@ -4,6 +4,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { useAdmin } from '../hooks/useAdmin.jsx';
 import { useAuth } from '../hooks/useAuth.jsx';
 import { COLLECTIONS as COLLECTIONS_DATA } from '../data/collections.js';
+import { SERIES as SERIES_DATA } from '../data/series.js';
 import { RELIGIONS, COUNTRIES, VALUES, DURATIONS, LANGUAGES } from '../utils/constants.js';
 import { APP_NAME, APP_VERSION } from '../utils/version.js';
 import { GA_MEASUREMENT_ID, db } from '../lib/firebase.js';
@@ -1783,6 +1784,7 @@ function StoryLab({ showSettingsTabs }) {
   const STUDIO_TABS = [
     { key: 'wisdom-audio', label: 'Wisdom Stories (51)', icon: '📖' },
     { key: 'collections', label: 'Collections (48)', icon: '🎬' },
+    { key: 'series', label: 'Series', icon: '📺' },
   ];
 
   const SETTINGS_TABS = [
@@ -2236,6 +2238,7 @@ function StoryLab({ showSettingsTabs }) {
       {/* ══════ WISDOM AUDIO ══════ */}
       {subTab === 'wisdom-audio' && <WisdomAudioPanel />}
       {subTab === 'collections' && <CollectionsPanel />}
+      {subTab === 'series' && <SeriesPanel />}
 
       {/* ══════ VOICE FEEDBACK ══════ */}
       {subTab === 'voice-feedback' && <VoiceFeedbackPanel />}
@@ -2955,6 +2958,192 @@ function CuratorSubmissionsPanel() {
                 Unpublish
               </button>
             )}
+          </div>
+        </div>
+      ))}
+    </div>
+  );
+}
+
+function SeriesPanel() {
+  const [urls, setUrls] = useState({});
+  const [imageUrls, setImageUrls] = useState({});
+  const [status, setStatus] = useState({});
+  const [generating, setGenerating] = useState(null);
+  const [bulkRunning, setBulkRunning] = useState(false);
+  const [bulkProgress, setBulkProgress] = useState('');
+  const bulkAbort = useRef(false);
+  const [dataReady, setDataReady] = useState(false);
+
+  const ELEVEN_VOICES = [
+    { key: 'george', label: 'George' }, { key: 'lily', label: 'Lily' },
+    { key: 'sarah', label: 'Sarah' }, { key: 'muskaan', label: 'Muskaan 🇮🇳' },
+    { key: 'brian', label: 'Brian' },
+  ];
+
+  useEffect(() => {
+    (async () => {
+      try {
+        const { db } = await import('../lib/firebase.js');
+        if (!db) { setDataReady(true); return; }
+        const { doc, getDoc } = await import('firebase/firestore');
+        const snap = await getDoc(doc(db, 'config', 'wisdomAudio'));
+        if (snap.exists()) setUrls(snap.data());
+        const imgSnap = await getDoc(doc(db, 'config', 'wisdomImages'));
+        if (imgSnap.exists()) setImageUrls(imgSnap.data());
+        setDataReady(true);
+      } catch { setDataReady(true); }
+    })();
+  }, []);
+
+  const API_BASE = import.meta.env.VITE_API_BASE_URL || '';
+
+  const allEpisodes = SERIES_DATA.flatMap(s => s.episodes.map(ep => ({
+    ...ep, seriesId: s.id, seriesTitle: s.title, seriesIcon: s.icon,
+  })));
+
+  const totalAudio = allEpisodes.filter(e => urls[e.id]).length;
+  const totalImages = allEpisodes.filter(e => imageUrls[e.id]).length;
+
+  const generateAudio = async (episode, voice = 'george') => {
+    setGenerating(episode.id);
+    setStatus(s => ({ ...s, [episode.id]: `11Labs: ${voice}...` }));
+    try {
+      const text = (episode.body || '').replace(/\{childName\}/g, 'little one').replace(/\{sibling\}/g, 'their friend').replace(/\{pet\}/g, 'their puppy');
+      const res = await fetch(`${API_BASE}/api/generate-elevenlabs-audio`, {
+        method: 'POST', headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ text: text.slice(0, 10000), voice }),
+      });
+      if (!res.ok) { setStatus(s => ({ ...s, [episode.id]: `Failed (${res.status})` })); setGenerating(null); return; }
+      const blob = await res.blob();
+      setStatus(s => ({ ...s, [episode.id]: 'uploading...' }));
+      const { ref, uploadBytes, getDownloadURL } = await import('firebase/storage');
+      const { storage, db: fireDb } = await import('../lib/firebase.js');
+      const storageRef = ref(storage, `wisdom-audio/${episode.id}.mp3`);
+      await uploadBytes(storageRef, blob, { contentType: 'audio/mpeg' });
+      const audioUrl = await getDownloadURL(storageRef);
+      const { doc: fdoc, setDoc: fset } = await import('firebase/firestore');
+      await fset(fdoc(fireDb, 'config', 'wisdomAudio'), { [episode.id]: audioUrl }, { merge: true });
+      setUrls(u => ({ ...u, [episode.id]: audioUrl }));
+      setStatus(s => ({ ...s, [episode.id]: `✓ ${voice}` }));
+    } catch (e) { setStatus(s => ({ ...s, [episode.id]: e.message })); }
+    setGenerating(null);
+  };
+
+  const generateImage = async (episode) => {
+    setGenerating(episode.id + '_img');
+    setStatus(s => ({ ...s, [episode.id]: 'generating image...' }));
+    try {
+      let prompt;
+      try {
+        const { getStoryPrompt } = await import('../utils/imagePrompts.js');
+        prompt = getStoryPrompt(episode.id, 'thumbnail');
+      } catch {
+        prompt = `Children's storybook illustration for "${episode.title}". Warm, colorful, bedtime style.`;
+      }
+      const res = await fetch(`${API_BASE}/api/generate-story-image`, {
+        method: 'POST', headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ prompt }),
+      });
+      if (!res.ok) { setStatus(s => ({ ...s, [episode.id]: `Image failed (${res.status})` })); setGenerating(null); return; }
+      const data = await res.json();
+      let imgBlob;
+      if (data.imageBase64) {
+        const bytes = Uint8Array.from(atob(data.imageBase64), c => c.charCodeAt(0));
+        imgBlob = new Blob([bytes], { type: 'image/png' });
+      } else if (data.imageUrl) {
+        const imgRes = await fetch(data.imageUrl);
+        imgBlob = await imgRes.blob();
+      } else { setStatus(s => ({ ...s, [episode.id]: 'No image data' })); setGenerating(null); return; }
+      const { ref, uploadBytes, getDownloadURL } = await import('firebase/storage');
+      const { storage, db: fireDb } = await import('../lib/firebase.js');
+      const storageRef = ref(storage, `wisdom-images/${episode.id}.png`);
+      await uploadBytes(storageRef, imgBlob, { contentType: 'image/png' });
+      const permanentUrl = await getDownloadURL(storageRef);
+      const { doc: fdoc, setDoc: fset } = await import('firebase/firestore');
+      await fset(fdoc(fireDb, 'config', 'wisdomImages'), { [episode.id]: permanentUrl }, { merge: true });
+      setImageUrls(u => ({ ...u, [episode.id]: permanentUrl }));
+      setStatus(s => ({ ...s, [episode.id]: '✓ image' }));
+    } catch (e) { setStatus(s => ({ ...s, [episode.id]: e.message })); }
+    setGenerating(null);
+  };
+
+  return (
+    <div className="space-y-5">
+      {/* Stats */}
+      <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+        <div className="rounded-xl bg-[#1a1a28] p-4 ring-1 ring-white/5">
+          <div className="text-2xl font-bold text-[#f5f0e8]">{SERIES_DATA.length}</div>
+          <div className="text-[10px] font-bold uppercase tracking-wider text-[#6e6a63]">Series</div>
+        </div>
+        <div className="rounded-xl bg-[#1a1a28] p-4 ring-1 ring-white/5">
+          <div className="text-2xl font-bold text-[#f5f0e8]">{allEpisodes.length}</div>
+          <div className="text-[10px] font-bold uppercase tracking-wider text-[#6e6a63]">Total Episodes</div>
+        </div>
+        <div className="rounded-xl bg-[#1a1a28] p-4 ring-1 ring-white/5">
+          <div className={`text-2xl font-bold ${dataReady ? 'text-[#7ad9a1]' : 'text-[#f0a500] animate-pulse'}`}>{dataReady ? totalAudio : '...'}</div>
+          <div className="text-[10px] font-bold uppercase tracking-wider text-[#6e6a63]">Audio Ready</div>
+        </div>
+        <div className="rounded-xl bg-[#1a1a28] p-4 ring-1 ring-white/5">
+          <div className={`text-2xl font-bold ${dataReady ? 'text-[#539df5]' : 'text-[#f0a500] animate-pulse'}`}>{dataReady ? totalImages : '...'}</div>
+          <div className="text-[10px] font-bold uppercase tracking-wider text-[#6e6a63]">Images Ready</div>
+        </div>
+      </div>
+
+      {/* Series list */}
+      {SERIES_DATA.map((series) => (
+        <div key={series.id} className="rounded-xl bg-[#1a1a28] p-4 ring-1 ring-white/5">
+          {/* Series header */}
+          <div className="flex items-center gap-3 mb-3">
+            <span className="text-2xl">{series.icon}</span>
+            <div>
+              <h3 className="text-sm font-bold text-[#f5f0e8]">{series.title}</h3>
+              <p className="text-[10px] text-[#6e6a63]">{series.totalEpisodes} episodes · {series.ageRange}</p>
+            </div>
+          </div>
+
+          {/* Episodes */}
+          <div className="space-y-2">
+            {series.episodes.map((ep) => (
+              <div key={ep.id} className="rounded-lg bg-[#0f0f17] p-3">
+                <div className="flex items-start gap-3">
+                  <div className="h-10 w-10 shrink-0 overflow-hidden rounded-lg bg-[#1a1a28]">
+                    {imageUrls[ep.id] ? <img src={imageUrls[ep.id]} alt="" className="h-full w-full object-cover" />
+                      : <div className="grid h-full w-full place-items-center text-sm font-bold text-[#6e6a63]">{ep.episodeNumber}</div>}
+                  </div>
+                  <div className="min-w-0 flex-1">
+                    <div className="text-xs font-bold text-[#f5f0e8]">Ep {ep.episodeNumber}: {ep.title}</div>
+                    <div className="text-[10px] text-[#6e6a63] mt-0.5">{ep.subtitle}</div>
+                    <div className="flex items-center gap-2 mt-1">
+                      {urls[ep.id] ? <span className="rounded-full bg-[#7ad9a1]/10 px-2 py-0.5 text-[8px] font-bold text-[#7ad9a1]">Audio ✓</span>
+                        : !dataReady ? <span className="rounded-full bg-[#f0a500]/10 px-2 py-0.5 text-[8px] font-bold text-[#f0a500] animate-pulse">Loading...</span>
+                        : <span className="rounded-full bg-red-400/10 px-2 py-0.5 text-[8px] font-bold text-red-400">No audio</span>}
+                      {imageUrls[ep.id] ? <span className="rounded-full bg-[#7ad9a1]/10 px-2 py-0.5 text-[8px] font-bold text-[#7ad9a1]">Image ✓</span>
+                        : !dataReady ? <span className="rounded-full bg-[#f0a500]/10 px-2 py-0.5 text-[8px] font-bold text-[#f0a500] animate-pulse">Loading...</span>
+                        : <span className="rounded-full bg-red-400/10 px-2 py-0.5 text-[8px] font-bold text-red-400">No image</span>}
+                    </div>
+                    {status[ep.id] && <div className="text-[9px] text-[#f0a500] mt-1">{status[ep.id]}</div>}
+                  </div>
+                </div>
+                {/* Audio preview */}
+                {urls[ep.id] && <audio controls preload="none" src={urls[ep.id]} className="w-full h-8 mt-2" style={{ filter: 'invert(1) hue-rotate(180deg)', opacity: 0.7 }} />}
+                {/* Actions */}
+                <div className="flex items-center gap-2 mt-2">
+                  <select defaultValue="george" id={`voice-${ep.id}`}
+                    className="rounded-lg bg-[#1a1a28] px-2 py-1.5 text-[10px] font-bold text-[#7ad9a1] outline-none ring-1 ring-[#7ad9a1]/20">
+                    {ELEVEN_VOICES.map(v => <option key={v.key} value={v.key}>{v.label}</option>)}
+                  </select>
+                  <button onClick={() => generateAudio(ep, document.getElementById(`voice-${ep.id}`)?.value || 'george')} disabled={!!generating}
+                    className="rounded-lg bg-[#7ad9a1]/10 px-3 py-1.5 text-[10px] font-bold text-[#7ad9a1] disabled:opacity-30">
+                    {generating === ep.id ? '...' : '⚡ 11Labs'}
+                  </button>
+                  <button onClick={() => generateImage(ep)} disabled={!!generating}
+                    className="rounded-lg bg-[#539df5]/10 px-3 py-1.5 text-[10px] font-bold text-[#539df5] disabled:opacity-30">
+                    {generating === ep.id + '_img' ? '...' : '🖼️ Image'}
+                  </button>
+                </div>
+              </div>
+            ))}
           </div>
         </div>
       ))}
