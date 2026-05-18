@@ -641,61 +641,97 @@ That night, {childName}, remember the concert. Twenty kids in homemade Earth hat
 That night, {childName}, remember the Spring Concert. Being brave is not about being perfect. It's about starting. Even when your voice shakes. Even when there are two hundred eyes. Even when the words almost don't come. You start. And the rest follows.`,
       },
       {
-        id: 'rk_ep3_brickworks', episodeNumber: 3, title: 'The Hike at Brick Works',
-        subtitle: 'Mr. Zak and Shelagh take the Rainbow batch on a field trip to Evergreen Brick Works.',
+        id: 'rk_ep3_brickworks', episodeNumber: 3, title: 'The Field Trip to Brick Works',
+        subtitle: 'The first field trip! Two classes board the yellow bus for Evergreen Brick Works.',
         tradition: 'universal', theme: 'compassion-animals', durationMinutes: 6,
         source: 'Rainbow Kindergarten · Episode 3',
-        body: `The yellow school bus rumbled down Bayview Avenue. Mr. Zak and Shelagh sat at the front, counting heads. The Rainbow batch pressed their faces against the windows. "Are we there yet? Are we there yet?"
+        body: `This was it. The first REAL field trip. Not a community walk. A FIELD TRIP. With a yellow school bus.
 
-Evergreen Brick Works appeared like a hidden world — old brick buildings covered in ivy, a pond shining in the sun, and trails disappearing into tall trees.
+At 9:15 in the morning, two kindergarten classes lined up outside Jean Lumb Public School. The Rainbow batch and the other kindergarten class — almost forty kids in total. Mr. Zak and Shelagh were at the front, holding clipboards and counting heads. Two parent volunteers were there too, wearing bright orange safety vests and carrying first aid kits.
 
-"Today," said the nature guide, whose name was Turtle Tom, "we are going to learn how animals build their homes. And then YOU are going to build one too."
+"Has everyone got their lunch? Water bottle? Buddy?" Mr. Zak called out.
 
-The class gasped. BUILD a home? Out of STICKS?
+"YES MR. ZAK!" forty voices shouted.
 
-The hike started on the forest trail. Within five minutes, Turtle Tom stopped. "Look down. Very carefully."
+The yellow school bus pulled up. {childName}'s eyes went wide. It was enormous. And yellow. SO yellow. The doors opened with a loud PSSSHHH and the stairs looked like they went up forever.
 
-{childName} looked. On a flat rock near the pond, a small turtle was sunbathing. Its shell was dark green with yellow stripes. It was no bigger than {childName}'s hand.
+{childName} climbed aboard. The seats were high and bouncy. The windows were huge. The engine rumbled underneath like a sleeping dinosaur. This was the best thing that had ever happened.
 
-"This is a Midland Painted Turtle," said Turtle Tom. "She's been coming to this exact rock for maybe fifteen years. This is her home."
+The bus rumbled down Bayview Avenue. Kids bouncing in their seats. Parent volunteers counting heads again. Mr. Zak and Shelagh sitting near the front, going over the schedule. "Stick building first, then lunch, then the turtle conservatory, then the nature walk around the pond."
 
-"But it's just a rock," said Aarav.
+Evergreen Brick Works appeared through the trees like a hidden world. It was a 130-year-old brick factory that had been turned into a nature park — old brick buildings covered in green ivy, tall chimneys reaching into the sky, and paths disappearing into Toronto's beautiful ravines.
 
-"Home isn't always a building. For this turtle, home is a warm rock by a safe pond. She lays her eggs in the sandy soil over there." He pointed to a small roped-off area. "We protect that area so nobody steps on the eggs. Each egg is smaller than a grape. If even one person walks there..."
+Two nature guides were waiting at the entrance. "Welcome, Jean Lumb!" they said. "Today you're going to learn how animals build their homes — and then YOU are going to build one too."
 
-The class went silent. Twenty children suddenly looking at their own feet, making sure they were nowhere near the sand.
+The kids gasped. BUILD a home?
 
-Further up the trail, Turtle Tom pointed to a tree with a small hole. "Hear that?" A faint chirping. "Baby birds. A Black-capped Chickadee built her nest inside that hole. She pulled fur from animals, bits of moss, even spider silk to make it soft."
+The guides led them to a clearing in the forest. "Animals don't have hammers or nails," one guide explained. "They use what nature gives them: sticks, leaves, mud, bark, moss. Your job: build a shelter big enough for a small animal to hide in. You can only use things you find on the ground."
 
-"Spider silk?" {childName} whispered, amazed.
+The Rainbow batch exploded into action. {childName} found long sticks and leaned them against a fallen log, making a triangle shape — like a tent. Other kids stuffed leaves into the gaps to block wind. Someone packed mud along the bottom to keep out rain. Shelagh helped one group weave thin branches together. Mr. Zak showed another group how to make the roof stronger by crossing sticks in an X pattern.
 
-"The softest building material in nature. She's a better architect than most humans."
+"Why are sticks so important?" Mr. Zak asked.
 
-At the next stop, they looked UP. High in a dead tree, hanging upside down in a crack: bats. Three little brown bats, sleeping.
+"Because they're strong AND bendy!" {childName} said.
 
-"Bats sleep all day and fly all night," Turtle Tom said. "They eat thousands of mosquitoes. Without bats, this park would be unbearable in summer."
+"Exactly. Nature's building material. Free, everywhere, and perfectly designed."
 
-Priya shuddered. "But they're scary."
+The guides inspected each shelter and gave every team a thumbs up. "You just thought like an animal," they said. "You asked: what does this creature NEED? Not what looks pretty. What keeps it safe."
 
-"They're shy," said Turtle Tom. "They've never once bothered a human. They just hang there, sleep, and eat bugs. Pretty good neighbors, honestly."
+After all that building, everyone was hungry. The kids sat on logs and benches and ate their lunches in the sunshine. Sandwiches, juice boxes, apple slices. Parent volunteers passed out extra water. {childName} traded a cookie for a cheese stick. Fair deal.
 
-After the hike, Turtle Tom brought the class to a clearing. "Now it's YOUR turn. Build a home. Using only sticks, leaves, and mud. A home big enough for a small animal to hide in."
+After lunch came the part everyone had been waiting for: the turtle conservatory.
 
-The Rainbow batch exploded into action. {childName} and Aarav teamed up. They found long sticks and leaned them against a log, making a triangle — a tent shape. They filled the gaps with leaves. They packed mud on the bottom to keep out rain.
+The group walked into a special indoor area where the Evergreen team cared for turtles. Two real Midland Painted Turtles were there — their shells dark green with bright yellow and red markings.
 
-Meera's group built a circle of stones with a stick roof. Priya's group dug a shallow hole and covered it with bark — "like the turtle," Priya said.
+"These turtles have been living in the Don Valley for years," the guide said. "We protect them here because their habitat is shrinking. They lay their eggs in sandy soil near the pond, and if people walk on that area, the eggs get crushed. Each egg is smaller than a grape."
 
-When they finished, Turtle Tom inspected each one. He placed a small stuffed animal inside each shelter to see if it would stay dry, warm, and hidden.
+The room went quiet. Forty kids suddenly VERY aware of their feet.
 
-{childName}'s shelter passed. The stuffed rabbit inside was dry, warm, and invisible from outside.
+"Now — would you like to touch one?"
 
-"You know what you just did?" Turtle Tom said. "You thought like an animal. You asked: what does this creature NEED? Not what looks pretty. What keeps it safe."
+The room went UN-quiet. "YES!"
 
-On the bus ride home, {childName} pressed against the window again. But this time, instead of looking at buildings and cars, {childName} looked at trees. And saw holes where birds might live. Saw rocks where turtles might rest. Saw cracks where bats might sleep.
+"One finger only. Gently. On the shell."
 
-The whole city was full of tiny homes. You just had to know where to look.
+One by one, the kids stepped forward. Some were nervous. Some were excited. Some were both — what {childName} called "nexcited."
 
-That night, {childName}, remember the hike at Brick Works. Every creature on Earth needs the same thing you need: a safe place to rest. A warm spot. A home. The turtle's home is a rock. The bird's home is a hole lined with spider silk. The bat's home is a crack in a dead tree. And your home is wherever the people who love you are. Protect every home you find — no matter how small. Because to someone tiny, that rock is everything.`,
+{childName} reached out one finger and touched the turtle's shell. It was hard and smooth and warm. The turtle didn't move. It just blinked slowly, as if to say: "I've been here for thirty years. You're fine."
+
+"I touched a turtle," {childName} whispered. "I actually touched a TURTLE."
+
+Then came the nature walk around the pond. The group split into two: one group went left around the pond with Mr. Zak and a parent volunteer, the other went right with Shelagh and the guides.
+
+{childName}'s group went right. Within minutes, they spotted Turtle Island — a small rocky island in the middle of the pond where more than thirty turtles were sunbathing. Painted turtles, Snapping turtles, tiny baby turtles stacked on top of big ones.
+
+"Turtles are cold-blooded," the guide explained. "They need the sun to warm up. That's why they pile on those rocks. It's their version of a hot bath."
+
+"Why do they pile on top of each other?" someone asked.
+
+"Because there are more turtles than rocks. They share. Even turtles know how to share."
+
+The guide pointed out how mother turtles dig nests in the sandy banks, lay their eggs, and then LEAVE. "The babies hatch on their own and crawl to the water by themselves. No mummy to help. That's how tough baby turtles are."
+
+Further along the trail, the group stopped at the bat house — a tall wooden box on a pole. "Hundreds of bats sleep inside during the day," the guide said. "At night, they fly out and eat thousands of mosquitoes. Without bats, summer in Toronto would be unbearable."
+
+Some kids thought bats were scary. The guide said: "They're actually very shy. They've never once bothered a human. They just sleep, fly, and eat bugs. Best neighbours you could ask for."
+
+Then the guide pointed at a plant with three shiny leaves. "See that? That's poison ivy. THREE leaves — let it BE. Never touch it. It makes your skin very itchy and red."
+
+Everyone took three steps back. Mr. Zak took a photo of it. "Good to know what it looks like so you can avoid it," he said.
+
+The group also saw wildflowers, ferns, and herbs growing along the trail. "These are native plants," the guide said. "They've been growing in this ravine for hundreds of years, long before Toronto was a city."
+
+The two groups met back at the meeting point. Forty kids, buzzing with stories. "We saw THIRTY turtles!" "We touched the shell!" "There are BATS!" "Poison ivy has THREE leaves!"
+
+By 1:30, everyone was back on the yellow school bus. Tired. Happy. A little muddy. {childName} pressed against the window one more time, but this time, instead of looking at buildings and cars, {childName} was looking at trees. Wondering which ones had birds inside. Wondering which rocks had turtles underneath. Wondering where the bats were sleeping.
+
+The bus pulled up to Jean Lumb Public School at 1:35. The kids tumbled out, running toward their parents who were waiting at the pickup area.
+
+"How was it?" Mummy asked.
+
+{childName} held up one finger. "I touched a turtle. With THIS finger. And it blinked at me."
+
+That night, {childName}, remember the field trip to Evergreen Brick Works. The turtles who share their sunny rocks. The bats who eat mosquitoes so we don't have to. The baby turtles who crawl to the water all by themselves. And the poison ivy with three shiny leaves — let it BE. The world is full of tiny creatures living their tiny lives, in their tiny homes, right next to ours. All they need is for us to notice them, respect them, and step carefully.`,
       },
     ],
   },
