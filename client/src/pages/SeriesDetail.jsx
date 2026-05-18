@@ -156,8 +156,8 @@ export default function SeriesDetail() {
         </div>
       )}
 
-      {/* Episode list */}
-      <div className="px-5 space-y-3">
+      {/* Episode list — card grid matching home page tile size */}
+      <div className="px-5 grid grid-cols-2 md:grid-cols-3 gap-3">
         {series.episodes.map((ep, i) => {
           const done = isEpisodeComplete(series.id, ep.id);
           const isNext = nextEpisode?.id === ep.id;
@@ -174,57 +174,54 @@ export default function SeriesDetail() {
               initial={{ opacity: 0, y: 12 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: i * 0.08 }}
-              className={`w-full overflow-hidden rounded-2xl text-left transition ${
+              className={`w-full overflow-hidden rounded-2xl text-left transition relative ${
                 isNext ? 'ring-2 ring-gold/50' : 'ring-1 ring-white/5'
               }`}
+              style={{ aspectRatio: '2/3', minHeight: 240 }}
             >
-              {/* Episode cover image */}
+              {/* Full card background — image or gradient */}
               {(() => {
                 const epImg = coverImages[ep.id] || (galleryImages[ep.id] || [])[0];
                 return epImg ? (
-                  <div className="relative h-32 w-full">
-                    <img src={epImg} alt="" className="h-full w-full object-cover" onError={(e) => { e.target.style.display = 'none'; }} />
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent" />
-                    <div className={`absolute top-2 left-2 grid h-7 w-7 place-items-center rounded-full text-[11px] font-bold ${
-                      done ? 'bg-gold text-bg-base' : 'bg-black/50 text-white backdrop-blur-sm'
-                    }`}>
-                      {done ? <CheckCircle size={14} /> : ep.episodeNumber}
-                    </div>
-                    <div className={`absolute bottom-2 right-2 grid h-9 w-9 place-items-center rounded-full ${
-                      isNext ? 'bg-gold text-bg-base' : 'bg-black/40 text-white backdrop-blur-sm'
-                    }`}>
-                      <Play size={14} fill="currentColor" />
-                    </div>
-                  </div>
+                  <img src={epImg} alt="" className="absolute inset-0 h-full w-full object-cover" onError={(e) => { e.target.style.display = 'none'; }} />
                 ) : (
-                  <div className="relative h-24 w-full" style={{ background: series.gradient }}>
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
-                    <div className={`absolute top-2 left-2 grid h-7 w-7 place-items-center rounded-full text-[11px] font-bold ${
-                      done ? 'bg-gold text-bg-base' : 'bg-black/50 text-white'
-                    }`}>
-                      {done ? <CheckCircle size={14} /> : ep.episodeNumber}
-                    </div>
-                    <div className={`absolute bottom-2 right-2 grid h-9 w-9 place-items-center rounded-full ${
-                      isNext ? 'bg-gold text-bg-base' : 'bg-white/10 text-white'
-                    }`}>
-                      <Play size={14} fill="currentColor" />
-                    </div>
-                  </div>
+                  <div className="absolute inset-0" style={{ background: series.gradient }} />
                 );
               })()}
+              <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/30 to-black/10" />
 
-              {/* Content below image */}
-              <div className={`p-3 ${done ? 'bg-bg-surface/50' : isNext ? 'bg-gold/5' : 'bg-bg-surface'}`}>
-                <p className={`text-sm font-bold ${done ? 'text-ink-muted' : 'text-ink'}`}
-                  style={{ fontFamily: 'Fraunces, serif' }}>
+              {/* Episode number badge */}
+              <div className={`absolute top-2 left-2 grid h-7 w-7 place-items-center rounded-full text-[11px] font-bold ${
+                done ? 'bg-gold text-bg-base' : 'bg-black/50 text-white backdrop-blur-sm'
+              }`}>
+                {done ? <CheckCircle size={14} /> : ep.episodeNumber}
+              </div>
+
+              {/* Play button */}
+              <div className={`absolute right-2 top-2 grid h-8 w-8 place-items-center rounded-full ${
+                isNext ? 'bg-gold text-bg-base' : 'bg-black/30 text-white/80 backdrop-blur-sm'
+              }`}>
+                <Play size={12} fill="currentColor" />
+              </div>
+
+              {/* Photo count */}
+              {(galleryImages[ep.id] || []).length > 0 && (
+                <div className="absolute top-2 left-1/2 -translate-x-1/2 rounded-full bg-black/50 px-2 py-0.5 backdrop-blur-sm">
+                  <span className="text-[8px] font-bold text-white/80">📷 {(galleryImages[ep.id] || []).length}</span>
+                </div>
+              )}
+
+              {/* Bottom content */}
+              <div className="absolute bottom-0 left-0 right-0 p-3">
+                <p className="text-xs font-bold text-white leading-snug"
+                  style={{ fontFamily: 'Fraunces, serif', textShadow: '0 1px 4px rgba(0,0,0,0.5)' }}>
                   {ep.title}
                 </p>
-                <p className="text-[10px] text-ink-muted mt-0.5 line-clamp-1">{ep.subtitle}</p>
-                <div className="mt-1.5 flex items-center gap-2 text-[9px] text-ink-dim">
+                <p className="text-[9px] text-white/50 mt-0.5 line-clamp-1">{ep.subtitle}</p>
+                <div className="mt-1 flex items-center gap-1.5 text-[9px] text-white/50">
                   <span>▶ {formatCount(plays)}</span>
                   <span>⭐ {rating}</span>
                   <span>{realDuration} min</span>
-                  {(galleryImages[ep.id] || []).length > 0 && <span>📷 {(galleryImages[ep.id] || []).length}</span>}
                 </div>
               </div>
             </motion.button>

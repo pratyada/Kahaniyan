@@ -19,6 +19,16 @@ const COLLECTION_WEIGHT = {
 
 export function getPlayCount(storyId) {
   const seed = hashSeed(storyId);
+
+  // New/niche series (kindergarten etc) — low realistic counts 5-13
+  if (storyId?.startsWith('rk_')) {
+    const base = 5 + (seed % 9);
+    try {
+      const plays = JSON.parse(localStorage.getItem('mst:wisdomPlays') || '{}');
+      return base + (plays[storyId] || 0);
+    } catch { return base; }
+  }
+
   // Base range 100-10K
   const raw = 100 + (seed % 9900);
   // Apply theme/collection weight for realistic distribution
