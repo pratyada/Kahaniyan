@@ -581,54 +581,62 @@ That night, {childName}, remember the community walk. Math is not just in textbo
       },
       {
         id: 'rk_ep2_concert', episodeNumber: 2, title: 'What a Wonderful World',
-        subtitle: 'The Rainbow batch performs their first concert — and one kid almost doesn\'t sing.',
+        subtitle: 'The Rainbow batch performs their first concert at Jean Lumb PS.',
         tradition: 'universal', theme: 'courage', durationMinutes: 5,
         source: 'Rainbow Kindergarten · Episode 2',
-        body: `The Rainbow batch had been practicing for three weeks. The Spring Concert. One song. Four minutes. Every parent in the audience.
+        body: `The Rainbow batch had been practicing for three weeks. Their very first concert at Jean Lumb Public School. One song. Four minutes. Every parent, grandparent, and sibling in the audience.
 
-The song was "What a Wonderful World."
+The song was "What a Wonderful World" — and Mr. Zak had told them why they chose it. "This song was written by Louis Armstrong," he said. "He wanted to remind people that even when the world feels big and busy, there is beauty everywhere. Trees, skies, rainbows, friends. That's what we want to share with our families tonight."
 
-Mr. Zak and Shelagh had given every child a part. Some sang the words. Some played shakers. Some held up painted pictures of trees, skies, and rainbows at the right moment.
+For two weeks, the Rainbow batch had been working on something special: their hats. Each child had made a globe hat — a round hat with planet Earth painted in the centre, covered in blue oceans and green continents. Some had glitter. Some had stickers of clouds. {childName}'s hat had a tiny gold star on top, because "Earth deserves a star."
 
-{childName} had the most important part: the opening line. Alone. Into the microphone. Before anyone else started.
+Mr. Zak and Shelagh had arranged the class in three rows on the stage. The tallest kids in the back, the smallest in the front. Everyone wearing their Earth hats. Twenty little globes on twenty little heads.
 
-"I see trees of green... red roses too..."
+Behind the curtain, {childName}'s heart was pounding. Through a gap in the fabric, {childName} could see the gym. It was FULL. Hundreds of parents sitting in rows. Cameras out. Phones up. Grandparents in the front row already dabbing their eyes, and the show hadn't even started yet.
 
-In practice, {childName} sang it perfectly. Every time. Loud and clear. Mr. Zak said: "You have a gift, {childName}."
+"I'm nervous," {childName} whispered.
 
-But today was different. Today the gym was full. Hundreds of eyes. Cameras. Grandparents in the front row. Mummies wiping tears before the song even started.
+Mr. Zak kneeled down to {childName}'s level. "You know what? I'm nervous too. Every single time. But here's the secret — when we sing together, the nervousness turns into something else. It turns into magic. Trust me."
 
-{childName} peeked through the curtain. So. Many. People.
+Shelagh adjusted a few hats, straightened a few collars, and gave everyone a thumbs up. "Remember your actions. When we sing 'trees of green,' we sway like trees. When we sing 'skies of blue,' we point up. When we sing 'wonderful world,' we open our arms wide. Mr. Zak and I will be right there doing the actions with you."
 
-"I can't do it," {childName} whispered to {sibling}'s friend Aarav, who was standing next to the curtain holding a painted rainbow.
+The curtain opened.
 
-"Why not?"
+The lights were warm and bright. The gym went silent. Hundreds of eyes looked at twenty children in Earth hats, standing in three rows, looking both terrified and beautiful.
 
-"What if I forget the words?"
+Mr. Zak raised his hand. The music started — gentle, slow, the opening chords filling the gym.
 
-Aarav thought about this. "Then just hum. Nobody will know the difference."
+And the Rainbow batch began to sing.
 
-Mr. Zak and Shelagh gathered the Rainbow batch behind the curtain. Mr. Zak said: "Listen. This is not about being perfect. This is about being together. When you walk out there, look at ME. Not the audience. Just me. And sing like we're in our classroom."
+"I see trees of green... red roses too..." Twenty small voices, some loud, some whispery, all together. They swayed like trees, just as Shelagh had taught them.
 
-The curtain opened. The lights were bright. The gym was silent.
+"I see them bloom... for me and you..." {childName} could see Mummy in the third row, holding up a phone with one hand and wiping a tear with the other.
 
-{childName} walked to the microphone. Two hundred people. Cameras. Silence.
+"And I think to myself..." The whole class paused, just like they had practised, and then — together, arms wide open — "WHAT A WONDERFUL WORLD."
 
-{childName} looked at the audience. Too many eyes. Throat tight. Words gone.
+Mr. Zak was doing every action alongside them from the side of the stage. Shelagh was mouthing every word from the other side. The kids looked at their teachers, not the crowd, and sang like they were back in their classroom.
 
-Then {childName} looked at Mr. Zak. Standing at the side. Smiling. Mouthing the first word silently: "I..."
+"The colours of the rainbow... so pretty in the sky..." The children pointed at their Earth hats. Some hats were slightly crooked. One had slipped over a child's eyes. Nobody cared. It was perfect.
 
-"I see trees of green," {childName} sang. Quietly at first. Then louder. "Red roses too. I see them bloom... for me and you."
+"Are also on the faces... of people going by..." The kids waved at the audience. The audience waved back. Someone in the back row laughed — the good kind of laugh, the kind that comes from pure joy.
 
-The shakers started. The painted pictures went up. Twenty voices joined in: "And I think to myself... what a wonderful world."
+The final notes played. The Rainbow batch held their last pose — arms wide, Earth hats on, twenty little globes facing the world.
 
-{childName}'s voice was not the loudest. But it was the first. And sometimes, being the one who starts — even when you're scared — is the bravest thing of all.
+Silence.
 
-After the concert, Mummy hugged {childName} so tight. "You were wonderful."
+Then the gym ERUPTED. Every parent stood up. Clapping, cheering, crying. Phones still recording. Grandparents openly weeping. Someone shouted: "BRAVO!"
 
-"I almost didn't sing."
+Mr. Zak wiped his eyes quickly — he thought nobody saw, but {childName} saw. Shelagh was clapping alongside the parents.
 
-"But you did. That's all that matters."
+Backstage, the Rainbow batch jumped up and down. "We did it! We did it!"
+
+{childName}'s hat had slipped sideways during the performance. The gold star was hanging over one ear. But Mummy said it was the most beautiful thing she had ever seen.
+
+"You were wonderful," Mummy said.
+
+"We ALL were," {childName} said.
+
+That night, {childName}, remember the concert. Twenty kids in homemade Earth hats sang one song about a wonderful world — and for four minutes, every person in that gym believed it. You don't need to be perfect to make something beautiful. You just need to show up, wear your hat, and sing with your whole heart.
 
 That night, {childName}, remember the Spring Concert. Being brave is not about being perfect. It's about starting. Even when your voice shakes. Even when there are two hundred eyes. Even when the words almost don't come. You start. And the rest follows.`,
       },
