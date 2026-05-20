@@ -1,8 +1,9 @@
 // Home — Netflix/Pocket FM style content browser.
 
 import { useMemo, useState, useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useNavigate, useParams } from 'react-router-dom';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import PageTransition from '../components/PageTransition.jsx';
 import HeroSlider from '../components/HeroSlider.jsx';
 import CreateFAB from '../components/CreateFAB.jsx';
@@ -16,6 +17,7 @@ import MilestoneCelebration from '../components/MilestoneCelebration.jsx';
 import MorningRecapShelf from '../components/shelves/MorningRecapShelf.jsx';
 import SEOHead from '../components/SEOHead.jsx';
 import SeriesShelf from '../components/shelves/SeriesShelf.jsx';
+import CuratorShelf from '../components/shelves/CuratorShelf.jsx';
 import { useFamilyProfile } from '../hooks/useFamilyProfile.js';
 import { usePlayer } from '../hooks/usePlayer.jsx';
 import { useAuth } from '../hooks/useAuth.jsx';
@@ -27,6 +29,7 @@ import { buildTraditionShelves, buildAgeShelf } from '../utils/shelfBuilder.js';
 import { fillTokens } from '../utils/storyHelpers.js';
 
 export default function Home() {
+  const { t } = useTranslation();
   const navigate = useNavigate();
   const { collectionId } = useParams();
   const { profile } = useFamilyProfile();
@@ -37,6 +40,12 @@ export default function Home() {
   const [createOpen, setCreateOpen] = useState(false);
   const [activeTheme, setActiveTheme] = useState('compassion-animals');
   const [visibleCollections, setVisibleCollections] = useState(8);
+
+  // Onboarding popup state
+  const needsOnboarding = user && !profile?.childName;
+  const [obName, setObName] = useState('');
+  const [obAge, setObAge] = useState('');
+  const [obStep, setObStep] = useState(0); // 0=name, 1=age, 2=language
 
   // Load more collections as user scrolls
   useEffect(() => {
@@ -123,9 +132,9 @@ export default function Home() {
 
   const greeting = (() => {
     const h = new Date().getHours();
-    if (h < 12) return 'Good morning';
-    if (h < 17) return 'Good afternoon';
-    return 'Good evening';
+    if (h < 12) return t('home.goodMorning');
+    if (h < 17) return t('home.goodAfternoon');
+    return t('home.goodEvening');
   })();
 
   return (
@@ -151,7 +160,7 @@ export default function Home() {
             </button>
             <div className="mb-4">
               <h2 className="text-xl font-bold text-ink" style={{ fontFamily: 'Fraunces, serif' }}>{focusCol.title}</h2>
-              <p className="mt-1 text-xs text-ink-muted">{focusCol.subtitle} · {focusCol.stories.length} stories</p>
+              <p className="mt-1 text-xs text-ink-muted">{focusCol.subtitle} · {focusCol.stories.length} {t('home.stories')}</p>
             </div>
             <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
               {focusCol.stories.map((story) => (
@@ -201,6 +210,9 @@ export default function Home() {
 
       {/* Series */}
       <SeriesShelf />
+
+      {/* Our Creators — community-created stories & series */}
+      <CuratorShelf />
 
       {/* 3. Browse by Value — interactive filter */}
       <section className="mb-6">
@@ -252,6 +264,147 @@ export default function Home() {
       {/* Milestone celebration overlay */}
       <MilestoneCelebration />
       </>)}  {/* end !collectionId */}
+
+      {/* Quick onboarding popup — shown when logged in but no profile */}
+      <AnimatePresence>
+        {needsOnboarding && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 z-[80] flex items-center justify-center bg-black/70 backdrop-blur-sm px-5"
+          >
+            <motion.div
+              initial={{ scale: 0.9, y: 20 }}
+              animate={{ scale: 1, y: 0 }}
+              className="w-full max-w-sm rounded-3xl bg-bg-elevated p-6 text-center shadow-lift ring-1 ring-white/10"
+            >
+              {obStep === 0 && (
+                <>
+                  <div className="text-3xl mb-3">👶</div>
+                  <h3 className="text-lg font-bold text-ink" style={{ fontFamily: 'Fraunces, serif' }}>
+                    {t('onboarding.childName')}
+                  </h3>
+                  <p className="mt-1 text-xs text-ink-muted">Every story will use this name</p>
+                  <input
+                    value={obName}
+                    onChange={(e) => setObName(e.target.value)}
+                    placeholder="e.g. Arjun"
+                    autoFocus
+                    className="mt-4 w-full rounded-xl bg-bg-surface px-4 py-3 text-center text-lg font-bold text-ink ring-1 ring-white/10 outline-none focus:ring-gold/50"
+                  />
+                  <motion.button
+                    whileTap={{ scale: 0.97 }}
+                    disabled={!obName.trim()}
+                    onClick={() => setObStep(1)}
+                    className="mt-4 w-full rounded-2xl bg-gold py-3.5 text-sm font-bold text-bg-base shadow-glow disabled:opacity-40"
+                  >
+                    {t('common.next')}
+                  </motion.button>
+                </>
+              )}
+
+              {obStep === 1 && (
+                <>
+                  <div className="text-3xl mb-3">🎂</div>
+                  <h3 className="text-lg font-bold text-ink" style={{ fontFamily: 'Fraunces, serif' }}>
+                    {t('onboarding.childAge')}
+                  </h3>
+                  <div className="mt-4 flex justify-center gap-2 flex-wrap">
+                    {[2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12].map((age) => (
+                      <button
+                        key={age}
+                        onClick={() => setObAge(String(age))}
+                        className={`grid h-12 w-12 place-items-center rounded-xl text-sm font-bold transition ${
+                          obAge === String(age)
+                            ? 'bg-gold text-bg-base shadow-glow'
+                            : 'bg-bg-surface text-ink ring-1 ring-white/10'
+                        }`}
+                      >
+                        {age}
+                      </button>
+                    ))}
+                  </div>
+                  <motion.button
+                    whileTap={{ scale: 0.97 }}
+                    disabled={!obAge}
+                    onClick={() => setObStep(2)}
+                    className="mt-4 w-full rounded-2xl bg-gold py-3.5 text-sm font-bold text-bg-base shadow-glow disabled:opacity-40"
+                  >
+                    {t('common.next')}
+                  </motion.button>
+                </>
+              )}
+
+              {obStep === 2 && (
+                <>
+                  <div className="text-3xl mb-3">🌍</div>
+                  <h3 className="text-lg font-bold text-ink" style={{ fontFamily: 'Fraunces, serif' }}>
+                    {t('onboarding.selectLanguage')}
+                  </h3>
+                  <div className="mt-4 grid grid-cols-2 gap-2">
+                    <button className="rounded-xl bg-gold py-4 text-sm font-bold text-bg-base shadow-glow">
+                      English
+                    </button>
+                    {['Hindi', 'Tamil', 'Spanish'].map((lang) => (
+                      <button key={lang} disabled
+                        className="rounded-xl bg-bg-surface py-4 text-sm font-bold text-ink-dim ring-1 ring-white/5 opacity-40">
+                        {lang} <span className="text-[8px] block text-ink-dim">{t('home.comingSoon')}</span>
+                      </button>
+                    ))}
+                  </div>
+                  <motion.button
+                    whileTap={{ scale: 0.97 }}
+                    onClick={async () => {
+                      const { save, addKid, profiles } = await import('../hooks/useFamilyProfile.js').then(m => {
+                        // Can't use hook here, use direct localStorage save
+                        return { save: null, addKid: null, profiles: [] };
+                      });
+                      // Direct save to profile
+                      const payload = {
+                        childName: obName.trim(),
+                        age: Number(obAge) || 6,
+                        language: 'English',
+                        gender: 'boy',
+                        country: 'CA',
+                        beliefs: [],
+                        showCrossCulture: false,
+                        tier: 'free',
+                        createdAt: Date.now(),
+                      };
+                      // Save via the hook's save function
+                      if (typeof save === 'function') {
+                        save(payload);
+                      } else {
+                        // Fallback: save directly to localStorage + Firestore
+                        try {
+                          localStorage.setItem('mst:familyProfile', JSON.stringify(payload));
+                          localStorage.setItem('mst:profiles', JSON.stringify([payload]));
+                        } catch {}
+                        try {
+                          const { db, auth: fbAuth } = await import('../lib/firebase.js');
+                          if (db && fbAuth?.currentUser) {
+                            const { doc, setDoc } = await import('firebase/firestore');
+                            await setDoc(doc(db, 'users', fbAuth.currentUser.uid), {
+                              profiles: [payload],
+                              email: fbAuth.currentUser.email,
+                              updatedAt: new Date().toISOString(),
+                            }, { merge: true });
+                          }
+                        } catch {}
+                      }
+                      window.location.reload();
+                    }}
+                    className="mt-4 w-full rounded-2xl bg-gold py-3.5 text-sm font-bold text-bg-base shadow-glow"
+                  >
+                    Start {obName}'s bedtime stories
+                  </motion.button>
+                </>
+              )}
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </PageTransition>
   );
 }

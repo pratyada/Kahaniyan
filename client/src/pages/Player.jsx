@@ -1,4 +1,5 @@
 import { Component, useEffect, useRef, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ArrowLeft, X, Share2, Play, Pause, RotateCcw, Loader2, Timer } from 'lucide-react';
@@ -89,6 +90,7 @@ import ShareCardSheet from '../components/ShareCardSheet.jsx';
 import { useSeriesProgress } from '../hooks/useSeriesProgress.js';
 import { SERIES } from '../data/series.js';
 import StoryGallery from '../components/StoryGallery.jsx';
+import { fillTokens } from '../utils/storyHelpers.js';
 
 const SPEEDS = [0.8, 1, 1.2];
 
@@ -140,6 +142,7 @@ export default function Player() {
 }
 
 function SharedStoryGate() {
+  const { t } = useTranslation();
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
   const { current, load, clear } = usePlayer();
@@ -169,7 +172,7 @@ function SharedStoryGate() {
     return (
       <div className="flex h-screen flex-col items-center justify-center bg-bg-base px-6 text-center">
         <div className="mb-4 inline-block h-8 w-8 animate-spin rounded-full border-2 border-gold border-t-transparent" />
-        <p className="text-sm text-ink-muted">Loading story...</p>
+        <p className="text-sm text-ink-muted">{t('player.loading')}</p>
       </div>
     );
   }
@@ -180,7 +183,7 @@ function SharedStoryGate() {
         <div className="text-4xl mb-4">😔</div>
         <h1 className="font-display text-xl font-bold text-gold">Story not found</h1>
         <p className="mt-2 text-sm text-ink-muted">This story link may have expired or doesn't exist.</p>
-        <button onClick={() => { clear(); navigate('/'); }} className="btn-primary mt-6">Go to home</button>
+        <button onClick={() => { clear(); navigate('/'); }} className="btn-primary mt-6">{t('player.backToHome')}</button>
       </div>
     );
   }
@@ -189,6 +192,7 @@ function SharedStoryGate() {
 }
 
 function PlayerInner() {
+  const { t } = useTranslation();
   const navigate = useNavigate();
   const { current, clear, isPlaying, setIsPlaying, reloadLast, load, setAudio, audioRef: globalAudioRef } = usePlayer();
   const { profile } = useFamilyProfile();
@@ -203,16 +207,21 @@ function PlayerInner() {
   const [ttsReady, setTtsReady] = useState(false);
   const startedRef = useRef(false);
   const [wisdomImageUrls, setWisdomImageUrls] = useState({});
+  const [wisdomAudioUrls, setWisdomAudioUrls] = useState({});
 
-  // Fetch wisdom images for background
+  // Fetch wisdom images + audio URLs for background and next-episode loading
   useEffect(() => {
     (async () => {
       try {
         const { db: fireDb } = await import('../lib/firebase.js');
         if (!fireDb) return;
         const { doc: fdoc, getDoc: fget } = await import('firebase/firestore');
-        const snap = await fget(fdoc(fireDb, 'config', 'wisdomImages'));
-        if (snap.exists()) setWisdomImageUrls(snap.data());
+        const [imgSnap, audioSnap] = await Promise.all([
+          fget(fdoc(fireDb, 'config', 'wisdomImages')),
+          fget(fdoc(fireDb, 'config', 'wisdomAudio')),
+        ]);
+        if (imgSnap.exists()) setWisdomImageUrls(imgSnap.data());
+        if (audioSnap.exists()) setWisdomAudioUrls(audioSnap.data());
       } catch {}
     })();
   }, []);
@@ -247,6 +256,8 @@ function PlayerInner() {
     }
 
     console.log('[My Sleepy Tale:Player] Starting playback:', current.title);
+    // Kill any orphaned audio elements before starting fresh
+    document.querySelectorAll('audio').forEach(a => { try { a.pause(); a.src = ''; } catch {} });
 
     const lang = current.language || profile?.language || 'English';
     const narratorName = current.voice || 'AI Narrator';
@@ -384,6 +395,7 @@ function PlayerInner() {
   const [showFeedback, setShowFeedback] = useState(false);
   const [nextSeriesEpisode, setNextSeriesEpisode] = useState(null);
   const [feedbackRating, setFeedbackRating] = useState(0);
+  const [showSignupNudge, setShowSignupNudge] = useState(false);
 
   useEffect(() => {
     if (!current || !ttsReady) return;
@@ -396,17 +408,29 @@ function PlayerInner() {
       if (current?.seriesId && current?.episodeId) {
         markEpisodeComplete(current.seriesId, current.episodeId);
       }
+      // Record play in Firestore (server-side tracking)
+      import('../utils/playTracker.js').then(({ recordStoryPlay }) => recordStoryPlay(current)).catch(() => {});
       import('../utils/analytics.js').then(({ trackAudioCompleted }) => trackAudioCompleted(current?.id, current?.estimatedMinutes)).catch(() => {});
 
-      // Series episode → skip reflection, show next episode prompt
+      // Series episode → show next episode prompt (+ signup nudge for guests)
       if (current?.seriesId) {
         const seriesData = SERIES.find(s => s.id === current.seriesId);
         const currentIdx = seriesData?.episodes.findIndex(e => e.id === current.episodeId);
         const nextEp = seriesData?.episodes[currentIdx + 1];
         if (nextEp) {
-          setTimeout(() => setNextSeriesEpisode(nextEp), 800);
+          // Guest on series → show signup nudge first, then next episode
+          if (!user) {
+            setTimeout(() => setShowSignupNudge(true), 800);
+          } else {
+            setTimeout(() => setNextSeriesEpisode(nextEp), 800);
+          }
           return;
         }
+      }
+      // Guest → show signup nudge instead of reflection
+      if (!user) {
+        setTimeout(() => setShowSignupNudge(true), 800);
+        return;
       }
       setTimeout(() => setShowReflection(true), 800);
     }
@@ -470,7 +494,7 @@ function PlayerInner() {
         <div className="text-4xl mb-4">😔</div>
         <h1 className="font-display text-xl font-bold text-gold">{current.title || 'Story'}</h1>
         <p className="mt-2 text-sm text-ink-muted">This story doesn't have any content to play.</p>
-        <button onClick={() => { clear(); navigate('/'); }} className="btn-primary mt-6">Back to home</button>
+        <button onClick={() => { clear(); navigate('/'); }} className="btn-primary mt-6">{t('player.backToHome')}</button>
       </div>
     );
   }
@@ -574,7 +598,7 @@ function PlayerInner() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="relative z-10 flex h-full flex-col px-5 pt-4 pb-6 safe-top safe-bottom"
+            className="relative z-10 flex h-full flex-col overflow-hidden px-5 pt-4 pb-6 safe-top safe-bottom"
           >
             {/* Top bar — minimal */}
             <div className="mb-3 flex items-center justify-between">
@@ -623,6 +647,22 @@ function PlayerInner() {
               {current?.cast?.length > 0 && (
                 <p className="mt-0.5 text-[10px] text-gold/70">{current.cast.join(' · ')}</p>
               )}
+              {/* Series badge — shows which series this episode belongs to */}
+              {(() => {
+                const seriesData = current?.seriesId ? SERIES.find(s => s.id === current.seriesId) : null;
+                const epNum = seriesData?.episodes.findIndex(e => e.id === current?.episodeId) + 1;
+                return seriesData ? (
+                  <button
+                    onClick={() => navigate(`/series/${seriesData.id}`)}
+                    className="mt-2 inline-flex items-center gap-1.5 rounded-full bg-white/8 px-3 py-1.5 ring-1 ring-white/10 transition active:scale-95"
+                  >
+                    <span className="text-xs">{seriesData.icon}</span>
+                    <span className="text-[10px] font-bold text-gold">{seriesData.title}</span>
+                    <span className="text-[10px] text-ink-muted">Ep {epNum}/{seriesData.totalEpisodes}</span>
+                    <span className="text-[10px] text-ink-dim">→</span>
+                  </button>
+                ) : null;
+              })()}
             </div>
 
             {/* Story text — always visible, scrolls in sync */}
@@ -640,7 +680,7 @@ function PlayerInner() {
             {/* Progress bar — tappable + draggable to seek */}
             <div className="mt-4">
               <div
-                className="relative h-6 w-full cursor-pointer flex items-center"
+                className="relative h-10 w-full cursor-pointer flex items-center"
                 style={{ touchAction: 'none' }}
                 onClick={(e) => {
                   if (!ttsReady) return;
@@ -661,6 +701,13 @@ function PlayerInner() {
                   const onUp = () => { window.removeEventListener('mousemove', onMove); window.removeEventListener('mouseup', onUp); };
                   window.addEventListener('mousemove', onMove);
                   window.addEventListener('mouseup', onUp);
+                }}
+                onTouchStart={(e) => {
+                  if (!ttsReady) return;
+                  e.preventDefault();
+                  const rect = e.currentTarget.getBoundingClientRect();
+                  const fraction = Math.max(0, Math.min(1, (e.touches[0].clientX - rect.left) / rect.width));
+                  narrator.seek(fraction);
                 }}
                 onTouchMove={(e) => {
                   if (!ttsReady) return;
@@ -711,7 +758,7 @@ function PlayerInner() {
                 <button
                   onClick={handleTogglePlay}
                   disabled={narrator.loading}
-                  aria-label={narrator.loading ? 'Loading audio' : isPlaying ? 'Pause story' : 'Play story'}
+                  aria-label={narrator.loading ? t('player.loading') : isPlaying ? t('player.pause') : t('player.play')}
                   className={`group relative grid h-20 w-20 place-items-center rounded-full transition active:scale-95 ${
                     narrator.loading
                       ? 'bg-bg-elevated ring-2 ring-gold/30'
@@ -764,55 +811,78 @@ function PlayerInner() {
           </motion.div>
       </AnimatePresence>
 
-      {/* Voice feedback popup — shown after story ends */}
-      {/* Next Episode prompt (series only) */}
+      {/* Episode complete — share + next episode (series only) */}
       <AnimatePresence>
         {nextSeriesEpisode && (
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="absolute inset-0 z-[60] flex items-center justify-center bg-black/70 backdrop-blur-sm px-6"
+            className="absolute inset-0 z-[60] flex items-center justify-center bg-black/70 backdrop-blur-sm px-5"
           >
             <motion.div
               initial={{ scale: 0.9, y: 20 }}
               animate={{ scale: 1, y: 0 }}
-              className="w-full max-w-sm rounded-3xl bg-bg-elevated p-6 text-center shadow-lift ring-1 ring-white/10"
+              className="w-full max-w-sm rounded-3xl bg-bg-elevated p-5 text-center shadow-lift ring-1 ring-white/10"
             >
-              <div className="text-3xl mb-3">🎉</div>
+              <div className="text-3xl mb-2">🎉</div>
               <h3 className="text-lg font-bold text-ink" style={{ fontFamily: 'Fraunces, serif' }}>Episode Complete!</h3>
-              <p className="mt-2 text-xs text-ink-muted">Up next:</p>
-              <p className="mt-1 text-sm font-bold text-gold">Ep {nextSeriesEpisode.episodeNumber}: {nextSeriesEpisode.title}</p>
+
+              {/* Share this episode */}
+              <p className="mt-3 mb-2 text-[11px] text-ink-muted">Share this episode</p>
+              <motion.button
+                whileTap={{ scale: 0.97 }}
+                onClick={() => { setNextSeriesEpisode(null); setShowShareCard(true); }}
+                className="w-full rounded-2xl bg-white/8 py-3 text-sm font-bold text-gold ring-1 ring-white/10 transition"
+              >
+                Share with friends & family
+              </motion.button>
+
+              {/* Divider */}
+              <div className="my-4 flex items-center gap-3">
+                <div className="flex-1 h-px bg-white/10" />
+                <span className="text-[10px] text-ink-dim">UP NEXT</span>
+                <div className="flex-1 h-px bg-white/10" />
+              </div>
+
+              {/* Next episode preview */}
+              <p className="text-sm font-bold text-gold">Ep {nextSeriesEpisode.episodeNumber}: {nextSeriesEpisode.title}</p>
+              <p className="mt-1 text-[10px] text-ink-muted line-clamp-2">{nextSeriesEpisode.subtitle}</p>
+
               <motion.button
                 whileTap={{ scale: 0.97 }}
                 onClick={() => {
                   const ep = nextSeriesEpisode;
                   const sid = current?.seriesId;
-                  setNextSeriesEpisode(null);
+                  const audioUrl = wisdomAudioUrls[ep.id];
                   narrator.stop();
-                  clear(); // fully reset player state
-                  // Small delay to let clear() propagate, then load new episode
-                  setTimeout(() => {
-                    const filledText = fillTokens(ep.body || '', user ? profile : null);
-                    load({
-                      id: ep.id, title: ep.title, text: filledText,
-                      wordCount: filledText.split(/\s+/).length,
-                      estimatedMinutes: ep.durationMinutes, value: ep.value || 'courage',
-                      language: profile?.language || 'English', voice: 'AI Narrator',
-                      tradition: ep.tradition, source: ep.source,
-                      createdAt: new Date().toISOString(), isWisdom: true,
-                      seriesId: sid, episodeId: ep.id,
-                    });
-                    setDone(false); setTtsReady(false); startedRef.current = false;
-                  }, 100);
+                  document.querySelectorAll('audio').forEach(a => { a.pause(); a.src = ''; });
+                  setNextSeriesEpisode(null);
+                  setDone(false);
+                  setTtsReady(false);
+                  setShowReflection(false);
+                  setShowShareCard(false);
+                  setShowFeedback(false);
+                  startedRef.current = false;
+                  const filledText = fillTokens(ep.body || '', user ? profile : null);
+                  load({
+                    id: ep.id, title: ep.title, text: filledText,
+                    wordCount: filledText.split(/\s+/).length,
+                    estimatedMinutes: ep.durationMinutes, value: ep.value || 'courage',
+                    language: profile?.language || 'English', voice: 'AI Narrator',
+                    tradition: ep.tradition, source: ep.source,
+                    createdAt: new Date().toISOString(), isWisdom: true,
+                    seriesId: sid, episodeId: ep.id,
+                    audioUrl,
+                  });
                 }}
-                className="mt-4 w-full rounded-2xl bg-gold py-4 text-base font-bold text-bg-base shadow-glow"
+                className="mt-3 w-full rounded-2xl bg-gold py-4 text-base font-bold text-bg-base shadow-glow"
               >
-                ▶ Play Next Episode
+                ▶ {t('player.playNext')}
               </motion.button>
               <button onClick={() => { setNextSeriesEpisode(null); narrator.stop(); navigate('/'); }}
                 className="mt-3 text-[11px] text-ink-dim">
-                Back to Home
+                {t('player.backToHome')}
               </button>
             </motion.div>
           </motion.div>
@@ -826,7 +896,16 @@ function PlayerInner() {
             story={current}
             onComplete={() => {
               setShowReflection(false);
-              setShowShareCard(true);
+              // Show share card once per day
+              const today = new Date().toISOString().slice(0, 10);
+              const lastSharePrompt = localStorage.getItem('mst:lastSharePrompt') || '';
+              if (lastSharePrompt !== today) {
+                localStorage.setItem('mst:lastSharePrompt', today);
+                setShowShareCard(true);
+              } else {
+                narrator.stop();
+                navigate('/');
+              }
             }}
             onDefer={() => {
               narrator.stop();
@@ -836,68 +915,78 @@ function PlayerInner() {
         )}
       </AnimatePresence>
 
-      {/* Shareable story card (after reflection) */}
-      <ShareCardSheet
-        open={showShareCard}
-        onClose={() => { setShowShareCard(false); setShowFeedback(true); }}
-        story={current}
-      />
-
-      {/* Voice feedback (after share card) */}
+      {/* Signup nudge for guests — after story ends */}
       <AnimatePresence>
-        {showFeedback && (
+        {showSignupNudge && (
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="absolute inset-0 z-[60] flex items-center justify-center bg-black/60 backdrop-blur-sm"
+            className="absolute inset-0 z-[60] flex items-center justify-center bg-black/70 backdrop-blur-sm px-5"
           >
             <motion.div
-              initial={{ scale: 0.85, opacity: 0 }}
-              animate={{ scale: 1, opacity: 1 }}
-              exit={{ scale: 0.85, opacity: 0 }}
-              className="mx-6 w-full max-w-sm rounded-3xl bg-bg-elevated p-6 text-center shadow-lift ring-1 ring-white/10"
+              initial={{ scale: 0.9, y: 20 }}
+              animate={{ scale: 1, y: 0 }}
+              className="w-full max-w-sm rounded-3xl bg-bg-elevated p-6 text-center shadow-lift ring-1 ring-white/10"
             >
-              {feedbackRating === 0 ? (
-                <>
-                  <div className="text-3xl mb-3">🌙</div>
-                  <h3 className="text-lg font-bold text-ink" style={{ fontFamily: 'Fraunces, serif' }}>
-                    How was the voice?
-                  </h3>
-                  <p className="mt-1 text-xs text-ink-muted">Your feedback helps us pick better voices</p>
-                  <div className="mt-5 flex justify-center gap-2">
-                    {[1, 2, 3, 4, 5].map((star) => (
-                      <button
-                        key={star}
-                        onClick={() => submitFeedback(star)}
-                        className="grid h-12 w-12 place-items-center rounded-xl bg-white/5 text-xl transition hover:bg-gold/20 active:scale-90 ring-1 ring-white/10"
-                      >
-                        {star <= 2 ? '😕' : star <= 3 ? '🙂' : star <= 4 ? '😊' : '🤩'}
-                      </button>
-                    ))}
-                  </div>
-                  <div className="mt-2 flex justify-between px-2 text-[9px] text-ink-dim">
-                    <span>Not great</span>
-                    <span>Amazing</span>
-                  </div>
-                  <button onClick={skipFeedback}
-                    className="mt-4 text-[11px] text-ink-dim">
-                    Skip
+              <div className="text-4xl mb-3">🌙</div>
+              <h3 className="text-xl font-bold text-ink" style={{ fontFamily: 'Fraunces, serif' }}>
+                Loved it?
+              </h3>
+              <p className="mt-3 text-sm text-ink-muted leading-relaxed">
+                Imagine hearing <span className="text-gold font-bold">your child's name</span> in every story — their friends, their pet, their real adventures turned into bedtime magic.
+              </p>
+              <p className="mt-2 text-xs text-ink-dim">
+                Sign up free and we will personalize every story just for your little one.
+              </p>
+
+              <motion.button
+                whileTap={{ scale: 0.97 }}
+                onClick={() => { setShowSignupNudge(false); narrator.stop(); navigate('/login'); }}
+                className="mt-5 w-full rounded-2xl bg-gold py-4 text-base font-bold text-bg-base shadow-glow"
+              >
+                Sign up free — personalize for my child
+              </motion.button>
+
+              {/* If series has next episode, show continue option */}
+              {(() => {
+                if (!current?.seriesId) return null;
+                const seriesData = SERIES.find(s => s.id === current.seriesId);
+                const currentIdx = seriesData?.episodes.findIndex(e => e.id === current.episodeId);
+                const nextEp = seriesData?.episodes[currentIdx + 1];
+                if (!nextEp) return null;
+                return (
+                  <button
+                    onClick={() => {
+                      setShowSignupNudge(false);
+                      setNextSeriesEpisode(nextEp);
+                    }}
+                    className="mt-3 w-full rounded-xl bg-white/5 py-3 text-xs font-bold text-gold ring-1 ring-white/10"
+                  >
+                    ▶ Play next: Ep {nextEp.episodeNumber} — {nextEp.title}
                   </button>
-                </>
-              ) : (
-                <>
-                  <div className="text-4xl mb-2">{feedbackRating >= 4 ? '💛' : '🙏'}</div>
-                  <h3 className="text-lg font-bold text-gold" style={{ fontFamily: 'Fraunces, serif' }}>
-                    {feedbackRating >= 4 ? 'Thank you!' : 'We\'ll do better!'}
-                  </h3>
-                  <p className="mt-1 text-xs text-ink-muted">Sweet dreams tonight</p>
-                </>
-              )}
+                );
+              })()}
+
+              <button
+                onClick={() => { setShowSignupNudge(false); narrator.stop(); navigate('/'); }}
+                className="mt-3 text-[11px] text-ink-dim"
+              >
+                Maybe later
+              </button>
             </motion.div>
           </motion.div>
         )}
       </AnimatePresence>
+
+      {/* Share card — only opened manually via share button, not auto after story */}
+      <ShareCardSheet
+        open={showShareCard}
+        onClose={() => { setShowShareCard(false); narrator.stop(); navigate('/'); }}
+        story={current}
+      />
+
+      {/* Voice feedback removed — was annoying after every story */}
     </div>
   );
 }
@@ -914,16 +1003,17 @@ function HighlightedText({ text, progress }) {
   const adjusted = Math.min(1, progress);
   const cutoff = Math.floor(totalLen * adjusted);
 
-  // Auto-scroll to keep active word visible
+  // Auto-scroll to keep active word visible (only within the text container)
   useEffect(() => {
     if (activeRef.current && containerRef.current) {
       const container = containerRef.current;
       const active = activeRef.current;
       const containerRect = container.getBoundingClientRect();
       const activeRect = active.getBoundingClientRect();
-      // Scroll if active word is below the visible area
+      // Scroll only within this container — don't use scrollIntoView which scrolls parents too
       if (activeRect.top > containerRect.bottom - 60 || activeRect.bottom < containerRect.top + 20) {
-        active.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        const scrollTarget = active.offsetTop - container.offsetTop - container.clientHeight / 2;
+        container.scrollTo({ top: scrollTarget, behavior: 'smooth' });
       }
     }
   }, [cutoff]);

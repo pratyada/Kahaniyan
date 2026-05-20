@@ -1,6 +1,7 @@
 // Series detail page — shows all episodes with progress.
 
 import { useState, useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useNavigate, useParams } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { Play, CheckCircle } from 'lucide-react';
@@ -14,6 +15,7 @@ import { fillTokens } from '../utils/storyHelpers.js';
 import { getPlayCount, getRating, formatCount } from '../utils/socialProof.js';
 
 export default function SeriesDetail() {
+  const { t } = useTranslation();
   const { seriesId } = useParams();
   const navigate = useNavigate();
   const { load } = usePlayer();
@@ -21,22 +23,48 @@ export default function SeriesDetail() {
   const { profile } = useFamilyProfile();
   const { getSeriesProgress, isEpisodeComplete } = useSeriesProgress();
   const [galleryImages, setGalleryImages] = useState({});
-  const [coverImages, setCoverImages] = useState({});
+  const [creatorPhoto, setCreatorPhoto] = useState(null);
+  // Use localStorage cache for instant display, then refresh from Firestore
+  const [coverImages, setCoverImages] = useState(() => {
+    try { return JSON.parse(localStorage.getItem('mst:cache:wisdomImages')) || {}; } catch { return {}; }
+  });
+  const [audioUrls, setAudioUrls] = useState(() => {
+    try { return JSON.parse(localStorage.getItem('mst:cache:wisdomAudio')) || {}; } catch { return {}; }
+  });
 
-  // Load gallery + cover images from Firestore
+  // Load gallery + refresh cover/audio from Firestore
   useEffect(() => {
     (async () => {
       try {
         const { db } = await import('../lib/firebase.js');
         if (!db) return;
         const { doc, getDoc } = await import('firebase/firestore');
-        const galSnap = await getDoc(doc(db, 'config', 'wisdomGallery'));
+        const [galSnap, imgSnap, audioSnap] = await Promise.all([
+          getDoc(doc(db, 'config', 'wisdomGallery')),
+          getDoc(doc(db, 'config', 'wisdomImages')),
+          getDoc(doc(db, 'config', 'wisdomAudio')),
+        ]);
         if (galSnap.exists()) setGalleryImages(galSnap.data());
-        const imgSnap = await getDoc(doc(db, 'config', 'wisdomImages'));
         if (imgSnap.exists()) setCoverImages(imgSnap.data());
+        if (audioSnap.exists()) setAudioUrls(audioSnap.data());
       } catch {}
     })();
   }, []);
+
+  // Fetch creator photo
+  useEffect(() => {
+    const s = SERIES.find(s => s.id === seriesId);
+    if (!s?.createdBy) return;
+    (async () => {
+      try {
+        const { db } = await import('../lib/firebase.js');
+        if (!db) return;
+        const { collection, query, where, getDocs } = await import('firebase/firestore');
+        const snap = await getDocs(query(collection(db, 'users'), where('email', '==', s.createdBy)));
+        snap.forEach(d => { if (d.data().photoURL) setCreatorPhoto(d.data().photoURL); });
+      } catch {}
+    })();
+  }, [seriesId]);
 
   const series = SERIES.find((s) => s.id === seriesId);
   if (!series) {
@@ -70,6 +98,7 @@ export default function SeriesDetail() {
       isWisdom: true,
       seriesId: series.id,
       episodeId: episode.id,
+      audioUrl: audioUrls[episode.id],
     });
     navigate('/player');
   };
@@ -104,15 +133,45 @@ export default function SeriesDetail() {
         <div className="absolute inset-0 bg-gradient-to-t from-bg-base via-bg-base/70 to-bg-base/30" />
 
         <div className="relative px-5 pt-10 pb-6">
-          <button onClick={() => navigate('/')}
-            className="mb-4 text-[11px] font-bold uppercase tracking-wider text-white/60 hover:text-white">
-            ← Back
-          </button>
+          <div className="flex items-center justify-between mb-4">
+            <button onClick={() => navigate('/')}
+              className="text-[11px] font-bold uppercase tracking-wider text-white/60 hover:text-white">
+              ← Back
+            </button>
+            <button
+              onClick={async (e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                const url = `https://mysleepytale.com/api/share?id=${series.id}`;
+                const text = `Check out "${series.title}" on My Sleepy Tale — ${series.totalEpisodes} bedtime episodes!`;
+                try {
+                  if (navigator.share) {
+                    await navigator.share({ title: series.title, text, url });
+                  } else {
+                    await navigator.clipboard.writeText(`${text}\n${url}`);
+                    alert('Link copied!');
+                  }
+                } catch (err) {
+                  // User cancelled share — that's fine
+                  if (err.name !== 'AbortError') {
+                    // Fallback: copy to clipboard
+                    try {
+                      await navigator.clipboard.writeText(`${text}\n${url}`);
+                      alert('Link copied!');
+                    } catch {}
+                  }
+                }
+              }}
+              className="grid h-8 w-8 place-items-center rounded-full bg-white/10 text-white/70 backdrop-blur-sm transition active:scale-95"
+            >
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M4 12v8a2 2 0 002 2h12a2 2 0 002-2v-8"/><polyline points="16 6 12 2 8 6"/><line x1="12" y1="2" x2="12" y2="15"/></svg>
+            </button>
+          </div>
 
           <div className="flex items-center gap-3 mb-2">
             <span className="text-3xl">{series.icon}</span>
             <div>
-              <p className="text-[9px] font-bold uppercase tracking-[0.2em] text-gold/70">Series · {series.totalEpisodes} episodes</p>
+              <p className="text-[9px] font-bold uppercase tracking-[0.2em] text-gold/70">{t('home.series')} · {series.totalEpisodes} {t('home.episodes')}</p>
               <h1 className="text-2xl font-bold text-white" style={{ fontFamily: 'Fraunces, serif' }}>
                 {series.title}
               </h1>
@@ -120,6 +179,23 @@ export default function SeriesDetail() {
           </div>
 
           <p className="text-xs text-white/60 leading-relaxed mb-3">{series.description}</p>
+
+          {/* Creator badge */}
+          {series.creatorName && (
+            <button
+              onClick={() => navigate(`/creator/${series.creatorUsername || encodeURIComponent(series.creatorName.toLowerCase().replace(/\s+/g, '-'))}`)}
+              className="mb-3 flex items-center gap-2 rounded-full bg-black/30 pl-1 pr-3 py-1 backdrop-blur-sm ring-1 ring-white/10 transition active:scale-95"
+            >
+              {creatorPhoto ? (
+                <img src={creatorPhoto} alt="" referrerPolicy="no-referrer" className="h-6 w-6 rounded-full object-cover" />
+              ) : (
+                <div className="grid h-6 w-6 place-items-center rounded-full bg-gold/20 text-[8px] font-bold text-gold">
+                  {series.creatorName.split(' ').map(w => w[0]).join('').toUpperCase().slice(0, 2)}
+                </div>
+              )}
+              <span className="text-[10px] text-white/70">by <span className="font-bold text-gold/90">{series.creatorName}</span></span>
+            </button>
+          )}
 
           {/* Progress */}
           <div className="flex items-center gap-3">
@@ -146,7 +222,7 @@ export default function SeriesDetail() {
             <Play size={20} fill="#0a0a0f" className="text-bg-base" />
             <div className="text-left flex-1">
               <p className="text-sm font-bold text-bg-base">
-                {completedCount === 0 ? 'Start Series' : 'Continue'}
+                {completedCount === 0 ? t('player.play') : t('home.continueListening')}
               </p>
               <p className="text-[10px] text-bg-base/70">
                 Episode {nextEpisode.episodeNumber}: {nextEpisode.title}
@@ -197,11 +273,29 @@ export default function SeriesDetail() {
                 {done ? <CheckCircle size={14} /> : ep.episodeNumber}
               </div>
 
-              {/* Play button */}
-              <div className={`absolute right-2 top-2 grid h-8 w-8 place-items-center rounded-full ${
-                isNext ? 'bg-gold text-bg-base' : 'bg-black/30 text-white/80 backdrop-blur-sm'
-              }`}>
-                <Play size={12} fill="currentColor" />
+              {/* Share + Play buttons */}
+              <div className="absolute right-2 top-2 flex gap-1.5">
+                <button
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    const url = `https://mysleepytale.com/api/share?id=${ep.id}`;
+                    const text = `Listen to "${ep.title}" from ${series.title} on My Sleepy Tale!`;
+                    if (navigator.share) {
+                      navigator.share({ title: ep.title, text, url }).catch(() => {});
+                    } else {
+                      navigator.clipboard.writeText(`${text}\n${url}`);
+                      alert('Link copied!');
+                    }
+                  }}
+                  className="grid h-7 w-7 place-items-center rounded-full bg-black/40 text-white/70 backdrop-blur-sm transition active:scale-90"
+                >
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M4 12v8a2 2 0 002 2h12a2 2 0 002-2v-8"/><polyline points="16 6 12 2 8 6"/><line x1="12" y1="2" x2="12" y2="15"/></svg>
+                </button>
+                <div className={`grid h-7 w-7 place-items-center rounded-full ${
+                  isNext ? 'bg-gold text-bg-base' : 'bg-black/30 text-white/80 backdrop-blur-sm'
+                }`}>
+                  <Play size={10} fill="currentColor" />
+                </div>
               </div>
 
               {/* Photo count */}
@@ -221,7 +315,7 @@ export default function SeriesDetail() {
                 <div className="mt-1 flex items-center gap-1.5 text-[9px] text-white/50">
                   <span>▶ {formatCount(plays)}</span>
                   <span>⭐ {rating}</span>
-                  <span>{realDuration} min</span>
+                  <span>{realDuration} {t('home.min')}</span>
                 </div>
               </div>
             </motion.button>
@@ -241,6 +335,8 @@ export default function SeriesDetail() {
           </p>
         </div>
       )}
+
+      {/* Creator attribution moved to header */}
 
       <div className="h-32" />
     </PageTransition>

@@ -2,44 +2,48 @@
 // Fetches actual generated images from Firestore when available.
 // Falls back to Unsplash for stories without generated images.
 
-import { initializeApp, getApps } from 'firebase-admin/app';
-import { getFirestore } from 'firebase-admin/firestore';
+const PROJECT_ID = process.env.FIREBASE_PROJECT_ID || 'qissaa-61a78';
+const FIRESTORE_URL = `https://firestore.googleapis.com/v1/projects/${PROJECT_ID}/databases/(default)/documents`;
 
-let db = null;
 let imageCache = null;
+let galleryCache = null;
 let cacheTime = 0;
 
-try {
-  if (getApps().length === 0) {
-    initializeApp({ projectId: process.env.FIREBASE_PROJECT_ID || 'qissaa-61a78' });
+// Parse Firestore REST API document fields into a plain object
+function parseFields(fields) {
+  const result = {};
+  for (const [key, val] of Object.entries(fields || {})) {
+    if (val.stringValue !== undefined) result[key] = val.stringValue;
+    else if (val.arrayValue) result[key] = (val.arrayValue.values || []).map(v => v.stringValue || '');
   }
-  db = getFirestore();
-} catch {}
-
-// Load wisdom images from Firestore (cached for 5 min)
-async function getWisdomImages() {
-  const now = Date.now();
-  if (imageCache && (now - cacheTime) < 300000) return imageCache;
-  if (!db) return {};
-  try {
-    const snap = await db.collection('config').doc('wisdomImages').get();
-    imageCache = snap.exists ? snap.data() : {};
-    cacheTime = now;
-    return imageCache;
-  } catch { return imageCache || {}; }
+  return result;
 }
 
-// Fallback Unsplash images (only used if no Firestore image)
-const FALLBACK_IMG = {
-  krishna_squirrel: '1501706362039-c06b2d715385',
-  prophet_camel: '1549989476-69a92fa57c36',
-  jesus_birds: '1444464666168-49d633b86797',
-  buddha_swan: '1501706362039-c06b2d715385',
-  guru_nanak_grain: '1500382017468-9049fed747ef',
-  hanuman_mountain: '1464822759023-fed622ff2c3b',
-  universal_sharing_blanket: '1478760329108-5c3ed9d495a0',
-  universal_bravery_first_step: '1478760329108-5c3ed9d495a0',
-};
+// Load wisdom images + gallery from Firestore REST API (no auth needed for public reads)
+async function getWisdomImages() {
+  const now = Date.now();
+  if (imageCache && (now - cacheTime) < 300000) return { images: imageCache, gallery: galleryCache || {} };
+  try {
+    const [imgRes, galRes] = await Promise.all([
+      fetch(`${FIRESTORE_URL}/config/wisdomImages`),
+      fetch(`${FIRESTORE_URL}/config/wisdomGallery`),
+    ]);
+    if (imgRes.ok) {
+      const data = await imgRes.json();
+      imageCache = parseFields(data.fields);
+    } else { imageCache = imageCache || {}; }
+    if (galRes.ok) {
+      const data = await galRes.json();
+      galleryCache = parseFields(data.fields);
+    } else { galleryCache = galleryCache || {}; }
+    cacheTime = now;
+    console.log('[share] Firestore loaded: images=', Object.keys(imageCache).length, 'keys | gallery=', Object.keys(galleryCache).length, 'keys');
+    return { images: imageCache, gallery: galleryCache };
+  } catch (e) { console.error('[share] Firestore error:', e.message); return { images: imageCache || {}, gallery: galleryCache || {} }; }
+}
+
+// Default fallback image — our own generated image, no Unsplash
+const DEFAULT_OG_IMAGE = 'https://mysleepytale.com/dsp_ep1_development.png';
 
 // Story titles (needed for OG tags)
 const TITLES = {
@@ -85,6 +89,50 @@ const TITLES = {
   universal_patience_river: { title: 'The Patient River', tradition: 'Universal', duration: 7 },
   universal_respect_old_tree: { title: 'The Old Tree', tradition: 'Universal', duration: 7 },
   universal_forgiveness_kite: { title: 'The Forgiveness Kite', tradition: 'Universal', duration: 7 },
+  // Series — Fire Truck Academy
+  fta_ep1_afraid: { title: 'Afraid of Fire', tradition: 'Universal', duration: 4, series: 'Fire Truck Academy', ep: 1, totalEp: 3 },
+  fta_ep2_big_test: { title: 'The Big Test', tradition: 'Universal', duration: 4, series: 'Fire Truck Academy', ep: 2, totalEp: 3 },
+  fta_ep3_saving_day: { title: 'Saving the Day', tradition: 'Universal', duration: 4, series: 'Fire Truck Academy', ep: 3, totalEp: 3 },
+  // Series — Rocket Adventures
+  ra_ep1_liftoff: { title: 'Liftoff!', tradition: 'Universal', duration: 4, series: 'Rocket Adventures', ep: 1, totalEp: 3 },
+  ra_ep2_space_walk: { title: 'The Space Walk', tradition: 'Universal', duration: 4, series: 'Rocket Adventures', ep: 2, totalEp: 3 },
+  ra_ep3_home: { title: 'Coming Home', tradition: 'Universal', duration: 4, series: 'Rocket Adventures', ep: 3, totalEp: 3 },
+  // Series — Kindness Squad
+  ks_ep1_invisible: { title: 'The Invisible Power', tradition: 'Universal', duration: 4, series: 'The Kindness Squad', ep: 1, totalEp: 3 },
+  ks_ep2_shield: { title: 'The Patience Shield', tradition: 'Universal', duration: 4, series: 'The Kindness Squad', ep: 2, totalEp: 3 },
+  ks_ep3_forgiveness: { title: 'The Forgiveness Force', tradition: 'Universal', duration: 4, series: 'The Kindness Squad', ep: 3, totalEp: 3 },
+  // Series — Around the World
+  aw_ep1_japan: { title: 'Cherry Blossoms in Tokyo', tradition: 'Universal', duration: 4, series: 'Around the World in 3 Nights', ep: 1, totalEp: 3 },
+  aw_ep2_egypt: { title: 'Stars Over the Pyramids', tradition: 'Universal', duration: 4, series: 'Around the World in 3 Nights', ep: 2, totalEp: 3 },
+  aw_ep3_brazil: { title: 'Dancing in Rio', tradition: 'Universal', duration: 4, series: 'Around the World in 3 Nights', ep: 3, totalEp: 3 },
+  // Series — Pluto's Journey
+  pj_ep1_small: { title: 'Too Small', tradition: 'Universal', duration: 4, series: "Pluto's Journey", ep: 1, totalEp: 3 },
+  pj_ep2_far: { title: 'So Far Away', tradition: 'Universal', duration: 4, series: "Pluto's Journey", ep: 2, totalEp: 3 },
+  pj_ep3_special: { title: 'Something Special', tradition: 'Universal', duration: 4, series: "Pluto's Journey", ep: 3, totalEp: 3 },
+  // Series — Cricket Champions
+  cc_ep1_dream: { title: 'The Dream', tradition: 'Universal', duration: 4, series: 'Cricket Champions', ep: 1, totalEp: 3 },
+  cc_ep2_practice: { title: 'Practice Day', tradition: 'Universal', duration: 4, series: 'Cricket Champions', ep: 2, totalEp: 3 },
+  cc_ep3_match: { title: 'The Big Match', tradition: 'Universal', duration: 4, series: 'Cricket Champions', ep: 3, totalEp: 3 },
+  // Series — Rainbow Kindergarten
+  rk_ep1_canoe: { title: 'Shapes at Canoe Landing', tradition: 'Universal', duration: 4, series: 'Rainbow Kindergarten Adventures', ep: 1, totalEp: 3 },
+  rk_ep2_concert: { title: 'What a Wonderful World', tradition: 'Universal', duration: 4, series: 'Rainbow Kindergarten Adventures', ep: 2, totalEp: 3 },
+  rk_ep3_brickworks: { title: 'The Field Trip to Brick Works', tradition: 'Universal', duration: 4, series: 'Rainbow Kindergarten Adventures', ep: 3, totalEp: 3 },
+  // Series — Dr. Spock Says
+  dsp_ep1_development: { title: 'Growing So Fast', tradition: 'Universal', duration: 2, series: 'Dr. Spock Says', ep: 1, totalEp: 5 },
+  dsp_ep2_ailments: { title: 'Sniffles and Tummy Aches', tradition: 'Universal', duration: 2, series: 'Dr. Spock Says', ep: 2, totalEp: 5 },
+  dsp_ep3_firstaid: { title: 'Bumps, Burns, and Boo-Boos', tradition: 'Universal', duration: 2, series: 'Dr. Spock Says', ep: 3, totalEp: 5 },
+  dsp_ep4_behavior: { title: 'Big Feelings, Little Body', tradition: 'Universal', duration: 2, series: 'Dr. Spock Says', ep: 4, totalEp: 5 },
+  dsp_ep5_special: { title: 'Every Child Shines', tradition: 'Universal', duration: 2, series: 'Dr. Spock Says', ep: 5, totalEp: 5 },
+  // Series (whole series, not individual episodes)
+  'rainbow-kindergarten-jlps-yr25-26': { title: 'Rainbow Kindergarten Adventures', tradition: 'Universal', duration: null, isSeries: true, totalEp: 3, description: 'The Rainbow batch from JLPS explores Toronto — shapes at Canoe Landing, a concert, and the Brick Works field trip.', firstEpId: 'rk_ep1_canoe', seriesUrl: '/series/rainbow-kindergarten-jlps-yr25-26' },
+  'dr-spock-parenting': { title: 'Dr. Spock Says', tradition: 'Universal', duration: null, isSeries: true, totalEp: 5, description: 'Five bedtime conversations with Dr. Spock about raising 3-to-5-year-olds.', firstEpId: 'dsp_ep1_development', seriesUrl: '/series/dr-spock-parenting' },
+  // Collections
+  col_fire_truck: { title: 'The Bravest Fire Truck', tradition: 'Universal', duration: 4 },
+  col_dog: { title: 'The Loyal Dog', tradition: 'Universal', duration: 4 },
+  col_kitten: { title: 'The Curious Kitten', tradition: 'Universal', duration: 4 },
+  col_rabbit: { title: 'The Gentle Rabbit', tradition: 'Universal', duration: 4 },
+  col_invisible_hero: { title: 'The Invisible Hero', tradition: 'Universal', duration: 4 },
+  col_cape_of_courage: { title: 'Cape of Courage', tradition: 'Universal', duration: 4 },
 };
 
 export default async function handler(req, res) {
@@ -97,26 +145,43 @@ export default async function handler(req, res) {
   }
 
   const lessonId = storyId.startsWith('lesson_') ? storyId.slice(7) : storyId;
-  const story = TITLES[lessonId];
+  // Check both the raw storyId and lessonId (series IDs have hyphens, not lesson_ prefix)
+  const story = TITLES[storyId] || TITLES[lessonId];
 
+  const isSeries = story?.isSeries;
   const title = story ? story.title : 'A Bedtime Story';
   const tradition = story ? story.tradition : '';
-  const duration = story ? `${story.duration} min` : '';
-  const description = story
-    ? `Listen to "${title}" — a ${tradition} bedtime story that teaches real values. ${duration}. Free on My Sleepy Tale.`
-    : 'A personalized bedtime story that teaches values. Free on My Sleepy Tale.';
+  const duration = story?.duration ? `${story.duration} min` : '';
 
-  // Get actual generated image from Firestore (admin-generated DALL-E images)
-  const wisdomImages = await getWisdomImages();
-  let image = wisdomImages[lessonId] || '';
-
-  // Fallback to Unsplash if no Firestore image
-  if (!image) {
-    const fallbackId = FALLBACK_IMG[lessonId] || '1544776193-352d25ca82cd';
-    image = `https://images.unsplash.com/photo-${fallbackId}?w=1200&h=630&fit=crop&q=80`;
+  let description;
+  if (isSeries) {
+    description = `${story.description || ''} ${story.totalEp} bedtime episodes. Free on My Sleepy Tale.`;
+  } else {
+    const seriesInfo = story?.series ? `Episode ${story.ep} of ${story.totalEp} in "${story.series}". ` : '';
+    description = story
+      ? `${seriesInfo}Listen to "${title}" — a ${tradition} bedtime story that teaches real values. ${duration}. Free on My Sleepy Tale.`
+      : 'A personalized bedtime story that teaches values. Free on My Sleepy Tale.';
   }
 
-  const playerUrl = `https://mysleepytale.com/player?storyId=${storyId || 'lesson_' + lessonId}`;
+  // Get actual generated image from Firestore
+  const { images: wisdomImages, gallery: wisdomGallery } = await getWisdomImages();
+  // For series, look up first episode's image
+  const imageKey = isSeries ? (story.firstEpId || lessonId) : lessonId;
+  let image = wisdomImages[imageKey] || wisdomImages[storyId] || '';
+  if (!image) {
+    const galleryPhotos = wisdomGallery[imageKey] || wisdomGallery[storyId] || wisdomGallery[lessonId] || [];
+    if (galleryPhotos.length > 0) image = galleryPhotos[0];
+  }
+
+  // Fallback to our own generated default image
+  if (!image) {
+    image = DEFAULT_OG_IMAGE;
+  }
+
+  // Series → redirect to series page, episodes/stories → redirect to player
+  const redirectUrl = isSeries
+    ? `https://mysleepytale.com${story.seriesUrl}`
+    : `https://mysleepytale.com/player?storyId=${storyId || 'lesson_' + lessonId}`;
 
   const html = `<!DOCTYPE html>
 <html>
@@ -136,10 +201,10 @@ export default async function handler(req, res) {
   <meta name="twitter:title" content="${title} — My Sleepy Tale">
   <meta name="twitter:description" content="${description}">
   <meta name="twitter:image" content="${image}">
-  <meta http-equiv="refresh" content="0;url=${playerUrl}">
+  <meta http-equiv="refresh" content="0;url=${redirectUrl}">
 </head>
 <body>
-  <p>Redirecting to <a href="${playerUrl}">${title}</a>...</p>
+  <p>Redirecting to <a href="${redirectUrl}">${title}</a>...</p>
 </body>
 </html>`;
 

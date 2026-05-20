@@ -6,6 +6,8 @@ import {
   signInWithPopup,
   signOut,
   updateProfile,
+  sendEmailVerification,
+  sendPasswordResetEmail,
 } from 'firebase/auth';
 import { auth, googleProvider, hasConfig } from '../lib/firebase.js';
 
@@ -37,6 +39,18 @@ export function AuthProvider({ children }) {
         notifiedRef.current = u?.uid || null;
         _onUserChange(u);
       }
+      // Save photoURL + email to Firestore user doc (for curator pages)
+      if (u?.uid) {
+        import('../lib/firebase.js').then(({ db }) => {
+          if (!db) return;
+          import('firebase/firestore').then(({ doc, setDoc }) => {
+            const updates = { email: u.email || '' };
+            if (u.photoURL) updates.photoURL = u.photoURL;
+            if (u.displayName) updates.displayName = u.displayName;
+            setDoc(doc(db, 'users', u.uid), updates, { merge: true }).catch(() => {});
+          });
+        });
+      }
     });
     return unsub;
   }, []);
@@ -62,6 +76,19 @@ export function AuthProvider({ children }) {
       if (displayName) {
         await updateProfile(cred.user, { displayName });
       }
+      // Send verification email
+      try { await sendEmailVerification(cred.user); } catch {}
+    } catch (e) {
+      setError(friendlyError(e.code));
+      throw e;
+    }
+  }, []);
+
+  const resetPassword = useCallback(async (email) => {
+    if (!auth) return;
+    setError(null);
+    try {
+      await sendPasswordResetEmail(auth, email);
     } catch (e) {
       setError(friendlyError(e.code));
       throw e;
@@ -98,6 +125,7 @@ export function AuthProvider({ children }) {
         loginEmail,
         signupEmail,
         loginGoogle,
+        resetPassword,
         logout,
         isConfigured: hasConfig,
       },

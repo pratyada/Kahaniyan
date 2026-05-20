@@ -123,6 +123,13 @@ export const STORY_PROMPTS = {
   col_egypt_pyramid: 'A tiny humble pyramid beside the enormous Great Pyramid of Giza, the small one with an open door glowing with warm light inside, size versus soul, dramatic desert sunset, humility',
   col_brazil_rainforest: 'An enormous ancient tree in the Amazon whose roots glow blue as they pull water from underground and release it as mist that becomes rain clouds above, the cycle of giving, magical realism',
   col_toronto_cn: 'The CN Tower soaring above Toronto skyline next to a tiny old brick house with warm light in its windows, tall versus old, new versus historic, Lake Ontario reflecting both, evening glow',
+
+  // ══════ SERIES — DR. SPOCK SAYS ══════
+  dsp_ep1_development: 'A warm kindly silver-haired doctor in a white coat sitting in a cozy living room armchair talking gently to a young parent, a preschool child playing with colorful blocks on the floor between them, soft lamp light, bookshelves with parenting books, warm golden atmosphere, trust and reassurance',
+  dsp_ep2_ailments: 'A gentle doctor kneeling beside a cozy bed where a small child with a runny nose is tucked under a warm blanket, a cup of soup on the nightstand, soft tissues nearby, warm bedside lamp glowing amber, caring parent watching from doorway, comforting scene',
+  dsp_ep3_firstaid: 'A kind doctor showing a parent how to put a bandage on a small child\'s scraped knee, the child sitting on a kitchen counter looking brave with a few tears, a small first aid kit open beside them, sunny kitchen with warm light, courage and care',
+  dsp_ep4_behavior: 'A small child mid-tantrum on the floor of a cozy living room while a calm parent sits nearby at eye level with open arms, a kindly doctor figure observing with a gentle smile from an armchair, warm evening light, patience and love, soft watercolor style',
+  dsp_ep5_special: 'A diverse group of children playing together in a sunny inclusive playground — one child in a small wheelchair, another with hearing aids, all laughing together, a gentle doctor figure watching proudly from a park bench, rainbow of abilities, warm golden light, joy and belonging',
 };
 
 // Get prompt for a story (with style prefix)

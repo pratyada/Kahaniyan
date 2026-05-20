@@ -1,6 +1,7 @@
 // Blog — image card grid inside the app shell, matching the static /blog/ design.
 
 import { useState, useMemo } from 'react';
+import { useTranslation } from 'react-i18next';
 import PageTransition from '../components/PageTransition.jsx';
 
 const POSTS = [
@@ -23,25 +24,12 @@ const POSTS = [
   { slug: 'bluey-bingo-niagara-victoria-day', title: 'Bluey & Bingo\'s Victoria Day Adventure at Niagara Falls', desc: 'A bedtime story where Bluey and Bingo visit Niagara Falls for Victoria Day fireworks. For Toronto kids who love Bluey.', cat: 'toronto', tag: 'Toronto', min: 5, img: 'https://images.unsplash.com/photo-1559757175-5700dde675bc?w=600&h=380&fit=crop&q=80', section: 'more' },
 ];
 
-const CATS = [
-  { key: 'all', label: 'All' },
-  { key: 'psychology', label: 'Child Psychology' },
-  { key: 'guide', label: 'Guides' },
-  { key: 'toronto', label: 'Toronto' },
-  { key: 'culture', label: 'Cultural' },
-  { key: 'comparison', label: 'Comparisons' },
-  { key: 'creators', label: 'Creators' },
-];
+const CAT_KEYS = ['all', 'psychology', 'guide', 'toronto', 'culture', 'comparison', 'creators'];
 
-const SECTIONS = [
-  { key: 'psychology', title: 'Child', highlight: 'Psychology' },
-  { key: 'guides', title: 'Guides &', highlight: 'Comparisons' },
-  { key: 'culture', title: 'Cultural', highlight: 'Stories' },
-  { key: 'creators', title: 'Creator', highlight: 'Program' },
-  { key: 'more', title: 'More', highlight: 'Reads' },
-];
+const SECTION_KEYS = ['psychology', 'guides', 'culture', 'creators', 'more'];
 
 function BlogCard({ post }) {
+  const { t } = useTranslation();
   return (
     <a
       href={`/blog/${post.slug}`}
@@ -62,7 +50,7 @@ function BlogCard({ post }) {
         <h3 className="font-display text-[15px] font-bold text-ink leading-snug mb-1.5 line-clamp-2">{post.title}</h3>
         <p className="text-[12px] text-ink-muted leading-relaxed line-clamp-2 flex-1">{post.desc}</p>
         <div className="mt-2.5 flex items-center gap-1.5 text-[10px] text-ink-dim">
-          <span>{post.min} min</span>
+          <span>{t('blog.min', { count: post.min })}</span>
           <span className="w-[3px] h-[3px] rounded-full bg-ink-dim" />
           <span>May 2026</span>
         </div>
@@ -72,6 +60,7 @@ function BlogCard({ post }) {
 }
 
 export default function Blog() {
+  const { t } = useTranslation();
   const [query, setQuery] = useState('');
   const [cat, setCat] = useState('all');
 
@@ -90,9 +79,9 @@ export default function Blog() {
   // Group by section when showing "All"
   const sections = useMemo(() => {
     if (isFiltering) return null;
-    return SECTIONS.map(s => ({
-      ...s,
-      posts: POSTS.filter(p => !p.featured && p.section === s.key),
+    return SECTION_KEYS.map(key => ({
+      key,
+      posts: POSTS.filter(p => !p.featured && p.section === key),
     })).filter(s => s.posts.length > 0);
   }, [isFiltering]);
 
@@ -104,13 +93,13 @@ export default function Blog() {
       {/* Header */}
       <div className="text-center px-5 pt-8 pb-1">
         <span className="inline-block bg-gold/10 text-gold text-[9px] font-bold uppercase tracking-[.15em] px-3 py-1 rounded-full ring-1 ring-gold/15 mb-3">
-          Stories, Science & Parenting
+          {t('blog.badge')}
         </span>
         <h1 className="font-display text-[clamp(1.6rem,5vw,2.2rem)] font-bold text-ink leading-tight">
           The <span className="text-gold">Sleepy Tale</span> Blog
         </h1>
         <p className="mt-2 text-sm text-ink-muted max-w-md mx-auto">
-          Child psychology, bedtime guides, cultural storytelling, and the science behind why stories shape better humans.
+          {t('blog.subtitle')}
         </p>
       </div>
 
@@ -120,29 +109,29 @@ export default function Blog() {
           type="text"
           value={query}
           onChange={e => setQuery(e.target.value)}
-          placeholder="Search articles..."
+          placeholder={t('blog.search')}
           className="w-full rounded-2xl bg-bg-surface px-4 py-3 text-sm text-ink placeholder:text-ink-dim outline-none ring-1 ring-white/5 focus:ring-gold/40 transition"
         />
       </div>
 
       {/* Categories */}
       <div className="px-5 pb-2 flex gap-2 overflow-x-auto no-scrollbar">
-        {CATS.map(c => (
+        {CAT_KEYS.map(key => (
           <button
-            key={c.key}
-            onClick={() => setCat(c.key)}
+            key={key}
+            onClick={() => setCat(key)}
             className={`shrink-0 rounded-pill px-3.5 py-1.5 text-xs font-bold transition ${
-              cat === c.key
+              cat === key
                 ? 'bg-gold text-bg-base'
                 : 'bg-bg-surface text-ink-muted ring-1 ring-white/5'
             }`}
           >
-            {c.label}
+            {t(`blog.categories.${key}`)}
           </button>
         ))}
       </div>
 
-      <div className="text-[11px] text-ink-dim px-5 mb-3">{filtered.length} article{filtered.length !== 1 ? 's' : ''}</div>
+      <div className="text-[11px] text-ink-dim px-5 mb-3">{filtered.length} {filtered.length !== 1 ? t('blog.articles') : t('blog.article')}</div>
 
       {/* Featured card — side by side on desktop */}
       {featured && (
@@ -158,7 +147,7 @@ export default function Blog() {
             <h2 className="font-display text-xl lg:text-2xl font-bold text-ink leading-snug mb-2">{featured.title}</h2>
             <p className="text-sm text-ink-muted leading-relaxed line-clamp-3">{featured.desc}</p>
             <div className="mt-3 flex items-center gap-2 text-[11px] text-ink-dim">
-              <span>{featured.min} min read</span>
+              <span>{t('blog.minRead', { count: featured.min })}</span>
               <span className="w-[3px] h-[3px] rounded-full bg-ink-dim" />
               <span>May 2026</span>
               <span className="w-[3px] h-[3px] rounded-full bg-ink-dim" />
@@ -172,7 +161,7 @@ export default function Blog() {
       {sections && sections.map(s => (
         <div key={s.key} className="px-5 mb-6">
           <h2 className="font-display text-lg font-bold text-ink mb-3">
-            {s.title} <span className="text-gold">{s.highlight}</span>
+            {t(`blog.sections.${s.key}`)} <span className="text-gold">{t(`blog.sections.${s.key}Highlight`)}</span>
           </h2>
           <div className="grid grid-cols-2 lg:grid-cols-3 gap-3">
             {s.posts.map(p => <BlogCard key={p.slug} post={p} />)}
@@ -192,7 +181,7 @@ export default function Blog() {
       {filtered.length === 0 && (
         <div className="py-16 text-center px-5">
           <div className="text-4xl mb-3">📝</div>
-          <p className="text-sm text-ink-muted">No articles found</p>
+          <p className="text-sm text-ink-muted">{t('blog.noResults')}</p>
         </div>
       )}
 

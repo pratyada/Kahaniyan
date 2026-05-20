@@ -1,143 +1,276 @@
-// Curation — Create stories (left tab) or Listen to creations (right tab).
-// Guests can browse everything. Submit requires sign-in.
+// Creation — Create stories/series or view your creations.
+// Guests can browse. Submit requires sign-in.
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Feather, Headphones } from 'lucide-react';
+import { Feather, Headphones, Plus, Trash2, Image as ImageIcon } from 'lucide-react';
 import PageTransition from '../components/PageTransition.jsx';
 import { useFamilyProfile } from '../hooks/useFamilyProfile.js';
 import { useAuth } from '../hooks/useAuth.jsx';
 import { RELIGIONS } from '../utils/constants.js';
+import { SERIES } from '../data/series.js';
+import { FOUNDER } from '../utils/socialProof.js';
+
+const THEMES = [
+  { key: 'compassion-animals', label: 'Compassion' },
+  { key: 'courage', label: 'Courage' },
+  { key: 'wisdom', label: 'Wisdom' },
+  { key: 'honesty', label: 'Honesty' },
+  { key: 'sharing', label: 'Sharing' },
+  { key: 'humility', label: 'Humility' },
+  { key: 'forgiveness', label: 'Forgiveness' },
+  { key: 'patience', label: 'Patience' },
+  { key: 'inclusion', label: 'Inclusion' },
+];
 
 export default function Library() {
+  const { t } = useTranslation();
   const navigate = useNavigate();
   const { profile } = useFamilyProfile();
   const { user } = useAuth();
   const [tab, setTab] = useState('create');
   const [toast, setToast] = useState(null);
+  const [createMode, setCreateMode] = useState(null); // null | 'story' | 'series'
 
   // Creator state
   const [myStories, setMyStories] = useState([]);
+  const [mySeries, setMySeries] = useState([]);
   const [credits, setCredits] = useState(0);
+
+  // Story form
   const [title, setTitle] = useState('');
   const [tradition, setTradition] = useState(profile?.beliefs?.[0] || 'universal');
   const [theme, setTheme] = useState('compassion-animals');
   const [source, setSource] = useState('');
   const [body, setBody] = useState('');
+  const [storyImage, setStoryImage] = useState(null);
   const [submitting, setSubmitting] = useState(false);
 
+  // Series form
+  const [seriesTitle, setSeriesTitle] = useState('');
+  const [seriesDesc, setSeriesDesc] = useState('');
+  const [seriesIcon, setSeriesIcon] = useState('📚');
+  const [seriesAge, setSeriesAge] = useState('3-8');
+  const [seriesTradition, setSeriesTradition] = useState('universal');
+  const [episodes, setEpisodes] = useState([{ title: '', body: '', image: null }]);
 
-  // Load creator data + published stories
+  const fileRef = useRef(null);
+  const [activeImageIdx, setActiveImageIdx] = useState(-1); // -1 = story image, 0+ = episode index
+
+  // Load creator data
   useEffect(() => {
+    if (!user) return;
     (async () => {
       try {
         const { db } = await import('../lib/firebase.js');
         if (!db) return;
         const { collection, query, where, getDocs, doc, getDoc } = await import('firebase/firestore');
 
-        // My submissions (if logged in)
-        if (user) {
-          // One-time seed: if admin and no creator stories exist, seed all 99 as creator
-          const isAdmin = ['prateekyadav2010@gmail.com', 'sahil.faraz@gmail.com'].includes(user.email);
-          const myQ = query(collection(db, 'creatorStories'), where('authorUid', '==', user.uid));
-          const mySnap = await getDocs(myQ);
-          const stories = [];
-          mySnap.forEach((d) => stories.push({ id: d.id, ...d.data() }));
+        // My stories
+        const myQ = query(collection(db, 'creatorStories'), where('authorUid', '==', user.uid));
+        const mySnap = await getDocs(myQ);
+        const stories = [];
+        mySnap.forEach((d) => stories.push({ id: d.id, ...d.data() }));
+        setMyStories(stories.sort((a, b) => new Date(b.submittedAt) - new Date(a.submittedAt)));
 
-          if (isAdmin && stories.length === 0) {
-            // Seed all stories as this admin's creations
-            const { setDoc } = await import('firebase/firestore');
-            const { CULTURAL_LESSONS } = await import('../data/culturalLessons.js');
-            const { COLLECTIONS } = await import('../data/collections.js');
-            const allStories = [
-              ...CULTURAL_LESSONS.map(l => ({ id: l.id, title: l.title, tradition: l.tradition, theme: l.theme, body: l.body, source: l.source, durationMinutes: l.durationMinutes })),
-              ...COLLECTIONS.flatMap(c => c.stories.map(s => ({ id: s.id, title: s.title, tradition: s.tradition, theme: s.theme, body: s.body, source: s.source, durationMinutes: s.durationMinutes }))),
-            ];
-            let seeded = 0;
-            for (const s of allStories) {
-              await setDoc(doc(db, 'creatorStories', s.id), {
-                title: s.title, tradition: s.tradition, theme: s.theme,
-                source: s.source || 'Original', body: (s.body || '').slice(0, 200) + '...',
-                authorUid: user.uid,
-                authorName: user.displayName || user.email?.split('@')[0] || 'Prateek',
-                status: 'published',
-                submittedAt: new Date().toISOString(),
-                views: 2000 + Math.floor(Math.random() * 8000),
-                creditsEarned: 50 + Math.floor(Math.random() * 200),
-              }, { merge: true });
-              seeded++;
-            }
-            // Set total credits
-            const totalCredits = allStories.length * 50 + Math.floor(Math.random() * 5000);
-            await setDoc(doc(db, 'creatorCredits', user.uid), { total: totalCredits, email: user.email }, { merge: true });
-            // Set leaderboard entry
-            await setDoc(doc(db, 'creatorLeaderboard', user.uid), {
-              name: user.displayName || 'Prateek Yadav',
-              email: user.email,
-              tradition: 'all',
-              storyCount: allStories.length,
-              totalViews: allStories.length * 5000,
-            }, { merge: true });
-            // Re-fetch
-            const mySnap2 = await getDocs(myQ);
-            stories.length = 0;
-            mySnap2.forEach((d) => stories.push({ id: d.id, ...d.data() }));
-            setCredits(totalCredits);
-          }
+        // My series
+        const serQ = query(collection(db, 'creatorSeries'), where('authorUid', '==', user.uid));
+        const serSnap = await getDocs(serQ);
+        const ser = [];
+        serSnap.forEach((d) => ser.push({ id: d.id, ...d.data() }));
+        setMySeries(ser.sort((a, b) => new Date(b.submittedAt) - new Date(a.submittedAt)));
 
-          setMyStories(stories.sort((a, b) => new Date(b.submittedAt) - new Date(a.submittedAt)));
-
-          const creditDoc = await getDoc(doc(db, 'creatorCredits', user.uid));
-          if (creditDoc.exists()) setCredits(creditDoc.data().total || 0);
-        }
+        // Credits
+        const creditDoc = await getDoc(doc(db, 'creatorCredits', user.uid));
+        if (creditDoc.exists()) setCredits(creditDoc.data().total || 0);
       } catch {}
     })();
   }, [user]);
 
   const showToast = (msg) => { setToast(msg); setTimeout(() => setToast(null), 3000); };
 
-  const handleSubmit = async () => {
-    // MUST be logged in to submit
-    if (!user) {
-      if (window.__triggerLogin) window.__triggerLogin();
-      else navigate('/login');
-      return;
-    }
+  const handleImagePick = (idx) => {
+    setActiveImageIdx(idx);
+    fileRef.current?.click();
+  };
+
+  const handleFileChange = (e) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = () => {
+      if (activeImageIdx === -1) {
+        setStoryImage(reader.result);
+      } else {
+        const updated = [...episodes];
+        updated[activeImageIdx].image = reader.result;
+        setEpisodes(updated);
+      }
+    };
+    reader.readAsDataURL(file);
+    e.target.value = '';
+  };
+
+  const handleSubmitStory = async () => {
+    if (!user) { navigate('/login'); return; }
     if (!title.trim() || !body.trim()) { showToast('Title and story are required'); return; }
-    const wordCount = body.trim().split(/\s+/).length;
-    if (wordCount < 200) { showToast(`Need at least 200 words (${wordCount} now)`); return; }
+    const wc = body.trim().split(/\s+/).length;
+    if (wc < 100) { showToast(`Need at least 100 words (${wc} now)`); return; }
 
     setSubmitting(true);
     try {
       const { db } = await import('../lib/firebase.js');
       const { collection, addDoc } = await import('firebase/firestore');
-      await addDoc(collection(db, 'creatorStories'), {
+
+      const { getOrCreateUsername } = await import('../utils/usernameHelper.js');
+      const authorUsername = await getOrCreateUsername() || '';
+
+      const storyData = {
         title: title.trim(), tradition, theme,
         source: source.trim() || `${tradition} tradition`,
         body: body.trim(),
         authorUid: user.uid,
         authorName: user.displayName || user.email?.split('@')[0] || 'Anonymous',
+        authorEmail: user.email || '',
+        authorUsername,
         status: 'pending', submittedAt: new Date().toISOString(),
         views: 0, creditsEarned: 0,
-      });
-      showToast('Submitted! We\'ll review within 48 hours.');
-      setTitle(''); setBody(''); setSource('');
-      // Refresh
-      const { query: q, where: w, getDocs: gd } = await import('firebase/firestore');
-      const myQ = q(collection(db, 'creatorStories'), w('authorUid', '==', user.uid));
-      const snap = await gd(myQ);
-      const updated = [];
-      snap.forEach((d) => updated.push({ id: d.id, ...d.data() }));
-      setMyStories(updated.sort((a, b) => new Date(b.submittedAt) - new Date(a.submittedAt)));
+        type: 'story',
+      };
+
+      // Upload image if provided
+      if (storyImage) {
+        try {
+          const { storage } = await import('../lib/firebase.js');
+          const { ref, uploadString, getDownloadURL } = await import('firebase/storage');
+          const imgRef = ref(storage, `creator-images/${user.uid}/${Date.now()}.jpg`);
+          await uploadString(imgRef, storyImage, 'data_url');
+          storyData.coverImage = await getDownloadURL(imgRef);
+        } catch {}
+      }
+
+      await addDoc(collection(db, 'creatorStories'), storyData);
+      showToast('Story submitted! We\'ll review within 48 hours.');
+      setTitle(''); setBody(''); setSource(''); setStoryImage(null);
+      setCreateMode(null);
+      // Switch to My Creations and refresh
+      setTab('listen');
+      try {
+        const { query: q2, where: w2, getDocs: gd2 } = await import('firebase/firestore');
+        const myQ = q2(collection(db, 'creatorStories'), w2('authorUid', '==', user.uid));
+        const snap = await gd2(myQ);
+        const updated = [];
+        snap.forEach((d) => updated.push({ id: d.id, ...d.data() }));
+        setMyStories(updated.sort((a, b) => new Date(b.submittedAt) - new Date(a.submittedAt)));
+      } catch {}
     } catch (e) { showToast('Failed: ' + e.message); }
     setSubmitting(false);
   };
 
+  const handleSubmitSeries = async () => {
+    if (!user) { navigate('/login'); return; }
+    if (!seriesTitle.trim()) { showToast('Series title is required'); return; }
+    const validEps = episodes.filter(ep => ep.title.trim() && ep.body.trim());
+    if (validEps.length < 2) { showToast('Need at least 2 episodes with title and story'); return; }
+
+    setSubmitting(true);
+    try {
+      const { db } = await import('../lib/firebase.js');
+      const { collection, addDoc } = await import('firebase/firestore');
+
+      const epData = [];
+      for (let i = 0; i < validEps.length; i++) {
+        const ep = validEps[i];
+        let epImage = null;
+        if (ep.image) {
+          try {
+            const { storage } = await import('../lib/firebase.js');
+            const { ref, uploadString, getDownloadURL } = await import('firebase/storage');
+            const imgRef = ref(storage, `creator-images/${user.uid}/series_${Date.now()}_ep${i}.jpg`);
+            await uploadString(imgRef, ep.image, 'data_url');
+            epImage = await getDownloadURL(imgRef);
+          } catch {}
+        }
+        epData.push({
+          episodeNumber: i + 1,
+          title: ep.title.trim(),
+          body: ep.body.trim(),
+          wordCount: ep.body.trim().split(/\s+/).length,
+          coverImage: epImage,
+        });
+      }
+
+      await addDoc(collection(db, 'creatorSeries'), {
+        title: seriesTitle.trim(),
+        description: seriesDesc.trim(),
+        icon: seriesIcon,
+        ageRange: seriesAge,
+        tradition: seriesTradition,
+        episodes: epData,
+        totalEpisodes: epData.length,
+        authorUid: user.uid,
+        authorName: user.displayName || user.email?.split('@')[0] || 'Anonymous',
+        authorEmail: user.email || '',
+        authorUsername: (await import('../utils/usernameHelper.js').then(m => m.getOrCreateUsername())) || '',
+        status: 'pending',
+        submittedAt: new Date().toISOString(),
+        type: 'series',
+      });
+      showToast('Series submitted! We\'ll review within 48 hours.');
+      setSeriesTitle(''); setSeriesDesc(''); setSeriesIcon('📚');
+      setEpisodes([{ title: '', body: '', image: null }]);
+      setCreateMode(null);
+      // Switch to My Creations tab and refresh
+      setTab('listen');
+      try {
+        const { collection: coll, query: q2, where: w2, getDocs: gd2 } = await import('firebase/firestore');
+        const serQ = q2(coll(db, 'creatorSeries'), w2('authorUid', '==', user.uid));
+        const serSnap = await gd2(serQ);
+        const ser = [];
+        serSnap.forEach((d) => ser.push({ id: d.id, ...d.data() }));
+        setMySeries(ser.sort((a, b) => new Date(b.submittedAt) - new Date(a.submittedAt)));
+      } catch {}
+    } catch (e) { showToast('Failed: ' + e.message); }
+    setSubmitting(false);
+  };
+
+  const addEpisode = () => setEpisodes([...episodes, { title: '', body: '', image: null }]);
+  const removeEpisode = (i) => { if (episodes.length > 1) setEpisodes(episodes.filter((_, idx) => idx !== i)); };
+  const updateEpisode = (i, field, value) => {
+    const updated = [...episodes];
+    updated[i][field] = value;
+    setEpisodes(updated);
+  };
+
+  const handleDelete = async (id, collName) => {
+    if (!confirm('Delete this? This cannot be undone.')) return;
+    try {
+      const { db } = await import('../lib/firebase.js');
+      const { doc, deleteDoc } = await import('firebase/firestore');
+      await deleteDoc(doc(db, collName, id));
+      if (collName === 'creatorSeries') setMySeries(prev => prev.filter(s => s.id !== id));
+      else setMyStories(prev => prev.filter(s => s.id !== id));
+      showToast('Deleted');
+    } catch (e) { showToast('Failed: ' + e.message); }
+  };
+
   const wordCount = body.trim().split(/\s+/).filter(Boolean).length;
+
+  const statusLabel = (status) => {
+    const map = { pending: t('creation.submitted'), revision_requested: t('creation.needsEdits'), approved: 'Approved', published: t('creation.published'), rejected: 'Rejected' };
+    return map[status] || status;
+  };
+  const statusColor = (status) => {
+    const map = { pending: 'bg-gold/10 text-gold', revision_requested: 'bg-blue-500/10 text-blue-400', approved: 'bg-emerald-500/10 text-emerald-400', published: 'bg-green-500/10 text-green-400', rejected: 'bg-red-500/10 text-red-400' };
+    return map[status] || 'bg-gold/10 text-gold';
+  };
 
   return (
     <PageTransition className="page-scroll px-5 pt-10 safe-top">
+      <input type="file" ref={fileRef} accept="image/*" className="hidden" onChange={handleFileChange} />
+
       {/* Toast */}
       <AnimatePresence>
         {toast && (
@@ -151,98 +284,188 @@ export default function Library() {
       {/* Header */}
       <header className="mb-5">
         <h1 className="text-2xl font-bold text-ink" style={{ fontFamily: 'Fraunces, serif' }}>
-          <span className="text-gold">Curation</span>
+          <span className="text-gold">{t('creation.title')}</span>
         </h1>
         <p className="mt-1 text-xs text-ink-muted">
-          Create stories for the community or listen to what others have shared
+          Create stories & series or view your creations
         </p>
       </header>
 
-      {/* Tab bar — Create LEFT, My Creations RIGHT */}
+      {/* Tab bar */}
       <div className="mb-5 flex gap-1 rounded-2xl bg-bg-surface p-1 ring-1 ring-white/5">
-        <button onClick={() => setTab('create')}
+        <button onClick={() => { setTab('create'); setCreateMode(null); }}
           className={`flex flex-1 items-center justify-center gap-1.5 rounded-xl py-2.5 text-xs font-bold transition ${
             tab === 'create' ? 'bg-gold text-bg-base' : 'text-ink-muted'
           }`}>
-          <Feather size={14} /> Create
+          <Feather size={14} /> {t('creation.create')}
         </button>
         <button onClick={() => setTab('listen')}
           className={`flex flex-1 items-center justify-center gap-1.5 rounded-xl py-2.5 text-xs font-bold transition ${
             tab === 'listen' ? 'bg-gold text-bg-base' : 'text-ink-muted'
           }`}>
-          <Headphones size={14} /> My Creations
+          <Headphones size={14} /> {t('creation.myCreations')}
         </button>
       </div>
 
       {/* ═══ CREATE TAB ═══ */}
-      {tab === 'create' && (
+      {tab === 'create' && !createMode && (
         <>
-          {/* Hero */}
           <div className="mb-5 rounded-2xl bg-gradient-to-br from-gold/10 to-gold/3 p-5 ring-1 ring-gold/20">
             <h2 className="text-lg font-bold text-ink" style={{ fontFamily: 'Fraunces, serif' }}>
               No story should go untold
             </h2>
             <p className="mt-1 text-xs text-ink-muted leading-relaxed">
-              Your grandma's tales. Your temple stories. Your cultural wisdom.
-              Write them here — we'll narrate them for thousands of kids.
-              Earn credits for every listen.
+              Your grandma's tales. Your temple stories. Your school adventures.
+              Write them here — we narrate them for thousands of kids.
             </p>
           </div>
 
-          {/* Submission form — available to all, but submit requires login */}
-          <div className="space-y-4">
-            <h3 className="text-sm font-bold text-ink">Write a new story</h3>
-
-            <input value={title} onChange={(e) => setTitle(e.target.value)}
-              placeholder="Story title (e.g. The Monkey and the Crocodile)"
-              className="field" />
-
-            <div className="flex gap-3">
-              <select value={tradition} onChange={(e) => setTradition(e.target.value)} className="field flex-1 text-sm">
-                {RELIGIONS.map((r) => <option key={r.key} value={r.key}>{r.icon} {r.label}</option>)}
-              </select>
-              <select value={theme} onChange={(e) => setTheme(e.target.value)} className="field flex-1 text-sm">
-                <option value="compassion-animals">Compassion</option>
-                <option value="courage">Courage</option>
-                <option value="wisdom">Wisdom</option>
-                <option value="honesty">Honesty</option>
-                <option value="sharing">Sharing</option>
-                <option value="humility">Humility</option>
-                <option value="forgiveness">Forgiveness</option>
-              </select>
-            </div>
-
-            <input value={source} onChange={(e) => setSource(e.target.value)}
-              placeholder="Source (e.g. Panchatantra folk tradition)" className="field" />
-
-            <div>
-              <textarea value={body} onChange={(e) => setBody(e.target.value)}
-                placeholder={'Write your story here...\n\nEnd with: "That night, {childName}, remember..."'}
-                className="field h-48 resize-y" />
-              <p className="mt-1 text-[10px] text-ink-dim">
-                {wordCount} words {wordCount > 0 && wordCount < 200 ? `(need ${200 - wordCount} more)` : ''}
-              </p>
-            </div>
-
-            <motion.button whileTap={{ scale: 0.97 }} onClick={handleSubmit}
-              disabled={submitting || wordCount < 200 || !title.trim()}
-              className="w-full rounded-2xl bg-gold py-4 text-base font-bold text-bg-base shadow-glow transition disabled:opacity-40">
-              {!user ? '🔒 Sign in to Submit' : submitting ? 'Submitting...' : 'Submit for Review'}
+          {/* Create Story or Series choice */}
+          <div className="space-y-3">
+            <motion.button whileTap={{ scale: 0.97 }} onClick={() => setCreateMode('story')}
+              className="w-full flex items-center gap-4 rounded-2xl bg-bg-surface p-5 ring-1 ring-white/8 text-left transition hover:ring-gold/30">
+              <div className="grid h-14 w-14 shrink-0 place-items-center rounded-2xl bg-gold/10 text-2xl">📖</div>
+              <div>
+                <h3 className="text-sm font-bold text-ink">{t('creation.writeStory')}</h3>
+                <p className="text-[10px] text-ink-muted mt-0.5">A single bedtime story — one lesson, one complete tale</p>
+              </div>
             </motion.button>
 
-            {!user && (
-              <p className="text-center text-[10px] text-ink-dim">
-                You can write your story now — sign in when ready to submit
-              </p>
-            )}
-
-            <div className="rounded-xl bg-bg-surface p-3 ring-1 ring-white/5 text-[10px] text-ink-muted leading-relaxed">
-              <strong className="text-ink">Tips:</strong> End with "That night, {'{childName}'}, remember..." •
-              Use {'{childName}'}, {'{sibling}'}, {'{pet}'} as placeholders •
-              800-2000 words ideal • Teach ONE clear value
-            </div>
+            <motion.button whileTap={{ scale: 0.97 }} onClick={() => setCreateMode('series')}
+              className="w-full flex items-center gap-4 rounded-2xl bg-bg-surface p-5 ring-1 ring-white/8 text-left transition hover:ring-gold/30">
+              <div className="grid h-14 w-14 shrink-0 place-items-center rounded-2xl bg-gold/10 text-2xl">📺</div>
+              <div>
+                <h3 className="text-sm font-bold text-ink">{t('creation.createSeries')}</h3>
+                <p className="text-[10px] text-ink-muted mt-0.5">Multiple episodes — same characters, new adventures each night</p>
+              </div>
+            </motion.button>
           </div>
         </>
+      )}
+
+      {/* ═══ CREATE STORY FORM ═══ */}
+      {tab === 'create' && createMode === 'story' && (
+        <div className="space-y-4">
+          <button onClick={() => setCreateMode(null)} className="text-[11px] font-bold text-ink-muted">← Back to options</button>
+          <h3 className="text-sm font-bold text-ink">New Story</h3>
+
+          <input value={title} onChange={(e) => setTitle(e.target.value)}
+            placeholder={t('creation.storyTitle')} className="field" />
+
+          <div className="flex gap-3">
+            <select value={tradition} onChange={(e) => setTradition(e.target.value)} className="field flex-1 text-sm">
+              {RELIGIONS.map((r) => <option key={r.key} value={r.key}>{r.icon} {r.label}</option>)}
+            </select>
+            <select value={theme} onChange={(e) => setTheme(e.target.value)} className="field flex-1 text-sm">
+              {THEMES.map((t) => <option key={t.key} value={t.key}>{t.label}</option>)}
+            </select>
+          </div>
+
+          <input value={source} onChange={(e) => setSource(e.target.value)}
+            placeholder="Source (e.g. Panchatantra folk tradition)" className="field" />
+
+          <textarea value={body} onChange={(e) => setBody(e.target.value)}
+            placeholder={'Write your story here...\n\nUse {childName} for personalization.\nEnd with a gentle bedtime message.'}
+            className="field h-48 resize-y" />
+          <p className="text-[10px] text-ink-dim">{wordCount} words {wordCount > 0 && wordCount < 100 ? `(need ${100 - wordCount} more)` : ''}</p>
+
+          {/* Cover image upload */}
+          <button onClick={() => handleImagePick(-1)}
+            className="flex items-center gap-2 rounded-xl bg-bg-surface px-4 py-3 ring-1 ring-white/8 text-xs text-ink-muted w-full">
+            <ImageIcon size={16} className="text-gold" />
+            {storyImage ? 'Cover image added ✓' : 'Add cover image (optional)'}
+          </button>
+          {storyImage && (
+            <img src={storyImage} alt="" className="h-24 w-full rounded-xl object-cover ring-1 ring-white/10" />
+          )}
+
+          <motion.button whileTap={{ scale: 0.97 }} onClick={handleSubmitStory}
+            disabled={submitting || wordCount < 100 || !title.trim()}
+            className="w-full rounded-2xl bg-gold py-4 text-base font-bold text-bg-base shadow-glow transition disabled:opacity-40">
+            {!user ? t('login.signInToContinue') : submitting ? 'Submitting...' : t('creation.submit')}
+          </motion.button>
+        </div>
+      )}
+
+      {/* ═══ CREATE SERIES FORM ═══ */}
+      {tab === 'create' && createMode === 'series' && (
+        <div className="space-y-4">
+          <button onClick={() => setCreateMode(null)} className="text-[11px] font-bold text-ink-muted">← Back to options</button>
+          <h3 className="text-sm font-bold text-ink">New Series</h3>
+
+          <div className="flex gap-3">
+            <input value={seriesIcon} onChange={(e) => setSeriesIcon(e.target.value)}
+              placeholder="Icon" className="field w-16 text-center text-xl" maxLength={2} />
+            <input value={seriesTitle} onChange={(e) => setSeriesTitle(e.target.value)}
+              placeholder="Series title" className="field flex-1" />
+          </div>
+
+          <textarea value={seriesDesc} onChange={(e) => setSeriesDesc(e.target.value)}
+            placeholder="Describe your series in 1-2 lines" className="field h-16 resize-none" />
+
+          <div className="flex gap-3">
+            <select value={seriesTradition} onChange={(e) => setSeriesTradition(e.target.value)} className="field flex-1 text-sm">
+              {RELIGIONS.map((r) => <option key={r.key} value={r.key}>{r.icon} {r.label}</option>)}
+            </select>
+            <select value={seriesAge} onChange={(e) => setSeriesAge(e.target.value)} className="field flex-1 text-sm">
+              <option value="2-4">Ages 2-4</option>
+              <option value="3-5">Ages 3-5</option>
+              <option value="3-8">Ages 3-8</option>
+              <option value="5-10">Ages 5-10</option>
+              <option value="8-12">Ages 8-12</option>
+            </select>
+          </div>
+
+          {/* Episodes */}
+          <div className="space-y-4">
+            <div className="flex items-center justify-between">
+              <h4 className="text-xs font-bold text-ink">Episodes ({episodes.length})</h4>
+              <button onClick={addEpisode}
+                className="flex items-center gap-1 rounded-full bg-gold/10 px-3 py-1.5 text-[10px] font-bold text-gold ring-1 ring-gold/20">
+                <Plus size={12} /> Add Episode
+              </button>
+            </div>
+
+            {episodes.map((ep, i) => (
+              <div key={i} className="rounded-xl bg-bg-surface p-4 ring-1 ring-white/8 space-y-3">
+                <div className="flex items-center justify-between">
+                  <span className="text-[10px] font-bold uppercase tracking-wider text-gold">Episode {i + 1}</span>
+                  {episodes.length > 1 && (
+                    <button onClick={() => removeEpisode(i)} className="text-ink-dim hover:text-red-400">
+                      <Trash2 size={14} />
+                    </button>
+                  )}
+                </div>
+
+                <input value={ep.title} onChange={(e) => updateEpisode(i, 'title', e.target.value)}
+                  placeholder={`Episode ${i + 1} title`} className="field" />
+
+                <textarea value={ep.body} onChange={(e) => updateEpisode(i, 'body', e.target.value)}
+                  placeholder="Write the episode story..."
+                  className="field h-32 resize-y" />
+                <p className="text-[10px] text-ink-dim">
+                  {ep.body.trim().split(/\s+/).filter(Boolean).length} words
+                </p>
+
+                {/* Episode image */}
+                <button onClick={() => handleImagePick(i)}
+                  className="flex items-center gap-2 rounded-lg bg-black/20 px-3 py-2 ring-1 ring-white/5 text-[10px] text-ink-muted w-full">
+                  <ImageIcon size={12} className="text-gold" />
+                  {ep.image ? 'Image added ✓' : 'Add episode image'}
+                </button>
+                {ep.image && (
+                  <img src={ep.image} alt="" className="h-20 w-full rounded-lg object-cover ring-1 ring-white/10" />
+                )}
+              </div>
+            ))}
+          </div>
+
+          <motion.button whileTap={{ scale: 0.97 }} onClick={handleSubmitSeries}
+            disabled={submitting || !seriesTitle.trim() || episodes.filter(e => e.title.trim() && e.body.trim()).length < 2}
+            className="w-full rounded-2xl bg-gold py-4 text-base font-bold text-bg-base shadow-glow transition disabled:opacity-40">
+            {!user ? t('login.signInToContinue') : submitting ? 'Submitting...' : `${t('creation.submitSeries')} (${episodes.filter(e => e.title.trim() && e.body.trim()).length} ${t('home.episodes')})`}
+          </motion.button>
+        </div>
       )}
 
       {/* ═══ MY CREATIONS TAB ═══ */}
@@ -257,26 +480,81 @@ export default function Library() {
                 Sign In
               </button>
             </div>
-          ) : myStories.length === 0 ? (
-            <div className="mt-12 text-center">
-              <div className="text-5xl mb-4">✍️</div>
-              <p className="text-lg font-bold text-ink" style={{ fontFamily: 'Fraunces, serif' }}>No creations yet</p>
-              <p className="mt-2 text-sm text-ink-muted">Write your first story and it will show up here.</p>
-              <button onClick={() => setTab('create')} className="mt-4 rounded-2xl bg-gold px-6 py-3 text-sm font-bold text-bg-base">
-                Start Creating
-              </button>
-            </div>
           ) : (
             <div className="space-y-3">
+              {/* Built-in series — show to creator who owns them, or founder sees all */}
+              {SERIES.filter(s => !s.comingSoon && (s.createdBy === user?.email || (!s.createdBy && user?.email === FOUNDER.email))).map((series) => (
+                <div key={series.id} className="rounded-xl bg-bg-surface p-4 ring-1 ring-white/5">
+                  <div className="flex items-start justify-between gap-3">
+                    <div className="min-w-0 flex-1">
+                      <div className="flex items-center gap-2 mb-1">
+                        <span className="text-lg">{series.icon}</span>
+                        <h3 className="text-sm font-bold text-ink">{series.title}</h3>
+                      </div>
+                      <p className="text-[10px] text-ink-muted">Series · {series.totalEpisodes} episodes · {series.ageRange}</p>
+                      <div className="mt-2 space-y-0.5">
+                        {series.episodes.map((ep) => (
+                          <p key={ep.id} className="text-[10px] text-ink-dim">Ep {ep.episodeNumber}: {ep.title}</p>
+                        ))}
+                      </div>
+                    </div>
+                    <span className="shrink-0 rounded-full px-2.5 py-1 text-[10px] font-bold bg-green-500/10 text-green-400">published</span>
+                  </div>
+                  <div className="mt-2 flex items-center gap-4 text-[11px] text-ink-muted">
+                    <span>📺 {series.totalEpisodes} episodes</span>
+                    <span>⭐ {series.totalEpisodes * 15 + 50} credits</span>
+                  </div>
+                </div>
+              ))}
+
+              {/* User-submitted series */}
+              {mySeries.map((s) => (
+                <div key={s.id} className="rounded-xl bg-bg-surface p-4 ring-1 ring-white/5">
+                  <div className="flex items-start justify-between gap-3">
+                    <div className="min-w-0 flex-1">
+                      <div className="flex items-center gap-2 mb-1">
+                        <span className="text-lg">{s.icon}</span>
+                        <h3 className="text-sm font-bold text-ink">{s.title}</h3>
+                      </div>
+                      <p className="text-[10px] text-ink-muted">Series · {s.totalEpisodes} episodes · {s.ageRange}</p>
+                      <div className="mt-2 space-y-0.5">
+                        {(s.episodes || []).map((ep, i) => (
+                          <p key={i} className="text-[10px] text-ink-dim">Ep {ep.episodeNumber}: {ep.title}</p>
+                        ))}
+                      </div>
+                    </div>
+                    <span className={`shrink-0 rounded-full px-2.5 py-1 text-[10px] font-bold ${statusColor(s.status)}`}>
+                      {statusLabel(s.status)}
+                    </span>
+                  </div>
+                  {/* Admin feedback */}
+                  {s.adminFeedback && s.status === 'revision_requested' && (
+                    <div className="mt-2 rounded-lg bg-blue-500/5 border border-blue-500/20 p-2.5">
+                      <p className="text-[9px] font-bold text-blue-400 uppercase tracking-wider mb-1">Admin feedback</p>
+                      <p className="text-[10px] text-blue-300/80">{s.adminFeedback}</p>
+                    </div>
+                  )}
+                  {s.status === 'pending' && (
+                    <p className="mt-2 text-[10px] text-gold/70">Under review — we will notify you within 48 hours</p>
+                  )}
+                  {(s.status === 'pending' || s.status === 'rejected' || s.status === 'revision_requested') && (
+                    <button onClick={() => handleDelete(s.id, 'creatorSeries')}
+                      className="mt-2 text-[10px] text-red-400/60 hover:text-red-400">
+                      {t('common.delete')}
+                    </button>
+                  )}
+                </div>
+              ))}
+
               {/* Credits */}
-              {credits > 0 && (
-                <div className="flex items-center justify-between rounded-xl bg-gold/10 p-4 ring-1 ring-gold/20 mb-4">
+              {(credits > 0 || SERIES.some(s => s.createdBy === user?.email)) && (
+                <div className="flex items-center justify-between rounded-xl bg-gold/10 p-4 ring-1 ring-gold/20">
                   <span className="text-sm font-bold text-ink">Total Credits</span>
                   <span className="text-lg font-bold text-gold">{credits}</span>
                 </div>
               )}
 
-              {/* Story list */}
+              {/* Individual stories */}
               {myStories.map((s) => (
                 <div key={s.id} className="rounded-xl bg-bg-surface p-4 ring-1 ring-white/5">
                   <div className="flex items-start justify-between gap-3">
@@ -285,15 +563,10 @@ export default function Library() {
                       <p className="text-[10px] text-ink-muted mt-0.5">
                         {s.tradition} · {s.theme?.replace('-', ' ')} · {(s.body || '').split(/\s+/).length} words
                       </p>
-                      <p className="text-[10px] text-ink-dim mt-0.5">
-                        Submitted {new Date(s.submittedAt).toLocaleDateString()}
-                      </p>
                     </div>
-                    <span className={`shrink-0 rounded-full px-2.5 py-1 text-[10px] font-bold ${
-                      s.status === 'published' ? 'bg-green-500/10 text-green-400' :
-                      s.status === 'rejected' ? 'bg-red-500/10 text-red-400' :
-                      'bg-gold/10 text-gold'
-                    }`}>{s.status}</span>
+                    <span className={`shrink-0 rounded-full px-2.5 py-1 text-[10px] font-bold ${statusColor(s.status)}`}>
+                      {statusLabel(s.status)}
+                    </span>
                   </div>
                   {s.status === 'published' && (
                     <div className="mt-2 flex items-center gap-4 text-[11px] text-ink-muted">
@@ -302,17 +575,47 @@ export default function Library() {
                     </div>
                   )}
                   {s.status === 'pending' && (
-                    <p className="mt-2 text-[10px] text-gold/70">Under review — we'll notify you within 48 hours</p>
+                    <p className="mt-2 text-[10px] text-gold/70">Under review — we will notify you within 48 hours</p>
                   )}
-                  {s.status === 'rejected' && (
-                    <p className="mt-2 text-[10px] text-red-400/70">This story didn't meet our guidelines. Try again with a different story.</p>
+                  {s.status === 'revision_requested' && (
+                    <div className="mt-2 rounded-lg bg-blue-500/5 border border-blue-500/20 p-2.5">
+                      <p className="text-[9px] font-bold text-blue-400 uppercase tracking-wider mb-1">Admin feedback</p>
+                      <p className="text-[10px] text-blue-300/80">{s.adminFeedback}</p>
+                      <p className="mt-1 text-[9px] text-ink-dim">Edit your story and resubmit</p>
+                    </div>
+                  )}
+                  {(s.status === 'pending' || s.status === 'rejected' || s.status === 'revision_requested') && (
+                    <button onClick={() => handleDelete(s.id, 'creatorStories')}
+                      className="mt-2 text-[10px] text-red-400/60 hover:text-red-400">
+                      {t('common.delete')}
+                    </button>
                   )}
                 </div>
               ))}
+
+              {/* Empty state */}
+              {myStories.length === 0 && mySeries.length === 0 && !(user?.email === FOUNDER.email) && (
+                <div className="mt-8 text-center">
+                  <div className="text-4xl mb-3">✍️</div>
+                  <p className="text-sm text-ink-muted">{t('creation.noCreations')}</p>
+                  <button onClick={() => { setTab('create'); setCreateMode(null); }}
+                    className="mt-3 rounded-2xl bg-gold px-5 py-2.5 text-sm font-bold text-bg-base">
+                    Start Creating
+                  </button>
+                </div>
+              )}
             </div>
           )}
         </>
       )}
+
+      {/* All Creators link */}
+      <div className="mt-6 text-center">
+        <button onClick={() => navigate('/creators')}
+          className="inline-flex items-center gap-2 rounded-full bg-white/5 px-5 py-2.5 text-xs font-bold text-gold ring-1 ring-white/10 transition active:scale-95">
+          ✍️ All Creators →
+        </button>
+      </div>
 
       <div className="h-32" />
     </PageTransition>

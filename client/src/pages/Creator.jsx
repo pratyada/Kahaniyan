@@ -1,12 +1,15 @@
 // Creator page — submit stories, view credits, see leaderboard.
 
 import { useState, useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import PageTransition from '../components/PageTransition.jsx';
 import { useAuth } from '../hooks/useAuth.jsx';
 import { useFamilyProfile } from '../hooks/useFamilyProfile.js';
 import { RELIGIONS } from '../utils/constants.js';
+import { SERIES } from '../data/series.js';
+import { FOUNDER } from '../utils/socialProof.js';
 
 const THEMES = [
   { key: 'compassion-animals', label: 'Compassion' },
@@ -19,6 +22,7 @@ const THEMES = [
 ];
 
 export default function Creator() {
+  const { t } = useTranslation();
   const navigate = useNavigate();
   const { user } = useAuth();
   const { profile } = useFamilyProfile();
@@ -167,7 +171,7 @@ export default function Creator() {
       {tab === 'submit' && (
         <div className="space-y-4">
           <div>
-            <label className="text-[10px] font-bold uppercase tracking-wider text-ink-muted block mb-1">Story Title</label>
+            <label className="text-[10px] font-bold uppercase tracking-wider text-ink-muted block mb-1">{t('creation.storyTitle')}</label>
             <input value={title} onChange={(e) => setTitle(e.target.value)} placeholder="e.g. The Monkey and the Crocodile"
               className="field" />
           </div>
@@ -214,7 +218,7 @@ export default function Creator() {
             disabled={submitting || wordCount < 200}
             className="w-full rounded-2xl bg-gold py-4 text-base font-bold text-bg-base shadow-glow transition disabled:opacity-40"
           >
-            {submitting ? 'Submitting...' : 'Submit for Review'}
+            {submitting ? 'Submitting...' : t('creation.submit')}
           </motion.button>
           {wordCount > 0 && wordCount < 200 && (
             <p className="text-center text-[10px] text-warning">Need at least 200 words ({200 - wordCount} more)</p>
@@ -225,7 +229,34 @@ export default function Creator() {
       {/* My stories tab */}
       {tab === 'my-stories' && (
         <div className="space-y-3">
-          {myStories.length === 0 ? (
+          {/* Series created by this user (founder sees all series) */}
+          {user?.email === FOUNDER.email && SERIES.map((series) => (
+            <div key={series.id} className="rounded-xl bg-bg-surface p-4 ring-1 ring-white/5">
+              <div className="flex items-start justify-between gap-3">
+                <div>
+                  <div className="flex items-center gap-2 mb-1">
+                    <span className="text-lg">{series.icon}</span>
+                    <h3 className="text-sm font-bold text-ink">{series.title}</h3>
+                  </div>
+                  <p className="text-[10px] text-ink-muted">Series · {series.totalEpisodes} episodes · {series.ageRange}</p>
+                  <div className="mt-2 space-y-1">
+                    {series.episodes.map((ep) => (
+                      <p key={ep.id} className="text-[10px] text-ink-dim">Ep {ep.episodeNumber}: {ep.title}</p>
+                    ))}
+                  </div>
+                </div>
+                <span className="shrink-0 rounded-full px-2.5 py-0.5 text-[9px] font-bold bg-green-500/10 text-green-400">
+                  published
+                </span>
+              </div>
+              <div className="mt-2 flex items-center gap-3 text-[10px] text-ink-muted">
+                <span>📺 {series.totalEpisodes} episodes</span>
+                <span>⭐ {series.totalEpisodes * 15 + 50} credits</span>
+              </div>
+            </div>
+          ))}
+
+          {myStories.length === 0 && !(user?.email === FOUNDER.email && SERIES.length > 0) ? (
             <div className="text-center py-12">
               <div className="text-4xl mb-3">✍️</div>
               <p className="text-sm text-ink-muted">No stories submitted yet. Write your first!</p>

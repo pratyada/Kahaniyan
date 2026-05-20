@@ -1,19 +1,23 @@
 import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useFamilyProfile } from '../hooks/useFamilyProfile.js';
-import { LANGUAGES, COUNTRIES, RELIGIONS } from '../utils/constants.js';
+import { LANGUAGES, RELIGIONS } from '../utils/constants.js';
+import { COUNTRIES, getStates } from '../data/regions.js';
 
-const makeSteps = (name) => {
+const makeSteps = (name, t) => {
   const n = name || 'your child';
   return [
-    { key: 'childName', title: "What's your child's name?", placeholder: 'e.g. Arjun', type: 'text' },
-    { key: 'age', title: `How old is ${n}?`, placeholder: '6', type: 'number' },
-    { key: 'language', title: 'Select preferred language', subtitle: 'Stories will be narrated in this language.', type: 'language' },
+    { key: 'childName', title: t('onboarding.childName'), placeholder: 'e.g. Arjun', type: 'text' },
+    { key: 'age', title: t('onboarding.childAge'), placeholder: '6', type: 'number' },
+    { key: 'language', title: t('onboarding.selectLanguage'), subtitle: 'Stories will be narrated in this language.', type: 'language' },
+    { key: 'country', title: `Where does ${n} live?`, subtitle: 'Stories will include local places and culture.', type: 'country' },
   ];
 };
 
 export default function Onboarding() {
+  const { t } = useTranslation();
   const [step, setStep] = useState(0);
   const [draft, setDraft] = useState({
     language: 'English',
@@ -25,7 +29,7 @@ export default function Onboarding() {
   const navigate = useNavigate();
   const { save, addKid, profiles } = useFamilyProfile();
 
-  const STEPS = makeSteps(draft.childName?.trim());
+  const STEPS = makeSteps(draft.childName?.trim(), t);
   const current = STEPS[step];
   const value = draft[current.key] ?? '';
 
@@ -51,7 +55,7 @@ export default function Onboarding() {
       <div className="aurora" />
       <div className="starfield opacity-30" />
 
-      <div className="relative z-10 flex h-full flex-col px-6 pt-12 pb-8 safe-top">
+      <div className="relative z-10 flex h-full flex-col items-center justify-center px-6 py-8 safe-top">
         {/* Brand */}
         <div className="mb-2 flex items-center gap-2 text-gold">
           <span className="text-2xl">🌙</span>
@@ -90,26 +94,28 @@ export default function Onboarding() {
 
             {current.type === 'language' ? (
               <div className="grid grid-cols-2 gap-3">
-                {LANGUAGES.map((l) => (
-                  <button
-                    key={l.key}
-                    onClick={() => setDraft((d) => ({ ...d, language: l.key }))}
-                    className={`rounded-2xl px-4 py-5 text-left transition ${
-                      draft.language === l.key
-                        ? 'bg-gold text-bg-base shadow-glow'
-                        : 'bg-bg-surface text-ink ring-1 ring-white/5'
-                    }`}
-                  >
-                    <div className="font-display text-2xl">{l.label}</div>
-                    <div
-                      className={`text-xs ${
-                        draft.language === l.key ? 'text-bg-base/70' : 'text-ink-muted'
+                {LANGUAGES.map((l) => {
+                  const isAvailable = l.key === 'English';
+                  return (
+                    <button
+                      key={l.key}
+                      onClick={() => isAvailable && setDraft((d) => ({ ...d, language: l.key }))}
+                      disabled={!isAvailable}
+                      className={`rounded-2xl px-4 py-5 text-left transition relative ${
+                        draft.language === l.key
+                          ? 'bg-gold text-bg-base shadow-glow'
+                          : isAvailable
+                            ? 'bg-bg-surface text-ink ring-1 ring-white/5'
+                            : 'bg-bg-surface/50 text-ink-dim ring-1 ring-white/3 opacity-50'
                       }`}
                     >
-                      {l.key}
-                    </div>
-                  </button>
-                ))}
+                      <div className="font-display text-2xl">{l.label}</div>
+                      <div className={`text-xs ${draft.language === l.key ? 'text-bg-base/70' : 'text-ink-muted'}`}>
+                        {isAvailable ? l.key : t('home.comingSoon')}
+                      </div>
+                    </button>
+                  );
+                })}
               </div>
             ) : current.type === 'gender' ? (
               <div className="grid grid-cols-2 gap-3">
@@ -132,21 +138,31 @@ export default function Onboarding() {
                 ))}
               </div>
             ) : current.type === 'country' ? (
-              <div className="grid grid-cols-2 gap-2">
-                {COUNTRIES.map((c) => (
-                  <button
-                    key={c.key}
-                    onClick={() => setDraft((d) => ({ ...d, country: c.key }))}
-                    className={`flex items-center gap-2 rounded-2xl px-3 py-3 text-left transition ${
-                      draft.country === c.key
-                        ? 'bg-gold text-bg-base shadow-glow'
-                        : 'bg-bg-surface text-ink ring-1 ring-white/5'
-                    }`}
-                  >
-                    <span className="text-2xl">{c.flag}</span>
-                    <span className="font-ui text-sm font-bold">{c.label}</span>
-                  </button>
-                ))}
+              <div className="space-y-4">
+                <select
+                  value={draft.country || 'CA'}
+                  onChange={(e) => setDraft((d) => ({ ...d, country: e.target.value, province: '' }))}
+                  className="w-full rounded-xl bg-bg-surface px-4 py-3 text-sm font-bold text-ink ring-1 ring-white/10 outline-none focus:ring-gold/50"
+                >
+                  {COUNTRIES.map((c) => (
+                    <option key={c.code} value={c.code}>{c.flag} {c.name}</option>
+                  ))}
+                </select>
+                {getStates(draft.country || 'CA').length > 0 && (
+                  <div>
+                    <label className="text-xs text-ink-muted block mb-1">State / Province</label>
+                    <select
+                      value={draft.province || ''}
+                      onChange={(e) => setDraft((d) => ({ ...d, province: e.target.value }))}
+                      className="w-full rounded-xl bg-bg-surface px-4 py-3 text-sm font-bold text-ink ring-1 ring-white/10 outline-none focus:ring-gold/50"
+                    >
+                      <option value="">Select...</option>
+                      {getStates(draft.country || 'CA').map((s) => (
+                        <option key={s} value={s}>{s}</option>
+                      ))}
+                    </select>
+                  </div>
+                )}
               </div>
             ) : current.type === 'beliefs' ? (
               <div>
@@ -199,7 +215,7 @@ export default function Onboarding() {
         <div className="mt-8 flex items-center gap-3">
           {step > 0 && (
             <button onClick={() => setStep((s) => s - 1)} className="btn-secondary">
-              ← Back
+              ← {t('common.back')}
             </button>
           )}
           <button
@@ -207,7 +223,7 @@ export default function Onboarding() {
             disabled={!canAdvance}
             className="btn-primary flex-1 disabled:opacity-40"
           >
-            {step === STEPS.length - 1 ? 'Begin →' : 'Next →'}
+            {step === STEPS.length - 1 ? `${t('onboarding.done')} →` : `${t('common.next')} →`}
           </button>
         </div>
       </div>

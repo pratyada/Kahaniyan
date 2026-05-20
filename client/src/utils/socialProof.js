@@ -20,27 +20,27 @@ const COLLECTION_WEIGHT = {
 export function getPlayCount(storyId) {
   const seed = hashSeed(storyId);
 
-  // New/niche series (kindergarten etc) — low realistic counts 5-13
-  if (storyId?.startsWith('rk_')) {
+  // Real plays from Firestore (cached in localStorage by playTracker)
+  let realPlays = 0;
+  try {
+    const plays = JSON.parse(localStorage.getItem('mst:wisdomPlays') || '{}');
+    const lessonId = storyId?.startsWith('lesson_') ? storyId.slice(7) : storyId;
+    realPlays = plays[lessonId] || plays[storyId] || 0;
+  } catch {}
+
+  // New/niche series (kindergarten, dr spock) — low realistic seed + real plays
+  if (storyId?.startsWith('rk_') || storyId?.startsWith('dsp_')) {
     const base = 5 + (seed % 9);
-    try {
-      const plays = JSON.parse(localStorage.getItem('mst:wisdomPlays') || '{}');
-      return base + (plays[storyId] || 0);
-    } catch { return base; }
+    return base + realPlays;
   }
 
-  // Base range 100-10K
+  // Base seeded range 100-10K + real plays on top
   const raw = 100 + (seed % 9900);
-  // Apply theme/collection weight for realistic distribution
   const theme = storyId?.startsWith('col_') ? null : guessTheme(storyId);
   const collection = storyId?.startsWith('col_') ? guessCollection(storyId) : null;
   const weight = theme ? (THEME_WEIGHT[theme] || 1.0) : (collection ? (COLLECTION_WEIGHT[collection] || 1.0) : 1.0);
   const base = Math.round(raw * weight);
-  try {
-    const plays = JSON.parse(localStorage.getItem('mst:wisdomPlays') || '{}');
-    const lessonId = storyId?.startsWith('lesson_') ? storyId.slice(7) : storyId;
-    return base + (plays[lessonId] || plays[storyId] || 0);
-  } catch { return base; }
+  return base + realPlays;
 }
 
 function guessTheme(id) {

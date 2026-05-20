@@ -139,7 +139,7 @@ export default function Admin() {
   const TABS = [
     { key: 'overview', label: 'Dashboard', icon: '📊' },
     { key: 'storylab', label: 'Story Studio', icon: '🧪' },
-    { key: 'feedback', label: 'Curators', icon: '✍️' },
+    { key: 'feedback', label: 'Creators', icon: '✍️' },
     { key: 'users', label: 'Settings', icon: '⚙️' },
   ];
 
@@ -2865,120 +2865,335 @@ function WisdomAudioPanel() {
 }
 
 function CuratorSubmissionsPanel() {
-  const [submissions, setSubmissions] = useState([]);
+  const [allItems, setAllItems] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [filter, setFilter] = useState('pending');
+  const [expandedCreator, setExpandedCreator] = useState(null);
+  const [expandedItem, setExpandedItem] = useState(null);
+  const [feedbackId, setFeedbackId] = useState(null);
+  const [feedbackText, setFeedbackText] = useState('');
+  const [editingId, setEditingId] = useState(null);
+  const [editData, setEditData] = useState(null);
+  const [saving, setSaving] = useState(false);
+  const fileInputRef = useRef(null);
+  const [uploadIdx, setUploadIdx] = useState(-1);
 
   useEffect(() => {
     (async () => {
       try {
         const { db } = await import('../lib/firebase.js');
         if (!db) return;
-        const { collection, getDocs, query, orderBy } = await import('firebase/firestore');
-        const q = query(collection(db, 'creatorStories'), orderBy('submittedAt', 'desc'));
-        const snap = await getDocs(q);
-        const list = [];
-        snap.forEach((d) => list.push({ id: d.id, ...d.data() }));
-        setSubmissions(list);
+        const { collection, getDocs, query, orderBy, doc, setDoc } = await import('firebase/firestore');
+        const { SERIES: ALL_SERIES } = await import('../data/series.js');
+
+        // Auto-seed built-in series into Firestore
+        for (const s of ALL_SERIES.filter(s => s.createdBy && !s.comingSoon)) {
+          await setDoc(doc(db, 'creatorSeries', s.id), {
+            title: s.title, icon: s.icon, description: s.description,
+            tradition: 'universal', ageRange: s.ageRange, totalEpisodes: s.totalEpisodes,
+            episodes: s.episodes.map(ep => ({ episodeNumber: ep.episodeNumber, title: ep.title, subtitle: ep.subtitle || '', body: ep.body || '', wordCount: (ep.body || '').split(/\s+/).length })),
+            authorEmail: s.createdBy, authorName: s.creatorName, authorUid: s.createdBy,
+            status: 'published', submittedAt: new Date().toISOString(), type: 'series',
+          }, { merge: true });
+        }
+
+        const [storySnap, seriesSnap] = await Promise.all([
+          getDocs(query(collection(db, 'creatorStories'), orderBy('submittedAt', 'desc'))),
+          getDocs(query(collection(db, 'creatorSeries'), orderBy('submittedAt', 'desc'))),
+        ]);
+        const items = [];
+        storySnap.forEach(d => items.push({ id: d.id, type: 'story', ...d.data() }));
+        seriesSnap.forEach(d => items.push({ id: d.id, type: 'series', ...d.data() }));
+        setAllItems(items);
       } catch {}
       setLoading(false);
     })();
   }, []);
 
-  const updateStatus = async (id, newStatus) => {
+  const updateStatus = async (id, type, newStatus, feedback) => {
+    const confirmMsgs = {
+      published: 'Are you sure you want to publish? This will be live for all users.',
+      rejected: 'Are you sure you want to unpublish/reject this?',
+      revision_requested: 'Are you sure you want to send this back for edits?',
+    };
+    if (confirmMsgs[newStatus] && !confirm(confirmMsgs[newStatus])) return;
+    const collName = type === 'series' ? 'creatorSeries' : 'creatorStories';
     try {
       const { db } = await import('../lib/firebase.js');
       const { doc, updateDoc } = await import('firebase/firestore');
-      await updateDoc(doc(db, 'creatorStories', id), { status: newStatus });
-      setSubmissions(prev => prev.map(s => s.id === id ? { ...s, status: newStatus } : s));
+      const updates = { status: newStatus };
+      if (feedback) updates.adminFeedback = feedback;
+      if (newStatus === 'revision_requested') updates.revisionRequestedAt = new Date().toISOString();
+      await updateDoc(doc(db, collName, id), updates);
+      setAllItems(prev => prev.map(s => s.id === id ? { ...s, ...updates } : s));
     } catch {}
   };
 
-  const filtered = submissions.filter(s => filter === 'all' ? true : s.status === filter);
-  const counts = { pending: submissions.filter(s => s.status === 'pending').length, published: submissions.filter(s => s.status === 'published').length, rejected: submissions.filter(s => s.status === 'rejected').length };
+  const sendFeedback = (id, type) => {
+    if (!feedbackText.trim()) return;
+    if (!confirm('Are you sure you want to send this feedback and request revision?')) return;
+    updateStatus(id, type, 'revision_requested', feedbackText.trim());
+    setFeedbackId(null); setFeedbackText('');
+  };
+
+  const startEdit = (item) => { setEditingId(item.id); setEditData(JSON.parse(JSON.stringify(item))); };
+  const cancelEdit = () => { setEditingId(null); setEditData(null); };
+
+  const handleImageUpload = async (e) => {
+    const file = e.target.files?.[0];
+    if (!file || !editData) return;
+    const reader = new FileReader();
+    reader.onload = async () => {
+      try {
+        const { storage } = await import('../lib/firebase.js');
+        const { ref, uploadString, getDownloadURL } = await import('firebase/storage');
+        const imgRef = ref(storage, `creator-images/admin/${Date.now()}_${file.name}`);
+        await uploadString(imgRef, reader.result, 'data_url');
+        const url = await getDownloadURL(imgRef);
+        if (uploadIdx === -1) setEditData(prev => ({ ...prev, coverImage: url }));
+        else setEditData(prev => { const eps = [...(prev.episodes || [])]; eps[uploadIdx] = { ...eps[uploadIdx], coverImage: url }; return { ...prev, episodes: eps }; });
+      } catch (err) { console.error('Upload failed:', err); }
+    };
+    reader.readAsDataURL(file); e.target.value = '';
+  };
+
+  const saveEdit = async () => {
+    if (!editData) return;
+    if (!confirm('Are you sure you want to save these changes?')) return;
+    setSaving(true);
+    try {
+      const { db } = await import('../lib/firebase.js');
+      const { doc, updateDoc } = await import('firebase/firestore');
+      const collName = editData.type === 'series' ? 'creatorSeries' : 'creatorStories';
+      const updates = editData.type === 'story'
+        ? { title: editData.title, body: editData.body, tradition: editData.tradition, ...(editData.coverImage ? { coverImage: editData.coverImage } : {}) }
+        : { title: editData.title, description: editData.description, icon: editData.icon, episodes: editData.episodes, totalEpisodes: editData.episodes?.length || 0 };
+      updates.adminEditedAt = new Date().toISOString();
+      await updateDoc(doc(db, collName, editData.id), updates);
+      setAllItems(prev => prev.map(s => s.id === editData.id ? { ...s, ...updates } : s));
+      setEditingId(null); setEditData(null);
+    } catch (err) { console.error('Save failed:', err); }
+    setSaving(false);
+  };
 
   if (loading) return <div className="text-center py-12 text-[#6e6a63]">Loading submissions...</div>;
 
+  // Group by creator
+  const creators = {};
+  allItems.forEach(item => {
+    const key = item.authorEmail || item.authorName || 'unknown';
+    if (!creators[key]) creators[key] = { name: item.authorName, email: item.authorEmail, items: [] };
+    creators[key].items.push(item);
+  });
+  const creatorList = Object.values(creators).sort((a, b) => b.items.length - a.items.length);
+  const totalPending = allItems.filter(i => i.status === 'pending' || i.status === 'revision_requested').length;
+  const totalPublished = allItems.filter(i => i.status === 'published').length;
+  const totalSeries = allItems.filter(i => i.type === 'series').length;
+
+  const statusBadge = (status) => {
+    const c = { pending: 'bg-yellow-500/15 text-yellow-400', published: 'bg-green-500/15 text-green-400', rejected: 'bg-red-500/15 text-red-400', revision_requested: 'bg-blue-500/15 text-blue-400' };
+    const l = { revision_requested: 'Needs Edits', pending: 'Pending', published: 'Published', rejected: 'Rejected' };
+    return <span className={`rounded-full px-2 py-0.5 text-[8px] font-bold ${c[status] || c.pending}`}>{l[status] || status}</span>;
+  };
+
   return (
     <div className="space-y-4">
-      {/* Stats */}
-      <div className="grid grid-cols-3 gap-3">
-        <div className="rounded-xl bg-[#1a1a28] p-4 ring-1 ring-white/5 text-center">
-          <div className="text-2xl font-bold text-[#f0a500]">{counts.pending}</div>
-          <div className="text-[10px] text-[#6e6a63]">Pending Review</div>
-        </div>
-        <div className="rounded-xl bg-[#1a1a28] p-4 ring-1 ring-white/5 text-center">
-          <div className="text-2xl font-bold text-[#7ad9a1]">{counts.published}</div>
-          <div className="text-[10px] text-[#6e6a63]">Published</div>
-        </div>
-        <div className="rounded-xl bg-[#1a1a28] p-4 ring-1 ring-white/5 text-center">
-          <div className="text-2xl font-bold text-red-400">{counts.rejected}</div>
-          <div className="text-[10px] text-[#6e6a63]">Rejected</div>
-        </div>
-      </div>
+      <input type="file" ref={fileInputRef} accept="image/*" className="hidden" onChange={handleImageUpload} />
 
-      {/* Filter */}
-      <div className="flex gap-2">
-        {['pending', 'published', 'rejected', 'all'].map(f => (
-          <button key={f} onClick={() => setFilter(f)}
-            className={`rounded-lg px-3 py-1.5 text-xs font-bold capitalize ${filter === f ? 'bg-[#f0a500] text-[#0a0a0f]' : 'bg-white/5 text-[#a8a39a] ring-1 ring-white/10'}`}>
-            {f} {f !== 'all' ? `(${counts[f] || 0})` : `(${submissions.length})`}
-          </button>
+      {/* Stats */}
+      <div className="grid grid-cols-4 gap-2">
+        {[
+          { v: totalPending, l: 'Pending', c: 'text-[#f0a500]' },
+          { v: totalPublished, l: 'Published', c: 'text-[#7ad9a1]' },
+          { v: totalSeries, l: 'Series', c: 'text-blue-400' },
+          { v: creatorList.length, l: 'Creators', c: 'text-purple-400' },
+        ].map(s => (
+          <div key={s.l} className="rounded-xl bg-[#1a1a28] p-3 ring-1 ring-white/5 text-center">
+            <div className={`text-xl font-bold ${s.c}`}>{s.v}</div>
+            <div className="text-[9px] text-[#6e6a63]">{s.l}</div>
+          </div>
         ))}
       </div>
 
-      {/* Submissions */}
-      {filtered.length === 0 ? (
-        <div className="text-center py-12"><div className="text-4xl mb-3">✍️</div><p className="text-sm text-[#a8a39a]">No {filter} submissions</p></div>
-      ) : filtered.map(s => (
-        <div key={s.id} className="rounded-xl bg-[#1a1a28] p-4 ring-1 ring-white/5">
-          <div className="flex items-start justify-between gap-3 mb-2">
-            <div>
-              <h4 className="text-sm font-bold text-[#f5f0e8]">{s.title}</h4>
-              <p className="text-[10px] text-[#6e6a63]">by {s.authorName} · {s.tradition} · {s.theme} · {(s.body || '').split(/\s+/).length} words</p>
-              <p className="text-[10px] text-[#6e6a63]">{new Date(s.submittedAt).toLocaleDateString()}</p>
-            </div>
-            <span className={`shrink-0 rounded-full px-2 py-0.5 text-[9px] font-bold ${
-              s.status === 'published' ? 'bg-green-500/10 text-green-400' :
-              s.status === 'rejected' ? 'bg-red-500/10 text-red-400' :
-              'bg-[#f0a500]/10 text-[#f0a500]'
-            }`}>{s.status}</span>
-          </div>
+      {/* Creator rows — expandable */}
+      {creatorList.length === 0 ? (
+        <div className="text-center py-12"><div className="text-4xl mb-3">✍️</div><p className="text-sm text-[#a8a39a]">No submissions yet</p></div>
+      ) : creatorList.map((c) => {
+        const isExp = expandedCreator === (c.email || c.name);
+        const pCount = c.items.filter(i => i.status === 'pending' || i.status === 'revision_requested').length;
+        const pubCount = c.items.filter(i => i.status === 'published').length;
+        const serCount = c.items.filter(i => i.type === 'series').length;
+        const stCount = c.items.filter(i => i.type === 'story').length;
 
-          {/* Story preview */}
-          <div className="rounded-lg bg-[#0f0f17] p-3 mb-3 text-xs text-[#a8a39a] leading-relaxed max-h-32 overflow-y-auto">
-            {(s.body || '').slice(0, 500)}{(s.body || '').length > 500 ? '...' : ''}
-          </div>
+        return (
+          <div key={c.email || c.name} className="rounded-xl bg-[#1a1a28] ring-1 ring-white/5 overflow-hidden">
+            {/* Creator header */}
+            <button onClick={() => setExpandedCreator(isExp ? null : (c.email || c.name))}
+              className="w-full flex items-center gap-3 p-3 text-left transition hover:bg-white/3">
+              <div className="grid h-9 w-9 shrink-0 place-items-center rounded-full bg-[#f0a500]/20 text-[10px] font-bold text-[#f0a500]">
+                {(c.name || '?').split(' ').map(w => w[0]).join('').toUpperCase().slice(0, 2)}
+              </div>
+              <div className="flex-1 min-w-0">
+                <p className="text-xs font-bold text-[#f5f0e8] truncate">{c.name}</p>
+                <p className="text-[9px] text-[#6e6a63] truncate">{c.email}</p>
+              </div>
+              <div className="flex items-center gap-1.5 shrink-0 flex-wrap justify-end">
+                {serCount > 0 && <span className="rounded bg-purple-500/15 px-1.5 py-0.5 text-[8px] font-bold text-purple-400">{serCount} series</span>}
+                {stCount > 0 && <span className="rounded bg-amber-500/15 px-1.5 py-0.5 text-[8px] font-bold text-amber-400">{stCount} stories</span>}
+                {pCount > 0 && <span className="rounded bg-yellow-500/15 px-1.5 py-0.5 text-[8px] font-bold text-yellow-400">{pCount}</span>}
+                {pubCount > 0 && <span className="rounded bg-green-500/15 px-1.5 py-0.5 text-[8px] font-bold text-green-400">{pubCount} live</span>}
+                <span className={`text-[#6e6a63] transition ${isExp ? 'rotate-180' : ''}`}>▾</span>
+              </div>
+            </button>
 
-          {/* Actions */}
-          <div className="flex gap-2">
-            {s.status === 'pending' && (
-              <>
-                <button onClick={() => updateStatus(s.id, 'published')}
-                  className="rounded-lg bg-[#7ad9a1]/10 px-3 py-1.5 text-[10px] font-bold text-[#7ad9a1]">
-                  ✓ Approve & Publish
-                </button>
-                <button onClick={() => updateStatus(s.id, 'rejected')}
-                  className="rounded-lg bg-red-400/10 px-3 py-1.5 text-[10px] font-bold text-red-400">
-                  ✗ Reject
-                </button>
-              </>
-            )}
-            {s.status === 'rejected' && (
-              <button onClick={() => updateStatus(s.id, 'published')}
-                className="rounded-lg bg-[#7ad9a1]/10 px-3 py-1.5 text-[10px] font-bold text-[#7ad9a1]">
-                Reconsider → Publish
-              </button>
-            )}
-            {s.status === 'published' && (
-              <button onClick={() => updateStatus(s.id, 'rejected')}
-                className="rounded-lg bg-red-400/10 px-3 py-1.5 text-[10px] font-bold text-red-400">
-                Unpublish
-              </button>
+            {/* Expanded items */}
+            {isExp && (
+              <div className="border-t border-white/5">
+                {/* Table header */}
+                <div className="flex items-center gap-2 px-3 py-2 text-[8px] font-bold uppercase tracking-wider text-[#6e6a63] border-b border-white/3">
+                  <div className="w-14">Type</div>
+                  <div className="flex-1">Title</div>
+                  <div className="w-16 text-center">Status</div>
+                  <div className="w-24 text-right">Actions</div>
+                </div>
+
+                {c.items.map(s => {
+                  const isEditing = editingId === s.id;
+                  const ed = isEditing ? editData : s;
+                  const isItemExp = expandedItem === s.id;
+
+                  return (
+                    <div key={`${s.type}-${s.id}`} className={`border-b border-white/3 ${isEditing ? 'bg-[#f0a500]/5' : ''}`}>
+                      {/* Row */}
+                      <div className="flex items-center gap-2 px-3 py-2">
+                        <div className="w-14">
+                          <span className={`rounded px-1.5 py-0.5 text-[8px] font-bold ${s.type === 'series' ? 'bg-purple-500/15 text-purple-400' : 'bg-amber-500/15 text-amber-400'}`}>
+                            {s.type === 'series' ? '📺' : '📖'} {s.type}
+                          </span>
+                        </div>
+                        <button onClick={() => setExpandedItem(isItemExp ? null : s.id)} className="flex-1 min-w-0 text-left">
+                          <p className="text-[11px] font-bold text-[#f5f0e8] truncate">{s.icon || ''} {s.title}</p>
+                          <p className="text-[9px] text-[#6e6a63]">{s.type === 'series' ? `${s.totalEpisodes || (s.episodes||[]).length} eps · ` : ''}{s.tradition}</p>
+                        </button>
+                        <div className="w-16 text-center">{statusBadge(s.status)}</div>
+                        <div className="w-24 flex gap-1 justify-end">
+                          <button onClick={() => isEditing ? cancelEdit() : startEdit(s)}
+                            className="rounded px-1.5 py-0.5 text-[8px] font-bold bg-[#f0a500]/10 text-[#f0a500]">
+                            {isEditing ? '✕' : '✏️'}
+                          </button>
+                          {!isEditing && s.status !== 'published' && (
+                            <button onClick={() => updateStatus(s.id, s.type, 'published')}
+                              className="rounded px-1.5 py-0.5 text-[8px] font-bold bg-green-500/10 text-green-400">✓</button>
+                          )}
+                          {!isEditing && s.status === 'published' && (
+                            <button onClick={() => updateStatus(s.id, s.type, 'rejected')}
+                              className="rounded px-1.5 py-0.5 text-[8px] font-bold bg-red-500/10 text-red-400">✕</button>
+                          )}
+                          {!isEditing && (
+                            <button onClick={() => setFeedbackId(feedbackId === s.id ? null : s.id)}
+                              className="rounded px-1.5 py-0.5 text-[8px] font-bold bg-blue-500/10 text-blue-400">✎</button>
+                          )}
+                        </div>
+                      </div>
+
+                      {/* Expanded item detail / edit */}
+                      {(isItemExp || isEditing) && (
+                        <div className="px-3 pb-3 space-y-2">
+                          {/* Feedback input */}
+                          {feedbackId === s.id && (
+                            <div className="space-y-2">
+                              <textarea value={feedbackText} onChange={(e) => setFeedbackText(e.target.value)}
+                                placeholder="Feedback for creator..."
+                                className="w-full rounded bg-[#0f0f17] p-2 text-xs text-[#f5f0e8] ring-1 ring-white/10 h-16 resize-y" />
+                              <div className="flex gap-2">
+                                <button onClick={() => sendFeedback(s.id, s.type)}
+                                  className="rounded bg-blue-500/10 px-2 py-1 text-[9px] font-bold text-blue-400">Send & Request Revision</button>
+                                <button onClick={() => { setFeedbackId(null); setFeedbackText(''); }}
+                                  className="text-[9px] text-[#6e6a63]">Cancel</button>
+                              </div>
+                            </div>
+                          )}
+
+                          {s.adminFeedback && (
+                            <div className="rounded bg-blue-500/5 border border-blue-500/20 p-2">
+                              <p className="text-[8px] font-bold text-blue-400 uppercase tracking-wider">Admin Feedback</p>
+                              <p className="text-[10px] text-blue-300/80">{s.adminFeedback}</p>
+                            </div>
+                          )}
+
+                          {/* Story body */}
+                          {s.type === 'story' && (
+                            isEditing ? (
+                              <div className="space-y-2">
+                                <input value={ed.title} onChange={(e) => setEditData(p => ({ ...p, title: e.target.value }))}
+                                  className="w-full rounded bg-[#0f0f17] px-2 py-1 text-xs font-bold text-[#f5f0e8] ring-1 ring-white/10" />
+                                <textarea value={ed.body || ''} onChange={(e) => setEditData(p => ({ ...p, body: e.target.value }))}
+                                  className="w-full rounded bg-[#0f0f17] p-2 text-[10px] text-[#a8a39a] ring-1 ring-white/5 h-32 resize-y" />
+                                <div className="flex items-center gap-2">
+                                  {ed.coverImage && <img src={ed.coverImage} alt="" className="h-10 w-10 rounded object-cover" />}
+                                  <button onClick={() => { setUploadIdx(-1); fileInputRef.current?.click(); }}
+                                    className="rounded bg-white/5 px-2 py-1 text-[9px] font-bold text-[#a8a39a]">📤 Image</button>
+                                  <button onClick={saveEdit} disabled={saving}
+                                    className="rounded bg-[#f0a500] px-3 py-1 text-[9px] font-bold text-[#0a0a0f]">{saving ? '...' : '💾 Save'}</button>
+                                </div>
+                              </div>
+                            ) : (
+                              <div className="rounded bg-[#0f0f17] p-2 text-[10px] text-[#a8a39a] leading-relaxed max-h-24 overflow-y-auto">
+                                {(s.body || '').slice(0, 400)}{(s.body || '').length > 400 ? '...' : ''}
+                              </div>
+                            )
+                          )}
+
+                          {/* Series episodes */}
+                          {s.type === 'series' && (
+                            isEditing ? (
+                              <div className="space-y-2">
+                                <input value={ed.title} onChange={(e) => setEditData(p => ({ ...p, title: e.target.value }))}
+                                  className="w-full rounded bg-[#0f0f17] px-2 py-1 text-xs font-bold text-[#f5f0e8] ring-1 ring-white/10" />
+                                <textarea value={ed.description || ''} onChange={(e) => setEditData(p => ({ ...p, description: e.target.value }))}
+                                  className="w-full rounded bg-[#0f0f17] p-2 text-[10px] text-[#f5f0e8] ring-1 ring-white/10 h-10 resize-none" placeholder="Description" />
+                                {(ed.episodes || []).map((ep, i) => (
+                                  <div key={i} className="rounded bg-[#0f0f17] p-2 ring-1 ring-white/5 space-y-1">
+                                    <div className="flex items-center gap-2">
+                                      <span className="text-[9px] font-bold text-[#f0a500]">Ep {i+1}</span>
+                                      <input value={ep.title} onChange={(e) => setEditData(p => { const eps=[...p.episodes]; eps[i]={...eps[i],title:e.target.value}; return {...p,episodes:eps}; })}
+                                        className="flex-1 rounded bg-[#1a1a28] px-2 py-0.5 text-[10px] font-bold text-[#f5f0e8] ring-1 ring-white/10" />
+                                    </div>
+                                    <textarea value={ep.body||''} onChange={(e) => setEditData(p => { const eps=[...p.episodes]; eps[i]={...eps[i],body:e.target.value}; return {...p,episodes:eps}; })}
+                                      className="w-full rounded bg-[#1a1a28] p-1.5 text-[9px] text-[#a8a39a] ring-1 ring-white/5 h-20 resize-y" />
+                                    <div className="flex items-center gap-2">
+                                      {ep.coverImage && <img src={ep.coverImage} alt="" className="h-8 w-8 rounded object-cover" />}
+                                      <button onClick={() => { setUploadIdx(i); fileInputRef.current?.click(); }}
+                                        className="rounded bg-white/5 px-1.5 py-0.5 text-[8px] font-bold text-[#a8a39a]">📤</button>
+                                      <span className="text-[8px] text-[#6e6a63]">{(ep.body||'').split(/\s+/).filter(Boolean).length}w</span>
+                                    </div>
+                                  </div>
+                                ))}
+                                <button onClick={saveEdit} disabled={saving}
+                                  className="rounded bg-[#f0a500] px-3 py-1 text-[9px] font-bold text-[#0a0a0f]">{saving ? '...' : '💾 Save All'}</button>
+                              </div>
+                            ) : (
+                              <div className="space-y-1">
+                                {(s.episodes || []).map((ep, i) => (
+                                  <div key={i} className="flex items-center gap-2 text-[10px]">
+                                    {ep.coverImage && <img src={ep.coverImage} alt="" className="h-6 w-6 rounded object-cover" />}
+                                    <span className="text-[#f0a500] font-bold">Ep {ep.episodeNumber || i+1}</span>
+                                    <span className="text-[#f5f0e8] truncate flex-1">{ep.title}</span>
+                                    <span className="text-[#6e6a63]">{ep.wordCount || (ep.body||'').split(/\s+/).length}w</span>
+                                  </div>
+                                ))}
+                              </div>
+                            )
+                          )}
+                        </div>
+                      )}
+                    </div>
+                  );
+                })}
+              </div>
             )}
           </div>
-        </div>
-      ))}
+        );
+      })}
     </div>
   );
 }

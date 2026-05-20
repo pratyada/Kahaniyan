@@ -77,9 +77,9 @@ export default function Settings() {
       <PageTransition className="page-scroll px-5 pt-10 safe-top">
         <div className="flex flex-col items-center py-16 text-center">
           <div className="mb-4 text-5xl">🌙</div>
-          <h1 className="font-display text-2xl font-bold text-gold">Welcome to My Sleepy Tale</h1>
+          <h1 className="font-display text-2xl font-bold text-gold">{t('onboarding.welcome')}</h1>
           <p className="mt-3 max-w-xs text-sm text-ink-muted">
-            Sign in to set up your child's profile, customize characters, and start creating personalized bedtime stories.
+            {t('onboarding.signInPrompt')}
           </p>
           <button
             onClick={async () => {
@@ -96,11 +96,11 @@ export default function Settings() {
               <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" />
               <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" />
             </svg>
-            Continue with Google
+            {t('onboarding.continueWithGoogle')}
           </button>
           <div className="mt-10 w-full space-y-3">
-          <Tile icon="🪨" title="Kid slept?" sub="Stoned Age awaits" onClick={() => window.location.href = 'https://stonedage.mysleepytale.com'} />
-            <Tile icon="✨" title="Guides" sub="Learn how it works" onClick={() => navigate('/guides')} />
+          <Tile icon="🪨" title={t('settings.kidSlept')} sub={t('settings.stonedAge')} onClick={() => window.location.href = 'https://stonedage.mysleepytale.com'} />
+            <Tile icon="✨" title={t('settings.guides')} sub="Learn how it works" onClick={() => navigate('/guides')} />
           </div>
         </div>
         <VersionFooter />
@@ -113,15 +113,15 @@ export default function Settings() {
       <PageTransition className="page-scroll px-5 pt-10 safe-top">
         <div className="flex flex-col items-center py-16 text-center">
           <div className="mb-4 text-5xl">👶</div>
-          <h1 className="font-display text-xl font-bold text-gold">Set up your child's profile</h1>
+          <h1 className="font-display text-xl font-bold text-gold">{t('onboarding.setupProfile')}</h1>
           <p className="mt-3 max-w-xs text-sm text-ink-muted">
-            Complete onboarding to start creating personalized bedtime stories.
+            {t('onboarding.completeOnboarding')}
           </p>
           <button
             onClick={() => navigate('/onboarding')}
             className="btn-primary mt-6 px-8 py-4"
           >
-            Start onboarding
+            {t('onboarding.startOnboarding')}
           </button>
         </div>
         <VersionFooter />
@@ -155,7 +155,7 @@ export default function Settings() {
             onClick={() => navigate('/onboarding')}
             className="shrink-0 rounded-pill bg-bg-surface px-4 py-2 text-sm font-bold text-gold ring-1 ring-gold/30"
           >
-            + Add kid
+            + {t('settings.addKid')}
           </button>
         </div>
       )}
@@ -190,7 +190,7 @@ export default function Settings() {
           onClick={() => navigate('/family')}
           className="shrink-0 rounded-pill bg-bg-card px-3 py-1.5 text-[10px] font-bold uppercase tracking-wider text-gold"
         >
-          Edit
+          {t('common.edit')}
         </button>
       </section>
 
@@ -202,8 +202,8 @@ export default function Settings() {
         >
           <span className="text-2xl">💬</span>
           <div className="flex-1">
-            <div className="text-sm font-bold text-gold">Share your thoughts</div>
-            <div className="text-[11px] text-ink-muted">Your feedback shapes what we build next</div>
+            <div className="text-sm font-bold text-gold">{t('settings.shareThoughts')}</div>
+            <div className="text-[11px] text-ink-muted">{t('settings.feedbackSub')}</div>
           </div>
           <span className="text-ink-muted">→</span>
         </button>
@@ -217,12 +217,12 @@ export default function Settings() {
             {feedbackSent ? (
               <div className="py-8 text-center">
                 <div className="mb-3 text-4xl">💛</div>
-                <h2 className="font-display text-xl font-bold text-gold">Thank you!</h2>
-                <p className="mt-2 text-sm text-ink-muted">Your words mean more than you know.</p>
+                <h2 className="font-display text-xl font-bold text-gold">{t('settings.thankYou')}</h2>
+                <p className="mt-2 text-sm text-ink-muted">{t('settings.thankYouSub')}</p>
               </div>
             ) : (
               <>
-                <h2 className="font-display text-xl font-bold text-gold">Share your thoughts</h2>
+                <h2 className="font-display text-xl font-bold text-gold">{t('settings.shareThoughts')}</h2>
                 <p className="mt-1 text-sm text-ink-muted">
                   What do you love? What's missing? What would make this perfect for your family?
                 </p>
@@ -239,10 +239,10 @@ export default function Settings() {
                   disabled={feedbackSubmitting || !feedbackText.trim()}
                   className="btn-primary mt-4 w-full py-4 disabled:opacity-40"
                 >
-                  {feedbackSubmitting ? 'Sending...' : 'Send feedback'}
+                  {feedbackSubmitting ? t('settings.sending') : t('settings.sendFeedback')}
                 </button>
                 <button onClick={() => setFeedbackOpen(false)} className="mt-3 w-full text-center text-sm text-ink-muted">
-                  Maybe later
+                  {t('settings.maybeLater')}
                 </button>
               </>
             )}
@@ -260,7 +260,7 @@ export default function Settings() {
             onClick={() => navigate('/onboarding')}
             className="mb-5 w-full rounded-2xl bg-bg-surface p-3 text-center text-[11px] font-bold text-gold ring-1 ring-gold/20"
           >
-            + Add another kid ({profiles.length}/{max})
+            + {t('settings.addAnotherKid')} ({profiles.length}/{max})
           </button>
         ) : profiles.length <= 1 ? null : (
           <div className="mb-5 w-full rounded-2xl bg-bg-surface p-3 text-center text-[11px] text-ink-muted ring-1 ring-white/5">
@@ -270,37 +270,37 @@ export default function Settings() {
       })()}
 
       {/* ─── CUSTOMIZE ─── */}
-      <SectionCard title="Customize">
+      <SectionCard title={t('settings.customize')}>
         <div className="grid grid-cols-2 gap-2">
-          <Tile icon="👨‍👩‍👧" title="Story cast" sub={`${profile.characters?.length || 0} chars`} onClick={() => navigate('/characters')} />
-          <Tile icon="🪷" title="Wisdom Stories" sub="By belief" onClick={() => navigate('/lessons')} />
-          <Tile icon={<Mic size={18} />} title="Voices" sub={`${voices.length} saved`} onClick={() => navigate('/voices')} />
-          <Tile icon={<Home size={18} />} title="Edit family" sub="Name, age, belief" onClick={() => navigate('/family')} />
+          <Tile icon="👨‍👩‍👧" title={t('settings.storyCast')} sub={`${profile.characters?.length || 0} ${t('common.chars')}`} onClick={() => navigate('/characters')} />
+          <Tile icon="🪷" title={t('settings.wisdomStories')} sub={t('settings.byBelief')} onClick={() => navigate('/lessons')} />
+          <Tile icon={<Mic size={18} />} title={t('settings.voices')} sub={`${voices.length} ${t('settings.saved')}`} onClick={() => navigate('/voices')} />
+          <Tile icon={<Home size={18} />} title={t('settings.editFamily')} sub={t('settings.nameAgeBelief')} onClick={() => navigate('/family')} />
         </div>
       </SectionCard>
 
       {/* ─── TOGGLES — compact stack ─── */}
-      <SectionCard title="Playback">
+      <SectionCard title={t('settings.playback')}>
         <div className="space-y-1.5">
           <MiniToggle
             checked={theme === 'day'}
             onChange={toggleTheme}
-            label={theme === 'day' ? '☀️ Day mode' : '🌙 Night mode'}
+            label={theme === 'day' ? `☀️ ${t('settings.dayMode')}` : `🌙 ${t('settings.nightMode')}`}
           />
           <MiniToggle
             checked={!!profile.autoplayNext}
             onChange={(v) => update({ autoplayNext: v })}
-            label="🔁 Autoplay next story"
+            label={`🔁 ${t('settings.autoplayNext')}`}
           />
           <MiniToggle
             checked={!!profile.whiteNoiseEnabled}
             onChange={(v) => update({ whiteNoiseEnabled: v })}
-            label="🌧️ Sleep sounds behind stories"
+            label={`🌧️ ${t('settings.sleepSounds')}`}
           />
           <MiniToggle
             checked={!!profile.dialogueFade}
             onChange={(v) => update({ dialogueFade: v })}
-            label="🌙 Story voice fades into sleep sounds"
+            label={`🌙 ${t('settings.storyFade')}`}
           />
         </div>
       </SectionCard>
@@ -329,28 +329,28 @@ export default function Settings() {
           <MiniToggle
             checked={!!profile.onlyMyTradition}
             onChange={(v) => update({ onlyMyTradition: v })}
-            label="Only stories from my beliefs"
+            label={t('settings.onlyMyTradition')}
           />
           <MiniToggle
             checked={!!profile.showCrossCulture}
             onChange={(v) => update({ showCrossCulture: v })}
-            label="Also show similar stories from other cultures"
+            label={t('settings.crossCulture')}
           />
         </div>
       </SectionCard>
 
       {/* ─── MORE ─── */}
-      <SectionCard title="More">
+      <SectionCard title={t('settings.more')}>
         <div className="grid grid-cols-2 gap-2">
-          <Tile icon="✍️" title="Become a Creator" sub="Write & earn" onClick={() => navigate('/creation')} />
-          <Tile icon="✨" title="Guides" sub="5 reads" onClick={() => navigate('/guides')} />
-          <Tile icon={<Gift size={18} />} title="Gift a Story Pack" sub="CA$9.99/mo" onClick={() => setGiftOpen(true)} />
-          <Tile icon={<Map size={18} />} title="Roadmap" sub="Build status" onClick={() => navigate('/roadmap')} />
-          <Tile icon="🪨" title="Kid slept?" sub="Stoned Age awaits" onClick={() => window.location.href = 'https://stonedage.mysleepytale.com'} />
+          <Tile icon="✍️" title={t('settings.becomeCreator')} sub={t('settings.writeAndEarn')} onClick={() => navigate('/creation')} />
+          <Tile icon="✨" title={t('settings.guides')} sub={`5 ${t('common.reads')}`} onClick={() => navigate('/guides')} />
+          <Tile icon={<Gift size={18} />} title={t('settings.giftStoryPack')} sub="CA$9.99/mo" onClick={() => setGiftOpen(true)} />
+          <Tile icon={<Map size={18} />} title={t('settings.roadmap')} sub={t('settings.buildStatus')} onClick={() => navigate('/roadmap')} />
+          <Tile icon="🪨" title={t('settings.kidSlept')} sub={t('settings.stonedAge')} onClick={() => window.location.href = 'https://stonedage.mysleepytale.com'} />
           {isAdmin && (
-            <Tile icon="🔑" title="Admin" sub="Dashboard" onClick={() => navigate('/admin')} />
+            <Tile icon="🔑" title={t('settings.admin')} sub={t('settings.dashboard')} onClick={() => navigate('/admin')} />
           )}
-          <Tile icon="📋" title="What's new" sub="v0.1.1" onClick={() => setReleasesOpen(true)} />
+          <Tile icon="📋" title={t('settings.whatsNew')} sub="v0.1.1" onClick={() => setReleasesOpen(true)} />
         </div>
       </SectionCard>
 
@@ -359,7 +359,7 @@ export default function Settings() {
         <div className="absolute inset-0 z-50 flex items-end justify-center bg-black/70 backdrop-blur-sm" onClick={() => setReleasesOpen(false)}>
           <div className="max-h-[85vh] w-full overflow-y-auto rounded-t-3xl bg-bg-elevated p-6 pb-24 shadow-lift" onClick={(e) => e.stopPropagation()}>
             <div className="mx-auto mb-4 h-1 w-12 rounded-full bg-white/20" />
-            <h2 className="font-display text-xl font-bold text-gold mb-4">What's new</h2>
+            <h2 className="font-display text-xl font-bold text-gold mb-4">{t('settings.whatsNew')}</h2>
             <div className="space-y-2">
               {[
                 { v: 'v0.0.10', date: 'Apr 16', badge: 'LATEST', title: '🧪 Story Lab + personalized experience', detail: 'Story Lab content engine — culturally-rooted stories powered by your belief, country, and family. Quick whispers personalized to your culture. Longer, richer stories. Anti-stereotype characters. Better voice. Yellow text highlight. Stories never lost.' },
@@ -381,7 +381,7 @@ export default function Settings() {
                 </div>
               ))}
             </div>
-            <button onClick={() => setReleasesOpen(false)} className="mt-4 w-full text-center text-sm text-ink-muted">Close</button>
+            <button onClick={() => setReleasesOpen(false)} className="mt-4 w-full text-center text-sm text-ink-muted">{t('common.close')}</button>
           </div>
         </div>
       )}
@@ -511,17 +511,17 @@ export default function Settings() {
         <div>
           <div className="text-sm font-bold text-ink">{tier.label}</div>
           <div className="text-[11px] text-ink-muted">
-            {used}/{tier.storiesPerWeek === Infinity ? '∞' : tier.storiesPerWeek} this week
+            {used}/{tier.storiesPerWeek === Infinity ? '∞' : tier.storiesPerWeek} {t('settings.thisWeek')}
           </div>
         </div>
         <button onClick={() => setUpgradeOpen(true)} className="btn-primary">
-          Upgrade
+          {t('settings.upgrade')}
         </button>
       </div>
 
       {/* ─── ACCOUNT ─── */}
       {isConfigured && user && (
-        <SectionCard title="Account">
+        <SectionCard title={t('settings.account')}>
           <div className="flex items-center justify-between rounded-2xl bg-bg-surface p-3 ring-1 ring-white/5">
             <div className="min-w-0 flex-1">
               <div className="truncate text-sm font-bold text-ink">
@@ -538,7 +538,7 @@ export default function Settings() {
               }}
               className="shrink-0 rounded-pill bg-bg-card px-3 py-1.5 text-[10px] font-bold uppercase tracking-wider text-ink-muted"
             >
-              Log out
+              {t('settings.logOut')}
             </button>
           </div>
         </SectionCard>
@@ -554,7 +554,7 @@ export default function Settings() {
         }}
         className="mt-6 text-[10px] uppercase tracking-wider text-negative/70"
       >
-        Remove profile
+        {t('settings.removeProfile')}
       </button>
 
       <UpgradeModal open={upgradeOpen} onClose={() => setUpgradeOpen(false)} />

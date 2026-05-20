@@ -175,9 +175,9 @@ export async function getStoryShareUrl(story, profile) {
   // Use mysleepytale.com domain — CloudFront routes /api/share to Lambda
   // This gives clean branded URLs in WhatsApp instead of raw API Gateway
   const storyId = story?.id || '';
-  // Use player URL with storyId — WhatsApp shows OG tags from index.html
-  // The story loads from Firestore/local data when opened
-  const shareUrl = `https://mysleepytale.com/player?storyId=${storyId}`;
+  // Use /api/share endpoint — returns dynamic OG tags (title, image from Firestore)
+  // then auto-redirects to /player?storyId=... so the story loads
+  const shareUrl = `https://mysleepytale.com/api/share?id=${storyId}`;
 
   // Also save to Firestore so the story is accessible via shared link
   try {

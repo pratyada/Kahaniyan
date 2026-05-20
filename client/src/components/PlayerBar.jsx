@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 import { usePlayer } from '../hooks/usePlayer.jsx';
 import { valueMeta } from '../utils/constants.js';
@@ -6,6 +7,7 @@ import { Play, Pause, X } from 'lucide-react';
 
 // Spotify-style mini player bar — sits above the bottom nav.
 export default function PlayerBar() {
+  const { t } = useTranslation();
   const navigate = useNavigate();
   const { current, isPlaying, setIsPlaying, clear, audioRef } = usePlayer();
   const [navHeight, setNavHeight] = useState(0);
@@ -62,12 +64,12 @@ export default function PlayerBar() {
       <div className="flex-1 truncate text-left">
         <div className="truncate font-ui text-sm font-bold text-ink">{current.title}</div>
         <div className="truncate text-xs text-ink-muted">
-          {meta.label} · {current.estimatedMinutes} min
+          {meta.label} · {current.estimatedMinutes} {t('home.min')}
         </div>
       </div>
       <button
         onClick={togglePlay}
-        aria-label={isPlaying ? 'Pause' : 'Play'}
+        aria-label={isPlaying ? t('player.pause') : t('player.play')}
         className="grid h-11 w-11 place-items-center rounded-full bg-gold text-bg-base shadow-glow transition active:scale-95"
       >
         {isPlaying ? <Pause size={18} fill="currentColor" /> : <Play size={18} fill="currentColor" />}

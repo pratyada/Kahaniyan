@@ -3,7 +3,7 @@
 
 export const SERIES = [
   {
-    id: 'fire-truck-academy',
+    id: 'fire-truck-academy', comingSoon: true,
     title: 'Fire Truck Academy',
     icon: '🚒',
     gradient: 'linear-gradient(135deg, #991b1b 0%, #ef4444 50%, #fca5a5 100%)',
@@ -88,7 +88,7 @@ That night, {childName}, the bravest people are not fearless. They shake and sho
   },
 
   {
-    id: 'panchatantra-tales',
+    id: 'panchatantra-tales', comingSoon: true,
     title: 'Panchatantra Tales',
     icon: '🐒',
     gradient: 'linear-gradient(135deg, #064e3b 0%, #059669 50%, #6ee7b7 100%)',
@@ -165,7 +165,7 @@ That night, {childName}, remember Mandu. Sometimes the smartest thing you can do
   },
 
   {
-    id: 'lightning-wheels',
+    id: 'lightning-wheels', comingSoon: true,
     title: 'Lightning Wheels',
     icon: '🏎️',
     gradient: 'linear-gradient(135deg, #78350f 0%, #f59e0b 50%, #fcd34d 100%)',
@@ -258,7 +258,7 @@ That night, {childName}, remember Flash's last race. Trophies collect dust. But 
   },
 
   {
-    id: 'rocket-adventures',
+    id: 'rocket-adventures', comingSoon: true,
     title: 'Rocket Adventures',
     icon: '🚀',
     gradient: 'linear-gradient(135deg, #1e1b4b 0%, #4f46e5 50%, #a5b4fc 100%)',
@@ -357,7 +357,7 @@ That night, {childName}, remember Rocket 5's choice. She could have come home fa
   },
 
   {
-    id: 'kindness-squad',
+    id: 'kindness-squad', comingSoon: true,
     title: 'The Kindness Squad',
     icon: '🦸',
     gradient: 'linear-gradient(135deg, #831843 0%, #ec4899 50%, #fbcfe8 100%)',
@@ -448,7 +448,7 @@ That night, {childName}, remember The Kindness Squad. A cape woven from kindness
   },
 
   {
-    id: 'planet-explorers',
+    id: 'planet-explorers', comingSoon: true,
     title: 'Planet Explorers',
     icon: '🪐',
     gradient: 'linear-gradient(135deg, #1e1b4b 0%, #312e81 50%, #fbbf24 100%)',
@@ -520,11 +520,12 @@ That night, {childName}, remember Pluto. Being small does not mean being unimpor
     ],
   },
   {
-    id: 'rainbow-kindergarten',
+    id: 'rainbow-kindergarten-jlps-yr25-26',
     title: 'Rainbow Kindergarten Adventures',
     icon: '🌈',
     gradient: 'linear-gradient(135deg, #7c3aed 0%, #f472b6 50%, #fbbf24 100%)',
     description: 'The Rainbow batch from JLPS explores Toronto — shapes at Canoe Landing, a concert, and a hike at Evergreen Brick Works.',
+    createdBy: 'deepti.ramaul@gmail.com', creatorName: 'Deepti Ramaul', creatorUsername: 'deepti-ramaul',
     ageRange: '4-6',
     totalEpisodes: 3,
     episodes: [
@@ -628,6 +629,170 @@ By 1:30, everyone was back on the bus. Tired, happy, a little muddy.
 {childName} held up one finger. "I touched a turtle. With THIS finger. And it blinked at me."
 
 That night, {childName}, remember the field trip. The turtles who share their sunny rocks. The bats who eat mosquitoes. The baby turtles who crawl to water all by themselves. The world is full of tiny creatures in tiny homes, right next to ours. All they need is for us to step carefully.`,
+      },
+    ],
+  },
+  {
+    id: 'dr-spock-parenting',
+    title: 'Dr. Spock Says',
+    icon: '👨‍⚕️',
+    gradient: 'linear-gradient(135deg, #1e3a5f 0%, #2563eb 50%, #93c5fd 100%)',
+    createdBy: 'deepti.ramaul@gmail.com', creatorName: 'Deepti Ramaul', creatorUsername: 'deepti-ramaul',
+    description: 'Five bedtime conversations with Dr. Spock — the world\'s most trusted baby doctor answers a parent\'s real questions about raising 3-to-5-year-olds.',
+    ageRange: '3-5',
+    totalEpisodes: 5,
+    episodes: [
+      {
+        id: 'dsp_ep1_development', episodeNumber: 1, title: 'Growing So Fast',
+        subtitle: 'A parent worries their child is behind. Dr. Spock reassures them.',
+        tradition: 'universal', theme: 'development', durationMinutes: 2,
+        value: 'wisdom',
+        source: 'Dr. Spock Says · Episode 1',
+        body: `"Dr. Spock, my {childName} just turned four. Other kids in class are writing their names already. Mine still scribbles. Should I be worried?"
+
+Dr. Spock leaned back and smiled. "Trust yourself. You know more than you think you do. Every child has their own clock. Some walk at nine months, some at fifteen. Neither is better."
+
+"But the other parents keep comparing."
+
+"Comparing is the thief of joy. At three to five, here is what truly matters. Can your child play pretend? Build a tower of blocks? Tell you a little story about their day?"
+
+"Oh, {childName} does all that. Talks to stuffed animals for an hour."
+
+"That is imagination. That is the engine of everything — reading, math, friendships. It all starts with a child who can pretend a banana is a telephone."
+
+"What about the fears? {childName} is suddenly scared of the dark."
+
+"Completely normal. A bigger imagination means bigger fears. The dark, loud sounds, monsters under beds. Do not force your child to be brave. Sit with them. A nightlight is not a weakness — it is a kindness."
+
+"And the questions! Why is the sky blue, why do dogs bark, why why why all day long."
+
+Dr. Spock laughed. "That is your child building a brain, one question at a time. Answer simply and honestly. You do not need to know everything. Saying I do not know, let us find out together is one of the best things a parent can say."
+
+"So {childName} is okay?"
+
+"More than okay. Your child is exactly where they need to be. And so are you."
+
+Good night, {childName}. You are growing at exactly the right speed.`,
+      },
+      {
+        id: 'dsp_ep2_ailments', episodeNumber: 2, title: 'Sniffles and Tummy Aches',
+        subtitle: 'When your child is sick — what to worry about and what to let pass.',
+        tradition: 'universal', theme: 'health', durationMinutes: 2,
+        value: 'wisdom',
+        source: 'Dr. Spock Says · Episode 2',
+        body: `"Dr. Spock, {childName} has had a runny nose for five days. I have wiped that nose a hundred times. When do I call the doctor?"
+
+"A cold is a cold. Seven to ten days of sniffles, maybe a mild fever, a little cough. That is the body doing its job. Rest, fluids, and patience."
+
+"But what if the fever gets high?"
+
+"Fever is not the enemy. It is your child fighting the infection. Dress them lightly. Offer water, juice, soup. A warm bath can help. But here is when you call — if the fever stays above 102 for more than two days, or your child becomes very drowsy and hard to wake up."
+
+"What about ear infections? Last month {childName} kept pulling at one ear and crying."
+
+"Ah, the ear tug. After a cold, fluid can build behind the eardrum. If there is fever plus ear pain plus trouble sleeping, call your doctor. Ear infections often need medical attention."
+
+"And stomach bugs? Last week there was so much vomiting."
+
+"Small sips. That is the secret. Not a full glass — just a spoonful of water or clear broth every few minutes. The biggest danger with vomiting and diarrhea is dehydration. Watch for dry lips, no tears when crying, and fewer wet diapers."
+
+"How do I know when it is serious?"
+
+"If your gut says something is wrong, call. That is what your pediatrician is for. You are not bothering them. You are being a good parent."
+
+"Thank you, Dr. Spock."
+
+"Thank yourself. You stayed calm. That is the best medicine of all."
+
+Sleep well tonight, {childName}. Your body is strong and knows how to heal.`,
+      },
+      {
+        id: 'dsp_ep3_firstaid', episodeNumber: 3, title: 'Bumps, Burns, and Boo-Boos',
+        subtitle: 'What you can handle at home — and when to rush to the ER.',
+        tradition: 'universal', theme: 'safety', durationMinutes: 2,
+        value: 'courage',
+        source: 'Dr. Spock Says · Episode 3',
+        body: `"Dr. Spock, {childName} fell off the swing today and scraped both knees. There was so much blood I almost panicked."
+
+"Scrapes always look worse than they are. Wash gently with soap and water. Press a clean cloth on it. Once the bleeding stops, a bandage and a kiss. That is the whole treatment."
+
+"What about the bump on the forehead last week? It swelled up like an egg."
+
+"Bumps on the forehead bleed a lot under the skin, so they swell fast. Ice it, watch your child for a few hours. If {childName} vomits, seems confused, or the pupils look different sizes — that is when you go to the emergency room."
+
+"And burns? {childName} touched the hot pan."
+
+"Cool water. Not ice, not butter, not toothpaste — just cool running water for ten to fifteen minutes. If the burn is small and the skin is just red, you can manage at home. If it blisters, or if it is on the face or hands, see a doctor."
+
+"What scares me most is choking."
+
+"Every parent should know this. If your child is coughing hard, let them cough. The body is trying to clear it. But if they cannot cough, cannot cry, cannot breathe — five firm back blows between the shoulder blades, then five quick chest thrusts. And call for help."
+
+"Should I keep a first aid kit?"
+
+"Absolutely. Bandages, antiseptic cream, tweezers, a thermometer, and the number for poison control. Tape it to the inside of a cabinet."
+
+Good night, {childName}. A few scrapes just mean you had a brave day.`,
+      },
+      {
+        id: 'dsp_ep4_behavior', episodeNumber: 4, title: 'Big Feelings, Little Body',
+        subtitle: 'Tantrums, tough questions, and the word NO — Dr. Spock explains.',
+        tradition: 'universal', theme: 'behavior', durationMinutes: 2,
+        value: 'patience',
+        source: 'Dr. Spock Says · Episode 4',
+        body: `"Dr. Spock, {childName} threw a full tantrum at the grocery store today. Screaming, kicking, on the floor. Everyone was staring."
+
+"Let them stare. A tantrum is not bad parenting. It is a small person with big feelings and no tools to manage them yet."
+
+"What am I supposed to do?"
+
+"Stay calm. Do not yell back — that is two people having a tantrum. Do not give in, because that teaches your child that screaming works. Just be near them, quiet and steady. When the storm passes, hold them. Say I love you even when you are angry."
+
+"And {childName} has started saying NO to everything."
+
+"Good. That means your child is learning they are their own person. You do not want a child who never says no — that child will not say no to anyone. Set boundaries firmly, but pick your battles. Does it really matter if the socks do not match?"
+
+"There is something else. {childName} asked me where babies come from."
+
+Dr. Spock nodded. "Answer simply and honestly. A baby grows inside a mother, and when the baby is big enough, the baby comes out. That is usually all a four-year-old wants to know. If they ask more, answer more. Use real words for body parts. There is no shame in the human body."
+
+"And the sibling fights? {childName} hit the baby."
+
+"Jealousy is natural. Your child is not mean — they are scared of losing you. Make time for just the two of you. Say you are my first, and nothing changes that."
+
+Good night, {childName}. Your big feelings mean you have a big heart.`,
+      },
+      {
+        id: 'dsp_ep5_special', episodeNumber: 5, title: 'Every Child Shines',
+        subtitle: 'When your child is different — Dr. Spock on disability, difference, and love.',
+        tradition: 'universal', theme: 'inclusion', durationMinutes: 2,
+        value: 'compassion',
+        source: 'Dr. Spock Says · Episode 5',
+        body: `"Dr. Spock, we just got the diagnosis. The doctor said {childName} has a developmental delay. I have not stopped crying."
+
+"Then cry. Grief is not weakness. You are mourning the path you imagined. That is human."
+
+"I feel guilty. Did I do something wrong?"
+
+"You did nothing wrong. Disabilities are not punishments. They are not caused by something you ate or a thought you had. Your child is still your child — the same laugh, the same eyes, the same little hand reaching for yours."
+
+"But what do I do now?"
+
+"First, breathe. Then, get help early. Early intervention makes a real difference — speech therapy, occupational therapy, special education programs. The earlier you start, the more your child can grow."
+
+"Will other kids be kind?"
+
+"Some will, some will not. That is true for every child. What matters is that {childName} knows, every single day, that they are loved exactly as they are. Not despite who they are. Because of who they are."
+
+"Should I treat {childName} differently?"
+
+"Set the same expectations you would for any child — adjusted, not removed. Let your child try, let them struggle a little, let them succeed. Overprotecting a child with a disability is as harmful as neglecting one."
+
+"I am scared I am not enough."
+
+"No parent is enough alone. Build your team — doctors, teachers, therapists, other parents who understand. And remember what I always say. Trust yourself. You know this child better than any specialist ever will."
+
+Good night, {childName}. You shine in your own way, and the world is brighter because of it.`,
       },
     ],
   },

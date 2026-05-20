@@ -60,17 +60,44 @@ export async function shareStoryToFirestore(story, { beliefs, country } = {}) {
 export async function loadSharedStory(storyId) {
   if (!storyId) return null;
 
-  // Try Firestore shared stories first
-  if (db) {
-    try {
-      const ref = doc(db, 'sharedStories', storyId);
-      const snap = await getDoc(ref);
-      if (snap.exists()) return { id: storyId, ...snap.data() };
-    } catch {}
-  }
-
-  // Fallback: check if it's a wisdom story (lesson_xxx) — load from local data
   const lessonId = storyId.startsWith('lesson_') ? storyId.slice(7) : storyId;
+
+  // Check series episodes FIRST — local data is always complete
+  try {
+    const { SERIES } = await import('../data/series.js');
+    for (const series of SERIES) {
+      const ep = series.episodes.find(e => e.id === storyId || e.id === lessonId);
+      if (ep) {
+        let audioUrl = null;
+        if (db) {
+          try {
+            const audioSnap = await getDoc(doc(db, 'config', 'wisdomAudio'));
+            if (audioSnap.exists()) audioUrl = audioSnap.data()[ep.id] || null;
+          } catch {}
+        }
+        return {
+          id: ep.id,
+          title: ep.title,
+          text: ep.body,
+          wordCount: (ep.body || '').split(/\s+/).length,
+          estimatedMinutes: ep.durationMinutes,
+          value: ep.value || 'courage',
+          language: 'English',
+          voice: 'AI Narrator',
+          tradition: ep.tradition,
+          source: ep.source,
+          createdAt: new Date().toISOString(),
+          isWisdom: true,
+          seriesId: series.id,
+          episodeId: ep.id,
+          audioUrl,
+        };
+      }
+    }
+  } catch {}
+
+  // Check wisdom stories — local data is always complete
+
   try {
     const { CULTURAL_LESSONS } = await import('../data/culturalLessons.js');
     const lesson = CULTURAL_LESSONS.find((l) => l.id === lessonId || l.id === storyId);
@@ -100,6 +127,15 @@ export async function loadSharedStory(storyId) {
       };
     }
   } catch {}
+
+  // Last resort: check Firestore shared stories (user-generated stories)
+  if (db) {
+    try {
+      const ref = doc(db, 'sharedStories', storyId);
+      const snap = await getDoc(ref);
+      if (snap.exists()) return { id: storyId, ...snap.data() };
+    } catch {}
+  }
 
   return null;
 }

@@ -1,9 +1,11 @@
 import { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 import { useRadio } from '../hooks/useRadio.jsx';
 import { RADIO_STATIONS } from '../data/radioStations.js';
 
 export default function RadioBar() {
+  const { t } = useTranslation();
   const navigate = useNavigate();
   const { stationId, playing, loading, togglePlayPause, stop } = useRadio();
   const station = RADIO_STATIONS.find((s) => s.id === stationId);
@@ -38,7 +40,7 @@ export default function RadioBar() {
         <div className="min-w-0 flex-1">
           <div className="truncate font-ui text-sm font-bold text-ink">{station.name}</div>
           <div className="truncate text-xs text-ink-muted">
-            {loading ? 'Connecting…' : playing ? 'Live · Radio' : 'Paused · Radio'}
+            {loading ? t('radio.connecting') : playing ? `${t('radio.live')} · ${t('nav.radio')}` : `${t('radio.paused')} · ${t('nav.radio')}`}
           </div>
         </div>
       </button>

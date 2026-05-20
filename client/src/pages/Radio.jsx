@@ -1,6 +1,7 @@
 // Radio — globe + station picker for 10 global bedtime stations.
 
 import { useState, useEffect, useMemo } from 'react';
+import { useTranslation } from 'react-i18next';
 import { motion, AnimatePresence } from 'framer-motion';
 import PageTransition from '../components/PageTransition.jsx';
 import RadioGlobe from '../components/RadioGlobe.jsx';
@@ -12,6 +13,7 @@ import { db } from '../lib/firebase.js';
 import { doc, getDoc, setDoc, updateDoc, increment, arrayUnion, arrayRemove, onSnapshot } from 'firebase/firestore';
 
 export default function Radio() {
+  const { t } = useTranslation();
   const { stationId, playing, loading, error, togglePlayPause, volume, setVolume } = useRadio();
   const { user } = useAuth();
   const [likes, setLikes] = useState({});
@@ -161,7 +163,7 @@ export default function Radio() {
                   <div className="flex items-center gap-2">
                     {playing && <SoundBars />}
                     <span className="text-[10px] font-bold uppercase tracking-[0.16em] text-gold">
-                      {loading ? 'Connecting...' : playing ? 'Now Playing' : 'Paused'}
+                      {loading ? t('radio.connecting') : playing ? t('player.nowPlaying') : t('radio.paused')}
                     </span>
                   </div>
                   <h2 className="mt-1 text-lg font-bold text-ink" style={{ fontFamily: 'Fraunces, serif' }}>
@@ -294,7 +296,7 @@ export default function Radio() {
                   {isPlaying ? '' : s.bestFor}
                 </span>
                 {isPlaying && <SoundBars />}
-                {isPlaying && <span className="text-[10px] font-bold uppercase tracking-wider text-gold">Live</span>}
+                {isPlaying && <span className="text-[10px] font-bold uppercase tracking-wider text-gold">{t('radio.live')}</span>}
                 <div className="flex-1" />
                 <button
                   onClick={(e) => { e.stopPropagation(); handleLike(s); }}
