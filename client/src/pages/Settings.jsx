@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
-import { Mic, Home, Gift, Map, Handshake, ChevronRight } from 'lucide-react';
+import { Mic, Home, Gift, Map, Handshake, ChevronRight, Globe } from 'lucide-react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import PageTransition from '../components/PageTransition.jsx';
 import SectionCard from '../components/SectionCard.jsx';
 import Toggle from '../components/Toggle.jsx';
@@ -18,6 +19,7 @@ import { TIERS, storiesThisWeek } from '../utils/tierGate.js';
 
 export default function Settings() {
   const navigate = useNavigate();
+  const { t, i18n } = useTranslation();
   const { profile, profiles, activeIndex, update, clear, switchKid } = useFamilyProfile();
   const { user, logout, loginGoogle, isConfigured } = useAuth();
   const { isAdmin } = useAdmin();
@@ -303,7 +305,26 @@ export default function Settings() {
         </div>
       </SectionCard>
 
-      <SectionCard title="Content">
+      <SectionCard title={t('settings.language')}>
+        <div className="flex gap-2">
+          {[{ code: 'en', label: 'English', flag: '🇬🇧' }, { code: 'fr', label: 'Français', flag: '🇫🇷' }].map(lang => (
+            <button
+              key={lang.code}
+              onClick={() => { i18n.changeLanguage(lang.code); localStorage.setItem('app-lang', lang.code); }}
+              className={`flex-1 flex items-center justify-center gap-2 rounded-xl px-3 py-3 text-sm font-bold transition ${
+                i18n.language === lang.code
+                  ? 'bg-gold text-bg-base shadow-glow'
+                  : 'bg-bg-surface text-ink-muted ring-1 ring-white/5'
+              }`}
+            >
+              <span className="text-lg">{lang.flag}</span>
+              {lang.label}
+            </button>
+          ))}
+        </div>
+      </SectionCard>
+
+      <SectionCard title={t('settings.content')}>
         <div className="space-y-1.5">
           <MiniToggle
             checked={!!profile.onlyMyTradition}

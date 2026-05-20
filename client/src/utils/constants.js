@@ -10,11 +10,12 @@ export const VALUES = [
 ];
 
 export const LANGUAGES = [
-  { key: 'English', label: 'English', voice: 'en-US' },
-  { key: 'Hindi', label: 'हिन्दी', voice: 'hi-IN' },
-  { key: 'Tamil', label: 'தமிழ்', voice: 'ta-IN' },
-  { key: 'Spanish', label: 'Español', voice: 'es-ES' },
-  { key: 'Arabic', label: 'العربية', voice: 'ar-SA' },
+  { key: 'English', label: 'English', voice: 'en-US', code: 'en' },
+  { key: 'French', label: 'Français', voice: 'fr-CA', code: 'fr' },
+  { key: 'Hindi', label: 'हिन्दी', voice: 'hi-IN', code: 'hi' },
+  { key: 'Tamil', label: 'தமிழ்', voice: 'ta-IN', code: 'ta' },
+  { key: 'Spanish', label: 'Español', voice: 'es-ES', code: 'es' },
+  { key: 'Arabic', label: 'العربية', voice: 'ar-SA', code: 'ar' },
 ];
 
 export const NARRATORS = [

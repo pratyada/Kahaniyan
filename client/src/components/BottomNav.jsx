@@ -2,14 +2,15 @@
 
 import { useState, useEffect } from 'react';
 import { NavLink } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import { useAuth } from '../hooks/useAuth.jsx';
 import { Moon, Feather, Radio, BookOpen, User, Sparkles } from 'lucide-react';
 
-const tabs = [
-  { to: '/', label: 'Home', Icon: Moon },
-  { to: '/creation', label: 'Creation', Icon: Feather },
-  { to: '/radio', label: 'Radio', Icon: Radio },
-  { to: '/blog', label: 'Blog', Icon: BookOpen },
+const TAB_KEYS = [
+  { to: '/', key: 'home', Icon: Moon },
+  { to: '/creation', key: 'creation', Icon: Feather },
+  { to: '/radio', key: 'radio', Icon: Radio },
+  { to: '/blog', key: 'blog', Icon: BookOpen },
 ];
 
 const MAIN_ORIGIN = 'https://mysleepytale.com';
@@ -25,9 +26,11 @@ function getInitials(user) {
 
 export default function BottomNav() {
   const { user } = useAuth();
+  const { t } = useTranslation();
   const initials = getInitials(user);
   const hostname = window.location.hostname;
   const isSubdomain = hostname.endsWith('.mysleepytale.com');
+  const tabs = TAB_KEYS.map(tab => ({ ...tab, label: t(`nav.${tab.key}`) }));
 
   const [collapsed, setCollapsed] = useState(() => {
     try { return localStorage.getItem('sidebar-collapsed') === '1'; } catch { return false; }
@@ -75,8 +78,8 @@ export default function BottomNav() {
                 <Sparkles size={18} className="text-gold" />
               </div>
               <div className="min-w-0">
-                <p className="text-sm font-bold text-ink truncate" style={{ fontFamily: 'Fraunces, serif' }}>My Sleepy Tale</p>
-                <p className="text-[10px] text-ink-muted truncate">Microlearning to complete your day</p>
+                <p className="text-sm font-bold text-ink truncate" style={{ fontFamily: 'Fraunces, serif' }}>{t('app.name')}</p>
+                <p className="text-[10px] text-ink-muted truncate">{t('app.tagline')}</p>
               </div>
             </div>
           )}
