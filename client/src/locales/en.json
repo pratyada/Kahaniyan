@@ -227,7 +227,9 @@
     "buddhist": "Buddhism",
     "jain": "Jainism",
     "jewish": "Judaism",
-    "universal": "Universal"
+    "universal": "Universal",
+    "hispanic": "Hispanic / Latino",
+    "catholic": "Catholic"
   },
   "family": {
     "mother": "Mother",

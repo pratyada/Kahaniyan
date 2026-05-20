@@ -55,6 +55,8 @@ export const RELIGIONS = [
   { key: 'buddhist', label: 'Buddhism', icon: '☸️' },
   { key: 'jain', label: 'Jainism', icon: '🪷' },
   { key: 'jewish', label: 'Judaism', icon: '✡️' },
+  { key: 'hispanic', label: 'Hispanic / Latino', icon: '🌺' },
+  { key: 'catholic', label: 'Catholic', icon: '⛪' },
   { key: 'universal', label: 'Universal', icon: '🌍' },
 ];
 
