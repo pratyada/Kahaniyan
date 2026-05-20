@@ -321,7 +321,7 @@ export default function Settings() {
       {/* ─── MORE ─── */}
       <SectionCard title="More">
         <div className="grid grid-cols-2 gap-2">
-          <Tile icon="✍️" title="Become a Creator" sub="Write & earn" onClick={() => navigate('/creator')} />
+          <Tile icon="✍️" title="Become a Creator" sub="Write & earn" onClick={() => navigate('/creation')} />
           <Tile icon="✨" title="Guides" sub="5 reads" onClick={() => navigate('/guides')} />
           <Tile icon={<Gift size={18} />} title="Gift a Story Pack" sub="CA$9.99/mo" onClick={() => setGiftOpen(true)} />
           <Tile icon={<Map size={18} />} title="Roadmap" sub="Build status" onClick={() => navigate('/roadmap')} />
@@ -330,12 +330,6 @@ export default function Settings() {
             <Tile icon="🔑" title="Admin" sub="Dashboard" onClick={() => navigate('/admin')} />
           )}
           <Tile icon="📋" title="What's new" sub="v0.1.1" onClick={() => setReleasesOpen(true)} />
-        </div>
-      </SectionCard>
-
-      <SectionCard title="Blog">
-        <div className="grid grid-cols-1 gap-2">
-          <Tile icon="📝" title="Read Our Blog" sub="Child psychology, parenting tips & bedtime guides" onClick={() => window.location.href = '/blog/'} />
         </div>
       </SectionCard>
 
@@ -586,5 +580,73 @@ function MiniToggle({ checked, onChange, label }) {
         />
       </span>
     </button>
+  );
+}
+
+function CountryProvinceSelector() {
+  const { profile, save } = useFamilyProfile();
+  const [countries, setCountries] = useState([]);
+  const [states, setStates] = useState([]);
+  const [country, setCountry] = useState(profile?.country || 'CA');
+  const [province, setProvince] = useState(profile?.province || '');
+  const [loaded, setLoaded] = useState(false);
+
+  useEffect(() => {
+    import('../data/regions.js').then((mod) => {
+      setCountries(mod.COUNTRIES);
+      setStates(mod.getStates(country));
+      setLoaded(true);
+    }).catch(e => console.error('regions load failed:', e));
+  }, []);
+
+  useEffect(() => {
+    if (!loaded) return;
+    import('../data/regions.js').then((mod) => {
+      setStates(mod.getStates(country));
+    });
+  }, [country, loaded]);
+
+  const handleCountryChange = (code) => {
+    setCountry(code);
+    setProvince('');
+    save({ ...profile, country: code, province: '' });
+  };
+
+  const handleProvinceChange = (prov) => {
+    setProvince(prov);
+    save({ ...profile, country, province: prov });
+  };
+
+  return (
+    <section className="card-elevated mb-5 space-y-3">
+      <h3 className="text-xs font-bold text-ink-muted uppercase tracking-wider">Location</h3>
+      <div>
+        <label className="text-[10px] text-ink-dim block mb-1">Country</label>
+        <select
+          value={country}
+          onChange={(e) => handleCountryChange(e.target.value)}
+          className="w-full rounded-xl bg-bg-surface px-3 py-2.5 text-sm text-ink ring-1 ring-white/10 outline-none focus:ring-gold/50"
+        >
+          {countries.map((c) => (
+            <option key={c.code} value={c.code}>{c.flag} {c.name}</option>
+          ))}
+        </select>
+      </div>
+      {states.length > 0 && (
+        <div>
+          <label className="text-[10px] text-ink-dim block mb-1">State / Province</label>
+          <select
+            value={province}
+            onChange={(e) => handleProvinceChange(e.target.value)}
+            className="w-full rounded-xl bg-bg-surface px-3 py-2.5 text-sm text-ink ring-1 ring-white/10 outline-none focus:ring-gold/50"
+          >
+            <option value="">Select...</option>
+            {states.map((s) => (
+              <option key={s} value={s}>{s}</option>
+            ))}
+          </select>
+        </div>
+      )}
+    </section>
   );
 }

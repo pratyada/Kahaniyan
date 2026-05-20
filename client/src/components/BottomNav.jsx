@@ -2,12 +2,13 @@
 
 import { NavLink } from 'react-router-dom';
 import { useAuth } from '../hooks/useAuth.jsx';
-import { Moon, Feather, Radio, User, Sparkles } from 'lucide-react';
+import { Moon, Feather, Radio, BookOpen, User, Sparkles } from 'lucide-react';
 
 const tabs = [
   { to: '/', label: 'Home', Icon: Moon },
-  { to: '/library', label: 'Curation', Icon: Feather },
+  { to: '/creation', label: 'Creation', Icon: Feather },
   { to: '/radio', label: 'Radio', Icon: Radio },
+  { to: '/blog/', label: 'Blog', Icon: BookOpen, external: true },
 ];
 
 const MAIN_ORIGIN = 'https://mysleepytale.com';
@@ -127,11 +128,15 @@ export default function BottomNav() {
 }
 
 function MobileTab({ tab, isSubdomain }) {
-  if (isSubdomain) {
+  if (tab.external || isSubdomain) {
+    const href = isSubdomain ? `${MAIN_ORIGIN}${tab.to}` : tab.to;
+    const isActive = window.location.pathname.startsWith(tab.to);
     return (
       <a
-        href={`${MAIN_ORIGIN}${tab.to}`}
-        className="flex min-h-[56px] flex-col items-center justify-center gap-1.5 rounded-2xl py-2 transition text-ink-muted active:text-ink"
+        href={href}
+        className={`flex min-h-[56px] flex-col items-center justify-center gap-1.5 rounded-2xl py-2 transition ${
+          isActive ? 'text-gold' : 'text-ink-muted active:text-ink'
+        }`}
       >
         <tab.Icon size={22} strokeWidth={1.8} />
         <span className="text-[10px] font-bold uppercase tracking-[0.14em]">{tab.label}</span>
@@ -194,11 +199,17 @@ function MobileMoreTab({ user, initials, isSubdomain }) {
 }
 
 function SidebarTab({ tab, isSubdomain }) {
-  if (isSubdomain) {
+  if (tab.external || isSubdomain) {
+    const href = isSubdomain ? `${MAIN_ORIGIN}${tab.to}` : tab.to;
+    const isActive = window.location.pathname.startsWith(tab.to);
     return (
       <a
-        href={`${MAIN_ORIGIN}${tab.to}`}
-        className="flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium text-ink-muted transition hover:bg-white/5 hover:text-ink"
+        href={href}
+        className={`flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium transition ${
+          isActive
+            ? 'bg-gold/10 text-gold'
+            : 'text-ink-muted hover:bg-white/5 hover:text-ink'
+        }`}
       >
         <tab.Icon size={20} strokeWidth={1.8} />
         <span>{tab.label}</span>

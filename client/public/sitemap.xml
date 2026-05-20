@@ -1,97 +1,173 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <!-- Core pages -->
   <url>
     <loc>https://mysleepytale.com/</loc>
+    <lastmod>2026-05-19</lastmod>
     <changefreq>daily</changefreq>
     <priority>1.0</priority>
   </url>
   <url>
-    <loc>https://mysleepytale.com/blog/</loc>
+    <loc>https://mysleepytale.com/creators</loc>
+    <lastmod>2026-05-19</lastmod>
     <changefreq>daily</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://mysleepytale.com/creation</loc>
+    <lastmod>2026-05-15</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://mysleepytale.com/login</loc>
+    <lastmod>2026-05-10</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+
+  <!-- Series -->
+  <url>
+    <loc>https://mysleepytale.com/series/rainbow-kindergarten-jlps-yr25-26</loc>
+    <lastmod>2026-05-19</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://mysleepytale.com/series/dr-spock-parenting</loc>
+    <lastmod>2026-05-19</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://mysleepytale.com/series/fire-truck-academy</loc>
+    <lastmod>2026-05-15</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+
+  <!-- Creator profiles -->
+  <url>
+    <loc>https://mysleepytale.com/creator/deepti-ramaul</loc>
+    <lastmod>2026-05-19</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://mysleepytale.com/creator/iampratyada</loc>
+    <lastmod>2026-05-19</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+
+  <!-- Blog index -->
+  <url>
+    <loc>https://mysleepytale.com/blog/</loc>
+    <lastmod>2026-05-19</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.9</priority>
+  </url>
+
+  <!-- Blog posts -->
+  <url>
+    <loc>https://mysleepytale.com/blog/become-a-creator</loc>
+    <lastmod>2026-05-18</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://mysleepytale.com/blog/creator-credits-guide</loc>
+    <lastmod>2026-05-18</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://mysleepytale.com/blog/rainbow-kindergarten-series-2026</loc>
+    <lastmod>2026-05-18</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://mysleepytale.com/blog/jean-lumb-kindergarten-bedtime-stories-toronto</loc>
+    <lastmod>2026-05-18</lastmod>
+    <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
     <loc>https://mysleepytale.com/blog/why-bedtime-stories-matter</loc>
+    <lastmod>2026-05-17</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://mysleepytale.com/blog/best-bedtime-story-app-toronto</loc>
+    <lastmod>2026-05-17</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://mysleepytale.com/blog/how-to-build-bedtime-routine</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://mysleepytale.com/blog/cultural-stories-for-kids</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
     <loc>https://mysleepytale.com/blog/best-bedtime-story-app-2026</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://mysleepytale.com/blog/moral-stories-for-kids</loc>
+    <lastmod>2026-05-17</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://mysleepytale.com/blog/indian-bedtime-stories</loc>
+    <lastmod>2026-05-17</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://mysleepytale.com/blog/islamic-stories-for-kids</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://mysleepytale.com/blog/5-minute-bedtime-stories</loc>
+    <lastmod>2026-05-17</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://mysleepytale.com/blog/why-kids-love-who-would-win</loc>
+    <lastmod>2026-05-17</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://mysleepytale.com/blog/why-kids-love-cars-buses</loc>
+    <lastmod>2026-05-17</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://mysleepytale.com/blog/why-kids-love-planets</loc>
+    <lastmod>2026-05-17</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://mysleepytale.com/blog/why-kids-love-sports-stories</loc>
+    <lastmod>2026-05-17</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://mysleepytale.com/blog/why-family-stories-matter</loc>
+    <lastmod>2026-05-17</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://mysleepytale.com/blog/why-kids-love-countries</loc>
+    <lastmod>2026-05-17</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://mysleepytale.com/blog/why-kids-need-superhero-stories</loc>
+    <lastmod>2026-05-17</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://mysleepytale.com/blog/become-a-creator</loc>
+    <loc>https://mysleepytale.com/blog/bluey-bingo-niagara-victoria-day</loc>
+    <lastmod>2026-05-19</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
