@@ -3,189 +3,571 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Become a Story Creator — My Sleepy Tale | Share Your Tradition</title>
-  <meta name="description" content="Share stories from your tradition and earn credits for every view. Hindu, Muslim, Sikh, Christian — every community needs storytellers. Join My Sleepy Tale as a creator.">
-  <meta name="keywords" content="create bedtime stories, story creator, share cultural stories, earn from stories, community storytelling Toronto, write stories for kids">
+  <title>Become a Story Creator — The Complete Guide | My Sleepy Tale</title>
+  <meta name="description" content="The full guide to creating bedtime stories and series on My Sleepy Tale. Step-by-step: write, submit, admin review, image generation, audio narration, publish. Everything explained.">
   <link rel="canonical" href="https://mysleepytale.com/blog/become-a-creator">
-  <meta name="geo.region" content="CA-ON">
-  <meta property="og:title" content="Become a Story Creator — Share Your Tradition, Earn Credits">
-  <meta property="og:description" content="Your tradition has stories the world needs to hear. Write them. We narrate them. Kids learn from them. You earn credits for every view.">
-  <meta property="og:type" content="website">
+  <meta property="og:title" content="Become a Story Creator — The Complete Guide">
+  <meta property="og:description" content="Create bedtime stories for kids. The full workflow from writing to publishing. Detailed guide with examples.">
+  <meta property="og:type" content="article">
   <meta property="og:url" content="https://mysleepytale.com/blog/become-a-creator">
-  <meta property="og:image" content="https://images.unsplash.com/photo-1456513080510-7bf3a84b82f8?w=1200&h=630&fit=crop&q=80">
-  <meta property="og:image:width" content="1200">
-  <meta property="og:image:height" content="630">
+  <meta property="og:image" content="https://mysleepytale.com/dsp_ep1_development.png">
   <meta property="og:locale" content="en_CA">
   <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:image" content="https://images.unsplash.com/photo-1456513080510-7bf3a84b82f8?w=1200&h=630&fit=crop&q=80">
   <link rel="icon" href="/favicon.svg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,700&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
   <style>
+    /* ── Top bar ── */
+    .topbar{position:sticky;top:0;z-index:40;background:rgba(10,10,15,.92);backdrop-filter:blur(16px);border-bottom:1px solid rgba(255,255,255,.05)}
+    .topbar-inner{max-width:800px;margin:0 auto;padding:.75rem 1.5rem;display:flex;align-items:center;justify-content:space-between}
+    .topbar .back{display:flex;align-items:center;gap:.4rem;font-size:.85rem;font-weight:600;color:#a8a39a;transition:color .2s}
+    .topbar .back:hover{color:#f0a500}
+    .topbar .back svg{width:18px;height:18px}
+    .topbar .brand{font-family:Fraunces,Georgia,serif;font-size:.95rem;font-weight:700;color:#f5f0e8;display:flex;align-items:center;gap:.4rem}
+    /* ── Bottom nav ── */
+    .bottom-nav{position:fixed;bottom:0;left:0;right:0;z-index:40;background:rgba(10,10,15,.95);backdrop-filter:blur(16px);border-top:1px solid rgba(255,255,255,.05);padding-bottom:env(safe-area-inset-bottom)}
+    .bottom-nav ul{display:flex;max-width:500px;margin:0 auto;padding:.5rem .5rem 0;list-style:none}
+    .bottom-nav li{flex:1;text-align:center}
+    .bottom-nav a{display:flex;flex-direction:column;align-items:center;gap:.2rem;padding:.5rem 0;color:#6e6a63;font-size:.6rem;font-weight:700;text-transform:uppercase;letter-spacing:.12em;transition:color .2s;text-decoration:none}
+    .bottom-nav a:hover,.bottom-nav a.on{color:#f0a500}
+    .bottom-nav svg{width:22px;height:22px;stroke-width:1.8}
+    /* ── Related ── */
+    .related{margin-top:3rem;padding-top:2rem;border-top:1px solid rgba(255,255,255,.06)}.related h3{font-family:Fraunces,Georgia,serif;font-size:1.1rem;color:#f5f0e8;margin-bottom:1rem}.related-grid{display:grid;grid-template-columns:1fr;gap:.8rem}@media(min-width:520px){.related-grid{grid-template-columns:1fr 1fr}}.related-card{display:flex;gap:.8rem;padding:1rem;border-radius:1rem;background:rgba(255,255,255,.025);border:1px solid rgba(255,255,255,.06);transition:all .2s}.related-card:hover{border-color:rgba(240,165,0,.2);transform:translateY(-1px)}.related-card img{width:72px;height:54px;border-radius:.6rem;object-fit:cover;flex-shrink:0}.related-card .rc-text{min-width:0}.related-card h4{font-size:.82rem;font-weight:700;color:#f5f0e8;line-height:1.3;margin-bottom:.2rem}.related-card span{font-size:.7rem;color:#6e6a63}
     *{margin:0;padding:0;box-sizing:border-box}
-    body{font-family:'DM Sans',system-ui,sans-serif;background:#0a0a0f;color:#f5f0e8;line-height:1.8}
+    body{font-family:'DM Sans',system-ui,sans-serif;background:#0a0a0f;color:#f5f0e8;line-height:1.9}
     a{color:#f0a500;text-decoration:none}
-    .container{max-width:720px;margin:0 auto;padding:2rem 1.5rem}
-    nav.top{display:flex;align-items:center;justify-content:space-between;padding:1rem 0 2rem}
-    nav.top .brand{font-weight:700}
-    nav.top .home-link{font-size:.8rem;background:rgba(240,165,0,.1);padding:.4rem 1rem;border-radius:2rem;color:#f0a500;font-weight:600}
+    .c{max-width:760px;margin:0 auto;padding:2rem 1.5rem}
+    nav{display:flex;align-items:center;justify-content:space-between;padding:1rem 0 2rem}
+    nav .b{font-weight:700;font-size:1.1rem}
+    nav .h{font-size:.8rem;background:rgba(240,165,0,.1);padding:.4rem 1rem;border-radius:2rem;color:#f0a500;font-weight:600}
 
-    .hero{text-align:center;padding:2rem 0 3rem;border-bottom:1px solid rgba(255,255,255,.06);margin-bottom:2rem}
-    .hero .badge{display:inline-flex;align-items:center;gap:.4rem;background:rgba(240,165,0,.08);border:1px solid rgba(240,165,0,.15);border-radius:2rem;padding:.3rem .8rem;font-size:.7rem;font-weight:700;color:#f0a500;margin-bottom:1rem}
-    .hero h1{font-family:'Playfair Display',Georgia,serif;font-size:2.2rem;font-weight:700;line-height:1.2;margin-bottom:1rem}
-    .hero h1 span{color:#f0a500}
-    .hero p{color:#a8a39a;font-size:1rem;max-width:540px;margin:0 auto}
+    .hero{text-align:center;padding:3rem 0;border-bottom:1px solid rgba(255,255,255,.06);margin-bottom:3rem}
+    .hero .ey{display:inline-block;background:rgba(240,165,0,.08);border:1px solid rgba(240,165,0,.2);border-radius:2rem;padding:.3rem 1rem;font-size:.7rem;font-weight:700;color:#f0a500;letter-spacing:.08em;text-transform:uppercase;margin-bottom:1.2rem}
+    .hero h1{font-family:Fraunces,Georgia,serif;font-size:2.4rem;font-weight:700;line-height:1.15;margin-bottom:1rem}
+    .hero h1 em{color:#f0a500;font-style:normal}
+    .hero .sub{color:#a8a39a;font-size:1rem;max-width:560px;margin:0 auto}
+    .hero .stats{display:flex;justify-content:center;gap:2rem;flex-wrap:wrap;margin-top:1.5rem}
+    .hero .st .n{font-size:1.8rem;font-weight:800;color:#f0a500}
+    .hero .st .l{font-size:.7rem;color:#6e6a63;text-transform:uppercase;letter-spacing:.1em}
 
-    .how-it-works{margin:2.5rem 0}
-    .how-it-works h2{font-size:1.3rem;font-weight:700;color:#f0a500;margin-bottom:1.5rem;text-align:center}
-    .step{display:flex;gap:1rem;margin-bottom:1.5rem;align-items:flex-start}
-    .step .num{width:36px;height:36px;border-radius:50%;background:rgba(240,165,0,.1);border:1px solid rgba(240,165,0,.3);display:flex;align-items:center;justify-content:center;font-size:.9rem;font-weight:800;color:#f0a500;flex-shrink:0}
-    .step .text h3{font-size:1rem;font-weight:700;margin-bottom:.2rem}
-    .step .text p{font-size:.85rem;color:#a8a39a;margin:0}
+    h2{font-family:Fraunces,Georgia,serif;font-size:1.5rem;font-weight:700;color:#f5f0e8;margin:3.5rem 0 .8rem}
+    h2 em{color:#f0a500;font-style:normal}
+    h3{font-size:1.05rem;font-weight:700;margin-bottom:.3rem}
+    p{font-size:.92rem;color:#a8a39a;margin-bottom:1.1rem}
+    strong{color:#f5f0e8}
 
-    .competition{background:rgba(255,255,255,.02);border:1px solid rgba(255,255,255,.06);border-radius:1.2rem;padding:1.5rem;margin:2.5rem 0}
-    .competition h2{font-size:1.2rem;font-weight:700;color:#f5f0e8;margin-bottom:1rem;text-align:center}
-    .tradition-row{display:flex;flex-wrap:wrap;gap:.5rem;justify-content:center;margin-bottom:1rem}
-    .tradition-pill{display:inline-flex;align-items:center;gap:.3rem;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:2rem;padding:.4rem .8rem;font-size:.75rem;font-weight:600}
-    .competition p{text-align:center;font-size:.85rem;color:#a8a39a}
+    /* Flow box */
+    .fb{background:rgba(255,255,255,.02);border:1px solid rgba(255,255,255,.06);border-radius:1.5rem;padding:2rem;margin:2rem 0}
+    .fb h3{color:#f0a500;text-align:center;margin-bottom:1.5rem;font-size:1.15rem}
+    .fr{display:flex;align-items:stretch;gap:.4rem;margin-bottom:.4rem;flex-wrap:wrap}
+    .fs{flex:1;min-width:70px;text-align:center;padding:.7rem .4rem;border-radius:.8rem;font-size:.68rem;font-weight:700;line-height:1.3}
+    .fg{background:rgba(240,165,0,.1);border:1px solid rgba(240,165,0,.25);color:#f0a500}
+    .fbl{background:rgba(59,130,246,.1);border:1px solid rgba(59,130,246,.25);color:#3b82f6}
+    .fp{background:rgba(168,85,247,.1);border:1px solid rgba(168,85,247,.25);color:#a855f7}
+    .fgr{background:rgba(34,197,94,.1);border:1px solid rgba(34,197,94,.25);color:#22c55e}
+    .fa{display:flex;align-items:center;justify-content:center;font-size:1rem;color:rgba(240,165,0,.5);min-width:16px}
+    .fad{text-align:center;font-size:1rem;color:rgba(240,165,0,.5);padding:.2rem 0}
 
-    .credits-section{margin:2.5rem 0}
-    .credits-section h2{font-size:1.3rem;font-weight:700;color:#f0a500;margin-bottom:1rem}
-    .credit-row{display:flex;justify-content:space-between;align-items:center;padding:.8rem 0;border-bottom:1px solid rgba(255,255,255,.04)}
-    .credit-row .label{font-size:.9rem;color:#d4cfc7}
-    .credit-row .value{font-size:.9rem;font-weight:700;color:#f0a500}
+    /* Timeline */
+    .tl{position:relative;margin:2rem 0;padding-left:3rem}
+    .tl::before{content:'';position:absolute;left:15px;top:0;bottom:0;width:3px;background:linear-gradient(180deg,#f0a500 0%,#3b82f6 30%,#a855f7 55%,#22c55e 80%,#f0a500 100%);border-radius:2px}
+    .ts{position:relative;margin-bottom:2.5rem}.ts:last-child{margin-bottom:0}
+    .td{position:absolute;left:-3rem;top:.15rem;width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.8rem;font-weight:800}
+    .tc{background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.08);border-radius:1.2rem;padding:1.4rem}
+    .tc h3{font-size:1rem;margin-bottom:.2rem;color:#f5f0e8}
+    .tc p{font-size:.85rem;margin:.3rem 0 0}
+    .tc .d{margin-top:.8rem;background:rgba(0,0,0,.25);border-radius:.8rem;padding:1rem;font-size:.82rem;color:#d4cfc7}
+    .tc .d ul{list-style:none;padding:0;margin:0}.tc .d li{padding:.2rem 0}
+    .tc .d strong{color:#f0a500}
+    .tg{display:inline-block;font-size:.62rem;font-weight:700;padding:.2rem .6rem;border-radius:1rem;margin-top:.5rem}
+    .tgg{background:rgba(240,165,0,.1);color:#f0a500}
+    .tgb{background:rgba(59,130,246,.1);color:#3b82f6}
+    .tgp{background:rgba(168,85,247,.1);color:#a855f7}
+    .tggr{background:rgba(34,197,94,.1);color:#22c55e}
 
-    .who-section{margin:2.5rem 0}
-    .who-section h2{font-size:1.3rem;font-weight:700;color:#f0a500;margin-bottom:1rem}
-    .who-section ul{list-style:none;padding:0}
-    .who-section li{padding:.7rem 0;border-bottom:1px solid rgba(255,255,255,.03);font-size:.9rem;color:#d4cfc7}
-    .who-section li strong{color:#f5f0e8}
+    /* Compare */
+    .cmp{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin:1.2rem 0}
+    @media(max-width:500px){.cmp{grid-template-columns:1fr}}
+    .cm{background:rgba(255,255,255,.02);border:1px solid rgba(255,255,255,.06);border-radius:1rem;padding:1.2rem}
+    .cm h4{font-size:.95rem;margin-bottom:.5rem;display:flex;align-items:center;gap:.4rem}
+    .cm ul{list-style:none;padding:0;font-size:.82rem;color:#a8a39a}
+    .cm li{padding:.25rem 0;padding-left:1rem;position:relative}
+    .cm li::before{content:'';position:absolute;left:0;top:.55rem;width:5px;height:5px;border-radius:50%;background:#f0a500}
 
-    .cta-section{background:linear-gradient(135deg,rgba(240,165,0,.12),rgba(240,165,0,.03));border:1px solid rgba(240,165,0,.3);border-radius:1.5rem;padding:2.5rem 2rem;text-align:center;margin:3rem 0}
-    .cta-section h2{font-family:'Playfair Display',Georgia,serif;font-size:1.5rem;font-weight:700;color:#f5f0e8;margin-bottom:.5rem}
-    .cta-section p{color:#a8a39a;font-size:.9rem;margin-bottom:1.5rem}
-    .cta-section a.btn{display:inline-block;background:#f0a500;color:#0a0a0f;font-weight:700;padding:.9rem 2.5rem;border-radius:.75rem;font-size:1rem;text-decoration:none}
-    .cta-section .sub{margin-top:.8rem;font-size:.75rem;color:#6e6a63}
+    /* Example callout */
+    .ex{background:rgba(240,165,0,.04);border-left:4px solid #f0a500;border-radius:0 1rem 1rem 0;padding:1.2rem 1.4rem;margin:1.2rem 0}
+    .ex h4{color:#f0a500;font-size:.85rem;margin-bottom:.4rem}
+    .ex p{font-size:.83rem;color:#a8a39a;margin:0}
+    code{background:rgba(240,165,0,.1);padding:.1rem .4rem;border-radius:4px;font-size:.8rem;color:#f0a500}
 
-    .testimonial{border-left:3px solid #f0a500;padding:.8rem 1.2rem;margin:2rem 0;background:rgba(240,165,0,.03);border-radius:0 .5rem .5rem 0}
-    .testimonial p{color:#a8a39a;font-style:italic;margin:0;font-size:.9rem}
-    .testimonial cite{display:block;margin-top:.4rem;font-size:.75rem;color:#6e6a63;font-style:normal}
+    /* Policy box */
+    .pol{background:rgba(239,68,68,.03);border:1px solid rgba(239,68,68,.15);border-radius:1.2rem;padding:1.5rem;margin:1.5rem 0}
+    .pol h4{color:#ef4444;font-size:.95rem;margin-bottom:.6rem}
+    .pol ul{list-style:none;padding:0;font-size:.85rem;color:#a8a39a}
+    .pol li{padding:.3rem 0}
+    .ok{color:#22c55e}
+    .no{color:#ef4444}
+
+    /* Credits */
+    .cth{display:flex;justify-content:space-between;padding:.5rem 1rem;background:rgba(240,165,0,.05);border-radius:.8rem .8rem 0 0;font-size:.72rem;font-weight:700;color:#f0a500;text-transform:uppercase;letter-spacing:.08em}
+    .ctr{display:flex;justify-content:space-between;align-items:center;padding:.6rem 1rem;border-bottom:1px solid rgba(255,255,255,.04)}
+    .ctr:last-child{border-bottom:none}
+    .ctr .cl{font-size:.85rem;color:#d4cfc7}
+    .ctr .cv{font-size:.85rem;font-weight:700;color:#f0a500;background:rgba(240,165,0,.08);padding:.15rem .5rem;border-radius:.5rem}
+
+    /* Tiers */
+    .trs{display:grid;grid-template-columns:1fr 1fr;gap:.7rem;margin:1.2rem 0}
+    @media(max-width:500px){.trs{grid-template-columns:1fr}}
+    .tr{border-radius:1rem;padding:1rem;text-align:center}
+    .tr h4{font-size:.9rem;margin-bottom:.2rem}
+    .tr .rg{font-size:.65rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;margin-bottom:.2rem}
+    .tr p{font-size:.75rem;color:#a8a39a;margin:0}
+    .t1{background:rgba(240,165,0,.05);border:1px solid rgba(240,165,0,.15)}.t1 h4,.t1 .rg{color:#f0a500}
+    .t2{background:rgba(59,130,246,.05);border:1px solid rgba(59,130,246,.15)}.t2 h4,.t2 .rg{color:#3b82f6}
+    .t3{background:rgba(168,85,247,.05);border:1px solid rgba(168,85,247,.15)}.t3 h4,.t3 .rg{color:#a855f7}
+    .t4{background:rgba(34,197,94,.05);border:1px solid rgba(34,197,94,.15)}.t4 h4,.t4 .rg{color:#22c55e}
+
+    /* Status badges */
+    .sb{display:inline-block;padding:.25rem .7rem;border-radius:2rem;font-size:.7rem;font-weight:700}
+    .sg{background:rgba(240,165,0,.1);color:#f0a500}.sbl{background:rgba(59,130,246,.1);color:#3b82f6}.sp{background:rgba(168,85,247,.1);color:#a855f7}.sgr{background:rgba(34,197,94,.1);color:#22c55e}.sr{background:rgba(239,68,68,.1);color:#ef4444}
+    .srow{display:flex;align-items:center;gap:1rem;padding:.7rem 0;border-bottom:1px solid rgba(255,255,255,.04)}
+    .srow span:last-child{font-size:.83rem;color:#a8a39a}
+
+    /* FAQ */
+    .fq{border-bottom:1px solid rgba(255,255,255,.04);padding:.8rem 0}
+    .fq h4{font-size:.9rem;color:#f5f0e8}
+    .fq p{font-size:.83rem;color:#a8a39a;margin:.4rem 0 0}
+
+    /* CTA */
+    .cta{background:linear-gradient(135deg,rgba(240,165,0,.15),rgba(240,165,0,.03));border:2px solid rgba(240,165,0,.3);border-radius:1.5rem;padding:3rem 2rem;text-align:center;margin:3rem 0}
+    .cta h2{margin-top:0;color:#f5f0e8;font-size:1.7rem}
+    .cta p{color:#a8a39a;font-size:.95rem;margin-bottom:1.2rem;max-width:480px;margin-left:auto;margin-right:auto}
+    .cta .btn{display:inline-block;background:#f0a500;color:#0a0a0f;font-weight:700;padding:.9rem 2.5rem;border-radius:2rem;font-size:1.05rem}
+    .cta .sm{margin-top:.8rem;font-size:.72rem;color:#6e6a63}
+
+    footer{text-align:center;padding:2rem 0;color:rgba(245,240,232,.25);font-size:.78rem;border-top:1px solid rgba(255,255,255,.05);margin-top:3rem}
   </style>
 </head>
 <body>
-  <div class="container">
-    <nav class="top"><a href="/" class="brand">🌙 My Sleepy Tale</a><a href="/" class="home-link">Open App →</a></nav>
 
-    <div class="hero">
-      <div class="badge">🇨🇦 Open to creators in Toronto & Canada</div>
-      <h1>Your tradition has stories<br>the world <span>needs to hear</span></h1>
-      <p>Write bedtime stories from your culture. We narrate them with AI voices. Kids across Canada learn from them. You earn credits for every view.</p>
+  <div class="topbar"><div class="topbar-inner">
+    <a href="/blog" class="back"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M15 18l-6-6 6-6"/></svg>Blog</a>
+    <a href="/" class="brand">🌙 My Sleepy Tale</a>
+  </div></div>
+
+<div class="c">
+
+  <div class="hero">
+    <div class="ey">The Complete Creator Guide · 2026</div>
+    <h1>How to Create, Submit,<br>and <em>Publish</em> Bedtime Stories</h1>
+    <p class="sub">This guide walks you through every single step — from writing your first story to hearing it narrated for thousands of kids. No detail skipped.</p>
+    <div class="stats">
+      <div class="st"><div class="n">100+</div><div class="l">Stories Live</div></div>
+      <div class="st"><div class="n">8</div><div class="l">Series</div></div>
+      <div class="st"><div class="n">7</div><div class="l">Traditions</div></div>
+      <div class="st"><div class="n">Free</div><div class="l">To Join</div></div>
     </div>
+  </div>
 
-    <div class="how-it-works">
-      <h2>How It Works</h2>
+  <!-- OVERVIEW FLOW -->
+  <h2>The <em>Complete Workflow</em></h2>
+  <p>Every story or series follows this exact path. No shortcuts. This is how we keep quality high and kids safe.</p>
 
-      <div class="step">
-        <div class="num">1</div>
-        <div class="text">
-          <h3>Sign up as a Creator</h3>
-          <p>Create your account on My Sleepy Tale. Go to Settings → "Become a Creator." Pick your tradition.</p>
-        </div>
-      </div>
-
-      <div class="step">
-        <div class="num">2</div>
-        <div class="text">
-          <h3>Write a story from your tradition</h3>
-          <p>A moral story (5-10 minutes read) that teaches one value: kindness, courage, honesty, patience, sharing, respect, or forgiveness. Can be from scripture, folk tradition, or your own family lore.</p>
-        </div>
-      </div>
-
-      <div class="step">
-        <div class="num">3</div>
-        <div class="text">
-          <h3>Submit for review</h3>
-          <p>Our team reads every submission. If it's respectful, well-written, and teaches a clear value — it gets approved within 48 hours.</p>
-        </div>
-      </div>
-
-      <div class="step">
-        <div class="num">4</div>
-        <div class="text">
-          <h3>We narrate it with AI voice + generate cover art</h3>
-          <p>Your story gets a professional audio narration and beautiful cover image. It appears in the app for all families of that tradition.</p>
-        </div>
-      </div>
-
-      <div class="step">
-        <div class="num">5</div>
-        <div class="text">
-          <h3>Earn credits for every view</h3>
-          <p>Every time a family plays your story, you earn 1 credit. Credits can be redeemed for free Pro subscription, gift cards, or donated to charity.</p>
-        </div>
-      </div>
+  <div class="fb">
+    <h3>From Your Idea to a Kid's Bedtime</h3>
+    <div class="fr">
+      <div class="fs fg">🔑<br>Sign Up<br>& Listen</div>
+      <div class="fa">→</div>
+      <div class="fs fg">✍️<br>Write Story<br>or Series</div>
+      <div class="fa">→</div>
+      <div class="fs fg">📸<br>Upload<br>Images</div>
+      <div class="fa">→</div>
+      <div class="fs fbl">📤<br>Submit<br>for Review</div>
     </div>
-
-    <div class="competition">
-      <h2>Which tradition will have the most stories?</h2>
-      <div class="tradition-row">
-        <span class="tradition-pill">🕉️ Hindu — 15 stories</span>
-        <span class="tradition-pill">☪️ Muslim — 5 stories</span>
-        <span class="tradition-pill">✝️ Christian — 4 stories</span>
-        <span class="tradition-pill">☬ Sikh — 3 stories</span>
-        <span class="tradition-pill">☸️ Buddhist — 4 stories</span>
-        <span class="tradition-pill">🪷 Jain — 3 stories</span>
-        <span class="tradition-pill">✡️ Jewish — 3 stories</span>
-        <span class="tradition-pill">🌍 Universal — 10 stories</span>
-      </div>
-      <p>Every community has hundreds of stories worth telling. Yours might be next. Help your tradition lead the board.</p>
+    <div class="fad">↓</div>
+    <div class="fr">
+      <div class="fs fgr">🎉<br>Live on<br>the App!</div>
+      <div class="fa">←</div>
+      <div class="fs fgr">🎧<br>Audio<br>Generated</div>
+      <div class="fa">←</div>
+      <div class="fs fgr">🖼️<br>Art<br>Created</div>
+      <div class="fa">←</div>
+      <div class="fs fbl">👀<br>Admin<br>Reviews</div>
     </div>
-
-    <div class="credits-section">
-      <h2>Creator Credits</h2>
-      <div class="credit-row"><span class="label">Story approved & published</span><span class="value">+50 credits</span></div>
-      <div class="credit-row"><span class="label">Every play/view of your story</span><span class="value">+1 credit</span></div>
-      <div class="credit-row"><span class="label">Story shared by a listener</span><span class="value">+5 credits</span></div>
-      <div class="credit-row"><span class="label">100 credits =</span><span class="value">1 month Pro free</span></div>
-      <div class="credit-row"><span class="label">500 credits =</span><span class="value">$25 gift card</span></div>
-      <div class="credit-row"><span class="label">Donate credits to</span><span class="value">Charity of choice</span></div>
+    <div class="fad">↑ ↓</div>
+    <div class="fr">
+      <div class="fs fp" style="flex:none;width:48%">✏️ Edits Requested → Creator Fixes → Resubmit</div>
+      <div class="fa" style="flex:none;width:3%"></div>
+      <div class="fs fgr" style="flex:none;width:48%">💰 Credits: Every Play · Every Share · Every Rating</div>
     </div>
+  </div>
 
-    <div class="who-section">
-      <h2>Perfect For</h2>
+  <!-- WHAT YOU CAN CREATE -->
+  <h2>What Can You <em>Create?</em></h2>
+  <p>Two formats. Pick whichever fits your story.</p>
+
+  <div class="cmp">
+    <div class="cm">
+      <h4>📖 A Single Story</h4>
       <ul>
-        <li><strong>Grandparents visiting Toronto</strong> — have time, have stories, want to contribute</li>
-        <li><strong>Religious scholars & teachers</strong> — share the stories you teach at temple/masjid/gurdwara</li>
-        <li><strong>Writers & storytellers</strong> — your cultural stories reach thousands of kids</li>
-        <li><strong>Parents</strong> — the story you tell YOUR kid could help 100 other families</li>
-        <li><strong>Students</strong> — writing practice + cultural contribution + credits</li>
-        <li><strong>Anyone</strong> who knows a beautiful moral story from their tradition</li>
+        <li>One complete bedtime tale</li>
+        <li>Teaches exactly ONE value</li>
+        <li>100+ words (about 1-3 minutes)</li>
+        <li>One tradition (Hindu, Sikh, etc.)</li>
+        <li>Optional: upload a cover image</li>
+        <li>Uses <code>{childName}</code> for personalization</li>
+        <li>Ends with a gentle bedtime message</li>
+        <li><strong>Perfect for your first creation</strong></li>
       </ul>
     </div>
-
-    <div class="testimonial">
-      <p>"My Nani used to tell me stories about Guru Nanak every night. Now I'm writing them down on My Sleepy Tale so every Sikh kid in Canada can hear them. It feels like preserving something precious."</p>
-      <cite>— Upcoming creator, Brampton</cite>
-    </div>
-
-    <div class="cta-section">
-      <h2>Start Creating Today</h2>
-      <p>Sign up on My Sleepy Tale → Go to Settings → "Become a Creator" → Write your first story.</p>
-      <a href="/" class="btn">Join as Creator →</a>
-      <p class="sub">Free to join. No minimum commitment. Write 1 story or 100.</p>
-    </div>
-
-    <div style="margin-top:2rem;padding-top:1.5rem;border-top:1px solid rgba(255,255,255,.05)">
-      <h2 style="font-size:1.1rem;color:#f0a500;margin-bottom:1rem">Story Guidelines</h2>
-      <ul style="list-style:none;padding:0;font-size:.85rem;color:#a8a39a">
-        <li style="padding:.4rem 0">✓ Must teach one clear value (kindness, courage, honesty, etc.)</li>
-        <li style="padding:.4rem 0">✓ 800-2000 words (5-10 minute read when narrated)</li>
-        <li style="padding:.4rem 0">✓ End with "That night, {childName}..." moral paragraph</li>
-        <li style="padding:.4rem 0">✓ Respectful of the tradition it represents</li>
-        <li style="padding:.4rem 0">✓ Original writing or retelling of folk/religious stories (no plagiarism)</li>
-        <li style="padding:.4rem 0">✓ Age-appropriate for kids 3-12</li>
-        <li style="padding:.4rem 0">✗ No violence, fear, or graphic content</li>
-        <li style="padding:.4rem 0">✗ No promotion of one tradition over another</li>
+    <div class="cm">
+      <h4>📺 A Series (2+ Episodes)</h4>
+      <ul>
+        <li><strong style="color:#f0a500">Minimum 2 episodes required</strong></li>
+        <li>Same characters across episodes</li>
+        <li>Each episode is a standalone story</li>
+        <li>Kids ask "what happens next?"</li>
+        <li>Series title, icon, description, age range</li>
+        <li>Image per episode (optional)</li>
+        <li>Higher credit potential (series bonus)</li>
+        <li><strong>Creates habit loops — kids come back</strong></li>
       </ul>
     </div>
   </div>
+
+  <div class="ex">
+    <h4>Why 2 episodes minimum for a series?</h4>
+    <p>A series with 1 episode is just a story. The magic of series is the "next episode" pull — kids finish one and immediately want the next. That only works with 2 or more. You can always add more episodes later after publishing.</p>
+  </div>
+
+  <!-- DETAILED STEP BY STEP -->
+  <h2>Step-by-Step: <em>The Full Journey</em></h2>
+
+  <div class="tl">
+
+    <!-- STEP 1 -->
+    <div class="ts">
+      <div class="td fg">1</div>
+      <div class="tc">
+        <h3>Sign Up & Listen First</h3>
+        <p>Create a free account — Google or email. No credit card. No commitment. Then <strong>explore the app</strong>. Listen to at least 2-3 stories before writing.</p>
+        <div class="d">
+          <strong>Why listen first?</strong>
+          <ul>
+            <li>• Notice how every story uses <code>{childName}</code> — when you hear "That night, Arjun, remember..." you understand the magic</li>
+            <li>• Notice the <strong>length</strong> — stories are 2-4 minutes, not 20</li>
+            <li>• Notice the <strong>tone</strong> — warm, quiet, winding down. Not exciting. Not loud. These play at 8pm.</li>
+            <li>• Notice the <strong>ending</strong> — always a gentle moral, always addressed to the child</li>
+          </ul>
+        </div>
+        <span class="tg tgg">5 minutes · No cost</span>
+      </div>
+    </div>
+
+    <!-- STEP 2 -->
+    <div class="ts">
+      <div class="td fg">2</div>
+      <div class="tc">
+        <h3>Open the Creation Tab</h3>
+        <p>Tap <strong>CREATION</strong> in the bottom navigation (second icon from left). You'll see two big buttons:</p>
+        <p><strong>"Create a Story"</strong> — for a single tale.<br><strong>"Create a Series"</strong> — for multiple episodes.</p>
+        <p>Tap one. The form opens.</p>
+        <span class="tg tgg">Your choice</span>
+      </div>
+    </div>
+
+    <!-- STEP 3 -->
+    <div class="ts">
+      <div class="td fg">3</div>
+      <div class="tc">
+        <h3>Write Your Story</h3>
+        <p>Fill in every field carefully. Here's exactly what each field means:</p>
+        <div class="d">
+          <ul>
+            <li><strong>Title</strong> — Short, catchy. "The Monkey and the Crocodile" not "A story about a monkey who meets a crocodile in the river"</li>
+            <li><strong>Tradition</strong> — Hindu, Sikh, Muslim, Christian, Buddhist, Jewish, or Universal. Pick one. Stories are filtered by this.</li>
+            <li><strong>Theme</strong> — Courage, Kindness, Honesty, Wisdom, Sharing, Patience, Humility, Forgiveness. Pick ONE.</li>
+            <li><strong>Source</strong> — Where this story comes from. "Panchatantra folk tradition" or "Based on a real field trip" or "Family story from my grandmother"</li>
+            <li><strong>Story body</strong> — The full text. This is what gets narrated. Write it exactly as you want it spoken aloud.</li>
+          </ul>
+        </div>
+
+        <h3 style="margin-top:1.2rem">The Magic Tokens</h3>
+        <p>These are replaced with real names when played:</p>
+        <div class="d">
+          <ul>
+            <li><code>{childName}</code> → becomes "Arjun" or "Veda" or whatever the listener's child is named</li>
+            <li><code>{sibling}</code> → the child's sibling name</li>
+            <li><code>{pet}</code> → the child's pet name</li>
+          </ul>
+        </div>
+
+        <div class="ex" style="margin-top:1rem">
+          <h4>Example: How to end a story</h4>
+          <p>"That night, <code>{childName}</code>, remember the old tree in the park. How it stood through every storm — not because it was the tallest, but because its roots went deep. Your kindness is like those roots. It grows quietly, underground, where nobody sees. But one day, it holds up everything."</p>
+        </div>
+
+        <h3 style="margin-top:1.2rem">For a Series: Add Episodes</h3>
+        <p>Tap <strong>"Add Episode"</strong> to add more. Each episode needs a title and story text. <strong style="color:#f0a500">You must have at least 2 episodes to submit.</strong> Each episode can have its own cover image.</p>
+        <span class="tg tgg">Take your time — no rush</span>
+      </div>
+    </div>
+
+    <!-- STEP 4 -->
+    <div class="ts">
+      <div class="td fg">4</div>
+      <div class="tc">
+        <h3>Upload Images</h3>
+        <p>You can upload cover images for your story or for each episode in a series. These show on the story card, in the player, and in WhatsApp share previews.</p>
+        <div class="d">
+          <strong>What makes a good cover image?</strong>
+          <ul>
+            <li>• <strong>Real photos</strong> — if your story is about a field trip, upload an actual photo from that day</li>
+            <li>• <strong>Illustrations</strong> — hand-drawn or AI-generated artwork that matches the story mood</li>
+            <li>• <strong>No text on images</strong> — the app adds the title overlay automatically</li>
+            <li>• <strong>Landscape or square</strong> works best (portrait gets cropped)</li>
+            <li>• If you don't upload one, admin may generate AI art for you</li>
+          </ul>
+        </div>
+        <span class="tg tgg">Optional but recommended</span>
+      </div>
+    </div>
+
+    <!-- STEP 5 -->
+    <div class="ts">
+      <div class="td fbl">5</div>
+      <div class="tc">
+        <h3>Submit for Review</h3>
+        <p>Hit the gold <strong>"Submit for Review"</strong> button. Your creation immediately appears in your <strong>My Creations</strong> tab with a <span class="sb sg">Submitted</span> badge.</p>
+        <p>You can see it. Listeners can't — not yet. It needs to pass review first.</p>
+        <div class="d">
+          <strong>What happens behind the scenes:</strong>
+          <ul>
+            <li>• Your submission is saved to our database</li>
+            <li>• Admin team gets notified</li>
+            <li>• You earn <strong>+5 credits</strong> just for submitting</li>
+            <li>• Review begins within 48 hours</li>
+          </ul>
+        </div>
+        <span class="tg tgb">Status: Submitted</span>
+      </div>
+    </div>
+
+    <!-- STEP 6 -->
+    <div class="ts">
+      <div class="td fbl">6</div>
+      <div class="tc">
+        <h3>Admin Reviews Your Work</h3>
+        <p>Our admin team reads every word. This is not automated — a real person reads your story. Here's exactly what they check:</p>
+
+        <div class="pol">
+          <h4>Content Policy Checklist</h4>
+          <ul>
+            <li><span class="ok">✓</span> <strong>Age-appropriate</strong> — safe for kids 3-12. No violence, fear, or adult themes</li>
+            <li><span class="ok">✓</span> <strong>One clear value</strong> — courage, kindness, honesty, etc. Not a lecture, but a lesson through story</li>
+            <li><span class="ok">✓</span> <strong>Cultural accuracy</strong> — if it's a Hindu story, does it respect the tradition? Names, places, customs correct?</li>
+            <li><span class="ok">✓</span> <strong>Writing quality</strong> — flows well when read aloud? No grammar issues? Natural dialogue?</li>
+            <li><span class="ok">✓</span> <strong>Proper tokens</strong> — uses <code>{childName}</code> at least once? Ends with bedtime message?</li>
+            <li><span class="ok">✓</span> <strong>Bedtime tone</strong> — calming, not exciting. Wind-down pace. No cliffhangers.</li>
+            <li><span class="ok">✓</span> <strong>Original work</strong> — retelling folk tales is fine, but no copy-paste from other apps/books</li>
+            <li><span class="no">✗</span> <strong>No violence or fear</strong> — nothing that keeps kids awake</li>
+            <li><span class="no">✗</span> <strong>No promotion of one tradition over another</strong></li>
+            <li><span class="no">✗</span> <strong>No advertising or product placement</strong></li>
+          </ul>
+        </div>
+
+        <h3 style="margin-top:1rem">What Admin Does Beyond Reading</h3>
+        <div class="d">
+          <ul>
+            <li>🖼️ <strong>Image generation</strong> — if you didn't upload images, admin generates AI cover art using our image engine (OpenAI gpt-image-1). Each story gets a unique, beautiful illustration in our Pixar-meets-Ghibli watercolor style.</li>
+            <li>📸 <strong>Image review</strong> — if you uploaded images, admin checks they're appropriate and high quality. They may crop, enhance, or replace low-quality uploads.</li>
+            <li>✏️ <strong>Text polish</strong> — admin may fix minor typos, improve paragraph breaks, or adjust the bedtime ending. Major changes are sent back to you.</li>
+            <li>🎧 <strong>Audio preparation</strong> — admin selects the best voice for your story (George, Lily, Muskaan, Brian, Sarah) and queues it for narration generation.</li>
+          </ul>
+        </div>
+        <span class="tg tgb">48 hours max · Usually faster</span>
+      </div>
+    </div>
+
+    <!-- STEP 7 -->
+    <div class="ts">
+      <div class="td fp">7</div>
+      <div class="tc">
+        <h3>Edits Requested (If Needed)</h3>
+        <p>If something needs work, admin sends <strong>specific, constructive feedback</strong>. Not "rejected" — but "here's how to make it better."</p>
+        <p>You'll see the feedback in your <strong>My Creations</strong> tab, highlighted in blue. The status changes to <span class="sb sp">Needs Edits</span>.</p>
+
+        <div class="ex">
+          <h4>Real example of admin feedback:</h4>
+          <p>"Beautiful story concept! Two suggestions: (1) Episode 2 ends too abruptly — the child is still awake. Add 2-3 sentences winding down: describe the night sky, the warm blanket, the soft sounds. (2) The moral in Episode 3 could be clearer — try ending with 'That night, {childName}, remember...' to tie the lesson to bedtime."</p>
+        </div>
+
+        <p>You edit your content in the app, fix the feedback, and <strong>resubmit</strong>. It goes back to admin for final review. Most stories need 0-1 rounds of edits. Second submission almost always gets approved.</p>
+        <span class="tg tgp">Status: Needs Edits</span>
+      </div>
+    </div>
+
+    <!-- STEP 8 -->
+    <div class="ts">
+      <div class="td fgr">8</div>
+      <div class="tc">
+        <h3>Audio & Art Generation</h3>
+        <p>Once approved, the production pipeline kicks in:</p>
+        <div class="d">
+          <ul>
+            <li>🎧 <strong>Voice narration</strong> — your story is narrated using ElevenLabs premium voices. Admin picks the best voice for your story's tone and tradition. The narration sounds warm, natural, and perfect for bedtime.</li>
+            <li>🖼️ <strong>Cover art</strong> — if not already created, AI generates a unique illustration. For series, each episode gets its own art.</li>
+            <li>📱 <strong>App integration</strong> — your story is wired into the app: play buttons, share links, progress tracking, the works.</li>
+          </ul>
+        </div>
+        <span class="tg tggr">Automated · Takes minutes</span>
+      </div>
+    </div>
+
+    <!-- STEP 9 -->
+    <div class="ts">
+      <div class="td fgr">9</div>
+      <div class="tc">
+        <h3>Published! 🎉</h3>
+        <p>Your story goes <strong style="color:#22c55e">LIVE</strong>. Here's everything that happens at the moment of publish:</p>
+        <div class="d">
+          <ul>
+            <li>🏠 <strong>Appears on Home page</strong> — families see it in the "Our Creators" section</li>
+            <li>👤 <strong>Shows on your creator profile</strong> — <code>mysleepytale.com/creator/your-username</code></li>
+            <li>🔗 <strong>Gets a shareable link</strong> — share on WhatsApp, the preview shows your cover image + title</li>
+            <li>🎧 <strong>Fully playable</strong> — any family can listen. The child hears their own name.</li>
+            <li>📺 <strong>Series episodes are connected</strong> — "Play Next Episode" appears automatically after each one</li>
+            <li>💰 <strong>Credits start flowing</strong> — every play, share, and rating earns you credits</li>
+            <li>❤️ <strong>Listeners can like your profile</strong> — likes count toward your creator rank</li>
+          </ul>
+        </div>
+        <span class="tg tggr">Status: Published — LIVE!</span>
+      </div>
+    </div>
+
+    <!-- STEP 10 -->
+    <div class="ts">
+      <div class="td fg">10</div>
+      <div class="tc">
+        <h3>Share & Earn</h3>
+        <p>Now the fun part. Share your creator profile link with everyone you know. Every family that listens earns you credits.</p>
+        <p>Your profile: <code>mysleepytale.com/creator/your-username</code></p>
+        <p>Share specific stories: <code>mysleepytale.com/api/share?id=your-story-id</code></p>
+        <p>On WhatsApp, the share preview shows your cover image, title, and description. The more you share, the more credits you earn.</p>
+        <span class="tg tgg">Ongoing · Credits for life</span>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- STATUS BADGES -->
+  <h2>Status <em>Badges</em> Explained</h2>
+  <p>Your story's status badge tells you exactly where it is in the workflow.</p>
+  <div class="srow"><span class="sb sg">Submitted</span><span>You've submitted — admin will review within 48 hours</span></div>
+  <div class="srow"><span class="sb sbl">Under Review</span><span>Admin is reading your story, checking policy, preparing production</span></div>
+  <div class="srow"><span class="sb sp">Needs Edits</span><span>Admin sent specific feedback — edit your story and resubmit</span></div>
+  <div class="srow"><span class="sb sgr">Published</span><span>Live on the app! Audio narrated. Credits flowing. Families listening.</span></div>
+  <div class="srow"><span class="sb sr">Rejected</span><span>Didn't meet content policy — you'll know exactly why. Try again with a new story.</span></div>
+
+  <!-- CREDITS -->
+  <h2>Credit <em>System</em></h2>
+  <p>Credits track your impact. The more families your stories reach, the more you earn.</p>
+  <div class="cth"><span>Action</span><span>Credits</span></div>
+  <div class="ctr"><span class="cl">Story submitted</span><span class="cv">+5</span></div>
+  <div class="ctr"><span class="cl">Story approved & published</span><span class="cv">+25</span></div>
+  <div class="ctr"><span class="cl">Series created (3+ episodes)</span><span class="cv">+50</span></div>
+  <div class="ctr"><span class="cl">Each episode approved</span><span class="cv">+15</span></div>
+  <div class="ctr"><span class="cl">Story played (per unique listener)</span><span class="cv">+1</span></div>
+  <div class="ctr"><span class="cl">Story shared via WhatsApp/link</span><span class="cv">+3</span></div>
+  <div class="ctr"><span class="cl">Story completed (full listen)</span><span class="cv">+2</span></div>
+  <div class="ctr"><span class="cl">5-star feedback from listener</span><span class="cv">+5</span></div>
+  <div class="ctr"><span class="cl">Creator profile liked (❤️)</span><span class="cv">+2</span></div>
+
+  <div class="ex">
+    <h4>Real math: What a 3-episode series earns</h4>
+    <p>You create a 3-episode series. All approved. 50 families listen. 10 share it. 5 rate it 5 stars.<br>
+    <strong style="color:#f0a500">5</strong> (submit) + <strong style="color:#f0a500">50</strong> (series bonus) + <strong style="color:#f0a500">45</strong> (3 eps × 15) + <strong style="color:#f0a500">25</strong> (approved) + <strong style="color:#f0a500">50</strong> (50 plays) + <strong style="color:#f0a500">100</strong> (50 completions) + <strong style="color:#f0a500">30</strong> (10 shares) + <strong style="color:#f0a500">25</strong> (5 ratings) = <strong style="color:#22c55e">330 credits from one series</strong></p>
+  </div>
+
+  <!-- TIERS -->
+  <h2>Creator <em>Tiers</em></h2>
+  <div class="trs">
+    <div class="tr t1"><h4>🌱 Storyteller</h4><div class="rg">0 – 99 credits</div><p>First stories. Your name on every creation.</p></div>
+    <div class="tr t2"><h4>📘 Keeper</h4><div class="rg">100 – 499</div><p>Create series. Priority review. Growing reach.</p></div>
+    <div class="tr t3"><h4>🏛️ Elder</h4><div class="rg">500 – 1,999</div><p>Featured on Home. Mentor others. Your tradition's voice.</p></div>
+    <div class="tr t4"><h4>🛡️ Guardian</h4><div class="rg">2,000+</div><p>Creator Council. Revenue share. Shaping childhoods.</p></div>
+  </div>
+
+  <!-- CONTENT POLICY DETAIL -->
+  <h2>Content <em>Policy</em> in Detail</h2>
+  <p>These are not suggestions — they are requirements. Every story must pass all of these:</p>
+
+  <div class="pol">
+    <h4>What We Accept</h4>
+    <ul>
+      <li><span class="ok">✓</span> Stories from any of our 7 traditions (Hindu, Sikh, Muslim, Christian, Buddhist, Jewish, Universal)</li>
+      <li><span class="ok">✓</span> Retellings of folk tales, scripture stories, family stories</li>
+      <li><span class="ok">✓</span> Stories based on real events (field trips, school concerts, family traditions)</li>
+      <li><span class="ok">✓</span> Conversational/dialogue format (like the Dr. Spock series)</li>
+      <li><span class="ok">✓</span> Animal characters, fantasy elements, gentle humor</li>
+      <li><span class="ok">✓</span> Stories that celebrate cultural differences without ranking them</li>
+    </ul>
+  </div>
+
+  <div class="pol">
+    <h4>What We Reject</h4>
+    <ul>
+      <li><span class="no">✗</span> Violence, weapons, fighting (even cartoon violence)</li>
+      <li><span class="no">✗</span> Scary content — monsters, ghosts, threats, darkness-as-danger</li>
+      <li><span class="no">✗</span> One tradition being superior to another</li>
+      <li><span class="no">✗</span> Plagiarized content from other apps, books, or websites</li>
+      <li><span class="no">✗</span> Advertising, product placement, or external links</li>
+      <li><span class="no">✗</span> Adult themes, innuendo, or content inappropriate for children</li>
+      <li><span class="no">✗</span> Political content or propaganda</li>
+      <li><span class="no">✗</span> Stories without a clear value/lesson</li>
+    </ul>
+  </div>
+
+  <!-- FAQ -->
+  <h2>Questions <em>Answered</em></h2>
+
+  <div class="fq"><h4>How long should my story be?</h4><p>250-500 words is ideal — about 2-4 minutes when narrated. Kids fall asleep during the story, not after it. Shorter is almost always better.</p></div>
+  <div class="fq"><h4>Can I write in Hindi or Punjabi?</h4><p>English only for now. Other languages are coming. But your story can be about any culture — just write it in English.</p></div>
+  <div class="fq"><h4>Can I record my own voice?</h4><p>Coming soon! For now, our premium AI voices handle narration — George, Lily, Muskaan, Brian, Sarah. They sound warm and natural.</p></div>
+  <div class="fq"><h4>What if my story gets rejected?</h4><p>You'll know exactly why. Usually it's a small fix — soften a scene, add a clearer moral, adjust the tone. Fix and resubmit. Most rejections become approvals on the second try.</p></div>
+  <div class="fq"><h4>Can I write about my own child's adventures?</h4><p>Absolutely! Our most popular series (Rainbow Kindergarten Adventures) is based on a real kindergarten class at Jean Lumb Public School in Toronto. Real adventures make the best bedtime stories.</p></div>
+  <div class="fq"><h4>Is there a limit?</h4><p>No limit. Write 1 story or 100. Each earns credits independently. The more you write, the more you earn.</p></div>
+  <div class="fq"><h4>How do I set my creator username?</h4><p>ME tab → Edit Family → scroll to "Creator Username." Choose a unique name. This becomes your profile URL: mysleepytale.com/creator/your-username</p></div>
+  <div class="fq"><h4>Can I edit after publishing?</h4><p>Contact us and we'll work with you to update. Changes go through review again to maintain quality.</p></div>
+  <div class="fq"><h4>Who can see my published stories?</h4><p>Everyone. Logged-in users see them personalized with their child's name. Guests can listen too. Your stories are public — that's the point.</p></div>
+  <div class="fq"><h4>Can I add more episodes to a published series?</h4><p>Yes! Submit new episodes through the Creation tab. They go through the same review process and get added to your existing series.</p></div>
+
+  <!-- CTA -->
+  <div class="cta">
+    <h2>Ready to Create?</h2>
+    <p>Sign up free. Listen to a few stories. Open the Creation tab. Write yours. Your first story could reach hundreds of families by bedtime tonight.</p>
+    <a href="/" class="btn">Open My Sleepy Tale →</a>
+    <p class="sm">Free forever. No minimum. Write 1 story or 100.</p>
+  </div>
+
+  <div class="related">
+    <h3>Keep Reading</h3>
+    <div class="related-grid">
+      <a href="/blog/creator-credits-guide" class="related-card"><img src="https://images.unsplash.com/photo-1606092195730-5d7b9af1efc5?w=200&h=150&fit=crop&q=80" alt="Credits guide"><div class="rc-text"><h4>Creator Credits Guide</h4><span>4 min read</span></div></a>
+      <a href="/blog/rainbow-kindergarten-series-2026" class="related-card"><img src="https://mysleepytale.com/dsp_ep1_development.png" alt="Rainbow kindergarten"><div class="rc-text"><h4>Rainbow Kindergarten Adventures</h4><span>5 min read</span></div></a>
+    </div>
+  </div>
+
+</div>
+
+  <nav class="bottom-nav"><ul>
+    <li><a href="/"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg>Home</a></li>
+    <li><a href="/creation"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M20.24 12.24a6 6 0 00-8.49-8.49L5 10.5V19h8.5z"/><line x1="16" y1="8" x2="2" y2="22"/><line x1="17.5" y1="15" x2="9" y2="15"/></svg>Creation</a></li>
+    <li><a href="/radio"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M4.9 19.1C1 15.2 1 8.8 4.9 4.9"/><path d="M7.8 16.2a5.5 5.5 0 010-8.4"/><path d="M16.2 7.8a5.5 5.5 0 010 8.4"/><path d="M19.1 4.9C23 8.8 23 15.1 19.1 19"/><circle cx="12" cy="12" r="1"/></svg>Radio</a></li>
+    <li><a href="/blog" class="on"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M2 3h6a4 4 0 014 4v14a3 3 0 00-3-3H2z"/><path d="M22 3h-6a4 4 0 00-4 4v14a3 3 0 013-3h7z"/></svg>Blog</a></li>
+    <li><a href="/settings"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>Me</a></li>
+  </ul></nav>
+
 </body>
 </html>
