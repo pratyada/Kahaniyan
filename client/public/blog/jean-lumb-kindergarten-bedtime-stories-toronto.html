@@ -75,6 +75,28 @@
     .faq h4{font-size:.9rem;color:#f5f0e8}
     .faq p{font-size:.83rem;color:#a8a39a;margin:.4rem 0 0}
     footer{text-align:center;padding:2rem 0;color:rgba(245,240,232,.25);font-size:.78rem;border-top:1px solid rgba(255,255,255,.05);margin-top:3rem}
+    .topbar{position:sticky;top:0;z-index:40;background:rgba(10,10,15,.92);backdrop-filter:blur(16px);border-bottom:1px solid rgba(255,255,255,.05)}
+    .topbar-inner{max-width:800px;margin:0 auto;padding:.75rem 1.5rem;display:flex;align-items:center;justify-content:space-between}
+    .topbar .back{display:flex;align-items:center;gap:.4rem;font-size:.85rem;font-weight:600;color:#a8a39a;transition:color .2s}
+    .topbar .back:hover{color:#f0a500}
+    .topbar .back svg{width:18px;height:18px}
+    .topbar .brand{font-family:Fraunces,Georgia,serif;font-size:.95rem;font-weight:700;color:#f5f0e8;display:flex;align-items:center;gap:.4rem}
+    .related{margin-top:3rem;padding-top:2rem;border-top:1px solid rgba(255,255,255,.06)}
+    .related h3{font-family:Fraunces,Georgia,serif;font-size:1.1rem;color:#f5f0e8;margin-bottom:1rem}
+    .related-grid{display:grid;grid-template-columns:1fr;gap:.8rem}
+    @media(min-width:520px){.related-grid{grid-template-columns:1fr 1fr}}
+    .related-card{display:flex;gap:.8rem;padding:1rem;border-radius:1rem;background:rgba(255,255,255,.025);border:1px solid rgba(255,255,255,.06);transition:all .2s}
+    .related-card:hover{border-color:rgba(240,165,0,.2);transform:translateY(-1px)}
+    .related-card img{width:72px;height:54px;border-radius:.6rem;object-fit:cover;flex-shrink:0}
+    .related-card .rc-text{min-width:0}
+    .related-card h4{font-size:.82rem;font-weight:700;color:#f5f0e8;line-height:1.3;margin-bottom:.2rem}
+    .related-card span{font-size:.7rem;color:#6e6a63}
+    .bottom-nav{position:fixed;bottom:0;left:0;right:0;z-index:40;background:rgba(10,10,15,.95);backdrop-filter:blur(16px);border-top:1px solid rgba(255,255,255,.05);padding-bottom:env(safe-area-inset-bottom)}
+    .bottom-nav ul{display:flex;max-width:500px;margin:0 auto;padding:.5rem .5rem 0;list-style:none}
+    .bottom-nav li{flex:1;text-align:center}
+    .bottom-nav a{display:flex;flex-direction:column;align-items:center;gap:.2rem;padding:.5rem 0;color:#6e6a63;font-size:.6rem;font-weight:700;text-transform:uppercase;letter-spacing:.12em;transition:color .2s;text-decoration:none}
+    .bottom-nav a:hover,.bottom-nav a.on{color:#f0a500}
+    .bottom-nav svg{width:22px;height:22px;stroke-width:1.8}
   </style>
 </head>
 <body>
