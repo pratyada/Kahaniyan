@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react';
 import { NavLink } from 'react-router-dom';
 import { useAuth } from '../hooks/useAuth.jsx';
-import { Moon, Feather, Radio, BookOpen, User, Sparkles, PanelLeftClose, PanelLeftOpen } from 'lucide-react';
+import { Moon, Feather, Radio, BookOpen, User, Sparkles } from 'lucide-react';
 
 const tabs = [
   { to: '/', label: 'Home', Icon: Moon },
@@ -59,8 +59,12 @@ export default function BottomNav() {
           collapsed ? 'w-[68px] px-2' : 'w-56 px-3'
         }`}
       >
-        {/* Brand */}
-        <div className={`mb-6 ${collapsed ? 'px-0 flex justify-center' : 'px-3'}`}>
+        {/* Brand — click to toggle collapse */}
+        <button
+          onClick={() => setCollapsed(c => !c)}
+          title={collapsed ? 'Expand sidebar' : 'Collapse sidebar'}
+          className={`mb-6 text-left cursor-pointer transition-colors hover:bg-white/5 rounded-xl ${collapsed ? 'px-0 flex justify-center py-2' : 'px-3 py-1'}`}
+        >
           {collapsed ? (
             <div className="grid h-9 w-9 place-items-center rounded-xl bg-gold/15">
               <Sparkles size={18} className="text-gold" />
@@ -76,7 +80,7 @@ export default function BottomNav() {
               </div>
             </div>
           )}
-        </div>
+        </button>
 
         {/* Nav items */}
         {tabs.map((t) => (
@@ -85,75 +89,54 @@ export default function BottomNav() {
 
         <div className="my-2 border-t border-white/5" />
 
-        {/* Settings / Me */}
+        {/* Spacer */}
+        <div className="flex-1" />
+
+        {/* User info at bottom — clickable to settings */}
         {isSubdomain ? (
           <a
             href={`${MAIN_ORIGIN}/settings`}
-            title="Settings"
-            className={`flex items-center rounded-xl py-2.5 text-sm font-medium text-ink-muted transition hover:bg-white/5 hover:text-ink ${
-              collapsed ? 'justify-center px-0' : 'gap-3 px-3'
+            className={`rounded-xl bg-bg-surface ring-1 ring-white/5 transition hover:ring-gold/20 ${
+              collapsed ? 'p-2 flex justify-center' : 'p-3'
             }`}
           >
-            <User size={20} strokeWidth={1.8} />
-            {!collapsed && <span>Settings</span>}
+            <div className={`flex items-center ${collapsed ? '' : 'gap-2'}`}>
+              <User size={collapsed ? 20 : 24} strokeWidth={1.8} className="text-ink-muted shrink-0" />
+              {!collapsed && <span className="text-xs font-bold text-ink">Settings</span>}
+            </div>
           </a>
         ) : (
           <NavLink
             to="/settings"
-            title={user ? 'Me' : 'Settings'}
             className={({ isActive }) =>
-              `flex items-center rounded-xl py-2.5 text-sm font-medium transition ${
-                collapsed ? 'justify-center px-0' : 'gap-3 px-3'
-              } ${isActive ? 'bg-gold/10 text-gold' : 'text-ink-muted hover:bg-white/5 hover:text-ink'}`
+              `rounded-xl ring-1 transition ${
+                collapsed ? 'p-2 flex justify-center' : 'p-3'
+              } ${isActive ? 'bg-gold/10 ring-gold/20' : 'bg-bg-surface ring-white/5 hover:ring-gold/20'}`
             }
           >
             {user ? (
-              user.photoURL ? (
-                <img src={user.photoURL} alt="" className="h-6 w-6 rounded-full object-cover" referrerPolicy="no-referrer" />
-              ) : (
-                <span className="grid h-6 w-6 place-items-center rounded-full bg-gold text-[10px] font-bold text-bg-base">
-                  {initials}
-                </span>
-              )
-            ) : (
-              <User size={20} strokeWidth={1.8} />
-            )}
-            {!collapsed && <span>{user ? 'Me' : 'Settings'}</span>}
-          </NavLink>
-        )}
-
-        {/* Spacer */}
-        <div className="flex-1" />
-
-        {/* Collapse toggle */}
-        <button
-          onClick={() => setCollapsed(c => !c)}
-          title={collapsed ? 'Expand sidebar' : 'Collapse sidebar'}
-          className={`flex items-center rounded-xl py-2.5 text-sm font-medium text-ink-dim transition hover:bg-white/5 hover:text-ink-muted ${
-            collapsed ? 'justify-center px-0' : 'gap-3 px-3'
-          }`}
-        >
-          {collapsed ? <PanelLeftOpen size={18} strokeWidth={1.8} /> : <PanelLeftClose size={18} strokeWidth={1.8} />}
-          {!collapsed && <span className="text-xs">Collapse</span>}
-        </button>
-
-        {/* User info at bottom */}
-        {user && !collapsed && (
-          <div className="mt-2 rounded-xl bg-bg-surface p-3 ring-1 ring-white/5">
-            <div className="flex items-center gap-2">
-              {user.photoURL ? (
-                <img src={user.photoURL} alt="" className="h-8 w-8 rounded-full object-cover" referrerPolicy="no-referrer" />
-              ) : (
-                <span className="grid h-8 w-8 place-items-center rounded-full bg-gold text-xs font-bold text-bg-base">
-                  {initials}
-                </span>
-              )}
-              <div className="min-w-0 flex-1">
-                <p className="truncate text-xs font-bold text-ink">{user.displayName || 'User'}</p>
-                <p className="truncate text-[10px] text-ink-muted">{user.email}</p>
+              <div className={`flex items-center ${collapsed ? '' : 'gap-2'}`}>
+                {user.photoURL ? (
+                  <img src={user.photoURL} alt="" className={`${collapsed ? 'h-7 w-7' : 'h-8 w-8'} rounded-full object-cover shrink-0`} referrerPolicy="no-referrer" />
+                ) : (
+                  <span className={`grid ${collapsed ? 'h-7 w-7 text-[10px]' : 'h-8 w-8 text-xs'} place-items-center rounded-full bg-gold font-bold text-bg-base shrink-0`}>
+                    {initials}
+                  </span>
+                )}
+                {!collapsed && (
+                  <div className="min-w-0 flex-1">
+                    <p className="truncate text-xs font-bold text-ink">{user.displayName || 'User'}</p>
+                    <p className="truncate text-[10px] text-ink-muted">{user.email}</p>
+                  </div>
+                )}
               </div>
-            </div>
-          </div>
+            ) : (
+              <div className={`flex items-center ${collapsed ? '' : 'gap-2'}`}>
+                <User size={collapsed ? 20 : 24} strokeWidth={1.8} className="text-ink-muted shrink-0" />
+                {!collapsed && <span className="text-xs font-bold text-ink">Settings</span>}
+              </div>
+            )}
+          </NavLink>
         )}
       </nav>
     </>
