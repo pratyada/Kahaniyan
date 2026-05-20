@@ -19,7 +19,11 @@ import Admin from './pages/Admin.jsx';
 import RecordVoice from './pages/RecordVoice.jsx';
 import Invest from './pages/Invest.jsx';
 import StonedAge from './pages/StonedAge.jsx';
+import Blog from './pages/Blog.jsx';
 import Creator from './pages/Creator.jsx';
+import CreatorProfile from './pages/CreatorProfile.jsx';
+import CuratorPage from './pages/CuratorPage.jsx';
+import Curators from './pages/Curators.jsx';
 import SeriesDetail from './pages/SeriesDetail.jsx';
 import BottomNav from './components/BottomNav.jsx';
 import PlayerBar from './components/PlayerBar.jsx';
@@ -130,7 +134,9 @@ function Shell() {
             <Route path="/onboarding" element={<Onboarding />} />
             <Route path="/player" element={<Player />} />
             <Route path="/library" element={<Library />} />
+            <Route path="/creation" element={<Library />} />
             <Route path="/radio" element={<Radio />} />
+            <Route path="/blog" element={<Blog />} />
             <Route path="/lessons" element={<CulturalLessons />} />
             <Route path="/voices" element={<VoiceStudio />} />
             <Route path="/characters" element={<Characters />} />
@@ -140,7 +146,9 @@ function Shell() {
             <Route path="/roadmap" element={<Roadmap />} />
             <Route path="/collection/:collectionId" element={<Home />} />
             <Route path="/series/:seriesId" element={<SeriesDetail />} />
-            <Route path="/creator" element={<Creator />} />
+            <Route path="/creator" element={<Navigate to="/creation" replace />} />
+            <Route path="/creators" element={<Curators />} />
+            <Route path="/creator/:slug" element={<CuratorPage />} />
             <Route path="/admin" element={<Admin />} />
             <Route path="*" element={<Navigate to="/" replace />} />
           </Routes>
