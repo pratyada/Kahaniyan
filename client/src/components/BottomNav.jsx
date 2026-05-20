@@ -1,8 +1,9 @@
-// Navigation — bottom bar on mobile, sidebar on desktop (lg:1024px+).
+// Navigation — bottom bar on mobile, collapsible sidebar on desktop (lg:1024px+).
 
+import { useState, useEffect } from 'react';
 import { NavLink } from 'react-router-dom';
 import { useAuth } from '../hooks/useAuth.jsx';
-import { Moon, Feather, Radio, BookOpen, User, Sparkles } from 'lucide-react';
+import { Moon, Feather, Radio, BookOpen, User, Sparkles, PanelLeftClose, PanelLeftOpen } from 'lucide-react';
 
 const tabs = [
   { to: '/', label: 'Home', Icon: Moon },
@@ -28,6 +29,14 @@ export default function BottomNav() {
   const hostname = window.location.hostname;
   const isSubdomain = hostname.endsWith('.mysleepytale.com');
 
+  const [collapsed, setCollapsed] = useState(() => {
+    try { return localStorage.getItem('sidebar-collapsed') === '1'; } catch { return false; }
+  });
+
+  useEffect(() => {
+    try { localStorage.setItem('sidebar-collapsed', collapsed ? '1' : '0'); } catch {}
+  }, [collapsed]);
+
   return (
     <>
       {/* ═══ MOBILE: Bottom nav bar ═══ */}
@@ -44,46 +53,58 @@ export default function BottomNav() {
         </ul>
       </nav>
 
-      {/* ═══ DESKTOP: Sidebar nav ═══ */}
-      <nav className="hidden lg:flex flex-col w-56 shrink-0 border-r border-white/5 bg-bg-surface/50 backdrop-blur-xl px-3 py-6 gap-1 z-30">
+      {/* ═══ DESKTOP: Collapsible sidebar ═══ */}
+      <nav
+        className={`hidden lg:flex flex-col shrink-0 border-r border-white/5 bg-bg-surface/50 backdrop-blur-xl py-6 gap-1 z-30 transition-all duration-200 ${
+          collapsed ? 'w-[68px] px-2' : 'w-56 px-3'
+        }`}
+      >
         {/* Brand */}
-        <div className="mb-6 px-3">
-          <div className="flex items-center gap-2">
+        <div className={`mb-6 ${collapsed ? 'px-0 flex justify-center' : 'px-3'}`}>
+          {collapsed ? (
             <div className="grid h-9 w-9 place-items-center rounded-xl bg-gold/15">
               <Sparkles size={18} className="text-gold" />
             </div>
-            <div>
-              <p className="text-sm font-bold text-ink" style={{ fontFamily: 'Fraunces, serif' }}>My Sleepy Tale</p>
-              <p className="text-[10px] text-ink-muted">Microlearning to complete your day</p>
+          ) : (
+            <div className="flex items-center gap-2">
+              <div className="grid h-9 w-9 shrink-0 place-items-center rounded-xl bg-gold/15">
+                <Sparkles size={18} className="text-gold" />
+              </div>
+              <div className="min-w-0">
+                <p className="text-sm font-bold text-ink truncate" style={{ fontFamily: 'Fraunces, serif' }}>My Sleepy Tale</p>
+                <p className="text-[10px] text-ink-muted truncate">Microlearning to complete your day</p>
+              </div>
             </div>
-          </div>
+          )}
         </div>
 
         {/* Nav items */}
         {tabs.map((t) => (
-          <SidebarTab key={t.to} tab={t} isSubdomain={isSubdomain} />
+          <SidebarTab key={t.to} tab={t} isSubdomain={isSubdomain} collapsed={collapsed} />
         ))}
 
         <div className="my-2 border-t border-white/5" />
 
-        {/* More / Settings */}
+        {/* Settings / Me */}
         {isSubdomain ? (
           <a
             href={`${MAIN_ORIGIN}/settings`}
-            className="flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium text-ink-muted transition hover:bg-white/5 hover:text-ink"
+            title="Settings"
+            className={`flex items-center rounded-xl py-2.5 text-sm font-medium text-ink-muted transition hover:bg-white/5 hover:text-ink ${
+              collapsed ? 'justify-center px-0' : 'gap-3 px-3'
+            }`}
           >
             <User size={20} strokeWidth={1.8} />
-            <span>Settings</span>
+            {!collapsed && <span>Settings</span>}
           </a>
         ) : (
           <NavLink
             to="/settings"
+            title={user ? 'Me' : 'Settings'}
             className={({ isActive }) =>
-              `flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium transition ${
-                isActive
-                  ? 'bg-gold/10 text-gold'
-                  : 'text-ink-muted hover:bg-white/5 hover:text-ink'
-              }`
+              `flex items-center rounded-xl py-2.5 text-sm font-medium transition ${
+                collapsed ? 'justify-center px-0' : 'gap-3 px-3'
+              } ${isActive ? 'bg-gold/10 text-gold' : 'text-ink-muted hover:bg-white/5 hover:text-ink'}`
             }
           >
             {user ? (
@@ -97,16 +118,28 @@ export default function BottomNav() {
             ) : (
               <User size={20} strokeWidth={1.8} />
             )}
-            <span>{user ? 'Me' : 'Settings'}</span>
+            {!collapsed && <span>{user ? 'Me' : 'Settings'}</span>}
           </NavLink>
         )}
 
-        {/* Spacer pushes user info to bottom */}
+        {/* Spacer */}
         <div className="flex-1" />
 
-        {/* User info at bottom of sidebar */}
-        {user && (
-          <div className="mt-4 rounded-xl bg-bg-surface p-3 ring-1 ring-white/5">
+        {/* Collapse toggle */}
+        <button
+          onClick={() => setCollapsed(c => !c)}
+          title={collapsed ? 'Expand sidebar' : 'Collapse sidebar'}
+          className={`flex items-center rounded-xl py-2.5 text-sm font-medium text-ink-dim transition hover:bg-white/5 hover:text-ink-muted ${
+            collapsed ? 'justify-center px-0' : 'gap-3 px-3'
+          }`}
+        >
+          {collapsed ? <PanelLeftOpen size={18} strokeWidth={1.8} /> : <PanelLeftClose size={18} strokeWidth={1.8} />}
+          {!collapsed && <span className="text-xs">Collapse</span>}
+        </button>
+
+        {/* User info at bottom */}
+        {user && !collapsed && (
+          <div className="mt-2 rounded-xl bg-bg-surface p-3 ring-1 ring-white/5">
             <div className="flex items-center gap-2">
               {user.photoURL ? (
                 <img src={user.photoURL} alt="" className="h-8 w-8 rounded-full object-cover" referrerPolicy="no-referrer" />
@@ -194,15 +227,18 @@ function MobileMoreTab({ user, initials, isSubdomain }) {
   );
 }
 
-function SidebarTab({ tab, isSubdomain }) {
+function SidebarTab({ tab, isSubdomain, collapsed }) {
   if (isSubdomain) {
     return (
       <a
         href={`${MAIN_ORIGIN}${tab.to}`}
-        className="flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium text-ink-muted transition hover:bg-white/5 hover:text-ink"
+        title={tab.label}
+        className={`flex items-center rounded-xl py-2.5 text-sm font-medium text-ink-muted transition hover:bg-white/5 hover:text-ink ${
+          collapsed ? 'justify-center px-0' : 'gap-3 px-3'
+        }`}
       >
         <tab.Icon size={20} strokeWidth={1.8} />
-        <span>{tab.label}</span>
+        {!collapsed && <span>{tab.label}</span>}
       </a>
     );
   }
@@ -210,16 +246,15 @@ function SidebarTab({ tab, isSubdomain }) {
     <NavLink
       to={tab.to}
       end={tab.to === '/'}
+      title={tab.label}
       className={({ isActive }) =>
-        `flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium transition ${
-          isActive
-            ? 'bg-gold/10 text-gold'
-            : 'text-ink-muted hover:bg-white/5 hover:text-ink'
-        }`
+        `flex items-center rounded-xl py-2.5 text-sm font-medium transition ${
+          collapsed ? 'justify-center px-0' : 'gap-3 px-3'
+        } ${isActive ? 'bg-gold/10 text-gold' : 'text-ink-muted hover:bg-white/5 hover:text-ink'}`
       }
     >
       <tab.Icon size={20} strokeWidth={1.8} />
-      <span>{tab.label}</span>
+      {!collapsed && <span>{tab.label}</span>}
     </NavLink>
   );
 }
