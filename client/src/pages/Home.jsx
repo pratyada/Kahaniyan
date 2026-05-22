@@ -23,7 +23,7 @@ import { usePlayer } from '../hooks/usePlayer.jsx';
 import { useAuth } from '../hooks/useAuth.jsx';
 import { useWisdomData } from '../hooks/useWisdomData.js';
 import { THEMES } from '../data/culturalLessons.js';
-import { COLLECTIONS } from '../data/collections.js';
+import { useLocalizedCollections } from '../hooks/useLocalizedData.js';
 import { playLesson, recommendedValueFor } from '../utils/storyHelpers.js';
 import { buildTraditionShelves, buildAgeShelf } from '../utils/shelfBuilder.js';
 import { fillTokens } from '../utils/storyHelpers.js';
@@ -36,6 +36,7 @@ export default function Home() {
   const { load } = usePlayer();
   const { user } = useAuth();
   const { wisdomAudioUrls, wisdomImageUrls, allLessons, loading: dataLoading } = useWisdomData();
+  const COLLECTIONS = useLocalizedCollections();
 
   const [createOpen, setCreateOpen] = useState(false);
   const [activeTheme, setActiveTheme] = useState('compassion-animals');

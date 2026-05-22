@@ -307,7 +307,7 @@ export default function Settings() {
 
       <SectionCard title={t('settings.language')}>
         <div className="flex gap-2">
-          {[{ code: 'en', label: 'English', flag: '🇬🇧' }, { code: 'fr', label: 'Français', flag: '🇫🇷' }].map(lang => (
+          {[{ code: 'en', label: 'English', flag: '🇬🇧' }, { code: 'fr', label: 'Français', flag: '🇫🇷' }, { code: 'es', label: 'Español', flag: '🇪🇸' }].map(lang => (
             <button
               key={lang.code}
               onClick={() => { i18n.changeLanguage(lang.code); localStorage.setItem('app-lang', lang.code); }}

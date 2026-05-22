@@ -88,7 +88,7 @@ import { useStreak } from '../hooks/useStreak.js';
 import PostStoryReflection from '../components/PostStoryReflection.jsx';
 import ShareCardSheet from '../components/ShareCardSheet.jsx';
 import { useSeriesProgress } from '../hooks/useSeriesProgress.js';
-import { SERIES } from '../data/series.js';
+import { useLocalizedSeries } from '../hooks/useLocalizedData.js';
 import StoryGallery from '../components/StoryGallery.jsx';
 import { fillTokens } from '../utils/storyHelpers.js';
 
@@ -193,6 +193,7 @@ function SharedStoryGate() {
 
 function PlayerInner() {
   const { t } = useTranslation();
+  const SERIES = useLocalizedSeries();
   const navigate = useNavigate();
   const { current, clear, isPlaying, setIsPlaying, reloadLast, load, setAudio, audioRef: globalAudioRef } = usePlayer();
   const { profile } = useFamilyProfile();

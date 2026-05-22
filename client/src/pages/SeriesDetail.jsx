@@ -6,7 +6,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { Play, CheckCircle } from 'lucide-react';
 import PageTransition from '../components/PageTransition.jsx';
-import { SERIES } from '../data/series.js';
+import { useLocalizedSeries } from '../hooks/useLocalizedData.js';
 import { useSeriesProgress } from '../hooks/useSeriesProgress.js';
 import { usePlayer } from '../hooks/usePlayer.jsx';
 import { useAuth } from '../hooks/useAuth.jsx';
@@ -16,6 +16,7 @@ import { getPlayCount, getRating, formatCount } from '../utils/socialProof.js';
 
 export default function SeriesDetail() {
   const { t } = useTranslation();
+  const SERIES = useLocalizedSeries();
   const { seriesId } = useParams();
   const navigate = useNavigate();
   const { load } = usePlayer();

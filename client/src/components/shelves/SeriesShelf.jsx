@@ -6,12 +6,13 @@ import { useNavigate } from 'react-router-dom';
 import ShelfSection from './ShelfSection.jsx';
 import ShelfRow from './ShelfRow.jsx';
 import SeriesCard from '../cards/SeriesCard.jsx';
-import { SERIES } from '../../data/series.js';
+import { useLocalizedSeries } from '../../hooks/useLocalizedData.js';
 
 // Preferred order for live series
 const LIVE_ORDER = ['rainbow-kindergarten-jlps-yr25-26', 'dr-spock-parenting'];
 
 export default function SeriesShelf() {
+  const SERIES = useLocalizedSeries();
   const navigate = useNavigate();
   const [coverImages, setCoverImages] = useState({});
   const [galleryImages, setGalleryImages] = useState({});
