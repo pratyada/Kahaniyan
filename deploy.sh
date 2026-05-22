@@ -22,6 +22,13 @@ aws s3 cp client/dist/index.html s3://mysleepytale-app/index.html \
 aws s3 sync client/dist/blog/ s3://mysleepytale-app/blog/ \
   --cache-control "public, max-age=3600" --content-type "text/html" --quiet
 
+# Upload root-level landing pages (SEO)
+for f in client/dist/*.html; do
+  [ "$(basename $f)" = "index.html" ] && continue
+  aws s3 cp "$f" "s3://mysleepytale-app/$(basename $f)" \
+    --cache-control "public, max-age=3600" --content-type "text/html" --quiet
+done
+
 aws s3 cp client/dist/robots.txt s3://mysleepytale-app/robots.txt \
   --cache-control "public, max-age=86400" --content-type "text/plain" --quiet
 
