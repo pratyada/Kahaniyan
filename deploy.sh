@@ -59,7 +59,10 @@ aws lambda update-function-code --function-name mysleepytale-api \
 # Invalidate CloudFront cache
 echo "🔄 Invalidating cache..."
 aws cloudfront create-invalidation --distribution-id E2SUVVWBBFCBPE \
-  --paths "/index.html" "/blog/*" "/robots.txt" "/sitemap.xml" \
+  --paths "/index.html" "/blog/*" "/*.html" "/robots.txt" "/sitemap.xml" \
   --query 'Invalidation.Status' --output text
+
+# Notify search engines (IndexNow + sitemap ping)
+bash scripts/notify-search-engines.sh
 
 echo "✅ Deployed! Live at https://mysleepytale.com"
