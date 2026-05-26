@@ -3393,6 +3393,37 @@ function SeriesPanel() {
         >
           🚀 Bulk ALL ({allEpisodes.filter(e => !urls[e.id] || !imageUrls[e.id]).length} missing)
         </button>
+        <button
+          onClick={async () => {
+            if (!confirm(`Regenerate images for ALL ${allEpisodes.length} episodes? This will replace existing images. ~${Math.ceil(allEpisodes.length * 10 / 60)} minutes.`)) return;
+            for (let i = 0; i < allEpisodes.length; i++) {
+              setBulkProgress(`🖼️ Regen ${i + 1}/${allEpisodes.length}: ${allEpisodes[i].title}`);
+              await generateImage(allEpisodes[i]);
+              await new Promise(r => setTimeout(r, 1500));
+            }
+            setBulkProgress(`Done! ${allEpisodes.length} images regenerated`);
+          }}
+          disabled={!!generating}
+          className="rounded-lg bg-red-400/10 px-4 py-1.5 text-[10px] font-bold text-red-400 disabled:opacity-30"
+        >
+          🔄 Regen ALL Images ({allEpisodes.length})
+        </button>
+        <button
+          onClick={async () => {
+            const voice = document.getElementById('bulk-series-voice')?.value || 'george';
+            if (!confirm(`Regenerate audio for ALL ${allEpisodes.length} episodes with voice "${voice}"? ~${Math.ceil(allEpisodes.length * 15 / 60)} minutes.`)) return;
+            for (let i = 0; i < allEpisodes.length; i++) {
+              setBulkProgress(`⚡ Regen ${i + 1}/${allEpisodes.length}: ${allEpisodes[i].title}`);
+              await generateAudio(allEpisodes[i], voice);
+              await new Promise(r => setTimeout(r, 2000));
+            }
+            setBulkProgress(`Done! ${allEpisodes.length} audio regenerated`);
+          }}
+          disabled={!!generating}
+          className="rounded-lg bg-red-400/10 px-4 py-1.5 text-[10px] font-bold text-red-400 disabled:opacity-30"
+        >
+          🔄 Regen ALL Audio ({allEpisodes.length})
+        </button>
         {bulkProgress && <div className="w-full text-[10px] text-[#f0a500] mt-2">{bulkProgress}</div>}
       </div>
 
