@@ -138,15 +138,36 @@ export default function BadgeWall({ open, onClose }) {
                 <p className="mt-1 text-sm text-ink-muted">{selected.desc}</p>
 
                 {selected.unlocked ? (
-                  <div className="mt-4 rounded-xl bg-gold/10 px-4 py-2 ring-1 ring-gold/20">
-                    <p className="text-[10px] font-bold text-gold">
-                      Unlocked {new Date(selected.unlockedAt).toLocaleDateString()}
-                    </p>
-                  </div>
+                  <>
+                    <div className="mt-3 rounded-xl bg-gold/10 px-4 py-2 ring-1 ring-gold/20">
+                      <p className="text-[10px] font-bold text-gold">
+                        Unlocked {new Date(selected.unlockedAt).toLocaleDateString()}
+                      </p>
+                    </div>
+                    {selected.reward && (
+                      <div className="mt-3 rounded-xl bg-green-900/20 px-4 py-3 ring-1 ring-green-500/20">
+                        <div className="flex items-center justify-center gap-2 mb-1">
+                          <span className="text-lg">{selected.reward.icon}</span>
+                          <p className="text-xs font-bold text-green-400">{selected.reward.label}</p>
+                        </div>
+                        <p className="text-[10px] text-green-400/70">{selected.reward.detail}</p>
+                      </div>
+                    )}
+                  </>
                 ) : (
-                  <div className="mt-4 rounded-xl bg-bg-surface px-4 py-2 ring-1 ring-white/5">
-                    <p className="text-[10px] font-bold text-ink-dim">Keep going to unlock!</p>
-                  </div>
+                  <>
+                    <div className="mt-3 rounded-xl bg-bg-surface px-4 py-2 ring-1 ring-white/5">
+                      <p className="text-[10px] font-bold text-ink-dim">Keep going to unlock!</p>
+                    </div>
+                    {selected.reward && (
+                      <div className="mt-2 rounded-xl bg-bg-surface/50 px-4 py-2 ring-1 ring-white/5 opacity-50">
+                        <div className="flex items-center justify-center gap-1.5">
+                          <span className="text-sm">{selected.reward.icon}</span>
+                          <p className="text-[10px] text-ink-dim">Reward: {selected.reward.label}</p>
+                        </div>
+                      </div>
+                    )}
+                  </>
                 )}
 
                 <button

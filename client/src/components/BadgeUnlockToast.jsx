@@ -54,6 +54,12 @@ export default function BadgeUnlockToast() {
               <p className="text-[10px] uppercase tracking-wider text-gold font-bold">Badge Unlocked!</p>
               <p className="text-sm font-bold text-ink">{badge.title}</p>
               <p className="text-[11px] text-ink-muted">{badge.desc}</p>
+              {badge.reward && (
+                <div className="mt-1 flex items-center gap-1">
+                  <span className="text-xs">{badge.reward.icon}</span>
+                  <span className="text-[10px] font-bold text-green-400">{badge.reward.label}</span>
+                </div>
+              )}
             </div>
             <motion.div
               initial={{ width: '100%' }}
