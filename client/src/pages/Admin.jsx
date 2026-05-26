@@ -3430,12 +3430,52 @@ function SeriesPanel() {
       {/* Series list */}
       {SERIES_DATA.map((series) => (
         <div key={series.id} className="rounded-xl bg-[#1a1a28] p-4 ring-1 ring-white/5">
-          {/* Series header */}
-          <div className="flex items-center gap-3 mb-3">
-            <span className="text-2xl">{series.icon}</span>
-            <div>
-              <h3 className="text-sm font-bold text-[#f5f0e8]">{series.title}</h3>
-              <p className="text-[10px] text-[#6e6a63]">{series.totalEpisodes} episodes · {series.ageRange}</p>
+          {/* Series header + per-series bulk */}
+          <div className="flex items-center justify-between mb-3">
+            <div className="flex items-center gap-3">
+              <span className="text-2xl">{series.icon}</span>
+              <div>
+                <h3 className="text-sm font-bold text-[#f5f0e8]">{series.title}</h3>
+                <p className="text-[10px] text-[#6e6a63]">{series.episodes.length} episodes · {series.ageRange} · Audio: {series.episodes.filter(e => urls[e.id]).length}/{series.episodes.length} · Images: {series.episodes.filter(e => imageUrls[e.id]).length}/{series.episodes.length}</p>
+              </div>
+            </div>
+            <div className="flex gap-1.5 shrink-0">
+              <button
+                onClick={async () => {
+                  const voice = document.getElementById('bulk-series-voice')?.value || 'george';
+                  const eps = series.episodes;
+                  if (!confirm(`Generate audio + images for all ${eps.length} episodes of "${series.title}"?`)) return;
+                  for (let i = 0; i < eps.length; i++) {
+                    setBulkProgress(`${series.icon} ${i + 1}/${eps.length}: ${eps[i].title}`);
+                    if (!urls[eps[i].id]) { await generateAudio(eps[i], voice); await new Promise(r => setTimeout(r, 2000)); }
+                    if (!imageUrls[eps[i].id]) { await generateImage(eps[i]); await new Promise(r => setTimeout(r, 1500)); }
+                  }
+                  setBulkProgress(`${series.icon} Done!`);
+                }}
+                disabled={!!generating}
+                className="rounded-lg bg-[#f0a500]/10 px-2.5 py-1 text-[9px] font-bold text-[#f0a500] disabled:opacity-30"
+                title="Generate missing audio + images for this series"
+              >
+                🚀 Missing
+              </button>
+              <button
+                onClick={async () => {
+                  const voice = document.getElementById('bulk-series-voice')?.value || 'george';
+                  const eps = series.episodes;
+                  if (!confirm(`REGENERATE all ${eps.length} episodes of "${series.title}"? Replaces existing.`)) return;
+                  for (let i = 0; i < eps.length; i++) {
+                    setBulkProgress(`${series.icon} Regen ${i + 1}/${eps.length}: ${eps[i].title}`);
+                    await generateAudio(eps[i], voice); await new Promise(r => setTimeout(r, 2000));
+                    await generateImage(eps[i]); await new Promise(r => setTimeout(r, 1500));
+                  }
+                  setBulkProgress(`${series.icon} Regen done!`);
+                }}
+                disabled={!!generating}
+                className="rounded-lg bg-red-400/10 px-2.5 py-1 text-[9px] font-bold text-red-400 disabled:opacity-30"
+                title="Regenerate ALL audio + images for this series"
+              >
+                🔄 Regen
+              </button>
             </div>
           </div>
 
