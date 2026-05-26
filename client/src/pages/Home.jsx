@@ -238,12 +238,7 @@ export default function Home() {
       {/* ═══ SERIES VIEW ═══ */}
       {viewMode === 'series' && (<>
         <SeriesShelf />
-        <CuratorShelf />
       </>)}
-
-      {/* ═══ ALWAYS VISIBLE (both views) ═══ */}
-      {viewMode === 'episodes' && <SeriesShelf />}
-      {viewMode === 'episodes' && <CuratorShelf />}
 
       {/* 3. Browse by Value — interactive filter */}
       <section className="mb-6">
@@ -284,6 +279,12 @@ export default function Home() {
               </ShelfRow>
             </ShelfSection>
           ))}
+
+      {/* Series shelf at bottom (episodes view) */}
+      {viewMode === 'episodes' && <SeriesShelf />}
+
+      {/* Our Creators — always at bottom */}
+      <CuratorShelf />
 
       {/* Create Story FAB + Sheet */}
       <CreateFAB onClick={() => setCreateOpen(true)} />
