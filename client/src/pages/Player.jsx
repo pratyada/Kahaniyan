@@ -457,6 +457,13 @@ function PlayerInner() {
       setDone(true);
       setIsPlaying(false);
       recordPlay(); // increment learning streak
+      // Log to play history for badge system
+      try {
+        const history = JSON.parse(localStorage.getItem('mst:playHistory') || '[]');
+        history.push({ id: current?.id, tradition: current?.tradition, ts: Date.now() });
+        if (history.length > 500) history.splice(0, history.length - 500); // keep last 500
+        localStorage.setItem('mst:playHistory', JSON.stringify(history));
+      } catch {}
       // Mark series episode complete if applicable
       if (current?.seriesId && current?.episodeId) {
         markEpisodeComplete(current.seriesId, current.episodeId);

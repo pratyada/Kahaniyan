@@ -26,6 +26,7 @@ import CuratorPage from './pages/CuratorPage.jsx';
 import Curators from './pages/Curators.jsx';
 import SeriesDetail from './pages/SeriesDetail.jsx';
 import BottomNav from './components/BottomNav.jsx';
+import BadgeUnlockToast from './components/BadgeUnlockToast.jsx';
 import PlayerBar from './components/PlayerBar.jsx';
 import RadioBar from './components/RadioBar.jsx';
 import { AuthProvider, useAuth } from './hooks/useAuth.jsx';
@@ -159,6 +160,9 @@ function Shell() {
 
         {/* Radio mini bar */}
         {stationId && !isOnboardingRoute && !isPlayerRoute && !isRadioRoute && !isLoginRoute && !current && <RadioBar />}
+
+        {/* Badge unlock toast */}
+        <BadgeUnlockToast />
 
         {/* Login popup — appears after 5 seconds if user isn't signed in */}
         <AnimatePresence>
