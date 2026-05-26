@@ -4,7 +4,8 @@ import { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate, useParams } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { Play, CheckCircle } from 'lucide-react';
+import { Play, CheckCircle, Mic } from 'lucide-react';
+import { hasVoicePrompts } from '../data/voicePrompts.js';
 import PageTransition from '../components/PageTransition.jsx';
 import { useLocalizedSeries } from '../hooks/useLocalizedData.js';
 import { useSeriesProgress } from '../hooks/useSeriesProgress.js';
@@ -317,6 +318,12 @@ export default function SeriesDetail() {
                   <span>▶ {formatCount(plays)}</span>
                   <span>⭐ {rating}</span>
                   <span>{realDuration} {t('home.min')}</span>
+                  {hasVoicePrompts(ep.id) && (
+                    <span className="flex items-center gap-0.5 text-gold/70">
+                      <Mic size={8} />
+                      {localStorage.getItem(`mst:voiceclips:${ep.id}`) ? 'Recorded' : 'Record voice'}
+                    </span>
+                  )}
                 </div>
               </div>
             </motion.button>

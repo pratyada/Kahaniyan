@@ -90,6 +90,8 @@ import ShareCardSheet from '../components/ShareCardSheet.jsx';
 import { useSeriesProgress } from '../hooks/useSeriesProgress.js';
 import { useLocalizedSeries } from '../hooks/useLocalizedData.js';
 import StoryGallery from '../components/StoryGallery.jsx';
+import VoiceClipRecorder from '../components/VoiceClipRecorder.jsx';
+import { hasVoicePrompts, getVoicePrompts } from '../data/voicePrompts.js';
 import { fillTokens } from '../utils/storyHelpers.js';
 
 const SPEEDS = [0.8, 1, 1.2];
@@ -184,6 +186,56 @@ function SharedStoryGate() {
         <h1 className="font-display text-xl font-bold text-gold">Story not found</h1>
         <p className="mt-2 text-sm text-ink-muted">This story link may have expired or doesn't exist.</p>
         <button onClick={() => { clear(); navigate('/'); }} className="btn-primary mt-6">{t('player.backToHome')}</button>
+      </div>
+    );
+  }
+
+  // Check if this episode supports voice clips
+  const episodeId = current?.id || '';
+  const voicePrompts = getVoicePrompts(episodeId);
+  const [voiceStep, setVoiceStep] = useState(() => {
+    // Skip if already recorded or no prompts
+    if (!voicePrompts) return 'play';
+    const cached = localStorage.getItem(`mst:voiceclips:${episodeId}`);
+    if (cached) return 'play';
+    return 'ask'; // Show "want to record?" prompt
+  });
+
+  if (voiceStep === 'ask' && voicePrompts) {
+    return (
+      <div className="flex h-screen flex-col items-center justify-center bg-bg-base px-6 text-center">
+        <div className="text-5xl mb-4">🎙️</div>
+        <h2 className="font-display text-2xl font-bold text-gold mb-2">Add your voice!</h2>
+        <p className="text-sm text-ink-muted mb-1 max-w-xs">
+          Record {current?.childName || 'your'} voice into this story — just 3 quick clips about what you remember.
+        </p>
+        <p className="text-[11px] text-ink-dim mb-6">Takes about 1 minute. Totally optional!</p>
+        <button
+          onClick={() => setVoiceStep('record')}
+          className="btn-primary px-8 py-4 text-base mb-3"
+        >
+          🎤 Let's Record!
+        </button>
+        <button
+          onClick={() => setVoiceStep('play')}
+          className="text-sm text-ink-muted"
+        >
+          Skip — just play the story
+        </button>
+      </div>
+    );
+  }
+
+  if (voiceStep === 'record' && voicePrompts) {
+    return (
+      <div className="flex h-screen flex-col bg-bg-base safe-top">
+        <VoiceClipRecorder
+          prompts={voicePrompts}
+          episodeId={episodeId}
+          childName={current?.childName || 'your child'}
+          onDone={() => setVoiceStep('play')}
+          onSkip={() => setVoiceStep('play')}
+        />
       </div>
     );
   }
