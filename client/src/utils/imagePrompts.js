@@ -230,7 +230,19 @@ export const STORY_PROMPTS = {
   rat_ep3_asteroid: 'Five kid astronauts inside a spacecraft cockpit staring at a car-sized asteroid tumbling toward them through the window, one child pressing a cargo bay eject button, scientific equipment launching into the void toward the asteroid, tension and sacrifice, dramatic space lighting',
   rat_ep4_station: 'Five kid astronauts floating in the cupola window of the International Space Station with a Japanese commander, Earth glowing enormous and blue below them, solar panel wings visible outside, floating tortillas and equipment around them, wonder and weightlessness',
   rat_ep5_landing: 'A small child astronaut walking down a hill on an alien planet with blue-green grass toward a small shimmering alien figure holding a glowing orb, two moons in a purple sky, dome-shaped dwellings in a spiral valley behind, hands open in peace, first contact, golden alien sunset',
+// ══════ WHO WOULD WIN — ANIMAL BATTLES ══════
+  wwwa_ep1_lion_tiger: 'A majestic golden lion and a massive orange-striped tiger standing face to face on a dramatic savanna cliff edge at sunset, both roaring, golden dust swirling between them, muscles tensed, epic confrontation under a blood-orange sky',
+  wwwa_ep2_scorpion_tarantula: 'A glowing ultraviolet scorpion with raised stinger facing a giant hairy tarantula in a moonlit desert arena, sand particles floating, dramatic shadows, both in fighting stance, tiny but terrifying close-up perspective',
+  wwwa_ep3_cheetah_leopard: 'A sleek spotted cheetah mid-sprint blur racing alongside a muscular leopard perched powerfully on a tree branch, African grassland, golden hour, speed lines on cheetah, raw strength visible in leopard muscles',
+  wwwa_ep4_shark_croc: 'A great white shark breaching upward from deep blue water toward a massive saltwater crocodile lunging from a muddy riverbank, water splashing dramatically at the collision point, tropical coastline background',
+  wwwa_ep5_eagle_owl: 'A golden eagle with spread seven-foot wings diving through golden daylight on the left, and a great horned owl with glowing amber eyes emerging from a dark forest on the right, dawn/dusk dividing line between them',
+  wwwa_ep6_gorilla_bear: 'A silverback gorilla beating its chest standing on a mossy rock facing a massive grizzly bear rearing up on hind legs, misty mountain forest, dramatic size comparison, raw power radiating from both creatures',
+  wwwa_ep7_cobra_mongoose: 'A king cobra raised tall with hood spread wide and a tiny brave mongoose in a fighting crouch below it, Indian jungle clearing, dramatic size difference, the mongoose looking fearless despite being ten times smaller',
+  wwwa_ep8_whale_squid: 'A sperm whale descending into pitch-black deep ocean encountering a giant squid with enormous dinner-plate eyes and reaching tentacles, bioluminescent particles floating, dramatic deep-sea darkness with whale sonar rings',
+  wwwa_ep9_rhino_hippo: 'A charging rhinoceros with lowered horn about to collide with a hippo opening its massive jaws impossibly wide showing twenty-inch teeth, African waterhole at dusk, dust and water droplets frozen in the air',
+  wwwa_ep10_wolf_hyena: 'A pack of grey wolves in formation on a snowy ridge facing a clan of spotted hyenas gathered on an African plain, split-screen effect with snow on left and savanna on right, both groups looking fierce and unified',
 };
+
 
 // Get prompt for a story (with style prefix)
 export function getStoryPrompt(storyId, style = 'thumbnail') {

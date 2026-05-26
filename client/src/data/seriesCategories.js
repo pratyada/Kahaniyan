@@ -20,6 +20,7 @@ export const SERIES_CATEGORIES = {
   'planets-and-stars': ['space', 'science'],
   'geometry-shapes': ['maths'],
   'rocket-adventures-team': ['space', 'adventure'],
+  'who-would-win-animals': ['science', 'adventure'],
 };
 
 export const COLLECTION_CATEGORIES = {

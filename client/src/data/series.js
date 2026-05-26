@@ -2926,5 +2926,266 @@ That night, {childName}, remember HOPE-3 and the new world. No matter how far yo
       },
     ],
   },
+  {
+    id: 'who-would-win-animals',
+    title: 'Who Would Win? — Animal Battles',
+    icon: '🦁',
+    gradient: 'linear-gradient(135deg, #b45309 0%, #f59e0b 50%, #fde68a 100%)',
+    description: 'Two animals enter. One wins. But BOTH teach you something amazing. Real animal facts, epic showdowns, and a surprise ending every time.',
+    ageRange: '4-8',
+    totalEpisodes: 10,
+    episodes: [
+      {
+        id: 'wwwa_ep1_lion_tiger', episodeNumber: 1, title: 'Lion vs Tiger',
+        subtitle: 'The King of the Jungle meets the Striped Assassin.',
+        tradition: 'universal', theme: 'courage', durationMinutes: 3,
+        source: 'Who Would Win? Animal Battles · Episode 1',
+        body: `Ladies and gentlemen, boys and girls, welcome to the ULTIMATE animal showdown!
+
+In one corner — the LION! The King of the Jungle. Four hundred pounds of golden muscle with a mane so magnificent it looks like a crown made of fur. Lions live in Africa. They are the ONLY cats that live in groups — called prides. A male lion's roar can be heard from five miles away. FIVE. MILES. That is like standing at your school and hearing a roar from the mall.
+
+In the other corner — the TIGER! The Striped Shadow. Six hundred pounds of orange and black power — even BIGGER than the lion. Tigers live in Asia. They hunt alone, at night, in total silence. A tiger can leap thirty feet in a single jump. That is the length of a school bus. And here is the secret weapon: tigers love water. They SWIM. Lions hate getting wet.
+
+ROUND ONE: Strength. The tiger is heavier by two hundred pounds. Point to the tiger.
+
+ROUND TWO: Teamwork. The lion fights in a group. Tigers fight alone. But this is a one-on-one battle, so... point to the tiger.
+
+ROUND THREE: Speed. Both run about fifty miles per hour. A tie!
+
+ROUND FOUR: Bite force. The tiger bites harder — one thousand and fifty pounds of force. The lion? six hundred and fifty. Point to the tiger.
+
+So who would win?
+
+Most animal experts say... the TIGER. It is bigger, bites harder, and fights solo every day of its life. The lion is brave — but the tiger is built for one-on-one combat.
+
+BUT — and here is the important part — in real life, lions and tigers never meet. Lions live in Africa. Tigers live in Asia. They are both kings of their own worlds.
+
+That night, {childName}, remember this: you do not have to beat everyone to be powerful. You just have to be the best version of yourself, in YOUR world.`,
+      },
+      {
+        id: 'wwwa_ep2_scorpion_tarantula', episodeNumber: 2, title: 'Scorpion vs Tarantula',
+        subtitle: 'Stinger meets Fangs. Two tiny nightmares, one winner.',
+        tradition: 'universal', theme: 'wisdom', durationMinutes: 3,
+        source: 'Who Would Win? Animal Battles · Episode 2',
+        body: `Tonight's battle is CREEPY. CRAWLY. And absolutely COOL.
+
+In one corner — the SCORPION! Eight legs, two crushing claws, and a tail with a venomous stinger curled over its back like a tiny sword. Scorpions have been on Earth for FOUR HUNDRED AND THIRTY MILLION years. That is before the dinosaurs. Before trees. Before almost everything. They glow in ultraviolet light — like tiny neon warriors in the dark.
+
+In the other corner — the TARANTULA! Eight legs, eight eyes, and two massive fangs dripping with venom. Tarantulas are the BIGGEST spiders in the world — some are as big as a dinner plate. Their secret weapon? They can flick tiny barbed hairs from their belly at enemies. The hairs sting and itch like a thousand tiny needles.
+
+ROUND ONE: Armour. The scorpion has a hard exoskeleton — like wearing a suit of armour. The tarantula is soft and squishy. Point to the scorpion.
+
+ROUND TWO: Weapons. The scorpion has claws AND a stinger — two weapons! The tarantula has fangs and hair-flicking — also two weapons. A tie!
+
+ROUND THREE: Venom. Most scorpion venom is mild — like a bee sting. Most tarantula venom is also mild. But the scorpion's stinger is FASTER. Point to the scorpion.
+
+ROUND FOUR: Patience. Tarantulas can wait for HOURS without moving. Scorpions are ambush hunters too, but tarantulas are the champions of stillness. Point to the tarantula.
+
+So who would win? In real battles — which DO happen in nature — the scorpion usually wins. Those claws grab the tarantula, hold it still, and the stinger strikes before the spider can bite.
+
+WINNER: The scorpion!
+
+That night, {childName}, remember: the scorpion wins not because it is bigger or scarier, but because it has a PLAN — grab first, sting second. In life, having a plan is more powerful than having strength.`,
+      },
+      {
+        id: 'wwwa_ep3_cheetah_leopard', episodeNumber: 3, title: 'Cheetah vs Leopard',
+        subtitle: 'The fastest cat alive meets the strongest climber.',
+        tradition: 'universal', theme: 'wisdom', durationMinutes: 3,
+        source: 'Who Would Win? Animal Battles · Episode 3',
+        body: `They LOOK alike. Spots. Golden fur. Sleek bodies. But these two cats could not be more different.
+
+In one corner — the CHEETAH! The fastest animal on land. Zero to seventy miles per hour in THREE SECONDS. That is faster than a sports car. A cheetah's body is built for speed — long legs, a flexible spine that stretches like a rubber band, and claws that grip the ground like running shoes. But here is the secret: cheetahs are LIGHT. Only a hundred and forty pounds. And they can only run fast for about thirty seconds before they overheat.
+
+In the other corner — the LEOPARD! Not as fast — only thirty-six miles per hour — but STRONG. Insanely strong. A leopard can carry a dead antelope — heavier than itself — UP a tree. Straight up. Using only its mouth and legs. Leopards are built like bodybuilders. They hunt at night, in total darkness, and they can swim, climb, and fight anything their size.
+
+ROUND ONE: Speed. Cheetah wins. Not even close.
+
+ROUND TWO: Strength. Leopard wins. A leopard is nearly twice as strong pound for pound.
+
+ROUND THREE: Fighting skills. Cheetahs almost NEVER fight. They run from lions, from leopards, even from hyenas. If they get injured, they cannot hunt — because their speed IS their survival. Leopards fight everything. They have been known to fight off baboons, hyenas, and even young lions. Massive point to the leopard.
+
+ROUND FOUR: Endurance. The cheetah has thirty seconds of speed, then it is exhausted. The leopard can fight all night. Point to the leopard.
+
+WINNER: The leopard. Speed is amazing, but in a fight, strength and toughness win.
+
+That night, {childName}, remember this: being the fastest does not mean you are the strongest. And being the strongest does not mean you always need to fight. The cheetah survives by knowing when to RUN. The leopard survives by knowing when to STAND. Both are perfect for who they are.`,
+      },
+      {
+        id: 'wwwa_ep4_shark_croc', episodeNumber: 4, title: 'Great White Shark vs Saltwater Crocodile',
+        subtitle: "The ocean's top predator meets the river's ancient beast.",
+        tradition: 'universal', theme: 'courage', durationMinutes: 3,
+        source: 'Who Would Win? Animal Battles · Episode 4',
+        body: `This one is LEGENDARY. Two of the most feared animals on the planet.
+
+In one corner — the GREAT WHITE SHARK! Twenty feet long, five thousand pounds, and three hundred razor-sharp teeth arranged in rows — when one tooth breaks, another slides forward like a conveyor belt of DOOM. Great whites can smell a single drop of blood from a MILE away. They swim at twenty-five miles per hour and attack from below — shooting upward like a torpedo.
+
+In the other corner — the SALTWATER CROCODILE! The largest reptile alive. Twenty-three feet long, two THOUSAND pounds, and the strongest bite force of ANY animal on Earth — three thousand seven hundred pounds per square inch. That is like having a car parked on your finger. Crocs have been around since the DINOSAURS. Two hundred million years of survival. Their armour skin is so tough that arrows bounce off.
+
+ROUND ONE: Bite force. Croc wins — the strongest bite on the planet. The shark's bite is strong but only one-third as powerful.
+
+ROUND TWO: Speed. In water, the shark wins — twenty-five versus eighteen miles per hour. On land? The croc can gallop at eleven miles per hour. The shark cannot walk at all. Split round.
+
+ROUND THREE: Armour. The croc has thick bony plates under its skin. The shark has smooth skin with no protection. Point to the croc.
+
+ROUND FOUR: Senses. The shark can detect electrical signals from other animals' heartbeats. The croc has incredible pressure sensors on its snout. Both are terrifying. Tie!
+
+In deep water — the shark wins. It is faster, more agile, and attacks from below where the croc cannot defend.
+
+In shallow water or on land — the croc wins. That bite, that armour, that death roll.
+
+WINNER: It depends on WHERE they fight. Home advantage matters.
+
+That night, {childName}, remember: where you are matters as much as who you are. A fish out of water struggles — but in its element, it flies.`,
+      },
+      {
+        id: 'wwwa_ep5_eagle_owl', episodeNumber: 5, title: 'Golden Eagle vs Great Horned Owl',
+        subtitle: 'Daytime hunter meets the silent night assassin.',
+        tradition: 'universal', theme: 'patience', durationMinutes: 3,
+        source: 'Who Would Win? Animal Battles · Episode 5',
+        body: `Two rulers of the sky. One owns the day. One owns the night.
+
+In one corner — the GOLDEN EAGLE! Seven-foot wingspan. Talons that grip with FOUR HUNDRED pounds of pressure — strong enough to crack a bowling ball. Golden eagles dive at TWO HUNDRED miles per hour — the fastest dive of any bird. They hunt rabbits, foxes, and even young deer. In Mongolia, people train golden eagles to hunt WOLVES.
+
+In the other corner — the GREAT HORNED OWL! Called "the tiger of the sky." Not as big as the eagle — only four-foot wingspan — but its talons grip with THREE HUNDRED pounds of force. And here is the superpower: SILENCE. An owl's feathers have soft edges that break up air flow. It flies without making ANY sound. Zero. Nothing. Its prey never hears it coming.
+
+ROUND ONE: Eyesight. The eagle sees eight times better than humans — it can spot a rabbit from two miles away. But the owl can see in almost TOTAL darkness. In daylight, eagle wins. At night, owl wins. Tie — depends on time.
+
+ROUND TWO: Talons. Eagle grips harder — four hundred versus three hundred. Point to the eagle.
+
+ROUND THREE: Stealth. The owl is completely silent. The eagle makes noise when it dives — wind rushing through feathers. If you cannot hear your attacker, you cannot defend. Massive point to the owl.
+
+ROUND FOUR: Toughness. Great horned owls are fearless. They attack bald eagles, hawks, and even other owls. They have been known to steal nests from red-tailed hawks and just... move in. Point to the owl.
+
+In the daytime — the eagle. In the nighttime — the owl. Neither would want to mess with the other.
+
+WINNER: A tie! Each is unbeatable in their own time.
+
+That night, {childName}, remember: you do not have to be great at EVERYTHING. Find YOUR time, YOUR strength, YOUR element — and own it completely.`,
+      },
+      {
+        id: 'wwwa_ep6_gorilla_bear', episodeNumber: 6, title: 'Silverback Gorilla vs Grizzly Bear',
+        subtitle: 'Raw power meets raw power. The heaviest hitters in nature.',
+        tradition: 'universal', theme: 'courage', durationMinutes: 3,
+        source: 'Who Would Win? Animal Battles · Episode 6',
+        body: `Two of the most POWERFUL animals on land. No claws versus massive claws. Brains versus brute force.
+
+In one corner — the SILVERBACK GORILLA! Four hundred pounds of pure muscle. A silverback can bench press FOUR THOUSAND pounds — ten times what the strongest human can lift. Their arms are six times stronger than a human's. They are also incredibly SMART — they use tools, solve puzzles, and communicate with over twenty different sounds. In the wild, silverbacks almost never fight. They beat their chests and roar to scare enemies away. Because when you are THAT strong, you do not need to prove it.
+
+In the other corner — the GRIZZLY BEAR! EIGHT hundred pounds — twice the gorilla's weight. Six-inch claws that can tear through a car door. A bite that crushes bones. Grizzlies can run at thirty-five miles per hour — faster than a horse. And they have a layer of fat and muscle on their back so thick that even other bears have trouble hurting them.
+
+ROUND ONE: Strength. The gorilla is stronger pound-for-pound. But the bear weighs TWICE as much. Raw total force? Point to the bear.
+
+ROUND TWO: Intelligence. The gorilla is one of the smartest animals alive. The bear is clever but not in the same league. Point to the gorilla.
+
+ROUND THREE: Weapons. The gorilla has fists and teeth. The bear has fists, teeth, AND six-inch razor claws. Big point to the bear.
+
+ROUND FOUR: Endurance. Bears can fight for hours. Gorillas tire faster in combat. Point to the bear.
+
+WINNER: The grizzly bear — by size, claws, and endurance. But the gorilla would put up the bravest fight of any animal its size.
+
+That night, {childName}, remember the silverback: real strength is not about fighting. The gorilla beats its chest so it does NOT have to fight. The bravest thing is not throwing a punch — it is being strong enough to walk away.`,
+      },
+      {
+        id: 'wwwa_ep7_cobra_mongoose', episodeNumber: 7, title: 'King Cobra vs Mongoose',
+        subtitle: 'The deadliest snake meets its only enemy.',
+        tradition: 'universal', theme: 'bravery', durationMinutes: 3,
+        source: 'Who Would Win? Animal Battles · Episode 7',
+        body: `This is the most UNFAIR battle in nature. And the small one wins.
+
+In one corner — the KING COBRA! The longest venomous snake in the world — EIGHTEEN FEET. That is taller than a giraffe laid on its side. One bite delivers enough venom to kill an elephant. When threatened, it raises the front third of its body off the ground and spreads its hood — looking you straight in the eye. The king cobra's venom attacks the nervous system. One bite and your muscles stop working. Even your lungs stop breathing.
+
+In the other corner — the MONGOOSE! Two feet long. Two pounds. Looks like a fuzzy sausage with legs. Cute little face. Tiny little paws.
+
+This seems like no contest. Eighteen feet of venomous death versus a two-pound furball.
+
+But here is the INCREDIBLE truth.
+
+The mongoose wins. Almost every time.
+
+HOW?
+
+SECRET WEAPON NUMBER ONE: Speed. The mongoose has the fastest reaction time of any mammal. It can dodge a cobra strike — which happens in a fraction of a second — and bite the snake on the back of the head before it can strike again.
+
+SECRET WEAPON NUMBER TWO: Resistance. The mongoose has a special mutation in its cells that makes it partially IMMUNE to cobra venom. A bite that would kill a human barely slows down a mongoose.
+
+SECRET WEAPON NUMBER THREE: Strategy. The mongoose does not just attack. It DANCES. It jumps forward, jumps back, forward, back — tiring the cobra out. Each fake lunge makes the cobra strike and miss. When the cobra is exhausted... the mongoose strikes.
+
+WINNER: The mongoose. Every. Single. Time.
+
+That night, {childName}, remember the mongoose: size does not decide who wins. Speed, smarts, and never giving up — THAT decides who wins. The smallest creature in the fight can be the bravest.`,
+      },
+      {
+        id: 'wwwa_ep8_whale_squid', episodeNumber: 8, title: 'Sperm Whale vs Giant Squid',
+        subtitle: 'The deepest battle on Earth. A mile below the ocean surface.',
+        tradition: 'universal', theme: 'courage', durationMinutes: 3,
+        source: 'Who Would Win? Animal Battles · Episode 8',
+        body: `This battle happens where NO human has ever seen it. A mile below the ocean. In total darkness. Freezing cold. Crushing pressure.
+
+In one corner — the SPERM WHALE! The largest toothed animal that has EVER lived. Sixty feet long. Fifty tons. A head so massive it takes up one THIRD of its entire body — filled with a waxy oil called spermaceti that helps it dive to incredible depths. Sperm whales can dive to THREE THOUSAND feet — deeper than most submarines. They use echolocation — clicking sounds that bounce off objects — to "see" in the pitch dark.
+
+In the other corner — the GIANT SQUID! Up to forty-three feet long — including tentacles. Eyes the size of DINNER PLATES — the largest eyes of any animal ever. Two long feeding tentacles lined with hundreds of suckers, and each sucker has a sharp, serrated ring — like a tiny circular saw. In the dark deep ocean, those tentacles reach out and grab.
+
+This battle is REAL. We know because sperm whales are often found with giant sucker scars on their faces — circular cuts from the squid's tentacles. The squid fights back HARD.
+
+ROUND ONE: Size. The whale is bigger — sixty feet versus forty-three, and twenty times heavier. Point to the whale.
+
+ROUND TWO: Weapons. The squid has eight arms plus two long tentacles with razor suckers. The whale has massive jaws with teeth. The squid has more reach. Split.
+
+ROUND THREE: Senses. Both can operate in pitch darkness. The whale uses sonar. The squid uses enormous eyes. Tie.
+
+ROUND FOUR: The real battle. The whale dives deep, finds the squid with echolocation, and charges. The squid wraps its tentacles around the whale's head — slicing and gripping. But the whale's head is built for this — thick, tough, and enormous. Eventually the whale bites down and swallows the squid.
+
+WINNER: The sperm whale — but those scars prove the squid never goes quietly.
+
+That night, {childName}, remember: even when you are smaller and the odds are against you, fighting with everything you have leaves a mark. The squid's scars on the whale say: "I was here. I fought back."`,
+      },
+      {
+        id: 'wwwa_ep9_rhino_hippo', episodeNumber: 9, title: 'Rhinoceros vs Hippopotamus',
+        subtitle: 'Horn versus jaws. Two tanks of the African plains.',
+        tradition: 'universal', theme: 'wisdom', durationMinutes: 3,
+        source: 'Who Would Win? Animal Battles · Episode 9',
+        body: `Two of the most DANGEROUS animals in Africa. They look slow and clumsy. They are anything but.
+
+In one corner — the RHINOCEROS! Five thousand pounds. Two inches of armour-like skin. And a HORN — made of the same stuff as your fingernails — that can be two feet long and sharp as a spear. Rhinos charge at THIRTY miles per hour — five thousand pounds moving at thirty is like being hit by a small truck. Their eyesight is terrible — they can barely see past thirty feet — but their hearing and smell are extraordinary.
+
+In the other corner — the HIPPOPOTAMUS! Four thousand pounds. But here is what most people do not know: the hippo is the DEADLIEST large animal in Africa. More people are killed by hippos than by lions, elephants, or crocodiles. Why? Because hippos are AGGRESSIVE. They are territorial. And their mouth opens ONE HUNDRED AND FIFTY degrees — wider than any other land animal. Their canine teeth are twenty inches long and sharp enough to bite a crocodile in HALF. They have actually done this.
+
+ROUND ONE: Armour. The rhino's skin is thicker and tougher — nearly bulletproof. Point to the rhino.
+
+ROUND TWO: Bite. The hippo's bite force is almost TWO THOUSAND pounds. The rhino does not really bite — it stabs with its horn. The hippo's jaws are terrifying. Point to the hippo.
+
+ROUND THREE: Charge. The rhino is faster on land — thirty versus nineteen miles per hour. And that horn hits like a battering ram. Point to the rhino.
+
+ROUND FOUR: Aggression. The hippo is more aggressive. It will chase boats, fight crocodiles, and charge at anything that enters its territory. Point to the hippo.
+
+WINNER: On land, the rhino's charge and horn give it the edge. In water, the hippo dominates — it is faster, more agile, and those jaws are lethal. Most experts call it a DRAW — neither wants to mess with the other.
+
+That night, {childName}, remember: the toughest creatures in the world know when NOT to pick a fight. The rhino and hippo live side by side in Africa — and they leave each other alone. That is not weakness. That is wisdom.`,
+      },
+      {
+        id: 'wwwa_ep10_wolf_hyena', episodeNumber: 10, title: 'Grey Wolf vs Spotted Hyena',
+        subtitle: 'The pack hunter meets the clan fighter. Team versus team.',
+        tradition: 'universal', theme: 'sharing', durationMinutes: 3,
+        source: 'Who Would Win? Animal Battles · Episode 10',
+        body: `This is not just a battle of two animals. This is a battle of two TEAMS.
+
+In one corner — the GREY WOLF! A hundred and seventy-five pounds of lean, fast, intelligent hunting muscle. But the wolf's real power? The PACK. Wolves hunt in groups of six to ten. They communicate with howls, body language, and even facial expressions. A wolf pack is a FAMILY — led by a mother and father, with their children helping on every hunt. They take turns chasing prey, driving it toward teammates who are waiting in ambush. Wolf packs can take down animals TEN TIMES their size — moose, bison, even elk.
+
+In the other corner — the SPOTTED HYENA! A hundred and forty pounds with the most powerful jaws of any mammal its size — ONE THOUSAND pounds of bite force. That is enough to crush bone. Hyenas eat EVERYTHING — meat, bone, hooves, teeth. Nothing is wasted. And hyenas live in CLANS of up to eighty members. Eighty! Led by females — the females are bigger and tougher than the males. Hyena clans defend their territory fiercely.
+
+ROUND ONE: One-on-one. The wolf is bigger and faster. The hyena bites harder. But the wolf's agility and stamina give it the edge in a single fight. Slight point to the wolf.
+
+ROUND TWO: Team tactics. Wolf packs are coordinated hunters — they have STRATEGY. Hyena clans are more of a mob — overwhelming with numbers. Point to the wolf for teamwork.
+
+ROUND THREE: Endurance. Wolves can chase prey for miles at a steady pace. But hyenas can too — and hyenas can run at thirty-seven miles per hour for long distances. Tie.
+
+ROUND FOUR: Numbers. A wolf pack is six to ten. A hyena clan is up to EIGHTY. In a group battle, the hyenas simply overwhelm the wolves. Point to the hyena.
+
+WINNER: In a fair fight — small group versus small group — the wolves win. Their teamwork is unmatched. But in the real wild, hyena clans outnumber wolf packs — and numbers win wars.
+
+That night, {childName}, remember both lessons: the wolves teach us that TEAMWORK beats raw power. The hyenas teach us that SHOWING UP in numbers makes you unstoppable. Either way, the lesson is the same: you are stronger together than alone.`,
+      },
+    ],
+  },
 ];
 
