@@ -2925,6 +2925,6 @@ That night — under alien stars, on a world no human had ever touched — five 
 That night, {childName}, remember HOPE-3 and the new world. No matter how far you travel, no matter what you discover, the most important thing you can do when you arrive is offer something kind. A drawing. A smile. An open hand. Because the universe doesn't reward the strongest or the smartest. It rewards those who show up gently and say: "We come in peace. What can we share?"`,
       },
     ],
-  },,
+  },
 ];
 
