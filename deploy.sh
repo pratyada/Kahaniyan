@@ -5,7 +5,10 @@
 set -e
 echo "🚀 Deploying My Sleepy Tale to AWS..."
 
-# Build
+# Pre-deploy validation — catches data bugs before production
+bash scripts/pre-deploy-check.sh || exit 1
+
+# Build already done in pre-deploy check, but rebuild to be safe
 echo "📦 Building..."
 cd client && npm run build && cd ..
 
