@@ -3187,5 +3187,2149 @@ That night, {childName}, remember both lessons: the wolves teach us that TEAMWOR
       },
     ],
   },
+// ─── 1. INDIA ──────────────────────────────────────────────
+  {
+    id: 'discover-india',
+    title: '🇮🇳 Discover India',
+    icon: '🇮🇳',
+    gradient: 'linear-gradient(135deg, #ff6f00 0%, #ff9800 40%, #4caf50 100%)',
+    description: 'Fly across the land of spices, tigers, and ancient wonders — 5 bedtime adventures through incredible India.',
+    ageRange: '4-8',
+    totalEpisodes: 5,
+    episodes: [
+      {
+        id: 'india_ep1_geo', episodeNumber: 1, title: 'The Land of India',
+        subtitle: 'Fly over snowy mountains, golden deserts, and emerald jungles.',
+        tradition: 'universal', theme: 'wisdom', durationMinutes: 3,
+        source: 'Discover India · Episode 1',
+        body: `Close your eyes and imagine you are a bird — a great golden eagle soaring high above the Earth. Below you, a land shaped like a giant kite stretches out in every direction. Welcome to India.
+
+Up in the north, you see the tallest mountains in the entire world — the Himalayas. Their peaks are white with snow, even in summer. They are so high that clouds float beneath them, not above. Somewhere down there, rivers are born — melting snow trickling into streams, streams joining into mighty rivers like the Ganges that flow thousands of miles to the sea.
+
+Now fly south. The mountains give way to wide, flat plains where farmers grow rice and wheat in fields so green they glow. Golden mustard flowers stretch to the horizon. You can almost smell the earth after rain — Indians call that smell "petrichor," and they love it.
+
+Keep going. The land turns dry and sandy — the Thar Desert, where camels walk in long lines and the sand dunes shift like golden waves. At night, the desert sky has more stars than you have ever seen.
+
+Now turn east. Thick, tangled jungles appear — the Sundarbans, where Bengal tigers swim through mangrove forests. Yes, tigers that swim! The trees here grow right out of the water, their roots twisting like fingers.
+
+Fly to the very bottom of the kite, and the land narrows to a point surrounded by warm, turquoise ocean. Palm trees line beaches that stretch for miles. Fishermen push colorful wooden boats into gentle waves every morning.
+
+India is enormous — the seventh largest country on Earth. Over a billion people live here, more than almost any other country. From frozen mountains to tropical beaches, from roaring rivers to silent deserts, India holds almost every kind of landscape you can imagine, all in one place.
+
+That night, {childName}, remember India's incredible land. One country can hold snow and sand, jungles and oceans, all at once. The world is bigger and more beautiful than we think — and every corner has a story waiting to be discovered.`,
+      },
+      {
+        id: 'india_ep2_history', episodeNumber: 2, title: 'Stories From Long Ago',
+        subtitle: 'Ancient cities, clever inventors, and the world\'s oldest stories.',
+        tradition: 'universal', theme: 'wisdom', durationMinutes: 3,
+        source: 'Discover India · Episode 2',
+        body: `Picture this — almost five thousand years ago, while most of the world was still living in simple huts, people in India built entire cities. Real cities, with straight roads, brick houses, and — here is the amazing part — indoor bathrooms with running water. This was the Indus Valley Civilization, one of the oldest in the world.
+
+The people of these ancient cities were clever. They invented weights and measures so merchants could trade fairly. They carved tiny seals with pictures of animals — bulls, elephants, and a mysterious unicorn-like creature that nobody has fully explained to this day.
+
+Centuries later, India gave the world one of its greatest gifts — the number zero. Before zero, math was very difficult. Imagine trying to write the number one hundred without a zero. It was an Indian mathematician named Aryabhata who helped the world count, calculate, and eventually build everything from bridges to computers. Every time you see a zero, you can thank ancient India.
+
+India is also the birthplace of some of the world's oldest stories. The Ramayana and the Mahabharata are epic tales of princes, adventures, loyalty, and wisdom. They were first told around campfires thousands of years ago and are still loved today — turned into plays, cartoons, and movies.
+
+Great teachers walked this land too. The Buddha sat under a Bodhi tree in India and discovered ideas about kindness and peace that spread across all of Asia. Emperor Ashoka, who once fought terrible battles, became so sorry for the suffering he caused that he spent the rest of his life planting trees, building hospitals, and spreading messages of peace carved into stone pillars — some of which still stand today.
+
+India's history is like a river that never stops flowing — ancient wisdom pouring into the modern world every single day.
+
+That night, {childName}, remember India's story. People thousands of years ago dreamed, invented, and created things we still use today. Every big idea starts with one curious mind — and your mind is just as powerful as theirs.`,
+      },
+      {
+        id: 'india_ep3_places', episodeNumber: 3, title: 'Wonders of India',
+        subtitle: 'The Taj Mahal, golden temples, and palaces that float on lakes.',
+        tradition: 'universal', theme: 'wisdom', durationMinutes: 3,
+        source: 'Discover India · Episode 3',
+        body: `Imagine standing in front of a building so beautiful that people cry when they first see it. That is the Taj Mahal. It sits in the city of Agra, made entirely of white marble that changes color throughout the day — pinkish at dawn, blazing white at noon, and golden when the sun sets. An emperor named Shah Jahan built it almost four hundred years ago as a monument of love for his wife. Twenty thousand workers spent twenty-two years creating it. Every inch is covered in delicate flower patterns carved into the stone, some with real gemstones pressed inside.
+
+Now travel north to Amritsar, where the Golden Temple glows like a jewel floating on water. Its walls are covered in real gold, and it sits in the middle of a shimmering pool called the Pool of Nectar. The most wonderful thing about this temple is its kitchen — it feeds over one hundred thousand people every single day, for free. Anyone can walk in, sit on the floor, and receive a warm meal, no matter who they are.
+
+Fly to the deserts of Rajasthan and you will find forts and palaces that look like they belong in fairy tales. The Hawa Mahal, the Palace of Winds, has nine hundred and fifty-three tiny windows so the queens could watch the streets below without being seen. In Udaipur, a white marble palace seems to float on a lake, its reflection shimmering in the still water.
+
+In southern India, temples rise like mountains, covered from top to bottom in thousands of colorful statues of gods, animals, and dancers. The Meenakshi Temple has over thirty-three thousand sculptures, each one hand-carved and painted in bright blues, greens, yellows, and reds.
+
+And deep in the hills of Maharashtra, ancient monks carved entire temples out of solid rock at Ajanta and Ellora — no bricks, no cement, just rock chiseled away to reveal pillars, statues, and halls inside the mountain itself.
+
+That night, {childName}, remember India's wonders. People built incredible things not with machines, but with patience, love, and bare hands. Anything you build with care and heart becomes something the world will remember.`,
+      },
+      {
+        id: 'india_ep4_culture', episodeNumber: 4, title: 'Colors, Spices & Celebrations',
+        subtitle: 'Festivals of light, plates of flavor, and kids who love cricket.',
+        tradition: 'universal', theme: 'wisdom', durationMinutes: 3,
+        source: 'Discover India · Episode 4',
+        body: `If India had one word to describe itself, it might be "colorful." Everything in India bursts with color — the clothes, the food, the festivals, the trucks, even the rickshaws painted with flowers and movie stars.
+
+Let us start with festivals. During Holi, the Festival of Colors, people run through the streets throwing powdered colors at each other — pink, yellow, blue, green — until everyone is covered head to toe in a rainbow. Strangers hug. Enemies become friends. Nobody cares about being neat. It is pure, joyful chaos.
+
+Then there is Diwali, the Festival of Lights. Families line their homes with tiny clay lamps called diyas, turning every street into a river of golden light. Children set off sparklers and eat sweets, and the whole country glows like a sky full of earthbound stars.
+
+Now, the food. Oh, the food! India uses more spices than almost any country on Earth — turmeric that turns everything golden, cumin that smells like warm earth, cardamom that tastes like a sweet forest. A single meal might have ten different dishes on one round metal plate called a thali — rice, lentil soup called dal, crispy bread called roti, spicy vegetable curries, tangy pickles, cool yogurt, and something sweet to finish.
+
+Indian kids love cricket the way some kids love soccer. In every street, park, and empty lot, you will find children playing cricket with whatever they have — a proper bat or a plank of wood, a real ball or a taped-up tennis ball. When India wins a big cricket match, the entire country celebrates like it is a holiday.
+
+India has over twenty-two official languages and hundreds more. A child in the north might speak Hindi, while a child in the south speaks Tamil — completely different languages. Yet they are all Indian, united by a love of family, food, festivals, and telling stories.
+
+That night, {childName}, remember India's colors and flavors. The world is richer when we celebrate our differences. Every language, every festival, every spice adds something beautiful to the great big recipe of life.`,
+      },
+      {
+        id: 'india_ep5_facts', episodeNumber: 5, title: 'Amazing India',
+        subtitle: 'World records, surprising facts, and things that make you say "wow!"',
+        tradition: 'universal', theme: 'wisdom', durationMinutes: 3,
+        source: 'Discover India · Episode 5',
+        body: `Get ready, because India is full of facts that will make your eyes go wide.
+
+Did you know that India has the largest postal system in the entire world? Over one hundred and fifty thousand post offices — more than any other country. There is even a floating post office on a lake in Kashmir, bobbing gently on the water while postal workers sort letters inside.
+
+Here is another one — India is home to the wettest place on Earth. A tiny village called Mawsynram gets so much rain that people carry umbrellas made from entire banana leaves. It rains almost every single day, and the forests there are so green they seem to glow.
+
+India launched a spacecraft to Mars — and it cost less than the budget of many Hollywood movies. The Indian Space Research Organisation did it on their very first try, something even some of the richest countries in the world had not managed before.
+
+The country has a bridge made entirely of living tree roots. In the northeast, the Khasi people train the roots of rubber trees to grow across rivers, weaving them together over years until they form bridges strong enough to hold fifty people. These living bridges get stronger as they age, not weaker.
+
+India is home to the snow leopard, the one-horned rhinoceros, the king cobra, and the Asiatic lion — animals found nowhere else on Earth in the wild. The country has over five hundred wildlife sanctuaries protecting these incredible creatures.
+
+And here is one more — the game of chess was invented in India. It was originally called Chaturanga, and it was played by Indian kings and queens over fifteen hundred years ago. So every time someone says "checkmate," they are using a word that traces back to ancient India.
+
+From floating post offices to living bridges, from Mars missions to the invention of chess, India is a land where the extraordinary is ordinary.
+
+That night, {childName}, remember India's amazing facts. The world is full of wonders hiding in plain sight. Stay curious, keep asking "did you know?" — and you will never run out of incredible things to discover.`,
+      },
+    ],
+  },
+
+  // ─── 2. CANADA ─────────────────────────────────────────────
+  {
+    id: 'discover-canada',
+    title: '🇨🇦 Discover Canada',
+    icon: '🇨🇦',
+    gradient: 'linear-gradient(135deg, #b71c1c 0%, #e53935 50%, #ffffff 100%)',
+    description: 'Journey through maple forests, frozen tundras, and friendly cities — 5 bedtime adventures across the Great White North.',
+    ageRange: '4-8',
+    totalEpisodes: 5,
+    episodes: [
+      {
+        id: 'canada_ep1_geo', episodeNumber: 1, title: 'The Land of Canada',
+        subtitle: 'Endless forests, frozen lakes, and mountains touching the sky.',
+        tradition: 'universal', theme: 'wisdom', durationMinutes: 3,
+        source: 'Discover Canada · Episode 1',
+        body: `Close your eyes and imagine flying over the second largest country on Earth. Below you, forests stretch so far they seem to go on forever — dark green spruce and pine trees, millions and millions of them, covering the land like a thick, soft blanket. Welcome to Canada.
+
+Canada is enormous. If you drove from one side to the other without stopping, it would take you over five days. The country stretches from the Atlantic Ocean in the east to the Pacific Ocean in the west, and all the way up to the Arctic Ocean in the north, where polar bears walk on sea ice under skies that shimmer with green and purple northern lights.
+
+In the west, the Rocky Mountains rise like giant stone teeth. Their peaks are covered in snow and glaciers — rivers of ice that have been slowly sliding downhill for thousands of years. Turquoise lakes sit at the base of these mountains, their water so blue-green it looks like someone poured melted gemstones into the valleys. Lake Louise and Moraine Lake are so beautiful that people travel from all over the world just to sit beside them and stare.
+
+Canada has more lakes than all other countries in the world combined. Over two million lakes! Some are so big they look like oceans. The Great Lakes along the southern border hold one-fifth of all the fresh water on Earth's surface.
+
+Travel north and the trees thin out, then disappear entirely. This is the tundra — a vast, flat, frozen land where the ground stays frozen even in summer. It looks empty, but caribou travel across it in herds of thousands, and Arctic foxes with fur as white as snow hunt quietly in the silence.
+
+On the east coast, massive icebergs float past the shores of Newfoundland — chunks of ancient ice that broke off glaciers in Greenland and drifted south. Some are as tall as ten-story buildings, glowing blue and white in the sunlight.
+
+That night, {childName}, remember Canada's vast land. A country of forests and ice, lakes and mountains, stretching wider than you can imagine. Nature built something magnificent here — and it is still wild, still free, still waiting to be explored.`,
+      },
+      {
+        id: 'canada_ep2_history', episodeNumber: 2, title: 'Stories From Long Ago',
+        subtitle: 'First peoples, fur traders, and the building of a nation.',
+        tradition: 'universal', theme: 'wisdom', durationMinutes: 3,
+        source: 'Discover Canada · Episode 2',
+        body: `Long before Canada had a name, this land belonged to the Indigenous peoples — the First Nations, Inuit, and Métis — who had lived here for over fifteen thousand years. They knew every river, every forest trail, every animal by name and habit.
+
+The Haida people of the Pacific coast carved towering totem poles from giant cedar trees, each pole telling the story of a family — their history, their spirit animals, their dreams. These poles still stand today, some taller than a four-story building, their painted faces watching over the misty coastline.
+
+In the Arctic, the Inuit built igloos from blocks of packed snow — and here is the surprising part — it was warm inside. Body heat and a small oil lamp could raise the temperature inside an igloo to a cozy level, even when it was forty degrees below zero outside. The Inuit also invented the kayak, a sleek, fast boat made from animal skins stretched over a wooden frame, perfect for hunting seals in icy waters.
+
+When European explorers arrived — first the French, then the British — they found a land rich in beaver fur. Beaver fur hats were the most fashionable thing in Europe, and fur trading became a massive business. French and British traders built forts and trading posts, and slowly, towns grew around them — Québec City, Montréal, Halifax.
+
+In 1867, four provinces joined together to form a new country called Canada. It was not born from war but from conversation — people sitting around tables, talking, arguing politely, and eventually agreeing. Over time, more provinces and territories joined, stretching the country from sea to sea to sea.
+
+Canada also built a railway across the entire country — thousands of miles of track through mountains, forests, and prairies. Workers from all over the world, including thousands of brave Chinese laborers, blasted through solid rock to connect the east coast to the west. It was one of the greatest building projects of its time.
+
+That night, {childName}, remember Canada's story. A nation built by many peoples — Indigenous wisdom, French and British traditions, and immigrants from every corner of the globe — all woven together like threads in a great, warm blanket.`,
+      },
+      {
+        id: 'canada_ep3_places', episodeNumber: 3, title: 'Wonders of Canada',
+        subtitle: 'Thundering waterfalls, sky-high towers, and castles in the mountains.',
+        tradition: 'universal', theme: 'wisdom', durationMinutes: 3,
+        source: 'Discover Canada · Episode 3',
+        body: `Imagine standing at the edge of a cliff, and below you, a wall of water wider than ten football fields crashes down with a roar so loud you cannot hear the person next to you. This is Niagara Falls, one of the most powerful waterfalls on Earth. Every second, more than seven hundred thousand gallons of water thunder over the edge. The mist rises so high it creates permanent rainbows in the sunlight. People come from everywhere just to stand in that mist and feel the power of nature shaking the ground beneath their feet.
+
+Now fly west to the Rocky Mountains, where the Fairmont Banff Springs Hotel rises from the forest like a castle from a fairy tale. Built over a hundred years ago, this enormous stone hotel has turrets, towers, and over seven hundred rooms nestled between snow-capped peaks. Guests can look out their windows and see elk grazing on the lawn.
+
+In Toronto, the CN Tower stretches five hundred and fifty-three meters into the sky — it was the tallest freestanding structure in the world for over thirty years. The bravest visitors can walk on a glass floor high above the city, looking straight down through their feet at the tiny streets below. Some even walk along the outside edge, attached to a harness, with nothing but air between them and the ground far, far below.
+
+Travel to the east coast and you will find the Bay of Fundy, where the tides are the highest on the planet. The water rises and falls over twelve meters twice a day — imagine a four-story building appearing and disappearing with the tide. At low tide, you can walk on the ocean floor among strange, mushroom-shaped rocks carved by centuries of water.
+
+In the far north, the historic Inuit village of Ivvavik sits where rivers meet the Arctic Ocean. And in Québec City, the old walled town looks like a piece of Europe dropped into North America — cobblestone streets, stone buildings, and the grand Château Frontenac perched on a cliff above the Saint Lawrence River.
+
+That night, {childName}, remember Canada's wonders. From thundering water to glass floors in the sky, this country reminds us that adventure is always waiting — you just have to step outside and look up.`,
+      },
+      {
+        id: 'canada_ep4_culture', episodeNumber: 4, title: 'Maple Syrup, Hockey & Kindness',
+        subtitle: 'Sweet syrup, fast skates, and the friendliest people on Earth.',
+        tradition: 'universal', theme: 'wisdom', durationMinutes: 3,
+        source: 'Discover Canada · Episode 4',
+        body: `If there is one thing Canada is famous for, it might be maple syrup. Every spring, when the days get warm but the nights are still cold, maple trees start pushing sweet sap up through their trunks. Farmers drill tiny holes in the trees, collect the sap in buckets, and boil it down into thick, golden maple syrup. It takes about forty liters of sap to make just one liter of syrup — that is why it is so precious. Canada makes over seventy percent of all the maple syrup in the world. Pancakes have never been the same.
+
+Now, hockey. Canadians love hockey the way the sun loves shining — it is simply part of who they are. In winter, kids across the country lace up their skates and play on frozen ponds, backyard rinks, and neighborhood arenas. The crack of a hockey stick, the scrape of blades on ice, the cheer when a puck hits the net — these are the sounds of a Canadian winter. The sport was born here, and Canadians have played it with passion for over a hundred and fifty years.
+
+Canada is officially bilingual — people speak both English and French. In the province of Québec, almost everyone speaks French. Street signs, school lessons, songs on the radio — all in French. It gives Canada a unique flavor, like a country with two hearts beating in two languages.
+
+Canadians are known around the world for being polite and kind. The joke is that Canadians say "sorry" even when someone bumps into them. But it is not just politeness — Canada welcomes more immigrants and refugees per capita than almost any country on Earth. People arrive from Syria, India, the Philippines, Nigeria, and dozens of other countries, and they find communities ready to help them start new lives.
+
+Children in Canada grow up with poutine — french fries covered in cheese curds and hot gravy — butter tarts, Nanaimo bars, and Tim Hortons hot chocolate on cold mornings. They go camping in summer, skating in winter, and say "eh" at the end of sentences without even noticing.
+
+That night, {childName}, remember Canada's warmth. A country that proves you can be strong and gentle at the same time, that sweetness — in syrup and in spirit — is something worth sharing with the world.`,
+      },
+      {
+        id: 'canada_ep5_facts', episodeNumber: 5, title: 'Amazing Canada',
+        subtitle: 'Polar bears, dinosaur bones, and the longest coastline on Earth.',
+        tradition: 'universal', theme: 'wisdom', durationMinutes: 3,
+        source: 'Discover Canada · Episode 5',
+        body: `Ready for some facts about Canada that will blow your mind? Let us go.
+
+Canada has the longest coastline of any country in the world. If you walked along every twist and turn of Canada's shore, it would take you over two hundred and forty thousand kilometers — that is six times around the entire Earth. You could walk for your whole life and never see it all.
+
+In the town of Churchill, Manitoba, polar bears wander right through town every autumn. They are waiting for the ice on Hudson Bay to freeze so they can go hunting for seals. Churchill is called the Polar Bear Capital of the World, and they have special "bear patrol" officers who gently guide bears away from schools and houses.
+
+Canada is hiding one of the greatest dinosaur graveyards on the planet. In the badlands of Alberta, a place called Dinosaur Provincial Park has produced more dinosaur fossils than almost anywhere on Earth — over forty different species, including the mighty Tyrannosaurus Rex and the duck-billed Hadrosaur.
+
+Here is a wild one — there is a lake in Canada that has an island, and on that island there is a lake, and in that lake there is another island. It is like nature's version of a nesting doll, found on Victoria Island in the Arctic.
+
+The Canadian territory of Nunavut is larger than Western Europe, but fewer than forty thousand people live there. That means there is so much open space that a person could walk for days and see nothing but tundra, caribou, and sky.
+
+Canada invented basketball. A Canadian teacher named James Naismith created the game in 1891 using a soccer ball and two peach baskets nailed to a gym balcony. He just wanted a fun indoor game for winter — and accidentally created one of the most popular sports on Earth.
+
+And the northern lights — the aurora borealis — dance across Canadian skies in ribbons of green, purple, and pink, especially in the Yukon and Northwest Territories. Indigenous peoples have told stories about these lights for thousands of years.
+
+That night, {childName}, remember Canada's surprises. Even the quietest, coldest places on Earth are full of wonders. Keep exploring — the best facts are the ones you have not found yet.`,
+      },
+    ],
+  },
+
+  // ─── 3. UNITED STATES ──────────────────────────────────────
+  {
+    id: 'discover-united-states',
+    title: '🇺🇸 Discover United States',
+    icon: '🇺🇸',
+    gradient: 'linear-gradient(135deg, #1565c0 0%, #e53935 50%, #ef5350 100%)',
+    description: 'Coast to coast across America — 5 bedtime adventures through a land of big dreams and even bigger landscapes.',
+    ageRange: '4-8',
+    totalEpisodes: 5,
+    episodes: [
+      {
+        id: 'usa_ep1_geo', episodeNumber: 1, title: 'The Land of America',
+        subtitle: 'From purple mountains to golden plains, sea to shining sea.',
+        tradition: 'universal', theme: 'wisdom', durationMinutes: 3,
+        source: 'Discover United States · Episode 1',
+        body: `Close your eyes and imagine soaring like an eagle from one ocean to another. Below you stretches the United States of America — a land so big and so different from place to place that it feels like fifty countries stitched together into one.
+
+Start on the east coast, where the Appalachian Mountains roll gently through morning mist. These mountains are ancient — some of the oldest on Earth — worn soft and round by hundreds of millions of years of wind and rain. In autumn, their forests explode into red, orange, and gold, like the whole land is on fire with color.
+
+Fly west over the Great Plains — an ocean of grass stretching flat to the horizon. Farmers grow enough wheat and corn here to feed much of the world. In summer, thunderstorms march across the plains like giants, with lightning bolts as tall as skyscrapers and thunder that shakes the ground.
+
+Keep going and the Rocky Mountains rise up suddenly — sharp, jagged, and covered in snow. These are young mountains, still growing, still wild. Grizzly bears fish in their rivers. Mountain goats balance on cliffs so steep they seem impossible.
+
+Now something magical — the deserts of the Southwest. The Grand Canyon, carved by the Colorado River over millions of years, is so deep and wide that you could fit an entire city inside it. The rock layers glow red, orange, pink, and purple, each layer a different chapter of Earth's history going back almost two billion years.
+
+Fly to the Pacific coast, where giant redwood trees grow taller than the Statue of Liberty. These trees have been alive for over two thousand years — they were already old when the Roman Empire existed.
+
+And do not forget the surprises — Hawaii's volcanic islands in the middle of the Pacific Ocean, where lava meets the sea in clouds of steam, and Alaska's vast wilderness, where glaciers calve icebergs into fjords under the midnight sun.
+
+That night, {childName}, remember America's landscapes. One country holds ancient mountains and young canyons, endless plains and tropical islands. The Earth is an artist, and America is one of its biggest canvases.`,
+      },
+      {
+        id: 'usa_ep2_history', episodeNumber: 2, title: 'Stories From Long Ago',
+        subtitle: 'First peoples, bold dreamers, and the idea that changed the world.',
+        tradition: 'universal', theme: 'wisdom', durationMinutes: 3,
+        source: 'Discover United States · Episode 2',
+        body: `Long before there were roads or cities, this land was home to hundreds of Indigenous nations, each with their own language, stories, and way of life. The Navajo wove rugs with patterns that told the story of the Earth. The Lakota followed great herds of bison across the plains, using every part of the animal and wasting nothing. The Haudenosaunee — the Iroquois — created a system of government where leaders were chosen by the people, an idea so good that it later inspired the founders of the United States.
+
+In the Pacific Northwest, nations like the Tlingit and Kwakwaka'wakw carved magnificent totem poles and held great feasts called potlatches, where the wealthiest families showed their generosity by giving everything away. To them, true richness was not how much you kept, but how much you shared.
+
+Centuries later, people from many different countries began arriving. They came for many reasons — for freedom, for opportunity, for a fresh start. In 1776, a group of colonists wrote a document called the Declaration of Independence, which said something revolutionary — that all people are created equal and deserve life, liberty, and the pursuit of happiness. It was a bold idea, and the country has spent the centuries since trying to live up to it.
+
+Not everyone was treated equally at first. It took brave people — like Harriet Tubman, who led enslaved people to freedom along secret routes called the Underground Railroad, and like the many who marched and spoke out for civil rights — to push the country closer to its own promise.
+
+Immigrants kept coming — from Ireland, Italy, China, Mexico, and every other corner of the Earth — each group adding their food, their music, their stories to the American quilt. The country grew, made mistakes, learned, and kept reaching forward.
+
+That night, {childName}, remember America's story. It is not a finished tale — it is one still being written. And the most important part of any country's story is what its people choose to do next. Including you.`,
+      },
+      {
+        id: 'usa_ep3_places', episodeNumber: 3, title: 'Wonders of America',
+        subtitle: 'Lady Liberty, the Grand Canyon, and a mountain with four faces.',
+        tradition: 'universal', theme: 'wisdom', durationMinutes: 3,
+        source: 'Discover United States · Episode 3',
+        body: `Imagine sailing into New York Harbor on a ship, tired from a long journey, and seeing her for the first time — the Statue of Liberty. She stands over ninety meters tall, her green copper skin gleaming, her torch held high above the water. For millions of immigrants arriving in America, she was the first thing they saw — a giant woman saying "welcome." France gave her to America as a gift of friendship in 1886, and she has been standing there ever since, watching over the harbor.
+
+Now fly west to South Dakota, where four enormous faces are carved into the side of a granite mountain. Mount Rushmore shows the faces of four presidents — Washington, Jefferson, Roosevelt, and Lincoln — each face about eighteen meters tall. Workers spent fourteen years blasting and carving the rock. From far away it looks like the mountain itself is staring at you.
+
+Down in Arizona, the Grand Canyon takes your breath away. It is over four hundred kilometers long, up to twenty-nine kilometers wide, and more than a mile deep. Stand at the edge and you feel tiny — a speck on the rim of something the Earth spent six million years creating. Ravens soar through the canyon on warm air currents, and far below, the Colorado River looks like a thin green ribbon.
+
+In Washington, D.C., the capital, the Lincoln Memorial glows white at night. Inside, a giant marble Abraham Lincoln sits in a chair, looking out over a long reflecting pool. People come here to remember and to dream — it is where Martin Luther King Jr. gave his famous "I Have a Dream" speech to hundreds of thousands of people.
+
+On the west coast, the Golden Gate Bridge stretches across the entrance to San Francisco Bay, its orange-red towers disappearing into the famous fog. And in the middle of the Pacific, Hawaii's volcanoes still erupt, adding new land to the Earth — the islands are literally still growing.
+
+That night, {childName}, remember America's wonders. People carved mountains and built bridges, but nature carved canyons and built volcanoes. The best things in this world are made by humans and nature working together — or sometimes, just by nature showing off.`,
+      },
+      {
+        id: 'usa_ep4_culture', episodeNumber: 4, title: 'Music, Movies & Apple Pie',
+        subtitle: 'Jazz, pizza slices, basketball, and a country made of many cultures.',
+        tradition: 'universal', theme: 'wisdom', durationMinutes: 3,
+        source: 'Discover United States · Episode 4',
+        body: `America is a country where a kid can eat tacos for lunch, sushi for dinner, and apple pie for dessert — all in the same town. That is because people from every country in the world live here, and they brought their food, their music, and their traditions with them.
+
+Let us talk about music first, because America gave the world some of its greatest sounds. Jazz was born in New Orleans, where African American musicians blended African rhythms, blues melodies, and pure improvisation into something the world had never heard before. Rock and roll came from the same roots, electrified and amplified until it shook entire stadiums. Hip hop started on the streets of the Bronx in New York, where DJs and poets turned turntables and microphones into instruments of storytelling.
+
+American kids grow up with sports woven into their lives. Basketball was invented here — remember, by a Canadian teacher! — and today, kids shoot hoops on driveways and playground courts in every state. Baseball is called "America's pastime," with hot dogs and peanuts at the ballpark on summer evenings. And on Friday nights in small towns, entire communities come together to watch high school football under the lights.
+
+Hollywood, in Los Angeles, is where most of the world's favorite movies are made. From animated adventures to superhero stories, the dreams cooked up in California travel to every screen on the planet.
+
+American food is a delicious mix of everything. New York pizza with its thin, foldable slices. Southern fried chicken and cornbread. Texas barbecue smoked low and slow for hours. Clam chowder in bread bowls in San Francisco. And the classic — a cheeseburger with fries, invented right here and now loved worldwide.
+
+One thing that ties it all together is a simple idea — that no matter where your family came from, you belong here. The country is not perfect at this, but the dream remains: many people, many traditions, one shared home.
+
+That night, {childName}, remember America's blend of cultures. The most beautiful music happens when different instruments play together. And the most delicious life is one where you taste, listen to, and learn from as many cultures as you can.`,
+      },
+      {
+        id: 'usa_ep5_facts', episodeNumber: 5, title: 'Amazing America',
+        subtitle: 'Moon landings, supervolcanoes, and a river that flows backwards.',
+        tradition: 'universal', theme: 'wisdom', durationMinutes: 3,
+        source: 'Discover United States · Episode 5',
+        body: `Hold on tight, because the United States is packed with facts that sound made up — but are completely true.
+
+In 1969, American astronauts became the first humans to walk on the Moon. Neil Armstrong stepped onto the dusty surface and said, "That's one small step for man, one giant leap for mankind." The American flag they planted is still up there, though scientists say the sun has bleached it completely white by now.
+
+Underneath Yellowstone National Park sits a supervolcano — a magma chamber so enormous that if it ever erupted, it could cover half the country in ash. But do not worry — it has not erupted in over six hundred thousand years, and scientists watch it very carefully. In the meantime, Yellowstone puts on a wonderful show — Old Faithful, a geyser that shoots boiling water over forty meters into the air almost every ninety minutes, like clockwork.
+
+The Mississippi River is one of the longest rivers in the world, stretching over three thousand seven hundred kilometers from Minnesota to the Gulf of Mexico. During a massive earthquake in 1812, witnesses said the river appeared to flow backwards for several hours. The shaking was so powerful it created new lakes overnight.
+
+Alaska, the largest state, is so big that if you placed it on top of the lower forty-eight states, it would stretch from coast to coast. Yet it has fewer people than most American cities.
+
+The Library of Congress in Washington, D.C. is the largest library in the world, with over one hundred and seventy million items — books, maps, recordings, photographs. If you read five books a day, it would take you over ninety thousand years to read them all.
+
+And here is a sweet one — Americans eat about one hundred acres of pizza every single day. That is roughly the size of ninety football fields, covered in cheese, sauce, and toppings, devoured in twenty-four hours.
+
+That night, {childName}, remember America's surprises. A country that walked on the Moon, sits on a supervolcano, and eats ninety football fields of pizza a day. Dream big, stay curious, and never stop reaching — even if what you are reaching for is the Moon itself.`,
+      },
+    ],
+  },
+
+  // ─── 4. UNITED KINGDOM ─────────────────────────────────────
+  {
+    id: 'discover-united-kingdom',
+    title: '🇬🇧 Discover United Kingdom',
+    icon: '🇬🇧',
+    gradient: 'linear-gradient(135deg, #1a237e 0%, #283593 50%, #c62828 100%)',
+    description: 'Castles, kings, and cozy countryside — 5 bedtime adventures through England, Scotland, Wales, and Northern Ireland.',
+    ageRange: '4-8',
+    totalEpisodes: 5,
+    episodes: [
+      {
+        id: 'uk_ep1_geo', episodeNumber: 1, title: 'The Land of the United Kingdom',
+        subtitle: 'Rolling green hills, misty highlands, and an island full of surprises.',
+        tradition: 'universal', theme: 'wisdom', durationMinutes: 3,
+        source: 'Discover United Kingdom · Episode 1',
+        body: `Close your eyes and imagine flying over a group of islands in the North Atlantic, where the land is green in a hundred different shades and the sky changes its mood every hour. Welcome to the United Kingdom — a small country with a very big personality.
+
+The United Kingdom is actually four countries in one — England, Scotland, Wales, and Northern Ireland — all joined together under one flag and one crown. Imagine four siblings sharing one house, each with their own room and their own character.
+
+England, the largest, is a patchwork of gentle, rolling hills, golden wheat fields, and hedge-lined lanes. In the south, white chalk cliffs drop straight into the English Channel — the famous White Cliffs of Dover, gleaming like a wall of snow against the grey-blue sea. London, the capital, sits on the River Thames, a city of eight million people, red buses, and old stone buildings standing shoulder to shoulder with glass skyscrapers.
+
+Fly north into Scotland, and the landscape turns wild. The Scottish Highlands are rugged mountains, deep glens, and misty lochs — that is the Scottish word for lakes. Loch Ness, the most famous of all, is so deep and dark that people have wondered for centuries whether a mysterious creature lives in its waters. The hills here are covered in purple heather in late summer, and eagles circle overhead.
+
+Wales, to the west, is a land of green valleys, ancient castles, and a language so old it was spoken before English even existed. Welsh words look impossible to pronounce — Llanfairpwllgwyngyll is the name of an actual town — but the sound of Welsh is musical and beautiful.
+
+Northern Ireland has its own magic — the Giant's Causeway, where forty thousand columns of dark rock step down into the sea like a staircase built by a giant. Legend says an Irish giant named Finn McCool built it to walk across the sea to Scotland.
+
+Despite being an island smaller than many American states, the United Kingdom packs in an astonishing variety of landscapes — from moorlands to sea cliffs, from gentle rivers to fierce highland storms.
+
+That night, {childName}, remember the United Kingdom's green and misty land. Even a small place can hold enormous wonders. It is not the size of the country that matters — it is the depth of its stories.`,
+      },
+      {
+        id: 'uk_ep2_history', episodeNumber: 2, title: 'Stories From Long Ago',
+        subtitle: 'Ancient stones, brave queens, and a playwright who changed words forever.',
+        tradition: 'universal', theme: 'wisdom', durationMinutes: 3,
+        source: 'Discover United Kingdom · Episode 2',
+        body: `Five thousand years ago, long before anyone wrote a single word in English, ancient people in Britain dragged enormous stones across miles of countryside and stacked them in a circle on a wide, windy plain. That circle is Stonehenge, and to this day, nobody knows exactly how they moved stones weighing as much as four elephants, or why they arranged them to line up perfectly with the sunrise on the longest day of the year.
+
+The Romans came next, building roads so straight you can still drive on some of them today. They built Hadrian's Wall across the north of England — a stone wall stretching over a hundred kilometers, built to mark the edge of their empire. Roman soldiers stood on that wall and looked north into the wild unknown, wondering what was out there.
+
+In medieval times, England, Scotland, and Wales were lands of kings, queens, and castles. Over a thousand castles were built across Britain — stone fortresses with moats, drawbridges, and towers. Some were built by Norman invaders who crossed the English Channel in 1066 and changed the country forever. The Tower of London, almost a thousand years old, has been a palace, a prison, and a zoo — and today it still holds the Crown Jewels, guarded by ravens. Legend says that if the ravens ever leave the Tower, the kingdom will fall. So the ravens are very well fed.
+
+Queen Elizabeth the First ruled England for forty-five years and was so clever that she spoke six languages and outsmarted kings and princes who underestimated her. During her reign, a playwright named William Shakespeare wrote plays so powerful that people still perform them today, over four hundred years later. He invented over seventeen hundred words that we use every day — including "eyeball," "lonely," and "bedroom."
+
+The United Kingdom also led the Industrial Revolution, building the first steam engines, railways, and factories. For better and worse, this tiny island changed the way the entire world works, travels, and builds.
+
+That night, {childName}, remember Britain's long story. From mysterious stones to words we speak every day, the past is never really gone — it lives in the roads we walk, the words we say, and the stories we tell before bed.`,
+      },
+      {
+        id: 'uk_ep3_places', episodeNumber: 3, title: 'Wonders of Britain',
+        subtitle: 'Big Ben, Edinburgh Castle, and a clock that keeps the world on time.',
+        tradition: 'universal', theme: 'wisdom', durationMinutes: 3,
+        source: 'Discover United Kingdom · Episode 3',
+        body: `Imagine standing beside the River Thames in London at night. The Houses of Parliament glow golden, and beside them, the Elizabeth Tower rises into the dark sky — home to Big Ben, one of the most famous clocks in the world. Big Ben is actually the name of the giant bell inside, not the tower. It weighs over thirteen tons and has been chiming on the hour since 1859. Its deep, resonant bong travels across the city and is broadcast on the radio so people can set their watches by it.
+
+Cross the river and you will see the Tower Bridge, a magnificent blue and white bridge that can split in half and lift up to let tall ships pass through. When it opens, traffic stops and people stare — it is like watching a giant do a slow-motion stretch.
+
+Now travel north to Edinburgh, Scotland's capital, where a medieval castle sits on top of an extinct volcano right in the middle of the city. Edinburgh Castle has watched over the town for over a thousand years. At one o'clock every afternoon, a cannon fires from its walls — a tradition so old that people set their watches by it, just like Big Ben.
+
+In the English countryside, the University of Oxford has been teaching students for over nine hundred years. Its golden stone buildings look like something from a fantasy novel — in fact, the dining hall of Christ Church College was used as inspiration for the Great Hall in the Harry Potter films.
+
+Speaking of Harry Potter — if you visit Platform Nine and Three-Quarters at King's Cross Station in London, you will find a luggage trolley half-embedded in the wall, as if someone is about to push through to a magical world. Thousands of people visit it every day.
+
+In Bath, ancient Roman baths still steam with naturally hot water that rises from deep underground. People bathed here two thousand years ago, and the green, steaming pools remain, surrounded by Roman columns and statues.
+
+And on a tiny island off the coast of Cornwall, St Michael's Mount rises from the sea — a fairy-tale castle on a tidal island, reachable on foot only when the tide is out.
+
+That night, {childName}, remember Britain's wonders. A country where cannons tell the time, castles sit on volcanoes, and a luggage trolley promises that magic might be real — if you just believe enough to push through the wall.`,
+      },
+      {
+        id: 'uk_ep4_culture', episodeNumber: 4, title: 'Tea, Football & Fish and Chips',
+        subtitle: 'Afternoon tea, the beautiful game, and stories that enchanted the world.',
+        tradition: 'universal', theme: 'wisdom', durationMinutes: 3,
+        source: 'Discover United Kingdom · Episode 4',
+        body: `Every afternoon, something wonderful happens across the United Kingdom. Kettles click on. Teapots warm. Biscuits appear on plates. It is tea time. The British drink over one hundred million cups of tea every single day. Tea is not just a drink here — it is a hug in a mug, a pause in a busy day, a reason to sit with someone and talk. "Shall I put the kettle on?" might be the most British sentence ever spoken.
+
+Now, football — and in Britain, football means the game played with your feet, the one much of the world calls "the beautiful game." England is where modern football was born. The rules were written in London in 1863, and the game spread from British shores to every country on Earth. On match days, stadiums roar with singing fans, and entire neighborhoods go quiet as everyone gathers around televisions, holding their breath.
+
+The United Kingdom has given the world some of its most beloved stories. J.K. Rowling wrote Harry Potter in a café in Edinburgh while her baby daughter slept beside her. J.R.R. Tolkien created Middle-earth, with its hobbits and wizards, while teaching at Oxford. Roald Dahl dreamed up Willy Wonka, Matilda, and the BFG from his writing hut in the English countryside. Paddington Bear, Peter Rabbit, Winnie-the-Pooh — all British.
+
+British music changed the world too. The Beatles, from Liverpool, became the most famous band in history. Their songs are still played on radios every single day, more than fifty years later. After them came David Bowie, Queen, the Spice Girls, Adele, and Ed Sheeran — a small island producing an enormous amount of music.
+
+Fish and chips is the classic British meal — battered fish and thick-cut chips wrapped in paper, eaten by the seaside with salt and vinegar. Sunday roast is another tradition — roasted meat, crispy potatoes, Yorkshire pudding, gravy, and vegetables, the whole family gathered around a table.
+
+British children grow up with bonfire night in November, Christmas pantomimes where the audience shouts at the actors, and the constant, gentle presence of rain — which is why the British talk about weather more than almost anything else.
+
+That night, {childName}, remember Britain's cozy traditions. A cup of tea, a good story, a song, and a rainy day — sometimes the simplest things create the warmest memories. And the best stories, like the best tea, are meant to be shared.`,
+      },
+      {
+        id: 'uk_ep5_facts', episodeNumber: 5, title: 'Amazing Britain',
+        subtitle: 'Royal corgis, underground trains, and a language spoken everywhere.',
+        tradition: 'universal', theme: 'wisdom', durationMinutes: 3,
+        source: 'Discover United Kingdom · Episode 5',
+        body: `Ready for some facts about the United Kingdom that will make you smile and say "really?"
+
+The English language started right here — and it has become the most widely spoken language in the world. Over one and a half billion people speak English, even though the country where it was born is smaller than the state of Oregon. Words from Old English, French, Latin, Norse, and dozens of other languages were all mixed together over centuries to create the language you are listening to right now.
+
+The London Underground — called "the Tube" — was the first underground railway in the world, opened in 1863. Passengers rode in wooden carriages pulled by steam locomotives through tunnels lit by gas lamps. Today, over a billion journeys are made on it every year. The famous voice that says "Mind the gap" at stations has become one of the most recognized phrases on Earth.
+
+Queen Elizabeth the Second, who reigned for seventy years, was famous for her love of corgis. She owned more than thirty corgis during her lifetime. The little dogs had their own room in Buckingham Palace and were fed by the queen herself from a silver tray.
+
+The UK is home to the shortest scheduled commercial flight in the world — from the island of Westray to the island of Papa Westray in Scotland. It takes about ninety seconds. By the time you buckle your seatbelt, you are practically landing.
+
+Britain invented the World Wide Web. In 1989, a British scientist named Tim Berners-Lee created the system that lets you browse websites, watch videos, and explore the internet. He could have become the richest person in history, but he gave his invention to the world for free. Every time you go online, you are using a British invention.
+
+Scotland's national animal is the unicorn. Yes, really. The Scots chose the unicorn centuries ago because in legends, it was the only creature strong enough to defeat the English lion. You will find unicorns carved into buildings and statues all across Scotland.
+
+That night, {childName}, remember Britain's amazing facts. A tiny island gave the world its language, its internet, its football, and its unicorn. Never underestimate small places — sometimes the smallest islands make the biggest waves.`,
+      },
+    ],
+  },
+
+  // ─── 5. JAPAN ──────────────────────────────────────────────
+  {
+    id: 'discover-japan',
+    title: '🇯🇵 Discover Japan',
+    icon: '🇯🇵',
+    gradient: 'linear-gradient(135deg, #c62828 0%, #ffffff 50%, #f48fb1 100%)',
+    description: 'Cherry blossoms, bullet trains, and ancient temples — 5 bedtime adventures through the Land of the Rising Sun.',
+    ageRange: '4-8',
+    totalEpisodes: 5,
+    episodes: [
+      {
+        id: 'japan_ep1_geo', episodeNumber: 1, title: 'The Land of Japan',
+        subtitle: 'A chain of islands where mountains meet the sea and volcanoes steam.',
+        tradition: 'universal', theme: 'wisdom', durationMinutes: 3,
+        source: 'Discover Japan · Episode 1',
+        body: `Close your eyes and imagine a chain of islands curving gently through the blue Pacific Ocean, like a string of emerald jewels scattered on silk. Welcome to Japan — the Land of the Rising Sun.
+
+Japan is made up of nearly seven thousand islands, though most people live on the four biggest ones. The country is long and narrow, stretching from the cold, snowy north to the warm, tropical south. Imagine this — in the same country, on the same day, one person can be skiing through deep powder snow while another swims in a turquoise sea.
+
+The most famous sight in all of Japan is Mount Fuji — a nearly perfect cone-shaped volcano that rises three thousand seven hundred and seventy-six meters above the land. On clear days, you can see it from over a hundred kilometers away, its snow-capped peak floating above the clouds like a painting come to life. Artists and poets have been inspired by Mount Fuji for thousands of years.
+
+Japan sits on the Pacific Ring of Fire, a zone where the Earth's underground plates push and pull against each other. This means Japan has many volcanoes — over a hundred — and frequent earthquakes. But it also means something wonderful: hot springs. All across Japan, naturally heated water bubbles up from deep underground, and people have been soaking in these warm, mineral-rich pools for centuries. Even monkeys bathe in hot springs during winter, their faces red and content, steam rising from the water around them.
+
+In spring, Japan transforms. Cherry blossom trees — called sakura — burst into clouds of pale pink and white flowers. Entire parks and riverbanks become tunnels of soft petals, and when the wind blows, the petals fall like pink snow. The Japanese call this "hanami" — flower viewing — and families spread blankets under the trees to picnic and watch the blossoms drift.
+
+The forests are dense with bamboo — tall, green stalks that grow so thick they form natural corridors. Walking through a bamboo grove, with the stalks creaking and swaying overhead, feels like entering another world.
+
+That night, {childName}, remember Japan's beautiful land. An island country where fire burns beneath the earth and flowers bloom above it. Even in a place where the ground shakes, beauty finds a way to grow.`,
+      },
+      {
+        id: 'japan_ep2_history', episodeNumber: 2, title: 'Stories From Long Ago',
+        subtitle: 'Samurai honor, ancient emperors, and the way of peace.',
+        tradition: 'universal', theme: 'wisdom', durationMinutes: 3,
+        source: 'Discover Japan · Episode 2',
+        body: `Japan's story begins thousands of years ago with the Jomon people, who made some of the oldest pottery in the world. They pressed rope patterns into wet clay, creating beautiful pots and figures that still survive today, over ten thousand years old. They lived in harmony with the forest, fishing, gathering nuts, and building small villages near rivers and coasts.
+
+Over time, Japan developed its own unique civilization. Emperors ruled from ancient capitals, and the Japanese believed their emperor was descended from the sun goddess Amaterasu. The imperial family of Japan is the oldest continuous monarchy in the world — stretching back over two thousand years.
+
+Then came the samurai — warriors who followed a strict code of honor called bushido, "the way of the warrior." Samurai trained not just in sword fighting, but in poetry, calligraphy, and tea ceremony. They believed a true warrior must be as gentle with a brush as they were fierce with a blade. Their swords, called katana, were forged by master craftsmen who folded the steel thousands of times, creating blades so sharp and strong they became works of art.
+
+During the Edo period, Japan closed itself off from most of the world for over two hundred years. While other countries traded and traveled, Japan turned inward and created an extraordinary culture — kabuki theater with dramatic face paint and sweeping costumes, ukiyo-e woodblock prints that captured daily life in stunning detail, and haiku poetry that said everything in just seventeen syllables.
+
+When Japan finally opened its doors to the world in the 1850s, it transformed itself at remarkable speed. Within decades, it built railways, factories, and modern cities. After the devastation of World War Two, Japan rebuilt itself from rubble into one of the most prosperous, peaceful, and technologically advanced nations on Earth — a transformation that amazed the entire world.
+
+Through it all, the Japanese held onto their traditions — their temples, their tea ceremonies, their deep respect for nature and for each other.
+
+That night, {childName}, remember Japan's journey. A country that learned the art of the sword also mastered the art of peace. True strength is not about being fierce — it is about knowing when to fight and when to put the sword away and pick up a paintbrush.`,
+      },
+      {
+        id: 'japan_ep3_places', episodeNumber: 3, title: 'Wonders of Japan',
+        subtitle: 'Golden temples, floating gates, and a castle white as a heron.',
+        tradition: 'universal', theme: 'wisdom', durationMinutes: 3,
+        source: 'Discover Japan · Episode 3',
+        body: `Imagine a temple covered entirely in gold, its reflection shimmering in a mirror-still pond surrounded by perfectly shaped pine trees. This is Kinkaku-ji, the Golden Pavilion, in the city of Kyoto. Every surface gleams with real gold leaf, and the building seems to float between the water below and the sky above. It was built over six hundred years ago, and on a clear day, you cannot tell where the real temple ends and its reflection begins.
+
+Now picture this — a giant red gate standing in the sea. The Torii gate of Itsukushima Shrine, on Miyajima Island, rises from the water at high tide as if it grew from the ocean floor. At low tide, you can walk right up to it on the wet sand. It has stood here for centuries, marking the boundary between the everyday world and the sacred world beyond.
+
+Himeji Castle is called the White Heron because its white walls and graceful curved roofs look like a great bird about to take flight. It is the finest surviving medieval castle in Japan, with eighty-three buildings connected by winding corridors, hidden rooms, and defensive mazes designed to confuse invaders. The castle has survived earthquakes, typhoons, and even wartime bombing — still standing, still white, still beautiful.
+
+In Nara, an ancient capital, a giant bronze Buddha sits inside the largest wooden building in the world. The statue is fifteen meters tall, and its open hand alone is big enough for a person to sit in. Outside, over a thousand friendly deer roam freely through the temple parks. They bow to visitors — yes, really bow — and visitors bow back.
+
+The Fushimi Inari Shrine in Kyoto has over ten thousand bright orange gates — called torii — lined up in rows that snake up an entire mountainside. Walking through them feels like moving through a tunnel of orange light, each gate placed by someone giving thanks for a wish that came true.
+
+And in Tokyo, the ancient Senso-ji Temple sits in the middle of the modern city, with a giant red paper lantern at its entrance weighing over seven hundred kilograms. Past meets present every day at its gates.
+
+That night, {childName}, remember Japan's wonders. Gold temples, floating gates, bowing deer, and ten thousand wishes. In Japan, even stones and trees are treated with respect — because wonder lives in everything, if you look carefully enough.`,
+      },
+      {
+        id: 'japan_ep4_culture', episodeNumber: 4, title: 'Sushi, Festivals & Kindness',
+        subtitle: 'Chopsticks, cherry blossom picnics, and a culture built on respect.',
+        tradition: 'universal', theme: 'wisdom', durationMinutes: 3,
+        source: 'Discover Japan · Episode 4',
+        body: `In Japan, when you enter someone's home, you take off your shoes. When you greet someone, you bow. When you receive a gift, you use both hands. These small gestures are not just politeness — they are a way of showing respect, and respect is at the heart of everything in Japanese culture.
+
+Let us start with food, because Japanese food is like edible art. Sushi — small pieces of fresh fish on little pillows of seasoned rice — is Japan's most famous dish, but there is so much more. Ramen is a steaming bowl of noodles in rich broth, topped with egg, pork, and vegetables — the perfect food for a cold day. Bento boxes are packed lunches arranged so beautifully they look like tiny paintings, with rice shaped like animals and vegetables cut into flowers.
+
+Japanese children eat school lunch together in their classroom, serving each other and cleaning up afterwards. There are no janitors in most Japanese schools — the students clean the school themselves, sweeping hallways and scrubbing floors. They learn that taking care of shared spaces is everyone's responsibility.
+
+Festivals, called matsuri, fill the Japanese calendar. During summer festivals, children wear colorful cotton robes called yukata, eat shaved ice and grilled squid from street stalls, and watch fireworks paint the night sky. Giant portable shrines called mikoshi are carried through the streets on the shoulders of chanting, sweating teams.
+
+The Japanese art of origami turns a single flat sheet of paper into cranes, flowers, dragons, and butterflies — all without scissors or glue, just folding. Japanese children learn that something simple can become something extraordinary with patience and precision.
+
+Manga — Japanese comic books — and anime are loved by children and adults alike. Characters like Astro Boy, Sailor Moon, Pikachu, and Totoro were all born in Japan, and their stories have traveled to every corner of the globe.
+
+Even the way Japanese people wrap a gift, pour tea, or arrange a single flower in a vase is done with care. There is a word for this attention to beauty in everyday life — "wabi-sabi" — the idea that imperfection and simplicity are beautiful.
+
+That night, {childName}, remember Japan's gentle ways. Kindness does not have to be loud. Sometimes the most powerful thing you can do is bow, take off your shoes, and treat the world around you with quiet, careful respect.`,
+      },
+      {
+        id: 'japan_ep5_facts', episodeNumber: 5, title: 'Amazing Japan',
+        subtitle: 'Robot hotels, vending machines everywhere, and trains that never run late.',
+        tradition: 'universal', theme: 'wisdom', durationMinutes: 3,
+        source: 'Discover Japan · Episode 5',
+        body: `Get ready, because Japan is a country where the future and the past live side by side — and the facts are absolutely wild.
+
+Japan's bullet trains — called Shinkansen — travel at over three hundred kilometers per hour, fast enough to cover the distance between two cities in the time it takes to watch a cartoon. But here is the truly amazing part — they are almost never late. The average delay is less than one minute per year. If a train is even a few seconds late, the railway company issues a formal apology to passengers.
+
+Japan has more than five million vending machines — that is roughly one for every twenty-three people. You can buy almost anything from them: hot coffee, cold noodles, fresh eggs, umbrellas, flowers, and even entire meals. In some places, you can find vending machines on remote mountain hiking trails, quietly humming and offering drinks to tired hikers.
+
+There is a hotel in Japan staffed almost entirely by robots. At the front desk, a robot dinosaur checks you in. A robot arm carries your luggage. A robot fish swims in the lobby tank — okay, that one is just a regular fish. But you get the idea.
+
+Japan is the birthplace of karaoke — the word means "empty orchestra" — where people sing along to music tracks in small private rooms with their friends. It was invented in the early 1970s, and now you can find karaoke in almost every country on Earth.
+
+The country has a "Cat Island" — Aoshima — where cats outnumber humans six to one. Cats roam freely, nap on porches, and are treated like royalty by the handful of human residents.
+
+Japanese toilets are the most advanced in the world. Many have heated seats, built-in speakers that play nature sounds, and buttons for everything you can imagine. Visitors from other countries are often amazed — and sometimes confused — by all the options.
+
+And here is one that shows the Japanese spirit perfectly — if you lose your wallet in Japan, there is an incredibly high chance you will get it back, cash and all. Japanese people return lost items at a rate that astonishes the rest of the world. Honesty is not just valued — it is simply how things are done.
+
+That night, {childName}, remember Japan's wonders. A country where trains apologize for being a minute late and strangers return your lost wallet. The future they are building runs not just on technology — but on trust, care, and doing things right.`,
+      },
+    ],
+  },,
+// ─── 1. China 🇨🇳 ───────────────────────────────────────────────────────────
+  {
+    id: 'discover-china',
+    title: 'Discover China',
+    icon: '🇨🇳',
+    gradient: 'linear-gradient(135deg, #991b1b 0%, #dc2626 40%, #f59e0b 100%)',
+    description: 'Five bedtime journeys across China — mountains, emperors, palaces, dumplings, and records that will blow your mind.',
+    ageRange: '4-8',
+    totalEpisodes: 5,
+    episodes: [
+      {
+        id: 'dc_cn_ep1_geo', episodeNumber: 1, title: 'Mountains, Rivers & Rice',
+        subtitle: 'Fly over the tallest peaks and longest rivers on Earth.',
+        tradition: 'universal', theme: 'wisdom', durationMinutes: 5,
+        source: 'Discover China · Episode 1',
+        body: `Close your eyes and imagine you are a little bird soaring high above the clouds. Below you stretches China — one of the biggest countries in the whole wide world, so big that when the sun rises on one side, it is still nighttime on the other.
+
+First, you fly toward the west. The air gets colder. Snow swirls around your feathers. You have reached the Himalayas — the tallest mountains on the entire planet. Mount Everest, the very highest peak, sits right on the border between China and Nepal. Its top pokes above the clouds like a white crown. Tibetan yaks with shaggy fur wander the meadows below, munching grass at heights where most people would gasp for air.
+
+Now turn east and follow the Yangtze River. It is the third longest river in the world, winding through deep gorges where limestone cliffs rise so steeply they look like giant walls. Fishermen in bamboo boats drift on the emerald water, just as their great-great-grandparents did hundreds of years ago.
+
+Keep flying south. The land turns warm and green. Terraced rice paddies step down the hillsides like a giant staircase carved into the earth. Each terrace is filled with water that reflects the sky, so from above it looks like a mountain made of mirrors. Farmers in wide straw hats wade knee-deep, planting rice seedlings one by one. Rice feeds more people in the world than any other grain, and much of it grows right here.
+
+Swing north and you will cross the Gobi Desert — a sea of golden sand and rocky plains where wild camels roam and the wind sings lonely songs at night. Then forests of bamboo appear, so thick and green that giant pandas hide among the stalks, munching their favourite snack.
+
+China's land holds nearly every kind of landscape you can dream of — snowy peaks, steamy jungles, wide deserts, and misty rivers.
+
+Tonight, {childName}, remember that the world is wonderfully big, and every landscape has a story waiting for a curious traveller like you. Sweet dreams, little explorer.`,
+      },
+      {
+        id: 'dc_cn_ep2_history', episodeNumber: 2, title: 'Emperors & Dragons',
+        subtitle: 'Ancient stories of the first emperor and his terracotta army.',
+        tradition: 'universal', theme: 'wisdom', durationMinutes: 5,
+        source: 'Discover China · Episode 2',
+        body: `Long, long ago — more than two thousand years before you were born — China was not one country. It was many small kingdoms, always fighting. Then a fierce young king named Qin Shi Huang united them all and said: "From now on, we are one."
+
+He became the very first emperor of China. He wore robes of golden silk and a crown studded with jade. He ordered thousands of workers to connect old walls into one enormous wall — the Great Wall of China — stretching over mountains and valleys like a stone dragon protecting the land.
+
+But Qin Shi Huang did something even more astonishing. Deep underground, he built a secret army to guard him in the afterlife. Not living soldiers — statues made of clay called terracotta. More than eight thousand life-sized warriors, each with a different face, a different hairstyle, a different expression. Some kneel with crossbows. Some stand tall with swords. There are even clay horses and chariots. For over two thousand years, this silent army waited in the dark, forgotten — until a farmer digging a well in 1974 struck something hard with his shovel and uncovered a warrior's head.
+
+Before the emperors, the Chinese people told stories of magical dragons. Unlike the scary dragons in some tales, Chinese dragons were kind and wise. They brought rain to the rice fields and good luck to families. During festivals, people danced under long silk dragons held up by poles, weaving through the streets like a river of colour.
+
+The ancient Chinese also invented things the whole world still uses — paper, so you can draw and write; silk, the softest cloth you have ever touched; fireworks, which paint the night sky with light; and the compass, which always points north so travellers never get lost.
+
+Tonight, {childName}, remember that history is like a treasure buried underground — sometimes all it takes is one curious person with a shovel to bring it back to life. Goodnight, little historian.`,
+      },
+      {
+        id: 'dc_cn_ep3_places', episodeNumber: 3, title: 'The Great Wall & Forbidden City',
+        subtitle: 'Walk along the longest wall ever built and peek inside a palace of 9,999 rooms.',
+        tradition: 'universal', theme: 'wisdom', durationMinutes: 5,
+        source: 'Discover China · Episode 3',
+        body: `Imagine you are standing on top of a wall so long that if you started walking at sunrise, you would still be walking when the stars came out — for weeks and weeks. That is the Great Wall of China. It stretches over twenty-one thousand kilometres across mountains, deserts, and grasslands. Watchtowers dot the wall like beads on a necklace. Soldiers once lit fires on top of them to send signals — one puff of smoke meant a small group was coming, three puffs meant a big army. It was like texting, but with smoke.
+
+From above, the wall looks like a grey ribbon draped across green hills. In autumn, the trees around it turn gold and crimson, and the wall seems to float on a sea of fire-coloured leaves.
+
+Now fly south to Beijing, the capital city. Hidden behind tall red walls is the Forbidden City — the biggest palace complex on Earth. It has nearly ten thousand rooms, and for five hundred years only the emperor and his court were allowed inside. Everyone else was forbidden — that is how it got its name.
+
+The roofs are covered in golden tiles that gleam in the sun. Stone lions guard every gate, their manes curled like clouds. Inside, throne rooms are painted in red and gold, and ceilings are carved with swirling dragons. The emperor's throne sits at the very centre, facing south, because the Chinese believed the south wind brought warmth and good fortune.
+
+Beyond Beijing, there are other wonders too — the Li River in Guilin, where pointy green mountains rise from the water like something from a painting. And the round tulou houses of Fujian, built in circles like giant doughnuts, where whole families lived together and shared one courtyard under the stars.
+
+Tonight, {childName}, remember that people have been building incredible things for thousands of years, and every wall, palace, and tower started with one single stone placed by one brave hand. Sleep well, little architect.`,
+      },
+      {
+        id: 'dc_cn_ep4_culture', episodeNumber: 4, title: 'Dumplings, Dragons & Lanterns',
+        subtitle: 'The food, festivals, and family traditions that make China magical.',
+        tradition: 'universal', theme: 'wisdom', durationMinutes: 5,
+        source: 'Discover China · Episode 4',
+        body: `In China, food is not just something you eat — it is a way of saying "I love you." And the most loved food of all might be the dumpling. Picture a tiny parcel of soft dough, folded and pinched at the edges, filled with pork, vegetables, or shrimp. Families gather in the kitchen before Chinese New Year and make hundreds of dumplings together, chatting and laughing while their fingers fold and press. Some families hide a coin inside one lucky dumpling — whoever bites into it will have good fortune all year long.
+
+Chinese New Year is the biggest celebration in the country. It falls in January or February, when winter is fading. Streets explode with red — red lanterns, red banners, red envelopes stuffed with money that grandparents give to children. Red is the colour of luck and happiness. Firecrackers pop and bang to scare away a mythical beast called Nian, who was said to be afraid of loud noises and the colour red.
+
+On the fifteenth night, the Lantern Festival lights up the sky. Children carry glowing lanterns shaped like rabbits, fish, and dragons through the streets. Some lanterns float into the air, drifting up like tiny orange moons. Riddles are written on paper and hung from the lanterns — if you solve one, you win a small prize.
+
+In autumn comes the Mid-Autumn Festival, when families sit outside under the full moon and eat mooncakes — round pastries with sweet filling inside. They tell the story of Chang'e, a goddess who flew to the moon and lives there still, with a jade rabbit for company.
+
+Chinese people greet each other by saying "ni hao," which means "you good?" It is a little wish for the other person's happiness packed into two small words.
+
+Tonight, {childName}, remember that the most delicious meals and the brightest festivals always taste better when shared with the people you love. Goodnight, little dumpling.`,
+      },
+      {
+        id: 'dc_cn_ep5_facts', episodeNumber: 5, title: 'Record-Breaking China',
+        subtitle: 'The fastest trains, tallest bridges, and most pandas on the planet.',
+        tradition: 'universal', theme: 'wisdom', durationMinutes: 5,
+        source: 'Discover China · Episode 5',
+        body: `Get ready, because China is a land of records that will make your jaw drop.
+
+Start with trains. China has the fastest trains in the world — bullet trains that zoom at over three hundred and fifty kilometres per hour. That is faster than a cheetah, faster than most racing cars. The train network stretches more than forty-five thousand kilometres, enough to wrap around the Earth. You can eat breakfast in Beijing and have lunch in Shanghai, over a thousand kilometres away.
+
+Now look up — way, way up. The Danyang-Kunshan Grand Bridge is the longest bridge on Earth, stretching one hundred and sixty-four kilometres. It carries trains over lakes, rice paddies, and river channels. It took four years and ten thousand workers to build.
+
+Speaking of tall, the Shanghai Tower spirals into the sky at over six hundred metres. It twists as it rises, like a giant corkscrew, and on windy days it actually sways gently, though the people inside barely feel it.
+
+China is home to nearly all of the world's giant pandas — fluffy black-and-white bears that spend about fourteen hours a day eating bamboo. A baby panda is born pink, blind, and no bigger than a stick of butter. Panda reserves in Sichuan province take care of these gentle giants, and thanks to years of protection, their numbers are slowly growing.
+
+Here is a fun one — China has a festival where people race boats shaped like dragons. Dragon boat racing started over two thousand years ago and now teams from all over the world compete, paddling to the beat of a big drum at the front of the boat.
+
+And did you know? Ice cream was first enjoyed in China, thousands of years ago, when people mixed snow with fruit and honey. So the next time you lick a cone, you can thank ancient China.
+
+Tonight, {childName}, remember that records are made to be broken, and somewhere right now someone is dreaming up the next amazing thing. Maybe one day that someone will be you. Goodnight, little record-breaker.`,
+      },
+    ],
+  },
+
+  // ─── 2. Australia 🇦🇺 ────────────────────────────────────────────────────────
+  {
+    id: 'discover-australia',
+    title: 'Discover Australia',
+    icon: '🇦🇺',
+    gradient: 'linear-gradient(135deg, #1e3a8a 0%, #3b82f6 40%, #facc15 100%)',
+    description: 'Five bedtime journeys across Australia — coral reefs, ancient stories, opera houses, meat pies, and the wildest wildlife on Earth.',
+    ageRange: '4-8',
+    totalEpisodes: 5,
+    episodes: [
+      {
+        id: 'dc_au_ep1_geo', episodeNumber: 1, title: 'Reefs, Rocks & Red Deserts',
+        subtitle: 'Dive into the Great Barrier Reef and fly over a giant red rock.',
+        tradition: 'universal', theme: 'wisdom', durationMinutes: 5,
+        source: 'Discover Australia · Episode 1',
+        body: `Close your eyes and imagine you are floating in warm, turquoise water. Below you is the Great Barrier Reef — the biggest living structure on the entire planet, so huge that astronauts can see it from space. It stretches over two thousand three hundred kilometres along the coast of Queensland, like an underwater rainbow made of coral.
+
+Fish of every colour dart between the coral — clownfish hiding in waving anemones, bright blue tangs, and enormous manta rays gliding like underwater birds. Sea turtles paddle past lazily, and if you are very lucky, a gentle whale shark as big as a school bus drifts by, its spotted skin shimmering.
+
+Now rise out of the water and fly west. The land dries out. Trees thin. The soil turns orange, then deep red. Welcome to the Outback — the vast, dusty heart of Australia where the sky feels wider than anywhere on Earth. In the very centre sits Uluru, a giant rock that rises three hundred and fifty metres from the flat desert floor. At sunrise it glows orange. At sunset it turns deep crimson. Indigenous Australians, whose ancestors have lived here for over sixty-five thousand years, consider Uluru sacred.
+
+Fly south and you will find rainforests dripping with moisture, where tree ferns grow taller than houses and cassowaries — enormous birds with bright blue necks and a bony helmet on their heads — stroll through the undergrowth.
+
+Head to the island of Tasmania, and the air turns cool. Forests of ancient Huon pines, some over two thousand years old, stand quietly beside mirror-still rivers.
+
+Australia is an island, a country, and a continent all at once — the only place on Earth that is all three. From coral seas to red deserts to misty forests, it is a land of wild contrasts.
+
+Tonight, {childName}, remember that the most extraordinary places on Earth are also the most fragile — and they need gentle, caring explorers like you. Sweet dreams, little adventurer.`,
+      },
+      {
+        id: 'dc_au_ep2_history', episodeNumber: 2, title: 'Dreamtime & Ancient Fires',
+        subtitle: 'The oldest stories ever told — passed down for sixty-five thousand years.',
+        tradition: 'universal', theme: 'wisdom', durationMinutes: 5,
+        source: 'Discover Australia · Episode 2',
+        body: `Before any castle was built, before any book was written, the Aboriginal and Torres Strait Islander peoples of Australia were already telling stories. Their history stretches back over sixty-five thousand years, making it the oldest continuous culture on the planet. Think about that — sixty-five thousand years of grandparents whispering stories to grandchildren under the stars.
+
+Their creation stories are called the Dreamtime. In the Dreamtime, ancestor spirits rose from the earth and walked across the land. As they walked, they sang — and their songs created mountains, rivers, waterholes, and animals. The Rainbow Serpent, one of the most important Dreamtime spirits, slithered across the dry land and wherever its body pressed into the earth, rivers formed and water filled the valleys.
+
+These stories were never written in books. They were painted on rock walls, danced around campfires, and sung along ancient paths called songlines — invisible trails that crisscross Australia like a map made of music. If you knew the right song, you could find your way across hundreds of kilometres of desert without ever getting lost.
+
+Aboriginal Australians were also the first people on Earth to use fire to care for the land. They burned small patches of grass on purpose, gently and carefully, to encourage new plants to grow and to prevent bigger, dangerous fires. Scientists today call this fire-stick farming, and modern firefighters are learning from this ancient wisdom.
+
+Thousands of years later, in 1770, a British explorer named Captain James Cook sailed to Australia's east coast. After that, many people arrived from Europe, and the story of Australia changed forever — sometimes in painful ways that the country is still learning from.
+
+Tonight, {childName}, remember that the oldest stories in the world were not written in books — they were sung under the stars by people who loved the land. And those stories still matter. Goodnight, little listener.`,
+      },
+      {
+        id: 'dc_au_ep3_places', episodeNumber: 3, title: 'Opera House & Harbour Bridge',
+        subtitle: 'Visit the sail-shaped wonder and climb the world\'s widest bridge.',
+        tradition: 'universal', theme: 'wisdom', durationMinutes: 5,
+        source: 'Discover Australia · Episode 3',
+        body: `Imagine you are standing at the edge of Sydney Harbour. The water sparkles blue. Ferries criss-cross the bay. And right there, on a point of land reaching into the harbour, sits the Sydney Opera House — one of the most famous buildings on Earth.
+
+Its roof is made of huge white shells — or maybe sails, or maybe the petals of a giant flower opening to the sky. The architect, a Danish man named Jorn Utzon, was inspired by peeling an orange. He figured out that every curved piece of the roof could be cut from the surface of a single sphere, like slices of the same orange. It took sixteen years to build and over a million tiles cover those gleaming shells.
+
+Right next door rises the Sydney Harbour Bridge, nicknamed "The Coathanger" because of its arched shape. It is the widest steel arch bridge in the world, and brave visitors can actually climb all the way to the top — one hundred and thirty-four metres above the water — and look out over the whole sparkling city.
+
+Fly north to Queensland and you will find the Daintree Rainforest, one of the oldest rainforests on Earth — over one hundred and eighty million years old. Dinosaurs once walked under these same trees. Today, tiny tree kangaroos hop through the canopy and electric-blue butterflies the size of your hand flutter between the ferns.
+
+Travel to the middle of Australia and you will find Coober Pedy, a tiny town where people live underground to escape the scorching desert heat. Their homes, churches, and even a hotel are carved right into the rock. Above ground it looks like a dusty moonscape, but below the surface, cool rooms glow with the shimmer of opal — a precious gem that flashes every colour of the rainbow.
+
+Tonight, {childName}, remember that the most wonderful buildings and places are born when someone dares to imagine something nobody has ever seen before. Goodnight, little dreamer.`,
+      },
+      {
+        id: 'dc_au_ep4_culture', episodeNumber: 4, title: 'Meat Pies, Mateship & Surf',
+        subtitle: 'The food, friendships, and beach culture that make Australia special.',
+        tradition: 'universal', theme: 'wisdom', durationMinutes: 5,
+        source: 'Discover Australia · Episode 4',
+        body: `In Australia, if someone offers you a meat pie at the footy, you have just made a friend for life. Australians love their meat pies — flaky golden pastry filled with savoury beef and gravy, topped with a squirt of tomato sauce. You will find them at every sports game, every bakery, and every petrol station from Sydney to Perth.
+
+But food in Australia is a delicious mix of cultures. Because people have come to Australia from all over the world — Greece, Italy, Vietnam, India, Lebanon, China — the food is wonderfully varied. You can eat Vietnamese pho for breakfast, Italian gelato after lunch, and a classic Aussie barbecue for dinner, all in the same suburb.
+
+Australians have a special word — mateship. It means friendship, loyalty, and looking out for each other. If your car breaks down on a dusty Outback road, a stranger will stop to help. If a bushfire threatens a town, neighbours show up with hoses, sandwiches, and open arms. Mateship is the glue that holds this big, spread-out country together.
+
+The beach is the heart of Australian life. Over eighty-five percent of Australians live within fifty kilometres of the coast. Children learn to swim almost as soon as they can walk. Surf lifesavers in their red and yellow caps patrol the beaches, keeping swimmers safe. The nippers program teaches kids as young as five how to read the ocean — where the rip currents hide, how to float if you get tired, and how to signal for help.
+
+Australians also shorten nearly every word. Breakfast is "brekkie." Afternoon is "arvo." A barbecue is a "barbie." A kangaroo is a "roo." If an Aussie says "no worries," it means everything is perfectly fine, relax, and maybe have another meat pie.
+
+Tonight, {childName}, remember that the best communities are built by people who look out for one another — just like the lifesavers watching the waves. Goodnight, little mate.`,
+      },
+      {
+        id: 'dc_au_ep5_facts', episodeNumber: 5, title: 'Wild Australia',
+        subtitle: 'Kangaroos that box, spiders that dance, and a fence longer than the Great Wall.',
+        tradition: 'universal', theme: 'wisdom', durationMinutes: 5,
+        source: 'Discover Australia · Episode 5',
+        body: `Australia is the land of "wait, that is REAL?" So get ready for some facts that sound made up but are absolutely true.
+
+Kangaroos cannot walk backwards. Their big, powerful tails and long hind legs are built for bouncing forward, not reversing. That is one reason the kangaroo appears on Australia's coat of arms — it represents a country that only moves forward.
+
+The platypus is one of the strangest animals on Earth. It has the bill of a duck, the tail of a beaver, the feet of an otter, and it lays eggs — even though it is a mammal. Oh, and the males have venomous spurs on their hind legs. When European scientists first saw a preserved platypus, they thought someone had glued animal parts together as a joke.
+
+There is a fence in Australia called the Dingo Fence. It stretches five thousand six hundred and fourteen kilometres — longer than the Great Wall of China — and its job is to keep wild dingoes away from sheep farms. It takes a team of workers driving along its length constantly, fixing holes and replacing wire.
+
+The box jellyfish, found in Australian waters, is one of the most venomous creatures alive. Its tentacles can stretch three metres long. But do not worry — beaches have special stinger nets and warning signs to keep swimmers safe.
+
+Now for something wonderful. Peacock spiders are tiny — smaller than your fingernail — and the males dance to impress females. They raise two colourful, patterned legs like fans and wiggle their bodies side to side. Scientists have filmed these dances, and they look like the spider is doing a little disco routine.
+
+Australia has more beaches than any other country — over ten thousand. If you visited a new beach every day, it would take you more than twenty-seven years to see them all.
+
+Tonight, {childName}, remember that nature is the wildest, most creative inventor of all — and Australia is its most playful laboratory. Goodnight, little naturalist.`,
+      },
+    ],
+  },
+
+  // ─── 3. Brazil 🇧🇷 ────────────────────────────────────────────────────────────
+  {
+    id: 'discover-brazil',
+    title: 'Discover Brazil',
+    icon: '🇧🇷',
+    gradient: 'linear-gradient(135deg, #15803d 0%, #22c55e 40%, #facc15 100%)',
+    description: 'Five bedtime journeys across Brazil — the Amazon, ancient peoples, towering statues, samba rhythms, and jaw-dropping records.',
+    ageRange: '4-8',
+    totalEpisodes: 5,
+    episodes: [
+      {
+        id: 'dc_br_ep1_geo', episodeNumber: 1, title: 'The Amazon & Endless Green',
+        subtitle: 'Fly over the biggest rainforest and the mightiest river on Earth.',
+        tradition: 'universal', theme: 'wisdom', durationMinutes: 5,
+        source: 'Discover Brazil · Episode 1',
+        body: `Close your eyes and imagine you are a tiny parrot with bright green feathers, soaring over a sea of trees that stretches from horizon to horizon. Welcome to Brazil — the biggest country in South America and home to the largest rainforest on the planet.
+
+The Amazon Rainforest covers an area bigger than all of Western Europe. From above, it looks like a giant green carpet, thick and endless. But zoom down into the canopy and you enter a world buzzing with life. Monkeys swing between branches. Toucans with enormous orange beaks hop from tree to tree. Poison dart frogs — tiny, bright blue or red — sit on wet leaves, warning everything with their colours: "Do not eat me."
+
+Winding through the forest is the Amazon River, the mightiest river on Earth. It carries more water than the next seven largest rivers combined. During the rainy season, the river swells so wide in places that you cannot see the other side. Pink river dolphins — yes, pink! — leap and play in its muddy waters. They are one of only a few dolphin species that live in freshwater.
+
+Fly south and the forest gives way to wide, flat grasslands called the Cerrado. Then further south, the land turns into the Pantanal — the largest tropical wetland in the world, where jaguars prowl the riverbanks and giant otters the size of a grown-up swim in family groups, chattering to each other.
+
+Along the coast, golden beaches stretch for over seven thousand kilometres. Waves crash against cliffs in the northeast, and in the south, the land cools into rolling green hills perfect for growing coffee — Brazil grows more coffee than any other country on Earth.
+
+Tonight, {childName}, remember that one forest can hold more life than you could count in a lifetime — and every single creature in it matters. Sweet dreams, little parrot.`,
+      },
+      {
+        id: 'dc_br_ep2_history', episodeNumber: 2, title: 'Ancient Peoples & Hidden Kingdoms',
+        subtitle: 'The first Brazilians — twelve thousand years of stories in the forest.',
+        tradition: 'universal', theme: 'wisdom', durationMinutes: 5,
+        source: 'Discover Brazil · Episode 2',
+        body: `Long before skyscrapers rose in Sao Paulo, long before ships arrived from Portugal, the land we now call Brazil was home to millions of Indigenous people who had lived there for at least twelve thousand years.
+
+Deep in the Amazon, the Tupi people fished the rivers, grew cassava — a starchy root vegetable — and told stories of a great creator called Tupa, the god of thunder, whose voice boomed across the sky during storms. They believed the forest was alive with spirits, and every tree, river, and animal had a soul that deserved respect.
+
+Scientists have recently discovered something astonishing. Hidden beneath the thick forest canopy, ancient peoples built enormous earthworks — huge geometric shapes carved into the ground, circles and squares as big as football fields. Using special tools that can see through trees from aeroplanes, researchers have found hundreds of these earthworks. This means the Amazon was not always wild and untouched — thriving communities lived there, farming, building, and creating art.
+
+In the Serra da Capivara National Park in northeast Brazil, rock walls are covered with paintings made over twelve thousand years ago. Stick figures dance, hunt deer, and hold hands in circles. These are some of the oldest artworks in the Americas — ancient bedtime stories told in paint instead of words.
+
+In 1500, Portuguese explorers arrived on Brazil's coast. They found a tree that produced a deep red dye, which they called pau-brasil — and that is how Brazil got its name. Over the centuries, people from Africa, Europe, Asia, and the Middle East came to Brazil, blending their languages, foods, and traditions into the vibrant culture you see today.
+
+Tonight, {childName}, remember that beneath every forest and beneath every city, there are layers of history — stories of people who came before, whose footprints are still in the earth. Goodnight, little archaeologist.`,
+      },
+      {
+        id: 'dc_br_ep3_places', episodeNumber: 3, title: 'Christ the Redeemer & Iguazu Falls',
+        subtitle: 'Stand beneath open arms on a mountaintop and feel the thunder of waterfalls.',
+        tradition: 'universal', theme: 'wisdom', durationMinutes: 5,
+        source: 'Discover Brazil · Episode 3',
+        body: `Imagine you are riding a tiny red train up a steep, green mountain above the city of Rio de Janeiro. The trees thin out. The air gets misty. And then, towering above you, arms stretched wide as if ready to give the whole city a hug, stands Christ the Redeemer.
+
+This enormous statue is thirty metres tall — about the height of a ten-storey building — and stands on top of Mount Corcovado, seven hundred metres above the sparkling sea. Made of concrete and covered in thousands of tiny soapstone tiles, it has watched over Rio since 1931. At night, lights make the statue glow white against the dark sky, and from the beaches below it looks like a guardian floating among the stars.
+
+From the statue's feet, you can see Sugarloaf Mountain — a dome of smooth grey rock rising from the harbour like a giant gumdrop. A cable car carries visitors to the top, swinging gently over the treetops and the blue bay below.
+
+Now fly a thousand kilometres south to the border with Argentina, and you will hear Iguazu Falls before you see them. A deep rumble, like distant thunder that never stops. Then the mist hits your face. And then — the falls appear. Two hundred and seventy-five separate waterfalls plunge over cliffs in a massive horseshoe shape, surrounded by lush jungle. Rainbows shimmer in the mist. Butterflies with wings as blue as the sky flutter around you. A walkway stretches right to the edge of a section called the Devil's Throat, where the water drops so powerfully that the spray rises like a cloud.
+
+In the northeast sits the colourful city of Salvador, with cobblestone streets, pastel-painted buildings, and the sound of drums drifting from every corner. It was the first capital of Brazil and still pulses with Afro-Brazilian heritage.
+
+Tonight, {childName}, remember that whether it is a statue with open arms or a waterfall that roars like thunder, the most magnificent places on Earth remind us how beautiful it is to be alive. Goodnight, little traveller.`,
+      },
+      {
+        id: 'dc_br_ep4_culture', episodeNumber: 4, title: 'Samba, Football & Acai Bowls',
+        subtitle: 'The rhythms, games, and flavours that make Brazil dance.',
+        tradition: 'universal', theme: 'wisdom', durationMinutes: 5,
+        source: 'Discover Brazil · Episode 4',
+        body: `If Brazil had a heartbeat, it would sound like a samba drum. Samba is the music and dance that flows through Brazil like a river of rhythm. It started in the Afro-Brazilian communities of Bahia, blending African drumming traditions with Portuguese melodies. The beat is fast, joyful, and impossible to resist — even your toes will start tapping.
+
+Every year before Lent, Brazil throws the biggest party on Earth — Carnival. In Rio de Janeiro, samba schools — huge community groups that spend the entire year preparing — parade down a giant avenue called the Sambadrome. Dancers wear costumes covered in feathers, sequins, and glitter, some so tall they need wheels to support them. Drummers pound out rhythms that shake the ground. The whole city dances for four days straight.
+
+Now let us talk about football — or as Brazilians say, futebol. Brazil has won the FIFA World Cup five times, more than any other country. Children play on beaches, in alleyways, on dirt fields — anywhere they can find space. The legendary Pele, who grew up too poor to afford a ball, practised with a sock stuffed with newspaper. He went on to score over a thousand goals and became one of the greatest athletes in history.
+
+Brazilian food is a warm hug. Feijoada, the national dish, is a rich stew of black beans and pork, served with rice, orange slices, and farofa — crunchy toasted cassava flour. On hot days, Brazilians cool down with acai bowls — thick, frozen purple pulp from a palm berry, topped with granola, banana, and honey. Acai comes straight from the Amazon.
+
+Brazilians greet friends with a kiss on each cheek and the word "oi," which means "hi." Family gatherings are loud, warm, and filled with laughter — Sunday lunch at grandma's house can last all afternoon.
+
+Tonight, {childName}, remember that the happiest communities are the ones that make time to dance, play, and eat together. Goodnight, little samba dancer.`,
+      },
+      {
+        id: 'dc_br_ep5_facts', episodeNumber: 5, title: 'Record-Breaking Brazil',
+        subtitle: 'The loudest animals, widest rivers, and a city built from nothing.',
+        tradition: 'universal', theme: 'wisdom', durationMinutes: 5,
+        source: 'Discover Brazil · Episode 5',
+        body: `Brazil is so full of records that your head might spin. Ready? Let us go.
+
+The Amazon River is not just the mightiest river — scientists recently discovered that beneath it flows another river, underground, at a depth of about four thousand metres. This hidden river is just as long as the Amazon above it, slowly moving through porous rock. A secret twin river flowing in the dark.
+
+Brazil is the most biodiverse country on Earth. It is home to more species of plants, freshwater fish, and mammals than anywhere else. The Amazon alone contains about ten percent of all the species on the planet. Scientists find new species there every year — a tiny frog here, an unusual orchid there.
+
+The howler monkey, found in Brazil's forests, is the loudest land animal in the world. Its call can be heard from five kilometres away. Imagine your alarm clock being heard from the other side of town — that is a howler monkey at sunrise.
+
+In 1960, Brazil did something extraordinary. It built a brand-new capital city from scratch — Brasilia — in the middle of empty grassland. The architect Oscar Niemeyer designed buildings that looked like they came from the future — swooping curves, white domes, and towers that seemed to float. From above, the city is shaped like an aeroplane.
+
+Brazil's coastline is the longest in the Atlantic Ocean — over seven thousand four hundred kilometres of beaches. The country spans three time zones. And the Amazon River's mouth is so wide — over three hundred and twenty kilometres — that you could fit the entire country of England inside it.
+
+One more: the Itaipu Dam, on the border with Paraguay, was once the largest hydroelectric dam in the world. It produces enough clean energy to power entire countries.
+
+Tonight, {childName}, remember that a country this big holds enough wonders for a lifetime of exploring — and the adventure is always just beginning. Goodnight, little explorer.`,
+      },
+    ],
+  },
+
+  // ─── 4. France 🇫🇷 ────────────────────────────────────────────────────────────
+  {
+    id: 'discover-france',
+    title: 'Discover France',
+    icon: '🇫🇷',
+    gradient: 'linear-gradient(135deg, #1e3a8a 0%, #f8fafc 50%, #dc2626 100%)',
+    description: 'Five bedtime journeys across France — lavender fields, knights, the Eiffel Tower, croissants, and records that sparkle.',
+    ageRange: '4-8',
+    totalEpisodes: 5,
+    episodes: [
+      {
+        id: 'dc_fr_ep1_geo', episodeNumber: 1, title: 'Lavender, Alps & Atlantic Waves',
+        subtitle: 'Fly over purple fields, snowy peaks, and golden coastlines.',
+        tradition: 'universal', theme: 'wisdom', durationMinutes: 5,
+        source: 'Discover France · Episode 1',
+        body: `Close your eyes and imagine you are a butterfly drifting over a country shaped like a hexagon — six beautiful sides surrounded by mountains, oceans, and rivers. Welcome to France, sitting right in the heart of Western Europe.
+
+Start in the south, in a region called Provence. Below you stretch endless rows of lavender — purple as far as you can see, humming with bees, filling the warm air with a scent so sweet it makes you sleepy. Sunflowers stand tall in neighbouring fields, their golden faces always turned toward the sun. Olive trees twist their silver-green leaves in the breeze, their roots deep in sandy soil.
+
+Now fly east and the land rises sharply. You have reached the French Alps — jagged, snow-capped peaks where Mont Blanc, the tallest mountain in Western Europe, towers at four thousand eight hundred and eight metres. Skiers carve down white slopes in winter, and in summer, hikers walk through meadows dotted with wildflowers and the gentle clanging of cowbells.
+
+Turn north and you will cross rolling green countryside — vineyards in neat rows in Burgundy, fields of golden wheat in the Loire Valley, and thick forests in the Vosges where deer hide among ancient oak trees.
+
+The west coast faces the Atlantic Ocean. In Brittany, dramatic cliffs drop into crashing waves, and lighthouses perch on lonely rocks. In the south-west, the Dune of Pilat is the tallest sand dune in Europe — over one hundred metres high — and from its top you can see dark pine forest on one side and sparkling ocean on the other.
+
+Four great rivers wind through France — the Seine through Paris, the Loire through castle country, the Rhone through wine country, and the Garonne through the sunny south-west.
+
+Tonight, {childName}, remember that even a country small enough to cross in a day can hold a universe of beauty within its borders. Sweet dreams, little butterfly.`,
+      },
+      {
+        id: 'dc_fr_ep2_history', episodeNumber: 2, title: 'Knights, Kings & a Girl Named Joan',
+        subtitle: 'Castles, crowns, and the teenager who changed history.',
+        tradition: 'universal', theme: 'wisdom', durationMinutes: 5,
+        source: 'Discover France · Episode 2',
+        body: `Once upon a very real time, France was a land of castles, knights in shining armour, and kings who wore crowns heavy with jewels. But the most incredible story of all belongs to a teenage girl.
+
+Over a thousand years ago, France was ruled by powerful kings — the Franks. A king named Charlemagne united much of Europe and was crowned emperor on Christmas Day in the year 800. He loved books and learning so much that he set up schools across his empire, even though most people at the time could not read.
+
+The Loire Valley filled up with castles — over three hundred of them, with tall towers, drawbridges over moats, and gardens trimmed into perfect shapes. Knights trained from boyhood, learning to joust on horseback and follow a code of honour — be brave, be kind, protect those weaker than you.
+
+Then came a dark time. England and France fought a war that lasted over a hundred years — the Hundred Years' War. France was losing badly. Whole regions were captured. Hope was fading.
+
+And then, from a tiny village called Domremy, came Joan of Arc — a seventeen-year-old girl who had never held a sword. She believed she heard voices telling her to save France. She cut her hair short, put on armour, and rode to meet the prince. She was so brave and so certain that soldiers twice her age followed her into battle. She helped lift the siege of Orleans, a turning point in the war. Joan was captured and tragically killed at just nineteen — but her courage changed the course of history. Today, she is one of France's greatest heroes.
+
+Centuries later, in 1789, the French people rose up and said that all citizens deserved equal rights. The French Revolution gave the world the words liberty, equality, and fraternity — freedom, fairness, and friendship for all.
+
+Tonight, {childName}, remember Joan of Arc. You do not need to be big or old to be brave. Sometimes the quietest voice in the room can change the world. Goodnight, little knight.`,
+      },
+      {
+        id: 'dc_fr_ep3_places', episodeNumber: 3, title: 'The Eiffel Tower & the Louvre',
+        subtitle: 'Climb the iron lady of Paris and meet the most famous smile in the world.',
+        tradition: 'universal', theme: 'wisdom', durationMinutes: 5,
+        source: 'Discover France · Episode 3',
+        body: `Imagine you are standing on a wide green lawn in Paris, your neck tilted all the way back, looking straight up at the Eiffel Tower. It soars three hundred and thirty metres into the sky — taller than an eighty-storey building — and it is made entirely of iron. Eighteen thousand pieces of iron held together by two and a half million rivets. When it was built in 1889 for a world fair, many people hated it. They called it an eyesore, a metal monster. But Parisians grew to love it, and now it is the most visited paid monument on Earth. At night, twenty thousand light bulbs make it sparkle for five minutes every hour, like a giant golden candle.
+
+Walk along the River Seine and you will reach the Louvre — the biggest art museum in the world. It used to be a royal palace, and you can still feel its grandeur in the long marble hallways and golden ceilings. Inside hangs the Mona Lisa, a small painting by Leonardo da Vinci of a woman with a mysterious half-smile. Millions of people travel from around the world just to stand in front of her for a few minutes and wonder: what is she thinking?
+
+Take a train south to the coast, and you will reach the Palace of Versailles — a palace so enormous it has over two thousand three hundred rooms and gardens that stretch for kilometres, with fountains that shoot water high into the air in perfect choreography.
+
+In Normandy, on the northwest coast, cliffs rise above beaches where one of the most important events of the twentieth century took place — D-Day, when thousands of brave soldiers landed on the shore to free Europe during World War Two. Today, peaceful meadows and white crosses mark the spot.
+
+And in the south, the hilltop village of Mont-Saint-Michel rises from the sea like a fairy-tale castle, cut off from the mainland when the tide rolls in.
+
+Tonight, {childName}, remember that the Eiffel Tower was once the most hated building in Paris — and now it is the most loved. Sometimes the best ideas just need time. Goodnight, little artist.`,
+      },
+      {
+        id: 'dc_fr_ep4_culture', episodeNumber: 4, title: 'Croissants, Berets & Bonjour',
+        subtitle: 'The food, fashion, and daily rituals that make France magnifique.',
+        tradition: 'universal', theme: 'wisdom', durationMinutes: 5,
+        source: 'Discover France · Episode 4',
+        body: `In France, breakfast starts with a warm croissant — a crescent-shaped pastry made of thin layers of buttery dough, so flaky that crumbs rain down on the table like golden confetti. Dip it in a bowl of hot chocolate — yes, a bowl, not a mug — and you have the most perfect morning in the world.
+
+French food is treated like an art form. Bakers wake at three in the morning to make fresh baguettes — long, crispy loaves of bread with soft, fluffy insides. By law, a traditional French baguette can only contain four ingredients: flour, water, salt, and yeast. Simple things, done perfectly.
+
+Lunch is not rushed. Families sit down together, eat slowly, and talk. A typical meal might be a savoury quiche Lorraine — a warm egg and cheese tart — followed by a green salad, then cheese (France has over a thousand types of cheese!), and finally a small dessert like a fruit tart or a delicate cream puff.
+
+French children say "bonjour" — good day — to every grown-up they meet. It is considered the most important word in France. Walking into a shop without saying bonjour is like walking into someone's home without knocking.
+
+France is also the birthplace of fashion. Paris Fashion Week draws designers from around the world twice a year. But everyday French style is simpler than you might think — a striped shirt, good shoes, and confidence. The French believe that being well-dressed is a way of being polite to the people around you.
+
+French children play petanque — a game where you toss metal balls toward a small wooden target ball on a sandy court. It is played in village squares everywhere, usually by people of all ages, with plenty of friendly arguing about whose ball is closest.
+
+The Tour de France, the world's most famous bicycle race, winds through the country every July, climbing mountain passes and speeding through sunflower fields.
+
+Tonight, {childName}, remember that the best things — a warm croissant, a slow lunch, a kind bonjour — are often the simplest. Goodnight, magnifique dreamer.`,
+      },
+      {
+        id: 'dc_fr_ep5_facts', episodeNumber: 5, title: 'Ooh La La — French Records',
+        subtitle: 'The most visited country, the fastest trains, and a bridge taller than the Eiffel Tower.',
+        tradition: 'universal', theme: 'wisdom', durationMinutes: 5,
+        source: 'Discover France · Episode 5',
+        body: `France holds some records that will make you say "ooh la la!" Ready? Here we go.
+
+France is the most visited country on the entire planet. Every year, more than ninety million tourists arrive — that is more than the entire population of France itself. They come for the food, the art, the history, and of course, that sparkling tower.
+
+The TGV — Train a Grande Vitesse, which means "high speed train" — once set a world speed record of five hundred and seventy-four kilometres per hour. That is faster than a small aeroplane. Regular TGV trains cruise at three hundred and twenty kilometres per hour, zooming passengers from Paris to the south of France in just three hours.
+
+The Millau Viaduct is a bridge so tall that its highest point — three hundred and forty-three metres — is taller than the Eiffel Tower. It crosses a valley in the south of France, and when morning mist fills the valley below, the bridge looks like it is floating in the clouds.
+
+France gave the world the metric system — metres, kilograms, litres — the measuring system used by almost every country on Earth. French scientists in the 1790s decided the world needed one simple system that everyone could share.
+
+The Louvre museum is so big that if you spent thirty seconds looking at each piece of art, it would take you over one hundred days to see everything — without sleeping.
+
+Here is a sweet one. The eclair, the macaron, the souffle, the crepe, and the croissant — five of the world's most beloved pastries — all come from France. French patisseries treat baking like chemistry, measuring every gram with precision.
+
+And France has a village called Saint-Louis-de-Montferrand where the postbox is a baguette. Well, shaped like one. Because in France, even the mail has style.
+
+Tonight, {childName}, remember that a country does not need to be the biggest to be the most wonderful — it just needs to do things with love. Goodnight, little record-keeper.`,
+      },
+    ],
+  },
+
+  // ─── 5. Egypt 🇪🇬 ────────────────────────────────────────────────────────────
+  {
+    id: 'discover-egypt',
+    title: 'Discover Egypt',
+    icon: '🇪🇬',
+    gradient: 'linear-gradient(135deg, #b45309 0%, #f59e0b 40%, #d4a574 100%)',
+    description: 'Five bedtime journeys across Egypt — the Nile, pharaohs, pyramids, spices, and records carved in stone.',
+    ageRange: '4-8',
+    totalEpisodes: 5,
+    episodes: [
+      {
+        id: 'dc_eg_ep1_geo', episodeNumber: 1, title: 'The Nile & the Golden Desert',
+        subtitle: 'Follow the world\'s longest river through a land of sand and green.',
+        tradition: 'universal', theme: 'wisdom', durationMinutes: 5,
+        source: 'Discover Egypt · Episode 1',
+        body: `Close your eyes and imagine you are a hawk, circling high above a land of gold. Below you stretches Egypt — mostly desert, vast and quiet, where sand dunes ripple like a frozen ocean. The Sahara Desert covers almost the entire country, and it is the largest hot desert on Earth.
+
+But look — there, cutting through the golden sand like a long green ribbon, is the Nile River. The Nile is the longest river in Africa, flowing over six thousand six hundred kilometres from deep in the heart of the continent all the way north to the Mediterranean Sea. Without the Nile, Egypt would be nothing but sand. The river brings life. Along its banks, palm trees sway, fields of wheat and cotton grow thick and green, and farmers called fellahin work the soil just as their ancestors did thousands of years ago.
+
+Every year, the Nile used to flood, spreading rich black mud across the land. This mud was so good for growing crops that the ancient Egyptians called their country Kemet — "the black land." The floods were so regular that farmers could plan their whole year around them.
+
+Fly south and you will reach Lake Nasser, one of the largest man-made lakes in the world, created when the Aswan High Dam was built in the 1960s. The dam controls the Nile's floods and provides electricity to millions of people.
+
+Along the coast of the Red Sea, the desert drops into crystal-clear water filled with coral reefs almost as colourful as the Great Barrier Reef. Fish striped in orange and purple dart through underwater gardens of pink and blue coral.
+
+In the western desert, an oasis called Siwa hides among the dunes — a green pocket of palm trees and freshwater springs where people have lived for thousands of years, far from any city, under the most star-filled sky you have ever seen.
+
+Tonight, {childName}, remember that life always finds a way — even in the driest desert, a river can bring a world of green. Sweet dreams, little hawk.`,
+      },
+      {
+        id: 'dc_eg_ep2_history', episodeNumber: 2, title: 'Pharaohs & the River of Time',
+        subtitle: 'Gods, queens, and a civilisation that lasted three thousand years.',
+        tradition: 'universal', theme: 'wisdom', durationMinutes: 5,
+        source: 'Discover Egypt · Episode 2',
+        body: `Imagine a civilisation so powerful it lasted over three thousand years — longer than any other in human history. That is ancient Egypt.
+
+It all began along the Nile. Around five thousand years ago, a king named Narmer united Upper and Lower Egypt into one kingdom. He wore a double crown — one for each region — and became the first pharaoh. Pharaohs were believed to be part human, part god, chosen by the heavens to rule the land.
+
+The Egyptians worshipped many gods. Ra, the sun god, sailed across the sky each day in a golden boat. Anubis, with the head of a jackal, guarded the dead. And Isis, the great mother goddess, was said to have magical powers strong enough to bring the dead back to life.
+
+One of the most fascinating pharaohs was Hatshepsut — a woman who became pharaoh in a time when only men were supposed to rule. She wore the royal false beard, built magnificent temples, and sent trading ships to faraway lands. Her temple at Deir el-Bahari, carved into the side of a cliff, still stands today — three thousand five hundred years later.
+
+Then there was Tutankhamun — the boy king, who became pharaoh at just nine years old. When his tomb was discovered in 1922, it was filled with golden treasures that had been sealed in darkness for over three thousand years. His golden death mask, with its calm, young face, is one of the most famous objects ever found.
+
+The ancient Egyptians invented hieroglyphics — a writing system made of tiny pictures. A bird meant one thing, a wavy line meant water, an eye meant to see. For centuries, nobody could read them — until a stone slab called the Rosetta Stone was found, and a clever scholar cracked the code.
+
+Tonight, {childName}, remember that the most powerful people in history were often the ones who built things that lasted — not weapons, but temples, stories, and knowledge. Goodnight, little pharaoh.`,
+      },
+      {
+        id: 'dc_eg_ep3_places', episodeNumber: 3, title: 'Pyramids & the Sphinx',
+        subtitle: 'Stand before the last surviving wonder of the ancient world.',
+        tradition: 'universal', theme: 'wisdom', durationMinutes: 5,
+        source: 'Discover Egypt · Episode 3',
+        body: `Imagine you are standing at the edge of the desert, just outside the city of Cairo. The sand is warm under your feet. And there, rising before you against the pale blue sky, are the Great Pyramids of Giza — the last surviving wonder of the ancient world.
+
+The biggest one, the Great Pyramid, was built for Pharaoh Khufu over four thousand five hundred years ago. It is made of more than two million stone blocks, each weighing as much as a car. It stood as the tallest structure on Earth for nearly four thousand years. And here is the most astonishing part — it was built without modern machines. Workers cut limestone blocks, dragged them on wooden sleds, and stacked them with incredible precision. The base is so perfectly level that the difference between the highest and lowest corners is just two centimetres.
+
+Guarding the pyramids is the Great Sphinx — a massive statue with the body of a lion and the face of a pharaoh, carved from a single ridge of limestone. It is seventy-three metres long and twenty metres tall. Sand has buried it up to its shoulders many times over the centuries, and each time, someone has dug it out again.
+
+Sail up the Nile to Luxor, and you will find the Valley of the Kings — a hidden desert valley where sixty-three royal tombs are cut deep into the rock. The walls inside are painted with scenes of the afterlife — boats sailing through a starry underworld, gods weighing hearts on golden scales, and pharaohs joining the sun on its eternal journey.
+
+Across the river stands the Temple of Karnak, so large that ten European cathedrals could fit inside it. Its columns, painted in faded reds and blues, are as thick as ancient trees and rise higher than a five-storey building.
+
+In the south, the temples of Abu Simbel feature four giant statues of Pharaoh Ramesses II, each twenty metres tall, carved directly into the cliff face, gazing out across the desert with calm, eternal eyes.
+
+Tonight, {childName}, remember that the pyramids were built one block at a time — and anything you build with patience and care can last for thousands of years. Goodnight, little builder.`,
+      },
+      {
+        id: 'dc_eg_ep4_culture', episodeNumber: 4, title: 'Spices, Stars & Sweet Tea',
+        subtitle: 'The food, music, and warm hospitality that fill Egyptian homes.',
+        tradition: 'universal', theme: 'wisdom', durationMinutes: 5,
+        source: 'Discover Egypt · Episode 4',
+        body: `In Egypt, when a guest arrives, the very first thing that happens is tea. Sweet, dark, amber-coloured tea in a small glass, sometimes with fresh mint leaves floating on top. Offering tea is a way of saying: "You are welcome here. Sit. Stay. Tell me about your day."
+
+Egyptian food is warm, hearty, and full of flavours that have been perfected over centuries. The national dish is koshari — a big, comforting bowl of rice, lentils, macaroni, and chickpeas, topped with tangy tomato sauce and crispy fried onions. It sounds simple, but every bite is a little symphony of textures and tastes. Street vendors serve it from huge pots, and it costs almost nothing — because good food should be for everyone.
+
+For breakfast, many Egyptians eat ful medames — slow-cooked fava beans mashed with garlic, lemon, and olive oil, scooped up with warm flatbread. It has been eaten in Egypt for thousands of years. Pharaohs probably ate something very similar.
+
+Egyptian music fills the air like perfume. The oud — a pear-shaped stringed instrument — plays melodies that can make you feel happy and melancholy at the same time. The great singer Umm Kulthum, known as the Star of the East, had a voice so powerful that when she sang on the radio, the streets of Cairo would go quiet as millions of people stopped to listen.
+
+Family is at the centre of everything. Egyptian families are often large and close-knit. Friday is the day for gathering — grandparents, aunts, uncles, and cousins fill the house with laughter, stories, and enormous meals that take all morning to prepare.
+
+During the holy month of Ramadan, Muslims fast from sunrise to sunset and then break their fast with a special meal called iftar. Lanterns called fanoos are hung from balconies, glowing in every colour, and children run through the streets singing traditional Ramadan songs.
+
+Tonight, {childName}, remember that hospitality — making someone feel at home — is one of the most beautiful gifts you can give. Goodnight, little host.`,
+      },
+      {
+        id: 'dc_eg_ep5_facts', episodeNumber: 5, title: 'Ancient Records & Modern Marvels',
+        subtitle: 'The oldest board game, the busiest canal, and toothpaste from the pharaohs.',
+        tradition: 'universal', theme: 'wisdom', durationMinutes: 5,
+        source: 'Discover Egypt · Episode 5',
+        body: `Egypt is a land where records were being set before most countries even existed. Let us dive in.
+
+The ancient Egyptians invented one of the first forms of toothpaste — a mixture of crushed rock salt, dried flowers, pepper, and mint. They also invented breath mints made of cinnamon and honey. Even five thousand years ago, people wanted fresh breath.
+
+The oldest known board game, Senet, was played in Egypt over five thousand years ago. The board had thirty squares and players moved pieces based on the throw of sticks. Pharaohs were buried with Senet boards so they could play in the afterlife. Imagine loving a board game so much you wanted to take it with you forever.
+
+The Suez Canal, opened in 1869, is one of the most important waterways on Earth. It connects the Mediterranean Sea to the Red Sea, allowing ships to travel between Europe and Asia without going all the way around Africa. About fifty ships pass through it every single day, carrying goods that fill shops all over the world.
+
+Here is an amazing engineering fact. In the 1960s, the temples of Abu Simbel were about to be flooded by the new Aswan Dam. So engineers cut the entire temple into blocks — over a thousand of them, some weighing thirty tonnes — and moved it to higher ground, piece by piece. It took five years. They reassembled it so perfectly that on the same two days each year, sunlight still shines through the temple entrance and illuminates the statues inside, exactly as it did three thousand years ago.
+
+Ancient Egyptians were some of the first people to use a calendar with three hundred and sixty-five days. They divided the year into twelve months and three seasons — flood, growth, and harvest — based on the Nile.
+
+The Great Pyramid was once covered in smooth white limestone that gleamed so brightly in the sun it could be seen from miles away. People called it "the mountain that shines."
+
+Tonight, {childName}, remember that the people of Egypt have been inventing, building, and dreaming for five thousand years — and the story is still being written. Maybe you will add a chapter of your own. Goodnight, little inventor.`,
+      },
+    ],
+  },,
+// ── 🇲🇽 Mexico ──────────────────────────────────────────────────────────
+  {
+    id: 'discover-mexico',
+    title: 'Discover Mexico',
+    icon: '🇲🇽',
+    gradient: 'linear-gradient(135deg, #166534 0%, #dc2626 50%, #fafafa 100%)',
+    description: 'Five bedtime journeys through Mexico — volcanoes, pyramids, bright colors, and amazing flavors.',
+    ageRange: '4-8',
+    totalEpisodes: 5,
+    episodes: [
+      {
+        id: 'dc_mx_ep1_geo', episodeNumber: 1, title: 'Mountains of Fire & Turquoise Seas',
+        subtitle: 'Mexico\'s wild landscapes — from smoking volcanoes to glowing caves.',
+        tradition: 'universal', theme: 'wisdom', durationMinutes: 5,
+        source: 'Discover Mexico · Episode 1',
+        body: `Imagine you are a tiny hummingbird, hovering above a country shaped like a giant horn. Welcome to Mexico, where the land itself tells stories.
+
+Down the middle of the country runs a chain of enormous mountains called the Sierra Madre — the "Mother Mountains." They are so tall that clouds get stuck on their peaks like fluffy white hats. Between the mountains sit high, flat valleys where cities sparkle at night like bowls full of stars.
+
+Now fly south and you will find two volcanoes standing side by side near Mexico City. Their names are Popocatépetl and Iztaccíhuatl — Popo and Izta for short. Popo is still alive! Sometimes he sends puffs of smoke into the sky, like a sleeping dragon breathing in his dreams. Izta is quiet and covered in snow. An old legend says she is a princess who fell into an endless sleep, and Popo watches over her forever.
+
+Zoom to the east coast and the land flattens into the Yucatán Peninsula — a limestone shelf hiding thousands of underground rivers and magical pools called cenotes. Picture a hole in the jungle floor filled with crystal-clear water that glows turquoise when sunlight pours in. Ancient people believed cenotes were doorways to another world.
+
+Head northwest and you will cross the Sonoran Desert, where cactuses grow taller than houses. The giant saguaro cactus can live for two hundred years and hold enough water inside to fill a bathtub. Even in the driest places, life finds a way.
+
+And if you fly all the way to the coast of Baja California, gray whales swim close to shore every winter to have their babies in warm, shallow lagoons. Mama whales sometimes lift their calves to the surface so people in boats can say hello.
+
+Tonight, {childName}, remember that Mexico's land stretches from smoking volcanoes to glowing underwater caves. Even the Earth has a wild imagination — and so do you.`,
+      },
+      {
+        id: 'dc_mx_ep2_hist', episodeNumber: 2, title: 'Pyramids, Calendars & Chocolate',
+        subtitle: 'The ancient civilizations that built wonders in the jungle.',
+        tradition: 'universal', theme: 'wisdom', durationMinutes: 5,
+        source: 'Discover Mexico · Episode 2',
+        body: `Long before cars or phones or even writing in English, brilliant people built cities in Mexico that amazed the world.
+
+The Olmec people came first, over three thousand years ago. They carved enormous stone heads — some taller than a grown-up — out of volcanic rock and rolled them through the jungle. Nobody is quite sure how they moved stones that heavy. Some heads weigh as much as four elephants!
+
+Then came the Maya, who built gleaming white cities in the jungle of the Yucatán. The Maya loved math and stars. They invented a calendar so accurate that it could predict eclipses hundreds of years into the future. At the city of Chichén Itzá, they built a pyramid called El Castillo — "The Castle." Twice a year, when the sun sets on the spring and autumn equinox, shadows slide down the pyramid stairs and form the shape of a giant feathered serpent slithering to the ground. The Maya designed that on purpose, thousands of years ago!
+
+In central Mexico, the Aztecs built their capital, Tenochtitlán, on an island in the middle of a lake. They created floating gardens called chinampas — rafts of woven reeds piled with soil where they grew corn, beans, squash, and flowers. The city had wide canals instead of streets, bridges, and a marketplace so big that sixty thousand people visited it every single day.
+
+And here is a delicious secret: the Aztecs invented chocolate! They ground cacao beans into a bitter, spicy drink they called xocolātl. They believed it was a gift from the gods. When European explorers tasted it, they added sugar — and that is how the chocolate you know was born.
+
+Close your eyes, {childName}, and picture those ancient builders, stargazers, and chocolate makers. They proved that curiosity and cleverness can build wonders that last forever — and your ideas can too.`,
+      },
+      {
+        id: 'dc_mx_ep3_places', episodeNumber: 3, title: 'Colors Everywhere You Look',
+        subtitle: 'From Frida\'s blue house to the floating gardens of Xochimilco.',
+        tradition: 'universal', theme: 'wisdom', durationMinutes: 5,
+        source: 'Discover Mexico · Episode 3',
+        body: `Mexico is one of the most colorful countries on Earth, and tonight we are going to visit its most magical places.
+
+Start in Mexico City, one of the biggest cities in the world. Over twenty-one million people live here! In the heart of the city stands the Palacio de Bellas Artes — the Palace of Fine Arts — a building made of white marble that glows golden at sunset. Inside, enormous murals painted by Diego Rivera cover the walls, telling the story of Mexico in swirling colors.
+
+Now hop on a brightly painted boat called a trajinera and float through the canals of Xochimilco, the last remaining piece of those ancient Aztec floating gardens. Musicians play guitars on passing boats. Flower sellers paddle alongside you. The water reflects every color of the rainbow.
+
+Travel south to the town of Oaxaca, where buildings are painted in terracotta, mustard yellow, and turquoise. The streets smell like roasting chocolate and fresh tortillas. Every July, the Guelaguetza festival fills the hillside stadium with dancers in spectacular costumes, each village sharing its own special dance.
+
+In the small city of Guanajuato, houses are stacked up the hillsides in every crayon color you can imagine — pink, orange, lime green, sky blue. The streets are so narrow that people on opposite balconies can shake hands across the alley. Underground tunnels, once river beds, now serve as roads for cars driving beneath the city.
+
+And do not forget the Casa Azul — the Blue House — in the Coyoacán neighborhood of Mexico City. This cobalt-blue building was the home of the famous artist Frida Kahlo. Her paintings, her garden, and even her kitchen are still there, bright and bold, just as she left them.
+
+Dream in color tonight, {childName}. Mexico shows us that the world is more beautiful when you are not afraid to paint it bright.`,
+      },
+      {
+        id: 'dc_mx_ep4_culture', episodeNumber: 4, title: 'Tacos, Mariachi & Day of the Dead',
+        subtitle: 'The food, music, and celebrations that make Mexico unforgettable.',
+        tradition: 'universal', theme: 'wisdom', durationMinutes: 5,
+        source: 'Discover Mexico · Episode 4',
+        body: `Let us start with the most important question: what is for dinner in Mexico?
+
+The answer is tacos — but not the kind you might be picturing. In Mexico, a taco can be almost anything wrapped in a soft, warm corn tortilla. Street vendors called taqueros set up little stands on every corner, grilling meat over charcoal, chopping cilantro and onions, and squeezing fresh lime on top. There are tacos al pastor — thin slices of pork cooked on a spinning spit with a pineapple on top. There are tacos de canasta — "basket tacos" — carried through the streets in cloth-lined baskets, steaming and soft. Every region has its own special taco, and people argue lovingly about whose is best.
+
+Now listen — do you hear that? Trumpets! Violins! Guitars! That is a mariachi band, and they are the soundtrack of Mexico. Mariachi musicians wear elegant suits with silver buttons and wide-brimmed sombreros. They play at weddings, birthdays, and sometimes just under someone's window at midnight as a surprise serenade. The music swells with joy and sometimes with beautiful sadness — because mariachi is not afraid of big feelings.
+
+The most magical celebration in Mexico is Día de los Muertos — the Day of the Dead — on November first and second. Families build colorful altars called ofrendas decorated with bright marigold flowers, candles, sugar skulls, and photos of loved ones who have passed away. They set out the favorite foods and drinks of those they miss. It is not a sad holiday — it is a joyful reunion. Families believe that for one night, their loved ones return to share a meal and a laugh.
+
+The marigold petals are scattered in paths from the cemetery to the house, so the spirits can follow the bright orange trail home.
+
+As you drift to sleep, {childName}, remember that in Mexico, love does not end — it just changes shape, like marigold petals glowing in the candlelight.`,
+      },
+      {
+        id: 'dc_mx_ep5_facts', episodeNumber: 5, title: 'World Records & Wild Wonders',
+        subtitle: 'The jaw-dropping facts that make Mexico one of a kind.',
+        tradition: 'universal', theme: 'wisdom', durationMinutes: 5,
+        source: 'Discover Mexico · Episode 5',
+        body: `Get ready, because Mexico is full of facts that will make your eyes go wide.
+
+Mexico is home to the world's smallest volcano. Cuexcomate, near the city of Puebla, is only thirteen meters tall — about as high as a four-story building. You can walk down a spiral staircase inside it and stand at the bottom of a real volcanic crater. It has not erupted in a very long time, so do not worry!
+
+In the Cave of Crystals deep beneath the Chihuahuan Desert, scientists discovered crystals as long as school buses. These giant selenite crystals grew slowly over hundreds of thousands of years in water heated by magma far below. The cave is so hot — over fifty degrees Celsius — that people can only survive inside for a few minutes, even wearing special cooling suits.
+
+Mexico has more species of reptiles than any other country on Earth — over nine hundred kinds of lizards, snakes, and turtles. The axolotl, a smiling pink salamander that lives in the lakes near Mexico City, can regrow its legs, heart, and even parts of its brain. Scientists study it hoping to learn the secret of healing.
+
+The world's largest pyramid by volume is not in Egypt — it is in Cholula, Mexico! The Great Pyramid of Cholula is so enormous that it looks like a hill with a church built on top. It is wider at the base than the Great Pyramid of Giza and was built layer upon layer over a thousand years by different civilizations.
+
+And every winter, millions of monarch butterflies travel over four thousand kilometers from Canada and the United States to a tiny patch of forest in the mountains of Michoacán, Mexico. The trees bend under the weight of so many orange wings. Nobody taught the butterflies the route — they just know.
+
+Goodnight, {childName}. Like those monarch butterflies, you carry something amazing inside you — an instinct for wonder that will guide you wherever you need to go.`,
+      },
+    ],
+  },
+
+  // ── 🇮🇹 Italy ──────────────────────────────────────────────────────────
+  {
+    id: 'discover-italy',
+    title: 'Discover Italy',
+    icon: '🇮🇹',
+    gradient: 'linear-gradient(135deg, #166534 0%, #fafafa 50%, #dc2626 100%)',
+    description: 'Five bedtime journeys through Italy — rolling hills, Roman roads, art, pasta, and impossible records.',
+    ageRange: '4-8',
+    totalEpisodes: 5,
+    episodes: [
+      {
+        id: 'dc_it_ep1_geo', episodeNumber: 1, title: 'The Boot in the Sea',
+        subtitle: 'Italy\'s shape, volcanoes, and the bluest water you have ever seen.',
+        tradition: 'universal', theme: 'wisdom', durationMinutes: 5,
+        source: 'Discover Italy · Episode 1',
+        body: `Look at a map of Europe and you will spot Italy right away — it is shaped like a tall leather boot, kicking a little triangle-shaped ball. That ball is the island of Sicily, and just above it, the toe of the boot nearly touches it. Italy is surrounded on three sides by the Mediterranean Sea, which is why the water is so beautifully blue.
+
+Running down the back of the boot like a spine is a mountain chain called the Apennines. These green and rocky mountains stretch almost the entire length of the country, and shepherds have walked their flocks along these ridges for thousands of years.
+
+Up in the very north, Italy shares the mighty Alps with its neighbors. Mont Blanc, the tallest peak in the Alps, sits right on the border with France. In winter, the peaks are frosted white. In summer, wildflowers carpet the meadows in purple, yellow, and pink.
+
+Now here is where it gets exciting. Italy has three famous volcanoes. Mount Etna, on the island of Sicily, is the tallest active volcano in Europe. It rumbles and glows so often that locals call it "Mama Etna" — she is always grumbling about something. Mount Vesuvius sits near the city of Naples. Nearly two thousand years ago, it erupted so violently that it buried an entire Roman city called Pompeii under ash. And tiny Stromboli, a volcanic island, has been erupting almost nonstop for over two thousand years — sailors call it the "Lighthouse of the Mediterranean" because its glow guides ships at night.
+
+Between the mountains and coasts lie gentle rolling hills covered in grapevines and olive trees. Tuscany's hills turn golden in summer, and the light there is so warm and soft that painters have traveled from around the world just to capture it.
+
+Sleep well, {childName}. Italy is a land of fire, water, and golden light — proof that beauty comes in every element.`,
+      },
+      {
+        id: 'dc_it_ep2_hist', episodeNumber: 2, title: 'Roads, Gladiators & Emperors',
+        subtitle: 'The Roman Empire that shaped the world — told as a bedtime story.',
+        tradition: 'universal', theme: 'wisdom', durationMinutes: 5,
+        source: 'Discover Italy · Episode 2',
+        body: `Once upon a time — and this part is true — a tiny village on seven hills beside a river grew into the most powerful empire the world had ever seen. This is the story of Rome.
+
+According to legend, Rome was founded by twin brothers named Romulus and Remus, who were raised by a mother wolf. Whether or not you believe that part, the city they built became extraordinary. The Romans were brilliant builders. They invented concrete, built roads so straight and strong that some are still used today, and created aqueducts — stone bridges that carried water across valleys and into cities. Fresh water flowed from mountains to fountains, and every Roman could drink for free.
+
+At the heart of the city stood the Colosseum, an arena so large it could seat fifty thousand people. Gladiators — warriors who were often slaves — fought wild animals and each other while the crowd cheered. It was thrilling and terrible at the same time. The Colosseum had trapdoors, elevators powered by pulleys, and even a system to flood the floor with water for pretend sea battles.
+
+But Rome was not only about fighting. Roman children went to school, learned math and public speaking, and played with dolls made of clay and bone. Roman engineers heated floors with underground furnaces so families could walk barefoot in winter. They built public baths where people soaked, exercised, read books, and chatted — like a combination of a library, gym, and swimming pool.
+
+At its biggest, the Roman Empire stretched from England to Egypt. Roman roads connected it all — over eighty thousand kilometers of them — so that a letter sent from London could reach Rome in just a few weeks.
+
+Eventually the empire grew too large to manage and slowly faded. But its ideas — laws, roads, arches, even the alphabet you read today — live on in every corner of the modern world.
+
+Goodnight, {childName}. The Romans showed us that one small village can change the whole world — and so can one small idea of yours.`,
+      },
+      {
+        id: 'dc_it_ep3_places', episodeNumber: 3, title: 'Towers, Canals & Painted Ceilings',
+        subtitle: 'Italy\'s most famous places — from the leaning tower to the floating city.',
+        tradition: 'universal', theme: 'wisdom', durationMinutes: 5,
+        source: 'Discover Italy · Episode 3',
+        body: `Italy has more UNESCO World Heritage Sites than any other country on Earth — over fifty! Tonight, let us visit some of the most magical.
+
+Start in Pisa, where a round white bell tower leans to one side like it is trying to peek around a corner. The Leaning Tower of Pisa was not supposed to lean — the ground beneath it was too soft on one side, and by the time builders noticed, they were already three stories up. They kept building anyway! It took almost two hundred years to finish, and it has been leaning for over eight hundred years. Engineers recently straightened it just a tiny bit so it would not fall, but they left the lean because, well, that is what makes it special.
+
+Now travel north to Venice, a city built on water. There are no cars in Venice — only boats. Instead of streets, there are canals. Gondolas glide silently under arched stone bridges while the buildings seem to float on the lagoon. The most famous square, Piazza San Marco, sometimes floods when the tides rise, and pigeons scatter across the wet marble while musicians keep playing from café balconies.
+
+In Rome, step inside the Pantheon, a temple built almost two thousand years ago with a giant hole in the roof called the oculus — the eye. Rain falls through it, sunlight pours through it, and on a clear night, you can see stars through that ancient circle. The dome is still the largest unreinforced concrete dome in the world.
+
+And in Vatican City — the world's tiniest country, sitting right inside Rome — look up inside the Sistine Chapel. The ceiling was painted by Michelangelo, who lay on his back on scaffolding for four years to create scenes from the Bible. The most famous image shows two hands reaching toward each other, fingers almost touching — one belonging to a man, the other to God.
+
+Dream of towers, canals, and painted skies tonight, {childName}. Italy reminds us that humans can build things so beautiful they make the whole world hold its breath.`,
+      },
+      {
+        id: 'dc_it_ep4_culture', episodeNumber: 4, title: 'Pasta, Gelato & Family Sundays',
+        subtitle: 'The food, family, and feeling that make Italy warm from the inside.',
+        tradition: 'universal', theme: 'wisdom', durationMinutes: 5,
+        source: 'Discover Italy · Episode 4',
+        body: `In Italy, food is not just dinner — it is love you can taste.
+
+Every region has its own special pasta. In Bologna, they make tagliatelle — long, flat ribbons of golden egg pasta served with a slow-cooked meat sauce that simmers for hours. In Naples, they serve spaghetti with simple tomato sauce, garlic, and fresh basil — because the best flavors do not need to be complicated. In Rome, cacio e pepe is just pasta, cheese, and pepper — three ingredients that somehow taste like magic.
+
+There are over three hundred shapes of pasta in Italy. Some look like little ears (orecchiette), some like butterflies (farfalle), some like tiny tubes (penne), and some like sheets for layering into lasagna. Italian grandmothers — called nonnas — often make pasta by hand, rolling the dough on big wooden boards and cutting it with practiced fingers. Every nonna believes her recipe is the best, and every nonna is right.
+
+After lunch, there is gelato — Italian ice cream that is denser and creamier than regular ice cream because it has less air. Flavors range from pistachio and hazelnut to lemon and dark chocolate. A proper gelato shop — a gelateria — might have forty flavors in a rainbow of colors behind the glass.
+
+But the most important ingredient in Italian life is family. Sunday lunch is sacred. Grandparents, parents, children, aunts, uncles, and cousins all squeeze around one long table. The meal might last three hours — primo (pasta), secondo (meat or fish), contorno (vegetables), dolce (dessert), and then espresso in tiny cups. The adults talk loudly. The children run between chairs. Nobody checks the clock.
+
+Italians also invented opera — stories told entirely through singing, with emotions so big they fill whole theaters. When an Italian feels something, they do not whisper it. They sing it.
+
+As you fall asleep, {childName}, remember the Italian way: fill your table with people you love, take your time, and never rush a good thing.`,
+      },
+      {
+        id: 'dc_it_ep5_facts', episodeNumber: 5, title: 'Supercars, Fountains & Cheese Vaults',
+        subtitle: 'The incredible records and surprises hiding in Italy.',
+        tradition: 'universal', theme: 'wisdom', durationMinutes: 5,
+        source: 'Discover Italy · Episode 5',
+        body: `Italy is a country of surprises, and tonight we are collecting the most amazing ones.
+
+In the city of Maranello, a factory paints almost every car the same shade of red. This is Ferrari, and that red is called Rosso Corsa — "racing red." Every Ferrari is partly assembled by hand, and when the engine roars for the first time, the workers cheer. Italy is also home to Lamborghini, Maserati, and Pagani. Nobody makes supercars quite like the Italians.
+
+Now here is a strange and wonderful fact: in the Emilia-Romagna region, banks accept wheels of Parmigiano-Reggiano cheese as collateral for loans. Yes, cheese. These giant golden wheels, each weighing about thirty-nine kilograms, are stored in enormous bank vaults with thousands of other wheels, aging for years while gaining value. The cheese vaults are climate-controlled and guarded like treasure — because to Italians, great cheese IS treasure.
+
+Italy has a fountain in Rome called the Trevi Fountain where visitors toss coins over their left shoulder with their right hand to guarantee they will return to Rome someday. About three thousand euros in coins are thrown in every single day. The money is collected each night and donated to charity.
+
+The oldest university in the world that has been running nonstop is the University of Bologna, founded in 1088 — almost a thousand years ago. Students have been studying there since before the printing press existed.
+
+And deep inside a mountain in central Italy, scientists built a laboratory to study the tiniest particles in the universe. They chose the mountain because the rock above blocks interfering signals from space. Some of the biggest discoveries about how the universe works have come from deep inside an Italian mountain.
+
+Italy even gave the world the piano, the thermometer, eyeglasses, and the radio. Not bad for a boot-shaped country!
+
+Goodnight, {childName}. Italy proves that great things come in all shapes — even the shape of a boot kicking a ball across the sea.`,
+      },
+    ],
+  },
+
+  // ── 🇩🇪 Germany ──────────────────────────────────────────────────────────
+  {
+    id: 'discover-germany',
+    title: 'Discover Germany',
+    icon: '🇩🇪',
+    gradient: 'linear-gradient(135deg, #171717 0%, #dc2626 50%, #eab308 100%)',
+    description: 'Five bedtime journeys through Germany — forests, castles, inventions, pretzels, and record-breaking feats.',
+    ageRange: '4-8',
+    totalEpisodes: 5,
+    episodes: [
+      {
+        id: 'dc_de_ep1_geo', episodeNumber: 1, title: 'The Dark Forest & the Fairy-Tale River',
+        subtitle: 'Germany\'s deep forests, mighty rivers, and snow-capped Alps.',
+        tradition: 'universal', theme: 'wisdom', durationMinutes: 5,
+        source: 'Discover Germany · Episode 1',
+        body: `Close your eyes and picture a forest so thick and green that sunlight barely reaches the ground. Moss covers every rock. Mushrooms glow faintly in the shadows. Somewhere, a woodpecker taps a rhythm on an ancient oak. This is the Black Forest — the Schwarzwald — in southwest Germany, and it is as magical as it sounds.
+
+Germany sits right in the heart of Europe. To the north, flat plains stretch to the cold seas — the North Sea and the Baltic Sea, where seals rest on sandbars and lighthouses blink through the fog. Sandy islands dot the coastline, and in summer, families build the most elaborate sandcastles you have ever seen because the tides leave long, flat beaches that go on forever.
+
+In the middle of the country, gentle hills and river valleys create a patchwork of vineyards, meadows, and small towns with half-timbered houses — buildings with dark wooden beams crisscrossing white walls, like something from a storybook.
+
+The Rhine River is Germany's most famous waterway. It flows for over a thousand kilometers, carving steep valleys through rocky cliffs. Ruined castles perch on nearly every hilltop along its banks — over forty of them in one stretch alone! Legend says a maiden named Lorelei sat on a rock above the narrowest part of the Rhine, singing so beautifully that sailors forgot to steer and crashed into the rocks below.
+
+Down in the south, the land rises dramatically into the Bavarian Alps. Germany's tallest mountain, the Zugspitze, stands almost three thousand meters high. On a clear day from its peak, you can see into four countries at once — Germany, Austria, Switzerland, and Italy.
+
+Between the Alps and the forests lie sparkling lakes so clear you can see fish swimming near the bottom, surrounded by meadows full of wildflowers and the sound of cowbells.
+
+Sleep tight, {childName}. Germany is a land of dark forests and bright meadows, where every river bend hides a story waiting to be told.`,
+      },
+      {
+        id: 'dc_de_ep2_hist', episodeNumber: 2, title: 'Knights, Kingdoms & a Wall That Fell',
+        subtitle: 'From medieval castles to the night the Berlin Wall came down.',
+        tradition: 'universal', theme: 'wisdom', durationMinutes: 5,
+        source: 'Discover Germany · Episode 2',
+        body: `Germany's history is like a thick storybook with chapters that range from thrilling to heartbreaking — and one chapter with an ending so happy that people danced in the streets.
+
+A thousand years ago, Germany was not one country but hundreds of tiny kingdoms, duchies, and free cities, each ruled by its own lord or prince. Knights in heavy armor rode through the forests, and castles popped up on every hilltop. Some lords were kind. Some were not. But the craftspeople in the towns — blacksmiths, bakers, weavers — formed groups called guilds to protect each other and share skills. Those guilds helped build the strong, careful engineering culture Germany is famous for today.
+
+Around the year 1440, a German goldsmith named Johannes Gutenberg changed the world forever. He invented the printing press with movable type. Before Gutenberg, books had to be copied by hand, one page at a time. A single Bible took a monk years to write. Gutenberg's press could print a page in minutes. Suddenly books were affordable. Ideas spread like wildfire. Some historians say the printing press was the most important invention of the last thousand years.
+
+Centuries later, Germany went through its darkest chapter. Two World Wars brought terrible suffering to Europe and the world. After the second war ended in 1945, the country was split in two — West Germany and East Germany — divided by borders, fences, and in Berlin, a thick concrete wall. Families were separated. Friends could not visit each other. The Wall stood for twenty-eight years.
+
+Then, on the night of November ninth, 1989, something incredible happened. The gates opened. People streamed through, crying and hugging strangers. They chipped away at the Wall with hammers. They danced on top of it. Germany was whole again.
+
+Tonight, {childName}, remember the Wall that fell. No barrier lasts forever when people believe in togetherness — and the best chapters are the ones where everyone comes home.`,
+      },
+      {
+        id: 'dc_de_ep3_places', episodeNumber: 3, title: 'The Fairy-Tale Castle & the Clock Tower',
+        subtitle: 'Germany\'s most famous buildings — from dream castles to glass domes.',
+        tradition: 'universal', theme: 'wisdom', durationMinutes: 5,
+        source: 'Discover Germany · Episode 3',
+        body: `High on a cliff in Bavaria, surrounded by pine forests and misty mountains, stands a castle so beautiful it looks like it belongs in a dream. Neuschwanstein Castle was built by King Ludwig II, who loved fairy tales and music so much that he designed a real castle to match his imagination. White towers rise into the clouds. Inside, murals of swans and legends cover every wall. Walt Disney visited this castle and loved it so much that it inspired Sleeping Beauty's castle at Disneyland.
+
+In Berlin, the Reichstag building — Germany's parliament — has a modern glass dome on top that visitors can walk through on a spiral ramp. The dome is transparent on purpose. It symbolizes that the government should be open and visible to the people. From the top, you can look down and see the politicians working below.
+
+The city of Cologne is famous for its enormous cathedral — the Kölner Dom. Construction started in 1248 and was not finished until 1880, over six hundred years later! For four years, it was the tallest building in the world. Its twin spires reach one hundred fifty-seven meters into the sky, and the stained glass windows paint the stone floor in rainbows of colored light every afternoon.
+
+In the town of Rothenburg ob der Tauber, time seems to have stopped five hundred years ago. The entire medieval town is still surrounded by its original stone wall, and you can walk along the top of it, looking down at cobblestone streets, flower boxes, and tiny shops selling wooden toys and Christmas ornaments — all year round.
+
+And in the Black Forest, master clockmakers have been building cuckoo clocks for over three hundred years. The world's largest cuckoo clock is the size of a house, and every hour a wooden bird the size of a child pops out and calls.
+
+Dream of towers and cuckoo birds tonight, {childName}. Germany shows us that when people pour love into what they build, even stones can tell stories.`,
+      },
+      {
+        id: 'dc_de_ep4_culture', episodeNumber: 4, title: 'Pretzels, Polka & Kindness in a Kinder Egg',
+        subtitle: 'The food, music, and traditions that warm the German heart.',
+        tradition: 'universal', theme: 'wisdom', durationMinutes: 5,
+        source: 'Discover Germany · Episode 4',
+        body: `In Germany, bread is serious business. Germans bake over three hundred different kinds of bread — more varieties than any other country in the world. Dark rye bread, sunflower seed bread, pumpernickel so dense you could use it as a doorstop (but it tastes wonderful), and of course, the pretzel — the Brezel.
+
+A perfect German pretzel is golden brown on the outside, soft and chewy on the inside, with coarse salt crystals that crunch between your teeth. Bakers twist the dough into its famous knot shape, and the secret to that dark, shiny crust is dipping it in a special solution before baking. You can buy a fresh pretzel from a bakery on almost every street corner in Germany, and many children eat one for breakfast on the way to school.
+
+Christmas in Germany is pure magic. The tradition of the Christmas tree started here! Families bring a real pine tree indoors, hang glass ornaments, and light real candles on the branches. In December, every town sets up a Weihnachtsmarkt — a Christmas market — with wooden stalls selling gingerbread, roasted almonds, hand-carved wooden figurines, and mugs of warm spiced cider. The air smells like cinnamon and pine, and twinkling lights turn every town square into a wonderland.
+
+German children also get to celebrate something extra: on the eve of December sixth, they leave their shoes outside the door. Saint Nikolaus fills them with chocolate coins, oranges, and small toys. It is like a bonus Christmas two and a half weeks early!
+
+Music runs deep in Germany. Ludwig van Beethoven, one of the greatest composers who ever lived, was born in the city of Bonn. He wrote some of his most powerful music after he had gone completely deaf. He could not hear a single note — but he felt every one.
+
+Close your eyes, {childName}. Like Beethoven, you do not need everything to be perfect to create something beautiful. Just feel it — and let it out.`,
+      },
+      {
+        id: 'dc_de_ep5_facts', episodeNumber: 5, title: 'Autobahns, Gummy Bears & Record Breakers',
+        subtitle: 'The surprising facts that make Germany truly extraordinary.',
+        tradition: 'universal', theme: 'wisdom', durationMinutes: 5,
+        source: 'Discover Germany · Episode 5',
+        body: `Hold on tight, because Germany has some facts that are going to zoom past you.
+
+Germany has a highway system called the Autobahn, and on large stretches of it, there is no speed limit. That is right — drivers can go as fast as their cars can handle. Despite this, the Autobahn is one of the safest highway systems in the world because drivers follow strict rules: always pass on the left, never stop unless it is an emergency, and always pay attention. Germans prove that freedom and responsibility go hand in hand.
+
+The gummy bear was invented in Germany in 1922 by a candy maker named Hans Riegel in the city of Bonn. He called his company Haribo — the first two letters of his first name, last name, and hometown: HA-RI-BO. Today, Haribo makes over one hundred million gummy bears every single day. Lined up in a row, one day's production would stretch around the Earth.
+
+Germany is a world leader in renewable energy. On some sunny, windy days, the country produces so much electricity from solar panels and wind turbines that they actually have more power than they can use. Germany has shown the world that a big, industrial country can run on clean energy.
+
+The world's narrowest street is in the city of Reutlingen. Called Spreuerhofstrasse, it is only thirty-one centimeters wide at its narrowest point. You would have to turn sideways to squeeze through!
+
+Germans also love football — soccer — with a passion that unites the whole nation. The German national team has won the FIFA World Cup four times, and on game days, entire cities go quiet as everyone gathers around televisions, then erupt in cheers that echo for blocks.
+
+And one more: the kindergarten — the very idea of a playful school for young children — was invented in Germany. The word means "children's garden," because the founder believed kids should grow like flowers: with sunlight, freedom, and gentle care.
+
+Goodnight, {childName}. From gummy bears to gardens for children, Germany reminds us that the best inventions make life a little sweeter for everyone.`,
+      },
+    ],
+  },
+
+  // ── 🇰🇷 South Korea ──────────────────────────────────────────────────────
+  {
+    id: 'discover-southkorea',
+    title: 'Discover South Korea',
+    icon: '🇰🇷',
+    gradient: 'linear-gradient(135deg, #1e40af 0%, #dc2626 100%)',
+    description: 'Five bedtime journeys through South Korea — misty mountains, ancient palaces, K-pop beats, and mind-blowing tech.',
+    ageRange: '4-8',
+    totalEpisodes: 5,
+    episodes: [
+      {
+        id: 'dc_kr_ep1_geo', episodeNumber: 1, title: 'Mountains, Islands & the Morning Calm',
+        subtitle: 'South Korea\'s beautiful land — from volcanic peaks to bamboo forests.',
+        tradition: 'universal', theme: 'wisdom', durationMinutes: 5,
+        source: 'Discover South Korea · Episode 1',
+        body: `South Korea is a small country on a peninsula in East Asia, shaped a bit like a rabbit standing on its hind legs. Despite being smaller than many US states, it holds mountains, forests, beaches, islands, and one of the biggest cities in the world — all packed together like treasures in a jewelry box.
+
+The country's old name is "The Land of the Morning Calm," and if you stand on a mountaintop at dawn, you will understand why. Mist rolls through the valleys like slow rivers of cloud, and the first sunlight paints everything gold and pink.
+
+Mountains cover about seventy percent of South Korea. The most famous is Hallasan, a dormant volcano on Jeju Island in the south. At the very top is a crystal-clear crater lake called Baengnokdam — "White Deer Lake" — because legend says white deer once drank from its waters. The hike to the top passes through subtropical forest, then temperate forest, then alpine meadow — like walking through three different countries in one day.
+
+Jeju Island itself is a wonder. Lava tubes — tunnels carved by ancient volcanic rivers — run beneath the island, and some are large enough to drive a car through. Above ground, curious volcanic rocks are carved into grandfather figures called dolhareubang, with big eyes and gentle smiles, guarding the island like friendly stone giants.
+
+Back on the mainland, the Seoraksan mountains in the northeast are famous for their granite peaks that turn fiery red and orange in autumn when the maple leaves change color. The forests here are home to the Asiatic black bear, the Korean water deer, and the red-crowned crane — one of the rarest birds in the world.
+
+Along the coast, over three thousand small islands scatter across the sea, many uninhabited and wild. Fishermen harvest seaweed that will be dried, seasoned, and eaten as a crispy snack across the country.
+
+Rest now, {childName}. South Korea is proof that even a small land can hold enormous beauty — and so can a small heart full of wonder.`,
+      },
+      {
+        id: 'dc_kr_ep2_hist', episodeNumber: 2, title: 'Kingdoms, Warriors & a Genius King',
+        subtitle: 'The ancient rulers who shaped Korea — including one who gave his people an alphabet.',
+        tradition: 'universal', theme: 'wisdom', durationMinutes: 5,
+        source: 'Discover South Korea · Episode 2',
+        body: `Korea's history stretches back over four thousand years, filled with brilliant kings, brave warriors, and one of the cleverest inventions in all of human history.
+
+Long ago, the Korean peninsula was divided into three kingdoms: Goguryeo in the north, mighty and warlike; Baekje in the southwest, known for art and elegance; and Silla in the southeast, famous for a group of young warrior-scholars called the Hwarang. These teenagers trained in sword fighting, poetry, horseback riding, and kindness — because they believed a true warrior must be gentle as well as strong. Eventually Silla united all three kingdoms, bringing peace to the peninsula.
+
+Centuries later, during the Joseon dynasty, Korea's greatest king was born. King Sejong the Great ruled in the 1400s, and he cared deeply about one thing above all: that every person in his kingdom — rich or poor, man or woman — should be able to read and write. At that time, Koreans used Chinese characters, which took years to learn. Most common people could never master them.
+
+So King Sejong gathered his smartest scholars and together they invented an entirely new alphabet called Hangul. It was designed to be so logical and simple that anyone could learn it in a single day. The shapes of the letters are based on the shape your mouth makes when you say them! Hangul is now considered one of the most scientific writing systems ever created. Every year on October ninth, South Korea celebrates Hangul Day in the king's honor.
+
+Korea also built one of the world's first ironclad warships — the geobukseon, or "turtle ship." Covered in iron spikes and shaped like a turtle's shell, it could ram enemy boats without being boarded. Admiral Yi Sun-sin used these ships to defeat a much larger invading fleet, winning one of the greatest naval victories in history.
+
+Dream of brave scholars and clever kings tonight, {childName}. King Sejong taught us that the greatest gift a leader can give is knowledge — and you already hold that gift every time you open a book.`,
+      },
+      {
+        id: 'dc_kr_ep3_places', episodeNumber: 3, title: 'Palaces, Temples & the City That Never Sleeps',
+        subtitle: 'South Korea\'s most stunning places — from ancient gardens to neon skylines.',
+        tradition: 'universal', theme: 'wisdom', durationMinutes: 5,
+        source: 'Discover South Korea · Episode 3',
+        body: `South Korea is a place where ancient and modern live side by side — sometimes on the very same street.
+
+In the heart of Seoul, the capital, stands Gyeongbokgung Palace, built in 1395. Its name means "Palace Greatly Blessed by Heaven." Step through the massive gate and the noise of the modern city fades. Courtyards stretch out in perfect symmetry, wooden halls painted in vivid green and orange sit beneath curved tile roofs, and a throne room with a painted ceiling of phoenixes and dragons waits at the center. Every day, guards in traditional costumes stand perfectly still at the entrance, and tourists love to dress in hanbok — the flowing, colorful traditional Korean clothing — to stroll the grounds and take photos.
+
+Just behind the palace is the neighborhood of Bukchon, where hundreds of traditional houses called hanok line narrow, hilly streets. These houses have gracefully curved roofs and heated floors — a system called ondol that Koreans invented over two thousand years ago. Hot air flows beneath the stone floor, so the entire room becomes warm and toasty. Koreans still prefer heated floors today.
+
+Now step into modern Seoul, and the contrast will take your breath away. The Dongdaemun Design Plaza is a building that looks like a giant silver spaceship landed in the middle of the city — all curves, no straight lines, glowing at night with thousands of LED roses. Nearby, the Cheonggyecheon Stream flows through downtown — a beautiful, lantern-lit waterway that used to be buried under a highway until the city tore the road down and brought the stream back to life.
+
+On Jeju Island, the Haenyeo — women sea divers — free-dive to the ocean floor without oxygen tanks to harvest shellfish, continuing a tradition that is centuries old. Most are grandmothers in their sixties and seventies, and they are considered national treasures.
+
+Sleep peacefully, {childName}. South Korea teaches us to honor the old while reaching for the new — heated floors and silver spaceships, grandmothers and glowing roses, all in one beautiful place.`,
+      },
+      {
+        id: 'dc_kr_ep4_culture', episodeNumber: 4, title: 'Kimchi, K-pop & the Art of Sharing',
+        subtitle: 'The food, music, and family traditions that make Korea glow.',
+        tradition: 'universal', theme: 'wisdom', durationMinutes: 5,
+        source: 'Discover South Korea · Episode 4',
+        body: `In South Korea, every meal is a celebration of sharing. When food arrives at a Korean table, it does not come on one plate — it comes in many small dishes called banchan. Little bowls of seasoned vegetables, tofu, fish cakes, pickled radish, and always, always kimchi. Kimchi is fermented cabbage seasoned with chili pepper, garlic, ginger, and fish sauce. Every Korean family has their own recipe, passed down through generations, and in late autumn families gather for kimjang — a big community event where neighbors make hundreds of jars of kimchi together to last through winter.
+
+Korean barbecue is another beloved tradition. A grill sits right in the middle of the table, and everyone cooks thin slices of marinated beef or pork together, wrapping the sizzling meat in lettuce leaves with rice, garlic, and spicy sauce. The sizzle, the laughter, the passing of food — eating together is the Korean way of saying "I care about you."
+
+Now turn up the volume, because K-pop has taken over the world! Groups like BTS, BLACKPINK, and Stray Kids perform choreographed dances so precise that every finger, every head tilt, is synchronized perfectly. K-pop idols train for years — sometimes starting as teenagers — learning singing, dancing, and even multiple languages so they can connect with fans everywhere. The fan communities, called fandoms, are incredibly organized and kind, often raising money for charity in their favorite group's name.
+
+Korea also has a beautiful tradition called jeong — a deep feeling of affection and attachment that builds between people over time. It is more than friendship, more than love. It is the warm bond that grows when you share meals, share struggles, and share life with someone. Koreans say that even strangers can build jeong by simply being kind to each other consistently.
+
+As you drift off, {childName}, think about jeong. Every small act of sharing — a meal, a song, a smile — adds a thread to the invisible web of warmth that connects us all.`,
+      },
+      {
+        id: 'dc_kr_ep5_facts', episodeNumber: 5, title: 'Robots, Speed & the Smartest Toilet',
+        subtitle: 'The jaw-dropping records and innovations of South Korea.',
+        tradition: 'universal', theme: 'wisdom', durationMinutes: 5,
+        source: 'Discover South Korea · Episode 5',
+        body: `South Korea is one of the most high-tech countries on the planet, and its facts are going to blow your mind.
+
+South Korea has the fastest average internet speed in the world. Downloading a full movie takes about one second. Almost the entire country is connected to super-fast broadband, and free public Wi-Fi is everywhere — on buses, in parks, even deep inside subway tunnels. Korean subway stations, by the way, have heated seats in winter and screen doors that keep you safe from the tracks.
+
+Speaking of the subway — Seoul's metro system is one of the longest in the world, with over seven hundred kilometers of track. Every station has digital maps, phone chargers, and sometimes even small libraries where you can borrow a book for your ride.
+
+South Korea is also the world capital of esports. Professional video game players are treated like sports stars, with packed stadiums, screaming fans, and salaries that can reach millions of dollars. The country even has a television channel dedicated entirely to watching people play games.
+
+Here is a cozy fact: South Korea has more coffee shops per person than almost any country in the world. But Korean cafés are not just about coffee — there are cat cafés where you sip a latte while kittens climb on your shoulders, dog cafés, raccoon cafés, and even sheep cafés. There are also study cafés where students pay by the hour for a quiet desk, free drinks, and a focused atmosphere.
+
+The country recycles over fifty percent of its food waste by turning it into animal feed and fertilizer. Special biodegradable bags are required, and some apartment buildings have smart bins that weigh your food waste and charge you — so wasting less saves money.
+
+And one last one: South Korea's birth flower is the mugunghwa — the Rose of Sharon — a flower that blooms, falls, and blooms again all summer long. Koreans see it as a symbol of resilience. No matter how many times it falls, it comes back.
+
+Goodnight, {childName}. Like the mugunghwa, you can always bloom again — faster internet not required.`,
+      },
+    ],
+  },
+
+  // ── 🇷🇺 Russia ──────────────────────────────────────────────────────────
+  {
+    id: 'discover-russia',
+    title: 'Discover Russia',
+    icon: '🇷🇺',
+    gradient: 'linear-gradient(135deg, #1e40af 0%, #fafafa 50%, #dc2626 100%)',
+    description: 'Five bedtime journeys through Russia — frozen tundra, golden domes, ballet, borscht, and breathtaking records.',
+    ageRange: '4-8',
+    totalEpisodes: 5,
+    episodes: [
+      {
+        id: 'dc_ru_ep1_geo', episodeNumber: 1, title: 'The Biggest Country on Earth',
+        subtitle: 'From frozen Siberia to volcanoes of fire — Russia\'s unbelievable landscapes.',
+        tradition: 'universal', theme: 'wisdom', durationMinutes: 5,
+        source: 'Discover Russia · Episode 1',
+        body: `Russia is the biggest country in the entire world. It is so enormous that it stretches across eleven time zones. When children in Moscow are eating breakfast, children on Russia's Pacific coast are already getting ready for bed. If you drove from one end to the other without stopping, it would take over a week.
+
+In the north lies the Arctic tundra — a flat, frozen land where the ground stays frozen all year long, even in summer. This permanently frozen earth is called permafrost, and it has been frozen for thousands of years. In winter, the sun barely rises. But in summer, the sun never fully sets — for weeks, it just circles the horizon, painting the sky in endless shades of orange and pink. This is the land of the midnight sun.
+
+South of the tundra stretches the taiga — the world's largest forest. It is made almost entirely of pine, spruce, and birch trees, and it covers an area bigger than the Amazon rainforest. Siberian tigers — the largest cats on Earth — prowl through the eastern taiga. They can weigh over three hundred kilograms and leave paw prints the size of dinner plates in the snow.
+
+In the middle of Siberia lies Lake Baikal, the deepest and oldest lake in the world. It holds one-fifth of all the fresh water on Earth's surface. The water is so pure and clear that in winter, when the lake freezes, you can see right through the ice to the depths below. Strange creatures live in Baikal that exist nowhere else — including a freshwater seal called the nerpa, the only seal in the world that lives entirely in fresh water.
+
+Far to the east, the Kamchatka Peninsula is a wild land of erupting volcanoes, steaming geysers, and brown bears catching salmon as they leap upstream. The Valley of Geysers shoots boiling water and steam into the freezing air, creating clouds that drift through a landscape that feels like another planet.
+
+Dream of endless forests and frozen lakes tonight, {childName}. Russia reminds us that our world is so big that you could explore it every day and never run out of new wonders.`,
+      },
+      {
+        id: 'dc_ru_ep2_hist', episodeNumber: 2, title: 'Tsars, Trains & a Revolution',
+        subtitle: 'Russia\'s dramatic history — from powerful rulers to the railway that crossed a continent.',
+        tradition: 'universal', theme: 'wisdom', durationMinutes: 5,
+        source: 'Discover Russia · Episode 2',
+        body: `Russia's history reads like the grandest story ever written — full of powerful rulers, impossible journeys, and moments that changed the entire world.
+
+For centuries, Russia was ruled by tsars — emperors who held enormous power. The most famous early tsar was Ivan the Terrible, who earned his scary name not because he was always cruel, but because "terrible" in old Russian meant "fearsome" and "awe-inspiring." He united the many small Russian territories into one vast kingdom and built Saint Basil's Cathedral in Moscow — the one with those wild, colorful, onion-shaped domes that look like swirled candy.
+
+Then came Peter the Great, a tsar who was nearly seven feet tall and bursting with curiosity. Peter traveled in disguise to Europe to learn shipbuilding, and he returned home determined to modernize Russia. He built an entirely new capital city — Saint Petersburg — on swampy marshland near the sea, declaring it Russia's "window to Europe." Thousands of workers built palaces, canals, and bridges where nothing but mud had existed before.
+
+In the 1800s, Russia began building something that seemed impossible: a railway that would cross the entire country. The Trans-Siberian Railway stretches over nine thousand kilometers from Moscow to Vladivostok on the Pacific coast. It took twenty-five years to build, through frozen wilderness, across mighty rivers, and along the shores of Lake Baikal. Today, the full journey takes about six days and passes through hundreds of small towns and seven time zones. Passengers watch the landscape change from farmland to forest to steppe to mountains, all from a warm compartment with a cup of tea.
+
+In 1961, Russia launched the first human being into space. Yuri Gagarin, a young pilot with a wide smile, orbited the Earth in a tiny capsule called Vostok 1. The entire flight lasted just one hundred eight minutes, but it changed humanity forever. When Gagarin looked down at our planet, he said: "The Earth is blue. How wonderful."
+
+Goodnight, {childName}. Like Yuri Gagarin, sometimes the bravest journey starts with simply saying yes to something no one has tried before.`,
+      },
+      {
+        id: 'dc_ru_ep3_places', episodeNumber: 3, title: 'Golden Domes & Frozen Palaces',
+        subtitle: 'Russia\'s most breathtaking buildings and places.',
+        tradition: 'universal', theme: 'wisdom', durationMinutes: 5,
+        source: 'Discover Russia · Episode 3',
+        body: `Russia's buildings are some of the most dramatic on Earth — as if the architects wanted every structure to take your breath away.
+
+Start in Moscow's Red Square, where Saint Basil's Cathedral rises like a forest of colorful lollipops. Nine domes, each a different shape and pattern — striped, swirled, checkered — in reds, greens, blues, and golds. Legend says that Ivan the Terrible was so amazed by the cathedral that he asked the architects if they could build anything more beautiful. When they said yes, he — well, this is a bedtime story, so let us just say he made sure they would never build anything else. The cathedral has stood for over four hundred sixty years and is still the most photographed building in Russia.
+
+Now take the train to Saint Petersburg and enter the Hermitage Museum, one of the largest art museums in the world. It fills five connected buildings, including the magnificent Winter Palace, where tsars once lived. The museum holds over three million items — paintings, sculptures, jewels, and even Egyptian mummies. If you spent one minute looking at each piece, it would take over eleven years to see everything.
+
+The halls themselves are works of art. The Malachite Room is covered in bright green stone. The Peacock Clock, a golden mechanical sculpture of a peacock, owl, and rooster, still works after over two hundred fifty years — the peacock spreads its tail, the rooster crows, and the owl blinks.
+
+In winter, Saint Petersburg holds something magical. When the rivers and canals freeze, the city hosts ice sculpture festivals. Artists carve enormous palaces, animals, and fairy-tale scenes out of solid blocks of ice, lit from inside with colored lights. An entire ice castle you can walk through, glowing blue and purple against the snowy sky.
+
+And deep beneath Moscow, the metro stations are underground palaces. Chandeliers hang from painted ceilings. Marble columns line the platforms. Mosaics and statues decorate every wall. Muscovites call their metro "the people's palace" because beauty should belong to everyone.
+
+Tonight, {childName}, dream of golden domes and ice palaces. Russia shows us that beauty is not a luxury — it is a gift meant to be shared with everyone who walks by.`,
+      },
+      {
+        id: 'dc_ru_ep4_culture', episodeNumber: 4, title: 'Borscht, Ballet & Nesting Dolls',
+        subtitle: 'The food, art, and cozy traditions that warm the Russian soul.',
+        tradition: 'universal', theme: 'wisdom', durationMinutes: 5,
+        source: 'Discover Russia · Episode 4',
+        body: `When the snow is deep and the wind howls outside, Russians gather around the kitchen table — and the first thing they reach for is soup.
+
+Borscht is Russia's most famous dish — a deep red soup made from beets, cabbage, potatoes, and herbs, served with a big spoonful of sour cream that swirls like a white cloud in a ruby sky. Every family makes it differently. Some add beef. Some keep it vegetarian. But every version warms you from the inside out, and there is always enough to share with a neighbor who drops by unannounced — because in Russia, the door is always open for guests.
+
+Russian hospitality is legendary. When someone visits, the host offers tea from a samovar — a tall, beautiful metal urn that keeps water hot for hours. Tea comes with jam — not in the tea, but on a little spoon that you eat between sips. Strawberry jam, raspberry jam, even pine cone jam. Yes, pine cones! They are sweet, sticky, and taste like the forest smells.
+
+Now picture a theater with red velvet seats and a glittering chandelier. The curtain rises and dancers float across the stage as if gravity has forgotten them. This is Russian ballet. The Bolshoi Theatre in Moscow and the Mariinsky Theatre in Saint Petersburg are two of the most famous ballet houses in the world. Tchaikovsky, a Russian composer, wrote the music for Swan Lake, The Nutcracker, and Sleeping Beauty — ballets that are performed all over the world every winter.
+
+Russian children grow up with matryoshka dolls — those round, painted wooden dolls that nest inside each other, each one smaller than the last. Open the big doll, and a slightly smaller one is hiding inside. Open that one, and another. And another. The tiniest one, no bigger than your fingernail, is always solid — the heart of the whole family.
+
+And when Russian children are small, their grandmothers — called babushkas — tell them fairy tales about Baba Yaga, a wild witch who lives in a house that walks on chicken legs. She is scary, she is funny, and she always teaches a lesson.
+
+Sleep warmly, {childName}. Like a matryoshka doll, there are layers of kindness inside you — and the smallest, deepest one holds the most love.`,
+      },
+      {
+        id: 'dc_ru_ep5_facts', episodeNumber: 5, title: 'Space Dogs, Chess Kings & the Coldest Town',
+        subtitle: 'The record-breaking, mind-bending facts about Russia.',
+        tradition: 'universal', theme: 'wisdom', durationMinutes: 5,
+        source: 'Discover Russia · Episode 5',
+        body: `Russia holds some of the most incredible records on the planet, and here they come — one after another.
+
+Russia is so big that it has the most neighbors of any country — it shares borders with fourteen different nations. And its land area is larger than the entire surface of the dwarf planet Pluto. Let that sink in: a country bigger than a planet.
+
+The coldest permanently inhabited place on Earth is the village of Oymyakon in Siberia. Winter temperatures regularly drop to minus fifty degrees Celsius. At that temperature, a cup of boiling water thrown into the air freezes before it hits the ground — turning into a cloud of instant snow. Children in Oymyakon still go to school unless it drops below minus fifty-two. Their eyelashes freeze on the walk there.
+
+Before humans went to space, dogs went first. In 1957, a small stray dog from the streets of Moscow named Laika became the first living creature to orbit the Earth. Later, two dogs named Belka and Strelka orbited and came safely home, becoming the most famous dogs in history. Strelka's puppy was later given as a gift to the American president's family.
+
+Russia has produced more chess grandmasters than any other country. Chess is so popular that children learn it in school, and parks across the country have giant outdoor chessboards where strangers challenge each other to games on sunny afternoons.
+
+Lake Baikal, which we visited on our first night, holds another surprise: in winter, the frozen surface cracks and reforms in patterns so beautiful they look like stained glass windows made of ice. Photographers travel from around the world just to lie on the ice and take pictures of the turquoise bubbles frozen beneath the surface — methane gas trapped in layers of crystal-clear ice.
+
+And Russia's national animal is the brown bear. Bears appear on coats of arms, in fairy tales, and as the mascot for the 1980 Olympics — a cartoon bear named Misha who was so beloved that people cried when his giant balloon floated away at the closing ceremony.
+
+Goodnight, {childName}. In a world this big and surprising, you will never run out of things to wonder about — and that is the best kind of record to hold.`,
+      },
+    ],
+  },,
+// ─── SOUTH AFRICA ───────────────────────────────────────────────
+  {
+    id: 'discover-southafrica',
+    title: 'Discover South Africa',
+    icon: '🇿🇦',
+    gradient: 'linear-gradient(135deg, #166534 0%, #eab308 50%, #1c1917 100%)',
+    description: 'Five bedtime journeys through the Rainbow Nation — from Table Mountain to the Big Five.',
+    ageRange: '4-8',
+    totalEpisodes: 5,
+    episodes: [
+      {
+        id: 'dc_za_ep1_geo', episodeNumber: 1, title: 'The Land at the Bottom of Africa',
+        subtitle: 'Where two oceans meet and mountains touch the clouds.',
+        tradition: 'universal', theme: 'wisdom', durationMinutes: 5,
+        source: 'Discover South Africa · Episode 1',
+        body: `If you could fly like a sunbird all the way to the southern tip of Africa, you would find a land so beautiful it would make your wings tremble. This is South Africa — a country shaped like a giant diamond, sitting right where the warm Indian Ocean shakes hands with the cold Atlantic Ocean.
+
+At the very bottom, there is a rocky cape called the Cape of Good Hope. Sailors long ago thought it was the edge of the world. The waves there crash and roar like two oceans having a friendly argument about who is stronger. Neither one ever wins.
+
+Now fly north and you will see Table Mountain — a flat-topped mountain that looks like someone took a giant knife and sliced the peak clean off. Clouds roll over its top like a white tablecloth, and the people of Cape Town call it "the tablecloth." On misty mornings the whole mountain disappears, and children wonder if it went to sleep.
+
+Keep flying and the land turns golden. The savanna stretches out like a honey-colored blanket, dotted with acacia trees that look like giant umbrellas. This is where the Big Five live — lions, elephants, buffalo, leopards, and rhinoceroses. They roam through places like Kruger National Park, one of the largest game reserves on Earth.
+
+In the east, the Drakensberg Mountains rise like dragon teeth — jagged and purple against the sunset. Their name actually means "Dragon Mountains." Waterfalls tumble down their cliffs, and ancient San people painted pictures on the rock walls thousands of years ago.
+
+South Africa has deserts too. The Kalahari in the northwest is home to meerkats who stand on their hind legs like tiny guards, watching for eagles.
+
+Tonight, {childName}, imagine standing where two oceans meet, feeling one warm wave and one cold wave touch your toes at the same time. That is South Africa — a place where different things come together and make something wonderful.`,
+      },
+      {
+        id: 'dc_za_ep2_hist', episodeNumber: 2, title: 'Stories Older Than Stone',
+        subtitle: 'From ancient cave paintings to the courage of Nelson Mandela.',
+        tradition: 'universal', theme: 'wisdom', durationMinutes: 5,
+        source: 'Discover South Africa · Episode 2',
+        body: `Long before cities or roads, long before anyone wrote words on paper, people lived in southern Africa. The San people — some of the oldest communities on Earth — made their home among the rocks and rivers. They painted pictures on cave walls using ochre, charcoal, and even egg whites. Giraffes, eland antelope, dancing figures — thousands of paintings that have survived for tens of thousands of years.
+
+These were not just pretty pictures. They were stories. The San believed that some paintings could bring rain, heal the sick, or connect the living world with the spirit world. Each brushstroke carried meaning, like a letter in a language only the heart could read.
+
+Centuries later, many different peoples called this land home — the Zulu, Xhosa, Sotho, and Tswana, among others. The Zulu kingdom, led by the great King Shaka in the early 1800s, became one of the most powerful nations in Africa. Shaka trained his warriors to be disciplined and brave, but he also believed that true strength meant protecting your people, not just fighting.
+
+Then came a long, difficult time. For many years, a system called apartheid separated people by the color of their skin. Black South Africans could not go to the same schools, beaches, or hospitals as white South Africans. It was deeply unfair.
+
+But the people resisted. A man named Nelson Mandela spent twenty-seven years in prison on a small island called Robben Island because he believed all people deserved to be equal. When he finally walked free, he did not seek revenge. He chose forgiveness. He became the first Black president of South Africa and called it the Rainbow Nation — a place where every color belongs.
+
+Tonight, {childName}, remember that even after the longest night, morning always comes. And the people who wait with courage and kindness in their hearts are the ones who build the brightest days.`,
+      },
+      {
+        id: 'dc_za_ep3_places', episodeNumber: 3, title: 'Mountains, Bridges, and Golden Cities',
+        subtitle: 'Table Mountain, Johannesburg, and the Garden Route.',
+        tradition: 'universal', theme: 'wisdom', durationMinutes: 5,
+        source: 'Discover South Africa · Episode 3',
+        body: `Let us visit three of South Africa's most famous places tonight, one by one, like turning pages in a picture book.
+
+First — Table Mountain. It rises above Cape Town like a giant stage. You can ride a cable car that spins slowly as it climbs, giving you a view of the city, the ocean, and even penguins waddling on the beach far below. Yes — penguins in Africa! African penguins live at Boulders Beach, and they waddle around like little gentlemen in tuxedos, completely unbothered by the tourists snapping photos.
+
+Next — Johannesburg, the City of Gold. Long ago, a farmer stumbled upon a glittering rock on his land. That rock contained gold, and within years, thousands of people rushed to the area hoping to find fortune. Johannesburg grew from a dusty mining camp into Africa's largest and richest city. Today its skyline glitters at night like a jewelry box. But the real treasure of Johannesburg is the Apartheid Museum, where visitors walk through the story of South Africa's struggle for freedom, and children learn why equality matters.
+
+Finally — the Garden Route. Imagine a road that hugs the coastline for three hundred kilometers, winding through forests, over bridges, past lagoons, and alongside cliffs where whales leap out of the water in winter. The Bloukrans Bridge along this route is the highest commercial bungee jump in the world — two hundred sixteen meters above the river. People scream all the way down and laugh all the way back up.
+
+Along the Garden Route you will also find Tsitsikamma Forest, where yellowwood trees have been growing for eight hundred years. Walking among them feels like stepping into a cathedral built by nature.
+
+Tonight, {childName}, close your eyes and ride the spinning cable car up Table Mountain. Feel the wind on your face. Look down at the penguins. And know that some of the most magical places on Earth are real — you just have to go find them.`,
+      },
+      {
+        id: 'dc_za_ep4_culture', episodeNumber: 4, title: 'Braai, Biltong, and Ubuntu',
+        subtitle: 'The food, music, and spirit of South Africa.',
+        tradition: 'universal', theme: 'wisdom', durationMinutes: 5,
+        source: 'Discover South Africa · Episode 4',
+        body: `In South Africa, there is a word that has no perfect translation in English. The word is ubuntu. It means something close to "I am because we are." It means that a person becomes a person through other people — that kindness, sharing, and community are what make us truly human.
+
+Ubuntu lives in the way South Africans gather. And the most beloved gathering of all is the braai. A braai is a barbecue, but calling it "just a barbecue" would be like calling the ocean "just water." A braai is an event. Families and friends come together around an open fire, grilling boerewors sausages that sizzle and curl, thick steaks rubbed with spices, and mielies — corn on the cob roasted until the kernels are smoky and sweet.
+
+While the fire crackles, someone always brings biltong — dried, seasoned meat that South Africans snack on the way other countries eat chips. It is chewy, salty, and completely addictive.
+
+South Africa has eleven official languages — eleven! — including Zulu, Xhosa, Afrikaans, and English. The Xhosa language has special click sounds that visitors find almost impossible to make. Children who grow up speaking Xhosa can click and talk at the same time as easily as you blink.
+
+Music fills the air everywhere. In townships, a style called kwaito blends house music with African rhythms. Choirs sing in harmonies so beautiful they can make strangers cry. The gumboot dance, created by gold miners who were not allowed to speak underground, turned rubber boots into drums — stomping, slapping, and clapping to communicate and celebrate.
+
+And every September, South Africans celebrate Heritage Day by having a braai. The whole country cooks together. Because in a nation with so many languages and traditions, fire and food are the one language everyone speaks.
+
+Tonight, {childName}, remember ubuntu. You are who you are because of the people who love you. And the kindness you give comes back to you like warmth from a fire.`,
+      },
+      {
+        id: 'dc_za_ep5_facts', episodeNumber: 5, title: 'Records, Wonders, and Surprises',
+        subtitle: 'The amazing facts that make South Africa one of a kind.',
+        tradition: 'universal', theme: 'wisdom', durationMinutes: 5,
+        source: 'Discover South Africa · Episode 5',
+        body: `Ready for some facts that will make your eyebrows jump? South Africa is full of surprises.
+
+First — the world's first heart transplant happened in Cape Town. In 1967, a doctor named Christiaan Barnard took a healthy heart from one person and placed it inside another person's chest. The whole world held its breath. The patient lived for eighteen days — and medicine was changed forever.
+
+South Africa is home to the oldest meteor crater visible on Earth. The Vredefort Crater is about two billion years old and three hundred kilometers wide. A rock from space hit so hard it left a scar that can be seen from space even today.
+
+The country has the third-highest waterfall in the world — Tugela Falls in the Drakensberg Mountains. Water drops nine hundred forty-eight meters, which is nearly five times taller than the Statue of Liberty stacked on top of itself.
+
+Here is a fun one. South Africa has a penguin colony, a desert, tropical forests, snowy mountains, and shark-filled oceans — all in one country. It is like six different planets squeezed into one beautiful place.
+
+The Big Hole in Kimberley is the largest hole ever dug by human hands. Miners dug it with picks and shovels looking for diamonds. It is two hundred fifteen meters deep and you could fit several football fields inside it.
+
+South Africa also has the longest wine route in the world — Route 62 stretches over eight hundred fifty kilometers through valleys dotted with vineyards and farms.
+
+And one more — the protea, South Africa's national flower, is one of the oldest flower families on Earth. It has been blooming for over three hundred million years, long before dinosaurs even existed.
+
+Tonight, {childName}, remember that South Africa is a land of firsts, biggests, and oldests. It reminds us that the world is full of wonders — and the best ones are the ones you have not discovered yet.`,
+      },
+    ],
+  },
+
+  // ─── TURKEY ─────────────────────────────────────────────────────
+  {
+    id: 'discover-turkey',
+    title: 'Discover Turkey',
+    icon: '🇹🇷',
+    gradient: 'linear-gradient(135deg, #991b1b 0%, #dc2626 50%, #fefefe 100%)',
+    description: 'Five bedtime journeys through the land where East meets West — bazaars, balloons, and ancient empires.',
+    ageRange: '4-8',
+    totalEpisodes: 5,
+    episodes: [
+      {
+        id: 'dc_tr_ep1_geo', episodeNumber: 1, title: 'The Bridge Between Two Worlds',
+        subtitle: 'A land that sits on two continents at once.',
+        tradition: 'universal', theme: 'wisdom', durationMinutes: 5,
+        source: 'Discover Turkey · Episode 1',
+        body: `Imagine a country so special it lives on two continents at the same time. One foot in Europe, one foot in Asia, with a shimmering blue strait of water running right through the middle. This is Turkey — the bridge between two worlds.
+
+That strip of water is called the Bosphorus. Ships from every corner of the Earth sail through it, honking their horns as they pass beneath bridges that connect the European side of Istanbul to the Asian side. You can eat breakfast in Europe and have lunch in Asia without ever boarding a plane.
+
+Now fly east and the land changes. The green hills near the coast give way to a vast, high plateau called Anatolia. It is dry and golden in summer, white with snow in winter. Strange rock formations rise from the ground like giant mushrooms and chimneys — this is Cappadocia, where wind and rain sculpted soft volcanic rock into shapes that look like a fairy tale.
+
+In eastern Turkey, Mount Ararat stands alone, covered in snow year-round, rising over five thousand meters into the sky. Many people believe it is the mountain where Noah's Ark came to rest after the great flood. Whether that is true or not, seeing Ararat at sunrise — pink and gold and enormous — is enough to make anyone believe in wonders.
+
+Turkey's coastline stretches for over eight thousand kilometers. The turquoise waters of the Mediterranean lap against white sand beaches in the south. In the north, the Black Sea coast is misty, green, and full of tea plantations — yes, Turkey is one of the biggest tea-drinking countries in the world.
+
+And hidden underground, entire cities were carved into rock thousands of years ago. Derinkuyu, the deepest underground city, goes eight levels down and could hold twenty thousand people.
+
+Tonight, {childName}, imagine standing on a bridge with one foot in Europe and one in Asia. Feel both continents beneath you. That is Turkey — where two worlds become one.`,
+      },
+      {
+        id: 'dc_tr_ep2_hist', episodeNumber: 2, title: 'Empires That Shook the World',
+        subtitle: 'From Troy to Constantinople to the Ottoman golden age.',
+        tradition: 'universal', theme: 'wisdom', durationMinutes: 5,
+        source: 'Discover Turkey · Episode 2',
+        body: `The land we call Turkey has been home to some of the greatest empires the world has ever known. Close your eyes and let us travel back in time.
+
+Three thousand years ago, on the western coast, there was a city called Troy. You may have heard the story — a great war fought over ten long years, a giant wooden horse, and a trick that ended it all. For centuries people thought Troy was just a legend. Then archaeologists dug into a hill in Turkey and found it — layer after layer of ancient cities, built on top of each other like a stack of pancakes. Troy was real.
+
+Centuries later, a Roman emperor named Constantine chose a small town on the Bosphorus and turned it into one of the greatest cities ever built. He called it Constantinople. It had enormous walls, golden churches, and a hippodrome where chariot races drew a hundred thousand screaming fans. For over a thousand years, it was the capital of the Byzantine Empire and the richest city in the world.
+
+Then in 1453, a young Ottoman sultan named Mehmed — only twenty-one years old — did what no one had managed in a thousand years. He conquered Constantinople. His soldiers dragged ships over a hill on wooden rollers to get around the chain blocking the harbor. It was so bold, so impossible, that even his enemies admired him. The city was renamed Istanbul.
+
+The Ottoman Empire that followed lasted over six hundred years. At its peak it stretched from Hungary to Egypt to the gates of Vienna. The Ottomans built mosques with domes that seemed to float, created intricate tiles painted in blue and white, and ran a government that was remarkably organized for its time.
+
+Every layer of Turkey's history is a story of transformation — cities rebuilt, empires reimagined, old ideas made new.
+
+Tonight, {childName}, remember that even the greatest things start small. A boy of twenty-one changed the world. A wooden horse ended a war. And a tiny town on a strait became the capital of empires.`,
+      },
+      {
+        id: 'dc_tr_ep3_places', episodeNumber: 3, title: 'Mosques, Balloons, and Underground Cities',
+        subtitle: 'The Hagia Sophia, Cappadocia, and Pamukkale.',
+        tradition: 'universal', theme: 'wisdom', durationMinutes: 5,
+        source: 'Discover Turkey · Episode 3',
+        body: `Turkey has places so magical they seem like they were borrowed from a dream. Let us visit three of them tonight.
+
+First — the Hagia Sophia in Istanbul. For almost a thousand years it was the largest cathedral in the world. Its dome is so high that when you stand inside and look up, you feel like the sky decided to come indoors. Sunlight pours through forty windows at the base of the dome, making it glow like a golden crown. It was a church, then a mosque, then a museum, then a mosque again. Walls covered in golden mosaics and Arabic calligraphy stand side by side — two faiths sharing one masterpiece.
+
+Next — Cappadocia. Every morning before sunrise, hundreds of hot air balloons rise into the cold Anatolian sky. They drift silently over a landscape of fairy chimneys — tall rock pillars topped with boulder caps that look like stone mushrooms. Below them, entire homes, churches, and even hotels are carved into the soft rock. People have been living inside these rocks for thousands of years. Imagine sleeping in a cave — warm in winter, cool in summer — and waking up to see balloons floating past your window like colorful jellyfish in a sky ocean.
+
+Finally — Pamukkale, which means "Cotton Castle." And it really does look like a castle made of cotton. Hot mineral water flows down a white limestone hillside, filling natural terraces that look like frozen waterfalls. The water is warm and turquoise, and people have been bathing in these pools since Roman times. At sunset, the white terraces turn pink and gold, and the whole hillside looks like it is glowing from inside.
+
+At the top of Pamukkale sit the ruins of Hierapolis, an ancient Roman spa city. People came from across the empire to heal in these waters two thousand years ago.
+
+Tonight, {childName}, imagine floating in a balloon over Cappadocia as the sun rises. Below you — fairy chimneys. Above you — a sky full of color. And inside you — the wonderful feeling of a world full of places waiting to be explored.`,
+      },
+      {
+        id: 'dc_tr_ep4_culture', episodeNumber: 4, title: 'Tea, Tulips, and the Grand Bazaar',
+        subtitle: 'The flavors, traditions, and warmth of Turkish life.',
+        tradition: 'universal', theme: 'wisdom', durationMinutes: 5,
+        source: 'Discover Turkey · Episode 4',
+        body: `In Turkey, friendship begins with tea. Not a big mug — a tiny tulip-shaped glass filled with dark red tea, served on a small saucer with two sugar cubes on the side. Turkish people drink more tea per person than almost any country on Earth. Tea is offered in shops, in homes, even at the mechanic while your car is being fixed. Saying no to tea is almost impossible. Saying yes is the beginning of a conversation.
+
+Speaking of tulips — did you know the tulip did not come from the Netherlands? It came from Turkey. Ottoman sultans loved tulips so much that there was a period called the Tulip Era. Gardens in Istanbul blazed with every color, and tulip festivals lit up the night with lanterns floating among the flowers.
+
+Now let us step inside the Grand Bazaar. Built in 1461, it is one of the oldest and largest covered markets in the world. Over four thousand shops line its winding corridors. Lanterns hang from arched ceilings. Spice sellers stack pyramids of bright red, orange, and yellow powders. Carpet merchants unroll silk rugs with patterns so detailed they take months to weave by hand.
+
+Turkish food is legendary. Kebabs come in dozens of styles — juicy lamb on skewers, minced meat wrapped around flatbread, vegetables stuffed with spiced rice. For breakfast, Turkish families spread a feast across the whole table — white cheese, olives, tomatoes, cucumbers, honey, clotted cream called kaymak, and fresh bread still warm from the oven.
+
+And then there is baklava — layers of paper-thin pastry filled with crushed pistachios and soaked in sweet syrup. Each bite crackles and melts at the same time.
+
+Turkish people have a saying: "A cup of coffee commits one to forty years of friendship." It means that sharing something small can create something that lasts a lifetime.
+
+Tonight, {childName}, remember that the best things are often the simplest — a glass of tea, warm bread, and someone to share them with.`,
+      },
+      {
+        id: 'dc_tr_ep5_facts', episodeNumber: 5, title: 'Records, Legends, and Surprises',
+        subtitle: 'The jaw-dropping facts that make Turkey extraordinary.',
+        tradition: 'universal', theme: 'wisdom', durationMinutes: 5,
+        source: 'Discover Turkey · Episode 5',
+        body: `Get ready — Turkey has some facts that will make you say "wait, really?" at least three times.
+
+Turkey is home to one of the oldest known temples on Earth. Gobekli Tepe was built around twelve thousand years ago — that is seven thousand years before the Egyptian pyramids. Giant stone pillars carved with animals stand in circles on a hilltop, and archaeologists still cannot fully explain who built them or why. It changed everything we thought we knew about ancient people.
+
+The country sits on two tectonic plates, which means earthquakes happen. But it also means Turkey has natural hot springs everywhere. The ancient Romans built entire cities around these warm waters, and you can still soak in them today.
+
+Turkey has more than eighty thousand mosques — more than any other country. The call to prayer echoes across cities five times a day, a sound so familiar it is woven into the rhythm of daily life.
+
+Here is a delicious fact — Turkey produces about seventy percent of the world's hazelnuts. That means most of the chocolate hazelnut spread you eat probably started as a nut growing on a Turkish hillside.
+
+Turkish ice cream, called dondurma, is so thick and stretchy that sellers play tricks on customers — pulling the cone away, flipping it upside down, handing you an empty cone first — all while laughing. It is made with a special root that makes it chewy and nearly impossible to melt.
+
+Santa Claus has Turkish roots too. Saint Nicholas, the real person behind the legend, was born in a town called Patara on Turkey's southern coast. He was known for secretly giving gifts to children and families in need.
+
+And one more — Turkey's Mediterranean coast is a nesting ground for endangered loggerhead sea turtles. Every summer, mother turtles crawl onto the beach at night to lay their eggs in the sand.
+
+Tonight, {childName}, remember Turkey — where the oldest temple on Earth and the stretchiest ice cream on Earth exist in the same wonderful country. The world is full of surprises if you keep your eyes open.`,
+      },
+    ],
+  },
+
+  // ─── UAE ────────────────────────────────────────────────────────
+  {
+    id: 'discover-uae',
+    title: 'Discover UAE',
+    icon: '🇦🇪',
+    gradient: 'linear-gradient(135deg, #166534 0%, #fefefe 50%, #1c1917 100%)',
+    description: 'Five bedtime journeys through the land of sand dunes and skyscrapers — where the desert touches the future.',
+    ageRange: '4-8',
+    totalEpisodes: 5,
+    episodes: [
+      {
+        id: 'dc_ae_ep1_geo', episodeNumber: 1, title: 'Dunes, Oases, and the Sparkling Gulf',
+        subtitle: 'A desert land that stretches from mountains to sea.',
+        tradition: 'universal', theme: 'wisdom', durationMinutes: 5,
+        source: 'Discover UAE · Episode 1',
+        body: `Close your eyes and imagine a land made of sand. Golden sand dunes rolling like frozen waves under a blazing sun. This is the United Arab Emirates — the UAE — a small country on the eastern edge of the Arabian Peninsula, tucked between the Persian Gulf and the Gulf of Oman.
+
+The desert here is called the Rub' al Khali — the Empty Quarter — and it is the largest sand desert in the world. Some dunes rise over two hundred fifty meters, taller than many skyscrapers. The sand shifts and reshapes every day, so the desert is never quite the same twice. It is like a painting that keeps painting itself.
+
+But the UAE is not all sand. In the east, the Hajar Mountains rise sharply from the flat plains. These rocky peaks are millions of years old, and hidden between them are wadis — dry riverbeds that fill with emerald-green water after rainstorms. Children splash in wadi pools that appear like magic after a storm and disappear days later.
+
+Along the coast, the Persian Gulf sparkles turquoise and warm. The water is shallow enough in places that you can wade far from shore and still see your toes. Mangrove forests grow along parts of the coast, their tangled roots creating underwater nurseries for baby fish, crabs, and turtles.
+
+In the desert, oases dot the landscape — patches of green surrounded by gold. The Al Ain Oasis has over one hundred forty-seven thousand date palm trees, all fed by an ancient underground irrigation system called a falaj that has been working for over three thousand years.
+
+And at the edges where desert meets sea, you will find salt flats called sabkhas — flat, white, and sparkling, like a beach that forgot to add the ocean.
+
+Tonight, {childName}, imagine walking through a desert where the sand whispers under your feet. In the UAE, even the emptiest places are full of life — you just have to know where to look.`,
+      },
+      {
+        id: 'dc_ae_ep2_hist', episodeNumber: 2, title: 'Pearl Divers, Traders, and a Bold Dream',
+        subtitle: 'From Bedouin camps to a nation born in one generation.',
+        tradition: 'universal', theme: 'wisdom', durationMinutes: 5,
+        source: 'Discover UAE · Episode 2',
+        body: `Before the skyscrapers, before the airports, before the highways — there was the sea. And the pearl.
+
+For thousands of years, the people of the Gulf coast made their living diving for pearls. Young men would take a deep breath, clip a wooden peg on their nose, tie a stone to their foot, and sink to the bottom of the warm Persian Gulf. Down in the murky water, they searched for oysters, prying them open one by one, hoping to find a gleaming pearl inside. Most oysters had nothing. But every now and then — a pearl so perfect it could buy a whole house.
+
+Pearl diving was dangerous. Divers stayed underwater for minutes at a time. Jellyfish stung. Sharks circled. But families depended on the pearl harvest, and every diver knew the sea was both provider and challenge.
+
+On land, Bedouin tribes crossed the desert with their camels, trading goods between coastal villages and mountain settlements. They navigated by the stars and survived on dates, camel milk, and an unbreakable code of hospitality — any stranger who arrived at your tent was given food, water, and shelter, no questions asked.
+
+Then everything changed. In 1958, oil was discovered. Black gold beneath the sand. Within a single generation, fishing villages became cities. But the true miracle was what happened in 1971, when seven small emirates — Abu Dhabi, Dubai, Sharjah, Ajman, Umm Al Quwain, Ras Al Khaimah, and Fujairah — decided to unite as one country. Sheikh Zayed bin Sultan Al Nahyan, the leader of Abu Dhabi, was the architect of this union. He believed that together they would be strong, and apart they would remain small.
+
+He was right. In just fifty years, the UAE went from pearl-diving villages to one of the most modern nations on Earth.
+
+Tonight, {childName}, remember the pearl divers. They dove into the dark unknown, hoping for something precious. And sometimes, the most valuable thing you find is not a pearl — it is the courage to keep diving.`,
+      },
+      {
+        id: 'dc_ae_ep3_places', episodeNumber: 3, title: 'Towers, Mosques, and Desert Palaces',
+        subtitle: 'The Burj Khalifa, Sheikh Zayed Mosque, and the Louvre Abu Dhabi.',
+        tradition: 'universal', theme: 'wisdom', durationMinutes: 5,
+        source: 'Discover UAE · Episode 3',
+        body: `Let us visit three places in the UAE that will take your breath away — each one more astonishing than the last.
+
+First — the Burj Khalifa in Dubai. It is the tallest building in the world. Eight hundred twenty-eight meters high — that is over one hundred sixty floors. Standing at its base and looking up, you cannot even see the top on a cloudy day. The tip disappears into the sky like a silver needle stitching the earth to the heavens. At sunset, the tower glows orange and pink, and from the observation deck on the one hundred forty-eighth floor, you can see the curve of the Earth.
+
+Building it took six years and twelve thousand workers from all over the world. The foundation alone goes fifty meters deep. On the hottest days, the top of the Burj Khalifa is six degrees cooler than the bottom — it literally has its own weather.
+
+Next — the Sheikh Zayed Grand Mosque in Abu Dhabi. It is one of the most beautiful buildings ever created. Eighty-two white marble domes sit atop a structure that can hold forty thousand worshippers. One thousand columns line the courtyards. The floor is covered by the world's largest hand-knotted carpet — it took twelve hundred artisans two years to make. At night, the mosque is lit to reflect the phases of the moon — bluish-grey on new moon nights, brilliant white on full moons.
+
+Finally — the Louvre Abu Dhabi. A museum built on an island, covered by a massive dome made of eight thousand metal stars layered in a pattern. When the sun shines through, it creates a "rain of light" — thousands of tiny sunbeams dancing on the floor and walls like stars fallen indoors. Inside, art from every civilization sits side by side — Egyptian, Chinese, European, Islamic — showing how all human cultures are connected.
+
+Tonight, {childName}, imagine standing in the rain of light inside the Louvre Abu Dhabi. Each tiny sunbeam is a story. And together, they remind us that all our stories are part of one big, beautiful story.`,
+      },
+      {
+        id: 'dc_ae_ep4_culture', episodeNumber: 4, title: 'Dates, Dances, and Desert Hospitality',
+        subtitle: 'The food, traditions, and generous spirit of the Emirates.',
+        tradition: 'universal', theme: 'wisdom', durationMinutes: 5,
+        source: 'Discover UAE · Episode 4',
+        body: `In the UAE, when a guest arrives, the first thing offered is Arabic coffee and dates. The coffee is light, golden, flavored with cardamom and saffron, and poured from a long-spouted pot called a dallah. The dates are plump, sticky, and sweet — like nature's candy. This tradition of welcoming visitors is thousands of years old, and it is the heart of Emirati culture.
+
+Hospitality is not just polite here — it is sacred. Bedouin tradition says you must offer food and shelter to anyone who comes to your door, even a stranger, for three days. No questions asked. Generosity is considered one of the greatest virtues.
+
+Emirati food tells the story of the land. Machboos is spiced rice cooked with meat or fish, seasoned with dried limes called loomi that add a tangy, smoky flavor. Luqaimat are little dumplings, deep-fried until golden and drizzled with date syrup — crunchy on the outside, soft and warm on the inside. Harees is a comforting porridge of wheat and slow-cooked meat, often served during Ramadan.
+
+During Ramadan, the holy month, families fast from sunrise to sunset. When the evening call to prayer sounds, everyone gathers for iftar — breaking the fast together. Streets fill with the smell of food, and strangers share meals. It is a time of patience, gratitude, and community.
+
+Emirati culture also celebrates the desert. Falconry — hunting with trained falcons — has been practiced for thousands of years and is a proud tradition. Falcons are treated like family. Some falcons even have their own passports for traveling to competitions.
+
+The Al-Ayyala is a traditional dance where rows of men move in rhythm, holding thin canes and swaying together while drums beat. It looks like the desert itself is dancing.
+
+Tonight, {childName}, remember the golden coffee and the plump date. In the UAE, sharing what you have — even if it is small — is the greatest thing a person can do. Generosity is not about being rich. It is about being kind.`,
+      },
+      {
+        id: 'dc_ae_ep5_facts', episodeNumber: 5, title: 'Records, Firsts, and Desert Wonders',
+        subtitle: 'The jaw-dropping facts that make the UAE extraordinary.',
+        tradition: 'universal', theme: 'wisdom', durationMinutes: 5,
+        source: 'Discover UAE · Episode 5',
+        body: `The UAE loves to break records. Get ready — this tiny country has some enormous surprises.
+
+The Burj Khalifa is the tallest building in the world, but the UAE does not stop there. Dubai also has the largest shopping mall by total area — the Dubai Mall. It has over twelve hundred shops, an aquarium with thirty-three thousand sea creatures, an ice-skating rink, and a waterfall three stories tall. You could visit a different shop every day and not finish for more than three years.
+
+The UAE built palm-shaped islands in the sea. The Palm Jumeirah was made by pouring millions of tons of sand into the Persian Gulf to create a tree-shaped island visible from space. It has hotels, homes, and beaches — all on land that did not exist thirty years ago.
+
+Here is a wild fact — the UAE has more camels than people in some emirates. Camel racing is a major sport, and the jockeys are tiny robots strapped onto the camels' backs, controlled by remote control from pickup trucks driving alongside. It is one of the most unusual sports you will ever see.
+
+The country went from having no space program to sending an astronaut to the International Space Station and launching a probe to Mars — the Hope Probe — which arrived in 2021, making the UAE the first Arab nation to reach Mars.
+
+Abu Dhabi has the world's fastest roller coaster — Formula Rossa at Ferrari World. It goes from zero to two hundred forty kilometers per hour in under five seconds. Riders have to wear goggles because the wind is too strong for bare eyes.
+
+And despite being mostly desert, the UAE has one of the best wifi networks on the planet. Even remote desert camps often have internet.
+
+Tonight, {childName}, remember the UAE — a country that looked at the desert and saw possibility. It reminds us that it does not matter where you start. What matters is how big you dare to dream.`,
+      },
+    ],
+  },
+
+  // ─── SPAIN ──────────────────────────────────────────────────────
+  {
+    id: 'discover-spain',
+    title: 'Discover Spain',
+    icon: '🇪🇸',
+    gradient: 'linear-gradient(135deg, #991b1b 0%, #dc2626 50%, #eab308 100%)',
+    description: 'Five bedtime journeys through the land of flamenco, fiestas, and golden sun.',
+    ageRange: '4-8',
+    totalEpisodes: 5,
+    episodes: [
+      {
+        id: 'dc_es_ep1_geo', episodeNumber: 1, title: 'The Sun-Kissed Peninsula',
+        subtitle: 'Mountains, mesetas, and the bluest Mediterranean waters.',
+        tradition: 'universal', theme: 'wisdom', durationMinutes: 5,
+        source: 'Discover Spain · Episode 1',
+        body: `Spain sits on a great peninsula in southwestern Europe, like a slightly tilted square reaching toward Africa. Only fourteen kilometers of water — the Strait of Gibraltar — separate Spain from Morocco. On clear days, you can stand on the southern coast and see another continent.
+
+The heart of Spain is the meseta — a vast, high plateau that stretches across the center of the country. It is dry and golden in summer, cold and windswept in winter. Windmills still stand on some hilltops, and centuries ago a famous character in a book mistook them for giants and charged at them with a lance. That character was Don Quixote, and those windmills are still there.
+
+In the north, the Pyrenees Mountains form a massive wall between Spain and France. Snow-capped peaks, green valleys, and mountain villages where shepherds still tend their flocks. The Pyrenees are home to brown bears, golden eagles, and a type of wild goat called the ibex that climbs nearly vertical cliff faces as easily as you walk on flat ground.
+
+Spain's coastline is one of the most beautiful in Europe. The Costa Brava in the northeast has rocky coves and crystal-clear water. The Costa del Sol in the south has over three hundred days of sunshine per year. And the Canary Islands, off the coast of Africa, have volcanic beaches made of black sand.
+
+In the northwest, Galicia is green and misty, more like Ireland than the Spain you see in postcards. Rain falls often, rivers carve through granite hills, and the seafood — octopus, mussels, and percebes barnacles — is some of the best on Earth.
+
+And then there is Mallorca — an island in the Mediterranean with turquoise coves so beautiful that pirates once used them as hiding spots.
+
+Tonight, {childName}, imagine standing on a Spanish hilltop as the sun sets golden over the meseta. The windmills turn slowly. The air smells of wild thyme. And the whole world feels warm and still and good.`,
+      },
+      {
+        id: 'dc_es_ep2_hist', episodeNumber: 2, title: 'Empires, Explorers, and the Golden Age',
+        subtitle: 'From Roman roads to the ships that crossed the ocean.',
+        tradition: 'universal', theme: 'wisdom', durationMinutes: 5,
+        source: 'Discover Spain · Episode 2',
+        body: `Spain's story is one of layers — like a cake baked over thousands of years, each layer adding something new and delicious.
+
+The Romans came first and stayed for six hundred years. They built roads, aqueducts, and theatres. The aqueduct of Segovia still stands today — a towering bridge of stone blocks stacked without any cement or mortar, holding strong for two thousand years. Engineers still marvel at how it was done.
+
+Then came the Moors — Muslim rulers from North Africa who crossed the Strait of Gibraltar in the year 711. For nearly eight hundred years, they ruled parts of Spain and brought incredible knowledge with them. They introduced new crops like oranges, rice, and almonds. They built the Alhambra in Granada — a palace so beautiful that its walls are covered in poetry carved into plaster. Water flows through its courtyards in narrow channels, and the sound of fountains fills every room. During this time, Muslim, Jewish, and Christian scholars worked side by side in cities like Cordoba, translating ancient Greek texts and inventing new mathematics.
+
+In 1492, three things happened that changed the world. The Catholic monarchs Ferdinand and Isabella completed the Reconquista, reclaiming all of Spain. That same year, Christopher Columbus sailed west with three small ships — the Nina, the Pinta, and the Santa Maria — looking for Asia and stumbling upon the Americas instead.
+
+Spain's Golden Age followed. Spanish ships sailed every ocean. Gold and silver flowed in. Painters like Velazquez created masterpieces. Writers like Cervantes wrote Don Quixote, considered the first modern novel.
+
+But empires rise and fall. Spain learned, like all great nations, that true wealth is not gold — it is the ideas, art, and culture you leave behind.
+
+Tonight, {childName}, remember the aqueduct of Segovia — stones balanced perfectly for two thousand years with no glue. Some things last not because they are forced together, but because they are placed together with patience and care.`,
+      },
+      {
+        id: 'dc_es_ep3_places', episodeNumber: 3, title: 'Cathedrals, Castles, and a Church Still Growing',
+        subtitle: 'The Alhambra, Sagrada Familia, and the Santiago trail.',
+        tradition: 'universal', theme: 'wisdom', durationMinutes: 5,
+        source: 'Discover Spain · Episode 3',
+        body: `Spain has buildings that make your jaw drop open and forget to close. Let us visit three tonight.
+
+First — the Alhambra in Granada. Perched on a hilltop with the snow-capped Sierra Nevada mountains behind it, this palace was built by Moorish rulers over centuries. Every surface is covered in intricate patterns — geometric shapes that repeat and interlock like an endless puzzle. No pictures of people or animals, just pure geometry, because the artists believed the beauty of patterns could reflect the infinite. The Court of the Lions has a fountain held up by twelve marble lions, with water flowing in channels that divide the courtyard into four perfect gardens. Standing there at sunset, with golden light pouring through carved archways, feels like being inside a jewel box.
+
+Next — the Sagrada Familia in Barcelona. This church was designed by Antoni Gaudi, an architect who looked at nature and said, "That is how buildings should look." He started building it in 1882, and it is still not finished — over one hundred forty years later. Its towers look like melting candles or dripping sand castles. Inside, columns branch like trees, and stained glass windows throw rainbows across the walls. Gaudi knew he would not live to see it completed. He said, "My client is not in a hurry" — meaning God.
+
+Finally — the Camino de Santiago. This is not a building but a path. For over a thousand years, people have walked across Spain to reach the cathedral of Santiago de Compostela in the northwest. The journey takes about a month on foot. Walkers carry a scallop shell as their symbol. Strangers become friends along the way. The point is not just the destination — it is what you discover about yourself during the walk.
+
+Tonight, {childName}, think about the Sagrada Familia. Some beautiful things take longer than a lifetime to finish. The important thing is to start, and to trust that others will continue what you began.`,
+      },
+      {
+        id: 'dc_es_ep4_culture', episodeNumber: 4, title: 'Flamenco, Paella, and the Joy of Living',
+        subtitle: 'The music, food, and fiery spirit of Spanish life.',
+        tradition: 'universal', theme: 'wisdom', durationMinutes: 5,
+        source: 'Discover Spain · Episode 4',
+        body: `In Spain, life is not meant to be rushed. It is meant to be tasted, danced, and shared.
+
+Let us start with flamenco — a dance that comes from deep inside the soul. A guitarist plays fast, intricate patterns. A singer wails with a voice full of longing and joy mixed together. And the dancer — stomping, clapping, spinning — tells a story without words. Flamenco was born in Andalusia, in the south of Spain, created by a mix of cultures over centuries. When you watch flamenco up close, you can feel the floor vibrating under the dancer's feet. It is not just a performance. It is an earthquake of emotion.
+
+Now let us eat. Spanish food is all about sharing. Tapas are small plates — a little dish of olives, a few slices of jamon serrano (cured ham that hangs from ceilings in bars), patatas bravas (crispy potatoes with spicy sauce), and tortilla espanola (a thick potato omelette that every grandmother makes differently and every grandmother insists hers is the best).
+
+Paella is Spain's most famous dish. It started in Valencia, cooked over an open fire in a wide, flat pan. Saffron turns the rice golden yellow. Depending on the region, it is filled with chicken, rabbit, seafood, or vegetables. Families argue lovingly about the "right" way to make it. There is no right way. Every paella is right.
+
+Spanish life follows its own clock. Lunch is at two or three in the afternoon. Dinner is at ten at night. In between, some people still take a siesta — a short afternoon nap that recharges the whole body. Children play outside until late in the evening, because the sun does not set until almost ten in the summer.
+
+Fiestas happen constantly. La Tomatina is a festival where an entire town throws tomatoes at each other. Las Fallas in Valencia builds enormous sculptures and then burns them all in one spectacular night.
+
+Tonight, {childName}, remember that life is a feast. Eat slowly. Dance freely. And stay up late enough to watch the sunset paint the sky red and gold — the colors of Spain.`,
+      },
+      {
+        id: 'dc_es_ep5_facts', episodeNumber: 5, title: 'Records, Wonders, and Surprises',
+        subtitle: 'The astonishing facts that make Spain unforgettable.',
+        tradition: 'universal', theme: 'wisdom', durationMinutes: 5,
+        source: 'Discover Spain · Episode 5',
+        body: `Spain is full of facts that will make you lean forward and say "tell me more." Here we go.
+
+Spain has the second-highest number of UNESCO World Heritage Sites in the world — over fifty. That means more protected treasures than almost any country on Earth. Ancient Roman walls, medieval cathedrals, cave paintings, and entire historic cities.
+
+Speaking of cave paintings — the Cave of Altamira in northern Spain has paintings that are over thirty-six thousand years old. Ancient artists used the bumps and curves of the cave ceiling to make bison look three-dimensional. When the cave was first discovered, experts refused to believe the paintings were real because they were too beautiful.
+
+Spain has a restaurant called El Bulli that was voted the best restaurant in the world five times. The chef, Ferran Adria, made food that looked like science experiments — olive oil spheres that burst in your mouth, disappearing ravioli, and ice cream that tasted like parmesan cheese.
+
+Here is a fun one — there is a town in Spain called Setenil de las Bodegas where houses are built into and under massive rock overhangs. The rock IS the roof. People live under boulders the size of buildings, perfectly comfortable.
+
+The oldest restaurant in the world is in Madrid. Sobrino de Botin has been serving food continuously since 1725. The famous painter Francisco Goya once worked there as a waiter before he became an artist.
+
+Spain's high-speed trains are among the fastest in Europe, connecting Madrid to Barcelona in just two and a half hours at speeds of over three hundred kilometers per hour.
+
+And one more — La Liga, Spain's football league, is home to some of the greatest football clubs and players the world has ever seen. The roar of a hundred thousand fans in a Spanish stadium is a sound you never forget.
+
+Tonight, {childName}, remember Spain — a country where ancient cave paintings and high-speed trains exist side by side. It teaches us that you can honor the past and race toward the future at the same time.`,
+      },
+    ],
+  },
+
+  // ─── NEW ZEALAND ────────────────────────────────────────────────
+  {
+    id: 'discover-newzealand',
+    title: 'Discover New Zealand',
+    icon: '🇳🇿',
+    gradient: 'linear-gradient(135deg, #1e3a5f 0%, #166534 50%, #1c1917 100%)',
+    description: 'Five bedtime journeys through the land of the long white cloud — mountains, geysers, and Maori legends.',
+    ageRange: '4-8',
+    totalEpisodes: 5,
+    episodes: [
+      {
+        id: 'dc_nz_ep1_geo', episodeNumber: 1, title: 'The Land of the Long White Cloud',
+        subtitle: 'Volcanoes, fjords, and a country that glows green.',
+        tradition: 'universal', theme: 'wisdom', durationMinutes: 5,
+        source: 'Discover New Zealand · Episode 1',
+        body: `Far, far away, in the bottom corner of the Pacific Ocean, there is a country so green and so wild that it looks like the Earth is showing off. This is New Zealand — or as the Maori people call it, Aotearoa, the Land of the Long White Cloud.
+
+New Zealand is made of two main islands — the North Island and the South Island — plus hundreds of tiny ones scattered around like crumbs from a giant's sandwich. It is one of the last large landmasses that humans ever settled, so nature had millions of years to create things here that exist nowhere else on Earth.
+
+The North Island is where the ground is alive. Volcanoes rumble beneath the surface. In Rotorua, the earth hisses and bubbles — boiling mud pools plop and splatter like porridge cooking in a giant pot. Geysers shoot scalding water twenty meters into the air. The whole town smells like rotten eggs because of the sulphur, but locals barely notice anymore. They are used to living on a planet that breathes.
+
+The South Island is where the mountains take over. The Southern Alps run down the island like a spine, and the tallest peak — Aoraki Mount Cook — rises three thousand seven hundred twenty-four meters into clouds that cling to its shoulders like a white scarf. Glaciers creep down valleys, blue and ancient, grinding rock into powder.
+
+And then — the fjords. Milford Sound is a narrow channel of water surrounded by cliffs so steep that waterfalls tumble straight down into the sea. When it rains, hundreds of temporary waterfalls appear, turning the cliffs into curtains of falling silver.
+
+New Zealand sits on the Pacific Ring of Fire, which means earthquakes and volcanic eruptions are part of life. The country literally grows and shifts and shakes.
+
+Tonight, {childName}, imagine standing at the edge of Milford Sound as mist rises from the water and waterfalls whisper all around you. That is New Zealand — a place where the earth itself feels alive and full of wonder.`,
+      },
+      {
+        id: 'dc_nz_ep2_hist', episodeNumber: 2, title: 'Voyagers, Warriors, and a Treaty',
+        subtitle: 'The Maori navigators who found paradise at the bottom of the world.',
+        tradition: 'universal', theme: 'wisdom', durationMinutes: 5,
+        source: 'Discover New Zealand · Episode 2',
+        body: `About seven hundred years ago, the greatest ocean voyagers the world has ever known set out across the vast Pacific in wooden canoes. They had no maps, no compasses, no GPS. They navigated by the stars, the ocean swells, the flight paths of birds, and the patterns of clouds on the horizon. These were the Polynesian ancestors of the Maori people, and they were looking for a new home.
+
+Imagine the courage it took. Loading your family, your food, your seeds, and your hopes into a double-hulled canoe and sailing into the unknown. The Pacific Ocean is enormous — the largest body of water on Earth. They could have sailed for weeks and found nothing. But they trusted their knowledge of the sea, and one day, they saw a long white cloud on the horizon. Beneath it — land. Aotearoa.
+
+The Maori settled these islands and built a rich culture. They carved elaborate meeting houses called wharenui, decorated with spiraling patterns that told the stories of their ancestors. They performed the haka — a powerful ceremonial dance with stomping feet, slapping chests, wide eyes, and extended tongues. The haka was not just a war dance. It was a way to express identity, pride, grief, and welcome.
+
+In 1840, the British Crown and Maori chiefs signed the Treaty of Waitangi. It was meant to be a partnership, but the English and Maori versions said different things, and misunderstandings led to years of conflict and injustice. Today, New Zealand continues to work toward honoring the treaty's promises, and the Maori language and culture are experiencing a powerful revival.
+
+Te reo Maori — the Maori language — is taught in schools. Maori place names are used alongside English. And the haka is performed by New Zealand's national rugby team, the All Blacks, before every match, sending chills down the spines of opponents and spectators alike.
+
+Tonight, {childName}, remember the voyagers who sailed into the unknown with nothing but courage and starlight. They remind us that the bravest journeys begin before you can see where they end.`,
+      },
+      {
+        id: 'dc_nz_ep3_places', episodeNumber: 3, title: 'Glowworms, Geysers, and Middle-earth',
+        subtitle: 'Milford Sound, the Waitomo Caves, and the Hobbiton movie set.',
+        tradition: 'universal', theme: 'wisdom', durationMinutes: 5,
+        source: 'Discover New Zealand · Episode 3',
+        body: `New Zealand has places so magical that a famous filmmaker chose it to create a fantasy world. But the truth is — New Zealand was already a fantasy world. Let us visit three places that prove it.
+
+First — the Waitomo Glowworm Caves. Deep underground, in pitch darkness, you climb into a small boat. A guide pulls you along a rope through a silent, narrow cave. Then you look up. The ceiling is alive with thousands of tiny blue-green lights. They look like stars — a galaxy underground. These are glowworms — larvae that produce light to attract insects into their sticky silk threads. They glow brightest in total silence. No one speaks. The only sound is the gentle drip of water. It feels like floating through outer space.
+
+Next — Wai-O-Tapu, the geothermal wonderland near Rotorua. The ground here is every color you can imagine. The Champagne Pool is a hot spring the color of orange juice, rimmed with bright yellow sulphur. The Devil's Bath is an acid-green pool that looks like someone poured neon paint into the earth. Steam rises everywhere. The ground is warm beneath your feet. At ten-fifteen every morning, the Lady Knox Geyser erupts — a column of water shooting up to twenty meters high, as punctual as an alarm clock.
+
+Finally — Hobbiton. When director Peter Jackson needed a home for hobbits, he searched the entire world and found the perfect green hills near Matamata. Forty-four hobbit holes were built into the hillside, with round doors painted in bright colors, tiny gardens, and a working pub called the Green Dragon. Even if you have never seen the movies, walking through Hobbiton feels like stepping into a storybook where everything is cozy and safe and sized just right.
+
+New Zealand is one of the few places where reality is more magical than fiction.
+
+Tonight, {childName}, imagine floating through the glowworm cave, looking up at a ceiling of living stars. The most wonderful things are sometimes hiding in the darkest places, waiting for you to be quiet enough to see them.`,
+      },
+      {
+        id: 'dc_nz_ep4_culture', episodeNumber: 4, title: 'Haka, Hangi, and the Kiwi Spirit',
+        subtitle: 'The food, traditions, and big heart of little New Zealand.',
+        tradition: 'universal', theme: 'wisdom', durationMinutes: 5,
+        source: 'Discover New Zealand · Episode 4',
+        body: `New Zealanders call themselves Kiwis — named after the kiwi bird, a small, round, flightless bird with a long beak and whiskers. The kiwi is shy, comes out only at night, and is surprisingly fierce for its size. New Zealanders think that describes them perfectly — humble, tough, and quietly remarkable.
+
+The haka is the cultural tradition New Zealand is most famous for. When the All Blacks rugby team performs the haka before a match, eighty thousand people go silent. The players stamp their feet, slap their arms, bulge their eyes, and chant words that shake the stadium. "Ka mate, ka mate — ka ora, ka ora" — it is about facing death and choosing life. The haka is not about scaring opponents. It is about honoring ancestors, showing unity, and declaring that you are present, alive, and ready.
+
+Food in New Zealand is shaped by the land and sea. The traditional Maori feast is called a hangi. A pit is dug in the ground, stones are heated in a fire, and food — chicken, lamb, kumara sweet potatoes, pumpkin, and stuffing — is wrapped in leaves and lowered onto the hot stones. The pit is covered with earth, and the food slow-cooks for hours, absorbing a smoky, earthy flavor that no oven can replicate. Uncovering the hangi is a celebration. Steam rises. Everyone gathers. The food is tender and deeply flavorful.
+
+New Zealand's pavlova is a dessert made of meringue — crispy on the outside, marshmallowy in the middle — topped with whipped cream and fresh kiwifruit. New Zealanders and Australians have argued for decades over who invented it. Both claim it. Neither will surrender.
+
+The Kiwi spirit is about being resourceful. Number eight wire mentality — the idea that you can fix or build anything with a piece of wire and determination — is a national pride. It comes from early settlers who had no shops nearby and had to solve every problem themselves.
+
+Tonight, {childName}, remember the kiwi bird — small, humble, and braver than it looks. You do not have to be the biggest or the loudest. Sometimes the quietest ones are the strongest.`,
+      },
+      {
+        id: 'dc_nz_ep5_facts', episodeNumber: 5, title: 'Records, Wonders, and Surprises',
+        subtitle: 'The incredible facts that make New Zealand one of a kind.',
+        tradition: 'universal', theme: 'wisdom', durationMinutes: 5,
+        source: 'Discover New Zealand · Episode 5',
+        body: `New Zealand is small — only about five million people — but it is packed with facts that make big countries jealous.
+
+New Zealand was the first country in the world to give women the right to vote, back in 1893. A woman named Kate Sheppard led the campaign, and her face is now on the ten-dollar note. She changed history by refusing to accept that things could not change.
+
+There are more sheep than people in New Zealand. About six sheep for every human. That means if the sheep ever held an election, they would win every time.
+
+The country has no native land mammals except for two species of bat. Before humans arrived, birds ruled. The now-extinct moa was the tallest bird that ever lived — over three and a half meters tall. The kiwi, unable to fly, evolved to behave like a mammal, sniffing the ground with nostrils at the tip of its beak — the only bird in the world with nostrils there.
+
+New Zealand was the first place on Earth to see each new day. The East Cape gets the first sunrise. Every New Year, Kiwis celebrate before almost everyone else on the planet.
+
+Bungee jumping as a commercial sport was invented in New Zealand. A man named AJ Hackett jumped off the Eiffel Tower with an elastic cord (illegally) and then came home and opened the world's first commercial bungee operation in Queenstown.
+
+The Whanganui River was granted the same legal rights as a person in 2017 — the first river in the world to receive this status. If someone pollutes it, it is treated as harming a living being.
+
+And finally — New Zealand's Fiordland crested penguin is one of the rarest penguins in the world, with only about three thousand breeding pairs. They live in the rainy, wild forests of the South Island, far from any city.
+
+Tonight, {childName}, remember New Zealand — a small country at the bottom of the world that keeps being first. It reminds us that size does not determine what you can achieve. Courage does.`,
+      },
+    ],
+  },,
 ];
 
