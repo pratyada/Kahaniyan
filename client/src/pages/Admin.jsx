@@ -3442,12 +3442,12 @@ function SeriesPanel() {
             <div className="flex gap-1.5 shrink-0">
               <button
                 onClick={async () => {
-                  const voice = document.getElementById('bulk-series-voice')?.value || 'george';
                   const eps = series.episodes;
-                  if (!confirm(`Generate audio + images for all ${eps.length} episodes of "${series.title}"?`)) return;
+                  if (!confirm(`Generate audio + images for all ${eps.length} episodes of "${series.title}"? Uses per-episode voice selection.`)) return;
                   for (let i = 0; i < eps.length; i++) {
-                    setBulkProgress(`${series.icon} ${i + 1}/${eps.length}: ${eps[i].title}`);
-                    if (!urls[eps[i].id]) { await generateAudio(eps[i], voice); await new Promise(r => setTimeout(r, 2000)); }
+                    const epVoice = document.getElementById(`voice-${eps[i].id}`)?.value || document.getElementById('bulk-series-voice')?.value || 'george';
+                    setBulkProgress(`${series.icon} ${i + 1}/${eps.length}: ${eps[i].title} (${epVoice})`);
+                    if (!urls[eps[i].id]) { await generateAudio(eps[i], epVoice); await new Promise(r => setTimeout(r, 2000)); }
                     if (!imageUrls[eps[i].id]) { await generateImage(eps[i]); await new Promise(r => setTimeout(r, 1500)); }
                   }
                   setBulkProgress(`${series.icon} Done!`);
@@ -3460,12 +3460,12 @@ function SeriesPanel() {
               </button>
               <button
                 onClick={async () => {
-                  const voice = document.getElementById('bulk-series-voice')?.value || 'george';
                   const eps = series.episodes;
-                  if (!confirm(`REGENERATE all ${eps.length} episodes of "${series.title}"? Replaces existing.`)) return;
+                  if (!confirm(`REGENERATE all ${eps.length} episodes of "${series.title}"? Replaces existing. Uses per-episode voice selection.`)) return;
                   for (let i = 0; i < eps.length; i++) {
-                    setBulkProgress(`${series.icon} Regen ${i + 1}/${eps.length}: ${eps[i].title}`);
-                    await generateAudio(eps[i], voice); await new Promise(r => setTimeout(r, 2000));
+                    const epVoice = document.getElementById(`voice-${eps[i].id}`)?.value || document.getElementById('bulk-series-voice')?.value || 'george';
+                    setBulkProgress(`${series.icon} Regen ${i + 1}/${eps.length}: ${eps[i].title} (${epVoice})`);
+                    await generateAudio(eps[i], epVoice); await new Promise(r => setTimeout(r, 2000));
                     await generateImage(eps[i]); await new Promise(r => setTimeout(r, 1500));
                   }
                   setBulkProgress(`${series.icon} Regen done!`);
