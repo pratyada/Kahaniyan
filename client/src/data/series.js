@@ -3739,7 +3739,7 @@ And here is one that shows the Japanese spirit perfectly — if you lose your wa
 That night, {childName}, remember Japan's wonders. A country where trains apologize for being a minute late and strangers return your lost wallet. The future they are building runs not just on technology — but on trust, care, and doing things right.`,
       },
     ],
-  },,
+  },
 // ─── 1. China 🇨🇳 ───────────────────────────────────────────────────────────
   {
     id: 'discover-china',
@@ -4270,7 +4270,7 @@ The Great Pyramid was once covered in smooth white limestone that gleamed so bri
 Tonight, {childName}, remember that the people of Egypt have been inventing, building, and dreaming for five thousand years — and the story is still being written. Maybe you will add a chapter of your own. Goodnight, little inventor.`,
       },
     ],
-  },,
+  },
 // ── 🇲🇽 Mexico ──────────────────────────────────────────────────────────
   {
     id: 'discover-mexico',
@@ -4791,7 +4791,7 @@ And Russia's national animal is the brown bear. Bears appear on coats of arms, i
 Goodnight, {childName}. In a world this big and surprising, you will never run out of things to wonder about — and that is the best kind of record to hold.`,
       },
     ],
-  },,
+  },
 // ─── SOUTH AFRICA ───────────────────────────────────────────────
   {
     id: 'discover-southafrica',
@@ -5330,6 +5330,395 @@ And finally — New Zealand's Fiordland crested penguin is one of the rarest pen
 Tonight, {childName}, remember New Zealand — a small country at the bottom of the world that keeps being first. It reminds us that size does not determine what you can achieve. Courage does.`,
       },
     ],
-  },,
+  },
+  {
+    id: 'tallest-towers',
+    title: '🏗️ Tallest Towers in the World',
+    icon: '🏗️',
+    gradient: 'linear-gradient(135deg, #1e3a5f 0%, #64748b 50%, #f0a500 100%)',
+    description: 'From the Burj Khalifa to the CN Tower — 20 episodes about the tallest structures ever built by humans.',
+    ageRange: '4-8',
+    totalEpisodes: 20,
+    episodes: [
+      {
+        id: 'tt_ep1_burj_khalifa', episodeNumber: 1, title: 'Burj Khalifa',
+        subtitle: 'Dubai, UAE — 828 meters',
+        tradition: 'universal', theme: 'wisdom', durationMinutes: 3,
+        source: 'Tallest Towers · Episode 1',
+        body: `Imagine stacking 206 school buses on top of each other. That is how tall the Burj Khalifa is. It stands 828 meters high in the middle of the desert city of Dubai, and it is the tallest building in the entire world.
+
+When builders decided to create the Burj Khalifa, many people thought it was impossible. The desert heat was brutal. Sand got into everything. Winds at the very top blew so hard they could push a grown-up sideways. But twelve thousand workers from all around the world came together and said: "We will build it anyway."
+
+It took six years. They poured enough concrete to fill four thousand swimming pools. The tower has 163 floors — more floors than most buildings have feet. The elevators zoom up at ten meters per second, which is faster than a cheetah sprints. If you stood at the very top observation deck on the 148th floor and looked down, cars would look like tiny ants and swimming pools would look like drops of blue paint.
+
+Here is something wild — the Burj Khalifa is so tall that if you watch the sunset from the ground floor, you can then ride the elevator to the top and watch the exact same sunset all over again. The sun sets later up there because you are so much closer to the horizon line.
+
+The building is shaped like a desert flower called the Hymenocallis. The architects studied how the petals spread outward and used that same shape to keep the tower stable in strong winds. Nature taught humans how to build the tallest thing they had ever made.
+
+At night, the Burj Khalifa lights up with shows — colors dancing across its surface like a giant glowing needle stitching patterns into the sky. People come from every country just to stand at its base and look up.
+
+{childName}, the Burj Khalifa teaches us that the biggest dreams start with the smallest step. Nobody built it in one day. They laid one brick, then another, then another — for six years. Your biggest dreams work the same way. One step at a time.`,
+      },
+      {
+        id: 'tt_ep2_merdeka_118', episodeNumber: 2, title: 'Merdeka 118',
+        subtitle: 'Kuala Lumpur, Malaysia — 679 meters',
+        tradition: 'universal', theme: 'wisdom', durationMinutes: 3,
+        source: 'Tallest Towers · Episode 2',
+        body: `In the heart of Kuala Lumpur, a city surrounded by rainforests and tropical heat, stands a tower called Merdeka 118. It reaches 679 meters into the sky — the second tallest building in the world. But its name might be the most important thing about it.
+
+"Merdeka" means "independence" in Malay. The tower was built on the very same field where Malaysia declared its freedom in 1957. Imagine — a country that was once told what to do by others now has one of the tallest buildings on Earth standing exactly where its people first shouted "We are free!"
+
+The tower has 118 floors. If you tried to climb the stairs from bottom to top, it would take you about three hours of nonstop walking — and your legs would feel like jelly for a week. The shape of the building is inspired by the raised hand of a person — a fist reaching upward, the same gesture Malaysians made when they chanted "Merdeka!" seven times on independence day.
+
+There is an observation deck near the top where you can stand on a glass floor and look straight down. Below you, the city spreads out like a colorful quilt — red rooftops, green parks, blue swimming pools, and the famous Petronas Twin Towers looking small in the distance.
+
+The builders used a special kind of concrete that could handle Malaysia's tropical storms. Rain falls so hard there that it sounds like drums on a tin roof. The tower had to be strong enough to laugh at thunderstorms.
+
+One of the coolest features is a sky lobby with gardens inside the building — real trees and plants growing hundreds of meters above the ground. Birds sometimes fly in and make nests there, not realizing they are inside a building.
+
+{childName}, Merdeka 118 reminds us that freedom is worth celebrating — not just once, but every single day. When people believe in themselves and work together, they can build things that touch the clouds.`,
+      },
+      {
+        id: 'tt_ep3_shanghai_tower', episodeNumber: 3, title: 'Shanghai Tower',
+        subtitle: 'Shanghai, China — 632 meters',
+        tradition: 'universal', theme: 'wisdom', durationMinutes: 3,
+        source: 'Tallest Towers · Episode 3',
+        body: `Most skyscrapers go straight up like a pencil. But the Shanghai Tower twists. It spirals 632 meters into the sky like a giant soft-serve ice cream cone, turning 120 degrees from bottom to top. It is the tallest building in China and the third tallest in the world.
+
+Why does it twist? Because Shanghai gets hit by powerful typhoon winds. Engineers discovered that by twisting the tower, wind slides around it instead of pushing against it. This simple twist reduces wind force by 24 percent — which saved the builders millions of dollars in steel. Nature's trick, borrowed by humans.
+
+The tower has the world's fastest elevators. They travel at 20.5 meters per second — that is like riding a roller coaster straight up. You can go from the ground floor to the 119th floor observation deck in just 55 seconds. Your ears might pop, just like on an airplane.
+
+Inside, the tower is like a vertical city. There are offices, hotels, shops, restaurants, and even sky gardens between the inner and outer glass walls. The space between the two layers of glass acts like a giant thermos, keeping the inside cool in summer and warm in winter without using tons of energy.
+
+At the very top, there is an observation deck where on a clear day you can see for over 40 kilometers. The Huangpu River below looks like a silver ribbon weaving through the city. Ships look like toy boats. The old historic buildings of the Bund neighborhood look like dollhouses.
+
+The Shanghai Tower was built to be green — it collects rainwater, generates some of its own wind power from turbines near the top, and uses that twisting shape to save energy. A building almost as tall as a mountain that still tries to take care of the Earth.
+
+{childName}, the Shanghai Tower teaches us that being different is not a weakness — it is a superpower. Its twist is what makes it strong. The things that make you unique are the things that make you unstoppable.`,
+      },
+      {
+        id: 'tt_ep4_abraj_al_bait', episodeNumber: 4, title: 'Abraj Al-Bait Clock Tower',
+        subtitle: 'Mecca, Saudi Arabia — 601 meters',
+        tradition: 'universal', theme: 'wisdom', durationMinutes: 3,
+        source: 'Tallest Towers · Episode 4',
+        body: `In the holy city of Mecca, right next to the most sacred mosque in Islam, stands a tower with the largest clock face in the world. The Abraj Al-Bait Clock Tower rises 601 meters — taller than two Eiffel Towers stacked on top of each other.
+
+The clock faces are enormous. Each one is 43 meters wide — bigger than the entire face of Big Ben in London. At night, the clock glows so brightly that you can read the time from 25 kilometers away. Two million LED lights make it shine like a lighthouse in the desert.
+
+The tower was built to serve the millions of pilgrims who travel to Mecca every year for the Hajj pilgrimage. At the top, there is a crescent moon made of gold-plated fiberglass that weighs 35 tons. When the sun hits it, it blazes like a second sun in the sky.
+
+Below the clock tower, there is a massive complex with hotels that can hold over 100,000 guests. Imagine a building that is also a small city — with its own shopping mall, prayer halls, food courts, and a museum about the history of clocks and timekeeping.
+
+Building it was incredibly hard. Mecca is surrounded by rocky mountains, and the ground had to be carved out before construction could begin. Workers blasted through granite and hauled away millions of tons of rock. The foundation alone required so much concrete that trucks delivered loads around the clock for months.
+
+The clock chimes can be heard seven kilometers away. Five times a day, 21,000 green and white lights flash to mark the call to prayer, and the sound rolls across the valley like gentle thunder.
+
+{childName}, the Abraj Al-Bait Clock Tower reminds us that time is precious. Every minute is a gift. The tower counts every second for millions of people — and tonight, as you close your eyes, remember that tomorrow is a brand new day full of wonderful minutes waiting just for you.`,
+      },
+      {
+        id: 'tt_ep5_ping_an', episodeNumber: 5, title: 'Ping An Finance Centre',
+        subtitle: 'Shenzhen, China — 599 meters',
+        tradition: 'universal', theme: 'wisdom', durationMinutes: 3,
+        source: 'Tallest Towers · Episode 5',
+        body: `Forty years ago, Shenzhen was a tiny fishing village. Just rice paddies, fishing boats, and a few hundred families. Today, it is a city of 17 million people — and right in the middle of it stands the Ping An Finance Centre, 599 meters tall, the fifth tallest building on Earth.
+
+The building almost reached 660 meters. The original design included a tall antenna on top, but it was removed because it would have interfered with airplanes flying into the nearby airport. Even the mightiest towers have to share the sky.
+
+Ping An means "safe and well" in Chinese — and the building lives up to its name. It was designed to survive typhoons, earthquakes, and just about anything nature can throw at it. Engineers put a massive weight near the top of the building — a tuned mass damper weighing hundreds of tons. When wind pushes the building one way, the weight swings the other way, keeping everything balanced. It is like a giant invisible seesaw inside the walls.
+
+The tower has 115 floors above ground and 5 floors underground. Its skin is covered in stainless steel panels that shimmer like silver dragon scales. On a cloudy day, the tower seems to disappear into the mist, its top hidden in the clouds. Workers at the highest floors sometimes look out their windows and see nothing but white fog — like working inside a cloud.
+
+The elevators are double-deckers. Two elevator cabins stacked on top of each other in the same shaft — one stops at odd floors, the other at even floors. This clever trick means twice as many people can ride at once without needing twice as many shafts.
+
+The observation deck on the 116th floor has a transparent floor section where you can look straight down 550 meters. Many visitors crawl on their hands and knees — too dizzy to stand.
+
+{childName}, Shenzhen went from a fishing village to one of the greatest cities in the world in just one lifetime. Ping An tower proves that where you start does not decide where you end up. Your story is still being written.`,
+      },
+      {
+        id: 'tt_ep6_lotte_world_tower', episodeNumber: 6, title: 'Lotte World Tower',
+        subtitle: 'Seoul, South Korea — 555 meters',
+        tradition: 'universal', theme: 'wisdom', durationMinutes: 3,
+        source: 'Tallest Towers · Episode 6',
+        body: `In Seoul, the capital of South Korea, there is a tower that looks like it was drawn by an artist with a very steady hand. The Lotte World Tower rises 555 meters — smooth, curved, and elegant, like a giant brushstroke reaching for the sky. Its shape was inspired by traditional Korean ceramics and calligraphy brushes.
+
+It took 13 years just to get permission to build it. People worried it was too close to a military airbase. Engineers redesigned the building again and again until everyone agreed it was safe. Then it took another 6 years to actually construct. That is 19 years from dream to reality — almost as long as you will live before you go to college.
+
+The tower has 123 floors and the highest glass-floor observation deck in the world. It is called Seoul Sky, and when you step onto the transparent floor on the 118th floor, your brain tells your feet they are standing on nothing. Some visitors scream. Some laugh. Some just freeze and stare at the city 500 meters below their shoes.
+
+There is also a luxury hotel that occupies floors 76 through 101. Imagine waking up in a bed that is higher than most airplanes fly. The bathtubs have views of the city — you can literally take a bath in the clouds.
+
+One of the most amazing things about the Lotte World Tower is its concert hall and aquarium at the base. So the same building that touches the clouds also has sharks swimming in tanks at the bottom. From ocean creatures to cloud level — all in one address.
+
+The tower withstands earthquakes up to magnitude 9 — the same strength as the most powerful earthquakes ever recorded. Its foundation goes 15 meters into solid bedrock, gripping the earth like a tree grips soil with its roots.
+
+{childName}, the Lotte World Tower waited 19 years to be built. Some dreams take patience. If something matters to you, do not give up just because it takes longer than you expected. The best things are worth waiting for.`,
+      },
+      {
+        id: 'tt_ep7_one_world_trade', episodeNumber: 7, title: 'One World Trade Center',
+        subtitle: 'New York, USA — 541 meters',
+        tradition: 'universal', theme: 'wisdom', durationMinutes: 3,
+        source: 'Tallest Towers · Episode 7',
+        body: `In the heart of New York City, on a patch of ground that once held two famous towers, stands One World Trade Center. It rises 541 meters — or exactly 1,776 feet. That number is not random. 1776 is the year America declared its independence. Every single foot of this building tells a story of hope.
+
+On September 11, 2001, the original Twin Towers were destroyed in a terrible attack. Thousands of people lost their lives. The whole world watched and cried. For years, the site was an empty wound in the city skyline.
+
+But New Yorkers decided to rebuild. Not to forget what happened — never to forget — but to show that when something knocks you down, you get back up. And so they built One World Trade Center, sometimes called the Freedom Tower, taller and stronger than what came before.
+
+The base of the building is wrapped in a fortress of concrete and steel, 57 meters tall, designed to be nearly indestructible. The glass panels above it reflect the sky — on a clear day, the building seems to dissolve into the blue, like it is made of sky itself.
+
+At the top, there is an observation deck called One World Observatory. You ride an elevator that shows a time-lapse video of New York City being built — from empty marshland to towering metropolis — in just 47 seconds. When the doors open, you see the entire city spread below you. The Statue of Liberty looks small enough to hold in your hand.
+
+Next to the tower, two enormous square pools sit exactly where the original Twin Towers stood. Water cascades down the walls into what feels like an endless hole. Around the edges, the names of every person who was lost are carved in bronze. At night, beams of light shoot straight up into the sky from where the towers once stood, visible for 100 kilometers.
+
+{childName}, One World Trade Center teaches us the most important lesson of all — resilience. When life knocks you down, you are allowed to cry. You are allowed to be sad. But then, when you are ready, you stand back up. And you build something even more beautiful than before.`,
+      },
+      {
+        id: 'tt_ep8_guangzhou_ctf', episodeNumber: 8, title: 'Guangzhou CTF Finance Centre',
+        subtitle: 'Guangzhou, China — 530 meters',
+        tradition: 'universal', theme: 'wisdom', durationMinutes: 3,
+        source: 'Tallest Towers · Episode 8',
+        body: `Guangzhou is one of the oldest cities in China — over 2,200 years old. Traders once sailed up the Pearl River carrying silk and spices. Today, a gleaming tower called the Guangzhou CTF Finance Centre stands 530 meters tall on the banks of that same river, watching over a city that has been busy for thousands of years.
+
+The tower has 111 floors and holds a world record — it has the fastest elevators ever installed in a building. These elevators travel at 21 meters per second. That means you could ride from the lobby to the 95th floor in about 42 seconds. Your stomach would flip like you were on a roller coaster, but your hair would not even move because the cabin is so smooth.
+
+The design is simple and beautiful — a tall, slender rectangle with slightly rounded corners, covered in silver-blue glass. At sunset, the building turns gold and orange, reflecting the light like a giant mirror aimed at the sky. Locals call it "the golden needle."
+
+Inside, there is a five-star hotel on the upper floors. The swimming pool on the 70th floor has floor-to-ceiling windows. Imagine swimming laps while looking down at a city of 15 million people. The water in the pool is higher than most clouds.
+
+Guangzhou is famous for its food — it is the birthplace of dim sum. So naturally, the restaurants inside this tower serve some of the finest dim sum in the world, hundreds of meters above the streets where dim sum was invented centuries ago. You can eat a steaming dumpling while looking down at the Pearl River, the same river that carried food traders to this city two thousand years ago.
+
+The building was designed to handle typhoons that regularly batter southern China. Its structure flexes slightly in high winds — bending without breaking, like bamboo in a storm.
+
+{childName}, Guangzhou has been standing for over two thousand years because it keeps adapting and growing. The CTF tower is just the newest chapter. Remember — growing and changing does not mean forgetting where you came from. The oldest cities build the newest towers.`,
+      },
+      {
+        id: 'tt_ep9_tianjin_ctf', episodeNumber: 9, title: 'Tianjin CTF Finance Centre',
+        subtitle: 'Tianjin, China — 530 meters',
+        tradition: 'universal', theme: 'wisdom', durationMinutes: 3,
+        source: 'Tallest Towers · Episode 9',
+        body: `Tianjin is a port city not far from Beijing, where the Hai River meets the sea. It is a city of bridges — over a hundred of them — and now it is also home to the Tianjin CTF Finance Centre, which stands exactly 530 meters tall. That makes it precisely the same height as its twin building in Guangzhou. They are like siblings — same height, different cities, different personalities.
+
+The Tianjin tower was completed in 2019 and has 97 floors above ground. Its shape tapers as it goes up, getting slimmer and slimmer like a sharpened pencil pointing at the stars. The glass exterior shifts between silver and pale blue depending on the weather, making it look different every single day.
+
+Tianjin gets bitterly cold in winter — temperatures can drop to minus fifteen degrees. The tower was designed with a double-skin glass system, like wearing two jackets at once. The air trapped between the two layers of glass acts as insulation, keeping everyone inside warm and cozy even when the wind howls outside.
+
+The building also has one of the tallest hotel swimming pools in the world. Picture this — outside it is snowing, the city is covered in white, and you are floating in a heated rooftop pool looking at snowflakes swirling past the windows hundreds of meters above the ground.
+
+Tianjin has a tradition of building incredible structures. The Tianjin Eye is a giant Ferris wheel built on top of a bridge — the only Ferris wheel in the world that sits on a bridge over a river. And now the CTF tower has joined the skyline, standing guard over a city that has always loved bold ideas.
+
+At the base of the tower, there is a massive shopping and entertainment complex. On weekends, families come from all over the region to shop, eat, and then ride the elevator up to the sky lobby to watch the sunset paint the Hai River gold.
+
+{childName}, the Tianjin CTF tower is a twin — the same height as its sibling in another city, but completely unique. Just like twins in real life, sharing something in common does not mean you are the same. You can share the sky and still shine in your own way.`,
+      },
+      {
+        id: 'tt_ep10_citic_tower', episodeNumber: 10, title: 'CITIC Tower',
+        subtitle: 'Beijing, China — 528 meters',
+        tradition: 'universal', theme: 'wisdom', durationMinutes: 3,
+        source: 'Tallest Towers · Episode 10',
+        body: `Beijing is one of the most ancient capital cities on Earth. Emperors ruled from the Forbidden City for over five hundred years. And now, just a few kilometers from those ancient palaces, stands the CITIC Tower — 528 meters tall, the tallest building in Beijing. Locals have given it a wonderful nickname: Zhongguo Zun, which means "China's Wine Vessel," because its shape looks like an ancient ceremonial cup used in Chinese rituals thousands of years ago.
+
+The tower is wider at the top and bottom and thinner in the middle, like a graceful vase. This is not just for looks — the shape helps the building resist Beijing's strong winds and the earthquakes that occasionally shake the region. It is ancient wisdom meeting modern engineering.
+
+The CITIC Tower has 108 floors — a number considered very lucky in Chinese culture. There are 108 beads on a Buddhist prayer necklace, and many temples have 108 steps. The builders chose this number on purpose.
+
+Inside the tower, there is an observation deck where you can see the Great Wall of China on a clear day. Think about that — standing in a building completed in 2018, looking at a wall that was built over two thousand years ago. Old and new, connected by a single glance across the horizon.
+
+The tower was one of the most difficult buildings ever constructed in Beijing because the soil underneath is soft and sandy. Engineers drove steel piles over 50 meters deep into the ground to find solid rock. The foundation is like an upside-down forest of steel trees buried beneath the earth.
+
+The building is also smart — it uses sensors everywhere to monitor temperature, wind, and even how much the building is swaying. A computer adjusts the air conditioning, lighting, and structural dampers in real time, like a building that can feel and respond to the weather.
+
+{childName}, the CITIC Tower is shaped like an ancient cup, reminding everyone that the future and the past are always connected. You carry the stories of your family and your ancestors everywhere you go — and one day, someone will carry yours.`,
+      },
+      {
+        id: 'tt_ep11_taipei_101', episodeNumber: 11, title: 'Taipei 101',
+        subtitle: 'Taipei, Taiwan — 508 meters',
+        tradition: 'universal', theme: 'wisdom', durationMinutes: 3,
+        source: 'Tallest Towers · Episode 11',
+        body: `From 2004 to 2010, Taipei 101 was the tallest building in the world. It stands 508 meters tall in the capital city of Taiwan, and it looks like no other skyscraper on Earth. Instead of a smooth glass box, it is stacked in eight sections that get smaller as they go up, like a giant bamboo stalk reaching for the clouds. The number eight is considered extremely lucky in Chinese culture — it sounds like the word for wealth and fortune.
+
+But here is the really amazing part — inside Taipei 101, hanging from the 92nd floor, is a giant golden ball. It weighs 730 tons — as heavy as 120 elephants. It is called a tuned mass damper, and it is the largest one ever hung inside a building. When typhoon winds push the building in one direction, the giant ball swings the other way, keeping the tower steady. Visitors can actually watch it swing during storms. It even has its own cartoon mascot — a cheerful round character called Damper Baby.
+
+Taipei sits right in the path of Pacific typhoons AND on an earthquake fault line. Building a supertall tower here was like building a sandcastle on a beach with waves coming from every direction. Engineers had to make the building incredibly strong but also flexible — stiff enough to stand, bendy enough not to snap. The solution was bamboo. Real bamboo bends in the wind but never breaks, and the engineers copied that idea.
+
+Every New Year, Taipei 101 puts on one of the most spectacular fireworks shows in the world. Fireworks shoot directly off the sides of the building, turning the tower into a giant 508-meter-tall roman candle. Over a million people gather in the streets below to watch.
+
+The elevators travel at 16.8 meters per second and held the world record for fastest elevator from 2004 to 2016. The ride from the fifth floor to the 89th floor observation deck takes just 37 seconds.
+
+{childName}, Taipei 101 was designed to bend, not break. That is a lesson for life too. When hard times push you around, you do not have to be rigid. Be like bamboo. Be like that golden ball. Flex, sway, adjust — but never fall.`,
+      },
+      {
+        id: 'tt_ep12_shanghai_wfc', episodeNumber: 12, title: 'Shanghai World Financial Center',
+        subtitle: 'Shanghai, China — 492 meters',
+        tradition: 'universal', theme: 'wisdom', durationMinutes: 3,
+        source: 'Tallest Towers · Episode 12',
+        body: `In Shanghai, right next to the twisting Shanghai Tower, stands a building with the most unusual shape in the skyline. The Shanghai World Financial Center is 492 meters tall, and at the very top, there is a huge rectangular hole — an opening 51 meters tall cut right through the building. It looks like someone took a giant hole-punch to the top of a skyscraper. Locals lovingly call it "the bottle opener."
+
+That hole is not just for fun. The original design had a circular opening at the top, but engineers discovered that the rectangular shape reduced wind pressure much more effectively. The hole lets typhoon winds pass through the building instead of pushing against it. What looks like a quirky design choice is actually brilliant engineering.
+
+Inside that opening sits the world's highest sky bridge observation deck. You walk across a glass-bottomed corridor 474 meters above the ground — higher than any other enclosed observation deck on the planet. Looking down through the glass floor, you can see cars and people so far below they look like sprinkles on a cake.
+
+The building took over 11 years to complete. Construction began in 1997, was halted during the Asian financial crisis, and did not resume until 2003. The builders ran out of money, waited, found new investors, redesigned parts of the building, and kept going. When it finally opened in 2008, it was the tallest building in China.
+
+The tower has three observation decks at different heights, so visitors can experience the city from multiple levels. The highest one sways gently in the wind — you can feel the building breathing, alive under your feet.
+
+At the base, the building connects to a network of underground shopping streets that link it to the subway, nearby towers, and a concert hall. You can walk for over a kilometer without ever stepping outside.
+
+{childName}, the Shanghai World Financial Center took 11 years and survived a financial crisis before it was finished. It reminds us that obstacles are not the end of the story — they are just part of the story. Keep building, even when the world asks you to stop.`,
+      },
+      {
+        id: 'tt_ep13_icc_hong_kong', episodeNumber: 13, title: 'International Commerce Centre',
+        subtitle: 'Hong Kong — 484 meters',
+        tradition: 'universal', theme: 'wisdom', durationMinutes: 3,
+        source: 'Tallest Towers · Episode 13',
+        body: `Hong Kong is a city of skyscrapers. Over 1,500 of them pack into a tiny strip of land between mountains and ocean. But one tower stands above them all — the International Commerce Centre, called the ICC, rising 484 meters on the Kowloon side of Victoria Harbour.
+
+Hong Kong has a rule — buildings on Hong Kong Island cannot be taller than the mountains behind them. So when developers wanted to build the tallest tower in the city, they had to put it across the water on the Kowloon peninsula, where the rule does not apply. That is why the ICC sits where it does — it was the only place it was allowed to be that tall.
+
+The tower has 118 floors and the highest hotel in the world. The Ritz-Carlton hotel occupies floors 102 to 118. Imagine checking into your room on the 112th floor and looking out at airplanes flying below you. The hotel bar on the 118th floor is nicknamed "the cloud bar" because on humid days, clouds actually form around the building at that height.
+
+The observation deck, called Sky100, gives you a 360-degree view of one of the most dramatic cityscapes on Earth. On one side, the harbor sparkles with ferries crossing between Kowloon and Hong Kong Island. On the other side, mountains covered in green jungle rise sharply behind clusters of glass towers. It is one of the only cities where jungle, ocean, and skyscrapers exist within a few hundred meters of each other.
+
+Every night at 8 PM, the ICC participates in the Symphony of Lights — the world's largest permanent light show. LED panels on the building flash and dance in sync with dozens of other skyscrapers across the harbor, all choreographed to music. The entire skyline becomes a stage.
+
+Building the ICC required driving piles through layers of soft marine sediment — the land where it stands was actually reclaimed from the sea. The tower literally sits on ground that humans made.
+
+{childName}, Hong Kong built its tallest tower on land it created from the ocean. If you can make land from water and towers from dreams, then nothing — absolutely nothing — is impossible for someone who refuses to give up.`,
+      },
+      {
+        id: 'tt_ep14_petronas_towers', episodeNumber: 14, title: 'Petronas Twin Towers',
+        subtitle: 'Kuala Lumpur, Malaysia — 452 meters',
+        tradition: 'universal', theme: 'wisdom', durationMinutes: 3,
+        source: 'Tallest Towers · Episode 14',
+        body: `Most famous skyscrapers are loners — they stand alone, towering over everything. But the Petronas Twin Towers are different. They come as a pair. Two identical towers, 452 meters tall, connected by a sky bridge on the 41st and 42nd floors. They stand in Kuala Lumpur like two best friends holding hands above the city.
+
+From 1998 to 2004, the Petronas Towers were the tallest buildings in the world. They were designed by an Argentine architect named Cesar Pelli, and the floor plan of each tower is based on an eight-pointed star — a pattern found in Islamic geometric art. Malaysia is a Muslim-majority country, and the designers wanted the building to reflect the nation's culture and faith.
+
+Here is a fun story — the two towers were built by two different construction teams from two different countries. One team was from South Korea, the other from Japan. They worked at the same time, racing each other upward. At one point, one team discovered their tower was leaning slightly — by 25 millimeters. They had to carefully adjust the next several floors to bring it back to perfectly vertical without anyone noticing.
+
+The sky bridge connecting the two towers is not bolted to the buildings. It sits on giant sliding supports so that when the towers sway in the wind — which they do, by up to half a meter — the bridge can move with them without snapping. It is like a pair of glasses resting on a nose — balanced, not glued.
+
+The foundation required the deepest barrette piles ever used in a building at that time — driven 120 meters into the earth. The original site was actually moved 60 meters because engineers found that the rock underneath was not strong enough in one spot.
+
+Every evening, the Petronas Towers light up like twin candles. The stainless steel cladding catches the sunset and turns rose gold before the night lights take over and make them glow white against the tropical sky.
+
+{childName}, the Petronas Towers remind us that you do not have to do everything alone. Two towers, standing together, are more beautiful and stronger than one. Find your partner, your friend, your teammate — and build something amazing side by side.`,
+      },
+      {
+        id: 'tt_ep15_cn_tower', episodeNumber: 15, title: 'CN Tower',
+        subtitle: 'Toronto, Canada — 553 meters',
+        tradition: 'universal', theme: 'wisdom', durationMinutes: 3,
+        source: 'Tallest Towers · Episode 15',
+        body: `For 32 years, from 1975 to 2007, the CN Tower in Toronto was the tallest free-standing structure in the entire world. It stands 553 meters tall — but here is the thing — it is not a building. You cannot live in it or work in it like a skyscraper. It is a communications tower, originally built to send TV and radio signals over the growing cluster of tall buildings in downtown Toronto that were blocking the airwaves.
+
+The CN Tower was built in just 40 months. Workers poured concrete around the clock using a massive climbing crane that crawled up the tower as it grew, like a caterpillar inching up a beanstalk. At the peak of construction, the tower grew by about 6 meters per day.
+
+The most famous feature is the Glass Floor, installed in 1994. It was the first glass floor ever put into a tower. When it opened, some visitors literally could not step onto it — their legs refused to move. The glass is five times stronger than what is needed to hold the weight, but your brain does not care about math when it sees 342 meters of empty air below your feet.
+
+There is also the EdgeWalk — the world's highest hands-free walk on a building. Visitors are strapped into a harness and walk along the outside edge of the tower's main pod, 356 meters above the ground, with nothing between them and the city below but air. No walls. No glass. Just you, the wind, and a really good harness.
+
+The tower gets struck by lightning about 75 times per year. It has copper grounding strips that run from the antenna all the way down to the foundation, sending the lightning harmlessly into the earth. The tower actually protects the surrounding area by attracting lightning away from other buildings.
+
+At the base, there is a revolving restaurant that completes one full rotation every 72 minutes. You sit down with a view of the harbor, and by the time dessert arrives, you are looking at the city skyline.
+
+{childName}, the CN Tower was built to solve a problem — TV signals being blocked. Sometimes the biggest achievements come from finding solutions to everyday problems. Keep your eyes open. The next great idea might come from something as simple as a fuzzy TV screen.`,
+      },
+      {
+        id: 'tt_ep16_tokyo_skytree', episodeNumber: 16, title: 'Tokyo Skytree',
+        subtitle: 'Tokyo, Japan — 634 meters',
+        tradition: 'universal', theme: 'wisdom', durationMinutes: 3,
+        source: 'Tallest Towers · Episode 16',
+        body: `In the bustling Sumida district of Tokyo stands the tallest tower in the world — not the tallest building, but the tallest tower. The Tokyo Skytree reaches 634 meters into the sky, almost as tall as two Eiffel Towers stacked together. It is a broadcasting tower, sending digital TV signals across the Tokyo metropolitan area, home to over 37 million people — the largest city on the planet.
+
+The Skytree was designed to withstand the powerful earthquakes that regularly shake Japan. The secret is a central column called a shinbashira — a concept borrowed from Japanese pagodas that have survived earthquakes for over 1,400 years. Ancient pagodas have a central pillar that is not attached to the floors. It acts like a snake standing upright, swaying independently while the rest of the structure moves around it. The Skytree uses this same ancient trick — a concrete core that dampens seismic movement, blending 1,400-year-old wisdom with 21st-century engineering.
+
+The tower changes shape as it rises. At the base, it is a triangle. By the top, it becomes a circle. This gradual transformation from three sides to zero sides is a mathematical feat that took years of computer modeling to perfect. It looks effortless, but every centimeter was calculated.
+
+The height — 634 meters — was chosen because the numbers 6-3-4 can be read as "Musashi" in a Japanese wordplay system. Musashi is the old historical name for the Tokyo region. So the tower's height is literally a love letter to its home.
+
+There are two observation decks. The lower one at 350 meters has a glass floor and a cafe where you can sip hot chocolate while watching tiny trains snake through the city below. The upper deck at 450 meters is reached by a sloping glass-walled corridor that spirals upward — climbing it feels like walking through a kaleidoscope of clouds and city lights.
+
+At night, the Skytree lights up in three colors that rotate — sky blue for elegance, royal purple for nobility, and orange for festivity. Each color represents a different aspect of the Japanese spirit.
+
+{childName}, Tokyo Skytree was built using wisdom from temples that are over a thousand years old. The lesson is simple but powerful — listen to the past. Your grandparents, your elders, your ancestors knew things that are still useful today. Old wisdom and new dreams work best together.`,
+      },
+      {
+        id: 'tt_ep17_canton_tower', episodeNumber: 17, title: 'Canton Tower',
+        subtitle: 'Guangzhou, China — 604 meters',
+        tradition: 'universal', theme: 'wisdom', durationMinutes: 3,
+        source: 'Tallest Towers · Episode 17',
+        body: `Guangzhou already has the CTF Finance Centre, but it also has something even more unusual — the Canton Tower, a twisting lattice structure that rises 604 meters above the Pearl River. It does not look like any other tower in the world. Instead of a solid column, it is made of steel tubes woven together like a net, twisted at the waist like a dancer mid-spin. Locals call it "the tiny waist" because the middle is narrower than the top and bottom.
+
+The Canton Tower was completed in 2010 for the Asian Games held in Guangzhou. It was designed by a Dutch architecture firm that wanted to create something that looked like it was alive — not a static monument but a structure that seemed to be moving even while standing still. And they succeeded. From different angles, the tower looks completely different. From the east, it appears slim and elegant. From the south, it looks wide and powerful. Walk around it and it seems to dance.
+
+At the very top, there is the world's highest outdoor observation deck — an open-air platform at 488 meters where the wind whips through your hair and the city spreads out beneath you like a living map. Even more thrilling is the Bubble Tram — transparent glass pods that ride on a track around the outside of the tower's crown. You sit in a glass bubble and slowly orbit the top of the tower, 450 meters above the ground, with nothing but a thin shell of glass between you and the sky.
+
+The tower also has the world's tallest Ferris wheel — well, technically it is a horizontal wheel built into the top of the tower, where the pods travel around the outside edge.
+
+At night, the lattice structure becomes a canvas. Over 7,000 LED lights are embedded in the steel tubes, turning the entire tower into a giant light sculpture. Patterns ripple up and down like waves. Colors chase each other from bottom to top. The tower's reflection shimmers in the Pearl River below, creating two towers — one in the sky, one in the water.
+
+{childName}, the Canton Tower teaches us that strength does not have to look hard or rigid. Sometimes the strongest things look graceful and delicate. A spider's web is one of the strongest structures in nature — and the Canton Tower is like a web made of steel, twisting beautifully toward the stars.`,
+      },
+      {
+        id: 'tt_ep18_ostankino_tower', episodeNumber: 18, title: 'Ostankino Tower',
+        subtitle: 'Moscow, Russia — 540 meters',
+        tradition: 'universal', theme: 'wisdom', durationMinutes: 3,
+        source: 'Tallest Towers · Episode 18',
+        body: `In 1967, when the world was a very different place, engineers in Moscow built the Ostankino Tower. At 540 meters, it was the tallest structure in the entire world — taller than anything in America, Europe, Asia, or anywhere else. And it held that record for eight years until the CN Tower in Toronto took the crown in 1975.
+
+What makes Ostankino special is when it was built. In the 1960s, there were no computer programs to model wind forces. No drones to inspect construction. No GPS to keep measurements precise. Engineers used slide rules, pencils, and sheer mathematical brilliance to design a structure taller than anything humanity had ever built.
+
+The tower is made of reinforced concrete up to 385 meters, with a steel antenna extending the rest of the way. The concrete section uses a technique called prestressed concrete — steel cables are stretched tight inside the walls, squeezing the concrete together so it is incredibly strong under compression. It is like wrapping a present tightly — the wrapping makes the box stronger.
+
+There is a revolving restaurant at 337 meters called Seventh Heaven. It rotates slowly, giving diners a full panoramic view of Moscow. On a clear winter day, with snow covering the city, the view from Seventh Heaven looks like a painting — golden church domes peeking through white snow, frozen rivers glittering in the pale sun.
+
+In the year 2000, a fire broke out in the tower. It burned for over 24 hours, destroying the interior of the observation deck and restaurant, and melting elevator cables. Incredibly, the tower's structure survived. Engineers repaired it over several years, and it reopened to the public. The fact that a concrete tower built in the 1960s survived a 24-hour fire is a testament to how well it was designed.
+
+Ostankino Tower still broadcasts signals to millions of homes across Moscow. Every TV show, every news broadcast, every cartoon that plays on Moscow television passes through this tower that was built before humans walked on the moon.
+
+{childName}, the Ostankino Tower was built with pencils and slide rules — no computers, no fancy technology. It reminds us that tools are helpful, but what really matters is the brain using them. Your imagination is more powerful than any machine.`,
+      },
+      {
+        id: 'tt_ep19_willis_tower', episodeNumber: 19, title: 'Willis Tower (Sears Tower)',
+        subtitle: 'Chicago, USA — 442 meters',
+        tradition: 'universal', theme: 'wisdom', durationMinutes: 3,
+        source: 'Tallest Towers · Episode 19',
+        body: `For 25 years, from 1973 to 1998, the Willis Tower — which everyone in Chicago still calls the Sears Tower — was the tallest building in the world. It stands 442 meters tall in the Windy City, a black steel giant that dominates the skyline like a chess piece on a board.
+
+The genius of the Sears Tower is its structure. Instead of building one giant tube, the architect — a Bangladeshi-American engineer named Fazlur Rahman Khan — designed nine square tubes bundled together like a package of straws. Each tube supports itself, and together they support each other. Some tubes stop at different heights, giving the building its distinctive stepped profile. This "bundled tube" design was revolutionary. It meant the building could be incredibly tall using much less steel than a traditional skyscraper.
+
+Fazlur Khan is considered one of the greatest structural engineers in history. He was born in Dhaka, Bangladesh, and came to America as a student. His ideas changed how every tall building in the world is designed. Every supertall skyscraper built after the Sears Tower owes something to his brilliance.
+
+The most famous attraction is the Skydeck Ledge — glass boxes that extend 1.3 meters out from the 103rd floor. You step into a box made entirely of glass — glass floor, glass walls, glass ceiling — and you are hanging 412 meters above the street. Below you, through the glass floor, you can see cars, buses, and the Chicago River. Some visitors lie down on the glass to take photos. Others hold onto the walls and laugh nervously.
+
+Chicago is called the Windy City, and the Sears Tower sways about 15 centimeters in normal wind. On very windy days, it can sway up to 30 centimeters. You cannot see the sway, but if you put a glass of water on a desk on the upper floors, the water tilts slightly.
+
+On a clear day from the Skydeck, you can see four states — Illinois, Indiana, Wisconsin, and Michigan. The view stretches over 80 kilometers across Lake Michigan, whose blue water seems to blend into the sky at the horizon.
+
+{childName}, Fazlur Khan came from a small city in Bangladesh and changed how the whole world builds towers. The Willis Tower reminds us that great ideas can come from anywhere. Never think your voice is too small or your town is too far away. The next world-changing idea might be yours.`,
+      },
+      {
+        id: 'tt_ep20_empire_state', episodeNumber: 20, title: 'Empire State Building',
+        subtitle: 'New York, USA — 443 meters',
+        tradition: 'universal', theme: 'wisdom', durationMinutes: 3,
+        source: 'Tallest Towers · Episode 20',
+        body: `We saved the most famous for last. The Empire State Building in New York City stands 443 meters tall, and even though it is no longer the tallest, it is the most beloved skyscraper in the world. It has appeared in over 250 movies. It has been on a million postcards. When people think of a skyscraper, they picture this one.
+
+Here is the most amazing fact about the Empire State Building — it was built in just 410 days. That is about one year and two months. It went from an empty plot of land to 102 finished stories in the time it takes most people to redecorate a kitchen. At the peak of construction, 3,400 workers added 14 floors per week — more than one floor per day. They worked so fast that the upper floors were still being designed while the lower floors were already being built.
+
+The building was completed in 1931, during the Great Depression — the worst economic crisis in American history. Millions of people had no jobs and no money. Building the Empire State gave work to thousands of families during the darkest time. It was a symbol of hope when hope was scarce.
+
+The workers who built it were called skywalkers. Many were Mohawk ironworkers from the Kahnawake community near Montreal, Canada. They walked on narrow steel beams hundreds of meters above the street with no safety nets and no harnesses. Photographs from that era show men eating lunch while sitting on a beam with nothing below them but air and the city. Their courage and skill are legendary.
+
+For nearly 40 years, from 1931 to 1970, it was the tallest building in the world. Even today, with dozens of taller buildings around the globe, the Empire State Building is the one that makes people gasp when they see it.
+
+Every night, the top of the building is lit in different colors for different occasions — red and green for Christmas, rainbow for Pride, blue for healthcare heroes. The building speaks in light.
+
+In 1945, a B-25 bomber accidentally crashed into the 79th floor in thick fog. Fourteen people died, but the building stood firm. It has survived lightning strikes, hurricanes, and nearly a century of time. It just keeps standing.
+
+{childName}, the Empire State Building was built during the hardest times by the bravest workers, and it became the most famous building in the world. Remember — the things built during tough times are often the things that last the longest. Your hard days are building something in you that will stand forever. Sweet dreams tonight, tower explorer. The whole world is waiting for you.`,
+      },
+    ],
+  },
 ];
 

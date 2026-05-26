@@ -41,6 +41,7 @@ export const SERIES_CATEGORIES = {
   'discover-uae': ['geography', 'history'],
   'discover-spain': ['geography', 'history'],
   'discover-newzealand': ['geography', 'history'],
+  'tallest-towers': ['geography', 'history', 'science'],
 };
 
 export const COLLECTION_CATEGORIES = {
