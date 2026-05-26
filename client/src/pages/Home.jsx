@@ -39,6 +39,7 @@ export default function Home() {
   const COLLECTIONS = useLocalizedCollections();
 
   const [createOpen, setCreateOpen] = useState(false);
+  const [viewMode, setViewMode] = useState('episodes'); // 'episodes' | 'series'
   const [activeTheme, setActiveTheme] = useState('compassion-animals');
   const [visibleCollections, setVisibleCollections] = useState(8);
 
@@ -186,34 +187,63 @@ export default function Home() {
         </h1>
       </motion.header>
 
-      {/* Streak */}
+      {/* Streak + Badges */}
       <StreakBadge />
+
+      {/* Episodes / Series toggle */}
+      <div className="mb-5 flex items-center justify-center">
+        <div className="flex rounded-full bg-bg-surface p-1 ring-1 ring-white/5">
+          <button
+            onClick={() => setViewMode('episodes')}
+            className={`rounded-full px-5 py-2 text-xs font-bold transition ${
+              viewMode === 'episodes' ? 'bg-gold text-bg-base shadow-glow' : 'text-ink-muted'
+            }`}
+          >
+            Episodes
+          </button>
+          <button
+            onClick={() => setViewMode('series')}
+            className={`rounded-full px-5 py-2 text-xs font-bold transition ${
+              viewMode === 'series' ? 'bg-gold text-bg-base shadow-glow' : 'text-ink-muted'
+            }`}
+          >
+            Series
+          </button>
+        </div>
+      </div>
 
       {/* Morning recap */}
       <MorningRecapShelf />
 
-      {/* Hero slider */}
-      <HeroSlider stories={featuredStories} wisdomImageUrls={wisdomImageUrls} onPlay={handlePlay} />
+      {/* ═══ EPISODES VIEW ═══ */}
+      {viewMode === 'episodes' && (<>
+        {/* Hero slider */}
+        <HeroSlider stories={featuredStories} wisdomImageUrls={wisdomImageUrls} onPlay={handlePlay} />
 
-      {/* 1. Tonight's Picks — render immediately from hardcoded data */}
-      {tonightPicks.length > 0 && (
-        <ShelfSection title={`✨ Tonight's Picks for ${user ? (profile?.childName || 'You') : 'You'}`}>
-          <ShelfRow>
-            {tonightPicks.map((lesson) => (
-              <StoryTile key={lesson.id} lesson={lesson} imageUrl={wisdomImageUrls[lesson.id]} onPlay={handlePlay} />
-            ))}
-          </ShelfRow>
-        </ShelfSection>
-      )}
+        {/* 1. Tonight's Picks */}
+        {tonightPicks.length > 0 && (
+          <ShelfSection title={`✨ Tonight's Picks for ${user ? (profile?.childName || 'You') : 'You'}`}>
+            <ShelfRow>
+              {tonightPicks.map((lesson) => (
+                <StoryTile key={lesson.id} lesson={lesson} imageUrl={wisdomImageUrls[lesson.id]} onPlay={handlePlay} />
+              ))}
+            </ShelfRow>
+          </ShelfSection>
+        )}
 
-      {/* 2. Trending */}
-      <TrendingShelf allLessons={allLessons} wisdomImageUrls={wisdomImageUrls} onPlay={handlePlay} />
+        {/* 2. Trending */}
+        <TrendingShelf allLessons={allLessons} wisdomImageUrls={wisdomImageUrls} onPlay={handlePlay} />
+      </>)}
 
-      {/* Series */}
-      <SeriesShelf />
+      {/* ═══ SERIES VIEW ═══ */}
+      {viewMode === 'series' && (<>
+        <SeriesShelf />
+        <CuratorShelf />
+      </>)}
 
-      {/* Our Creators — community-created stories & series */}
-      <CuratorShelf />
+      {/* ═══ ALWAYS VISIBLE (both views) ═══ */}
+      {viewMode === 'episodes' && <SeriesShelf />}
+      {viewMode === 'episodes' && <CuratorShelf />}
 
       {/* 3. Browse by Value — interactive filter */}
       <section className="mb-6">
