@@ -18,6 +18,7 @@ import MorningRecapShelf from '../components/shelves/MorningRecapShelf.jsx';
 import SEOHead from '../components/SEOHead.jsx';
 import SeriesShelf from '../components/shelves/SeriesShelf.jsx';
 import CuratorShelf from '../components/shelves/CuratorShelf.jsx';
+import CategoryShelves from '../components/shelves/CategoryShelves.jsx';
 import { useFamilyProfile } from '../hooks/useFamilyProfile.js';
 import { usePlayer } from '../hooks/usePlayer.jsx';
 import { useAuth } from '../hooks/useAuth.jsx';
@@ -235,10 +236,10 @@ export default function Home() {
         <TrendingShelf allLessons={allLessons} wisdomImageUrls={wisdomImageUrls} onPlay={handlePlay} />
       </>)}
 
-      {/* ═══ SERIES VIEW ═══ */}
-      {viewMode === 'series' && (<>
-        <SeriesShelf />
-      </>)}
+      {/* ═══ SERIES VIEW — Netflix-style category shelves ═══ */}
+      {viewMode === 'series' && (
+        <CategoryShelves wisdomImageUrls={wisdomImageUrls} />
+      )}
 
       {/* 3. Browse by Value — interactive filter */}
       <section className="mb-6">
