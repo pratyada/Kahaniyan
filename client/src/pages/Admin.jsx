@@ -3326,6 +3326,76 @@ function SeriesPanel() {
         </div>
       </div>
 
+      {/* Bulk generate ALL series */}
+      <div className="flex flex-wrap items-center gap-2 rounded-xl bg-[#1a1a28] p-4 ring-1 ring-white/5">
+        <span className="text-xs font-bold text-[#f5f0e8] mr-2">Bulk All Series:</span>
+        <select id="bulk-series-voice" defaultValue="george"
+          className="rounded-lg bg-[#0f0f17] px-2 py-1.5 text-[10px] font-bold text-[#7ad9a1] outline-none ring-1 ring-[#7ad9a1]/20">
+          {ELEVEN_VOICES.map(v => <option key={v.key} value={v.key}>{v.label}</option>)}
+        </select>
+        <button
+          onClick={async () => {
+            const voice = document.getElementById('bulk-series-voice')?.value || 'george';
+            const missing = allEpisodes.filter(e => !urls[e.id]);
+            if (missing.length === 0) { alert('All episodes already have audio!'); return; }
+            if (!confirm(`Generate audio for ${missing.length} episodes with voice "${voice}"? This will take ~${Math.ceil(missing.length * 15 / 60)} minutes.`)) return;
+            for (let i = 0; i < missing.length; i++) {
+              setBulkProgress(`Audio ${i + 1}/${missing.length}: ${missing[i].title}`);
+              await generateAudio(missing[i], voice);
+              await new Promise(r => setTimeout(r, 2000));
+            }
+            setBulkProgress(`Done! ${missing.length} audio files generated`);
+          }}
+          disabled={!!generating}
+          className="rounded-lg bg-[#7ad9a1]/10 px-4 py-1.5 text-[10px] font-bold text-[#7ad9a1] disabled:opacity-30"
+        >
+          ⚡ Bulk Audio ({allEpisodes.filter(e => !urls[e.id]).length} missing)
+        </button>
+        <button
+          onClick={async () => {
+            const missing = allEpisodes.filter(e => !imageUrls[e.id]);
+            if (missing.length === 0) { alert('All episodes already have images!'); return; }
+            if (!confirm(`Generate images for ${missing.length} episodes? This will take ~${Math.ceil(missing.length * 10 / 60)} minutes.`)) return;
+            for (let i = 0; i < missing.length; i++) {
+              setBulkProgress(`Image ${i + 1}/${missing.length}: ${missing[i].title}`);
+              await generateImage(missing[i]);
+              await new Promise(r => setTimeout(r, 1500));
+            }
+            setBulkProgress(`Done! ${missing.length} images generated`);
+          }}
+          disabled={!!generating}
+          className="rounded-lg bg-[#539df5]/10 px-4 py-1.5 text-[10px] font-bold text-[#539df5] disabled:opacity-30"
+        >
+          🖼️ Bulk Images ({allEpisodes.filter(e => !imageUrls[e.id]).length} missing)
+        </button>
+        <button
+          onClick={async () => {
+            const voice = document.getElementById('bulk-series-voice')?.value || 'george';
+            const missingAudio = allEpisodes.filter(e => !urls[e.id]);
+            const missingImages = allEpisodes.filter(e => !imageUrls[e.id]);
+            const total = missingAudio.length + missingImages.length;
+            if (total === 0) { alert('Everything is generated!'); return; }
+            if (!confirm(`Generate ${missingAudio.length} audio + ${missingImages.length} images? This will take ~${Math.ceil((missingAudio.length * 15 + missingImages.length * 10) / 60)} minutes.`)) return;
+            for (let i = 0; i < missingAudio.length; i++) {
+              setBulkProgress(`Audio ${i + 1}/${missingAudio.length}: ${missingAudio[i].title}`);
+              await generateAudio(missingAudio[i], voice);
+              await new Promise(r => setTimeout(r, 2000));
+            }
+            for (let i = 0; i < missingImages.length; i++) {
+              setBulkProgress(`Image ${i + 1}/${missingImages.length}: ${missingImages[i].title}`);
+              await generateImage(missingImages[i]);
+              await new Promise(r => setTimeout(r, 1500));
+            }
+            setBulkProgress(`Done! ${missingAudio.length} audio + ${missingImages.length} images`);
+          }}
+          disabled={!!generating}
+          className="rounded-lg bg-[#f0a500]/10 px-4 py-1.5 text-[10px] font-bold text-[#f0a500] disabled:opacity-30"
+        >
+          🚀 Bulk ALL ({allEpisodes.filter(e => !urls[e.id] || !imageUrls[e.id]).length} missing)
+        </button>
+        {bulkProgress && <div className="w-full text-[10px] text-[#f0a500] mt-2">{bulkProgress}</div>}
+      </div>
+
       {/* Series list */}
       {SERIES_DATA.map((series) => (
         <div key={series.id} className="rounded-xl bg-[#1a1a28] p-4 ring-1 ring-white/5">
