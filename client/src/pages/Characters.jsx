@@ -95,8 +95,12 @@ export default function Characters() {
           ? {
               ...c,
               name: draft.name.trim(),
-              relation: draft.relation.replace('-boy', '').replace('-girl', ''),
-              gender: draft.gender || c.gender || '',
+              relation: draft.relation,
+              gender: draft.relation === 'friend-boy' ? 'boy'
+                : draft.relation === 'friend-girl' ? 'girl'
+                : ['mummy', 'dadi', 'nani', 'grandmother', 'chachi', 'mami', 'didi'].includes(draft.relation) ? 'girl'
+                : ['daddy', 'dada', 'nana', 'grandfather', 'chacha', 'mama', 'bhaiya'].includes(draft.relation) ? 'boy'
+                : draft.gender || c.gender || '',
               emoji: draft.emoji,
               traits: (draft.tags || []).join(', '),
               tags: draft.tags || [],
