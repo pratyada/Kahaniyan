@@ -113,6 +113,33 @@ export function useStoryGenerator() {
         // Fire-and-forget: generate a DALL-E cover image in background
         generateCoverImage(story).catch(() => {});
 
+        // Save to Firestore generatedStories so admin can see ALL user stories
+        if (db) {
+          setDoc(
+            doc(db, 'generatedStories', story.id),
+            {
+              title: story.title,
+              text: story.text,
+              wordCount: story.wordCount,
+              estimatedMinutes: story.estimatedMinutes,
+              value: story.value,
+              language: story.language || 'English',
+              voice: story.voice || 'AI Narrator',
+              tradition: story.tradition || null,
+              cast: story.cast || [],
+              whisper: story.whisper || null,
+              coverImage: story.coverImage || null,
+              audioUrl: story.audioUrl || null,
+              createdAt: story.createdAt,
+              generatedBy: auth?.currentUser?.uid || 'anonymous',
+              generatedByEmail: auth?.currentUser?.email || null,
+              generatedByName: auth?.currentUser?.displayName || null,
+              childName: profile?.childName || null,
+            },
+            { merge: true }
+          ).catch((e) => console.warn('[gen] Firestore save failed (non-fatal):', e.message));
+        }
+
         // Sync usage to Firestore so admin dashboard shows it
         if (db && auth?.currentUser) {
           setDoc(

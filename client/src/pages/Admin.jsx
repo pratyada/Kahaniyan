@@ -138,6 +138,7 @@ export default function Admin() {
 
   const TABS = [
     { key: 'overview', label: 'Dashboard', icon: '📊' },
+    { key: 'userstories', label: 'User Stories', icon: '🌙' },
     { key: 'storylab', label: 'Story Studio', icon: '🧪' },
     { key: 'feedback', label: 'Creators', icon: '✍️' },
     { key: 'users', label: 'Settings', icon: '⚙️' },
@@ -1293,6 +1294,9 @@ export default function Admin() {
           </div>
         )}
 
+        {/* ═══ USER STORIES ═══ */}
+        {tab === 'userstories' && <UserStoriesAdmin />}
+
         {/* ═══ STORY LAB ═══ */}
         {tab === 'storylab' && <StoryLab />}
       </div>
@@ -1639,6 +1643,212 @@ const DEFAULT_VALUE_DELIVERY = [
 ];
 
 const API_BASE = import.meta.env?.VITE_API_BASE_URL || '';
+
+// ═══ USER STORIES ADMIN ═══
+function UserStoriesAdmin() {
+  const [stories, setStories] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [generating, setGenerating] = useState(null);
+  const [status, setStatus] = useState({});
+
+  const ELEVEN_VOICES = [
+    { key: 'george', label: 'George' }, { key: 'lily', label: 'Lily' },
+    { key: 'sarah', label: 'Sarah' }, { key: 'brian', label: 'Brian' },
+    { key: 'river', label: 'River' }, { key: 'jessica', label: 'Jessica' },
+  ];
+
+  useEffect(() => {
+    (async () => {
+      try {
+        const { collection, getDocs, query, orderBy, limit } = await import('firebase/firestore');
+        // Load from both generatedStories (all) and sharedStories (legacy)
+        const [genSnap, shareSnap] = await Promise.all([
+          getDocs(query(collection(db, 'generatedStories'), orderBy('createdAt', 'desc'), limit(200))).catch(() => ({ forEach: () => {} })),
+          getDocs(query(collection(db, 'sharedStories'), orderBy('sharedAt', 'desc'), limit(200))).catch(() => ({ forEach: () => {} })),
+        ]);
+        const merged = new Map();
+        genSnap.forEach(d => merged.set(d.id, { id: d.id, ...d.data() }));
+        shareSnap.forEach(d => { if (!merged.has(d.id)) merged.set(d.id, { id: d.id, ...d.data() }); });
+        const snap = { forEach: (fn) => merged.forEach(fn) };
+        const list = [];
+        snap.forEach(d => list.push({ id: d.id, ...d.data() }));
+        setStories(list);
+      } catch (e) { console.error('Failed to load user stories:', e); }
+      setLoading(false);
+    })();
+  }, []);
+
+  const generateAudio = async (story, voice = 'george') => {
+    setGenerating(story.id);
+    setStatus(s => ({ ...s, [story.id]: `11Labs: ${voice}...` }));
+    try {
+      const text = (story.text || '').replace(/\{childName\}/g, 'little one').slice(0, 10000);
+      const res = await fetch(`${API_BASE}/api/generate-elevenlabs-audio`, {
+        method: 'POST', headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ text, voice }),
+      });
+      if (!res.ok) { setStatus(s => ({ ...s, [story.id]: `Failed (${res.status})` })); setGenerating(null); return; }
+      const blob = await res.blob();
+      setStatus(s => ({ ...s, [story.id]: 'uploading...' }));
+      const { ref, uploadBytes, getDownloadURL } = await import('firebase/storage');
+      const { storage } = await import('../lib/firebase.js');
+      const storageRef = ref(storage, `user-story-audio/${story.id}.mp3`);
+      await uploadBytes(storageRef, blob, { contentType: 'audio/mpeg' });
+      const audioUrl = await getDownloadURL(storageRef);
+      const { doc: fdoc, setDoc: fset } = await import('firebase/firestore');
+      await fset(fdoc(db, 'sharedStories', story.id), { audioUrl }, { merge: true });
+      setStories(prev => prev.map(s => s.id === story.id ? { ...s, audioUrl } : s));
+      setStatus(s => ({ ...s, [story.id]: `✓ ${voice}` }));
+    } catch (e) { setStatus(s => ({ ...s, [story.id]: e.message })); }
+    setGenerating(null);
+  };
+
+  const generateImage = async (story) => {
+    setGenerating(story.id + '_img');
+    setStatus(s => ({ ...s, [story.id]: 'generating image...' }));
+    try {
+      const firstLine = (story.text || '').split('\n').find(l => l.trim()) || '';
+      const prompt = `Children's storybook illustration, warm watercolor, Pixar-meets-Ghibli. Scene from "${story.title}": ${firstLine.slice(0, 150)}`;
+      const res = await fetch(`${API_BASE}/api/generate-story-image`, {
+        method: 'POST', headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ prompt }),
+      });
+      if (!res.ok) { setStatus(s => ({ ...s, [story.id]: `Failed (${res.status})` })); setGenerating(null); return; }
+      const data = await res.json();
+      let imgBlob;
+      if (data.imageBase64) {
+        const bytes = Uint8Array.from(atob(data.imageBase64), c => c.charCodeAt(0));
+        imgBlob = new Blob([bytes], { type: 'image/png' });
+      } else if (data.imageUrl) {
+        const imgRes = await fetch(data.imageUrl);
+        imgBlob = await imgRes.blob();
+      }
+      if (!imgBlob) { setStatus(s => ({ ...s, [story.id]: 'No image returned' })); setGenerating(null); return; }
+      const { ref, uploadBytes, getDownloadURL } = await import('firebase/storage');
+      const { storage } = await import('../lib/firebase.js');
+      const storageRef = ref(storage, `user-story-images/${story.id}.png`);
+      await uploadBytes(storageRef, imgBlob, { contentType: 'image/png' });
+      const coverImage = await getDownloadURL(storageRef);
+      const { doc: fdoc, setDoc: fset } = await import('firebase/firestore');
+      await fset(fdoc(db, 'sharedStories', story.id), { coverImage }, { merge: true });
+      setStories(prev => prev.map(s => s.id === story.id ? { ...s, coverImage } : s));
+      setStatus(s => ({ ...s, [story.id]: '✓ image' }));
+    } catch (e) { setStatus(s => ({ ...s, [story.id]: e.message })); }
+    setGenerating(null);
+  };
+
+  const deleteStory = async (storyId) => {
+    if (!confirm('Delete this shared story?')) return;
+    try {
+      const { doc: fdoc, deleteDoc } = await import('firebase/firestore');
+      await deleteDoc(fdoc(db, 'sharedStories', storyId));
+      setStories(prev => prev.filter(s => s.id !== storyId));
+    } catch (e) { alert('Delete failed: ' + e.message); }
+  };
+
+  if (loading) return <div className="text-center py-12 text-[#6e6a63]">Loading user stories...</div>;
+
+  return (
+    <div className="space-y-5">
+      {/* Stats */}
+      <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+        <div className="rounded-xl bg-[#1a1a28] p-4 ring-1 ring-white/5">
+          <div className="text-2xl font-bold text-[#f5f0e8]">{stories.length}</div>
+          <div className="text-[10px] font-bold uppercase tracking-wider text-[#6e6a63]">User Stories</div>
+        </div>
+        <div className="rounded-xl bg-[#1a1a28] p-4 ring-1 ring-white/5">
+          <div className="text-2xl font-bold text-[#7ad9a1]">{stories.filter(s => s.audioUrl).length}</div>
+          <div className="text-[10px] font-bold uppercase tracking-wider text-[#6e6a63]">With Audio</div>
+        </div>
+        <div className="rounded-xl bg-[#1a1a28] p-4 ring-1 ring-white/5">
+          <div className="text-2xl font-bold text-[#539df5]">{stories.filter(s => s.coverImage).length}</div>
+          <div className="text-[10px] font-bold uppercase tracking-wider text-[#6e6a63]">With Image</div>
+        </div>
+        <div className="rounded-xl bg-[#1a1a28] p-4 ring-1 ring-white/5">
+          <div className="text-2xl font-bold text-[#f0a500]">{new Set(stories.map(s => s.sharedBy)).size}</div>
+          <div className="text-[10px] font-bold uppercase tracking-wider text-[#6e6a63]">Unique Users</div>
+        </div>
+      </div>
+
+      {stories.length === 0 && (
+        <div className="text-center py-12 text-[#6e6a63]">No user-generated stories shared yet.</div>
+      )}
+
+      {/* Story list */}
+      {stories.map(story => (
+        <div key={story.id} className="rounded-xl bg-[#1a1a28] p-4 ring-1 ring-white/5">
+          <div className="flex items-start gap-3">
+            {story.coverImage ? (
+              <img src={story.coverImage} alt="" className="h-16 w-16 shrink-0 rounded-lg object-cover" />
+            ) : (
+              <div className="grid h-16 w-16 shrink-0 place-items-center rounded-lg bg-[#0f0f17] text-2xl">🌙</div>
+            )}
+            <div className="min-w-0 flex-1">
+              <h3 className="text-sm font-bold text-[#f5f0e8]">{story.title}</h3>
+              <p className="text-[10px] text-[#6e6a63] mt-0.5">
+                {story.estimatedMinutes} min · {story.value} · {story.language}
+                {story.childName && ` · for ${story.childName}`}
+              </p>
+              <p className="text-[10px] text-[#6e6a63]">
+                {story.generatedByEmail || story.generatedByName || story.sharedBy?.slice(0, 8) || 'anonymous'}
+                {' · '}{story.createdAt ? new Date(story.createdAt).toLocaleString() : story.sharedAt ? new Date(story.sharedAt).toLocaleString() : ''}
+              </p>
+              {story.whisper && (
+                <p className="text-[10px] text-[#f0a500]/70 mt-0.5">💬 "{story.whisper}"</p>
+              )}
+              <div className="flex items-center gap-2 mt-1">
+                {story.audioUrl ? (
+                  <span className="rounded-full bg-[#7ad9a1]/10 px-2 py-0.5 text-[8px] font-bold text-[#7ad9a1]">Audio ✓</span>
+                ) : (
+                  <span className="rounded-full bg-red-400/10 px-2 py-0.5 text-[8px] font-bold text-red-400">No audio</span>
+                )}
+                {story.coverImage ? (
+                  <span className="rounded-full bg-[#7ad9a1]/10 px-2 py-0.5 text-[8px] font-bold text-[#7ad9a1]">Image ✓</span>
+                ) : (
+                  <span className="rounded-full bg-red-400/10 px-2 py-0.5 text-[8px] font-bold text-red-400">No image</span>
+                )}
+              </div>
+              {status[story.id] && <div className="text-[9px] text-[#f0a500] mt-1">{status[story.id]}</div>}
+            </div>
+          </div>
+
+          {/* Story text preview */}
+          <div className="mt-2 rounded-lg bg-[#0f0f17] p-3 max-h-24 overflow-y-auto">
+            <p className="text-[10px] text-[#a8a39a] leading-relaxed whitespace-pre-wrap">{(story.text || '').slice(0, 500)}...</p>
+          </div>
+
+          {/* Audio preview */}
+          {story.audioUrl && <audio controls preload="none" src={story.audioUrl} className="w-full h-8 mt-2" style={{ filter: 'invert(1) hue-rotate(180deg)', opacity: 0.7 }} />}
+
+          {/* Actions */}
+          <div className="flex items-center gap-2 mt-3 flex-wrap">
+            <select defaultValue="george" id={`uvoice-${story.id}`}
+              className="rounded-lg bg-[#0f0f17] px-2 py-1.5 text-[10px] font-bold text-[#7ad9a1] outline-none ring-1 ring-[#7ad9a1]/20">
+              {ELEVEN_VOICES.map(v => <option key={v.key} value={v.key}>{v.label}</option>)}
+            </select>
+            <button onClick={() => generateAudio(story, document.getElementById(`uvoice-${story.id}`)?.value || 'george')}
+              disabled={!!generating}
+              className="rounded-lg bg-[#7ad9a1]/10 px-3 py-1.5 text-[10px] font-bold text-[#7ad9a1] disabled:opacity-30">
+              {generating === story.id ? '...' : '⚡ Audio'}
+            </button>
+            <button onClick={() => generateImage(story)} disabled={!!generating}
+              className="rounded-lg bg-[#539df5]/10 px-3 py-1.5 text-[10px] font-bold text-[#539df5] disabled:opacity-30">
+              {generating === story.id + '_img' ? '...' : '🖼️ Image'}
+            </button>
+            <button onClick={() => { navigator.clipboard.writeText(`https://mysleepytale.com/player?storyId=${story.id}`); setStatus(s => ({ ...s, [story.id]: 'Link copied!' })); }}
+              className="rounded-lg bg-[#f0a500]/10 px-3 py-1.5 text-[10px] font-bold text-[#f0a500]">
+              🔗 Copy Link
+            </button>
+            <button onClick={() => deleteStory(story.id)}
+              className="ml-auto rounded-lg bg-red-400/10 px-3 py-1.5 text-[10px] font-bold text-red-400">
+              🗑️ Delete
+            </button>
+          </div>
+        </div>
+      ))}
+    </div>
+  );
+}
 
 function StoryLab({ showSettingsTabs }) {
   const [subTab, setSubTab] = useState(showSettingsTabs ? 'rules' : 'wisdom-audio');
