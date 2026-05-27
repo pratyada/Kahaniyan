@@ -1,16 +1,27 @@
 // Creation — Create stories/series or view your creations.
 // Guests can browse. Submit requires sign-in.
 
-import { useEffect, useState, useRef } from 'react';
+import { useEffect, useState, useMemo, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Feather, Headphones, Plus, Trash2, Image as ImageIcon } from 'lucide-react';
 import PageTransition from '../components/PageTransition.jsx';
-import CreateSheet from '../components/CreateSheet.jsx';
+import WhisperBox, { saveRecentWhisper } from '../components/WhisperBox.jsx';
+import LengthStrip from '../components/LengthStrip.jsx';
+import ValuePill from '../components/ValuePill.jsx';
+import UpgradeModal from '../components/UpgradeModal.jsx';
 import { useFamilyProfile } from '../hooks/useFamilyProfile.js';
+import { useStoryGenerator } from '../hooks/useStoryGenerator.js';
+import { usePlayer } from '../hooks/usePlayer.jsx';
+import { useRadio } from '../hooks/useRadio.jsx';
+import { useAdmin } from '../hooks/useAdmin.jsx';
 import { useAuth } from '../hooks/useAuth.jsx';
-import { RELIGIONS } from '../utils/constants.js';
+import { RELIGIONS, VALUES, DURATIONS, RELATION_EMOJI } from '../utils/constants.js';
+import { RADIO_STATIONS } from '../data/radioStations.js';
+import { recommendedValueFor } from '../utils/storyHelpers.js';
+import { maxDurationFor } from '../utils/tierGate.js';
+import { trackStoryGenerated } from '../utils/analytics.js';
 import { SERIES } from '../data/series.js';
 import { FOUNDER } from '../utils/socialProof.js';
 
@@ -31,10 +42,60 @@ export default function Library() {
   const navigate = useNavigate();
   const { profile } = useFamilyProfile();
   const { user } = useAuth();
+  const { generate, loading: genLoading } = useStoryGenerator();
+  const { load, clear } = usePlayer();
+  const radio = useRadio();
+  const { isUnlimited } = useAdmin();
+
   const [tab, setTab] = useState('create');
   const [toast, setToast] = useState(null);
   const [createMode, setCreateMode] = useState(null); // null | 'story' | 'series'
-  const [storySheetOpen, setStorySheetOpen] = useState(false);
+
+  // AI story generator state
+  const tier = profile?.tier || 'free';
+  const recommended = useMemo(() => recommendedValueFor(profile?.age || 6), [profile?.age]);
+  const characters = profile?.characters || [];
+  const nonProtagonist = characters.filter((c) => c.relation !== 'self');
+  const maxDuration = maxDurationFor(tier, isUnlimited);
+  const [genValue, setGenValue] = useState('kindness');
+  const [genDuration, setGenDuration] = useState(2);
+  const [whisper, setWhisper] = useState('');
+  const [whisperOverridesValue, setWhisperOverridesValue] = useState(true);
+  const [selectedCharIds, setSelectedCharIds] = useState([]);
+  const [storyError, setStoryError] = useState(null);
+  const [upgradeOpen, setUpgradeOpen] = useState(false);
+  const [upgradeReason, setUpgradeReason] = useState('');
+
+  const toggleChar = (id) => {
+    setSelectedCharIds((prev) => prev.includes(id) ? prev.filter(x => x !== id) : prev.length >= 5 ? prev : [...prev, id]);
+  };
+
+  const handleGenerateStory = async () => {
+    setStoryError(null);
+    if (window.__triggerLogin) {
+      window.__triggerLogin();
+      const { auth } = await import('../lib/firebase.js');
+      if (auth && !auth.currentUser) return;
+    }
+    if (!profile) { setStoryError('Profile not loaded.'); return; }
+    const selectedCharacters = characters.filter(c => selectedCharIds.includes(c.id) || c.relation === 'self');
+    clear();
+    navigate('/player');
+    const raagNidra = RADIO_STATIONS.find(s => s.id === 'raag-nidra') || RADIO_STATIONS[0];
+    try { radio.play(raagNidra); } catch {}
+    if (whisper.trim()) saveRecentWhisper(whisper.trim());
+    generate({
+      profile, value: genValue, duration: genDuration,
+      language: profile.language || 'English', voice: profile.defaultVoice || 'AI Narrator',
+      whisper, whisperOverridesValue, selectedCharacters: selectedCharIds.length > 0 ? selectedCharacters : undefined,
+    }).then((story) => {
+      trackStoryGenerated('creation', genValue, genDuration);
+      radio.stop(); load(story);
+      try { navigator.vibrate?.([200, 100, 200]); } catch {}
+    }).catch((e) => {
+      radio.stop(); setStoryError(e.message || 'Could not generate story.'); navigate('/creation');
+    });
+  };
 
   // Creator state
   const [myStories, setMyStories] = useState([]);
@@ -312,60 +373,109 @@ export default function Library() {
       {/* ═══ CREATE TAB ═══ */}
       {tab === 'create' && !createMode && (
         <>
-          {/* Tonight's Story — AI-generated personal story */}
-          <button
-            onClick={() => setStorySheetOpen(true)}
-            className="mb-5 w-full rounded-2xl p-5 text-left ring-1 ring-gold/30 transition active:scale-[0.99]"
-            style={{ background: 'linear-gradient(135deg, rgba(240,165,0,0.15) 0%, rgba(240,165,0,0.03) 100%)' }}
-          >
-            <div className="flex items-center gap-3">
-              <div className="grid h-12 w-12 shrink-0 place-items-center rounded-2xl bg-gold/20">
-                <span className="text-2xl">🌙</span>
-              </div>
-              <div className="flex-1">
-                <h2 className="text-base font-bold text-gold" style={{ fontFamily: 'Fraunces, serif' }}>
-                  Start Tonight's Story
-                </h2>
-                <p className="mt-0.5 text-[11px] text-ink-muted">
-                  AI creates a personalized bedtime story for {profile?.childName || 'your child'}
-                </p>
-              </div>
-              <span className="text-gold text-lg">→</span>
-            </div>
-          </button>
-
-          <CreateSheet open={storySheetOpen} onClose={() => setStorySheetOpen(false)} />
-
-          <div className="mb-5 rounded-2xl bg-gradient-to-br from-gold/10 to-gold/3 p-5 ring-1 ring-gold/20">
-            <h2 className="text-lg font-bold text-ink" style={{ fontFamily: 'Fraunces, serif' }}>
-              No story should go untold
+          {/* ── AI Story Generator (inline) ── */}
+          <div className="mb-6 rounded-2xl p-4 ring-1 ring-gold/20" style={{ background: 'linear-gradient(135deg, rgba(240,165,0,0.08) 0%, rgba(240,165,0,0.02) 100%)' }}>
+            <h2 className="text-base font-bold text-gold mb-3" style={{ fontFamily: 'Fraunces, serif' }}>
+              🌙 Tonight's Story for {profile?.childName || 'your child'}
             </h2>
-            <p className="mt-1 text-xs text-ink-muted leading-relaxed">
-              Your grandma's tales. Your temple stories. Your school adventures.
-              Write them here — we narrate them for thousands of kids.
-            </p>
+
+            <WhisperBox value={whisper} onChange={setWhisper} overrideValue={whisperOverridesValue} onToggleOverride={setWhisperOverridesValue} />
+
+            {/* Cast selection */}
+            {nonProtagonist.length > 0 && (
+              <div className="mb-4">
+                <p className="text-[10px] font-bold uppercase tracking-wider text-ink-muted mb-2">Include in tonight's story</p>
+                <div className="flex flex-wrap gap-1.5">
+                  {nonProtagonist.map(c => (
+                    <button key={c.id} onClick={() => toggleChar(c.id)}
+                      className={`flex items-center gap-1 rounded-full px-2.5 py-1 text-[11px] font-bold transition ${
+                        selectedCharIds.includes(c.id) ? 'bg-gold text-bg-base' : 'bg-bg-surface text-ink-muted ring-1 ring-white/10'
+                      }`}>
+                      <span>{RELATION_EMOJI[c.relation] || '✨'}</span>
+                      {c.name}
+                    </button>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {/* Auto-pick toggle */}
+            <label className="mb-4 flex cursor-pointer items-center justify-between gap-3 rounded-2xl bg-bg-surface p-3 ring-1 ring-white/5">
+              <div className="min-w-0 flex-1">
+                <div className="font-ui text-xs font-bold text-ink">Auto-pick the lesson</div>
+                <div className="mt-0.5 text-[11px] text-ink-muted">
+                  {whisperOverridesValue ? "We'll choose the best value for you" : 'Pick a value below'}
+                </div>
+              </div>
+              <span onClick={(e) => { e.preventDefault(); setWhisperOverridesValue(!whisperOverridesValue); }}
+                className={`relative inline-flex h-7 w-12 shrink-0 items-center rounded-full transition ${whisperOverridesValue ? 'bg-gold' : 'bg-bg-card ring-1 ring-white/10'}`}>
+                <span className={`inline-block h-5 w-5 transform rounded-full bg-bg-base transition ${whisperOverridesValue ? 'translate-x-6' : 'translate-x-1'}`} />
+              </span>
+            </label>
+
+            {!whisperOverridesValue && (
+              <div className="mb-4 flex flex-wrap gap-1.5">
+                {VALUES.map(v => (
+                  <button key={v.key} onClick={() => setGenValue(v.key)}
+                    className={`rounded-full px-3 py-1.5 text-[11px] font-bold transition ${
+                      genValue === v.key ? 'bg-gold text-bg-base' : 'bg-bg-surface text-ink-muted ring-1 ring-white/10'
+                    }`}>
+                    {v.emoji} {v.label}
+                  </button>
+                ))}
+              </div>
+            )}
+
+            {/* Story length */}
+            <div className="mb-4">
+              <p className="text-[10px] font-bold uppercase tracking-wider text-ink-muted mb-2">Story Length</p>
+              <div className="flex gap-2">
+                {DURATIONS.map(d => (
+                  <button key={d.minutes} onClick={() => d.minutes <= maxDuration ? setGenDuration(d.minutes) : (setUpgradeReason('duration'), setUpgradeOpen(true))}
+                    className={`flex-1 rounded-xl py-2 text-center text-xs font-bold transition ${
+                      genDuration === d.minutes ? 'bg-gold text-bg-base' : d.minutes > maxDuration ? 'bg-bg-surface text-ink-dim ring-1 ring-white/5 opacity-50' : 'bg-bg-surface text-ink-muted ring-1 ring-white/10'
+                    }`}>
+                    {d.label}
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            {storyError && <p className="mb-3 text-xs text-red-400">{storyError}</p>}
+
+            <motion.button whileTap={{ scale: 0.97 }} onClick={handleGenerateStory} disabled={genLoading}
+              className="w-full rounded-2xl bg-gold py-4 text-center text-base font-bold text-bg-base shadow-glow disabled:opacity-50">
+              {genLoading ? 'Creating story...' : "Start Tonight's Story"}
+            </motion.button>
           </div>
 
-          {/* Create Story or Series choice */}
+          {/* ── Creator Submissions ── */}
+          <div className="mb-4 rounded-2xl bg-gradient-to-br from-white/5 to-white/2 p-4 ring-1 ring-white/5">
+            <h3 className="text-sm font-bold text-ink mb-1" style={{ fontFamily: 'Fraunces, serif' }}>Write for the Community</h3>
+            <p className="text-[10px] text-ink-muted">Submit stories for thousands of kids to hear</p>
+          </div>
+
           <div className="space-y-3">
             <motion.button whileTap={{ scale: 0.97 }} onClick={() => setCreateMode('story')}
-              className="w-full flex items-center gap-4 rounded-2xl bg-bg-surface p-5 ring-1 ring-white/8 text-left transition hover:ring-gold/30">
-              <div className="grid h-14 w-14 shrink-0 place-items-center rounded-2xl bg-gold/10 text-2xl">📖</div>
+              className="w-full flex items-center gap-4 rounded-2xl bg-bg-surface p-4 ring-1 ring-white/8 text-left transition hover:ring-gold/30">
+              <div className="grid h-12 w-12 shrink-0 place-items-center rounded-2xl bg-gold/10 text-xl">📖</div>
               <div>
                 <h3 className="text-sm font-bold text-ink">{t('creation.writeStory')}</h3>
-                <p className="text-[10px] text-ink-muted mt-0.5">A single bedtime story — one lesson, one complete tale</p>
+                <p className="text-[10px] text-ink-muted mt-0.5">A single bedtime story for the community</p>
               </div>
             </motion.button>
 
             <motion.button whileTap={{ scale: 0.97 }} onClick={() => setCreateMode('series')}
-              className="w-full flex items-center gap-4 rounded-2xl bg-bg-surface p-5 ring-1 ring-white/8 text-left transition hover:ring-gold/30">
-              <div className="grid h-14 w-14 shrink-0 place-items-center rounded-2xl bg-gold/10 text-2xl">📺</div>
+              className="w-full flex items-center gap-4 rounded-2xl bg-bg-surface p-4 ring-1 ring-white/8 text-left transition hover:ring-gold/30">
+              <div className="grid h-12 w-12 shrink-0 place-items-center rounded-2xl bg-gold/10 text-xl">📺</div>
               <div>
                 <h3 className="text-sm font-bold text-ink">{t('creation.createSeries')}</h3>
-                <p className="text-[10px] text-ink-muted mt-0.5">Multiple episodes — same characters, new adventures each night</p>
+                <p className="text-[10px] text-ink-muted mt-0.5">Multiple episodes — same characters each night</p>
               </div>
             </motion.button>
           </div>
+
+          <UpgradeModal open={upgradeOpen} onClose={() => setUpgradeOpen(false)} reason={upgradeReason} />
         </>
       )}
 
