@@ -3,29 +3,29 @@ import { selectStory } from '../server/lib/storySelector.js';
 import { initializeApp, getApps, cert } from 'firebase-admin/app';
 import { getFirestore } from 'firebase-admin/firestore';
 
-// Initialize Firebase Admin (server-side — uses service account or auto-detected credentials)
+// Initialize Firebase Admin — ONLY if service account credentials exist.
+// Without credentials, Firestore calls hang for 7-10s before failing, wasting API Gateway time.
 let db = null;
 try {
-  if (getApps().length === 0) {
-    const raw = process.env.FIREBASE_SERVICE_ACCOUNT;
-    let serviceAccount = null;
-    if (raw) {
-      try {
-        serviceAccount = JSON.parse(raw);
-        // Validate required field
-        if (!serviceAccount.private_key) serviceAccount = null;
-      } catch { serviceAccount = null; }
-    }
-
-    initializeApp(
-      serviceAccount
-        ? { credential: cert(serviceAccount), projectId: serviceAccount.project_id || process.env.FIREBASE_PROJECT_ID || 'qissaa-61a78' }
-        : { projectId: process.env.FIREBASE_PROJECT_ID || 'qissaa-61a78' }
-    );
+  const raw = process.env.FIREBASE_SERVICE_ACCOUNT;
+  let serviceAccount = null;
+  if (raw) {
+    try {
+      serviceAccount = JSON.parse(raw);
+      if (!serviceAccount.private_key) serviceAccount = null;
+    } catch { serviceAccount = null; }
   }
-  db = getFirestore();
+
+  if (serviceAccount) {
+    if (getApps().length === 0) {
+      initializeApp({ credential: cert(serviceAccount), projectId: serviceAccount.project_id || process.env.FIREBASE_PROJECT_ID || 'qissaa-61a78' });
+    }
+    db = getFirestore();
+  } else {
+    console.log('[generate-story] No Firebase credentials — skipping Firestore (saves ~15s)');
+  }
 } catch (e) {
-  console.warn('Firebase Admin init failed — running without server-side enforcement:', e.message);
+  console.warn('Firebase Admin init failed:', e.message);
 }
 
 // Mother's Day promo: free unlimited until May 20, 2026
