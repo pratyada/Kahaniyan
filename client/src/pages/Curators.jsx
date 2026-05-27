@@ -113,6 +113,7 @@ export default function Curators() {
           });
         }
       } catch (e) { console.warn('[Creators]', e.message); }
+      setLoading(false);
       setLoadingMore(false);
     })();
   }, []);
@@ -148,6 +149,23 @@ export default function Curators() {
           className="w-full rounded-2xl bg-bg-surface pl-10 pr-10 py-3 text-sm text-ink ring-1 ring-white/10 outline-none focus:ring-gold/40 placeholder:text-ink-dim" />
         {search && <button onClick={() => setSearch('')} className="absolute right-3 top-1/2 -translate-y-1/2 text-ink-dim"><X size={16} /></button>}
       </div>
+
+      {/* Loading / Empty states */}
+      {loading && creators.length === 0 && (
+        <div className="py-16 text-center">
+          <div className="mb-4 inline-block h-8 w-8 animate-spin rounded-full border-2 border-gold border-t-transparent" />
+          <p className="text-sm text-ink-muted">Loading creators...</p>
+        </div>
+      )}
+
+      {!loading && creators.length === 0 && (
+        <div className="py-16 text-center">
+          <div className="text-5xl mb-4">✍️</div>
+          <h2 className="font-display text-lg font-bold text-ink">No creators yet</h2>
+          <p className="mt-2 text-sm text-ink-muted max-w-xs mx-auto">Be the first! Go to Creation tab and submit a story for the community.</p>
+          <button onClick={() => navigate('/creation')} className="btn-primary mt-4 px-6 py-3">Start Creating</button>
+        </div>
+      )}
 
       {/* Filter chips */}
       {allTags.length > 0 && (
