@@ -1660,10 +1660,28 @@ function UserStoriesAdmin() {
   useEffect(() => {
     (async () => {
       try {
-        const { collection, getDocs, query, orderBy, limit } = await import('firebase/firestore');
+        const { collection, getDocs, query, orderBy, limit, doc: fdoc, getDoc } = await import('firebase/firestore');
         const snap = await getDocs(query(collection(db, 'sharedStories'), orderBy('createdAt', 'desc'), limit(200)));
         const list = [];
         snap.forEach(d => list.push({ id: d.id, ...d.data() }));
+
+        // Enrich stories with user info for those missing email
+        const uidSet = new Set(list.filter(s => !s.generatedByEmail && (s.generatedBy || s.sharedBy)).map(s => s.generatedBy || s.sharedBy));
+        const userMap = {};
+        for (const uid of uidSet) {
+          if (!uid || uid === 'anonymous') continue;
+          try {
+            const uSnap = await getDoc(fdoc(db, 'users', uid));
+            if (uSnap.exists()) { const u = uSnap.data(); userMap[uid] = u.email || u.displayName || uid.slice(0, 8); }
+          } catch {}
+        }
+        list.forEach(s => {
+          if (!s.generatedByEmail) {
+            const uid = s.generatedBy || s.sharedBy;
+            if (uid && userMap[uid]) s.generatedByEmail = userMap[uid];
+          }
+        });
+
         setStories(list);
       } catch (e) { console.error('Failed to load user stories:', e); }
       setLoading(false);
