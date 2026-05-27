@@ -617,7 +617,7 @@ That night, {childName}, remember Pluto. Being small does not mean being unimpor
     description: 'The Rainbow batch from JLPS explores Toronto — shapes at Canoe Landing, a concert, and a hike at Evergreen Brick Works.',
     createdBy: 'deepti.ramaul@gmail.com', creatorName: 'Deepti Ramaul', creatorUsername: 'deepti-ramaul',
     ageRange: '4-6',
-    totalEpisodes: 3,
+    totalEpisodes: 4,
     episodes: [
       {
         id: 'rk_ep1_canoe', episodeNumber: 1, title: 'Shapes at Canoe Landing',
@@ -719,6 +719,77 @@ By 1:30, everyone was back on the bus. Tired, happy, a little muddy.
 {childName} held up one finger. "I touched a turtle. With THIS finger. And it blinked at me."
 
 That night, {childName}, remember the field trip. The turtles who share their sunny rocks. The bats who eat mosquitoes. The baby turtles who crawl to water all by themselves. The world is full of tiny creatures in tiny homes, right next to ours. All they need is for us to step carefully.`,
+      },
+      {
+        id: 'rk_ep4_summer', episodeNumber: 4, title: 'Sun and the Splash Pad',
+        subtitle: 'Summer arrives at JLPS — bikes, splash pads, soccer, and the whole Rainbow batch outside.',
+        tradition: 'universal', theme: 'sharing', durationMinutes: 6,
+        source: 'Rainbow Kindergarten · Episode 4',
+        body: `After months and months of snowsuits, mittens, and frozen fingers — the sun came back to Toronto.
+
+Not the shy, cold, winter sun that hides behind clouds. The REAL sun. The warm, golden, stay-outside-until-Mummy-calls-you-three-times sun.
+
+And the Rainbow batch of Jean Lumb Public School? They had been WAITING.
+
+Mr. Zak opened the door to the schoolyard and twenty kids exploded out like confetti from a party popper. Shelagh laughed and clicked photos from the steps. "SUMMER!" she called. "Go find it!"
+
+The soccer field was the first to fill up. {childName} was out there with a brand-new bike — a little wobbly still, pedalling across the grass near the goalposts, figuring out the balance. Left, right, left, WOBBLE — but never falling. Not today. Today was too good for falling.
+
+Beside the field, Arin was already on his bike too, racing along the path by Canoe Landing Park, wind in his hair, legs pumping fast. "Watch this!" he yelled, and did a wide loop around the big red canoe sculpture. Shelagh waved. Mr. Zak gave a thumbs up.
+
+At the sandbox near the playground, Ostap was deep in construction. He had made a castle — no, a FORTRESS — with towers and a moat and a bridge made from popsicle sticks he had been saving since March. "Nobody step on it!" he warned. Nobody did.
+
+Near the climbing frame, Hunter and Soir were playing tag and freeze. Hunter was IT. "FREEZE!" he shouted, and Soir froze mid-run, one foot in the air, arms out like a statue. He held it for THREE whole seconds before toppling over into the grass, giggling so hard his belly shook.
+
+By the swings, Dhruv was NOT on the swings. Dhruv was being a dinosaur. A T-Rex, specifically. He stomped around with tiny arms tucked in, making ROAAAAR sounds that echoed across the whole park. Two grade-two kids stopped and stared. Dhruv roared at them too. They ran.
+
+On the path behind the school, Parker glided past on his brand-new scooter — the blue one with the light-up wheels. Every push made the wheels glow green, and Parker grinned so wide you could see every single tooth. Well — almost every tooth.
+
+Because Aayan? Aayan had lost a tooth. And he was telling EVERYONE.
+
+"The Tooth Fairy came," Aayan announced to a circle of kids on the bench. "She left TWO dollars. TWO. And she left a tiny note that said 'Excellent tooth, Aayan. Very clean.'"
+
+"Did she really write that?" asked Mishaal, eyes wide.
+
+"I SAW the note," said Aayan seriously. "With GLITTER on it."
+
+Mishaal, Luna, Mira, Sisilia, Aarhia, and Ava were all sitting in a huddle near the fence, and the tooth fairy story was only HALF the conversation. The other half? The recent field trip to Evergreen Brick Works.
+
+"I want to go BACK," said Luna.
+
+"Me too," said Mira. "The turtles miss us."
+
+"We should write them a letter," said Sisilia, and she was NOT joking. "Dear Turtles, We liked your rocks. Love, Rainbow Class."
+
+"Can we go next week?" asked Aarhia.
+
+Ava shook her head wisely. "We need to plan it properly. We need snacks, water bottles, and matching hats." She paused. "Also a map."
+
+"We KNOW where it is," said Mishaal.
+
+"Maps are important," said Ava firmly. And that was that.
+
+Lingen was at the splash pad — the one in Canoe Landing Park where water shoots up from the ground in surprise jets. He stood right in the middle, arms spread wide, DARING the water to hit him. WHOOOOSH — a jet shot up and caught him right in the belly. He screamed. He laughed. He did it again.
+
+Wesley was doing something quieter. He had found a dandelion — the fluffy white kind — and was sitting cross-legged on the grass, blowing the seeds into the air one at a time. Each tiny parachute drifted into the summer sky, spinning slowly, carried by the same warm wind that was making everyone so happy.
+
+Mr. Zak sat down on the bench beside {childName}, who had parked the bike and was catching a breath.
+
+"You know what I love about summer?" Mr. Zak said.
+
+{childName} looked up. "What?"
+
+"Everyone finds their thing. Arin finds speed. Ostap finds building. Dhruv finds dinosaurs. Parker finds glowing wheels. Aayan finds stories. And you?" He looked at {childName}'s bike and the soccer ball nearby. "You find ALL of it."
+
+{childName} smiled. Because it was true. Today was not about being the fastest, or the loudest, or the best. Today was just about being OUTSIDE, TOGETHER, in the sun, with the people who had spent the whole year learning shapes and singing songs and touching turtles and becoming friends.
+
+The shadows got longer. The splash pad slowed to a trickle. Parents started arriving at the fence. One by one, the Rainbow batch collected their backpacks, their water bottles, their sandy shoes.
+
+"Same time tomorrow?" called Arin from across the field.
+
+"SAME TIME TOMORROW!" echoed twenty voices at once.
+
+That night, {childName}, remember the splash pad and the soccer field and the dandelion seeds floating away. Summer is not just a season. It is a feeling. The feeling of warm grass under your feet, friends all around, and absolutely nowhere you need to be except right here, right now. Carry that feeling into sleep tonight. And tomorrow? Same time. Same sun. Same friends.`,
       },
     ],
   },
