@@ -170,6 +170,17 @@ function SharedStoryGate() {
     });
   }, [sharedStoryId, load]);
 
+  // Voice clips state — MUST be before any early returns (React hooks rule)
+  const episodeId = current?.id || '';
+  const voicePrompts = getVoicePrompts(episodeId);
+  const [voiceStep, setVoiceStep] = useState(() => {
+    if (!voicePrompts) return 'play';
+    const cached = localStorage.getItem(`mst:voiceclips:${episodeId}`);
+    if (cached) return 'play';
+    return 'ask';
+  });
+
+  // Early returns AFTER all hooks
   if (status === 'loading') {
     return (
       <div className="flex h-screen flex-col items-center justify-center bg-bg-base px-6 text-center">
@@ -189,17 +200,6 @@ function SharedStoryGate() {
       </div>
     );
   }
-
-  // Check if this episode supports voice clips
-  const episodeId = current?.id || '';
-  const voicePrompts = getVoicePrompts(episodeId);
-  const [voiceStep, setVoiceStep] = useState(() => {
-    // Skip if already recorded or no prompts
-    if (!voicePrompts) return 'play';
-    const cached = localStorage.getItem(`mst:voiceclips:${episodeId}`);
-    if (cached) return 'play';
-    return 'ask'; // Show "want to record?" prompt
-  });
 
   if (voiceStep === 'ask' && voicePrompts) {
     return (
