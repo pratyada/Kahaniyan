@@ -609,37 +609,7 @@ function PlayerInner() {
   const storyArtData = current?.id ? getStoryArt(lessonKey) : null;
   const bgImage = current?.coverImage || wisdomImageUrls[lessonKey] || storyArtData?.image || null;
 
-  // Show generating screen while waiting for story
-  if (!current) {
-    return (
-      <div className="absolute inset-0 z-40 flex flex-col items-center justify-center bg-bg-base px-8 text-center">
-        <div className="aurora" />
-        <div className="starfield" />
-        <div className="relative z-10 flex flex-col items-center">
-          {waitTimeout ? (
-            <>
-              <div className="text-5xl mb-4">😔</div>
-              <h2 className="font-display text-xl font-bold text-gold">Story took too long</h2>
-              <p className="mt-2 text-sm text-ink-muted">The server might be busy. Please try again.</p>
-              <button onClick={() => navigate(-1)} className="btn-primary mt-6 px-8 py-3">Go Back</button>
-            </>
-          ) : (
-            <>
-              <div className="mb-6 inline-block h-12 w-12 animate-spin rounded-full border-3 border-gold/30 border-t-gold" />
-              <h2 className="font-display text-xl font-bold text-gold">Creating your story...</h2>
-              <p className="mt-2 text-sm text-ink-muted max-w-xs">
-                Writing a personalized bedtime story just for {profile?.childName || 'you'}. This takes about 20 seconds.
-              </p>
-              <div className="mt-6 flex items-center gap-2 text-[11px] text-ink-dim">
-                <span className="w-2 h-2 rounded-full bg-gold animate-pulse" />
-                Weaving magic...
-              </div>
-            </>
-          )}
-        </div>
-      </div>
-    );
-  }
+  const isGenerating = !current;
 
   return (
     <div className="absolute inset-0 z-40 overflow-hidden bg-bg-base" style={{ touchAction: 'pan-y' }}>
@@ -736,14 +706,39 @@ function PlayerInner() {
               )}
             </motion.div>
 
-            {/* Title + meta — centered */}
+            {/* Title + meta — centered (or generating message) */}
             <div className="mb-3 text-center">
-              <h1 className="text-xl font-bold text-ink" style={{ fontFamily: 'Fraunces, serif' }}>
-                {current?.title || 'Bedtime Story'}
-              </h1>
-              <p className="mt-1 text-xs text-ink-muted" style={{ fontFamily: 'Nunito, sans-serif' }}>
-                For {profile?.childName}{current?.estimatedMinutes ? ` · ${current.estimatedMinutes} min` : ''}
-              </p>
+              {isGenerating ? (
+                <>
+                  {waitTimeout ? (
+                    <>
+                      <div className="text-4xl mb-2">😔</div>
+                      <h1 className="text-xl font-bold text-gold" style={{ fontFamily: 'Fraunces, serif' }}>Story took too long</h1>
+                      <p className="mt-1 text-xs text-ink-muted">The server might be busy.</p>
+                      <button onClick={() => navigate(-1)} className="btn-primary mt-4 px-6 py-2 text-sm">Go Back</button>
+                    </>
+                  ) : (
+                    <>
+                      <div className="mb-3 inline-block h-10 w-10 animate-spin rounded-full border-2 border-gold/30 border-t-gold" />
+                      <h1 className="text-xl font-bold text-gold" style={{ fontFamily: 'Fraunces, serif' }}>Creating your story...</h1>
+                      <p className="mt-1 text-xs text-ink-muted">
+                        Writing a bedtime story for {profile?.childName || 'you'}. ~20 seconds.
+                      </p>
+                      <div className="mt-3 flex items-center justify-center gap-2 text-[11px] text-ink-dim">
+                        <span className="w-2 h-2 rounded-full bg-gold animate-pulse" />
+                        Weaving magic...
+                      </div>
+                    </>
+                  )}
+                </>
+              ) : (
+                <>
+                  <h1 className="text-xl font-bold text-ink" style={{ fontFamily: 'Fraunces, serif' }}>
+                    {current?.title || 'Bedtime Story'}
+                  </h1>
+                  <p className="mt-1 text-xs text-ink-muted" style={{ fontFamily: 'Nunito, sans-serif' }}>
+                    For {profile?.childName}{current?.estimatedMinutes ? ` · ${current.estimatedMinutes} min` : ''}
+                  </p>
               {current?.cast?.length > 0 && (
                 <p className="mt-0.5 text-[10px] text-gold/70">{current.cast.join(' · ')}</p>
               )}
@@ -763,6 +758,8 @@ function PlayerInner() {
                   </button>
                 ) : null;
               })()}
+                </>
+              )}
             </div>
 
             {/* Story text — always visible, scrolls in sync */}
