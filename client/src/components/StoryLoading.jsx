@@ -147,23 +147,23 @@ function VolumeControl() {
   const [muted, setMuted] = useState(false);
   const [hasAudio, setHasAudio] = useState(false);
 
-  // Find any playing audio elements (radio, etc.)
+  // Find any playing audio elements (radio, etc.) and sync volume
   useEffect(() => {
     const check = () => {
       const audios = document.querySelectorAll('audio');
+      let found = false;
       for (const a of audios) {
         if (a.src && !a.paused) {
           setVol(a.volume);
           setMuted(a.volume === 0);
-          setHasAudio(true);
-          return;
+          found = true;
+          break;
         }
       }
-      // Check if radio context has a playing stream
-      setHasAudio(audios.length > 0);
+      setHasAudio(found);
     };
     check();
-    const t = setInterval(check, 1000);
+    const t = setInterval(check, 500);
     return () => clearInterval(t);
   }, []);
 
@@ -186,11 +186,13 @@ function VolumeControl() {
     });
   };
 
+  if (!hasAudio) return null;
+
   return (
     <motion.div
       initial={{ opacity: 0, y: 10 }}
       animate={{ opacity: 1, y: 0 }}
-      transition={{ delay: 1.5 }}
+      transition={{ delay: 0.5 }}
       className="mt-6 flex items-center gap-3 rounded-2xl bg-white/5 px-4 py-3 backdrop-blur-sm ring-1 ring-white/10"
       style={{ width: '240px' }}
     >
