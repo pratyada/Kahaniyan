@@ -3555,6 +3555,7 @@ function SeriesPanel() {
   }, []);
 
   const API_BASE = import.meta.env.VITE_API_BASE_URL || '';
+  const [editingEpisode, setEditingEpisode] = useState(null);
 
   const allEpisodes = SERIES_DATA.flatMap(s => s.episodes.map(ep => ({
     ...ep, seriesId: s.id, seriesTitle: s.title, seriesIcon: s.icon,
@@ -3824,6 +3825,34 @@ function SeriesPanel() {
                     {status[ep.id] && <div className="text-[9px] text-[#f0a500] mt-1">{status[ep.id]}</div>}
                   </div>
                 </div>
+                {/* Inline edit — title + body */}
+                {editingEpisode === ep.id && (
+                  <div className="mt-2 space-y-2 rounded-lg bg-[#0f0f17] p-3 ring-1 ring-[#f0a500]/20">
+                    <input defaultValue={ep.title} id={`ep-edit-title-${ep.id}`}
+                      className="w-full rounded-lg bg-[#1a1a28] px-3 py-2 text-xs font-bold text-[#f5f0e8] outline-none ring-1 ring-white/10" placeholder="Title" />
+                    <textarea defaultValue={ep.body} id={`ep-edit-body-${ep.id}`} rows={10}
+                      className="w-full rounded-lg bg-[#1a1a28] px-3 py-2 text-[10px] text-[#a8a39a] leading-relaxed outline-none ring-1 ring-white/10 resize-y" />
+                    <div className="flex gap-2">
+                      <button onClick={async () => {
+                        const newTitle = document.getElementById(`ep-edit-title-${ep.id}`).value;
+                        const newBody = document.getElementById(`ep-edit-body-${ep.id}`).value;
+                        try {
+                          const { doc: fdoc, setDoc: fset } = await import('firebase/firestore');
+                          await fset(fdoc(db, 'config', 'pendingEdits'), {
+                            [ep.id]: { title: newTitle, body: newBody },
+                          }, { merge: true });
+                          setStatus(s => ({ ...s, [ep.id]: '✅ Edit queued — run: node scripts/apply-story-edits.mjs' }));
+                          setEditingEpisode(null);
+                        } catch (e) { setStatus(s => ({ ...s, [ep.id]: '❌ ' + e.message })); }
+                      }} className="rounded-lg bg-[#7ad9a1]/10 px-4 py-1.5 text-[10px] font-bold text-[#7ad9a1]">
+                        💾 Save & Queue Deploy
+                      </button>
+                      <button onClick={() => setEditingEpisode(null)} className="rounded-lg bg-white/5 px-4 py-1.5 text-[10px] font-bold text-[#6e6a63]">
+                        Cancel
+                      </button>
+                    </div>
+                  </div>
+                )}
                 {/* Audio preview */}
                 {urls[ep.id] && <audio controls preload="none" src={urls[ep.id]} className="w-full h-8 mt-2" style={{ filter: 'invert(1) hue-rotate(180deg)', opacity: 0.7 }} />}
                 {/* Actions */}
@@ -3839,6 +3868,10 @@ function SeriesPanel() {
                   <button onClick={() => generateImage(ep)} disabled={!!generating}
                     className="rounded-lg bg-[#539df5]/10 px-3 py-1.5 text-[10px] font-bold text-[#539df5] disabled:opacity-30">
                     {generating === ep.id + '_img' ? '...' : '🖼️ AI Image'}
+                  </button>
+                  <button onClick={() => setEditingEpisode(editingEpisode === ep.id ? null : ep.id)}
+                    className="rounded-lg bg-[#f0a500]/10 px-3 py-1.5 text-[10px] font-bold text-[#f0a500]">
+                    {editingEpisode === ep.id ? '✕ Close' : '✏️ Edit Text'}
                   </button>
                   <label className="rounded-lg bg-[#e8b4ff]/10 px-3 py-1.5 text-[10px] font-bold text-[#e8b4ff] cursor-pointer hover:bg-[#e8b4ff]/20">
                     📤 Upload ({(galleryUrls[ep.id] || []).length})
