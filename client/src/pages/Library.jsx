@@ -7,7 +7,9 @@ import { useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Feather, Headphones, Plus, Trash2, Image as ImageIcon } from 'lucide-react';
 import PageTransition from '../components/PageTransition.jsx';
+import { Share2, Play, Trash2 as TrashIcon } from 'lucide-react';
 import WhisperBox, { saveRecentWhisper } from '../components/WhisperBox.jsx';
+import { getLibrary, removeFromLibrary } from '../utils/storyCache.js';
 import LengthStrip from '../components/LengthStrip.jsx';
 import ValuePill from '../components/ValuePill.jsx';
 import UpgradeModal from '../components/UpgradeModal.jsx';
@@ -101,6 +103,61 @@ export default function Library() {
       navigate('/creation');
       setTimeout(() => setStoryError(e.message || 'Could not generate story. Please try again.'), 100);
     });
+  };
+
+  // AI-generated stories from library
+  const [generatedStories, setGeneratedStories] = useState(() => getLibrary());
+
+  // Refresh generated stories when tab switches to listen
+  useEffect(() => {
+    if (tab === 'listen') setGeneratedStories(getLibrary());
+  }, [tab]);
+
+  const shareStory = async (story) => {
+    // Save story to Firestore so anyone with the link can listen (no login)
+    try {
+      const { db: fireDb } = await import('../lib/firebase.js');
+      if (fireDb) {
+        const { doc: fdoc, setDoc: fset } = await import('firebase/firestore');
+        await fset(fdoc(fireDb, 'sharedStories', story.id), {
+          title: story.title,
+          text: story.text,
+          wordCount: story.wordCount,
+          estimatedMinutes: story.estimatedMinutes,
+          value: story.value,
+          language: story.language || 'English',
+          voice: story.voice || 'AI Narrator',
+          tradition: story.tradition,
+          coverImage: story.coverImage || null,
+          audioUrl: story.audioUrl || null,
+          createdAt: story.createdAt,
+          sharedAt: new Date().toISOString(),
+          sharedBy: user?.uid || 'anonymous',
+        }, { merge: true });
+      }
+    } catch (e) { console.warn('Could not save shared story:', e); }
+
+    const shareUrl = `https://mysleepytale.com/player?storyId=${story.id}`;
+    const text = `Listen to "${story.title}" — a personalized bedtime story on My Sleepy Tale!`;
+    if (navigator.share) {
+      try { await navigator.share({ title: story.title, text, url: shareUrl }); localStorage.setItem('mst:hasShared', '1'); } catch {}
+    } else {
+      await navigator.clipboard.writeText(shareUrl);
+      setToast('Link copied!');
+      localStorage.setItem('mst:hasShared', '1');
+      setTimeout(() => setToast(null), 2000);
+    }
+  };
+
+  const playStory = (story) => {
+    load(story);
+    navigate('/player');
+  };
+
+  const deleteGenerated = (storyId) => {
+    if (!confirm('Remove this story?')) return;
+    removeFromLibrary(storyId);
+    setGeneratedStories(getLibrary());
   };
 
   // Creator state
@@ -613,15 +670,68 @@ export default function Library() {
       {/* ═══ MY CREATIONS TAB ═══ */}
       {tab === 'listen' && (
         <>
-          {!user ? (
-            <div className="mt-12 text-center">
-              <div className="text-5xl mb-4">🔒</div>
-              <p className="text-lg font-bold text-ink" style={{ fontFamily: 'Fraunces, serif' }}>Sign in to see your creations</p>
-              <p className="mt-2 text-sm text-ink-muted">Your submitted stories will appear here.</p>
-              <button onClick={() => navigate('/login')} className="mt-4 rounded-2xl bg-gold px-6 py-3 text-sm font-bold text-bg-base">
-                Sign In
-              </button>
+          {/* AI-Generated Stories — visible to everyone (stored locally) */}
+          {generatedStories.length > 0 && (
+            <div className="mb-6">
+              <h3 className="text-sm font-bold text-ink mb-3" style={{ fontFamily: 'Fraunces, serif' }}>
+                🌙 Your Generated Stories
+              </h3>
+              <div className="space-y-2">
+                {generatedStories.map((story) => (
+                  <div key={story.id} className="rounded-xl bg-bg-surface p-3 ring-1 ring-white/5">
+                    <div className="flex items-start gap-3">
+                      {story.coverImage ? (
+                        <img src={story.coverImage} alt="" className="h-12 w-12 shrink-0 rounded-lg object-cover" />
+                      ) : (
+                        <div className="grid h-12 w-12 shrink-0 place-items-center rounded-lg bg-gold/10 text-lg">🌙</div>
+                      )}
+                      <div className="min-w-0 flex-1">
+                        <h4 className="text-xs font-bold text-ink truncate">{story.title}</h4>
+                        <p className="text-[10px] text-ink-muted mt-0.5">
+                          {story.estimatedMinutes} min · {story.value} · {new Date(story.createdAt).toLocaleDateString()}
+                        </p>
+                      </div>
+                      <span className="shrink-0 rounded-full px-2 py-0.5 text-[9px] font-bold bg-green-500/10 text-green-400">generated</span>
+                    </div>
+                    <div className="mt-2 flex items-center gap-2">
+                      <button onClick={() => playStory(story)}
+                        className="flex items-center gap-1 rounded-lg bg-gold/10 px-3 py-1.5 text-[10px] font-bold text-gold">
+                        <Play size={12} /> Play
+                      </button>
+                      <button onClick={() => shareStory(story)}
+                        className="flex items-center gap-1 rounded-lg bg-blue-500/10 px-3 py-1.5 text-[10px] font-bold text-blue-400">
+                        <Share2 size={12} /> Share
+                      </button>
+                      <button onClick={() => deleteGenerated(story.id)}
+                        className="ml-auto rounded-lg px-2 py-1.5 text-[10px] text-ink-dim hover:text-red-400">
+                        <TrashIcon size={12} />
+                      </button>
+                    </div>
+                  </div>
+                ))}
+              </div>
             </div>
+          )}
+
+          {generatedStories.length === 0 && !user && (
+            <div className="mb-6 rounded-xl bg-bg-surface p-5 text-center ring-1 ring-white/5">
+              <div className="text-3xl mb-2">🌙</div>
+              <p className="text-sm text-ink-muted">Generate your first story from the Create tab!</p>
+            </div>
+          )}
+
+          {/* Creator-submitted content */}
+          {!user ? (
+            generatedStories.length === 0 && (
+              <div className="mt-12 text-center">
+                <div className="text-5xl mb-4">🔒</div>
+                <p className="text-lg font-bold text-ink" style={{ fontFamily: 'Fraunces, serif' }}>Sign in to see your creations</p>
+                <p className="mt-2 text-sm text-ink-muted">Your submitted stories will appear here.</p>
+                <button onClick={() => navigate('/login')} className="mt-4 rounded-2xl bg-gold px-6 py-3 text-sm font-bold text-bg-base">
+                  Sign In
+                </button>
+              </div>
+            )
           ) : (
             <div className="space-y-3">
               {/* Built-in series — show to creator who owns them, or founder sees all */}
