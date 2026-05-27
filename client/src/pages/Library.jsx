@@ -84,7 +84,11 @@ export default function Library() {
     clear();
     navigate('/player');
     const raagNidra = RADIO_STATIONS.find(s => s.id === 'raag-nidra') || RADIO_STATIONS[0];
-    try { radio.play(raagNidra); } catch {}
+    try {
+      radio.play(raagNidra);
+      // Set background music to 40% — light, not distracting
+      setTimeout(() => { document.querySelectorAll('audio').forEach(a => { if (a.src && !a.paused) a.volume = 0.4; }); }, 500);
+    } catch {}
     if (whisper.trim()) saveRecentWhisper(whisper.trim());
     generate({
       profile, value: genValue, duration: genDuration,

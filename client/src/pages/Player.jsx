@@ -762,7 +762,7 @@ function PlayerInner() {
               <motion.div
                 initial={{ opacity: 0, y: 5 }}
                 animate={{ opacity: 1, y: 0 }}
-                className="mb-2 flex items-center justify-center gap-2 rounded-xl bg-gold/10 px-4 py-2 ring-1 ring-gold/20"
+                className="mt-6 mb-4 flex items-center justify-center gap-2 rounded-xl bg-gold/10 px-4 py-2.5 ring-1 ring-gold/20"
               >
                 <span className="inline-block h-3 w-3 animate-spin rounded-full border-2 border-gold border-t-transparent" />
                 <span className="text-[11px] font-bold text-gold">Preparing voice… read the story while you wait</span>
