@@ -169,6 +169,31 @@
 - **Cause**: index.html cached by CloudFront despite invalidation. Old JS bundle hash persists.
 - **Fix**: Set cache-control to no-cache,no-store,must-revalidate on index.html. Full `/*` invalidation after deploy.
 
+### ISS-031: Story generation 503 — Lambda Firestore calls hang without credentials
+- **Status**: FIXED (2026-05-27)
+- **Severity**: Critical — story generation completely broken for all users
+- **Duration**: ~6 hours to diagnose and fix
+- **Symptoms**: API returns 503 (Service Unavailable). Lambda logs show 38-44 second durations exceeding API Gateway's 30s hard limit.
+- **Root cause chain** (3 layered issues):
+  1. **Lambda had no `FIREBASE_SERVICE_ACCOUNT` env var** — the value was empty `""` in `.env.prod`. It was never configured because the app uses client-side Firebase SDK, not Firebase Admin.
+  2. **Firebase Admin initialized anyway** — `generate-story.js` called `initializeApp()` without credentials and then `getFirestore()`. This created a Firestore client that tried to auto-detect Google Cloud credentials (which don't exist in Lambda).
+  3. **Two Firestore calls hung for 10-15 seconds each** — `getRole(uid)` and `enforceUsage()` both called Firestore. Each one waited 10-15 seconds trying to load non-existent Google Cloud default credentials, then threw "Could not load the default credentials" error. Combined: 25-30 seconds wasted.
+  4. **Haiku model (12s) + wasted Firestore time (25-30s) = 37-44 seconds** — exceeded API Gateway's 30s hard limit → 503.
+- **Why it was hard to diagnose**:
+  - The API worked from CLI (`curl`) when Lambda was warm and fast, but failed from browser when Lambda was cold or had stale instances.
+  - The model change from Sonnet to Haiku worked locally but Lambda kept running old code in cached execution environments.
+  - `update-function-code` uploads new code but doesn't kill existing Lambda containers — old containers keep serving old code until they naturally expire.
+  - The Firestore errors were non-fatal (`catch` blocks swallowed them), so the story still generated — just too slowly.
+- **Fix** (3 parts):
+  1. **Skip Firestore if no credentials** — `generate-story.js` now checks `FIREBASE_SERVICE_ACCOUNT` before initializing Firebase Admin. Empty = skip entirely (saves 25-30 seconds).
+  2. **Switch model to Haiku** — `claude-haiku-4-5-20251001` generates in 12s vs Sonnet's 26s.
+  3. **Force Lambda restart** — `aws lambda update-function-configuration --description "..."` forces all containers to restart with new code.
+- **Prevention**:
+  - Pre-deploy check now verifies Lambda env vars include required API keys.
+  - Pre-deploy check tests `/api/health` endpoint.
+  - ISSUES.md documents that `FIREBASE_SERVICE_ACCOUNT` is empty and Firestore calls must be guarded.
+- **Lesson**: Never call a service without first checking if its credentials exist. A `try/catch` that swallows a 15-second timeout is worse than a crash — it silently makes everything slow.
+
 ---
 
 ## Open Issues

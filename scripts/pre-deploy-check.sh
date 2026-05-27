@@ -166,7 +166,24 @@ else
   echo "  ⚠️  dist/index.html not found (build may not have run)"
 fi
 
-# ── 5. Story generation API health (non-blocking) ──
+# ── 5. Lambda env vars check (ISS-031) ──
+echo "  🔑 Checking Lambda env vars..."
+LAMBDA_KEYS=$(aws lambda get-function-configuration --function-name mysleepytale-api --region us-east-1 --query 'Environment.Variables' --output json 2>/dev/null || echo "{}")
+for KEY in ANTHROPIC_API_KEY OPENAI_API_KEY ELEVENLABS_API_KEY; do
+  HAS_KEY=$(echo "$LAMBDA_KEYS" | grep -c "\"$KEY\"" || true)
+  if [ "$HAS_KEY" = "0" ]; then
+    echo "  ❌ Lambda missing $KEY"
+    FAIL=1
+  fi
+done
+# Check generate-story.js guards Firestore calls (ISS-031 prevention)
+if grep -q "initializeApp(" api/generate-story.js && ! grep -q "serviceAccount)" api/generate-story.js; then
+  echo "  ❌ generate-story.js initializes Firebase without checking credentials (ISS-031)"
+  FAIL=1
+fi
+echo "  Lambda env vars: OK"
+
+# ── 6. Story generation API health (non-blocking) ──
 echo "  🌐 API health check (non-blocking)..."
 API_STATUS=$(curl -s -o /dev/null -w "%{http_code}" --max-time 5 "https://mysleepytale.com/api/health" 2>/dev/null || echo "timeout")
 if [ "$API_STATUS" = "200" ]; then
