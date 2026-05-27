@@ -289,6 +289,14 @@ function PlayerInner() {
     startedRef.current = false;
   }
 
+  // Timeout: if no story after 35s, show error
+  const [waitTimeout, setWaitTimeout] = useState(false);
+  useEffect(() => {
+    if (current) return;
+    const t = setTimeout(() => setWaitTimeout(true), 35000);
+    return () => clearTimeout(t);
+  }, [current]);
+
   // Auto-play when current story is available
   useEffect(() => {
     if (!current) {
@@ -600,6 +608,38 @@ function PlayerInner() {
   const lessonKey = current?.id?.startsWith('lesson_') ? current.id.slice(7) : '';
   const storyArtData = current?.id ? getStoryArt(lessonKey) : null;
   const bgImage = current?.coverImage || wisdomImageUrls[lessonKey] || storyArtData?.image || null;
+
+  // Show generating screen while waiting for story
+  if (!current) {
+    return (
+      <div className="absolute inset-0 z-40 flex flex-col items-center justify-center bg-bg-base px-8 text-center">
+        <div className="aurora" />
+        <div className="starfield" />
+        <div className="relative z-10 flex flex-col items-center">
+          {waitTimeout ? (
+            <>
+              <div className="text-5xl mb-4">😔</div>
+              <h2 className="font-display text-xl font-bold text-gold">Story took too long</h2>
+              <p className="mt-2 text-sm text-ink-muted">The server might be busy. Please try again.</p>
+              <button onClick={() => navigate(-1)} className="btn-primary mt-6 px-8 py-3">Go Back</button>
+            </>
+          ) : (
+            <>
+              <div className="mb-6 inline-block h-12 w-12 animate-spin rounded-full border-3 border-gold/30 border-t-gold" />
+              <h2 className="font-display text-xl font-bold text-gold">Creating your story...</h2>
+              <p className="mt-2 text-sm text-ink-muted max-w-xs">
+                Writing a personalized bedtime story just for {profile?.childName || 'you'}. This takes about 20 seconds.
+              </p>
+              <div className="mt-6 flex items-center gap-2 text-[11px] text-ink-dim">
+                <span className="w-2 h-2 rounded-full bg-gold animate-pulse" />
+                Weaving magic...
+              </div>
+            </>
+          )}
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="absolute inset-0 z-40 overflow-hidden bg-bg-base" style={{ touchAction: 'pan-y' }}>

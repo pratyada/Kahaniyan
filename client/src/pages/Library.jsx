@@ -89,11 +89,17 @@ export default function Library() {
       language: profile.language || 'English', voice: profile.defaultVoice || 'AI Narrator',
       whisper, whisperOverridesValue, selectedCharacters: selectedCharIds.length > 0 ? selectedCharacters : undefined,
     }).then((story) => {
+      console.log('[Creation] Story generated:', story?.title);
       trackStoryGenerated('creation', genValue, genDuration);
-      radio.stop(); load(story);
+      radio.stop();
+      load(story);
       try { navigator.vibrate?.([200, 100, 200]); } catch {}
     }).catch((e) => {
-      radio.stop(); setStoryError(e.message || 'Could not generate story.'); navigate('/creation');
+      console.error('[Creation] Story generation FAILED:', e);
+      radio.stop();
+      // Navigate back and show the error — don't silently fail
+      navigate('/creation');
+      setTimeout(() => setStoryError(e.message || 'Could not generate story. Please try again.'), 100);
     });
   };
 
