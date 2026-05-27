@@ -673,9 +673,10 @@ export default function Library() {
           {/* AI-Generated Stories — visible to everyone (stored locally) */}
           {generatedStories.length > 0 && (
             <div className="mb-6">
-              <h3 className="text-sm font-bold text-ink mb-3" style={{ fontFamily: 'Fraunces, serif' }}>
-                🌙 Your Generated Stories
+              <h3 className="text-sm font-bold text-ink mb-1" style={{ fontFamily: 'Fraunces, serif' }}>
+                🌙 Tonight's Stories
               </h3>
+              <p className="text-[10px] text-ink-dim mb-3">AI-generated bedtime stories for your child — share with family & friends via link</p>
               <div className="space-y-2">
                 {generatedStories.map((story) => (
                   <div key={story.id} className="rounded-xl bg-bg-surface p-3 ring-1 ring-white/5">
@@ -691,7 +692,7 @@ export default function Library() {
                           {story.estimatedMinutes} min · {story.value} · {new Date(story.createdAt).toLocaleDateString()}
                         </p>
                       </div>
-                      <span className="shrink-0 rounded-full px-2 py-0.5 text-[9px] font-bold bg-green-500/10 text-green-400">generated</span>
+                      <span className="shrink-0 rounded-full px-2 py-0.5 text-[9px] font-bold bg-purple-500/10 text-purple-400">personal</span>
                     </div>
                     <div className="mt-2 flex items-center gap-2">
                       <button onClick={() => playStory(story)}
@@ -734,6 +735,15 @@ export default function Library() {
             )
           ) : (
             <div className="space-y-3">
+              {/* Published community stories */}
+              {(SERIES.some(s => s.createdBy === user?.email) || myStories.length > 0 || mySeries.length > 0) && (
+                <div className="mb-2">
+                  <h3 className="text-sm font-bold text-ink mb-1" style={{ fontFamily: 'Fraunces, serif' }}>
+                    📚 Published for Community
+                  </h3>
+                  <p className="text-[10px] text-ink-dim">Stories & series you wrote — available to all listeners worldwide</p>
+                </div>
+              )}
               {/* Built-in series — show to creator who owns them, or founder sees all */}
               {SERIES.filter(s => !s.comingSoon && (s.createdBy === user?.email || (!s.createdBy && user?.email === FOUNDER.email))).map((series) => (
                 <div key={series.id} className="rounded-xl bg-bg-surface p-4 ring-1 ring-white/5">
