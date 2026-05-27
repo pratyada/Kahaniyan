@@ -277,6 +277,74 @@
 
 ---
 
+### ISS-032: Whisper prompt ignored — story about kindness instead of Eid
+- **Status**: FIXED (2026-05-27)
+- **Severity**: High — parent's prompt was secondary to the auto-picked value
+- **Cause**: Claude prompt said "make a kindness story that gently addresses the whisper". Claude prioritized kindness over the whisper topic.
+- **Fix**: Whisper is now #1 priority in the prompt: "THIS IS THE MOST IMPORTANT PART — the parent told you exactly what tonight's story should be about."
+- **Prevention**: Tested with "Eid" whisper → story is now about Eid with kindness as secondary theme.
+
+### ISS-033: Pet type not passed to story generator — Mowgli the dog gets "meow"
+- **Status**: FIXED (2026-05-27)
+- **Severity**: Medium — pets described with wrong animal behavior
+- **Cause**: `petType` field not included in character description sent to Claude. Claude guessed the animal type from the name "Mowgli".
+- **Fix**: Added `if (c.petType) desc += ', animal type: ${c.petType}'` to cast description builder.
+
+### ISS-034: Friend gender not saved on character edit — Charlie/Aryan showing as "she"
+- **Status**: FIXED (2026-05-27)
+- **Severity**: High — edited characters had wrong pronouns in stories
+- **Cause**: Edit path still had `relation.replace('-boy', '').replace('-girl', '')` from old code. Stripped friend-boy → friend (no gender). Also no auto-gender detection on edit (only on new).
+- **Fix**: Removed normalization on edit path. Added same auto-gender detection as new character path.
+- **Note**: Same bug fixed TWICE — first in new character path (ISS-026), then in edit path.
+
+### ISS-035: Volume slider stuck at 70% during story generation
+- **Status**: FIXED (2026-05-27)
+- **Severity**: Low — cosmetic, non-functional slider shown during loading
+- **Cause**: `VolumeControl` component initialized `useState(0.7)`. No audio element existed during generation so it stayed at initial value.
+- **Fix**: Volume control hidden when no audio is playing. Only appears when radio background music is active.
+
+### ISS-036: "Preparing voice" overlay blocks story text
+- **Status**: FIXED (2026-05-27)
+- **Severity**: Medium — user can't read story while audio loads
+- **Cause**: Phase 2 overlay had `blur(4px)` + semi-transparent background covering the entire screen including story text.
+- **Fix**: Removed Phase 2 overlay entirely. Story text visible immediately when it arrives. Small "Preparing voice… read the story while you wait" gold bar shown above progress bar instead.
+
+### ISS-037: Generated stories not visible in Admin — only shows after Share
+- **Status**: FIXED (2026-05-27)
+- **Severity**: High — admin blind to user activity
+- **Cause**: Stories only saved to Firestore `sharedStories` when user tapped Share button. Auto-generated stories stayed in localStorage only.
+- **Fix**: `useStoryGenerator.js` now auto-saves every generated story to `sharedStories` collection with user email, child name, and whisper prompt.
+
+### ISS-038: Firestore security rules block new collection writes
+- **Status**: FIXED (2026-05-27)
+- **Severity**: High — `generatedStories` collection had no write rules
+- **Cause**: Created new `generatedStories` collection but Firestore rules don't allow writes to unknown collections.
+- **Fix**: Switched to existing `sharedStories` collection which already has write permissions.
+- **Lesson**: Always use existing collections with known permissions, or update Firestore rules FIRST.
+
+### ISS-039: React hooks error #310 on shared story links
+- **Status**: FIXED (2026-05-27)
+- **Severity**: Critical — shared links crash with white screen
+- **Cause**: `useState` for `voiceStep` was placed AFTER early returns for loading/failed states in `SharedStoryGate`. When status changed from 'loading' → 'ready', React saw more hooks on second render.
+- **Fix**: Moved all `useState` calls BEFORE any conditional returns.
+- **Rule**: React hooks must ALWAYS run in the same order, every render. No hooks after early returns.
+- **Prevention**: Added to deployment checklist — test shared links in incognito.
+
+### ISS-040: Admin User Stories tab shows blank black screen
+- **Status**: FIXED (2026-05-27)
+- **Severity**: High — entire admin tab unusable
+- **Cause**: `useMemo` used in `UserStoriesAdmin` component but not imported.
+- **Fix**: Added `useMemo` to React import.
+- **Prevention**: Pre-deploy build check catches these (Vite fails on undefined variables in production builds... but useMemo was tree-shaken differently).
+
+### ISS-041: Old stories show as "Claude" instead of user email
+- **Status**: FIXED (2026-05-27)
+- **Severity**: Low — cosmetic, only affects pre-fix stories
+- **Cause**: Stories generated before auto-save code had `generatedBy: 'claude'` (the AI model name) instead of user info.
+- **Fix**: Admin enriches stories by looking up uid in users collection. Added one-click "Fix orphaned stories" button in admin. New stories auto-save with full user info.
+
+---
+
 ## Deployment Checklist
 
 - [ ] `bash deploy.sh` passes (build + S3 + Lambda + CloudFront invalidation)
@@ -294,5 +362,11 @@
 
 ---
 
-*Last updated: 2026-05-27*
+- [ ] Test shared story link in incognito: `/player?storyId=...` (ISS-039)
+- [ ] Test story generation with whisper prompt (ISS-032)
+- [ ] Admin User Stories tab loads and shows users (ISS-040)
+
+---
+
+*Last updated: 2026-05-27 (41 issues tracked)*
 *Auto-maintained by Claude during development sessions*
