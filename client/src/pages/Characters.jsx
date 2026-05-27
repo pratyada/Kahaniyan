@@ -79,7 +79,7 @@ export default function Characters() {
       const newChar = {
         id: `char_${Date.now()}_${Math.random().toString(36).slice(2, 6)}`,
         name: draft.name.trim(),
-        relation: draft.relation.replace('-boy', '').replace('-girl', ''), // normalize: friend-boy → friend
+        relation: draft.relation, // keep original relation (friend-boy, friend-girl, etc.)
         gender: autoGender,
         emoji: draft.emoji || RELATION_EMOJI[draft.relation] || '✨',
         traits: (draft.tags || []).join(', '),
@@ -146,7 +146,7 @@ export default function Characters() {
       <div className="page-scroll px-5 pt-10 pb-28 safe-top">
         <header className="mb-6">
           <button
-            onClick={() => navigate('/settings')}
+            onClick={() => navigate(-1)}
             className="mb-3 inline-flex items-center gap-1 text-[11px] font-bold uppercase tracking-wider text-ink-muted hover:text-ink"
           >
             ← Back

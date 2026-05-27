@@ -39,7 +39,7 @@ export default function BottomSheet({ open, onClose, children, className = '' })
               <div className="h-1 w-10 rounded-full bg-white/20" />
             </div>
             {/* Content */}
-            <div className="overflow-y-auto px-5 pb-24 safe-bottom" style={{ maxHeight: 'calc(85vh - 2rem)' }}>
+            <div className="overflow-y-auto px-5 pb-24 safe-bottom" style={{ maxHeight: 'calc(85vh - 2rem)', scrollbarGutter: 'stable' }}>
               {children}
             </div>
           </motion.div>
