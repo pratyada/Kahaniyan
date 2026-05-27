@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Volume2, VolumeX } from 'lucide-react';
 
@@ -147,15 +147,16 @@ function VolumeControl() {
   const [muted, setMuted] = useState(false);
   const [hasAudio, setHasAudio] = useState(false);
 
-  // Find any playing audio elements (radio, etc.) and sync volume
+  // Find playing audio and sync volume once, then just check if audio exists
+  const initDone = useRef(false);
   useEffect(() => {
     const check = () => {
       const audios = document.querySelectorAll('audio');
       let found = false;
       for (const a of audios) {
         if (a.src && !a.paused) {
-          setVol(a.volume);
-          setMuted(a.volume === 0);
+          // Only read volume on first detection — don't overwrite user's drag
+          if (!initDone.current) { setVol(a.volume); setMuted(a.volume === 0); initDone.current = true; }
           found = true;
           break;
         }
