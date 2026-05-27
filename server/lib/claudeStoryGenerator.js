@@ -179,6 +179,7 @@ export async function generateWithClaude({
       let desc = `${c.name} (${c.relation}`;
       if (c.gender) desc += `, ${c.gender === 'boy' ? 'he/him' : c.gender === 'girl' ? 'she/her' : c.gender}`;
       if (c.nickname) desc += `, ${childName} calls them "${c.nickname}"`;
+      if (c.petType) desc += `, animal type: ${c.petType}`;
       if (c.tags?.length) desc += `, loves: ${c.tags.join(', ')}`;
       else if (c.traits) desc += `, ${c.traits}`;
       return desc + ')';
@@ -274,7 +275,13 @@ Just the story, start to finish.
 Begin immediately — first word of the story, not an introduction to it.`;
 
   const userMessage = whisper
-    ? `Tonight's whisper from the parent: "${whisper}". Create a bedtime story that gently addresses what's on the child's heart, through the lens of ${value}. Make it fun and light — the child should giggle before they sleep.`
+    ? `Tonight's whisper from the parent: "${whisper}".
+
+THIS IS THE MOST IMPORTANT PART — the parent told you exactly what tonight's story should be about. The story MUST directly address this topic. If the parent says "Eid", make the story about Eid. If they say "soccer tournament", make it about a soccer tournament. If they say "scared of the dark", address that fear. The whisper is the #1 priority — it overrides everything else.
+
+The value "${value}" is a secondary theme to weave in naturally, but the TOPIC of the story is the whisper above.
+
+Make it fun, warm, educational where the whisper demands it, and always end with a gentle bedtime wind-down.`
     : `Create a bedtime story about ${value}. Use ${childName}'s name and the family members throughout. Make it magical, giggly, and impossible to fight sleep to.`;
 
   try {
