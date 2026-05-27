@@ -113,10 +113,10 @@ export function useStoryGenerator() {
         // Fire-and-forget: generate a DALL-E cover image in background
         generateCoverImage(story).catch(() => {});
 
-        // Save to Firestore generatedStories so admin can see ALL user stories
+        // Save to Firestore sharedStories so admin can see ALL user stories
         if (db) {
           setDoc(
-            doc(db, 'generatedStories', story.id),
+            doc(db, 'sharedStories', story.id),
             {
               title: story.title,
               text: story.text,

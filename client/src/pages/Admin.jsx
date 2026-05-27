@@ -1661,15 +1661,7 @@ function UserStoriesAdmin() {
     (async () => {
       try {
         const { collection, getDocs, query, orderBy, limit } = await import('firebase/firestore');
-        // Load from both generatedStories (all) and sharedStories (legacy)
-        const [genSnap, shareSnap] = await Promise.all([
-          getDocs(query(collection(db, 'generatedStories'), orderBy('createdAt', 'desc'), limit(200))).catch(() => ({ forEach: () => {} })),
-          getDocs(query(collection(db, 'sharedStories'), orderBy('sharedAt', 'desc'), limit(200))).catch(() => ({ forEach: () => {} })),
-        ]);
-        const merged = new Map();
-        genSnap.forEach(d => merged.set(d.id, { id: d.id, ...d.data() }));
-        shareSnap.forEach(d => { if (!merged.has(d.id)) merged.set(d.id, { id: d.id, ...d.data() }); });
-        const snap = { forEach: (fn) => merged.forEach(fn) };
+        const snap = await getDocs(query(collection(db, 'sharedStories'), orderBy('createdAt', 'desc'), limit(200)));
         const list = [];
         snap.forEach(d => list.push({ id: d.id, ...d.data() }));
         setStories(list);
