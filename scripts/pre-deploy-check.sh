@@ -85,6 +85,48 @@ try {
   console.log('  sitemap.xml: ' + urlCount + ' URLs');
 } catch(e) { errors.push('sitemap.xml read error: ' + e.message); }
 
+// Check imagePrompts.js parses without errors (ISS-028)
+try {
+  require('./client/src/utils/imagePrompts.js');
+  console.log('  imagePrompts.js: parses OK');
+} catch(e) { errors.push('imagePrompts.js PARSE ERROR: ' + e.message); }
+
+// Check series episode count matches totalEpisodes
+try {
+  const { SERIES } = require('./client/src/data/series.js');
+  SERIES.filter(Boolean).forEach(s => {
+    if (s.totalEpisodes && s.episodes && s.episodes.length !== s.totalEpisodes) {
+      errors.push('Series ' + s.id + ': episodes.length (' + s.episodes.length + ') !== totalEpisodes (' + s.totalEpisodes + ')');
+    }
+  });
+  console.log('  series episode counts: verified');
+} catch(e) { /* already checked above */ }
+
+// Check for duplicate IDs across all data files
+try {
+  const { SERIES } = require('./client/src/data/series.js');
+  const { CULTURAL_LESSONS } = require('./client/src/data/culturalLessons.js');
+  const { COLLECTIONS } = require('./client/src/data/collections.js');
+  const allIds = [];
+  SERIES.filter(Boolean).forEach(s => {
+    allIds.push(s.id);
+    if (s.episodes) s.episodes.forEach(ep => allIds.push(ep.id));
+  });
+  CULTURAL_LESSONS.filter(Boolean).forEach(l => allIds.push(l.id));
+  COLLECTIONS.filter(Boolean).forEach(c => {
+    allIds.push(c.id);
+    if (c.stories) c.stories.forEach(s => allIds.push(s.id));
+  });
+  const seen = {};
+  const dupes = [];
+  allIds.forEach(id => {
+    if (seen[id]) dupes.push(id);
+    seen[id] = true;
+  });
+  if (dupes.length > 0) errors.push('Duplicate IDs found: ' + dupes.join(', '));
+  else console.log('  unique IDs: ' + allIds.length + ' IDs, no duplicates');
+} catch(e) { errors.push('Duplicate ID check failed: ' + e.message); }
+
 // Report
 if (errors.length > 0) {
   console.error('');
@@ -97,6 +139,45 @@ if (errors.length > 0) {
 " 2>&1
 
 if [ $? -ne 0 ]; then
+  echo ""
+  echo "🚫 DEPLOY BLOCKED — fix errors above before deploying"
+  exit 1
+fi
+
+# ── 3. Unescaped apostrophes in imagePrompts.js (ISS-028) ──
+echo "  🔤 Checking for unescaped apostrophes in imagePrompts.js..."
+APOSTROPHE_HITS=$(grep -n "': '.*[^\\\\]'[a-z]" client/src/utils/imagePrompts.js 2>/dev/null || true)
+if [ -n "$APOSTROPHE_HITS" ]; then
+  echo "  ❌ Unescaped apostrophes found in imagePrompts.js:"
+  echo "$APOSTROPHE_HITS"
+  FAIL=1
+fi
+
+# ── 4. CloudFront bundle hash check ──
+echo "  🔗 Checking bundle hash in build output..."
+if [ -f client/dist/index.html ]; then
+  BUNDLE_HASH=$(grep -o 'index-[a-zA-Z0-9]*\.js' client/dist/index.html || true)
+  if [ -n "$BUNDLE_HASH" ]; then
+    echo "  Bundle: $BUNDLE_HASH"
+  else
+    echo "  ⚠️  No bundle hash found in dist/index.html — check Vite output"
+  fi
+else
+  echo "  ⚠️  dist/index.html not found (build may not have run)"
+fi
+
+# ── 5. Story generation API health (non-blocking) ──
+echo "  🌐 API health check (non-blocking)..."
+API_STATUS=$(curl -s -o /dev/null -w "%{http_code}" --max-time 5 "https://mysleepytale.com/api/health" 2>/dev/null || echo "timeout")
+if [ "$API_STATUS" = "200" ]; then
+  echo "  API: healthy (200)"
+elif [ "$API_STATUS" = "timeout" ]; then
+  echo "  ⚠️  API health check timed out (non-blocking, continuing)"
+else
+  echo "  ⚠️  API returned $API_STATUS (non-blocking, continuing)"
+fi
+
+if [ $FAIL -ne 0 ]; then
   echo ""
   echo "🚫 DEPLOY BLOCKED — fix errors above before deploying"
   exit 1
