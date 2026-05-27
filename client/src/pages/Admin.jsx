@@ -1756,6 +1756,21 @@ function UserStoriesAdmin() {
     } catch (e) { alert('Delete failed: ' + e.message); }
   };
 
+  // Group stories by user
+  const userGroups = useMemo(() => {
+    const groups = {};
+    stories.forEach(s => {
+      const key = s.generatedByEmail || s.generatedBy || s.sharedBy || 'anonymous';
+      if (!groups[key]) groups[key] = { email: s.generatedByEmail || key, name: s.generatedByName || s.childName || '', stories: [] };
+      if (s.generatedByName && !groups[key].name) groups[key].name = s.generatedByName;
+      if (s.childName && !groups[key].childName) groups[key].childName = s.childName;
+      groups[key].stories.push(s);
+    });
+    return Object.values(groups).sort((a, b) => b.stories.length - a.stories.length);
+  }, [stories]);
+
+  const [expandedUser, setExpandedUser] = useState(null);
+
   if (loading) return <div className="text-center py-12 text-[#6e6a63]">Loading user stories...</div>;
 
   return (
@@ -1764,7 +1779,11 @@ function UserStoriesAdmin() {
       <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
         <div className="rounded-xl bg-[#1a1a28] p-4 ring-1 ring-white/5">
           <div className="text-2xl font-bold text-[#f5f0e8]">{stories.length}</div>
-          <div className="text-[10px] font-bold uppercase tracking-wider text-[#6e6a63]">User Stories</div>
+          <div className="text-[10px] font-bold uppercase tracking-wider text-[#6e6a63]">Total Stories</div>
+        </div>
+        <div className="rounded-xl bg-[#1a1a28] p-4 ring-1 ring-white/5">
+          <div className="text-2xl font-bold text-[#f0a500]">{userGroups.length}</div>
+          <div className="text-[10px] font-bold uppercase tracking-wider text-[#6e6a63]">Users</div>
         </div>
         <div className="rounded-xl bg-[#1a1a28] p-4 ring-1 ring-white/5">
           <div className="text-2xl font-bold text-[#7ad9a1]">{stories.filter(s => s.audioUrl).length}</div>
@@ -1774,19 +1793,33 @@ function UserStoriesAdmin() {
           <div className="text-2xl font-bold text-[#539df5]">{stories.filter(s => s.coverImage).length}</div>
           <div className="text-[10px] font-bold uppercase tracking-wider text-[#6e6a63]">With Image</div>
         </div>
-        <div className="rounded-xl bg-[#1a1a28] p-4 ring-1 ring-white/5">
-          <div className="text-2xl font-bold text-[#f0a500]">{new Set(stories.map(s => s.sharedBy)).size}</div>
-          <div className="text-[10px] font-bold uppercase tracking-wider text-[#6e6a63]">Unique Users</div>
-        </div>
       </div>
 
-      {stories.length === 0 && (
-        <div className="text-center py-12 text-[#6e6a63]">No user-generated stories shared yet.</div>
-      )}
+      {/* User cards — tap to expand */}
+      {userGroups.map(group => (
+        <div key={group.email} className="rounded-xl bg-[#1a1a28] ring-1 ring-white/5 overflow-hidden">
+          {/* User header */}
+          <button
+            onClick={() => setExpandedUser(expandedUser === group.email ? null : group.email)}
+            className="w-full flex items-center gap-3 p-4 text-left transition hover:bg-white/3"
+          >
+            <div className="grid h-10 w-10 shrink-0 place-items-center rounded-full bg-gold/15 text-lg">
+              {group.name ? group.name[0]?.toUpperCase() : '👤'}
+            </div>
+            <div className="min-w-0 flex-1">
+              <h3 className="text-sm font-bold text-[#f5f0e8]">{group.email}</h3>
+              <p className="text-[10px] text-[#6e6a63]">
+                {group.childName && `Child: ${group.childName} · `}{group.stories.length} stories
+              </p>
+            </div>
+            <span className="text-[#6e6a63] text-sm">{expandedUser === group.email ? '▲' : '▼'}</span>
+          </button>
 
-      {/* Story list */}
-      {stories.map(story => (
-        <div key={story.id} className="rounded-xl bg-[#1a1a28] p-4 ring-1 ring-white/5">
+          {/* Expanded: show all stories for this user */}
+          {expandedUser === group.email && (
+            <div className="border-t border-white/5 p-3 space-y-3">
+              {group.stories.map(story => (
+                <div key={story.id} className="rounded-xl bg-[#0f0f17] p-3 ring-1 ring-white/5">
           <div className="flex items-start gap-3">
             {story.coverImage ? (
               <img src={story.coverImage} alt="" className="h-16 w-16 shrink-0 rounded-lg object-cover" />
@@ -1854,6 +1887,10 @@ function UserStoriesAdmin() {
               🗑️ Delete
             </button>
           </div>
+        </div>
+              ))}
+            </div>
+          )}
         </div>
       ))}
     </div>
