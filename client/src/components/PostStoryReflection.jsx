@@ -106,13 +106,21 @@ export default function PostStoryReflection({ story, onComplete, onDefer }) {
           </motion.div>
         </AnimatePresence>
 
-        {/* Save for morning */}
-        <button
-          onClick={handleDefer}
-          className="mt-8 w-full text-center text-[11px] font-bold text-ink-dim transition hover:text-ink-muted"
-        >
-          😴 Too sleepy? Save for morning
-        </button>
+        {/* Skip + Save for morning */}
+        <div className="mt-6 flex flex-col items-center gap-2">
+          <button
+            onClick={onComplete}
+            className="w-full rounded-xl bg-white/5 py-3 text-center text-xs font-bold text-ink-muted transition hover:bg-white/10"
+          >
+            Skip
+          </button>
+          <button
+            onClick={handleDefer}
+            className="text-[11px] text-ink-dim transition hover:text-ink-muted"
+          >
+            😴 Save for morning
+          </button>
+        </div>
       </motion.div>
     </motion.div>
   );
