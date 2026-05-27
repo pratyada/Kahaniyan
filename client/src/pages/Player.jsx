@@ -551,8 +551,8 @@ function PlayerInner() {
   // Done: audio ready → overlay gone
   const noStoryYet = !current;
   const audioGenerating = current && !ttsReady && !narrator.playing;
-  const showOverlay = noStoryYet || audioGenerating;
-  const overlayPhase = noStoryYet ? 'generating' : audioGenerating ? 'audio' : 'done';
+  const showOverlay = noStoryYet; // only block screen when NO story text yet
+  const overlayPhase = noStoryYet ? 'generating' : 'done';
   const meta = valueMeta(current?.value);
 
   // Stories without text can still play if they have cached audio
@@ -636,27 +636,10 @@ function PlayerInner() {
             className="absolute inset-0 z-50 pointer-events-none"
           >
             <div
-              className="absolute inset-0 flex flex-col items-center justify-center overflow-hidden transition-all duration-1000"
-              style={{
-                backgroundColor: overlayPhase === 'generating'
-                  ? 'rgba(10,10,15,0.70)'   // Phase 1: full overlay
-                  : 'rgba(10,10,15,0.30)',    // Phase 2: light, text readable
-                backdropFilter: overlayPhase === 'generating' ? 'blur(12px)' : 'blur(4px)',
-              }}
+              className="absolute inset-0 flex flex-col items-center justify-center overflow-hidden"
+              style={{ backgroundColor: 'rgba(10,10,15,0.70)', backdropFilter: 'blur(12px)' }}
             >
-              {overlayPhase === 'generating' ? (
-                <StoryLoading />
-              ) : (
-                /* Phase 2: light hint that audio is loading */
-                <motion.div
-                  initial={{ opacity: 0, y: 10 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  className="flex items-center gap-3 rounded-2xl bg-bg-base/80 px-5 py-3 shadow-lift backdrop-blur-xl"
-                >
-                  <span className="inline-block h-4 w-4 animate-spin rounded-full border-2 border-gold border-t-transparent" />
-                  <span className="text-xs font-bold text-gold">Preparing voice...</span>
-                </motion.div>
-              )}
+              <StoryLoading />
             </div>
           </motion.div>
         )}
@@ -773,6 +756,18 @@ function PlayerInner() {
 
             {/* Spacer */}
             <div className="flex-1" />
+
+            {/* Preparing voice indicator — shown when text is ready but audio still loading */}
+            {audioGenerating && (
+              <motion.div
+                initial={{ opacity: 0, y: 5 }}
+                animate={{ opacity: 1, y: 0 }}
+                className="mb-2 flex items-center justify-center gap-2 rounded-xl bg-gold/10 px-4 py-2 ring-1 ring-gold/20"
+              >
+                <span className="inline-block h-3 w-3 animate-spin rounded-full border-2 border-gold border-t-transparent" />
+                <span className="text-[11px] font-bold text-gold">Preparing voice… read the story while you wait</span>
+              </motion.div>
+            )}
 
             {/* Progress bar — tappable + draggable to seek */}
             <div className="mt-4">
