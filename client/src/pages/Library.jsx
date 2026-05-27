@@ -7,6 +7,7 @@ import { useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Feather, Headphones, Plus, Trash2, Image as ImageIcon } from 'lucide-react';
 import PageTransition from '../components/PageTransition.jsx';
+import CreateSheet from '../components/CreateSheet.jsx';
 import { useFamilyProfile } from '../hooks/useFamilyProfile.js';
 import { useAuth } from '../hooks/useAuth.jsx';
 import { RELIGIONS } from '../utils/constants.js';
@@ -33,6 +34,7 @@ export default function Library() {
   const [tab, setTab] = useState('create');
   const [toast, setToast] = useState(null);
   const [createMode, setCreateMode] = useState(null); // null | 'story' | 'series'
+  const [storySheetOpen, setStorySheetOpen] = useState(false);
 
   // Creator state
   const [myStories, setMyStories] = useState([]);
@@ -310,6 +312,30 @@ export default function Library() {
       {/* ═══ CREATE TAB ═══ */}
       {tab === 'create' && !createMode && (
         <>
+          {/* Tonight's Story — AI-generated personal story */}
+          <button
+            onClick={() => setStorySheetOpen(true)}
+            className="mb-5 w-full rounded-2xl p-5 text-left ring-1 ring-gold/30 transition active:scale-[0.99]"
+            style={{ background: 'linear-gradient(135deg, rgba(240,165,0,0.15) 0%, rgba(240,165,0,0.03) 100%)' }}
+          >
+            <div className="flex items-center gap-3">
+              <div className="grid h-12 w-12 shrink-0 place-items-center rounded-2xl bg-gold/20">
+                <span className="text-2xl">🌙</span>
+              </div>
+              <div className="flex-1">
+                <h2 className="text-base font-bold text-gold" style={{ fontFamily: 'Fraunces, serif' }}>
+                  Start Tonight's Story
+                </h2>
+                <p className="mt-0.5 text-[11px] text-ink-muted">
+                  AI creates a personalized bedtime story for {profile?.childName || 'your child'}
+                </p>
+              </div>
+              <span className="text-gold text-lg">→</span>
+            </div>
+          </button>
+
+          <CreateSheet open={storySheetOpen} onClose={() => setStorySheetOpen(false)} />
+
           <div className="mb-5 rounded-2xl bg-gradient-to-br from-gold/10 to-gold/3 p-5 ring-1 ring-gold/20">
             <h2 className="text-lg font-bold text-ink" style={{ fontFamily: 'Fraunces, serif' }}>
               No story should go untold

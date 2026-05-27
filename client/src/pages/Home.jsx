@@ -7,7 +7,6 @@ import { motion, AnimatePresence } from 'framer-motion';
 import PageTransition from '../components/PageTransition.jsx';
 import HeroSlider from '../components/HeroSlider.jsx';
 import CreateFAB from '../components/CreateFAB.jsx';
-import CreateSheet from '../components/CreateSheet.jsx';
 import ShelfSection from '../components/shelves/ShelfSection.jsx';
 import ShelfRow from '../components/shelves/ShelfRow.jsx';
 import StoryTile from '../components/cards/StoryTile.jsx';
@@ -39,7 +38,6 @@ export default function Home() {
   const { wisdomAudioUrls, wisdomImageUrls, allLessons, loading: dataLoading } = useWisdomData();
   const COLLECTIONS = useLocalizedCollections();
 
-  const [createOpen, setCreateOpen] = useState(false);
   const [viewMode, setViewMode] = useState('episodes'); // 'episodes' | 'series'
   const [activeTheme, setActiveTheme] = useState('compassion-animals');
   const [visibleCollections, setVisibleCollections] = useState(8);
@@ -287,9 +285,8 @@ export default function Home() {
       {/* Our Creators — always at bottom */}
       <CuratorShelf />
 
-      {/* Create Story FAB + Sheet */}
-      <CreateFAB onClick={() => setCreateOpen(true)} />
-      <CreateSheet open={createOpen} onClose={() => setCreateOpen(false)} />
+      {/* Create Story FAB — goes to Creation tab */}
+      <CreateFAB onClick={() => navigate('/creation')} />
 
       {/* Bottom padding */}
       <div className="h-40" />
