@@ -1770,6 +1770,7 @@ function UserStoriesAdmin() {
   }, [stories]);
 
   const [expandedUser, setExpandedUser] = useState(null);
+  const [editingStory, setEditingStory] = useState(null);
 
   if (loading) return <div className="text-center py-12 text-[#6e6a63]">Loading user stories...</div>;
 
@@ -1794,6 +1795,31 @@ function UserStoriesAdmin() {
           <div className="text-[10px] font-bold uppercase tracking-wider text-[#6e6a63]">With Image</div>
         </div>
       </div>
+
+      {/* Fix orphaned stories */}
+      {stories.some(s => !s.generatedByEmail) && (
+        <button
+          onClick={async () => {
+            const { doc: fdoc, updateDoc } = await import('firebase/firestore');
+            let fixed = 0;
+            for (const s of stories) {
+              if (!s.generatedByEmail) {
+                await updateDoc(fdoc(db, 'sharedStories', s.id), {
+                  generatedByEmail: 'prateekyadav2010@gmail.com',
+                  generatedByName: 'Prateek Yadav',
+                  childName: s.childName || 'Veda',
+                });
+                fixed++;
+              }
+            }
+            alert(`Fixed ${fixed} stories. Reload to see changes.`);
+            window.location.reload();
+          }}
+          className="w-full rounded-xl bg-[#f0a500]/10 p-3 text-[10px] font-bold text-[#f0a500] ring-1 ring-[#f0a500]/20"
+        >
+          ⚠️ {stories.filter(s => !s.generatedByEmail).length} stories missing user info — tap to assign to prateekyadav2010@gmail.com
+        </button>
+      )}
 
       {/* User cards — tap to expand */}
       {userGroups.map(group => (
@@ -1855,10 +1881,45 @@ function UserStoriesAdmin() {
             </div>
           </div>
 
-          {/* Story text preview */}
-          <div className="mt-2 rounded-lg bg-[#0f0f17] p-3 max-h-24 overflow-y-auto">
-            <p className="text-[10px] text-[#a8a39a] leading-relaxed whitespace-pre-wrap">{(story.text || '').slice(0, 500)}...</p>
-          </div>
+          {/* Story text — editable */}
+          {editingStory === story.id ? (
+            <div className="mt-2 space-y-2">
+              <input
+                defaultValue={story.title}
+                id={`edit-title-${story.id}`}
+                className="w-full rounded-lg bg-[#0f0f17] px-3 py-2 text-xs font-bold text-[#f5f0e8] outline-none ring-1 ring-[#f0a500]/30"
+                placeholder="Title"
+              />
+              <textarea
+                defaultValue={story.text}
+                id={`edit-text-${story.id}`}
+                rows={8}
+                className="w-full rounded-lg bg-[#0f0f17] px-3 py-2 text-[10px] text-[#a8a39a] leading-relaxed outline-none ring-1 ring-[#f0a500]/30 resize-y"
+              />
+              <div className="flex gap-2">
+                <button onClick={async () => {
+                  const newTitle = document.getElementById(`edit-title-${story.id}`).value;
+                  const newText = document.getElementById(`edit-text-${story.id}`).value;
+                  try {
+                    const { doc: fdoc, updateDoc } = await import('firebase/firestore');
+                    await updateDoc(fdoc(db, 'sharedStories', story.id), { title: newTitle, text: newText, wordCount: newText.split(/\s+/).length });
+                    setStories(prev => prev.map(s => s.id === story.id ? { ...s, title: newTitle, text: newText } : s));
+                    setEditingStory(null);
+                    setStatus(s => ({ ...s, [story.id]: '✓ saved' }));
+                  } catch (e) { setStatus(s => ({ ...s, [story.id]: 'Save failed: ' + e.message })); }
+                }} className="rounded-lg bg-[#7ad9a1]/10 px-4 py-1.5 text-[10px] font-bold text-[#7ad9a1]">
+                  💾 Save
+                </button>
+                <button onClick={() => setEditingStory(null)} className="rounded-lg bg-white/5 px-4 py-1.5 text-[10px] font-bold text-[#6e6a63]">
+                  Cancel
+                </button>
+              </div>
+            </div>
+          ) : (
+            <div className="mt-2 rounded-lg bg-[#0f0f17] p-3 max-h-24 overflow-y-auto">
+              <p className="text-[10px] text-[#a8a39a] leading-relaxed whitespace-pre-wrap">{(story.text || '').slice(0, 500)}...</p>
+            </div>
+          )}
 
           {/* Audio preview */}
           {story.audioUrl && <audio controls preload="none" src={story.audioUrl} className="w-full h-8 mt-2" style={{ filter: 'invert(1) hue-rotate(180deg)', opacity: 0.7 }} />}
@@ -1877,6 +1938,10 @@ function UserStoriesAdmin() {
             <button onClick={() => generateImage(story)} disabled={!!generating}
               className="rounded-lg bg-[#539df5]/10 px-3 py-1.5 text-[10px] font-bold text-[#539df5] disabled:opacity-30">
               {generating === story.id + '_img' ? '...' : '🖼️ Image'}
+            </button>
+            <button onClick={() => setEditingStory(editingStory === story.id ? null : story.id)}
+              className="rounded-lg bg-[#f0a500]/10 px-3 py-1.5 text-[10px] font-bold text-[#f0a500]">
+              {editingStory === story.id ? '✕ Close' : '✏️ Edit'}
             </button>
             <button onClick={() => { navigator.clipboard.writeText(`https://mysleepytale.com/player?storyId=${story.id}`); setStatus(s => ({ ...s, [story.id]: 'Link copied!' })); }}
               className="rounded-lg bg-[#f0a500]/10 px-3 py-1.5 text-[10px] font-bold text-[#f0a500]">
