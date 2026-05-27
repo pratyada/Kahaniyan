@@ -286,7 +286,7 @@ Begin immediately — first word of the story, not an introduction to it.`;
         'anthropic-version': '2023-06-01',
       },
       body: JSON.stringify({
-        model: 'claude-sonnet-4-20250514',
+        model: 'claude-haiku-4-5-20251001',
         max_tokens: Math.max(1200, dur.words * 2.5),
         system: systemPrompt,
         messages: [{ role: 'user', content: userMessage }],
@@ -312,7 +312,7 @@ Begin immediately — first word of the story, not an introduction to it.`;
         'anthropic-version': '2023-06-01',
       },
       body: JSON.stringify({
-        model: 'claude-sonnet-4-20250514',
+        model: 'claude-haiku-4-5-20251001',
         max_tokens: 20,
         messages: [{ role: 'user', content: `Give this bedtime story a short, fun title (3-5 words, no quotes):\n\n${text.slice(0, 300)}` }],
       }),
