@@ -3557,6 +3557,33 @@ function SeriesPanel() {
   const API_BASE = import.meta.env.VITE_API_BASE_URL || '';
   const [editingEpisode, setEditingEpisode] = useState(null);
 
+  const OPENAI_VOICES = ['nova', 'alloy', 'echo', 'fable', 'onyx', 'shimmer'];
+
+  const generateOpenAIAudio = async (episode, voice = 'nova') => {
+    setGenerating(episode.id);
+    setStatus(s => ({ ...s, [episode.id]: `OpenAI TTS: ${voice}...` }));
+    try {
+      const text = (episode.body || '').replace(/\{childName\}/g, 'little one').replace(/\{sibling\}/g, 'their friend').slice(0, 10000);
+      const res = await fetch(`${API_BASE}/api/tts`, {
+        method: 'POST', headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ text, voice, model: 'tts-1-hd' }),
+      });
+      if (!res.ok) { setStatus(s => ({ ...s, [episode.id]: `Failed (${res.status})` })); setGenerating(null); return; }
+      const blob = await res.blob();
+      setStatus(s => ({ ...s, [episode.id]: 'uploading...' }));
+      const { ref, uploadBytes, getDownloadURL } = await import('firebase/storage');
+      const { storage, db: fireDb } = await import('../lib/firebase.js');
+      const storageRef = ref(storage, `wisdom-audio/${episode.id}.mp3`);
+      await uploadBytes(storageRef, blob, { contentType: 'audio/mpeg' });
+      const audioUrl = await getDownloadURL(storageRef);
+      const { doc: fdoc, setDoc: fset } = await import('firebase/firestore');
+      await fset(fdoc(fireDb, 'config', 'wisdomAudio'), { [episode.id]: audioUrl }, { merge: true });
+      setUrls(u => ({ ...u, [episode.id]: audioUrl }));
+      setStatus(s => ({ ...s, [episode.id]: `✓ OpenAI ${voice}` }));
+    } catch (e) { setStatus(s => ({ ...s, [episode.id]: e.message })); }
+    setGenerating(null);
+  };
+
   const allEpisodes = SERIES_DATA.flatMap(s => s.episodes.map(ep => ({
     ...ep, seriesId: s.id, seriesTitle: s.title, seriesIcon: s.icon,
   })));
@@ -3864,6 +3891,14 @@ function SeriesPanel() {
                   <button onClick={() => generateAudio(ep, document.getElementById(`voice-${ep.id}`)?.value || 'george')} disabled={!!generating}
                     className="rounded-lg bg-[#7ad9a1]/10 px-3 py-1.5 text-[10px] font-bold text-[#7ad9a1] disabled:opacity-30">
                     {generating === ep.id ? '...' : '⚡ 11Labs'}
+                  </button>
+                  <select defaultValue="nova" id={`oaivoice-${ep.id}`}
+                    className="rounded-lg bg-[#1a1a28] px-2 py-1.5 text-[10px] font-bold text-[#60a5fa] outline-none ring-1 ring-[#60a5fa]/20">
+                    {OPENAI_VOICES.map(v => <option key={v} value={v}>{v}</option>)}
+                  </select>
+                  <button onClick={() => generateOpenAIAudio(ep, document.getElementById(`oaivoice-${ep.id}`)?.value || 'nova')} disabled={!!generating}
+                    className="rounded-lg bg-[#60a5fa]/10 px-3 py-1.5 text-[10px] font-bold text-[#60a5fa] disabled:opacity-30">
+                    {generating === ep.id ? '...' : '🔊 OpenAI'}
                   </button>
                   <button onClick={() => generateImage(ep)} disabled={!!generating}
                     className="rounded-lg bg-[#539df5]/10 px-3 py-1.5 text-[10px] font-bold text-[#539df5] disabled:opacity-30">
