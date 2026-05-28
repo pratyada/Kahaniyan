@@ -721,27 +721,31 @@ By 1:30, everyone was back on the bus. Tired, happy, a little muddy.
 That night, {childName}, remember the field trip. The turtles who share their sunny rocks. The bats who eat mosquitoes. The baby turtles who crawl to water all by themselves. The world is full of tiny creatures in tiny homes, right next to ours. All they need is for us to step carefully.`,
       },
       {
-        id: 'rk_ep4_summer', episodeNumber: 4, title: 'Sun and the Splash Pad',
-        subtitle: 'Summer arrives at JLPS — bikes, splash pads, soccer, and the whole Rainbow batch outside.',
-        tradition: 'universal', theme: 'sharing', durationMinutes: 6,
+        id: 'rk_ep4_summer', episodeNumber: 4, title: 'Sun and the Splash Pad — Welcome SUMMERS!',
+        subtitle: 'Summer arrives at JLPS — bikes, splash pads, soccer, Lego, dance, and all 25 Rainbow kids outside.',
+        tradition: 'universal', theme: 'sharing', durationMinutes: 7,
         source: 'Rainbow Kindergarten · Episode 4',
         body: `After months and months of snowsuits, mittens, and frozen fingers — the sun came back to Toronto.
 
-Not the shy, cold, winter sun that hides behind clouds. The REAL sun. The warm, golden, stay-outside-until-Mummy-calls-you-three-times sun.
+Not the shy, cold, winter sun that hides behind clouds. The REAL sun. The warm, golden, stay-outside-until-Mummy-calls-you-three-times SUN. That SUN. The one that makes your whole body warm and your smile come out without even trying.
 
-And the Rainbow batch of Jean Lumb Public School? They had been WAITING.
+And the Rainbow batch of Jean Lumb Public School? Twenty-five kids who had been WAITING.
 
-Mr. Zak opened the door to the schoolyard and twenty kids exploded out like confetti from a party popper. Shelagh laughed and clicked photos from the steps. "SUMMER!" she called. "Go find it!"
+Mr. Zak opened the door to the schoolyard and twenty-five kids exploded out like confetti from a party popper. Shelagh laughed and clicked photos from the steps. "SUMMER!" she called. "Go find it!"
 
-The soccer field was the first to fill up. {childName} was out there with a brand-new bike — a little wobbly still, pedalling across the grass near the goalposts, figuring out the balance. Left, right, left, WOBBLE — but never falling. Not today. Today was too good for falling.
+The soccer field was the first to fill up. {childName} was out there with a brand-new bike — a little wobbly still, pedalling across the grass near the goalposts, figuring out the balance. Left, right, left, WOBBLE — but never falling. Not today. Today was too good for falling. And in the evening, when the SUN turned everything golden, {childName} would be back on this same field for soccer practice — because summer evenings and soccer fields were made for each other.
 
 Beside the field, Arin was already on his bike too, racing along the path by Canoe Landing Park, wind in his hair, legs pumping fast. "Watch this!" he yelled, and did a wide loop around the big red canoe sculpture. Shelagh waved. Mr. Zak gave a thumbs up.
 
 At the sandbox near the playground, Ostap was deep in construction. He had made a castle — no, a FORTRESS — with towers and a moat and a bridge made from popsicle sticks he had been saving since March. "Nobody step on it!" he warned. Nobody did.
 
-Near the climbing frame, Hunter and Soir were playing tag and freeze. Hunter was IT. "FREEZE!" he shouted, and Soir froze mid-run, one foot in the air, arms out like a statue. He held it for THREE whole seconds before toppling over into the grass, giggling so hard his belly shook.
+Under the shade of the big tree, Soir had spread out his Lego collection on a flat rock. Pieces EVERYWHERE — red, blue, yellow, tiny gears and wheels and flat plates. He was building something that looked like a spaceship crossed with a dinosaur. "It's a Dino-Rocket," he explained to nobody in particular. Hunter wandered over. "Can I help?" And just like that, the two of them were building together — Hunter snapping bricks onto Soir's creation, both of them arguing about whether it needed more wings or more legs. Lego everywhere. Absolute everywhere.
 
-By the swings, Dhruv was NOT on the swings. Dhruv was being a dinosaur. A T-Rex, specifically. He stomped around with tiny arms tucked in, making ROAAAAR sounds that echoed across the whole park. Two grade-two kids stopped and stared. Dhruv roared at them too. They ran.
+On the bench by the fence, Eleen had her colouring book open. Not just any colouring book — the FANCY one with the thick pages and the metallic crayons that her aunt had brought from overseas. She was colouring a butterfly, and she was being SO careful with the edges that her tongue was sticking out sideways. Each wing was a different colour. Purple. Gold. Turquoise. "This is for Shelagh," she whispered.
+
+Aryan was NOT colouring. Aryan was being Spiderman. He had the pose — one hand forward, fingers doing the web thing — and he was crawling along the top of the low wall near the garden. "Thwip! Thwip!" he called, shooting invisible webs at pigeons. The pigeons did not care. Aryan did not care that they did not care. He was Spiderman and that was FINAL. Michelle watched Aryan's Spiderman moves and then grabbed {childName}. "Come on! We're playing too!" And suddenly it was {childName}, Aryan, and Michelle — three superheroes chasing imaginary villains across the schoolyard, laughing so hard they could barely run.
+
+By the swings, Dhruv was NOT on the swings. Dhruv was being a dinosaur — no, wait. Today Dhruv was being Sanvi. "I'm Sanvi now," he announced very seriously, hands on his hips. Nobody questioned it. Sanvi-Dhruv then proceeded to stomp around the playground making ROAAAAR sounds that echoed across the whole park. Two grade-two kids stopped and stared. Sanvi-Dhruv roared at them too. They ran.
 
 On the path behind the school, Parker glided past on his brand-new scooter — the blue one with the light-up wheels. Every push made the wheels glow green, and Parker grinned so wide you could see every single tooth. Well — almost every tooth.
 
@@ -753,43 +757,43 @@ Because Aayan? Aayan had lost a tooth. And he was telling EVERYONE.
 
 "I SAW the note," said Aayan seriously. "With GLITTER on it."
 
-Mishaal, Luna, Mira, Sisilia, Aarhia, and Ava were all sitting in a huddle near the fence, and the tooth fairy story was only HALF the conversation. The other half? The recent field trip to Evergreen Brick Works.
+Near the fence, Sisilia and Mira were being catching girls — running after anyone who crossed their path, arms wide, giggling and shouting "GOTCHA!" every time they tagged someone. Aarhia tried to escape but got caught. Ava tried a different strategy — she stood perfectly still and pretended to be a tree. It almost worked.
 
-"I want to go BACK," said Luna.
+Mishaal was talking about the recent field trip to Evergreen Brick Works. "I want to go BACK," she said.
 
-"Me too," said Mira. "The turtles miss us."
+"We should write them a letter," said Sisilia between catching runs. "Dear Turtles, We liked your rocks. Love, Rainbow Class."
 
-"We should write them a letter," said Sisilia, and she was NOT joking. "Dear Turtles, We liked your rocks. Love, Rainbow Class."
+"Can we go next week?" asked Aarhia, still recovering from being caught.
 
-"Can we go next week?" asked Aarhia.
-
-Ava shook her head wisely. "We need to plan it properly. We need snacks, water bottles, and matching hats." She paused. "Also a map."
+Ava — still being a tree — said, "We need to plan it properly. We need snacks, water bottles, and matching hats." She paused. "Also a map."
 
 "We KNOW where it is," said Mishaal.
 
 "Maps are important," said Ava firmly. And that was that.
 
+And Luna? Luna was DANCING. Right there in the middle of the schoolyard, arms above her head, spinning in slow circles, her dress floating out like a flower opening. She didn't need music — the SUN was her music. The warm wind was her rhythm. She twirled and twirled while everyone around her ran and built and caught and roared. Luna was in her own world, and her world was beautiful.
+
 Lingen was at the splash pad — the one in Canoe Landing Park where water shoots up from the ground in surprise jets. He stood right in the middle, arms spread wide, DARING the water to hit him. WHOOOOSH — a jet shot up and caught him right in the belly. He screamed. He laughed. He did it again.
 
 Wesley was doing something quieter. He had found a dandelion — the fluffy white kind — and was sitting cross-legged on the grass, blowing the seeds into the air one at a time. Each tiny parachute drifted into the summer sky, spinning slowly, carried by the same warm wind that was making everyone so happy.
 
-Mr. Zak sat down on the bench beside {childName}, who had parked the bike and was catching a breath.
+Mr. Zak sat down on the bench beside {childName}, who had parked the bike and was catching a breath after the superhero chase with Aryan and Michelle.
 
 "You know what I love about summer?" Mr. Zak said.
 
 {childName} looked up. "What?"
 
-"Everyone finds their thing. Arin finds speed. Ostap finds building. Dhruv finds dinosaurs. Parker finds glowing wheels. Aayan finds stories. And you?" He looked at {childName}'s bike and the soccer ball nearby. "You find ALL of it."
+"Everyone finds their thing. Arin finds speed. Ostap finds building. Soir and Hunter find Lego. Eleen finds colours. Aryan finds Spiderman. Dhruv finds... well, Sanvi." He smiled. "Luna finds dance. Parker finds glowing wheels. Aayan finds stories. Sisilia and Mira find everyone they can catch. And you?" He looked at {childName}'s bike and the soccer ball nearby and the cape still half-tied from the superhero game. "You find ALL of it."
 
-{childName} smiled. Because it was true. Today was not about being the fastest, or the loudest, or the best. Today was just about being OUTSIDE, TOGETHER, in the sun, with the people who had spent the whole year learning shapes and singing songs and touching turtles and becoming friends.
+{childName} smiled. Because it was true. Today was not about being the fastest, or the loudest, or the best. Today was just about being OUTSIDE, TOGETHER, in the SUN, with the twenty-five people who had spent the whole year learning shapes and singing songs and touching turtles and becoming friends.
 
-The shadows got longer. The splash pad slowed to a trickle. Parents started arriving at the fence. One by one, the Rainbow batch collected their backpacks, their water bottles, their sandy shoes.
+The shadows got longer. The splash pad slowed to a trickle. Parents started arriving at the fence. One by one, the Rainbow batch collected their backpacks, their water bottles, their sandy shoes, their Lego, their colouring books, their capes.
 
 "Same time tomorrow?" called Arin from across the field.
 
-"SAME TIME TOMORROW!" echoed twenty voices at once.
+"SAME TIME TOMORROW!" echoed twenty-five voices at once.
 
-That night, {childName}, remember the splash pad and the soccer field and the dandelion seeds floating away. Summer is not just a season. It is a feeling. The feeling of warm grass under your feet, friends all around, and absolutely nowhere you need to be except right here, right now. Carry that feeling into sleep tonight. And tomorrow? Same time. Same sun. Same friends.`,
+That night, {childName}, remember the splash pad and the soccer field and the Lego Dino-Rocket and Luna spinning in the SUN and the dandelion seeds floating away. Summer is not just a season. It is a feeling. The feeling of warm grass under your feet, friends all around, and absolutely nowhere you need to be except right here, right now. Carry that feeling into sleep tonight. And tomorrow? Same time. Same SUN. Same friends.`,
       },
     ],
   },
