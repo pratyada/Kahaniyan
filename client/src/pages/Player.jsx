@@ -431,13 +431,23 @@ function PlayerInner() {
 
   const shareStory = async () => {
     try {
-      const { shareStoryToFirestore } = await import('../utils/shareStory.js');
       const { trackShareStory } = await import('../utils/analytics.js');
       trackShareStory(current?.id);
-      const url = await shareStoryToFirestore(current, {
-        beliefs: profile?.beliefs || [],
-        country: profile?.country || '',
-      });
+
+      // Series episodes + wisdom stories → use /api/share (dynamic OG tags with episode image)
+      // User-generated stories → use /player?storyId (loaded from Firestore)
+      const storyId = current?.episodeId || current?.id?.replace('lesson_', '') || current?.id;
+      const isHardcoded = current?.isWisdom || current?.seriesId;
+      let url;
+      if (isHardcoded) {
+        url = `https://mysleepytale.com/api/share?id=${storyId}`;
+      } else {
+        const { shareStoryToFirestore } = await import('../utils/shareStory.js');
+        url = await shareStoryToFirestore(current, {
+          beliefs: profile?.beliefs || [],
+          country: profile?.country || '',
+        });
+      }
       const text = `Listen to "${current.title}" — a bedtime story on My Sleepy Tale`;
       if (navigator.share) {
         await navigator.share({ title: 'My Sleepy Tale story', text, url });
