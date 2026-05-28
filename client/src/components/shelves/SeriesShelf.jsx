@@ -49,7 +49,7 @@ export default function SeriesShelf() {
 
   const getSeriesCover = (series) => {
     for (const ep of series.episodes) {
-      const img = coverImages[ep.id] || (galleryImages[ep.id] || [])[0];
+      const img = (galleryImages[ep.id] || [])[0] || coverImages[ep.id];
       if (img) return img;
     }
     return null;

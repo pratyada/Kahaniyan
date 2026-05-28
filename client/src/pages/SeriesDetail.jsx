@@ -259,7 +259,7 @@ export default function SeriesDetail() {
             >
               {/* Full card background — image or gradient */}
               {(() => {
-                const epImg = coverImages[ep.id] || (galleryImages[ep.id] || [])[0];
+                const epImg = (galleryImages[ep.id] || [])[0] || coverImages[ep.id];
                 return epImg ? (
                   <img src={epImg} alt="" className="absolute inset-0 h-full w-full object-cover" onError={(e) => { e.target.style.display = 'none'; }} />
                 ) : (

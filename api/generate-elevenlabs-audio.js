@@ -32,47 +32,43 @@ export default async function handler(req, res) {
 
   const voiceConfig = VOICES[voice] || VOICES.george;
 
-  try {
-    const response = await fetch(`https://api.elevenlabs.io/v1/text-to-speech/${voiceConfig.id}`, {
-      method: 'POST',
-      headers: {
-        'xi-api-key': ELEVENLABS_KEY,
-        'Content-Type': 'application/json',
-        'Accept': 'audio/mpeg',
-      },
-      body: JSON.stringify({
-        text: text.slice(0, 10000),
-        model_id: model,
-        voice_settings: {
-          stability,
-          similarity_boost: similarity,
-          style: 0.3,
-          use_speaker_boost: true,
-        },
-      }),
-    });
+  // Split long text into chunks and generate in parallel to stay under 30s
+  const MAX_CHUNK = 3000; // chars per chunk — ElevenLabs handles ~3000 chars in ~12s
+  const fullText = text.slice(0, 10000);
 
-    if (!response.ok) {
-      const err = await response.text();
-      console.error('ElevenLabs error:', response.status, err);
-      return res.status(response.status).json({
-        error: response.status === 401 ? 'Invalid API key'
-          : response.status === 429 ? 'Rate limit — wait a moment'
-          : `ElevenLabs failed (${response.status})`,
-      });
+  const generateChunk = async (chunk) => {
+    const r = await fetch(`https://api.elevenlabs.io/v1/text-to-speech/${voiceConfig.id}`, {
+      method: 'POST',
+      headers: { 'xi-api-key': ELEVENLABS_KEY, 'Content-Type': 'application/json', 'Accept': 'audio/mpeg' },
+      body: JSON.stringify({ text: chunk, model_id: model, voice_settings: { stability, similarity_boost: similarity, style: 0.3, use_speaker_boost: true } }),
+    });
+    if (!r.ok) throw new Error(`ElevenLabs ${r.status}: ${await r.text()}`);
+    return Buffer.from(await r.arrayBuffer());
+  };
+
+  try {
+    let audioBuffer;
+    if (fullText.length <= MAX_CHUNK) {
+      // Short text — single request
+      audioBuffer = await generateChunk(fullText);
+    } else {
+      // Long text — split at paragraph boundaries, generate in parallel
+      const midpoint = Math.floor(fullText.length / 2);
+      let splitAt = fullText.lastIndexOf('\n\n', midpoint);
+      if (splitAt < fullText.length * 0.3) splitAt = fullText.lastIndexOf('. ', midpoint) + 1;
+      if (splitAt < fullText.length * 0.3) splitAt = midpoint;
+
+      const chunk1 = fullText.slice(0, splitAt).trim();
+      const chunk2 = fullText.slice(splitAt).trim();
+
+      const [buf1, buf2] = await Promise.all([generateChunk(chunk1), generateChunk(chunk2)]);
+      audioBuffer = Buffer.concat([buf1, buf2]);
     }
 
     res.setHeader('Content-Type', 'audio/mpeg');
     res.setHeader('Cache-Control', 'public, max-age=86400');
     res.setHeader('X-Voice-Used', voiceConfig.name);
-
-    const reader = response.body.getReader();
-    while (true) {
-      const { done, value } = await reader.read();
-      if (done) break;
-      res.write(value);
-    }
-    res.end();
+    res.end(audioBuffer);
   } catch (err) {
     console.error('ElevenLabs error:', err);
     return res.status(500).json({ error: 'Audio generation failed' });
