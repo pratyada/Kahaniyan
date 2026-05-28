@@ -729,37 +729,33 @@ That night, {childName}, remember the field trip. The turtles who share their su
 
 Mr. Zak opened the schoolyard door and twenty-five Rainbow kids rushed out like a burst of confetti. Shelagh clicked photos. "SUMMER!" she called. "Go find it!"
 
-{childName} grabbed a brand-new bike and pedalled across the soccer field. Wobbly, but never falling. Not today. In the evening, this same field would be for soccer practice — summer evenings and soccer fields were made for each other.
+{childName} pedalled a brand-new bike across the soccer field. Wobbly, but never falling. Not today. Summer evenings and soccer fields were made for each other.
 
-Arin raced his bike around the big red canoe sculpture at Canoe Landing Park. Ostap built a fortress in the sandbox with popsicle sticks saved since March. "Nobody step on it!" Nobody did.
+Arin raced his bike around the big red canoe at Canoe Landing Park. Ostap built a fortress in the sandbox. "Nobody step on it!" Nobody did.
 
-Under the big tree, Soir spread Lego EVERYWHERE. He was building a Dino-Rocket. Hunter wandered over. "Can I help?" And just like that — two builders, arguing about wings versus legs. Lego everywhere.
+Soir spread Lego EVERYWHERE under the big tree — building a Dino-Rocket. Hunter wandered over. "Can I help?" Two builders, arguing about wings versus legs.
 
 Eleen had her fancy colouring book open — metallic crayons, a butterfly with purple and gold wings. "This is for Shelagh," she whispered.
 
-Aryan was being Spiderman. "Thwip! Thwip!" — shooting invisible webs at pigeons. The pigeons did not care. Michelle smiled and waved at {childName}. "Want to play with us?" And just like that, {childName}, Aryan, and Michelle became a team of superheroes — running through the schoolyard together, laughing so hard their cheeks hurt.
+Aarhi sat cross-legged on the bench, quietly counting everything she could see. "Seven pigeons. Four bikes. Twelve clouds." She was doing maths — her favourite thing — turning the whole playground into numbers.
 
-Dhruv and Sanvi were playing together near the swings — Dhruv was pretending to be a friendly T-Rex and Sanvi was the brave explorer who was not afraid of dinosaurs at all. "ROAAAAR!" said Dhruv. "You don't scare me!" said Sanvi, giggling. They chased each other around the climbing frame, taking turns being the dinosaur and the explorer.
+Aryan was being Spiderman. "Thwip! Thwip!" — shooting invisible webs at pigeons. Michelle smiled and waved at {childName}. "Want to play with us?" And just like that, {childName}, Aryan, and Michelle became a team of superheroes — laughing so hard their cheeks hurt.
 
-Parker glided past on his light-up scooter. And Aryan? He had lost a tooth. "The Tooth Fairy left TWO dollars AND a glitter note that said 'Excellent tooth, Aryan!'" Mishaal's eyes went wide. "Did she really?" "I SAW it," said Aryan.
+Dhruv and Sanvi were playing near the swings — Dhruv was a friendly T-Rex and Sanvi was the brave explorer. "ROAAAAR!" said Dhruv. "You don't scare me!" said Sanvi, giggling.
 
-Sisilia and Mira were playing their favourite game of tag — "GOTCHA!" — gently tapping everyone on the shoulder. Aarhia tried to run but got tagged. Ava tried a clever trick — she stood perfectly still and pretended to be a tree. It almost worked.
+Aryan had also lost a tooth. "The Tooth Fairy left TWO dollars AND a glitter note!" Mishaal's eyes went wide.
 
-The girls were already planning the next field trip to Brick Works. "Dear Turtles, We liked your rocks. Love, Rainbow Class." Ava insisted on maps. "Maps are important."
+Sisilia and Mira were playing tag — "GOTCHA!" — gently tapping everyone. Ava pretended to be a tree. It almost worked.
 
-Luna was DANCING in the middle of the schoolyard. No music needed — the SUN was her music. Spinning in slow circles, dress floating like a flower.
+Luna was DANCING in the middle of the schoolyard. The SUN was her music. Spinning in slow circles, dress floating like a flower.
 
-Lingen stood in the splash pad, arms wide, DARING the water jets. WHOOOOSH — right in the belly! He screamed, laughed, did it again.
+Lingen stood in the splash pad, arms wide. WHOOOOSH — water jet right in the belly! He laughed and did it again.
 
-Wesley blew dandelion seeds into the sky. Each tiny parachute drifting up, spinning slowly.
+Wesley was racing his remote-control car across the grass — VROOM VROOM — dodging legs and backpacks, steering it around puddles with a huge grin on his face.
 
-Mr. Zak sat beside {childName}. "You know what I love about summer? Everyone finds their joy. Arin finds speed. Soir and Hunter find Lego. Eleen finds colours. Aryan finds Spiderman and tooth fairy stories. Dhruv and Sanvi find adventures together. Luna finds dance. Michelle finds friends to play with. And you?" He looked at the bike, the soccer ball, the superhero cape. "You find ALL of it."
+Mr. Zak sat beside {childName}. "Everyone finds their joy. Arin finds speed. Soir and Hunter find Lego. Eleen finds colours. Aarhi finds numbers. Aryan finds Spiderman. Dhruv and Sanvi find adventures. Luna finds dance. Wesley finds wheels. And you? You find ALL of it."
 
-The shadows got longer. Parents arrived. Backpacks, water bottles, Lego, capes — collected one by one.
-
-"Same time tomorrow?" called Arin.
-
-"SAME TIME TOMORROW!" echoed twenty-five voices.
+The shadows got longer. Parents arrived. "Same time tomorrow?" called Arin. "SAME TIME TOMORROW!" echoed twenty-five voices.
 
 That night, {childName}, remember the splash pad and Luna spinning in the SUN and dandelion seeds floating away. Summer is not just a season. It is a feeling. Warm grass, friends all around, nowhere to be except right here. Same SUN. Same friends. Sleep now.`,
       },
