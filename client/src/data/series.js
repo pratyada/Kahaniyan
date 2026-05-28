@@ -725,39 +725,29 @@ That night, {childName}, remember the field trip. The turtles who share their su
         subtitle: 'Summer arrives at JLPS — bikes, splash pads, soccer, Lego, dance, and all 25 Rainbow kids outside.',
         tradition: 'universal', theme: 'sharing', durationMinutes: 4,
         source: 'Rainbow Kindergarten · Episode 4',
-        body: `After months of snowsuits and frozen fingers — the SUN came back to Toronto. The REAL SUN. The warm, golden, stay-outside-until-Mummy-calls-you-three-times SUN.
+        body: `The SUN came back to Toronto! Mr. Zak opened the schoolyard door and twenty-five Rainbow kids rushed out. Shelagh clicked photos. "SUMMER!" she called.
 
-Mr. Zak opened the schoolyard door and twenty-five Rainbow kids rushed out like a burst of confetti. Shelagh clicked photos. "SUMMER!" she called. "Go find it!"
+{childName} pedalled a new bike across the soccer field. Wobbly, but never falling. Arin raced his bike around the big red canoe at Canoe Landing Park.
 
-{childName} pedalled a brand-new bike across the soccer field. Wobbly, but never falling. Not today. Summer evenings and soccer fields were made for each other.
+Ostap built a fortress in the sandbox. Sayer spread Lego everywhere — building a Dino-Rocket with Hunter. Eleen coloured a butterfly with metallic crayons. "This is for Shelagh," she whispered.
 
-Arin raced his bike around the big red canoe at Canoe Landing Park. Ostap built a fortress in the sandbox. "Nobody step on it!" Nobody did.
+Aarhi sat on the bench doing maths and geometry — counting shapes in the playground. "The slide is a triangle. The wheel is a circle. Seven pigeons. Four bikes." Numbers and shapes everywhere!
 
-Sayer spread Lego EVERYWHERE under the big tree — building a Dino-Rocket. Hunter wandered over. "Can I help?" Two builders, arguing about wings versus legs.
+Aryan was Spiderman — "Thwip! Thwip!" Michelle waved at {childName}. "Want to play?" Three superheroes, laughing so hard their cheeks hurt.
 
-Eleen had her fancy colouring book open — metallic crayons, a butterfly with purple and gold wings. "This is for Shelagh," she whispered.
+Dhruv and Sanvi played near the swings — Dhruv the friendly dinosaur, Sanvi the brave explorer. "ROAAAAR!" "You don't scare me!" Both giggling.
 
-Aarhi sat cross-legged on the bench, quietly counting everything she could see. "Seven pigeons. Four bikes. Twelve clouds." She was doing maths — her favourite thing — turning the whole playground into numbers.
+Aryan had lost a tooth too. "The Tooth Fairy left TWO dollars AND a glitter note!" Mishaal's eyes went wide.
 
-Aryan was being Spiderman. "Thwip! Thwip!" — shooting invisible webs at pigeons. Michelle smiled and waved at {childName}. "Want to play with us?" And just like that, {childName}, Aryan, and Michelle became a team of superheroes — laughing so hard their cheeks hurt.
+Sisilia and Mira played tag, gently tapping everyone. Ava pretended to be a tree. Luna was dancing — the SUN was her music.
 
-Dhruv and Sanvi were playing near the swings — Dhruv was a friendly T-Rex and Sanvi was the brave explorer. "ROAAAAR!" said Dhruv. "You don't scare me!" said Sanvi, giggling.
+Lingen stood in the splash pad. WHOOOOSH — water right in the belly! Wesley raced his remote-control car across the grass — VROOM VROOM — steering around puddles.
 
-Aryan had also lost a tooth. "The Tooth Fairy left TWO dollars AND a glitter note!" Mishaal's eyes went wide.
+Mr. Zak sat beside {childName}. "Everyone finds their joy. And you? You find all of it."
 
-Sisilia and Mira were playing tag — "GOTCHA!" — gently tapping everyone. Ava pretended to be a tree. It almost worked.
+The shadows got longer. "Same time tomorrow?" called Arin. "SAME TIME TOMORROW!" echoed twenty-five voices.
 
-Luna was DANCING in the middle of the schoolyard. The SUN was her music. Spinning in slow circles, dress floating like a flower.
-
-Lingen stood in the splash pad, arms wide. WHOOOOSH — water jet right in the belly! He laughed and did it again.
-
-Wesley was racing his remote-control car across the grass — VROOM VROOM — dodging legs and backpacks, steering it around puddles with a huge grin on his face.
-
-Mr. Zak sat beside {childName}. "Everyone finds their joy. Arin finds speed. Sayer and Hunter find Lego. Eleen finds colours. Aarhi finds numbers. Aryan finds Spiderman. Dhruv and Sanvi find adventures. Luna finds dance. Wesley finds wheels. And you? You find ALL of it."
-
-The shadows got longer. Parents arrived. "Same time tomorrow?" called Arin. "SAME TIME TOMORROW!" echoed twenty-five voices.
-
-That night, {childName}, remember the splash pad and Luna spinning in the SUN and dandelion seeds floating away. Summer is not just a season. It is a feeling. Warm grass, friends all around, nowhere to be except right here. Same SUN. Same friends. Sleep now.`,
+That night, {childName}, summer is a feeling. Warm grass, friends all around. Same SUN. Same friends. Sleep now.`,
       },
     ],
   },
