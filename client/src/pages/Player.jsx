@@ -595,10 +595,11 @@ function PlayerInner() {
   const handleClose = () => {
     closedRef.current = true;
     narrator.stop();
-    // Also stop browser speech if playing (wisdom stories fallback)
     try { window.speechSynthesis?.cancel(); } catch {}
+    const seriesId = current?.seriesId;
     clear();
-    navigate('/');
+    // Go back to series page if episode belongs to a series, otherwise home
+    navigate(seriesId ? `/series/${seriesId}` : '/');
   };
 
   // Media Session — lock screen / notification bar controls
@@ -666,7 +667,7 @@ function PlayerInner() {
             {/* Top bar — minimal */}
             <div className="mb-3 flex items-center justify-between">
               <button
-                onClick={() => navigate('/')}
+                onClick={() => navigate(current?.seriesId ? `/series/${current.seriesId}` : '/')}
                 className="grid h-9 w-9 place-items-center rounded-full bg-white/5 text-ink-muted transition hover:text-ink active:scale-95"
               >
                 <ArrowLeft size={16} />
@@ -1084,7 +1085,7 @@ function PlayerInner() {
       {/* Share card — only opened manually via share button, not auto after story */}
       <ShareCardSheet
         open={showShareCard}
-        onClose={() => { setShowShareCard(false); narrator.stop(); navigate('/'); }}
+        onClose={() => { setShowShareCard(false); narrator.stop(); navigate(current?.seriesId ? `/series/${current.seriesId}` : '/'); }}
         story={current}
       />
 
