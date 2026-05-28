@@ -733,7 +733,7 @@ Mr. Zak opened the schoolyard door and twenty-five Rainbow kids rushed out like 
 
 Arin raced his bike around the big red canoe at Canoe Landing Park. Ostap built a fortress in the sandbox. "Nobody step on it!" Nobody did.
 
-Soir spread Lego EVERYWHERE under the big tree — building a Dino-Rocket. Hunter wandered over. "Can I help?" Two builders, arguing about wings versus legs.
+Sayer spread Lego EVERYWHERE under the big tree — building a Dino-Rocket. Hunter wandered over. "Can I help?" Two builders, arguing about wings versus legs.
 
 Eleen had her fancy colouring book open — metallic crayons, a butterfly with purple and gold wings. "This is for Shelagh," she whispered.
 
@@ -753,7 +753,7 @@ Lingen stood in the splash pad, arms wide. WHOOOOSH — water jet right in the b
 
 Wesley was racing his remote-control car across the grass — VROOM VROOM — dodging legs and backpacks, steering it around puddles with a huge grin on his face.
 
-Mr. Zak sat beside {childName}. "Everyone finds their joy. Arin finds speed. Soir and Hunter find Lego. Eleen finds colours. Aarhi finds numbers. Aryan finds Spiderman. Dhruv and Sanvi find adventures. Luna finds dance. Wesley finds wheels. And you? You find ALL of it."
+Mr. Zak sat beside {childName}. "Everyone finds their joy. Arin finds speed. Sayer and Hunter find Lego. Eleen finds colours. Aarhi finds numbers. Aryan finds Spiderman. Dhruv and Sanvi find adventures. Luna finds dance. Wesley finds wheels. And you? You find ALL of it."
 
 The shadows got longer. Parents arrived. "Same time tomorrow?" called Arin. "SAME TIME TOMORROW!" echoed twenty-five voices.
 
