@@ -749,13 +749,13 @@ By the swings, Dhruv was NOT on the swings. Dhruv was being a dinosaur — no, w
 
 On the path behind the school, Parker glided past on his brand-new scooter — the blue one with the light-up wheels. Every push made the wheels glow green, and Parker grinned so wide you could see every single tooth. Well — almost every tooth.
 
-Because Aayan? Aayan had lost a tooth. And he was telling EVERYONE.
+Because Aryan? Aryan had lost a tooth. And he was telling EVERYONE.
 
-"The Tooth Fairy came," Aayan announced to a circle of kids on the bench. "She left TWO dollars. TWO. And she left a tiny note that said 'Excellent tooth, Aayan. Very clean.'"
+"The Tooth Fairy came," Aryan announced to a circle of kids on the bench. "She left TWO dollars. TWO. And she left a tiny note that said 'Excellent tooth, Aryan. Very clean.'"
 
 "Did she really write that?" asked Mishaal, eyes wide.
 
-"I SAW the note," said Aayan seriously. "With GLITTER on it."
+"I SAW the note," said Aryan seriously. "With GLITTER on it."
 
 Near the fence, Sisilia and Mira were being catching girls — running after anyone who crossed their path, arms wide, giggling and shouting "GOTCHA!" every time they tagged someone. Aarhia tried to escape but got caught. Ava tried a different strategy — she stood perfectly still and pretended to be a tree. It almost worked.
 
@@ -783,7 +783,7 @@ Mr. Zak sat down on the bench beside {childName}, who had parked the bike and wa
 
 {childName} looked up. "What?"
 
-"Everyone finds their thing. Arin finds speed. Ostap finds building. Soir and Hunter find Lego. Eleen finds colours. Aryan finds Spiderman. Dhruv finds... well, Sanvi." He smiled. "Luna finds dance. Parker finds glowing wheels. Aayan finds stories. Sisilia and Mira find everyone they can catch. And you?" He looked at {childName}'s bike and the soccer ball nearby and the cape still half-tied from the superhero game. "You find ALL of it."
+"Everyone finds their thing. Arin finds speed. Ostap finds building. Soir and Hunter find Lego. Eleen finds colours. Aryan finds Spiderman AND tooth fairy stories. Dhruv finds... well, Sanvi." He smiled. "Luna finds dance. Parker finds glowing wheels. Sisilia and Mira find everyone they can catch. And you?" He looked at {childName}'s bike and the soccer ball nearby and the cape still half-tied from the superhero game. "You find ALL of it."
 
 {childName} smiled. Because it was true. Today was not about being the fastest, or the loudest, or the best. Today was just about being OUTSIDE, TOGETHER, in the SUN, with the twenty-five people who had spent the whole year learning shapes and singing songs and touching turtles and becoming friends.
 
