@@ -727,7 +727,7 @@ That night, {childName}, remember the field trip. The turtles who share their su
         source: 'Rainbow Kindergarten · Episode 4',
         body: `After months of snowsuits and frozen fingers — the SUN came back to Toronto. The REAL SUN. The warm, golden, stay-outside-until-Mummy-calls-you-three-times SUN.
 
-Mr. Zak opened the schoolyard door and twenty-five Rainbow kids exploded out like confetti. Shelagh clicked photos. "SUMMER!" she called. "Go find it!"
+Mr. Zak opened the schoolyard door and twenty-five Rainbow kids rushed out like a burst of confetti. Shelagh clicked photos. "SUMMER!" she called. "Go find it!"
 
 {childName} grabbed a brand-new bike and pedalled across the soccer field. Wobbly, but never falling. Not today. In the evening, this same field would be for soccer practice — summer evenings and soccer fields were made for each other.
 
@@ -737,13 +737,13 @@ Under the big tree, Soir spread Lego EVERYWHERE. He was building a Dino-Rocket. 
 
 Eleen had her fancy colouring book open — metallic crayons, a butterfly with purple and gold wings. "This is for Shelagh," she whispered.
 
-Aryan was being Spiderman. "Thwip! Thwip!" — shooting invisible webs at pigeons. The pigeons did not care. Michelle watched and grabbed {childName}. "We're playing too!" Three superheroes chasing villains across the schoolyard, laughing so hard they could barely run.
+Aryan was being Spiderman. "Thwip! Thwip!" — shooting invisible webs at pigeons. The pigeons did not care. Michelle smiled and waved at {childName}. "Want to play with us?" And just like that, {childName}, Aryan, and Michelle became a team of superheroes — running through the schoolyard together, laughing so hard their cheeks hurt.
 
-Dhruv was being Sanvi today. "I'm Sanvi now," he announced seriously. Then he stomped around making ROAAAAR sounds. Two grade-two kids ran.
+Dhruv and Sanvi were playing together near the swings — Dhruv was pretending to be a friendly T-Rex and Sanvi was the brave explorer who was not afraid of dinosaurs at all. "ROAAAAR!" said Dhruv. "You don't scare me!" said Sanvi, giggling. They chased each other around the climbing frame, taking turns being the dinosaur and the explorer.
 
 Parker glided past on his light-up scooter. And Aryan? He had lost a tooth. "The Tooth Fairy left TWO dollars AND a glitter note that said 'Excellent tooth, Aryan!'" Mishaal's eyes went wide. "Did she really?" "I SAW it," said Aryan.
 
-Sisilia and Mira were catching girls — "GOTCHA!" — tagging everyone. Aarhia got caught. Ava pretended to be a tree. It almost worked.
+Sisilia and Mira were playing their favourite game of tag — "GOTCHA!" — gently tapping everyone on the shoulder. Aarhia tried to run but got tagged. Ava tried a clever trick — she stood perfectly still and pretended to be a tree. It almost worked.
 
 The girls were already planning the next field trip to Brick Works. "Dear Turtles, We liked your rocks. Love, Rainbow Class." Ava insisted on maps. "Maps are important."
 
@@ -753,7 +753,7 @@ Lingen stood in the splash pad, arms wide, DARING the water jets. WHOOOOSH — r
 
 Wesley blew dandelion seeds into the sky. Each tiny parachute drifting up, spinning slowly.
 
-Mr. Zak sat beside {childName}. "You know what I love about summer? Everyone finds their thing. Arin finds speed. Soir and Hunter find Lego. Eleen finds colours. Aryan finds Spiderman AND tooth fairy stories. Luna finds dance. And you?" He looked at the bike, the soccer ball, the superhero cape. "You find ALL of it."
+Mr. Zak sat beside {childName}. "You know what I love about summer? Everyone finds their joy. Arin finds speed. Soir and Hunter find Lego. Eleen finds colours. Aryan finds Spiderman and tooth fairy stories. Dhruv and Sanvi find adventures together. Luna finds dance. Michelle finds friends to play with. And you?" He looked at the bike, the soccer ball, the superhero cape. "You find ALL of it."
 
 The shadows got longer. Parents arrived. Backpacks, water bottles, Lego, capes — collected one by one.
 
