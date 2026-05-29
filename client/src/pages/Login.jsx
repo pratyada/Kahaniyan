@@ -64,6 +64,10 @@ export default function Login() {
       <div className="starfield opacity-30" />
 
       <div className="relative z-10 flex h-full flex-col justify-center px-6 safe-top safe-bottom">
+        {/* Home button */}
+        <button onClick={() => navigate('/')} className="absolute top-6 left-6 text-sm text-ink-muted font-bold">
+          ← Home
+        </button>
         {/* Brand */}
         <motion.div
           initial={{ opacity: 0, y: -12 }}
