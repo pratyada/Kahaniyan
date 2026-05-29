@@ -3,7 +3,7 @@
 // share cards, and marketing content.
 
 // Master style prefix — appended to EVERY image prompt
-export const STYLE_PREFIX = 'Digital children\'s storybook illustration, soft watercolor textures, warm golden hour lighting, rounded gentle shapes, cozy bedtime palette with deep purples and warm ambers, age-appropriate and inviting, Pixar-meets-Ghibli warmth, no text on image, 16:9 aspect ratio';
+export const STYLE_PREFIX = 'Digital children\'s storybook illustration, soft watercolor textures, warm golden hour lighting, rounded gentle shapes, cozy bedtime palette with deep purples and warm ambers, age-appropriate and inviting, Pixar-meets-Ghibli warmth, no text on image, NO human faces or realistic human figures — use only illustrated animals, objects, landscapes, or abstract shapes, 16:9 aspect ratio';
 
 // Style variants for different contexts
 export const STYLES = {
