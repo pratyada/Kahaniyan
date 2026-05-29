@@ -19,6 +19,7 @@ import { usePlayer } from '../hooks/usePlayer.jsx';
 import { useRadio } from '../hooks/useRadio.jsx';
 import { useAdmin } from '../hooks/useAdmin.jsx';
 import { useAuth } from '../hooks/useAuth.jsx';
+// isAdmin controls: Write Story, Create Series, story duration options
 import { RELIGIONS, VALUES, DURATIONS, RELATION_EMOJI } from '../utils/constants.js';
 import { RADIO_STATIONS } from '../data/radioStations.js';
 import { recommendedValueFor } from '../utils/storyHelpers.js';
@@ -47,7 +48,7 @@ export default function Library() {
   const { generate, loading: genLoading } = useStoryGenerator();
   const { load, clear } = usePlayer();
   const radio = useRadio();
-  const { isUnlimited } = useAdmin();
+  const { isUnlimited, isAdmin } = useAdmin();
 
   const [tab, setTab] = useState('create');
   const [toast, setToast] = useState(null);
@@ -493,18 +494,25 @@ export default function Library() {
               </div>
             )}
 
-            {/* Story length */}
+            {/* Story length — non-admin locked to 2 min */}
             <div className="mb-4">
               <p className="text-[10px] font-bold uppercase tracking-wider text-ink-muted mb-2">Story Length</p>
               <div className="flex gap-2">
-                {DURATIONS.map(d => (
-                  <button key={d.minutes} onClick={() => d.minutes <= maxDuration ? setGenDuration(d.minutes) : (setUpgradeReason('duration'), setUpgradeOpen(true))}
-                    className={`flex-1 rounded-xl py-2 text-center text-xs font-bold transition ${
-                      genDuration === d.minutes ? 'bg-gold text-bg-base' : d.minutes > maxDuration ? 'bg-bg-surface text-ink-dim ring-1 ring-white/5 opacity-50' : 'bg-bg-surface text-ink-muted ring-1 ring-white/10'
-                    }`}>
-                    {d.label}
-                  </button>
-                ))}
+                {DURATIONS.map(d => {
+                  const locked = !isAdmin && d.minutes > 2;
+                  return (
+                    <button key={d.minutes}
+                      onClick={() => locked ? null : d.minutes <= maxDuration ? setGenDuration(d.minutes) : (setUpgradeReason('duration'), setUpgradeOpen(true))}
+                      className={`flex-1 rounded-xl py-2 text-center text-xs font-bold transition ${
+                        genDuration === d.minutes ? 'bg-gold text-bg-base'
+                        : locked ? 'bg-bg-surface text-ink-dim ring-1 ring-white/5 opacity-30'
+                        : d.minutes > maxDuration ? 'bg-bg-surface text-ink-dim ring-1 ring-white/5 opacity-50'
+                        : 'bg-bg-surface text-ink-muted ring-1 ring-white/10'
+                      }`}>
+                      {d.label}{locked ? ' 🔒' : ''}
+                    </button>
+                  );
+                })}
               </div>
             </div>
 
@@ -516,31 +524,35 @@ export default function Library() {
             </motion.button>
           </div>
 
-          {/* ── Creator Submissions ── */}
-          <div className="mb-4 rounded-2xl bg-gradient-to-br from-white/5 to-white/2 p-4 ring-1 ring-white/5">
-            <h3 className="text-sm font-bold text-ink mb-1" style={{ fontFamily: 'Fraunces, serif' }}>Write for the Community</h3>
-            <p className="text-[10px] text-ink-muted">Submit stories for thousands of kids to hear</p>
-          </div>
-
-          <div className="space-y-3">
-            <motion.button whileTap={{ scale: 0.97 }} onClick={() => setCreateMode('story')}
-              className="w-full flex items-center gap-4 rounded-2xl bg-bg-surface p-4 ring-1 ring-white/8 text-left transition hover:ring-gold/30">
-              <div className="grid h-12 w-12 shrink-0 place-items-center rounded-2xl bg-gold/10 text-xl">📖</div>
-              <div>
-                <h3 className="text-sm font-bold text-ink">{t('creation.writeStory')}</h3>
-                <p className="text-[10px] text-ink-muted mt-0.5">A single bedtime story for the community</p>
+          {/* ── Creator Submissions — admin only ── */}
+          {isAdmin && (
+            <>
+              <div className="mb-4 rounded-2xl bg-gradient-to-br from-white/5 to-white/2 p-4 ring-1 ring-white/5">
+                <h3 className="text-sm font-bold text-ink mb-1" style={{ fontFamily: 'Fraunces, serif' }}>Write for the Community</h3>
+                <p className="text-[10px] text-ink-muted">Submit stories for thousands of kids to hear</p>
               </div>
-            </motion.button>
 
-            <motion.button whileTap={{ scale: 0.97 }} onClick={() => setCreateMode('series')}
-              className="w-full flex items-center gap-4 rounded-2xl bg-bg-surface p-4 ring-1 ring-white/8 text-left transition hover:ring-gold/30">
-              <div className="grid h-12 w-12 shrink-0 place-items-center rounded-2xl bg-gold/10 text-xl">📺</div>
-              <div>
-                <h3 className="text-sm font-bold text-ink">{t('creation.createSeries')}</h3>
-                <p className="text-[10px] text-ink-muted mt-0.5">Multiple episodes — same characters each night</p>
+              <div className="space-y-3">
+                <motion.button whileTap={{ scale: 0.97 }} onClick={() => setCreateMode('story')}
+                  className="w-full flex items-center gap-4 rounded-2xl bg-bg-surface p-4 ring-1 ring-white/8 text-left transition hover:ring-gold/30">
+                  <div className="grid h-12 w-12 shrink-0 place-items-center rounded-2xl bg-gold/10 text-xl">📖</div>
+                  <div>
+                    <h3 className="text-sm font-bold text-ink">{t('creation.writeStory')}</h3>
+                    <p className="text-[10px] text-ink-muted mt-0.5">A single bedtime story for the community</p>
+                  </div>
+                </motion.button>
+
+                <motion.button whileTap={{ scale: 0.97 }} onClick={() => setCreateMode('series')}
+                  className="w-full flex items-center gap-4 rounded-2xl bg-bg-surface p-4 ring-1 ring-white/8 text-left transition hover:ring-gold/30">
+                  <div className="grid h-12 w-12 shrink-0 place-items-center rounded-2xl bg-gold/10 text-xl">📺</div>
+                  <div>
+                    <h3 className="text-sm font-bold text-ink">{t('creation.createSeries')}</h3>
+                    <p className="text-[10px] text-ink-muted mt-0.5">Multiple episodes — same characters each night</p>
+                  </div>
+                </motion.button>
               </div>
-            </motion.button>
-          </div>
+            </>
+          )}
 
           <UpgradeModal open={upgradeOpen} onClose={() => setUpgradeOpen(false)} reason={upgradeReason} />
         </>
