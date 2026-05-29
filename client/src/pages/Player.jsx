@@ -1142,7 +1142,7 @@ function HighlightedText({ text, progress }) {
             ref={isActive ? activeRef : null}
             className={`mb-3 rounded-lg px-2 py-1 transition-all duration-500 ${
               isActive
-                ? 'bg-gold/10 text-ink font-medium ring-1 ring-gold/20'
+                ? 'bg-gold/10 text-ink font-medium ring-2 ring-gold'
                 : isPast
                   ? 'text-ink/70'
                   : 'text-ink-muted/40'
