@@ -347,6 +347,22 @@ const COLLECTION_GRADIENTS = {
   col_toronto: 'linear-gradient(135deg, #991b1b 0%, #dc2626 50%, #fca5a5 100%)',
 };
 
+// Generic bedtime/storytelling images — used when no cover image exists
+const GENERIC_STORY_IMAGES = [
+  'https://images.unsplash.com/photo-1512820790803-83ca734da794?w=600&h=600&fit=crop&q=80', // open book with warm light
+  'https://images.unsplash.com/photo-1524578271613-d550eacf6090?w=600&h=600&fit=crop&q=80', // book pages glowing
+  'https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?w=600&h=600&fit=crop&q=80', // stack of books warm tone
+  'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=600&h=600&fit=crop&q=80', // cozy reading nook
+  'https://images.unsplash.com/photo-1519682337058-a94d519337bc?w=600&h=600&fit=crop&q=80', // fairy lights and books
+  'https://images.unsplash.com/photo-1532012197267-da84d127e765?w=600&h=600&fit=crop&q=80', // book open in nature
+];
+
+export function getGenericStoryImage(storyId) {
+  // Deterministic pick based on story ID so same story always gets same image
+  const hash = (storyId || '').split('').reduce((a, c) => a + c.charCodeAt(0), 0);
+  return GENERIC_STORY_IMAGES[hash % GENERIC_STORY_IMAGES.length];
+}
+
 export function getStoryArt(lessonId) {
   if (STORY_ART[lessonId]) return STORY_ART[lessonId];
 

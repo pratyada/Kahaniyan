@@ -3,7 +3,7 @@ import { useTranslation } from 'react-i18next';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ArrowLeft, X, Share2, Play, Pause, RotateCcw, Loader2, Timer } from 'lucide-react';
-import { getStoryArt } from '../utils/storyArt.js';
+import { getStoryArt, getGenericStoryImage } from '../utils/storyArt.js';
 import { loadSharedStory } from '../utils/shareStory.js';
 import { storage, db, auth } from '../lib/firebase.js';
 
@@ -618,7 +618,7 @@ function PlayerInner() {
   // Resolve the best image for this story
   const lessonKey = current?.id?.startsWith('lesson_') ? current.id.slice(7) : '';
   const storyArtData = current?.id ? getStoryArt(lessonKey) : null;
-  const bgImage = current?.coverImage || wisdomImageUrls[lessonKey] || storyArtData?.image || null;
+  const bgImage = current?.coverImage || wisdomImageUrls[lessonKey] || storyArtData?.image || getGenericStoryImage(current?.id);
 
   const isGenerating = !current;
 

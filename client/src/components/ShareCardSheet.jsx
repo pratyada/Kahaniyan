@@ -7,7 +7,7 @@ import { shareStoryCard, saveCardImage, getStoryShareUrl } from '../utils/cardEx
 import { extractMoral } from '../utils/moralExtractor.js';
 import { useFamilyProfile } from '../hooks/useFamilyProfile.js';
 import { trackStoryCardShared } from '../utils/analytics.js';
-import { getStoryArt } from '../utils/storyArt.js';
+import { getStoryArt, getGenericStoryImage } from '../utils/storyArt.js';
 import { TRADITIONS } from '../data/culturalLessons.js';
 import { useWisdomData } from '../hooks/useWisdomData.js';
 
@@ -100,7 +100,7 @@ export default function ShareCardSheet({ open, onClose, story }) {
         {/* Story image — check coverImage first, then wisdomImageUrls, then art image */}
         {(() => {
           const imgId = story?.id?.startsWith('lesson_') ? story.id.slice(7) : story?.id;
-          const imgUrl = story?.coverImage || wisdomImageUrls?.[imgId] || wisdomImageUrls?.[story?.id] || art?.image;
+          const imgUrl = story?.coverImage || wisdomImageUrls?.[imgId] || wisdomImageUrls?.[story?.id] || art?.image || getGenericStoryImage(story?.id);
           return imgUrl ? (
             <img src={imgUrl} alt="" className="absolute inset-0 h-full w-full object-cover" onError={(e) => { e.target.style.display = 'none'; }} />
           ) : null;
