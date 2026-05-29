@@ -75,12 +75,12 @@ export default function Library() {
 
   const handleGenerateStory = async () => {
     setStoryError(null);
-    if (window.__triggerLogin) {
-      window.__triggerLogin();
-      const { auth } = await import('../lib/firebase.js');
-      if (auth && !auth.currentUser) return;
+    // Must be signed in to generate stories
+    if (!user) {
+      navigate('/login');
+      return;
     }
-    if (!profile) { setStoryError('Profile not loaded.'); return; }
+    if (!profile) { setStoryError('Set up your child\'s profile first.'); navigate('/onboarding'); return; }
     const selectedCharacters = characters.filter(c => selectedCharIds.includes(c.id) || c.relation === 'self');
     clear();
     navigate('/player');
@@ -520,8 +520,9 @@ export default function Library() {
 
             <motion.button whileTap={{ scale: 0.97 }} onClick={handleGenerateStory} disabled={genLoading}
               className="w-full rounded-2xl bg-gold py-4 text-center text-base font-bold text-bg-base shadow-glow disabled:opacity-50">
-              {genLoading ? 'Creating story...' : "Start Tonight's Story"}
+              {genLoading ? 'Creating story...' : user ? "Start Tonight's Story" : "Sign in to Start Tonight's Story"}
             </motion.button>
+            {!user && <p className="mt-2 text-center text-[10px] text-ink-dim">Free account required to generate stories</p>}
           </div>
 
           {/* ── Creator Submissions — admin only ── */}
