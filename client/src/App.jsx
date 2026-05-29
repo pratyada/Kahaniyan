@@ -167,7 +167,7 @@ function Shell() {
         {/* Login popup — appears after 5 seconds if user isn't signed in */}
         <AnimatePresence>
           {showLoginPopup && !isLoginRoute && (
-            <LoginPopup onLogin={() => navigate('/login')} />
+            <LoginPopup onLogin={() => navigate('/login')} onSkip={() => setLoginTriggered(false)} />
           )}
         </AnimatePresence>
       </div>
@@ -175,24 +175,23 @@ function Shell() {
   );
 }
 
-function LoginPopup({ onLogin }) {
+function LoginPopup({ onLogin, onSkip }) {
   return (
     <motion.div
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
-      className="absolute inset-0 z-50 flex items-end justify-center bg-black/80 backdrop-blur-md"
+      className="absolute inset-0 z-50 flex items-center justify-center bg-black/70 backdrop-blur-md px-6"
     >
       <motion.div
-        initial={{ y: '100%' }}
-        animate={{ y: 0 }}
-        exit={{ y: '100%' }}
-        transition={{ type: 'spring', damping: 28, stiffness: 280 }}
-        className="w-full rounded-t-3xl bg-bg-elevated p-6 shadow-lift"
+        initial={{ scale: 0.9, opacity: 0 }}
+        animate={{ scale: 1, opacity: 1 }}
+        exit={{ scale: 0.9, opacity: 0 }}
+        transition={{ type: 'spring', damping: 25, stiffness: 300 }}
+        className="w-full max-w-sm rounded-3xl bg-bg-elevated p-6 shadow-lift ring-1 ring-white/10"
       >
-        <div className="mx-auto mb-4 h-1 w-12 rounded-full bg-white/20" />
-        <div className="mb-4 text-center">
-          <div className="mb-2 text-4xl">🌙</div>
+        <div className="mb-5 text-center">
+          <div className="mb-3 text-5xl">🌙</div>
           <h2 className="font-display text-2xl font-bold text-gold">Sign in to continue</h2>
           <p className="mt-2 text-sm text-ink-muted">
             Create an account or sign in to start your child's bedtime journey.
@@ -203,6 +202,12 @@ function LoginPopup({ onLogin }) {
           className="btn-primary w-full py-4 text-base"
         >
           Sign in / Sign up
+        </button>
+        <button
+          onClick={onSkip}
+          className="mt-3 w-full text-center text-sm text-ink-muted"
+        >
+          Skip — explore first
         </button>
       </motion.div>
     </motion.div>
