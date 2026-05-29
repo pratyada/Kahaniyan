@@ -97,10 +97,10 @@ export default function ShareCardSheet({ open, onClose, story }) {
           position: 'relative',
         }}
       >
-        {/* Story image */}
+        {/* Story image — check coverImage first, then wisdomImageUrls, then art image */}
         {(() => {
           const imgId = story?.id?.startsWith('lesson_') ? story.id.slice(7) : story?.id;
-          const imgUrl = wisdomImageUrls?.[imgId] || wisdomImageUrls?.[story?.id];
+          const imgUrl = story?.coverImage || wisdomImageUrls?.[imgId] || wisdomImageUrls?.[story?.id] || art?.image;
           return imgUrl ? (
             <img src={imgUrl} alt="" className="absolute inset-0 h-full w-full object-cover" onError={(e) => { e.target.style.display = 'none'; }} />
           ) : null;
