@@ -1098,65 +1098,59 @@ function HighlightedText({ text, progress }) {
   const containerRef = useRef(null);
   const activeRef = useRef(null);
 
-  // Split into words, preserving whitespace
-  const words = (text || '').split(/(\s+)/);
-  const totalLen = text.length;
-
-  // No offset — highlight matches audio position exactly
+  // Split text into lines (paragraphs/sentences)
+  const lines = (text || '').split('\n').filter(l => l.trim());
+  const totalChars = text.length;
   const adjusted = Math.min(1, progress);
-  const cutoff = Math.floor(totalLen * adjusted);
 
-  // Auto-scroll to keep active word visible (only within the text container)
+  // Figure out which line is currently being spoken
+  let charsSoFar = 0;
+  let activeLine = 0;
+  for (let i = 0; i < lines.length; i++) {
+    charsSoFar += lines[i].length + 1; // +1 for newline
+    if (charsSoFar / totalChars > adjusted) {
+      activeLine = i;
+      break;
+    }
+    if (i === lines.length - 1) activeLine = i;
+  }
+
+  // Auto-scroll to keep active line visible
   useEffect(() => {
     if (activeRef.current && containerRef.current) {
       const container = containerRef.current;
       const active = activeRef.current;
       const containerRect = container.getBoundingClientRect();
       const activeRect = active.getBoundingClientRect();
-      // Scroll only within this container — don't use scrollIntoView which scrolls parents too
-      if (activeRect.top > containerRect.bottom - 60 || activeRect.bottom < containerRect.top + 20) {
-        const scrollTarget = active.offsetTop - container.offsetTop - container.clientHeight / 2;
+      if (activeRect.top > containerRect.bottom - 80 || activeRect.bottom < containerRect.top + 20) {
+        const scrollTarget = active.offsetTop - container.offsetTop - container.clientHeight / 3;
         container.scrollTo({ top: scrollTarget, behavior: 'smooth' });
       }
     }
-  }, [cutoff]);
-
-  let charCount = 0;
-  let foundActive = false;
+  }, [activeLine]);
 
   return (
-    <div ref={containerRef} className="mt-4 max-h-[45vh] overflow-y-auto rounded-2xl bg-black/30 p-4 font-story text-[15px] leading-[1.9] text-ink-muted/60 ring-1 ring-white/5">
-      {words.map((word, i) => {
-        const start = charCount;
-        charCount += word.length;
+    <div ref={containerRef} className="mt-4 max-h-[45vh] overflow-y-auto rounded-2xl bg-black/30 p-4 font-story text-[15px] leading-[1.9] ring-1 ring-white/5">
+      {lines.map((line, i) => {
+        const isPast = i < activeLine;
+        const isActive = i === activeLine;
+        const isFuture = i > activeLine;
 
-        // Whitespace — render as-is
-        if (/^\s+$/.test(word)) {
-          return <span key={i}>{word}</span>;
-        }
-
-        const isRead = charCount <= cutoff;
-        const isActive = !foundActive && start < cutoff && charCount > cutoff;
-        if (isActive) foundActive = true;
-
-        if (isActive) {
-          return (
-            <span
-              key={i}
-              ref={activeRef}
-              className="rounded px-0.5 text-bg-base font-bold"
-              style={{ backgroundColor: '#f0a500', boxShadow: '0 0 8px rgba(240,165,0,0.4)' }}
-            >
-              {word}
-            </span>
-          );
-        }
-
-        if (isRead) {
-          return <span key={i} className="text-ink">{word}</span>;
-        }
-
-        return <span key={i}>{word}</span>;
+        return (
+          <p
+            key={i}
+            ref={isActive ? activeRef : null}
+            className={`mb-3 rounded-lg px-2 py-1 transition-all duration-500 ${
+              isActive
+                ? 'bg-gold/10 text-ink font-medium ring-1 ring-gold/20'
+                : isPast
+                  ? 'text-ink/70'
+                  : 'text-ink-muted/40'
+            }`}
+          >
+            {line}
+          </p>
+        );
       })}
     </div>
   );
