@@ -415,7 +415,7 @@ export default function Library() {
       {/* Header */}
       <header className="mb-5">
         <h1 className="text-2xl font-bold text-ink" style={{ fontFamily: 'Fraunces, serif' }}>
-          <span className="text-gold">{t('creation.title')}</span>
+          <span className="text-gold">Create</span>
         </h1>
         <p className="mt-1 text-xs text-ink-muted">
           Create stories & series or view your creations
