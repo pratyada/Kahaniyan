@@ -48,6 +48,10 @@ export function AuthProvider({ children }) {
             if (u.photoURL) updates.photoURL = u.photoURL;
             if (u.displayName) updates.displayName = u.displayName;
             setDoc(doc(db, 'users', u.uid), updates, { merge: true }).catch(() => {});
+            // Auto-generate referral code if user doesn't have one
+            import('../utils/referralHelper.js').then(({ ensureReferralCode }) => {
+              ensureReferralCode(u.uid, u.displayName?.split(' ')[0]).catch(() => {});
+            });
           });
         });
       }

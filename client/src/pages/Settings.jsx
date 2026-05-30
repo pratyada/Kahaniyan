@@ -324,6 +324,9 @@ export default function Settings() {
         </div>
       </SectionCard>
 
+      {/* Refer & Earn */}
+      {user && <ReferralSection userId={user.uid} childName={profile?.childName} />}
+
       <SectionCard title={t('settings.content')}>
         <div className="space-y-1.5">
           <MiniToggle
@@ -669,5 +672,74 @@ function CountryProvinceSelector() {
         </div>
       )}
     </section>
+  );
+}
+
+function ReferralSection({ userId, childName }) {
+  const [stats, setStats] = useState(null);
+  const [copied, setCopied] = useState(false);
+
+  useEffect(() => {
+    if (!userId) return;
+    import('../utils/referralHelper.js').then(async ({ getReferralStats, ensureReferralCode }) => {
+      await ensureReferralCode(userId, childName);
+      const s = await getReferralStats(userId);
+      setStats(s);
+    }).catch(() => {});
+  }, [userId, childName]);
+
+  if (!stats?.code) return null;
+
+  const shareText = `Join My Sleepy Tale — personalized bedtime stories for your child! Use my code: ${stats.code}\nhttps://mysleepytale.com/login`;
+
+  const handleShare = async () => {
+    if (navigator.share) {
+      try { await navigator.share({ title: 'My Sleepy Tale', text: shareText }); } catch {}
+    } else {
+      await navigator.clipboard.writeText(shareText);
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2000);
+    }
+  };
+
+  const handleCopy = async () => {
+    await navigator.clipboard.writeText(stats.code);
+    setCopied(true);
+    setTimeout(() => setCopied(false), 2000);
+  };
+
+  return (
+    <SectionCard title="🎁 Refer & Earn">
+      <div className="rounded-2xl bg-gold/10 p-4 ring-1 ring-gold/20 mb-3">
+        <p className="text-[10px] uppercase tracking-wider text-gold font-bold mb-2">Your Referral Code</p>
+        <div className="flex items-center gap-2">
+          <div className="flex-1 rounded-xl bg-bg-base px-4 py-3 text-center text-lg font-bold tracking-[0.2em] text-gold ring-1 ring-white/10">
+            {stats.code}
+          </div>
+          <button onClick={handleCopy} className="rounded-xl bg-gold px-4 py-3 text-sm font-bold text-bg-base">
+            {copied ? '✓' : 'Copy'}
+          </button>
+        </div>
+      </div>
+
+      <div className="grid grid-cols-2 gap-2 mb-3">
+        <div className="rounded-xl bg-bg-surface p-3 text-center ring-1 ring-white/5">
+          <div className="text-xl font-bold text-gold">{stats.count}</div>
+          <div className="text-[9px] text-ink-muted uppercase tracking-wider">Referrals</div>
+        </div>
+        <div className="rounded-xl bg-bg-surface p-3 text-center ring-1 ring-white/5">
+          <div className="text-xl font-bold text-gold">{stats.credits}</div>
+          <div className="text-[9px] text-ink-muted uppercase tracking-wider">Credits</div>
+        </div>
+      </div>
+
+      <button onClick={handleShare}
+        className="w-full rounded-2xl bg-gold py-3 text-center text-sm font-bold text-bg-base">
+        Share with friends & family
+      </button>
+      <p className="mt-2 text-center text-[9px] text-ink-dim">
+        Earn 5 credits per signup · 25 credits per subscription
+      </p>
+    </SectionCard>
   );
 }

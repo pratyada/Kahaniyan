@@ -13,6 +13,7 @@ export default function Login() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [name, setName] = useState('');
+  const [referralCode, setReferralCode] = useState('');
   const [busy, setBusy] = useState(false);
   const [resetSent, setResetSent] = useState(false);
   const [verifyMsg, setVerifyMsg] = useState('');
@@ -32,7 +33,14 @@ export default function Login() {
         await resetPassword(email);
         setResetSent(true);
       } else if (mode === 'signup') {
-        await signupEmail(email, password, name);
+        const userCred = await signupEmail(email, password, name);
+        // Apply referral code if entered
+        if (referralCode.trim() && userCred?.user?.uid) {
+          try {
+            const { applyReferralCode } = await import('../utils/referralHelper.js');
+            await applyReferralCode(referralCode.trim(), userCred.user.uid);
+          } catch {}
+        }
         setVerifyMsg(t('login.verificationSent'));
         navigate('/');
       } else {
@@ -49,7 +57,14 @@ export default function Login() {
   const handleGoogle = async () => {
     setBusy(true);
     try {
-      await loginGoogle();
+      const result = await loginGoogle();
+      // Apply referral code if entered
+      if (referralCode.trim() && result?.user?.uid) {
+        try {
+          const { applyReferralCode } = await import('../utils/referralHelper.js');
+          await applyReferralCode(referralCode.trim(), result.user.uid);
+        } catch {}
+      }
       navigate('/');
     } catch {
       // error set by hook
@@ -77,6 +92,18 @@ export default function Login() {
           <div className="mb-2 text-5xl">🌙</div>
           <h1 className="font-display text-3xl font-bold text-gold">My Sleepy Tale</h1>
           <p className="mt-1 text-sm text-ink-muted">Bedtime stories that grow with your child</p>
+        </motion.div>
+
+        {/* Referral code — always visible */}
+        <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.05 }} className="mb-4">
+          <input
+            type="text"
+            placeholder="Referral code (optional)"
+            value={referralCode}
+            onChange={(e) => setReferralCode(e.target.value.toUpperCase())}
+            className="w-full rounded-pill bg-white/5 px-5 py-3 text-center text-sm text-ink font-bold tracking-widest outline-none ring-1 ring-white/10 placeholder:text-ink-dim placeholder:tracking-normal placeholder:font-normal focus:ring-gold/40"
+            autoComplete="off"
+          />
         </motion.div>
 
         {/* Google sign-in — primary CTA */}
@@ -113,14 +140,25 @@ export default function Login() {
           className="space-y-3"
         >
           {mode === 'signup' && (
-            <input
-              type="text"
-              placeholder="Your name"
-              value={name}
-              onChange={(e) => setName(e.target.value)}
-              className="field"
-              autoComplete="name"
-            />
+            <>
+              <input
+                type="text"
+                placeholder="Your name"
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+                className="field"
+                autoComplete="name"
+              />
+              <input
+                type="text"
+                placeholder="Referral code (optional)"
+                value={referralCode}
+                onChange={(e) => setReferralCode(e.target.value.toUpperCase())}
+                className="field"
+                autoComplete="off"
+                style={{ letterSpacing: '0.1em' }}
+              />
+            </>
           )}
           <input
             type="email"
