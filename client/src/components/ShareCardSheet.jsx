@@ -105,10 +105,10 @@ export default function ShareCardSheet({ open, onClose, story }) {
             <img src={imgUrl} alt="" className="absolute inset-0 h-full w-full object-cover" onError={(e) => { e.target.style.display = 'none'; }} />
           ) : null;
         })()}
-        {/* Dark overlay */}
+        {/* Dark overlay — strong enough for text readability */}
         <div style={{
           position: 'absolute', inset: 0,
-          background: 'linear-gradient(180deg, rgba(0,0,0,0.1) 0%, rgba(10,10,15,0.85) 60%, rgba(10,10,15,0.98) 100%)',
+          background: 'linear-gradient(180deg, rgba(0,0,0,0.15) 0%, rgba(0,0,0,0.4) 40%, rgba(10,10,15,0.92) 65%, rgba(10,10,15,1) 100%)',
         }} />
 
         {/* Play icon */}
@@ -125,12 +125,12 @@ export default function ShareCardSheet({ open, onClose, story }) {
         )}
 
         {/* Bottom content */}
-        <div className="absolute bottom-0 left-0 right-0 p-4">
-          <h3 className="text-base font-bold text-white leading-tight mb-2" style={{ fontFamily: 'Fraunces, serif' }}>
+        <div className="absolute bottom-0 left-0 right-0 p-5">
+          <h3 className="text-lg font-bold text-white leading-snug mb-2" style={{ fontFamily: 'Fraunces, serif', textShadow: '0 2px 8px rgba(0,0,0,0.8)' }}>
             {story?.title}
           </h3>
           {shortMoral && (
-            <p className="text-[10px] text-white/60 leading-relaxed line-clamp-2 mb-2 italic">
+            <p className="text-[11px] text-white/80 leading-relaxed line-clamp-2 mb-2 italic" style={{ textShadow: '0 1px 4px rgba(0,0,0,0.6)' }}>
               "{shortMoral}"
             </p>
           )}
