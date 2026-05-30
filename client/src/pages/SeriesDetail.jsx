@@ -108,11 +108,12 @@ export default function SeriesDetail() {
   // Find next episode to play
   const nextEpisode = series.episodes.find((ep) => !isEpisodeComplete(series.id, ep.id));
 
-  // Collect all gallery + cover images across episodes for collage
+  // Collect all images — uploaded gallery first, then AI covers as fallback
   const allPhotos = series.episodes.flatMap(ep => {
     const gallery = galleryImages[ep.id] || [];
     const cover = coverImages[ep.id];
-    return cover && !gallery.includes(cover) ? [cover, ...gallery] : gallery;
+    // Gallery (uploaded) takes priority, AI cover only if no gallery
+    return gallery.length > 0 ? gallery : cover ? [cover] : [];
   });
 
   return (
