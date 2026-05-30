@@ -128,6 +128,38 @@ export async function loadSharedStory(storyId) {
     }
   } catch {}
 
+  // Check collection stories
+  try {
+    const { COLLECTIONS } = await import('../data/collections.js');
+    for (const col of COLLECTIONS) {
+      const story = col.stories.find(s => s.id === storyId || s.id === lessonId);
+      if (story) {
+        let audioUrl = null;
+        if (db) {
+          try {
+            const audioSnap = await getDoc(doc(db, 'config', 'wisdomAudio'));
+            if (audioSnap.exists()) audioUrl = audioSnap.data()[story.id] || null;
+          } catch {}
+        }
+        return {
+          id: story.id,
+          title: story.title,
+          text: story.body,
+          wordCount: (story.body || '').split(/\s+/).length,
+          estimatedMinutes: story.durationMinutes,
+          value: story.theme || 'kindness',
+          language: 'English',
+          voice: 'AI Narrator',
+          tradition: story.tradition,
+          source: story.source || col.title,
+          createdAt: new Date().toISOString(),
+          isWisdom: true,
+          audioUrl,
+        };
+      }
+    }
+  } catch {}
+
   // Last resort: check Firestore shared stories (user-generated stories)
   if (db) {
     try {
