@@ -234,24 +234,30 @@ export default function Home() {
       <MorningRecapShelf />
 
       {/* ═══ EPISODES VIEW ═══ */}
-      {viewMode === 'episodes' && (<>
-        {/* Hero slider */}
-        <HeroSlider stories={featuredStories} wisdomImageUrls={wisdomImageUrls} onPlay={handlePlay} />
+      {viewMode === 'episodes' && (() => {
+        const shownIds = new Set();
+        const dedupe = (stories) => stories.filter(s => { if (shownIds.has(s.id)) return false; shownIds.add(s.id); return true; });
+        const featuredDeduped = dedupe(featuredStories);
+        const tonightDeduped = dedupe(tonightPicks);
+        return (<>
+          {/* Hero slider */}
+          <HeroSlider stories={featuredDeduped} wisdomImageUrls={wisdomImageUrls} onPlay={handlePlay} />
 
-        {/* 1. Tonight's Picks */}
-        {tonightPicks.length > 0 && (
-          <ShelfSection title={`✨ Tonight's Picks for ${user ? (profile?.childName || 'You') : 'You'}`}>
-            <ShelfRow>
-              {tonightPicks.map((lesson) => (
-                <StoryTile key={lesson.id} lesson={lesson} imageUrl={wisdomImageUrls[lesson.id]} onPlay={handlePlay} />
-              ))}
-            </ShelfRow>
-          </ShelfSection>
-        )}
+          {/* 1. Tonight's Picks */}
+          {tonightDeduped.length > 0 && (
+            <ShelfSection title={`✨ Tonight's Picks for ${user ? (profile?.childName || 'You') : 'You'}`}>
+              <ShelfRow>
+                {tonightDeduped.map((lesson) => (
+                  <StoryTile key={lesson.id} lesson={lesson} imageUrl={wisdomImageUrls[lesson.id]} onPlay={handlePlay} />
+                ))}
+              </ShelfRow>
+            </ShelfSection>
+          )}
 
-        {/* 2. Trending */}
-        <TrendingShelf allLessons={allLessons} wisdomImageUrls={wisdomImageUrls} onPlay={handlePlay} />
-      </>)}
+          {/* 2. Trending */}
+          <TrendingShelf allLessons={allLessons} wisdomImageUrls={wisdomImageUrls} onPlay={handlePlay} shownIds={shownIds} />
+        </>);
+      })()}
 
       {/* ═══ SERIES VIEW — Netflix-style category shelves ═══ */}
       {viewMode === 'series' && (

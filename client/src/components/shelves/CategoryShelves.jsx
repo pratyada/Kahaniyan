@@ -58,13 +58,21 @@ export default function CategoryShelves({ wisdomImageUrls }) {
     return null;
   };
 
+  // Track shown series/collections to prevent repeats across categories
+  const shownSeriesIds = useMemo(() => new Set(), []);
+  const shownColIds = useMemo(() => new Set(), []);
+
   return (
     <>
-      {categoryData.map(cat => (
+      {categoryData.map(cat => {
+        const uniqueSeries = cat.series.filter(s => { if (shownSeriesIds.has(s.id)) return false; shownSeriesIds.add(s.id); return true; });
+        const uniqueCollections = cat.collections.filter(c => { if (shownColIds.has(c.id)) return false; shownColIds.add(c.id); return true; });
+        if (uniqueSeries.length + uniqueCollections.length === 0) return null;
+        return (
         <ShelfSection key={cat.key} title={cat.label}>
           <ShelfRow>
             {/* Series cards */}
-            {cat.series.map(s => (
+            {uniqueSeries.map(s => (
               <SeriesCard
                 key={s.id}
                 series={s}
@@ -73,7 +81,7 @@ export default function CategoryShelves({ wisdomImageUrls }) {
               />
             ))}
             {/* Collection cards */}
-            {cat.collections.map(col => (
+            {uniqueCollections.map(col => (
               <button
                 key={col.id}
                 onClick={() => navigate(`/collection/${col.id}`)}
@@ -96,7 +104,8 @@ export default function CategoryShelves({ wisdomImageUrls }) {
             ))}
           </ShelfRow>
         </ShelfSection>
-      ))}
+        );
+      })}
     </>
   );
 }
