@@ -22,7 +22,7 @@ export default async function handler(req, res) {
         model: 'gpt-image-1',
         prompt: `Children's bedtime storybook illustration, soft watercolor style, warm dreamy colors, no text or words anywhere in the image: ${prompt}`,
         n: 1,
-        size: '512x512',
+        size: '1024x1024',
         quality: 'low',
       }),
     });
