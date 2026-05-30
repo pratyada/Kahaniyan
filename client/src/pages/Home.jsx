@@ -2,7 +2,7 @@
 
 import { useMemo, useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useNavigate, useParams, useSearchParams } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import PageTransition from '../components/PageTransition.jsx';
 import HeroSlider from '../components/HeroSlider.jsx';
@@ -37,6 +37,8 @@ export default function Home() {
   const { user } = useAuth();
   const { wisdomAudioUrls, wisdomImageUrls, allLessons, loading: dataLoading } = useWisdomData();
   const COLLECTIONS = useLocalizedCollections();
+  const [searchParams] = useSearchParams();
+  const cultureFilter = searchParams.get('culture'); // e.g. ?culture=hindu
 
   const [viewMode, setViewMode] = useState('episodes'); // 'episodes' | 'series'
   const [activeTheme, setActiveTheme] = useState('compassion-animals');
@@ -65,8 +67,12 @@ export default function Home() {
   const beliefs = profile?.beliefs || [];
   const age = profile?.age || 6;
 
-  // Filter: guests/universal see only universal stories, belief users see their tradition + universal
+  // Filter: URL culture param overrides profile beliefs
   const filterByBelief = (lesson) => {
+    // URL culture filter — show that culture + universal
+    if (cultureFilter) {
+      return lesson.tradition === cultureFilter || lesson.tradition === 'universal';
+    }
     if (beliefs.length > 0 && !beliefs.includes('universal')) {
       return beliefs.includes(lesson.tradition) || lesson.tradition === 'universal';
     }
@@ -185,6 +191,19 @@ export default function Home() {
           A story for <span className="text-gold">{user ? (profile?.childName || 'your child') : 'your child'}</span>
         </h1>
       </motion.header>
+
+      {/* Culture filter banner */}
+      {cultureFilter && (
+        <div className="mb-5 flex items-center justify-between rounded-2xl bg-gold/10 px-4 py-3 ring-1 ring-gold/20">
+          <div>
+            <p className="text-xs font-bold text-gold capitalize">{cultureFilter} Stories</p>
+            <p className="text-[10px] text-ink-muted">Showing stories from {cultureFilter} tradition</p>
+          </div>
+          <button onClick={() => navigate('/')} className="rounded-full bg-bg-surface px-3 py-1 text-[10px] font-bold text-ink-muted ring-1 ring-white/10">
+            Show All
+          </button>
+        </div>
+      )}
 
       {/* Streak + Badges */}
       <StreakBadge />
