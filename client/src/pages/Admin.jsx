@@ -692,7 +692,13 @@ export default function Admin() {
         {tab === 'feedback' && <CuratorSubmissionsPanel />}
 
         {/* ═══ SETTINGS ═══ */}
-        {tab === 'users' && <StoryLab showSettingsTabs />}
+        {tab === 'users' && (
+          <>
+            <AdminManagement />
+            <div className="mt-6" />
+            <StoryLab showSettingsTabs />
+          </>
+        )}
 
         {/* ═══ USAGE & COSTS ═══ */}
         {tab === 'usage' && (
@@ -1958,6 +1964,72 @@ function UserStoriesAdmin() {
           )}
         </div>
       ))}
+    </div>
+  );
+}
+
+function AdminManagement() {
+  const [admins, setAdmins] = useState([]);
+  const [newEmail, setNewEmail] = useState('');
+  const [saving, setSaving] = useState(false);
+
+  useEffect(() => {
+    (async () => {
+      try {
+        const { doc: fdoc, getDoc } = await import('firebase/firestore');
+        const snap = await getDoc(fdoc(db, 'config', 'app'));
+        if (snap.exists()) setAdmins(snap.data().adminEmails || []);
+      } catch {}
+    })();
+  }, []);
+
+  const addAdmin = async () => {
+    const email = newEmail.trim().toLowerCase();
+    if (!email || admins.includes(email)) return;
+    setSaving(true);
+    try {
+      const next = [...admins, email];
+      const { doc: fdoc, setDoc: fset } = await import('firebase/firestore');
+      await fset(fdoc(db, 'config', 'app'), { adminEmails: next }, { merge: true });
+      setAdmins(next);
+      setNewEmail('');
+    } catch (e) { alert('Failed: ' + e.message); }
+    setSaving(false);
+  };
+
+  const removeAdmin = async (email) => {
+    if (!confirm(`Remove ${email} as admin?`)) return;
+    const next = admins.filter(e => e !== email);
+    try {
+      const { doc: fdoc, setDoc: fset } = await import('firebase/firestore');
+      await fset(fdoc(db, 'config', 'app'), { adminEmails: next }, { merge: true });
+      setAdmins(next);
+    } catch (e) { alert('Failed: ' + e.message); }
+  };
+
+  return (
+    <div className="rounded-xl bg-[#1a1a28] p-4 ring-1 ring-white/5">
+      <h3 className="text-sm font-bold text-[#f5f0e8] mb-3">👑 Admin Users</h3>
+      <div className="space-y-2 mb-3">
+        {admins.map(email => (
+          <div key={email} className="flex items-center justify-between rounded-lg bg-[#0f0f17] px-3 py-2">
+            <span className="text-xs text-[#f5f0e8]">{email}</span>
+            <button onClick={() => removeAdmin(email)} className="text-[10px] text-red-400/60 hover:text-red-400">Remove</button>
+          </div>
+        ))}
+      </div>
+      <div className="flex gap-2">
+        <input
+          value={newEmail}
+          onChange={(e) => setNewEmail(e.target.value)}
+          placeholder="email@example.com"
+          className="flex-1 rounded-lg bg-[#0f0f17] px-3 py-2 text-xs text-[#f5f0e8] outline-none ring-1 ring-white/10 placeholder:text-[#6e6a63]"
+          onKeyDown={(e) => e.key === 'Enter' && addAdmin()}
+        />
+        <button onClick={addAdmin} disabled={saving} className="rounded-lg bg-[#7ad9a1]/10 px-4 py-2 text-[10px] font-bold text-[#7ad9a1] disabled:opacity-30">
+          {saving ? '...' : '+ Add'}
+        </button>
+      </div>
     </div>
   );
 }

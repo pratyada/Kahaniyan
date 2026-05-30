@@ -8,7 +8,7 @@ import { Moon, Feather, Radio, BookOpen, User, Sparkles } from 'lucide-react';
 
 const TAB_KEYS = [
   { to: '/', key: 'home', Icon: Moon },
-  { to: '/creation', key: 'creation', Icon: Feather },
+  { to: '/creation', key: 'creation', Icon: Feather, labelOverride: 'Create' },
   { to: '/radio', key: 'radio', Icon: Radio },
   { to: '/blog', key: 'blog', Icon: BookOpen },
 ];
@@ -30,7 +30,7 @@ export default function BottomNav() {
   const initials = getInitials(user);
   const hostname = window.location.hostname;
   const isSubdomain = hostname.endsWith('.mysleepytale.com');
-  const tabs = TAB_KEYS.map(tab => ({ ...tab, label: t(`nav.${tab.key}`) }));
+  const tabs = TAB_KEYS.map(tab => ({ ...tab, label: tab.labelOverride || t(`nav.${tab.key}`) }));
 
   const [collapsed, setCollapsed] = useState(() => {
     try { return localStorage.getItem('sidebar-collapsed') === '1'; } catch { return false; }
