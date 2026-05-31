@@ -152,6 +152,15 @@ function SharedStoryGate() {
   const [status, setStatus] = useState(sharedStoryId ? 'loading' : 'ready');
   const loadedRef = useRef(false);
 
+  // If storyId is actually a series slug, redirect to series page
+  useEffect(() => {
+    if (!sharedStoryId) return;
+    import('../data/series.js').then(({ SERIES }) => {
+      const match = SERIES.find(s => s.id === sharedStoryId);
+      if (match) navigate(`/series/${match.id}`, { replace: true });
+    }).catch(() => {});
+  }, [sharedStoryId, navigate]);
+
   useEffect(() => {
     if (!sharedStoryId || loadedRef.current) return;
     loadedRef.current = true;

@@ -264,6 +264,7 @@ export default function Home() {
         <CategoryShelves wisdomImageUrls={wisdomImageUrls} />
       )}
 
+      {viewMode === 'episodes' && (<>
       {/* 3. Browse by Value — interactive filter */}
       <section className="mb-6">
         <h3 className="mb-3 text-sm font-bold text-ink" style={{ fontFamily: 'Fraunces, serif' }}>
@@ -305,7 +306,8 @@ export default function Home() {
           ))}
 
       {/* Series shelf at bottom (episodes view) */}
-      {viewMode === 'episodes' && <SeriesShelf />}
+      <SeriesShelf />
+      </>)}
 
       {/* Our Creators — always at bottom */}
       <CuratorShelf />
