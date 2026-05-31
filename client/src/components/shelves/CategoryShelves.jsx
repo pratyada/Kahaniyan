@@ -58,15 +58,22 @@ export default function CategoryShelves({ wisdomImageUrls }) {
     return null;
   };
 
-  // Track shown series/collections to prevent repeats across categories
-  const shownSeriesIds = useMemo(() => new Set(), []);
-  const shownColIds = useMemo(() => new Set(), []);
+  // Deduplicate series/collections across categories (rebuilt each render)
+  const { deduped } = useMemo(() => {
+    const seenSeries = new Set();
+    const seenCols = new Set();
+    const result = categoryData.map(cat => {
+      const uniqueSeries = cat.series.filter(s => { if (seenSeries.has(s.id)) return false; seenSeries.add(s.id); return true; });
+      const uniqueCollections = cat.collections.filter(c => { if (seenCols.has(c.id)) return false; seenCols.add(c.id); return true; });
+      return { ...cat, uniqueSeries, uniqueCollections };
+    }).filter(cat => cat.uniqueSeries.length + cat.uniqueCollections.length > 0);
+    return { deduped: result };
+  }, [categoryData]);
 
   return (
     <>
-      {categoryData.map(cat => {
-        const uniqueSeries = cat.series.filter(s => { if (shownSeriesIds.has(s.id)) return false; shownSeriesIds.add(s.id); return true; });
-        const uniqueCollections = cat.collections.filter(c => { if (shownColIds.has(c.id)) return false; shownColIds.add(c.id); return true; });
+      {deduped.map(cat => {
+        const { uniqueSeries, uniqueCollections } = cat;
         if (uniqueSeries.length + uniqueCollections.length === 0) return null;
         return (
         <ShelfSection key={cat.key} title={cat.label}>
