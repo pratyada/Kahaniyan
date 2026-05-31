@@ -23,6 +23,8 @@ async function cacheAudioToStorage(storyId, blob) {
     // Save URL to sharedStories (so shared links play instantly)
     if (db) {
       setDoc(doc(db, 'sharedStories', storyId), { audioUrl }, { merge: true }).catch(() => {});
+      // Also save to global audio cache so all users get it instantly
+      setDoc(doc(db, 'config', 'wisdomAudio'), { [storyId]: audioUrl }, { merge: true }).catch(() => {});
     }
     // Save URL to user's library in Firestore
     const uid = auth?.currentUser?.uid;
