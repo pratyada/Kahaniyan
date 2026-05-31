@@ -2254,7 +2254,7 @@ That night, {childName}, remember Zain's Measurement Mission. The world is full 
     title: 'Planets & Stars',
     icon: '🪐',
     gradient: 'linear-gradient(135deg, #2e1065 0%, #7c3aed 50%, #fbbf24 100%)',
-    description: 'Each planet has a personality and a lesson — new stories from across the solar system.',
+    description: 'Why does the Moon glow? Why is Mars red? Each planet has a personality, a story, and a life lesson — bedtime tales from across the solar system.',
     ageRange: '3-7',
     totalEpisodes: 5,
     episodes: [

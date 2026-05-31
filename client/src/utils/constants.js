@@ -51,6 +51,7 @@ export const RELIGIONS = [
   { key: 'hispanic', label: 'Hispanic / Latino', icon: '🌺' },
   { key: 'catholic', label: 'Catholic', icon: '⛪' },
   { key: 'filipino', label: 'Filipino', icon: '🇵🇭' },
+  { key: 'chinese', label: 'Chinese', icon: '🇨🇳' },
   { key: 'hindu', label: 'Hinduism', icon: '🕉️' },
   { key: 'muslim', label: 'Islam', icon: '☪️' },
   { key: 'christian', label: 'Christianity', icon: '✝️' },

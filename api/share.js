@@ -126,6 +126,13 @@ const TITLES = {
   // Series (whole series, not individual episodes)
   'rainbow-kindergarten-jlps-yr25-26': { title: 'Rainbow Kindergarten Adventures', tradition: 'Universal', duration: null, isSeries: true, totalEp: 3, description: 'The Rainbow batch from JLPS explores Toronto — shapes at Canoe Landing, a concert, and the Brick Works field trip.', firstEpId: 'rk_ep1_canoe', seriesUrl: '/series/rainbow-kindergarten-jlps-yr25-26' },
   'dr-spock-parenting': { title: 'Dr. Spock Says', tradition: 'Universal', duration: null, isSeries: true, totalEp: 5, description: 'Five bedtime conversations with Dr. Spock about raising 3-to-5-year-olds.', firstEpId: 'dsp_ep1_development', seriesUrl: '/series/dr-spock-parenting' },
+  'planets-and-stars': { title: 'Planets & Stars', tradition: 'Universal', duration: null, isSeries: true, totalEp: 5, description: 'Why does the Moon glow? Why is Mars red? Each planet has a personality, a story, and a life lesson — bedtime tales from across the solar system.', firstEpId: 'ps_ep1_moon', seriesUrl: '/series/planets-and-stars' },
+  // Series — Planets & Stars episodes
+  ps_ep1_moon: { title: 'Why the Moon Glows', tradition: 'Universal', duration: 5, series: 'Planets & Stars', ep: 1, totalEp: 5 },
+  ps_ep2_mars: { title: 'Mars — The Planet That Lost Everything', tradition: 'Universal', duration: 5, series: 'Planets & Stars', ep: 2, totalEp: 5 },
+  ps_ep3_jupiter: { title: 'Jupiter and the Great Red Spot', tradition: 'Universal', duration: 5, series: 'Planets & Stars', ep: 3, totalEp: 5 },
+  ps_ep4_saturn: { title: 'Saturn and Her Rings of Lost Things', tradition: 'Universal', duration: 5, series: 'Planets & Stars', ep: 4, totalEp: 5 },
+  ps_ep5_pluto: { title: 'Pluto — Too Small, Too Far, Too Loved', tradition: 'Universal', duration: 5, series: 'Planets & Stars', ep: 5, totalEp: 5 },
   // Collections
   col_fire_truck: { title: 'The Bravest Fire Truck', tradition: 'Universal', duration: 4 },
   col_dog: { title: 'The Loyal Dog', tradition: 'Universal', duration: 4 },

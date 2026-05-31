@@ -3149,6 +3149,8 @@ export const TRADITIONS = [
   { key: 'jewish', label: 'Judaism', icon: '✡️' },
   { key: 'hispanic', label: 'Hispanic / Latino', icon: '🌺' },
   { key: 'catholic', label: 'Catholic', icon: '⛪' },
+  { key: 'filipino', label: 'Filipino', icon: '🇵🇭' },
+  { key: 'chinese', label: 'Chinese', icon: '🇨🇳' },
   { key: 'universal', label: 'Universal', icon: '🌍' },
 ];
 
@@ -3165,6 +3167,520 @@ export const THEMES = [
   { key: 'respect', label: 'Respect', icon: '🌳' },
   { key: 'bravery', label: 'Bravery', icon: '⚔️' },
 ];
+
+// Filipino stories — appended to CULTURAL_LESSONS below
+CULTURAL_LESSONS.push(
+  {
+    id: 'fil_maria_makiling',
+    tradition: 'filipino',
+    theme: 'compassion-animals',
+    title: 'Maria Makiling — Guardian of the Mountain',
+    durationMinutes: 5,
+    source: 'Filipino folklore · Laguna tradition',
+    body: `High above the province of Laguna, where the clouds rest on treetops like soft pillows, there lives a gentle spirit named Maria Makiling. She is the guardian of Mount Makiling — the mountain shaped like a sleeping woman.
+
+Every morning, Maria walks through her forest. She tends to the wounded deer, feeds the tired birds, and fills the streams with cool, sweet water. The farmers at the foot of the mountain always find extra fruit in their baskets — mangoes, guavas, and lanzones that were not there before. Maria leaves them as gifts, asking for nothing in return.
+
+One day, a young carabao wandered away from its farmer and got lost in the thick forest. It was tired, hungry, and scared. The carabao called out, but no one answered.
+
+Then the trees began to glow — soft golden light, like fireflies made of sunlight. Maria appeared. She did not speak, but she gently touched the carabao's nose. The animal stopped trembling. She led it along a hidden path, through ferns that parted like curtains, past streams that sang like lullabies.
+
+By evening, the carabao was home. The farmer found his animal resting peacefully, with a garland of sampaguita flowers around its neck. He looked up at the mountain and whispered, "Salamat, Maria." Thank you.
+
+The mountain seemed to smile.
+
+That night, {childName}, remember Maria Makiling. The kindest people are often the ones you never see — they help quietly, leave gifts without asking for thanks, and take care of the world when nobody is watching. You can be like Maria. A quiet act of kindness is still the loudest thing in the room.`
+  },
+  {
+    id: 'fil_monkey_turtle',
+    tradition: 'filipino',
+    theme: 'patience',
+    title: 'The Monkey and the Turtle',
+    durationMinutes: 5,
+    source: 'Filipino fable · Visayan tradition',
+    body: `Once, a monkey and a turtle found a banana tree floating down the river. "Let us share it!" said the turtle. They split the tree in two — the monkey took the top half with the green leaves, and the turtle took the bottom half with the roots.
+
+The monkey laughed. "I got the better half! Look at my beautiful leaves!" He planted his half and waited. But the leaves wilted. No fruit came.
+
+The turtle planted her half quietly. She watered it every day. She waited. And waited. Days turned to weeks. Weeks turned to months.
+
+Then one morning — tiny green bananas appeared. They grew bigger. They turned yellow. The sweetest bananas anyone had ever tasted.
+
+The monkey came running. "Share with me! Please!" The turtle looked at him for a long time. Then she smiled. "Of course. That is what friends do."
+
+She shared her bananas — not because she had to, but because kindness does not keep score.
+
+The monkey felt something warm in his chest. Not from the banana. From the shame of laughing, and the relief of being forgiven.
+
+That night, {childName}, remember the turtle. The best things in life grow slowly. The person who waters their roots every day — even when nothing is happening — is the one who eats the sweetest fruit. Patience is not waiting for something to happen. It is doing the small work every day, trusting that it will.`
+  },
+  {
+    id: 'fil_bayanihan',
+    tradition: 'filipino',
+    theme: 'sharing',
+    title: 'Bayanihan — The House That Moved',
+    durationMinutes: 5,
+    source: 'Filipino tradition · Bayanihan spirit',
+    body: `In a small barrio in the Philippines, Lola Nena needed to move her bahay kubo — her little nipa hut — to a new spot by the river where the soil was better for her garden.
+
+But Lola Nena was old. She could not carry a house by herself.
+
+So she cooked a big pot of sinigang. She made rice. She set out plates on a long wooden table under the mango tree. And she invited the whole barangay.
+
+They came. Every single neighbor. Men, women, children. They ate together first — because in the Philippines, you always eat before you work.
+
+Then they all stood around the little bahay kubo. Twenty people. Thirty. They bent down, grabbed the bamboo poles underneath, and together — together — they lifted the house off the ground.
+
+They carried it. Down the path, past the church, across the stream, to the new spot by the river. Laughing the whole way.
+
+No one was paid. No one was asked twice. This is bayanihan — the Filipino spirit of helping your neighbor, not because you have to, but because that is what community means.
+
+When the house was set down in its new home, Lola Nena smiled and said, "The house is light when many hands carry it."
+
+That night, {childName}, remember bayanihan. No problem is too heavy when your community lifts it together. And always — always — feed people first.`
+  },
+  {
+    id: 'fil_alitaptap',
+    tradition: 'filipino',
+    theme: 'courage',
+    title: 'Alitaptap — The Legend of the Firefly',
+    durationMinutes: 5,
+    source: 'Filipino folklore · Tagalog legend',
+    body: `Long ago, when the nights were completely dark — no streetlights, no candles, no lanterns — a tiny insect named Alitaptap wanted to help.
+
+"The children are scared of the dark," Alitaptap said. "I want to make light."
+
+The other insects laughed. "You are the smallest creature in the forest! How can YOU make light? That is the sun's job. That is the moon's job. Not yours."
+
+But Alitaptap did not listen to the laughter. Every night, she tried. She flapped her wings harder. She buzzed louder. She wished with all her tiny heart.
+
+One night — a glow. Just a flicker. A tiny golden light on her belly. It lasted for one second.
+
+She tried again. Two seconds. Then five. Then the light stayed — soft, warm, steady. Like a little lantern made of hope.
+
+The other insects gasped. "How did you do that?"
+
+"I just kept trying," said Alitaptap. "Every night. Even when nothing happened."
+
+Soon, other alitaptap learned to glow too. And the dark forest filled with hundreds of tiny floating lights — turning the scary darkness into something magical.
+
+The children stopped being afraid. They ran outside and chased the fireflies, laughing, catching the light in their cupped hands and letting it go again.
+
+That night, {childName}, remember Alitaptap. You do not need to be big to bring light. You do not need permission to be brave. Sometimes the smallest glow in the darkest night is the most beautiful thing anyone has ever seen.`
+  },
+  {
+    id: 'fil_malakas_maganda',
+    tradition: 'filipino',
+    theme: 'bravery',
+    title: 'Malakas and Maganda — Born from Bamboo',
+    durationMinutes: 5,
+    source: 'Filipino creation myth · Tagalog tradition',
+    body: `In the very beginning, there was only sky, sea, and a single bird — a beautiful sarimanok that flew endlessly between them, looking for a place to rest.
+
+The bird grew tired. So tired. It started a quarrel between the sky and the sea, making the sea throw waves at the sky. The sky, angry, threw rocks and islands into the sea. And finally — land appeared.
+
+On the new land, a single bamboo grew. Tall, strong, green. The wind blew through it, making music — a gentle humming sound like a lullaby.
+
+One day, the bamboo cracked open. And from inside, two people stepped out. The first was Malakas — whose name means "strong." The second was Maganda — whose name means "beautiful."
+
+They looked at each other. They looked at the islands around them — seven thousand islands! Green mountains, blue waters, white sand. And they were not afraid.
+
+Malakas said, "We will take care of this place." Maganda said, "We will take care of each other."
+
+And together they walked barefoot across the warm sand, exploring every island, naming every tree, tasting every fruit. They were brave — not because they were not scared, but because everything was new and they chose to step forward anyway.
+
+That night, {childName}, remember Malakas and Maganda. You came into this world just like them — stepping into something brand new, not knowing what comes next. And that is the bravest thing anyone can do.`
+  },
+  {
+    id: 'fil_sampaguita',
+    tradition: 'filipino',
+    theme: 'humility',
+    title: 'The Legend of the Sampaguita',
+    durationMinutes: 5,
+    source: 'Filipino folklore · National flower legend',
+    body: `Of all the flowers in the Philippines — the orchids, the hibiscus, the ylang-ylang — the tiniest one was chosen as the national flower. The sampaguita. Small, white, simple. It does not shout for attention. It does not tower over other flowers.
+
+But when you walk past a sampaguita bush at night, something magical happens — the sweetest smell in the world fills the air. Gentle, warm, like your grandmother's embrace turned into a scent.
+
+The legend says that a young girl named Sumpa made a promise to her ailing lola. "I will bring you the most beautiful thing in the garden." She looked at the grand roses. Too proud. The tall sunflowers. Too loud. The bright bougainvillea. Too showy.
+
+Then she saw the sampaguita. Tiny. Hidden behind the bigger plants. Almost invisible. But when she leaned close — oh, that smell! Like love and honey and rain all mixed together.
+
+She picked a handful and wove them into a garland — a simple white necklace of tiny flowers. She placed it around her lola's neck.
+
+Lola smiled. "This is the most beautiful thing in the garden. Not because it is the biggest. But because it is the most sincere."
+
+The word "sampaguita" comes from "sumpa kita" — "I promise you." Every sampaguita is a tiny promise made of petals.
+
+That night, {childName}, remember the sampaguita. You do not need to be the biggest, the loudest, or the most colorful. The sweetest things are often the smallest. Be sincere. Be gentle. Be the quiet fragrance that makes everyone smile.`
+  },
+  {
+    id: 'fil_lola_wisdom',
+    tradition: 'filipino',
+    theme: 'wisdom',
+    title: 'Lola\'s Wisdom by the Stove',
+    durationMinutes: 5,
+    source: 'Filipino family tradition',
+    body: `Every Sunday, the whole family went to Lola's house. Not for a party. Not for a celebration. Just because — that is what Filipino families do.
+
+Lola was always by the stove. Always. Stirring something. Today it was adobo — chicken simmering in soy sauce, vinegar, garlic, and bay leaves. The whole house smelled like home.
+
+{childName} sat on the kitchen stool, feet dangling, watching Lola stir.
+
+"Lola, why do you always cook so much? There is only you here."
+
+Lola smiled. "I do not cook for me, anak. I cook because someone might come. And if someone comes, they must eat." She paused. "In our family, no one leaves hungry. That is the rule."
+
+{childName} thought about this. "What if nobody comes?"
+
+Lola laughed — a warm, crinkly laugh. "Then I eat well! And I save some for the neighbors. Somebody is always hungry, anak."
+
+She added more garlic. The sizzle filled the kitchen.
+
+"Lola, what is the most important thing you know?"
+
+Lola did not answer right away. She tasted the sauce. Added a little more vinegar. Then she said:
+
+"The most important thing I know is this: love is not a word. Love is adobo at four in the afternoon for someone who might come. Love is setting the extra plate. Love is the stool in the kitchen where the grandchild sits and asks questions."
+
+{childName} smiled. The stool felt warmer now.
+
+That night, {childName}, remember Lola's kitchen. Wisdom is not in books. It is in the stirring, the waiting, the extra plate. The people who love you the most show it not with words — but with food, and time, and a warm seat by the stove.`
+  },
+  {
+    id: 'fil_sarimanok',
+    tradition: 'filipino',
+    theme: 'bravery',
+    title: 'Sarimanok — The Magical Bird of Mindanao',
+    durationMinutes: 5,
+    source: 'Maranao folklore · Mindanao',
+    body: `In the southern islands of Mindanao, where the waters are turquoise and the sunsets are painted in gold, there is a legendary bird called the Sarimanok. Its feathers are every color of the rainbow. Its tail sweeps the sky like a silk ribbon. And in its beak, it carries a fish — a symbol that whoever follows the Sarimanok will never go hungry.
+
+But the Sarimanok is not easy to find. It appears only to those who are brave enough to journey through the unknown and kind enough to deserve its blessing.
+
+A young fisherfolk set out to find the Sarimanok. Not for treasure. Not for fame. But because the fishing village was hungry, and the sea had been empty for weeks.
+
+The journey was long. Through mangrove forests where the roots twisted like puzzles. Across coral reefs where the water was so clear you could see the bottom of the world. Past waterfalls that sang ancient songs.
+
+Along the way, the young fisherfolk helped everyone they met. Shared their last piece of bibingka with a hungry traveler. Freed a turtle tangled in a net. Sang a lullaby to a crying child on the shore.
+
+On the seventh day, at the edge of the sea where the sky touches the water, the Sarimanok appeared. Its feathers blazed like a sunset. It circled once, twice, and dropped a golden fish into the water.
+
+The sea filled with fish. The village ate that night — and every night after.
+
+That night, {childName}, remember the Sarimanok. The magical things in life do not come to those who search the hardest. They come to those who help the most along the way.`
+  },
+  {
+    id: 'fil_mano_po',
+    tradition: 'filipino',
+    theme: 'respect',
+    title: 'The Gift of Mano Po',
+    durationMinutes: 5,
+    source: 'Filipino cultural tradition',
+    body: `In the Philippines, when a child meets an elder — a lola, a lolo, a tita, a tito — they do something beautiful. They take the elder's hand, bow gently, and press it to their forehead. This is called "mano po."
+
+It is not just a greeting. It is a prayer made with hands. It says: "I respect you. I honor your years. Please bless me with your wisdom."
+
+{childName} was visiting Lolo for the first time in a long while. At the door, Lolo stood with his warm eyes and his white hair and his hands that had built houses and planted rice and held babies.
+
+"Mano po, Lolo," {childName} said softly, reaching for his hand.
+
+Lolo's hand was rough from years of work, but gentle — so gentle. {childName} bowed and touched the hand to their forehead.
+
+Lolo's eyes got shiny. Not sad. Full. Full of love and years and memories.
+
+"Do you know why we do mano po?" Lolo asked.
+
+{childName} shook their head.
+
+"Because the hand that has worked the longest carries the most blessings. When you touch it to your head, you are saying: I want to carry your strength with me. I want to learn from your life."
+
+That evening, the whole family ate together — lumpia, pancit, and sticky rice with mango. And before every plate was served, every child did mano po to every elder at the table.
+
+That night, {childName}, remember mano po. Respect is not just words. It is a gentle bow. A hand on your forehead. A way of saying: you matter, and everything you lived through matters too.`
+  },
+  {
+    id: 'fil_fiesta',
+    tradition: 'filipino',
+    theme: 'sharing',
+    title: 'The Fiesta That Fed the Whole Barangay',
+    durationMinutes: 5,
+    source: 'Filipino celebration tradition',
+    body: `Once a year, the barangay held a fiesta. And in the Philippines, a fiesta is not a small thing. It is the biggest, loudest, most colorful, most delicious day of the year.
+
+Every family cooked their best dish. Tita Maya made her famous lechon. Tito Jun brought his special pancit. Lola Cora's bibingka was so good people lined up before sunrise. And someone always brought halo-halo — that magical tower of shaved ice, sweet beans, ube, leche flan, and everything wonderful piled together in one tall glass.
+
+The rule of the fiesta was simple: everybody eats. It did not matter if you were rich or poor, old or young, from this barangay or just passing through. If you were there, you ate.
+
+{childName} helped carry the plates to the long table in the street. The table stretched from one end of the barangay to the other — so long you could not see the end of it.
+
+"Why do we share all this food?" {childName} asked.
+
+Tita Maya smiled. "Because food tastes better when everyone has some. A lechon eaten alone is just pork. A lechon eaten with your whole barangay — that is a fiesta."
+
+The music started. Someone brought out a guitar. Children danced between the tables. The old people clapped. And every plate was full.
+
+That night, {childName}, remember the fiesta. The best things in life are not the things you keep for yourself. They are the things you put on the longest table you can find, and share with everyone who shows up.`
+  },
+  {
+    id: 'fil_carabao',
+    tradition: 'filipino',
+    theme: 'compassion-animals',
+    title: 'The Carabao — A Farmer\'s Best Friend',
+    durationMinutes: 5,
+    source: 'Filipino agricultural tradition',
+    body: `In the rice fields of the Philippines, the most important creature is not the rooster, not the goat, not the dog. It is the carabao — the water buffalo.
+
+The carabao is big, strong, and gray. It has wide, curved horns and deep brown eyes that always look a little sleepy. But do not let those sleepy eyes fool you — the carabao works harder than anyone.
+
+Every morning, the carabao wakes up with the farmer. Together they walk to the rice paddy. The carabao pulls the plow through the thick mud — back and forth, back and forth — turning the earth soft enough to plant rice.
+
+The farmer sings while they work. The carabao listens. They are partners.
+
+When the sun gets too hot, the farmer leads the carabao to the river. The carabao sinks into the cool water until only its nose and eyes peek out. It looks so happy — like a giant gray bathtub toy.
+
+One evening, the farmer sat beside his resting carabao. "You know," he said, "people think I take care of you. But the truth is, you take care of me. Without you, there is no rice. Without rice, there is no family dinner. Without dinner, there is no laughter at the table."
+
+The carabao blinked its big sleepy eyes. It might have been a nod.
+
+That night, {childName}, remember the carabao. The strongest creatures are often the gentlest. And the ones who work the hardest rarely ask for anything — just cool water, soft earth, and someone who says thank you.`
+  },
+  {
+    id: 'fil_bahay_kubo',
+    tradition: 'filipino',
+    theme: 'gratitude',
+    title: 'Bahay Kubo — The Nipa Hut and Its Garden',
+    durationMinutes: 5,
+    source: 'Filipino folk song · Bahay Kubo',
+    body: `There is a famous Filipino song that every child learns. It goes: "Bahay kubo, kahit munti, ang halaman doon ay sari-sari..." A small nipa hut, but the plants growing there are many and varied.
+
+The bahay kubo is tiny. Bamboo walls, nipa roof, wooden floor raised on stilts. No marble. No glass. No fancy anything.
+
+But the garden around it? That garden feeds a family.
+
+Singkamas, talong, sigarilyas, at mani. Sitaw, bataw, patani. Kundol, patola, upo at kalabasa. Every vegetable you can imagine — all growing in one small patch of earth around one small house.
+
+The bahay kubo teaches a lesson: you do not need a big house to have a rich life. You need good soil, patient hands, and gratitude for what grows.
+
+{childName} imagined living in a bahay kubo. Waking up to the sound of roosters. Walking barefoot to the garden. Picking a fresh eggplant for breakfast. Sitting on the bamboo floor, legs crossed, eating rice and vegetables and feeling the warm breeze through the windows.
+
+No television. No rushing. Just the sound of wind through nipa leaves and the taste of food you grew with your own hands.
+
+That night, {childName}, remember the bahay kubo. A small life lived with gratitude is bigger than a mansion lived with complaint. Count your vegetables, not your problems.`
+  },
+  {
+    id: 'fil_pineapple',
+    tradition: 'filipino',
+    theme: 'wisdom',
+    title: 'The Legend of the Pineapple',
+    durationMinutes: 5,
+    source: 'Filipino folklore · Visayan legend',
+    body: `There was once a girl named Pina who lived with her mother in a small house surrounded by fruit trees. The mother worked hard every day — washing, cooking, cleaning, farming. Pina did nothing.
+
+"Pina, please find the ladle," her mother would say. "I cannot find it, Nanay," Pina would reply, without even looking.
+
+"Pina, please pick the kamote from the garden." "I cannot find them, Nanay." She never looked. She never tried.
+
+This happened every day. "I cannot find it" became Pina's favorite words.
+
+One day, the mother was very ill. She needed medicine from the garden. "Pina, please find the lagundi leaves. They are right by the fence." Pina walked outside, looked for two seconds, and came back. "I cannot find them, Nanay."
+
+The mother, heartbroken, whispered a wish: "I wish you had a thousand eyes, so you would always find what you need."
+
+The next morning, Pina was gone. In her place, in the garden, grew a strange new fruit — round, golden, covered in hundreds of tiny eyes. The pineapple.
+
+Every eye on the pineapple is a reminder: look carefully. Pay attention. The things you need are always nearby — you just have to open your eyes and truly see them.
+
+That night, {childName}, remember the pineapple. When someone asks for your help, do not say "I cannot find it" without looking. The world is full of answers — they are just waiting for you to notice them.`
+  },
+  {
+    id: 'fil_tinikling',
+    tradition: 'filipino',
+    theme: 'courage',
+    title: 'The Tinikling Dance',
+    durationMinutes: 5,
+    source: 'Filipino traditional dance',
+    body: `The tinikling is the most famous dance in the Philippines. Two people hold long bamboo poles on the ground and clap them together — CLAP CLAP SLIDE. CLAP CLAP SLIDE. The dancer must jump between the poles without getting their feet caught.
+
+It looks impossible. The poles move fast. CLAP CLAP SLIDE.
+
+{childName} watched the older kids do it at the school festival. Their feet moved like magic — in, out, hop, skip — never touching the bamboo. The crowd cheered.
+
+"Want to try?" asked Ate Rosa, the dance teacher.
+
+{childName}'s stomach did a flip. "What if the bamboo catches my feet?"
+
+Ate Rosa smiled. "Then you try again. The bamboo does not hurt — it just taps. And every great tinikling dancer got tapped a hundred times before they flew."
+
+{childName} stepped between the poles. CLAP CLAP — jump! Made it! CLAP CLAP — jump! Made it again!
+
+Then — TAP. The bamboo caught one foot. {childName} stumbled. The crowd giggled — not mean giggles, warm ones.
+
+"Again?" asked Ate Rosa. {childName} nodded.
+
+This time — CLAP CLAP SLIDE — perfect. In, out, hop, skip. Flying between the bamboo like a bird between branches.
+
+The crowd cheered. {childName}'s heart was pounding. Not from fear. From joy.
+
+That night, {childName}, remember the tinikling. The bravest thing is not dancing perfectly. It is stepping between the bamboo poles when you know they might catch you — and dancing anyway.`
+  },
+  {
+    id: 'fil_first_banana',
+    tradition: 'filipino',
+    theme: 'gratitude',
+    title: 'The Story of the First Banana',
+    durationMinutes: 5,
+    source: 'Filipino folklore · Origin story',
+    body: `Long ago in the Philippines, there were no bananas. The people ate rice, fish, and kamote — but they wished for something sweet.
+
+An old farmer prayed to the sky. "Please give us a fruit that is easy to pick, easy to eat, and sweet enough to make children smile."
+
+The sky listened. A tall plant grew in the farmer's garden overnight — not a tree exactly, but a thick green stalk with wide leaves that waved like fans in the wind. At the top, a heavy bunch of curved yellow fruit hung down like a golden chandelier.
+
+The farmer picked one. Peeled it. Took a bite.
+
+His eyes went wide. It was the sweetest, softest, most perfect thing he had ever tasted. He laughed. He cried. He ran to tell the whole barrio.
+
+"But you must make a promise," the wind whispered. "This fruit is a gift. You must share it with everyone — never keep it for yourself alone."
+
+The farmer shared every banana. He planted more. His neighbors planted more. Soon the whole island was covered in banana trees — saba, lakatan, latundan — every kind you can imagine.
+
+And to this day, you will never find a Filipino who eats a banana alone. There is always one for you, one for your friend, and one to leave on the table in case someone comes by.
+
+That night, {childName}, remember the first banana. The sweetest gifts come with one condition — share them. A joy kept for yourself is just a snack. A joy shared with others is a feast.`
+  },
+  {
+    id: 'fil_hospitality',
+    tradition: 'filipino',
+    theme: 'respect',
+    title: 'The Door That Was Always Open',
+    durationMinutes: 5,
+    source: 'Filipino hospitality tradition',
+    body: `In the Philippines, when someone visits your house — even if they just happen to walk past — you say four magic words: "Kain na tayo." Let us eat.
+
+It does not matter if you only have rice and a little dried fish. It does not matter if the visitor is a stranger. You set another plate, scoop another serving, and make room at the table.
+
+This is Filipino hospitality. The door is always open. The pot always has enough.
+
+{childName}'s family had a neighbor, Tita Merly, whose house was the smallest on the street but always the fullest. Every afternoon, someone was sitting in her kitchen — eating, talking, laughing.
+
+"Tita Merly, how do you feed so many people?" {childName} asked.
+
+Tita Merly winked. "The secret is: the food stretches when the love is big. I just add more water to the sinigang. More broth, more love. Same pot."
+
+{childName} looked at the pot. It did seem like a lot of sinigang for one small pot.
+
+"And," Tita Merly added, "people always bring something. One brings rice. Another brings calamansi. Someone else brings stories. That is the real meal — the stories."
+
+That night, {childName}, remember Tita Merly's kitchen. Hospitality is not about having a big house or expensive food. It is about saying "come in, sit down, eat with us" — and meaning it every single time.`
+  },
+  {
+    id: 'fil_mango_legend',
+    tradition: 'filipino',
+    theme: 'honesty',
+    title: 'The Legend of the Mango',
+    durationMinutes: 5,
+    source: 'Filipino folklore',
+    body: `The Philippine mango is called the sweetest mango in the world. But according to the old legend, it was not always sweet.
+
+Long ago, the mango was bitter — so bitter that nobody wanted to eat it. The mango tree was sad. "Everyone loves the coconut. Everyone loves the banana. Nobody loves me."
+
+A wise old balete tree said, "Mango, you are bitter because you are hiding something. What are you hiding?"
+
+The mango tree was quiet for a long time. Then it whispered, "I am pretending to be something I am not. I try to look like the other trees. I try to be tall like the coconut. Round like the calamansi. But I am none of those things."
+
+"Then stop pretending," said the balete tree. "Be exactly what you are. Show your true flavor. If it is honest, it will be sweet."
+
+The mango tree took a deep breath. It stopped trying to be tall. It stopped trying to be round. It grew in its own shape — a little crooked, a little wild. And when its fruit ripened, it was golden and soft and — oh — the sweetest thing anyone had ever tasted.
+
+People came from everywhere. "This is the best fruit in the world!" they said. And it was. Because it was honest.
+
+That night, {childName}, remember the mango. When you stop pretending to be something you are not, the real you comes out — and the real you is always the sweetest.`
+  },
+  {
+    id: 'fil_golden_fish',
+    tradition: 'filipino',
+    theme: 'humility',
+    title: 'The Fisherman and the Golden Fish',
+    durationMinutes: 5,
+    source: 'Filipino coastal folklore',
+    body: `A simple fisherman in a small banca — a wooden boat with bamboo outriggers — caught a golden fish one morning. The fish glowed like a sunset trapped in scales.
+
+"Please let me go," said the fish. "And I will grant you one wish."
+
+The fisherman thought about it. He could wish for a big house. A new boat. All the fish in the sea.
+
+But he looked at the golden fish — so beautiful, so scared — and he said, "I wish for nothing. Go home."
+
+He opened his hands and the fish splashed back into the water.
+
+That evening, the fisherman came home to his small hut by the sea. His wife had cooked rice and tinapa — smoked fish. His children ran to hug him. The sunset was orange and purple. The waves whispered.
+
+He sat down, looked at his family, and realized — he already had everything.
+
+The golden fish never came back. But the fisherman's net was always full. Not overflowing — just enough. Every day, just enough.
+
+That night, {childName}, remember the fisherman. The richest person is not the one who has the most. It is the one who needs the least. And sometimes the bravest wish is no wish at all — just gratitude for what is already in your hands.`
+  },
+  {
+    id: 'fil_tala_stars',
+    tradition: 'filipino',
+    theme: 'forgiveness',
+    title: 'Tala and the Stars',
+    durationMinutes: 5,
+    source: 'Filipino mythology · Tagalog',
+    body: `In Filipino mythology, Tala is the goddess of the morning and evening star. She is the sister of the sun and the moon — and like all siblings, they sometimes fight.
+
+One night, Tala and her brother Apolaki, the sun, had a terrible argument. Apolaki said he was more important because he gave light to the day. Tala said she was more important because she guided travelers at night.
+
+They stopped speaking. The sky felt wrong — the sun shone during the day but looked angry. The stars appeared at night but seemed dim and sad.
+
+The moon, their mother Mayari, spoke gently. "The sky is big enough for both of you. The sun is not less because the stars exist. The stars are not less because the sun shines brighter. You are family. You complete each other."
+
+Tala looked at Apolaki. Apolaki looked at Tala.
+
+"I am sorry," said Tala. "I was jealous."
+
+"I am sorry too," said Apolaki. "I was proud."
+
+That night, the stars shone brighter than ever. And the next morning, the sun rose with a warmth that felt different — like a hug instead of just light.
+
+That night, {childName}, look up at the stars. Every twinkling light is a reminder: even the sky makes mistakes. Even the sun gets too proud. But when you say sorry — really mean it — the whole world shines brighter. That is what forgiveness does. It does not erase the fight. It lights up everything that comes after.`
+  },
+  {
+    id: 'fil_juan_tamad',
+    tradition: 'filipino',
+    theme: 'patience',
+    title: 'Juan Tamad and the Guava Tree',
+    durationMinutes: 5,
+    source: 'Filipino folklore · Juan Tamad tales',
+    body: `Juan Tamad was the laziest boy in the barrio. His name literally means "Lazy Juan." And he earned it.
+
+One afternoon, Juan lay under a guava tree, looking up at the ripe fruit hanging on the branches. His stomach growled. The guavas were right there — pink, fragrant, perfect.
+
+All he had to do was stand up and pick one.
+
+But Juan did not want to stand up. Standing up was too much work.
+
+"Maybe if I wait long enough," Juan said, "the guava will fall into my mouth."
+
+So he waited. And waited. A butterfly landed on his nose. A lizard walked across his belly. An ant carried a leaf past his ear. Still no guava fell.
+
+His mother came by. "Juan! Pick the guava!"
+
+"I am waiting for it to fall, Nanay."
+
+His mother shook her head. "Juan, the tree does its job — it grows the fruit. The wind does its job — it shakes the branches. But YOUR job is to reach up and pick it. Everyone has a part to play."
+
+Juan looked at his mother. He looked at the guava. He sighed the biggest sigh in the history of the Philippines.
+
+Then he stood up, stretched his arm, and picked the guava.
+
+It was the sweetest guava he had ever tasted. Because he had earned it.
+
+That night, {childName}, remember Juan Tamad. Good things do not fall from trees into your mouth. But they are always within reach — if you are willing to stand up.`
+  },
+);
 
 export const lessonsByTheme = (theme) => CULTURAL_LESSONS.filter((l) => l.theme === theme);
 export const lessonsByTradition = (tradition) =>

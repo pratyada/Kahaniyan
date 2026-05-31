@@ -408,6 +408,28 @@ dc_nz_ep5_facts: 'Fun illustration of a kiwi bird next to a kiwi fruit (same nam
   tt_ep19_willis_tower: 'Willis Tower (Sears Tower) black steel tower in Chicago skyline, glass Skydeck ledge extending from side, Lake Michigan below, dramatic clouds, architectural power, no human figures',
   tt_ep20_empire_state: 'Empire State Building art deco crown glowing gold at dusk, New York City stretching in all directions, vintage airplanes circling, classic movie poster style, iconic and timeless, no human figures',
 
+  // ─── Filipino cultural stories ───
+  fil_maria_makiling: 'Lush Philippine mountain with magical golden glow, enchanted forest with glowing fireflies, tropical flowers blooming, mystical nature spirit energy radiating from mountain peak, no human figures',
+  fil_monkey_turtle: 'Clever turtle and mischievous monkey under a banana tree in tropical Philippine jungle, river with stepping stones, lush green foliage, comedic animal interaction, no human figures',
+  fil_bayanihan: 'Traditional Filipino nipa hut being carried by a group of tiny illustrated ants working together across a green rice field, Philippine countryside, mountains backdrop, community spirit, no human figures',
+  fil_alitaptap: 'Hundreds of glowing fireflies lighting up a dark Philippine forest at night, warm yellow-green bioluminescence, bamboo trees, magical sparkles reflecting on a calm stream, no human figures',
+  fil_malakas_maganda: 'Giant bamboo stalk splitting open with golden light pouring out, tropical Philippine beach at dawn, waves gently lapping, birds circling, origin story feeling, no human figures',
+  fil_sampaguita: 'Delicate white sampaguita jasmine flowers glowing softly in moonlight, Philippine garden at night, sweet fragrance wisps illustrated as golden swirls, small and beautiful, no human figures',
+  fil_lola_wisdom: 'Warm Filipino kitchen with clay pot simmering adobo on a traditional stove, steam rising with aromatic golden swirls, wooden spoon, garlic and bay leaves, cozy Sunday atmosphere, no human figures',
+  fil_sarimanok: 'Magnificent Sarimanok bird with rainbow plumage and elaborate tail feathers, Maranao geometric patterns, golden crown, Philippine mythical bird perched on ornate tower, no human figures',
+  fil_mano_po: 'Two illustrated hands — one small reaching up to one elderly — gentle respectful gesture, soft golden light, Filipino family warmth, intergenerational love symbol, no human figures',
+  fil_fiesta: 'Colorful Philippine fiesta scene with long table overflowing with food, paper lanterns in every color, streamers and banners, vibrant celebration, community gathering, no human figures',
+  fil_carabao: 'Strong gentle water buffalo (carabao) standing in golden Philippine rice paddy at sunset, wide curved horns, muddy field, faithful farm companion, peaceful rural scene, no human figures',
+  fil_bahay_kubo: 'Traditional Filipino bahay kubo bamboo hut surrounded by a lush vegetable garden — eggplant, squash, string beans on trellises, tropical countryside, humble and beautiful, no human figures',
+  fil_pineapple: 'Magical golden pineapple with a thousand tiny eyes glowing in Philippine tropical garden, lush green leaves, starlit night, enchanted fruit origin story, no human figures',
+  fil_tinikling: 'Two long bamboo poles creating rhythmic patterns on the ground, Philippine dance scene, colorful ribbons, tropical birds mimicking dance steps, joyful movement energy, no human figures',
+  fil_first_banana: 'Giant banana plant with golden fruit growing from magical soil, Philippine tropical forest, butterflies and birds surrounding the first-ever banana, origin myth feeling, no human figures',
+  fil_hospitality: 'Warm inviting Filipino doorway with shoes lined up outside, welcome mat, potted orchids, warm golden light spilling from inside, plate of food left out, generous spirit, no human figures',
+  fil_mango_legend: 'Magnificent golden Philippine mango hanging from ancient tree, sunset colors matching the fruit, tropical island backdrop, sweetest fruit in the world, magical golden glow, no human figures',
+  fil_golden_fish: 'Enchanted golden fish swimming in crystal-clear Philippine river, scales glittering like coins, underwater tropical paradise, coral and seaweed, magical wish-granting energy, no human figures',
+  fil_tala_stars: 'Philippine night sky filled with brilliant constellations, Tala the brightest star shining golden, traditional outrigger boat (bangka) on calm sea below, celestial guide, no human figures',
+  fil_juan_tamad: 'Lazy illustrated cat lying under a guava tree with ripe fruit dangling just out of reach, mouth wide open waiting for fruit to fall, humorous scene, Philippine countryside, no human figures',
+
 };
 
 
