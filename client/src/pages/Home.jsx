@@ -40,7 +40,7 @@ export default function Home() {
   const [searchParams] = useSearchParams();
   const cultureFilter = searchParams.get('culture'); // e.g. ?culture=hindu
 
-  const [viewMode, setViewMode] = useState('episodes'); // 'episodes' | 'series'
+  const [viewMode, setViewMode] = useState(searchParams.get('view') === 'series' ? 'series' : 'episodes');
   const [activeTheme, setActiveTheme] = useState('compassion-animals');
   const [visibleCollections, setVisibleCollections] = useState(8);
 
