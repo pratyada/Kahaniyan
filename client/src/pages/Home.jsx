@@ -68,10 +68,11 @@ export default function Home() {
   const age = profile?.age || 6;
 
   // Filter: URL culture param overrides profile beliefs
+  const effectiveBeliefs = cultureFilter ? [cultureFilter] : beliefs;
   const filterByBelief = (lesson) => {
-    // URL culture filter — show that culture + universal
+    // URL culture filter — show ONLY that culture's stories
     if (cultureFilter) {
-      return lesson.tradition === cultureFilter || lesson.tradition === 'universal';
+      return lesson.tradition === cultureFilter;
     }
     if (beliefs.length > 0 && !beliefs.includes('universal')) {
       return beliefs.includes(lesson.tradition) || lesson.tradition === 'universal';
@@ -103,10 +104,10 @@ export default function Home() {
       .slice(0, 10);
   }, [allLessons, beliefs]);
 
-  // Wisdom stories grouped by user's selected beliefs
+  // Wisdom stories grouped by user's selected beliefs (or URL culture filter)
   const traditionShelves = useMemo(
-    () => buildTraditionShelves(allLessons, beliefs),
-    [allLessons, beliefs]
+    () => buildTraditionShelves(allLessons, effectiveBeliefs),
+    [allLessons, effectiveBeliefs]
   );
 
   // Theme-filtered stories
@@ -271,7 +272,19 @@ export default function Home() {
       )}
 
       {viewMode === 'episodes' && (<>
-      {/* 3. Browse by Value — interactive filter */}
+      {/* Wisdom stories by belief (or culture filter) — shown first when filtered */}
+      {traditionShelves.length > 0 && traditionShelves.map((shelf) => (
+        <ShelfSection key={shelf.id} title={shelf.title}>
+          <ShelfRow>
+            {shelf.stories.slice(0, 12).map((lesson) => (
+              <StoryTile key={lesson.id} lesson={lesson} imageUrl={wisdomImageUrls[lesson.id]} onPlay={handlePlay} />
+            ))}
+          </ShelfRow>
+        </ShelfSection>
+      ))}
+
+      {/* Browse by Value — hidden when culture filter active */}
+      {!cultureFilter && (
       <section className="mb-6">
         <h3 className="mb-3 text-sm font-bold text-ink" style={{ fontFamily: 'Fraunces, serif' }}>
           Browse by Value
@@ -294,20 +307,10 @@ export default function Home() {
           </ShelfRow>
         )}
       </section>
+      )}
 
-      {/* Wisdom stories by belief */}
-      {traditionShelves.length > 0 && traditionShelves.map((shelf) => (
-        <ShelfSection key={shelf.id} title={shelf.title}>
-          <ShelfRow>
-            {shelf.stories.slice(0, 12).map((lesson) => (
-              <StoryTile key={lesson.id} lesson={lesson} imageUrl={wisdomImageUrls[lesson.id]} onPlay={handlePlay} />
-            ))}
-          </ShelfRow>
-        </ShelfSection>
-      ))}
-
-      {/* 4-11. Collections (lazy-loaded as user scrolls) */}
-          {COLLECTIONS.slice(0, visibleCollections).map((col) => (
+      {/* Collections — hidden when culture filter active */}
+      {!cultureFilter && COLLECTIONS.slice(0, visibleCollections).map((col) => (
             <ShelfSection key={col.id} title={col.title} subtitle={col.subtitle}>
               <ShelfRow>
                 {col.stories.map((story) => (

@@ -41,8 +41,9 @@ export default function SeriesShelf({ cultureFilter }) {
   const beliefs = profile?.beliefs || [];
   const filtered = SERIES.filter(s => {
     const tradition = s.episodes?.[0]?.tradition;
+    // URL culture filter — show ONLY that culture's series
     if (cultureFilter) {
-      return tradition === cultureFilter || tradition === 'universal';
+      return tradition === cultureFilter;
     }
     if (!tradition || tradition === 'universal') return true;
     if (beliefs.length === 0) return tradition === 'universal';
