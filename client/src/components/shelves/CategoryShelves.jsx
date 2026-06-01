@@ -92,17 +92,18 @@ export default function CategoryShelves({ wisdomImageUrls }) {
               <button
                 key={col.id}
                 onClick={() => navigate(`/collection/${col.id}`)}
-                className="shrink-0 w-36 sm:w-40"
+                className="shrink-0"
+                style={{ width: 200, height: 280 }}
               >
-                <div className="relative aspect-[3/4] rounded-2xl overflow-hidden ring-1 ring-white/10 transition hover:ring-gold/30 active:scale-[0.97]"
+                <div className="relative h-full w-full rounded-2xl overflow-hidden ring-1 ring-white/10 transition hover:ring-gold/30 active:scale-[0.97]"
                   style={{ background: 'linear-gradient(135deg, rgba(240,165,0,0.15) 0%, rgba(30,30,50,0.9) 100%)' }}>
                   {/* Collection icon */}
                   <div className="absolute inset-0 flex flex-col items-center justify-center p-3 text-center">
-                    <span className="text-4xl mb-2">{col.icon}</span>
-                    <p className="text-xs font-bold text-ink leading-tight" style={{ fontFamily: 'Fraunces, serif' }}>
+                    <span className="text-5xl mb-3">{col.icon}</span>
+                    <p className="text-sm font-bold text-ink leading-tight" style={{ fontFamily: 'Fraunces, serif' }}>
                       {col.title.replace(/^[^\s]+\s/, '')}
                     </p>
-                    <p className="text-[9px] text-ink-muted mt-1">{col.stories.length} stories</p>
+                    <p className="text-[10px] text-ink-muted mt-1.5">{col.stories.length} stories</p>
                   </div>
                   {/* Gradient overlay */}
                   <div className="absolute inset-0 bg-gradient-to-t from-bg-base/80 via-transparent to-transparent" />
