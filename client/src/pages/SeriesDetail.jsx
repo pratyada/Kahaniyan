@@ -256,7 +256,7 @@ export default function SeriesDetail() {
               className={`w-full overflow-hidden rounded-2xl text-left transition relative ${
                 isNext ? 'ring-2 ring-gold/50' : 'ring-1 ring-white/5'
               }`}
-              style={{ aspectRatio: '2/3', minHeight: 240 }}
+              style={{ aspectRatio: '3/4', maxHeight: 280 }}
             >
               {/* Full card background — image or gradient */}
               {(() => {
