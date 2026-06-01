@@ -27,6 +27,7 @@ import { useLocalizedCollections } from '../hooks/useLocalizedData.js';
 import { playLesson, recommendedValueFor } from '../utils/storyHelpers.js';
 import { buildTraditionShelves, buildAgeShelf } from '../utils/shelfBuilder.js';
 import { fillTokens } from '../utils/storyHelpers.js';
+import CulturePage from './CulturePage.jsx';
 
 export default function Home() {
   const { t } = useTranslation();
@@ -38,7 +39,10 @@ export default function Home() {
   const { wisdomAudioUrls, wisdomImageUrls, allLessons, loading: dataLoading } = useWisdomData();
   const COLLECTIONS = useLocalizedCollections();
   const [searchParams] = useSearchParams();
-  const cultureFilter = searchParams.get('culture'); // e.g. ?culture=hindu
+  const cultureFilter = searchParams.get('culture'); // e.g. ?culture=muslim
+
+  // Culture filter → dedicated page
+  if (cultureFilter) return <CulturePage />;
 
   const [viewMode, setViewMode] = useState(searchParams.get('view') === 'series' ? 'series' : 'episodes');
   const [activeTheme, setActiveTheme] = useState('compassion-animals');
