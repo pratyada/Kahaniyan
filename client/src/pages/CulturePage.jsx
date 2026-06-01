@@ -16,6 +16,7 @@ import { useWisdomData } from '../hooks/useWisdomData.js';
 import { useLocalizedSeries } from '../hooks/useLocalizedData.js';
 import { playLesson } from '../utils/storyHelpers.js';
 import { useState, useEffect } from 'react';
+import { Helmet } from 'react-helmet-async';
 
 export default function CulturePage() {
   const navigate = useNavigate();
@@ -78,8 +79,21 @@ export default function CulturePage() {
       .sort((a, b) => b[1].length - a[1].length);
   }, [stories]);
 
+  const ogImage = culture === 'muslim' ? 'https://mysleepytale.com/og/islamic.png' : 'https://mysleepytale.com/og/cover.jpg';
+
   return (
     <PageTransition className="page-scroll safe-top">
+      <Helmet>
+        <title>{meta.label} Bedtime Stories for Kids | My Sleepy Tale</title>
+        <meta name="description" content={`${stories.length} stories + ${series.length} series — ${meta.label} bedtime stories personalized with your child's name. Free on My Sleepy Tale.`} />
+        <meta property="og:title" content={`${meta.label} Bedtime Stories for Kids | My Sleepy Tale`} />
+        <meta property="og:description" content={`${stories.length} stories + ${series.length} series — ${meta.label} bedtime stories personalized with your child's name. Free.`} />
+        <meta property="og:image" content={ogImage} />
+        <meta property="og:url" content={`https://mysleepytale.com/?culture=${culture}`} />
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:image" content={ogImage} />
+      </Helmet>
+
       {/* Hero header */}
       <div className="relative px-5 pt-10 pb-6">
         <div className="flex items-center justify-between mb-6">
