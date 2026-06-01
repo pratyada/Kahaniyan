@@ -11,7 +11,7 @@ const CULTURES = {
   },
   muslim: {
     title: 'Islamic Bedtime Stories for Kids — My Sleepy Tale',
-    description: 'Prophet stories (peace be upon him), compassion, patience & honesty — Islamic bedtime tales personalized with your child\'s name. Free.',
+    description: '28 stories + 10 series — Prophets (peace be upon them), Ramadan, Hajj, Names of Allah, Animals in the Quran, Muslim Heroes & more. Personalized with your child\'s name. Free.',
     image: 'https://mysleepytale.com/og/cover.jpg',
     icon: '☪️',
   },

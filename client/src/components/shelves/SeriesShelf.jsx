@@ -12,7 +12,7 @@ import { useFamilyProfile } from '../../hooks/useFamilyProfile.js';
 // Preferred order for live series
 const LIVE_ORDER = ['rainbow-kindergarten-jlps-yr25-26', 'dr-spock-parenting'];
 
-export default function SeriesShelf() {
+export default function SeriesShelf({ cultureFilter }) {
   const SERIES = useLocalizedSeries();
   const { profile } = useFamilyProfile();
   const navigate = useNavigate();
@@ -37,10 +37,13 @@ export default function SeriesShelf() {
 
   if (SERIES.length === 0) return null;
 
-  // Filter by beliefs — religious series only show if belief matches
+  // Filter by beliefs or URL culture param
   const beliefs = profile?.beliefs || [];
   const filtered = SERIES.filter(s => {
     const tradition = s.episodes?.[0]?.tradition;
+    if (cultureFilter) {
+      return tradition === cultureFilter || tradition === 'universal';
+    }
     if (!tradition || tradition === 'universal') return true;
     if (beliefs.length === 0) return tradition === 'universal';
     return beliefs.includes(tradition) || beliefs.includes('universal');

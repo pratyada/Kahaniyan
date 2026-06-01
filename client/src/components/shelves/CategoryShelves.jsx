@@ -11,7 +11,7 @@ import { useFamilyProfile } from '../../hooks/useFamilyProfile.js';
 import { CATEGORIES, SERIES_CATEGORIES, COLLECTION_CATEGORIES } from '../../data/seriesCategories.js';
 import { COLLECTIONS } from '../../data/collections.js';
 
-export default function CategoryShelves({ wisdomImageUrls }) {
+export default function CategoryShelves({ wisdomImageUrls, cultureFilter }) {
   const SERIES = useLocalizedSeries();
   const { profile } = useFamilyProfile();
   const navigate = useNavigate();
@@ -29,12 +29,16 @@ export default function CategoryShelves({ wisdomImageUrls }) {
     })();
   }, []);
 
-  // Filter series by user's beliefs — religious series only show if belief matches
+  // Filter series by user's beliefs or URL culture param
   const beliefs = profile?.beliefs || [];
   const seriesMatchesBelief = (s) => {
     const tradition = s.episodes?.[0]?.tradition;
-    if (!tradition || tradition === 'universal') return true; // non-religious → always show
-    if (beliefs.length === 0) return tradition === 'universal'; // no beliefs → universal only
+    // URL culture filter overrides profile beliefs
+    if (cultureFilter) {
+      return tradition === cultureFilter || tradition === 'universal';
+    }
+    if (!tradition || tradition === 'universal') return true;
+    if (beliefs.length === 0) return tradition === 'universal';
     return beliefs.includes(tradition) || beliefs.includes('universal');
   };
 
@@ -60,7 +64,7 @@ export default function CategoryShelves({ wisdomImageUrls }) {
 
       return { ...cat, series, collections, total: series.length + collections.length };
     }).filter(cat => cat.total > 0);
-  }, [SERIES, beliefs]);
+  }, [SERIES, beliefs, cultureFilter]);
 
   const getSeriesCover = (series) => {
     for (const ep of series.episodes) {

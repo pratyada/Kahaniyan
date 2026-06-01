@@ -267,7 +267,7 @@ export default function Home() {
 
       {/* ═══ SERIES VIEW — Netflix-style category shelves ═══ */}
       {viewMode === 'series' && (
-        <CategoryShelves wisdomImageUrls={wisdomImageUrls} />
+        <CategoryShelves wisdomImageUrls={wisdomImageUrls} cultureFilter={cultureFilter} />
       )}
 
       {viewMode === 'episodes' && (<>
@@ -323,7 +323,7 @@ export default function Home() {
           ))}
 
       {/* Series shelf at bottom (episodes view) */}
-      <SeriesShelf />
+      <SeriesShelf cultureFilter={cultureFilter} />
       </>)}
 
       {/* Our Creators — always at bottom */}
