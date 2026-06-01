@@ -53,7 +53,7 @@ export const RELIGIONS = [
   { key: 'filipino', label: 'Filipino', icon: '🇵🇭' },
   { key: 'chinese', label: 'Chinese', icon: '🇨🇳' },
   { key: 'hindu', label: 'Hinduism', icon: '🕉️' },
-  { key: 'muslim', label: 'Islam', icon: '☪️' },
+  { key: 'muslim', label: 'Islamic', icon: '☪️' },
   { key: 'christian', label: 'Christianity', icon: '✝️' },
   { key: 'sikh', label: 'Sikhism', icon: '☬' },
   { key: 'buddhist', label: 'Buddhism', icon: '☸️' },

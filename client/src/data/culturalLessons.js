@@ -3141,7 +3141,7 @@ Tonight, {childName}, if you ever feel lost — if the world seems dark and you 
 
 export const TRADITIONS = [
   { key: 'hindu', label: 'Hinduism', icon: '🕉️' },
-  { key: 'muslim', label: 'Islam', icon: '☪️' },
+  { key: 'muslim', label: 'Islamic', icon: '☪️' },
   { key: 'christian', label: 'Christianity', icon: '✝️' },
   { key: 'sikh', label: 'Sikhism', icon: '☬' },
   { key: 'buddhist', label: 'Buddhism', icon: '☸️' },
