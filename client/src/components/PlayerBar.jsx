@@ -64,7 +64,7 @@ export default function PlayerBar() {
       <div className="flex-1 truncate text-left">
         <div className="truncate font-ui text-sm font-bold text-ink">{current.title}</div>
         <div className="truncate text-xs text-ink-muted">
-          {meta.label} · {current.estimatedMinutes} {t('home.min')}
+          {meta.label} · {current?.text ? Math.max(1, Math.round(current.text.split(/\s+/).length / 150)) : current.estimatedMinutes} {t('home.min')}
         </div>
       </div>
       <button

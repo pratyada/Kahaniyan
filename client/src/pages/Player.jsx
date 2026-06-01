@@ -724,7 +724,7 @@ function PlayerInner() {
                     {current?.title || 'Bedtime Story'}
                   </h1>
                   <p className="mt-1 text-xs text-ink-muted" style={{ fontFamily: 'Nunito, sans-serif' }}>
-                    For {profile?.childName}{current?.estimatedMinutes ? ` · ${current.estimatedMinutes} min` : ''}
+                    For {profile?.childName}{current?.text ? ` · ${Math.max(1, Math.round(current.text.split(/\s+/).length / 150))} min` : ''}
                   </p>
               {current?.cast?.length > 0 && (
                 <p className="mt-0.5 text-[10px] text-gold/70">{current.cast.join(' · ')}</p>
