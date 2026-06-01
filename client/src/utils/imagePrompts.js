@@ -430,6 +430,103 @@ dc_nz_ep5_facts: 'Fun illustration of a kiwi bird next to a kiwi fruit (same nam
   fil_tala_stars: 'Philippine night sky filled with brilliant constellations, Tala the brightest star shining golden, traditional outrigger boat (bangka) on calm sea below, celestial guide, no human figures',
   fil_juan_tamad: 'Lazy illustrated cat lying under a guava tree with ripe fruit dangling just out of reach, mouth wide open waiting for fruit to fall, humorous scene, Philippine countryside, no human figures',
 
+  // ─── Islamic wisdom stories ───
+  mus_prophet_kindness: 'Small fluffy cat eating from a golden bowl near a mosque doorway, warm lantern light, Islamic geometric patterns on the wall, peaceful evening, no human figures',
+  mus_ibrahim_stars: 'Vast desert night sky filled with millions of stars, crescent moon, silhouette of ancient stone altar below, searching for truth in the cosmos, no human figures',
+  mus_yusuf_patience: 'Deep stone well in desert landscape with rope and bucket, single bright star shining directly above, hope from darkness, ancient Middle Eastern setting, no human figures',
+  mus_nuh_ark: 'Massive wooden ark on stormy seas, pairs of animals visible through windows, rainbow breaking through dark clouds, dove carrying olive branch, no human figures',
+  mus_sulaiman_ant: 'Tiny ant carrying a leaf across a golden path, ornate palace gates in background, Islamic arch framing the scene, the mighty bowing to the small, no human figures',
+  mus_bilal_call: 'Tall minaret at dawn with golden light spreading across the sky, sound waves radiating outward, birds taking flight, first call to prayer, no human figures',
+  mus_khadijah_support: 'Two intertwined olive trees growing strong together on a hilltop, one sheltering the other, golden sunset, Makkah mountains in background, no human figures',
+  mus_spider_cave: 'Cave entrance covered by intricate spider web glistening with morning dew, dove nesting nearby, desert landscape outside, divine protection, no human figures',
+  mus_date_palm: 'Beautiful date palm tree with golden dates, single tear-drop of sap rolling down the trunk, mosque in background, emotional bond with nature, no human figures',
+  mus_hungry_neighbor: 'Steaming pot of food on a doorstep with aromatic golden swirls rising, warm light from neighboring houses, Islamic neighborhood at dusk, no human figures',
+  mus_well_zamzam: 'Crystal clear water spring bursting from desert sand, golden sparkles in the water, Makkah mountains backdrop, miracle in the desert, no human figures',
+  mus_mercy_birds: 'Mother bird sheltering baby birds under her wings in a nest, warm golden light, gentle breeze, compassion in nature, no human figures',
+  mus_honest_merchant: 'Market stall with perfectly balanced golden scales, honest weights, colorful spices and fabrics, bustling bazaar atmosphere, no human figures',
+  mus_forgiveness_makkah: 'Grand gates of ancient city opening wide, golden light pouring through, olive branches and white flowers scattered on the path, mercy and peace, no human figures',
+  mus_ramadan_moon: 'Thin crescent moon appearing in deep purple twilight sky, lanterns lighting up one by one below, rooftops of a peaceful city, Ramadan beginning, no human figures',
+  mus_garden_brothers: 'Lush garden with overflowing fruit trees suddenly withered and bare, contrast between abundance and loss, moral lesson, no human figures',
+  mus_sleepers_cave: 'Deep cave with sleeping animals (dog at entrance), soft golden light filtering in, cobwebs showing passage of time, peaceful eternal sleep, no human figures',
+  mus_mother_paradise: 'Garden of paradise with golden gates, path of flowers leading to a glowing threshold, mother bird teaching baby bird to fly nearby, no human figures',
+  mus_two_brothers_field: 'Two golden wheat fields side by side under moonlight, mysterious bundles of wheat moving between them, brotherly love, no human figures',
+  mus_barakah_bismillah: 'Beautiful Arabic calligraphy of Bismillah glowing with golden light, surrounded by swirling patterns and tiny stars, blessing energy radiating outward, no human figures',
+  mus_prophet_smile: 'Warm golden sunrise over Madinah with light rays spreading like a smile, birds singing, flowers opening, joy radiating, no human figures',
+  mus_trust_allah_camel: 'Camel peacefully kneeling beside a palm tree, rope neatly tied to the trunk, starry desert night, trust and preparation, no human figures',
+  mus_cleaning_path: 'Thorny branch being gently lifted off a sandy path, golden light where it was removed, small flowers growing in the cleared spot, no human figures',
+  mus_aisha_generosity: 'Last piece of bread on a simple wooden plate glowing golden, humble home interior, warm candlelight, ultimate generosity, no human figures',
+  mus_luqman_wisdom: 'Ancient olive tree with deep roots visible underground, strong trunk, wise branches reaching toward stars, passing wisdom through generations, no human figures',
+
+  // ─── Islamic series: Stories of the Prophets ───
+  sop_ep1_ibrahim: 'Desert night sky with millions of stars, crescent moon fading as sun rises, ancient stone pillars, journey from darkness to light, no human figures',
+  sop_ep2_musa: 'Burning bush glowing with golden-green fire that does not consume, mountain landscape, divine light, staff on the ground nearby, no human figures',
+  sop_ep3_dawud: 'Mountains and valleys echoing with visible golden sound waves, birds joining in chorus, psalms of praise, nature singing, no human figures',
+  sop_ep4_sulaiman: 'Magnificent palace with Islamic arches, tiny ant colony marching below, wind carrying messages, kingdom of wisdom, no human figures',
+  sop_ep5_isa: 'Small clay bird on a windowsill suddenly taking flight with golden wings, miracle moment, gentle light, dove ascending, no human figures',
+
+  // ─── Islamic series: Names of Allah ───
+  noa_ep1_rahman: 'Vast ocean of mercy — golden light pouring from sky onto calm turquoise water, every drop glowing with compassion, infinite warmth, no human figures',
+  noa_ep2_wadud: 'Heart-shaped garden blooming with every type of flower, warm pink and golden light, love radiating from the center, no human figures',
+  noa_ep3_salam: 'Perfectly still lake reflecting a symmetrical mosque, not a ripple, absolute peace, dawn colors, serene silence, no human figures',
+  noa_ep4_ghaffar: 'Rain washing away dark marks on white marble, leaving it gleaming and pure, rainbow forming, fresh start, no human figures',
+  noa_ep5_kareem: 'Overflowing treasure chest of golden light (not gold coins), generosity pouring out as light beams, stars falling gently, no human figures',
+
+  // ─── Islamic series: Ramadan Adventures ───
+  ra_ep1_first_fast: 'Dawn breaking over a mosque with a single star still visible, empty plate waiting for sunset, anticipation and strength, no human figures',
+  ra_ep2_iftar: 'Long table overflowing with dates, water, soup, and bread, golden lanterns hanging above, warm family atmosphere, no human figures',
+  ra_ep3_laylat_alqadr: 'Night sky brighter than a thousand moons, angels descending as golden light particles, mosque dome below, most powerful night, no human figures',
+  ra_ep4_charity: 'Small decorated charity box overflowing with golden light, coins and notes transforming into blessings, giving spirit, no human figures',
+  ra_ep5_eid: 'Crescent moon and star decoration with colorful bunting, new shoes at a doorstep, gift boxes, celebration morning, no human figures',
+
+  // ─── Islamic series: Companions of the Prophet ───
+  cop_ep1_abubakr: 'Two sets of footprints in desert sand leading toward a distant oasis, loyal journey together, golden sunset, no human figures',
+  cop_ep2_umar: 'Perfectly balanced golden scales of justice, sword laid down beside them, strength serving fairness, no human figures',
+  cop_ep3_uthman: 'Well of fresh water in a desert with golden light, purchased and given freely to all, generosity flowing, no human figures',
+  cop_ep4_ali: 'Lion resting peacefully beside a sword covered in flowers, bravery tempered with mercy, no human figures',
+  cop_ep5_salman: 'Long winding road through different landscapes — mountains, seas, deserts — leading to a golden mosque, journey of faith, no human figures',
+
+  // ─── Islamic series: Animals in the Quran ───
+  aiq_ep1_hoopoe: 'Magnificent hoopoe bird with crown of feathers carrying a tiny scroll, flying over ancient kingdoms, messenger bird, no human figures',
+  aiq_ep2_whale: 'Enormous whale in deep ocean with small light glowing inside its belly, dark depths, prayer rising as bubbles, no human figures',
+  aiq_ep3_camel: 'Majestic she-camel emerging from a split rock in the desert, miraculous birth, golden light pouring from the crack, no human figures',
+  aiq_ep4_elephant: 'Army of elephants turning away from a golden city, small birds carrying pebbles overhead, divine protection, no human figures',
+  aiq_ep5_bee: 'Honeybee inside a perfect hexagonal honeycomb cell, golden honey glowing with light, miracle of nature, intricate design, no human figures',
+
+  // ─── Islamic series: Islamic Manners ───
+  im_ep1_salam: 'Two doors facing each other with golden light flowing between them, peace greeting passing back and forth, warmth spreading, no human figures',
+  im_ep2_eating: 'Beautiful spread of food on a cloth on the ground, dates and bread, golden barakah light hovering above, no human figures',
+  im_ep3_neighbors: 'Two houses with a shared garden wall, flowers growing over to both sides, plates of food on both doorsteps, no human figures',
+  im_ep4_elders: 'Ancient olive tree with young sapling growing in its shade, wisdom passing down, roots intertwined underground, no human figures',
+  im_ep5_promises: 'Glowing golden knot tied firmly, unbreakable bond, trust symbolized as light, Islamic geometric border, no human figures',
+
+  // ─── Islamic series: Hajj Journey ───
+  hj_ep1_what_is_hajj: 'Aerial view of the Kaaba surrounded by concentric circles of white, golden light emanating from the center, pilgrimage destination, no human figures',
+  hj_ep2_tawaf: 'The Kaaba at night with golden light, circular motion trails around it like orbiting planets, sacred rotation, no human figures',
+  hj_ep3_arafat: 'Mount Arafat at sunset, golden light bathing the plain, prayers rising as visible golden streams to the sky, no human figures',
+  hj_ep4_sacrifice: 'Ram with golden fleece standing on a mountain ridge, sunrise behind, sacrifice and devotion, Ibrahim story, no human figures',
+  hj_ep5_coming_home: 'Suitcase covered in travel stickers at a doorstep, door opening to warm golden light inside, coming home transformed, no human figures',
+
+  // ─── Islamic series: Mosque Adventures ───
+  ma_ep1_haram: 'Masjid al-Haram aerial view with Kaaba at center, minarets reaching skyward, golden hour lighting, grandest mosque, no human figures',
+  ma_ep2_nabawi: 'Green dome of Masjid an-Nabawi glowing at twilight, date palms surrounding, peaceful Madinah evening, no human figures',
+  ma_ep3_aqsa: 'Golden Dome of the Rock and Al-Aqsa mosque compound, Jerusalem old city walls, ancient and sacred, no human figures',
+  ma_ep4_sultan_ahmed: 'Blue Mosque Istanbul with six minarets, thousands of blue Iznik tiles creating patterns, interior light filtering through stained glass, no human figures',
+  ma_ep5_hassan_ii: 'Hassan II Mosque Casablanca standing on the Atlantic Ocean edge, waves crashing below, minaret tallest in the world, dramatic sunset, no human figures',
+
+  // ─── Islamic series: Bedtime Duas ───
+  bd_ep1_sleep_dua: 'Cozy bedroom with moonlight streaming through window, prayer beads on pillow, peaceful night, stars visible outside, no human figures',
+  bd_ep2_good_dreams: 'Dreamcatcher made of Islamic geometric patterns catching golden light, soft clouds, peaceful sleep atmosphere, no human figures',
+  bd_ep3_thanking_allah: 'Gratitude jar overflowing with golden light particles, each one a blessing from the day, warm bedroom glow, no human figures',
+  bd_ep4_parents_dua: 'Two tall trees protecting a small garden, roots deep, branches sheltering, love and prayer for parents, no human figures',
+  bd_ep5_world_dua: 'Globe wrapped in golden light threads connecting every continent, prayers circling the earth, peace for all, no human figures',
+
+  // ─── Islamic series: Muslim Heroes ───
+  mh_ep1_haytham: 'Camera obscura projecting light through a tiny hole onto a dark wall, rainbow spectrum, discovery of optics, scientific wonder, no human figures',
+  mh_ep2_khwarizmi: 'Ancient manuscript with beautiful Arabic numerals and algebra equations glowing golden, mathematical patterns spiraling outward, no human figures',
+  mh_ep3_fihri: 'Grand university building with Islamic arches and a fountain of knowledge (books flowing like water), oldest university, no human figures',
+  mh_ep4_battuta: 'Ancient map unrolling across continents, golden path traced across Africa, Asia, Europe, compass rose, greatest journey ever, no human figures',
+  mh_ep5_firnas: 'Pair of wings made of silk and feathers spread wide against a blue sky, clouds parting, dream of flight, no human figures',
+
 };
 
 

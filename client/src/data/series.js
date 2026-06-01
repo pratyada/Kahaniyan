@@ -5749,5 +5749,1374 @@ In 1945, a B-25 bomber accidentally crashed into the 79th floor in thick fog. Fo
       },
     ],
   },
+
+  // ─── ISLAMIC SERIES ───────────────────────────────────────────────
+
+  {
+    id: 'stories-of-the-prophets',
+    title: 'Stories of the Prophets',
+    icon: '🌙',
+    gradient: 'linear-gradient(135deg, #1a3a2a 0%, #2d6a4f 50%, #40916c 100%)',
+    description: 'Five beloved prophets, peace be upon them all — their faith, their patience, and the lessons they left for every child.',
+    ageRange: '4-10',
+    totalEpisodes: 5,
+    episodes: [
+      {
+        id: 'sop_ep1_ibrahim', episodeNumber: 1, title: 'Ibrahim and the Stars',
+        subtitle: 'A young boy looks at the sky and finds the One who made it all.',
+        tradition: 'muslim', theme: 'faith', durationMinutes: 5,
+        source: 'Stories of the Prophets · Episode 1',
+        body: `Long, long ago, in a land where people carved statues out of stone and bowed down to them, there lived a young boy named Ibrahim, peace be upon him. He was curious about everything — the wind, the rain, the way seeds turned into trees — but most of all, he was curious about who made the world.
+
+One evening, Ibrahim, peace be upon him, walked out into the desert alone. The sky above him was enormous, painted with thousands of sparkling stars. He looked up and saw one star brighter than all the rest. "Perhaps that is my Lord," he whispered. But as the hours passed, the star faded and disappeared below the horizon. "I cannot worship something that disappears," he said softly.
+
+Then the moon rose — round, glowing, silver-white. It was so beautiful that Ibrahim, peace be upon him, felt his heart lift. "Surely this must be my Lord," he thought. But by morning, the moon too had set. It was gone.
+
+Then the sun came up, blazing gold and warm, filling the entire sky with light. "This is the greatest of all!" Ibrahim, peace be upon him, said. But even the mighty sun moved across the sky and sank behind the mountains at the end of the day.
+
+Ibrahim, peace be upon him, sat quietly and smiled. He understood now. The stars, the moon, the sun — they were all beautiful, but they all came and went. The One who made them must be greater than all of them. The One who never sets. The One who never fades. Allah — the Creator of everything.
+
+From that night on, Ibrahim, peace be upon him, turned his heart to Allah alone. And no matter how many people laughed at him or told him he was wrong, he stood firm like a mountain because he had found the truth with his own heart.
+
+{childName}, tonight as you close your eyes, think about the stars outside your window. Every single one was placed there by Allah, the same way He placed you in this world — on purpose, with love, for a reason. Sleep well, little star-gazer. Allah is watching over you tonight and every night.`,
+      },
+      {
+        id: 'sop_ep2_musa', episodeNumber: 2, title: 'Musa and the Burning Bush',
+        subtitle: 'A shepherd hears a voice in the wilderness that changes everything.',
+        tradition: 'muslim', theme: 'courage', durationMinutes: 5,
+        source: 'Stories of the Prophets · Episode 2',
+        body: `Musa, peace be upon him, was a shepherd. He lived a quiet life in the land of Midian, tending his flock of sheep across rocky hills and green valleys. He knew every sheep by name. He knew which ones wandered too far, which ones needed extra care, and which ones liked to nap under the olive trees.
+
+One day, while walking near a mountain called Tur, Musa, peace be upon him, saw something that made him stop. A bush was glowing — not with ordinary fire, but with a light that did not burn the leaves. The branches were bright but not breaking. The light was warm but not hot.
+
+Musa, peace be upon him, walked closer. And then he heard a voice. Not from a person. Not from the wind. A voice that seemed to come from everywhere and nowhere at once. "O Musa, I am your Lord. Remove your shoes, for you are standing on holy ground."
+
+Musa, peace be upon him, trembled. He took off his sandals and stood barefoot on the cool earth. Allah spoke to him gently, telling him that he had been chosen for a very important task — to go back to the land of Egypt and free the people who were being treated with cruelty by the Pharaoh.
+
+"But I am just a shepherd," Musa, peace be upon him, said. "I am not powerful. I do not speak with fine words."
+
+Allah told him: "I will be with you. I will give you strength. You will not be alone."
+
+And Musa, peace be upon him, trusted Allah. He left the quiet hills and walked toward the most powerful king in the world — not with an army, not with weapons, but with faith in his heart and the words of Allah on his lips.
+
+{childName}, Musa, peace be upon him, was afraid, just like you might feel afraid sometimes. But he went anyway because Allah promised to be with him. And tonight, that same promise is for you too. Allah is with the brave and the gentle. Sleep peacefully, dear one. You are never, ever alone.`,
+      },
+      {
+        id: 'sop_ep3_dawud', episodeNumber: 3, title: 'Dawud and the Beautiful Voice',
+        subtitle: 'A young shepherd whose songs made even the mountains join in.',
+        tradition: 'muslim', theme: 'gratitude', durationMinutes: 5,
+        source: 'Stories of the Prophets · Episode 3',
+        body: `Dawud, peace be upon him, was a young shepherd boy with a gift that no one else in the land had — the most beautiful voice anyone had ever heard. When he sang praises to Allah, something magical happened. The birds stopped flying and landed on nearby branches to listen. The wind softened. Even the mountains — those great, ancient, towering mountains — would echo his songs back to him, as if they were singing along.
+
+Every morning, as the sun painted the hills gold, Dawud, peace be upon him, would lift his voice and say words of thanks. "Thank You, Allah, for the light. Thank You for the water. Thank You for the grass that feeds my sheep. Thank You for the air in my lungs."
+
+The other shepherds thought he was strange. "Why do you sing to the sky?" they asked. "The sky cannot hear you."
+
+But Dawud, peace be upon him, smiled. "Allah hears me. And that is enough."
+
+Allah loved Dawud, peace be upon him, so much that He gave him not only a beautiful voice but also great wisdom. When Dawud, peace be upon him, grew up, he became a king — not the kind of king who sat on a golden throne being served by servants, but the kind who listened to ordinary people, who judged fairly between them, and who never forgot that everything he had was a gift from Allah.
+
+Even as a king, Dawud, peace be upon him, continued to sing. He would spend part of every day fasting and part of every night praying. The book given to him by Allah, called the Zabur, was filled with beautiful songs of praise that people still remember today.
+
+They say that when Dawud, peace be upon him, sang, the whole world paused to listen — not because his voice was loud, but because it was sincere. Every note came from deep inside his heart.
+
+{childName}, you have a voice too. Maybe you use it to sing, or to laugh, or to say kind words to someone who is sad. Whatever you say with love, Allah hears it. So tonight, before you sleep, whisper something kind — even just "thank You, Allah" — and know that the whole world is listening with you. Goodnight, little songbird.`,
+      },
+      {
+        id: 'sop_ep4_sulaiman', episodeNumber: 4, title: 'Sulaiman and the Ant',
+        subtitle: 'The mightiest king stops his entire army — for a tiny ant.',
+        tradition: 'muslim', theme: 'kindness', durationMinutes: 5,
+        source: 'Stories of the Prophets · Episode 4',
+        body: `Sulaiman, peace be upon him, was a king like no other. Allah had given him powers that no human had ever received before. He could speak to animals. He could understand the language of birds. The wind obeyed his commands. Even the jinn — those invisible beings made of smokeless fire — worked under his rule.
+
+His army was enormous. Soldiers marched in rows that stretched beyond the horizon. Horses, chariots, birds flying overhead in formation — all moving at his command. The ground trembled when they marched.
+
+One day, as this mighty army crossed a valley, Sulaiman, peace be upon him, heard a tiny voice. So tiny that no one else in the entire army could hear it. It was an ant — a small, brown ant standing at the entrance of her colony, calling to the other ants: "Quick! Get inside! Sulaiman and his army are coming, and they might crush us without even knowing!"
+
+Sulaiman, peace be upon him, smiled. He did not laugh at the little ant. He did not ignore her. Instead, he raised his hand and stopped the entire army — thousands of soldiers, hundreds of horses, all standing still — so that not a single ant would be harmed.
+
+Then Sulaiman, peace be upon him, thanked Allah. "O Allah, thank You for letting me hear her. Thank You for reminding me that the smallest creature matters as much as the mightiest king."
+
+He did not feel proud of his power. He felt grateful that Allah had given him the ability to be gentle with it.
+
+The army waited patiently. The ants hurried inside their colony. And when the last tiny ant had disappeared underground, Sulaiman, peace be upon him, gave the signal, and the march continued.
+
+{childName}, think about that tonight. The most powerful king in history stopped everything for one little ant. Because being strong does not mean pushing past others — it means noticing them. It means being gentle even when you do not have to be. Sleep gently tonight, little one. Even the ants are safe under Allah's care, and so are you.`,
+      },
+      {
+        id: 'sop_ep5_isa', episodeNumber: 5, title: 'Isa and the Clay Birds',
+        subtitle: 'A child shapes birds from clay — and then something wonderful happens.',
+        tradition: 'muslim', theme: 'wonder', durationMinutes: 5,
+        source: 'Stories of the Prophets · Episode 5',
+        body: `When Isa, peace be upon him, was a young boy, he loved to play in the soft clay near the river. While other children built walls and towers, Isa, peace be upon him, shaped birds. Tiny, perfect birds with curved wings and small round heads. He placed them in a row on the riverbank — sparrows, each one slightly different from the last.
+
+The other children laughed. "They are just mud, Isa! They cannot fly!"
+
+Isa, peace be upon him, smiled quietly. He leaned down and gently breathed on the clay birds. And by the permission of Allah, the little sparrows shuddered, opened their wings, and flew into the sky. Real, living birds — chirping, soaring, disappearing into the blue.
+
+The children stood with their mouths open. They could not believe what they had seen. But Isa, peace be upon him, did not boast. He did not say "Look what I can do." Instead, he looked up at the sky and whispered, "All praise belongs to Allah."
+
+Isa, peace be upon him, had been blessed by Allah from the very beginning. He spoke as a baby in his cradle to defend his mother, Maryam, who was one of the most honored women in all of history. He healed the sick with a gentle touch. He gave sight to those who could not see. And every single time, he reminded the people: "This is not from me. This is from Allah."
+
+He never wanted fame. He never wanted power. He only wanted people to be kind to one another and to remember that everything beautiful in this world comes from the One who created it.
+
+Even as a boy playing by the river, Isa, peace be upon him, knew that the most wonderful things happen when you trust Allah completely — not in your own hands, but in His plan.
+
+{childName}, you do wonderful things too — every kind word, every gentle touch, every time you share with someone. Those are your clay birds. And with Allah's blessing, the good you put into the world will fly farther than you can imagine. Close your eyes now, little dreamer. The sky is full of birds that started as someone's small act of goodness. Sweet dreams.`,
+      },
+    ],
+  },
+  {
+    id: 'names-of-allah',
+    title: 'The Beautiful Names of Allah',
+    icon: '✨',
+    gradient: 'linear-gradient(135deg, #1b2838 0%, #2c5282 50%, #4299e1 100%)',
+    description: 'Five of Allah\'s most beautiful names — each one a window into His love, mercy, and care for every child.',
+    ageRange: '4-10',
+    totalEpisodes: 5,
+    episodes: [
+      {
+        id: 'noa_ep1_rahman', episodeNumber: 1, title: 'Ar-Rahman — The Most Merciful',
+        subtitle: 'Allah\'s mercy is bigger than the sky, deeper than the ocean.',
+        tradition: 'muslim', theme: 'mercy', durationMinutes: 5,
+        source: 'The Beautiful Names of Allah · Episode 1',
+        body: `There is a name of Allah so special that it appears at the very beginning of almost every chapter of the Quran. That name is Ar-Rahman — The Most Merciful.
+
+But what does mercy mean? Let me tell you a story.
+
+Once, there was a little girl named Amina who accidentally broke her grandmother's favorite teacup. It was the one with tiny blue flowers painted on the side — the one her grandmother had carried all the way from her old village. Amina held the broken pieces in her hands and cried. She was sure her grandmother would be upset.
+
+But when her grandmother came into the kitchen, she did not look at the broken cup. She looked at Amina's tears. She knelt down, wrapped her arms around her, and said, "Oh, my little flower. Cups can be replaced. You cannot."
+
+That feeling — that warm, safe feeling of being loved even when you make a mistake — that is a tiny glimpse of mercy. And Allah's mercy is infinitely bigger than even the kindest grandmother's love.
+
+Prophet Muhammad, peace be upon him, once told his companions a story. They saw a mother rushing through a crowd, searching desperately for her baby. When she finally found her child, she held him so tightly, tears streaming down her face. Prophet Muhammad, peace be upon him, asked his companions, "Do you think this mother could ever throw her child into a fire?" They said, "Never!" He said, "Allah is more merciful to His servants than this mother is to her child."
+
+Ar-Rahman — The Most Merciful — means that Allah's mercy covers everything. Every person. Every animal. Every tiny insect. Every leaf that falls from a tree. His mercy is in the rain that feeds the flowers. In the air you breathe. In the heartbeat that keeps you alive right now.
+
+Even when you make mistakes — even when you forget to be kind or say something you regret — Allah's mercy is waiting for you, wide open, like the arms of the kindest parent in the universe.
+
+{childName}, tonight, as you lie in bed, feel that mercy around you like a warm blanket. You are wrapped in the mercy of Ar-Rahman. You are safe. You are loved. You are forgiven. Goodnight, little one.`,
+      },
+      {
+        id: 'noa_ep2_wadud', episodeNumber: 2, title: 'Al-Wadud — The Most Loving',
+        subtitle: 'Allah\'s love is not something you earn — it is something you are wrapped in.',
+        tradition: 'muslim', theme: 'love', durationMinutes: 5,
+        source: 'The Beautiful Names of Allah · Episode 2',
+        body: `One of the most beautiful names of Allah is Al-Wadud — The Most Loving. Not just loving. The MOST loving. More loving than anyone you have ever known.
+
+There was a boy named Yusuf who sometimes felt invisible. At school, the louder children got all the attention. At home, his baby sister needed most of his parents' time. On the playground, he sat by himself under the big oak tree, drawing pictures in the dirt with a stick.
+
+One evening, Yusuf asked his father, "Baba, does Allah know I exist? There are billions of people in the world. How can He care about just me?"
+
+His father sat down beside him and pointed at the sky. "Do you see those stars, Yusuf? There are more stars in the sky than grains of sand on every beach on earth. And Allah knows every single one of them. He knows when one flickers. He knows when one is born. If He can love and know every star, do you think He could forget about you?"
+
+Yusuf thought about this.
+
+His father continued, "Al-Wadud means Allah does not just love — He pours love. His love is not like a candle that gets smaller as it burns. It is like the sun — it gives and gives and never runs out."
+
+Prophet Muhammad, peace be upon him, taught us that when Allah loves someone, He tells the angel Jibreel, "I love this person." And Jibreel tells the other angels. And then love for that person is placed in the hearts of people on earth. So when someone is kind to you for no reason — when a stranger smiles at you or a friend saves you a seat — that might be Allah's love, working through the hearts of people around you.
+
+Al-Wadud does not love you because you are perfect. He loves you because He created you. You do not have to earn it. You do not have to win it. It is already yours.
+
+{childName}, tonight, know this in your heart: you are deeply, completely, endlessly loved. Al-Wadud is watching over you right now, the way the sun watches over the earth — constant, warm, and full of light. Sleep well, beloved one. You are never unloved.`,
+      },
+      {
+        id: 'noa_ep3_salam', episodeNumber: 3, title: 'As-Salam — The Source of Peace',
+        subtitle: 'When the world feels too loud, there is a name that makes everything still.',
+        tradition: 'muslim', theme: 'peace', durationMinutes: 5,
+        source: 'The Beautiful Names of Allah · Episode 3',
+        body: `Sometimes the world feels too loud. Too fast. Too much. Horns honking. People rushing. Worries buzzing in your head like bees. On days like that, there is a name of Allah that can make everything go quiet — As-Salam, The Source of Peace.
+
+There was a girl named Fatima who could not sleep. Every night, her mind raced. Did she finish her homework? Would the other children like her tomorrow? What if she said something silly? The thoughts spun and spun like leaves in a storm.
+
+One night, her mother sat at the edge of her bed and said, "Fatima, close your eyes. I want to teach you something."
+
+Fatima closed her eyes.
+
+"Breathe in slowly," her mother said. "Now breathe out. Now say in your heart: As-Salam."
+
+Fatima whispered it. As-Salam.
+
+"Say it again."
+
+As-Salam.
+
+"One more time, slowly."
+
+As-Salam.
+
+Something shifted. The spinning thoughts slowed down. The buzzing quieted. It felt like someone had gently placed a soft blanket over all the noise in her mind.
+
+"As-Salam means that Allah is the source of all peace," her mother explained. "Every calm moment you have ever felt — the quiet after rain, the stillness of early morning, the feeling of being safe in someone's arms — all of that peace comes from Him."
+
+Prophet Muhammad, peace be upon him, used to greet everyone with "As-Salamu Alaikum" — peace be upon you. It was not just a hello. It was a prayer. Every time you say it to someone, you are asking Allah to wrap them in peace. And every time someone says it to you, peace is being wished upon your heart.
+
+As-Salam is not just the absence of noise. It is the presence of something beautiful. It is the feeling of knowing that everything is going to be okay — not because the world is perfect, but because Allah is in control, and He is peace itself.
+
+{childName}, tonight, let that peace fill your room. Breathe in. Breathe out. As-Salam. The noise is gone. The worries can wait until morning. Right now, you are wrapped in the peace of Allah. Sleep softly, little one. As-Salam is with you.`,
+      },
+      {
+        id: 'noa_ep4_ghaffar', episodeNumber: 4, title: 'Al-Ghaffar — The Forgiver',
+        subtitle: 'No mistake is too big for the One who forgives again and again and again.',
+        tradition: 'muslim', theme: 'forgiveness', durationMinutes: 5,
+        source: 'The Beautiful Names of Allah · Episode 4',
+        body: `Have you ever done something you wished you could take back? Said something unkind? Broken a rule? Felt that heavy feeling in your chest, like a stone sitting on your heart? Everyone has felt that way. Everyone. Even grown-ups.
+
+But there is a name of Allah that lifts that stone away — Al-Ghaffar, The Forgiver. Not just someone who forgives once. Al-Ghaffar means the One who forgives again and again and again, without ever getting tired of forgiving.
+
+There was a boy named Omar who told a lie. It was a small lie — he told his teacher he had finished his reading when he had not. At first, he felt clever. But by the afternoon, the lie sat in his stomach like a cold, heavy rock. He could not enjoy lunch. He could not laugh at his friend's jokes. The lie was ruining his whole day.
+
+That evening, Omar told his mother what he had done. She was quiet for a moment. Then she said, "Omar, do you know what the most hopeful thing in the world is?"
+
+He shook his head.
+
+"It is that Allah never locks the door. No matter how many times you knock on His door with a mistake in your hands, He opens it. Every single time. He is Al-Ghaffar."
+
+Prophet Muhammad, peace be upon him, said that if people did not make mistakes and then ask Allah for forgiveness, Allah would replace them with people who did make mistakes and asked for forgiveness — because Allah loves to forgive. Forgiving is not something Allah does reluctantly. It is something He loves to do.
+
+Think of it like this: imagine you drew a picture and spilled ink on it. You think the picture is ruined. But Al-Ghaffar takes that ink stain and turns it into a beautiful flower that makes the picture even better than before. That is what Allah's forgiveness does — it does not just erase the mistake. It transforms you into someone stronger, kinder, and more humble.
+
+{childName}, if there is anything weighing on your heart tonight, let it go. Whisper "Astaghfirullah" — I ask Allah's forgiveness — and feel that stone lift away. Al-Ghaffar is waiting with open arms, ready to forgive, ready to love you. You are never too far. Goodnight, dear one. Tomorrow is a fresh, clean page.`,
+      },
+      {
+        id: 'noa_ep5_kareem', episodeNumber: 5, title: 'Al-Kareem — The Most Generous',
+        subtitle: 'Allah gives and gives — even before you ask.',
+        tradition: 'muslim', theme: 'generosity', durationMinutes: 5,
+        source: 'The Beautiful Names of Allah · Episode 5',
+        body: `Close your eyes for a moment and think about everything you received today. The air that filled your lungs when you woke up — did you ask for it? The sunlight that warmed your face — did you pay for it? Your heartbeat — did you have to remember to make it beat?
+
+All of these are gifts from Al-Kareem — The Most Generous. Allah gives without being asked. He gives more than we need. He gives even to those who forget to thank Him.
+
+There was a family who had very little. Their father worked long hours, and their mother stretched every meal as far as she could. One evening, the children sat around a table with just rice and salt. The youngest, a girl named Zainab, looked at the plain bowl and said, "Alhamdulillah" — thank You, Allah.
+
+Her older brother frowned. "Why are you thanking Allah? We barely have anything."
+
+Zainab said, "We have rice. Some people have nothing. We have each other. Some people are alone. We have a roof. Some people sleep under the sky. I think Al-Kareem has given us a lot."
+
+Her brother went quiet. Then, slowly, he said, "Alhamdulillah."
+
+Prophet Muhammad, peace be upon him, was the most generous person who ever lived. When someone asked him for something, he never said no. If he had one cloak, he gave it away. If he had one meal, he shared it. And he taught that generosity is not about how much you have — it is about how willing you are to share what you do have.
+
+Al-Kareem gives endlessly. And the beautiful thing is, when you become generous too — when you share your snack, your toys, your smile, your time — you become a reflection of that name. You carry a little piece of Al-Kareem's light inside you.
+
+The scholars say that Al-Kareem is so generous that He feels shy to turn away a person who raises their hands in prayer. Imagine that — the Creator of the universe feels moved when you ask Him for something. That is how generous He is.
+
+{childName}, tonight, before you sleep, think of one thing you are grateful for. Just one. Hold it in your heart like a warm light. That is Al-Kareem's gift to you. And tomorrow, pass that light on — share something, say something kind, help someone who needs it. That is your gift back. Goodnight, generous soul.`,
+      },
+    ],
+  },
+  {
+    id: 'ramadan-adventures',
+    title: 'Ramadan Adventures',
+    icon: '🌙',
+    gradient: 'linear-gradient(135deg, #2d1b4e 0%, #6b3fa0 50%, #9f7aea 100%)',
+    description: 'The magic of Ramadan — fasting, feasting, giving, praying, and celebrating Eid together.',
+    ageRange: '4-10',
+    totalEpisodes: 5,
+    episodes: [
+      {
+        id: 'ra_ep1_first_fast', episodeNumber: 1, title: 'My Very First Fast',
+        subtitle: 'A child tries fasting for the first time — and discovers what hunger teaches.',
+        tradition: 'muslim', theme: 'patience', durationMinutes: 5,
+        source: 'Ramadan Adventures · Episode 1',
+        body: `The moon was thin like a fingernail in the sky, and Mama said, "Ramadan begins tomorrow."
+
+Layla had watched her parents fast every year. They woke up before the sun to eat suhoor, then did not eat or drink anything — not a single sip of water, not a single bite of food — until the sun set. It seemed impossible to Layla. How could anyone go a whole day without eating?
+
+This year, Layla was seven. "Can I try?" she asked.
+
+Mama and Baba looked at each other. "You can try a half-day fast," Mama said. "From sunrise until lunchtime. And if you feel too tired or dizzy, you eat. There is no shame in that."
+
+Layla set her alarm for 4 AM. She ate rice and dates and drank a big glass of water while it was still dark outside. Then she prayed Fajr with her parents, and the fast began.
+
+The morning was easy. She went to school, played with her friends, and almost forgot she was fasting. But by 10 AM, her stomach started talking. Not growling — talking. "Feed me," it said. "Just a little cracker. Just a tiny sip."
+
+Layla pressed her hand to her tummy and whispered, "Not yet."
+
+By 11 AM, she noticed something. She was thinking about food in a way she never had before. She thought about the children in the world who feel this way every day — not because they chose to, but because they had no food at all. Her heart felt heavy and soft at the same time.
+
+At noon, Mama was waiting with warm soup and fresh bread. Layla took her first sip, and it was the most delicious thing she had ever tasted. Not because the soup was special, but because she was grateful in a way she had never been before.
+
+"You did it," Mama said, kissing her forehead.
+
+"It was hard," Layla said. "But I learned something. When my stomach was empty, my heart felt full."
+
+Prophet Muhammad, peace be upon him, said that fasting is a shield. It teaches you patience, gratitude, and compassion for those who have less. Layla understood that now — not from a book, but from feeling it in her own body.
+
+{childName}, you do not have to fast tonight. But you can close your eyes and feel grateful for every meal you have ever eaten. Every sip of water. Every warm bowl of food. These are gifts. Goodnight, brave little faster.`,
+      },
+      {
+        id: 'ra_ep2_iftar', episodeNumber: 2, title: 'The Iftar Table',
+        subtitle: 'The most magical meal of the day — when the whole family gathers at sunset.',
+        tradition: 'muslim', theme: 'family', durationMinutes: 5,
+        source: 'Ramadan Adventures · Episode 2',
+        body: `In Ramadan, the most magical time of the day is not sunrise or midnight. It is sunset. Because sunset is when the fast breaks. And in the house of the Khalil family, sunset meant one thing — the iftar table.
+
+Every evening, the whole family worked together. Grandmother rolled out fatayer with her soft, flour-dusted hands. Baba squeezed fresh lemonade with mint. Mama stirred a big pot of lentil soup that had been simmering since the afternoon. The oldest cousin, Tariq, arranged the dates on a plate — three for each person, just like Prophet Muhammad, peace be upon him, used to break his fast.
+
+Little Ahmad's job was the most important: he watched the clock.
+
+"Is it time yet?" he asked every two minutes.
+
+"Not yet, habibi," Mama said, smiling.
+
+The table stretched across the living room — plates and bowls covering every inch. Neighbors brought dishes too. Mrs. Chen from next door always brought spring rolls because, she said, "Good food has no borders." Mr. Johnson from across the street brought a pie. "I may not fast," he said, "but I can feast with you."
+
+At exactly 7:14 PM, the adhan — the call to prayer — floated through the open window from the mosque down the street. The whole family said "Bismillah" — in the name of Allah — and bit into their dates. The sweetness burst on their tongues like a tiny sunrise.
+
+Then came the soup. Then the bread. Then laughter and stories and second helpings and third helpings and Grandmother insisting that everyone eat more.
+
+Prophet Muhammad, peace be upon him, said that the person who provides iftar for someone who is fasting earns the same reward as the one who fasted. Sharing food is not just feeding bodies — it is feeding hearts.
+
+After dinner, the family prayed Maghrib together, shoulder to shoulder, then sat on the porch drinking tea while the stars appeared one by one.
+
+{childName}, the iftar table is more than food. It is love laid out on plates. It is patience rewarded. It is family and friends and neighbors becoming one. Tonight, imagine yourself at that table — warm, full, surrounded by people who love you. That is how Allah wants you to feel. Goodnight, sweet one.`,
+      },
+      {
+        id: 'ra_ep3_laylat_alqadr', episodeNumber: 3, title: 'The Night of Power',
+        subtitle: 'One night in Ramadan is worth more than a thousand months — and it feels like magic.',
+        tradition: 'muslim', theme: 'wonder', durationMinutes: 5,
+        source: 'Ramadan Adventures · Episode 3',
+        body: `Deep in the last ten nights of Ramadan, there is one night that is unlike any other night in the entire year. It is called Laylat al-Qadr — the Night of Power. The Quran says this night is better than a thousand months. That means any prayer you make, any good deed you do, any word of kindness you say on this night is worth more than doing it every single night for over eighty years.
+
+Nobody knows exactly which night it is. It hides in the odd nights of the last ten days — the 21st, 23rd, 25th, 27th, or 29th. It is a secret, and the secret is part of its beauty. Because it means you have to search for it, the way you search for a treasure.
+
+In the Khalil house, the last ten nights were special. Baba stayed up late at the mosque, praying extra prayers called taraweeh. Mama spread a prayer mat in the living room and whispered duas long into the night. Even little Ahmad tried to stay awake, though he usually fell asleep on the couch by 10 PM, clutching his favorite blanket.
+
+"How will I know if it is Laylat al-Qadr?" Ahmad asked.
+
+Grandmother sat beside him. "Some say the night feels unusually peaceful. Some say the sky looks different — softer. Some say the morning after, the sun rises without strong rays, gentle and calm. But the truth is, habibi, you do not need to see a sign. You just need to pray with all your heart, and Allah will count it."
+
+Prophet Muhammad, peace be upon him, used to work harder in the last ten nights than any other time. He would wake up his whole family, not to scold them, but to invite them into the beauty of the night. "Wake up," he would say gently. "Do not miss this gift."
+
+On one of those quiet nights, Ahmad sat beside his mother on the prayer mat. He did not know big fancy prayers. He just closed his eyes and whispered, "Allah, please make Mama and Baba happy. Please help people who are hungry. Please let me be kind tomorrow."
+
+His mother's eyes glistened. "That," she said, "is the most beautiful dua I have ever heard."
+
+{childName}, you do not need to stay up all night. But tonight, before you close your eyes, make one small prayer — for someone you love, for the world, for yourself. On any night, in any place, Allah is listening. And who knows? Maybe tonight is the night that is worth a thousand months. Sweet dreams, little worshipper.`,
+      },
+      {
+        id: 'ra_ep4_charity', episodeNumber: 4, title: 'The Charity Box',
+        subtitle: 'A small coin in a box can change someone\'s whole world.',
+        tradition: 'muslim', theme: 'generosity', durationMinutes: 5,
+        source: 'Ramadan Adventures · Episode 4',
+        body: `At the beginning of Ramadan, Mama placed a small cardboard box on the kitchen shelf. She wrote on it with a marker: SADAQAH — which means charity given from the heart.
+
+"Every day this Ramadan," she told the children, "put something in the box. It does not have to be money. It can be a note about something kind you did. A drawing for someone who is sad. A promise to share. Anything that comes from your heart."
+
+Mariam, who was nine, put in her weekly allowance — two shiny coins. Her little brother Hassan, who was five, drew a picture of the sun and wrote (in wobbly letters): "This is for somone who is sad so they can feel warm."
+
+Every day, the box grew heavier. Coins clinked. Notes rustled. By the middle of Ramadan, the box was almost full.
+
+"What happens to everything inside?" Hassan asked.
+
+"We give it away," Mama said. "The money goes to families who need it. The drawings go to the children's hospital. The promises — those we keep in our hearts."
+
+Prophet Muhammad, peace be upon him, was always generous, but in Ramadan, his generosity became like the wind — unstoppable, reaching everyone. He gave food to the hungry, clothes to the cold, and kindness to the lonely. He taught that even a smile is charity. Even removing something harmful from a path is charity. Even saying a kind word counts.
+
+On the last day of Ramadan, the family drove to the mosque with their box. They saw other families bringing boxes too — big ones, small ones, some overflowing. The mosque collected everything and distributed it to families who needed help.
+
+Hassan watched a little girl about his age receive a bag of food and new shoes. She hugged the shoes like they were the most precious things in the world. Hassan felt something warm spread through his chest — a feeling bigger than any toy had ever given him.
+
+"Mama," he whispered, "giving away feels better than getting."
+
+Mama kissed his head. "Now you understand sadaqah."
+
+{childName}, you do not need a box to be generous. Tomorrow, try one small act of giving — share a snack, help someone carry something, say something kind to someone who looks lonely. That is your sadaqah. And Allah sees every single bit of it. Goodnight, generous heart.`,
+      },
+      {
+        id: 'ra_ep5_eid', episodeNumber: 5, title: 'Eid Morning',
+        subtitle: 'After a month of patience, the celebration begins — and it smells like perfume and pancakes.',
+        tradition: 'muslim', theme: 'joy', durationMinutes: 5,
+        source: 'Ramadan Adventures · Episode 5',
+        body: `The moon had been spotted. The announcement had been made. Tomorrow was Eid al-Fitr — the celebration at the end of Ramadan. And the Khalil house was buzzing.
+
+Mama ironed the children's new clothes — a green dress for Layla with tiny gold flowers, a crisp white thobe for Ahmad. Baba polished his shoes until they shone like mirrors. Grandmother wrapped small envelopes with money inside — Eidiya, the special gift for children.
+
+"Sleep early tonight," Mama said. "Eid starts at sunrise."
+
+But who could sleep? The house smelled like ma'amoul cookies — those crumbly, butter-soft pastries filled with dates and nuts that Grandmother baked only once a year. Ahmad snuck three before bedtime. Grandmother pretended not to notice.
+
+At dawn, the family woke to the sound of Baba calling, "Eid Mubarak!" — blessed Eid! Everyone dressed in their new clothes. Baba dabbed attar — a beautiful, woodsy perfume — behind each child's ears. It was a sunnah, something Prophet Muhammad, peace be upon him, used to do on Eid mornings.
+
+Before leaving for the mosque, everyone ate breakfast. This was important — on Eid morning, you eat before the prayer, to show that the month of fasting is finished and the celebration has begun. Dates and milk. Pancakes with honey. Layla's favorite: chocolate croissants that Baba bought from the bakery at 5 AM.
+
+At the mosque, hundreds of families gathered on a wide field. Everyone wore their best. Children ran between the rows, laughing. Strangers hugged each other and said "Eid Mubarak!" The imam led the prayer, and then came the khutbah — a short talk reminding everyone to be grateful, to share their joy, and to carry the lessons of Ramadan into the rest of the year.
+
+After the prayer, the real fun began. The children ran to Grandmother for their Eidiya envelopes. Neighbors exchanged sweets. The park near the mosque was turned into a small fair with face painting and balloon animals. Ahmad got a balloon sword. Layla got her face painted like a cat.
+
+Prophet Muhammad, peace be upon him, said that Eid is a day of joy and celebration. It is Allah's gift to the community — a day to smile, to laugh, to eat, and to be grateful for making it through a whole month of patience.
+
+{childName}, tonight, close your eyes and imagine the best Eid morning — new clothes, sweet smells, warm hugs, delicious food, and everyone saying "Eid Mubarak." That joy is waiting for you. You earned it with every kind deed and every patient moment. Goodnight, and Eid Mubarak in your dreams.`,
+      },
+    ],
+  },
+  {
+    id: 'companions-of-prophet',
+    title: 'Companions of the Prophet',
+    icon: '⭐',
+    gradient: 'linear-gradient(135deg, #3b1a1a 0%, #9b2c2c 50%, #e53e3e 100%)',
+    description: 'The incredible people who stood beside Prophet Muhammad, peace be upon him — their loyalty, courage, and love.',
+    ageRange: '4-10',
+    totalEpisodes: 5,
+    episodes: [
+      {
+        id: 'cop_ep1_abubakr', episodeNumber: 1, title: 'Abu Bakr\'s Loyalty',
+        subtitle: 'The best friend who believed when no one else would.',
+        tradition: 'muslim', theme: 'loyalty', durationMinutes: 5,
+        source: 'Companions of the Prophet · Episode 1',
+        body: `When Prophet Muhammad, peace be upon him, first told people that Allah had chosen him as a messenger, most people did not believe him. They laughed. They turned away. Some even threw stones.
+
+But there was one man who believed immediately, without a single moment of doubt. His name was Abu Bakr.
+
+Abu Bakr was a merchant — a kind, gentle man known throughout Makkah for his honesty. When Prophet Muhammad, peace be upon him, told him about the message from Allah, Abu Bakr did not ask for proof. He did not say, "Let me think about it." He simply said, "I believe you."
+
+Why? Because Abu Bakr knew Prophet Muhammad, peace be upon him, better than anyone. He had known him since childhood. He had never seen him tell a single lie. He had never seen him be unkind to a single person. If this man said he had received a message from Allah, then it must be true.
+
+From that day on, Abu Bakr gave everything he had to support the message of Islam. He spent his own money to free enslaved people who were being punished for believing in Allah. He gave up his comfortable life. He lost friends, faced danger, and never once complained.
+
+The most dangerous night came when Prophet Muhammad, peace be upon him, had to leave Makkah. Enemies were planning to harm him. Abu Bakr went with him. They hid in a small cave called Thawr while search parties hunted for them outside. Abu Bakr was terrified — not for himself, but for Prophet Muhammad, peace be upon him.
+
+"Do not be sad," Prophet Muhammad, peace be upon him, said gently. "Allah is with us."
+
+A spider spun a web across the cave entrance. A bird built a nest there. The enemies looked at the cave, saw the undisturbed web, and walked away. Allah had protected them.
+
+Abu Bakr spent his entire life standing beside Prophet Muhammad, peace be upon him — in joy and in hardship, in victory and in loss. He is known as As-Siddiq, The Truthful One.
+
+{childName}, a true friend believes in you even when the world does not. A true friend stays when everyone else leaves. Tonight, think of someone who has always been there for you — and be grateful for them. That is loyalty. That is love. Sleep well, faithful one.`,
+      },
+      {
+        id: 'cop_ep2_umar', episodeNumber: 2, title: 'Umar\'s Justice',
+        subtitle: 'The man who treated a beggar and a king exactly the same.',
+        tradition: 'muslim', theme: 'justice', durationMinutes: 5,
+        source: 'Companions of the Prophet · Episode 2',
+        body: `Umar ibn al-Khattab was a man that people both respected and feared. He was tall, strong, and had a voice like thunder. Before he became Muslim, he was one of Islam's fiercest enemies. But when he heard the words of the Quran — truly heard them — his heart broke open, and he became one of Islam's greatest defenders.
+
+When Umar became the leader of the Muslim community after Abu Bakr, he ruled a vast land stretching across deserts and cities. He was the most powerful man in the region. But here is what made Umar extraordinary — he lived like the poorest person in his community.
+
+His clothes had patches. He slept on the ground. He ate simple bread and dates. When people said, "You are the leader! You should live in a palace!" Umar replied, "How can I sleep on silk when there are people in my land sleeping on stones?"
+
+Every night, Umar disguised himself and walked through the streets of Madinah. He was checking — not on soldiers or officials — but on ordinary families. One night, he heard a woman crying in a small house. He knocked. She was a widow with hungry children, and she was boiling stones in a pot of water, pretending it was soup so her children would fall asleep thinking food was coming.
+
+Umar's eyes filled with tears. He ran back to the storehouse, loaded a sack of flour and food onto his own back — refusing to let his servant carry it — and brought it to the woman himself. He stayed and helped her cook until the children were fed and sleeping peacefully.
+
+His servant said, "Let me carry the sack for you."
+
+Umar said, "Will you carry my sins for me on the Day of Judgment too? This is my responsibility."
+
+Prophet Muhammad, peace be upon him, had once said about Umar that if there were to be a prophet after him, it would have been Umar. That is how deeply Umar understood justice, truth, and serving others.
+
+{childName}, justice means treating everyone fairly — whether they are rich or poor, big or small, a friend or a stranger. Tonight, dream of a world where everyone is treated with the kindness Umar showed that widow and her children. That world starts with you. Goodnight, little leader.`,
+      },
+      {
+        id: 'cop_ep3_uthman', episodeNumber: 3, title: 'Uthman\'s Generosity',
+        subtitle: 'The man who bought a well so that everyone could drink for free.',
+        tradition: 'muslim', theme: 'generosity', durationMinutes: 5,
+        source: 'Companions of the Prophet · Episode 3',
+        body: `In the early days of the Muslim community in Madinah, water was precious. There was one well — a clean, deep well with sweet water — but it was owned by a man who charged money for every bucket. The poor could not afford it. They went thirsty, or drank from muddy puddles that made them sick.
+
+Prophet Muhammad, peace be upon him, said, "Who will buy this well and make its water free for everyone? Allah will reward them with a garden in Paradise."
+
+A quiet man stepped forward. His name was Uthman ibn Affan. Uthman was wealthy, but he was not the kind of wealthy person who showed off. He dressed simply. He spoke softly. He was so shy that even the angels, it was said, felt shy in his presence.
+
+Uthman went to the well's owner and tried to buy it. The owner refused to sell the whole well. So Uthman, being clever and patient, offered to buy half — he would own the well on alternating days. On Uthman's days, the water was free for everyone.
+
+People quickly learned to collect extra water on Uthman's days, so nobody came to the well on the owner's days. Eventually, the owner sold his half too, and the whole well became free. Uthman had given an entire city clean water.
+
+But that was just the beginning. When Prophet Muhammad, peace be upon him, needed to equip an army to defend the community, Uthman donated three hundred camels, fully loaded. When the mosque needed expanding, Uthman paid for it. When refugees arrived with nothing, Uthman opened his warehouses.
+
+He never gave to be praised. He gave because he believed that everything he owned actually belonged to Allah, and he was just a caretaker, passing it on to those who needed it.
+
+Prophet Muhammad, peace be upon him, loved Uthman dearly. He said, "Whatever Uthman does after today will not harm him" — meaning his generosity had already earned him a place in Paradise.
+
+{childName}, generosity is not about being rich. It is about having an open hand and an open heart. Even sharing your glass of water with someone thirsty is a kind of Uthman-level generosity. Tonight, think about what you can share tomorrow — and sleep knowing that every small act of giving is seen by Allah. Goodnight, giving heart.`,
+      },
+      {
+        id: 'cop_ep4_ali', episodeNumber: 4, title: 'Ali\'s Bravery',
+        subtitle: 'The young cousin who slept in the Prophet\'s bed on the most dangerous night.',
+        tradition: 'muslim', theme: 'courage', durationMinutes: 5,
+        source: 'Companions of the Prophet · Episode 4',
+        body: `Ali ibn Abi Talib was just a boy — barely ten years old — when he became one of the first people in the world to accept Islam. He was Prophet Muhammad's cousin, peace be upon him, and had grown up in his household, learning from his kindness, his honesty, and his gentleness.
+
+Ali loved Prophet Muhammad, peace be upon him, the way a younger brother loves an older brother — with complete trust and admiration. And when the time came to prove that love, Ali did something so brave that people still talk about it fourteen hundred years later.
+
+The enemies in Makkah had made a terrible plan. They decided that young men from every tribe would surround Prophet Muhammad's house, peace be upon him, at night and attack him together so that no single tribe could be blamed.
+
+Allah told Prophet Muhammad, peace be upon him, about the plan and told him to leave Makkah that night. But the enemies were already gathering outside. If they looked in and saw an empty bed, they would immediately start hunting for him.
+
+Prophet Muhammad, peace be upon him, turned to Ali and asked him to sleep in his bed that night, wrapped in his green cloak, so the enemies would think he was still inside.
+
+Think about what this meant. The enemies were coming with weapons. They were angry and dangerous. Sleeping in that bed could cost Ali his life.
+
+Ali did not hesitate. Not for a second. He lay down in Prophet Muhammad's bed, peace be upon him, pulled the green cloak over himself, and closed his eyes. He was calm. He was not afraid. He trusted Allah, and he loved Prophet Muhammad, peace be upon him, more than he loved his own safety.
+
+That night, Prophet Muhammad, peace be upon him, walked right past the enemies — and Allah made them unable to see him. By morning, when they rushed in, they found only Ali, safe and unharmed. Allah had protected them both.
+
+Ali grew up to become a great scholar, a wise leader, and one of the bravest warriors in history. But his greatest act of bravery happened in the quiet of one dark night, lying still in a bed, trusting Allah completely.
+
+{childName}, bravery is not always loud. Sometimes it is lying still when your heart is racing. Sometimes it is doing the right thing when it is scary. Tonight, know that Allah protects the brave, just as He protected Ali. Sleep safely, courageous one.`,
+      },
+      {
+        id: 'cop_ep5_salman', episodeNumber: 5, title: 'Salman\'s Long Journey',
+        subtitle: 'A man who traveled across the world searching for truth — and finally found it.',
+        tradition: 'muslim', theme: 'perseverance', durationMinutes: 5,
+        source: 'Companions of the Prophet · Episode 5',
+        body: `Salman al-Farisi was born far, far away from Arabia — in Persia, the land we now call Iran. His family was wealthy. His father was a chief. He could have lived a comfortable life and never asked a single question.
+
+But Salman had a question that would not leave him alone: "What is the truth?"
+
+His family followed an ancient religion, tending a sacred fire that was never allowed to go out. Salman was given the important job of keeping the fire burning. But one day, while passing by a church, he heard people singing and praying, and something stirred in his heart. He went inside and listened. The message of worshipping one God struck him like a bell.
+
+Salman left his comfortable home and began a journey that would last years. He traveled from Persia to Syria, studying with one Christian monk after another. Each monk, before dying, would tell him, "Go to this next teacher." The last monk told him something different: "The time has come for a final prophet to appear. He will appear in a land of date palms. He will accept gifts but not charity. And between his shoulders, there will be a seal."
+
+Salman traveled toward Arabia. Along the way, he was betrayed and sold into slavery. He ended up in Madinah, working in the date gardens of a man who owned him. He was far from home, alone, enslaved — but he never stopped believing that his journey had a purpose.
+
+Then Prophet Muhammad, peace be upon him, arrived in Madinah. Salman heard about him and came to see for himself. He tested the three signs the monk had told him about. The Prophet accepted a gift of dates but gently refused charity. And when Salman saw the seal between his shoulders — he wept. He had found what he had been searching for his entire life.
+
+Prophet Muhammad, peace be upon him, helped Salman earn his freedom. And Salman became one of the most beloved companions — the man from a distant land who crossed the entire world to find the truth.
+
+{childName}, your own journey through life will have twists and turns. You may feel lost sometimes. But if you keep searching for what is good and true, you will find it — just like Salman did. The journey is never wasted. Goodnight, little traveler. Your path is guided by a light you cannot always see.`,
+      },
+    ],
+  },
+  {
+    id: 'animals-in-quran',
+    title: 'Animals in the Quran',
+    icon: '🐪',
+    gradient: 'linear-gradient(135deg, #1a3a1a 0%, #48752c 50%, #68d391 100%)',
+    description: 'Five amazing animals that appear in the Quran — each one with a lesson as big as the sky.',
+    ageRange: '4-10',
+    totalEpisodes: 5,
+    episodes: [
+      {
+        id: 'aiq_ep1_hoopoe', episodeNumber: 1, title: 'The Hoopoe of Sulaiman',
+        subtitle: 'A tiny bird brings big news to the mightiest king on earth.',
+        tradition: 'muslim', theme: 'courage', durationMinutes: 5,
+        source: 'Animals in the Quran · Episode 1',
+        body: `Sulaiman, peace be upon him, was the greatest king the world had ever known. He could command the wind. He could speak to animals. He had armies of humans, jinn, and birds — yes, birds. Birds were part of his army, and every single one had a role.
+
+One day, Sulaiman, peace be upon him, reviewed his troops. He looked over the rows of soldiers, the lines of jinn, and the formations of birds. Suddenly, he frowned. One bird was missing.
+
+"Where is the hoopoe?" he asked.
+
+The hoopoe is a small bird with a beautiful crown of feathers on its head and striped wings of orange and black. It is not the biggest bird. Not the strongest. Not the fastest. But it was the one Sulaiman, peace be upon him, noticed was missing.
+
+Sulaiman, peace be upon him, was not pleased. "If the hoopoe does not have a good reason for being absent, I will punish it severely."
+
+But then the hoopoe appeared, fluttering down excitedly. "O King," the little bird said, "I have news. I have seen something you have not seen. I traveled to the land of Sheba and found a queen — a powerful queen who rules a magnificent kingdom. But she and her people bow down to the sun instead of to Allah."
+
+Sulaiman, peace be upon him, was amazed. This tiny bird — one small creature in his enormous army — had discovered something the king himself did not know. The hoopoe had been brave enough to fly far on its own, curious enough to investigate, and honest enough to report back.
+
+Because of the hoopoe's discovery, Sulaiman, peace be upon him, sent a letter to the Queen of Sheba, inviting her to worship Allah alone. She eventually came to visit, saw the truth, and submitted to Allah.
+
+All because of one small, curious bird who refused to stay quiet when it had something important to say.
+
+{childName}, you might feel small sometimes — like one little bird in a big world. But small does not mean unimportant. Your curiosity matters. Your discoveries matter. Your voice matters. Even the mightiest king stopped and listened to the smallest bird. Tonight, sleep knowing that your words and your ideas are worth hearing. Goodnight, little hoopoe.`,
+      },
+      {
+        id: 'aiq_ep2_whale', episodeNumber: 2, title: 'The Whale of Yunus',
+        subtitle: 'A prophet is swallowed by darkness — and finds light inside a prayer.',
+        tradition: 'muslim', theme: 'hope', durationMinutes: 5,
+        source: 'Animals in the Quran · Episode 2',
+        body: `Yunus, peace be upon him, was a prophet sent by Allah to a city called Nineveh. The people of Nineveh had strayed far from goodness. They were unkind, unfair, and refused to listen when Yunus, peace be upon him, told them to turn back to Allah.
+
+Day after day, Yunus, peace be upon him, tried. He spoke to them gently. He warned them kindly. But they ignored him. They laughed. They turned their backs. After years of trying, Yunus, peace be upon him, felt frustrated and left the city without waiting for Allah's permission.
+
+He boarded a ship and sailed out to sea. But a terrible storm came — the sky turned black, the waves rose like mountains, and the ship was tossed about like a leaf. The sailors were terrified. They cast lots to see who should leave the ship to lighten the load. The lot fell on Yunus, peace be upon him.
+
+He was thrown into the churning sea. And then — a massive whale rose from the deep and swallowed him whole.
+
+Inside the whale, there was nothing but darkness. The darkness of the whale's belly. The darkness of the deep ocean. The darkness of the night above. Three layers of darkness, pressing in from every side.
+
+But in that absolute darkness, Yunus, peace be upon him, did not give up. He raised his hands and called out to Allah with words that Muslims still say today: "La ilaha illa anta, subhanaka, inni kuntu min adh-dhalimin" — There is no god but You, glory be to You, I was among the wrongdoers.
+
+He admitted his mistake. He turned back to Allah with all his heart. And Allah heard him. Allah always hears.
+
+The whale rose to the surface and gently placed Yunus, peace be upon him, on a sandy shore. Allah caused a vine to grow over him, shielding him from the sun and giving him shade while he recovered. And when Yunus, peace be upon him, returned to Nineveh, the entire city had already turned back to Allah. His efforts had not been wasted after all.
+
+{childName}, sometimes life feels dark — like being inside the whale. But even in the deepest darkness, your prayers have light. They travel through every layer of shadow, straight to Allah. If you ever feel lost or sad, remember the prayer of Yunus, peace be upon him. It turned darkness into light. Goodnight, little one. You are never in darkness when Allah is listening.`,
+      },
+      {
+        id: 'aiq_ep3_camel', episodeNumber: 3, title: 'The She-Camel of Salih',
+        subtitle: 'Allah sends a miracle on four legs — and asks only for kindness in return.',
+        tradition: 'muslim', theme: 'kindness', durationMinutes: 5,
+        source: 'Animals in the Quran · Episode 3',
+        body: `In the ancient land of Thamud, the people were master builders. They carved their homes directly into the mountains — grand palaces hollowed out of solid rock. They were powerful, wealthy, and proud. Very, very proud.
+
+Allah sent them a prophet — Salih, peace be upon him. He was one of their own people, kind and truthful. He told them to worship Allah alone and to be grateful for everything they had been given. But the people of Thamud laughed at him.
+
+"If your God is real," they said, "show us a miracle. Make a she-camel come out of that mountain."
+
+They thought this was impossible. A living camel from solid rock? Never.
+
+But Allah answered their challenge. The mountain trembled and cracked open, and out walked a she-camel — large, beautiful, and unlike any camel anyone had ever seen. She was gentle and magnificent, with soft eyes and a calm walk.
+
+Salih, peace be upon him, told the people, "This is Allah's she-camel. She is a sign for you. Let her graze freely on Allah's earth. Let her drink from the well on her day, and you drink on your day. Do not touch her with harm, or a painful punishment will come to you."
+
+The she-camel roamed peacefully. She drank from the well on her days, and the people drank on theirs. She never bothered anyone. She was gentle with the children, who loved to watch her walk past with her long, graceful strides.
+
+But some of the proud, arrogant men of Thamud could not stand it. They did not like sharing the well. They did not like being told what to do. So they plotted against the she-camel, and one of them — a cruel man — harmed her.
+
+Salih, peace be upon him, wept. He had warned them. "You have three days," he said. And on the third day, a sound came from the sky — a sound so powerful that it shook the mountains the people had been so proud of. The grand palaces of stone could not protect them from the consequence of their cruelty.
+
+{childName}, this story teaches something simple but important: be kind to animals. Be kind to every living thing. When Allah sends you a gift — a pet, a garden, a sunny day — treat it with care and gratitude. The she-camel asked for nothing but to be left in peace. Tonight, make a small promise to be gentle with every creature you meet tomorrow. Goodnight, kind heart.`,
+      },
+      {
+        id: 'aiq_ep4_elephant', episodeNumber: 4, title: 'The Elephant That Could Not Enter',
+        subtitle: 'An army with an elephant marches toward the Kaaba — and birds defend it.',
+        tradition: 'muslim', theme: 'faith', durationMinutes: 5,
+        source: 'Animals in the Quran · Episode 4',
+        body: `In the year that Prophet Muhammad, peace be upon him, was born, something extraordinary happened in Makkah. A powerful king named Abraha, who ruled in Yemen, decided to destroy the Kaaba — the sacred house built by Ibrahim, peace be upon him, and his son Ismail, peace be upon him, long, long ago.
+
+Abraha had built a grand cathedral in Yemen and wanted everyone to visit it instead of the Kaaba. But people still traveled to Makkah, and this made Abraha jealous and angry. So he gathered a massive army. He had soldiers, horses, and — most terrifying of all — a huge elephant. The people of Arabia had never seen an elephant before. It was enormous, grey, and unstoppable.
+
+The army marched toward Makkah. People along the way ran in fear. No one could stand against an army that had an elephant. Abraha captured two hundred camels belonging to Abdul Muttalib, the leader of Makkah and the grandfather of Prophet Muhammad, peace be upon him.
+
+Abdul Muttalib went to Abraha — not to fight, but to ask for his camels back.
+
+Abraha was surprised. "I have come to destroy your most sacred house, and you are asking about camels?"
+
+Abdul Muttalib said something remarkable: "I am the lord of the camels, so I ask for them. The Kaaba has its own Lord, and He will protect it."
+
+The next morning, Abraha gave the order to march. But the elephant — the mighty, enormous elephant named Mahmud — refused to move toward Makkah. When they pointed him toward Makkah, he sat down. When they pointed him toward Yemen, he stood up. He would move in every direction except toward the Kaaba. Even the elephant knew this was wrong.
+
+Then the sky darkened. Flocks of birds appeared — small birds, each carrying tiny stones in their beaks and claws. They flew over Abraha's army and released the stones. Each stone, though tiny, struck with a power that no armor could block.
+
+The great army with the great elephant was turned back. The Kaaba stood untouched. Allah had protected His house with the smallest soldiers — little birds with little stones.
+
+{childName}, Surah Al-Fil in the Quran tells this story in just five beautiful verses. It reminds us that no army is stronger than Allah's plan. And the biggest, most powerful creatures bow before His will. Sleep safely tonight. The One who protected the Kaaba with birds is watching over you too. Goodnight, little one.`,
+      },
+      {
+        id: 'aiq_ep5_bee', episodeNumber: 5, title: 'The Bee — Surah An-Nahl',
+        subtitle: 'A tiny creature that builds, shares, and heals — just like Allah designed it.',
+        tradition: 'muslim', theme: 'wisdom', durationMinutes: 5,
+        source: 'Animals in the Quran · Episode 5',
+        body: `Of all the creatures Allah mentions in the Quran, the bee might be the most amazing. Allah dedicated an entire surah — chapter — to the bee. It is called Surah An-Nahl, The Bee.
+
+Why would Allah, the Creator of the entire universe, write about a tiny insect? Because the bee is a masterpiece. Let me tell you why.
+
+First, think about where the bee lives. A beehive is one of the most perfectly designed homes in nature. The cells are hexagons — six-sided shapes that fit together without any gaps, using the least amount of wax possible. Engineers and mathematicians have studied this shape for centuries and agree: the hexagon is the most efficient structure that exists. The bee knew this long before any human figured it out.
+
+Allah says in the Quran, "And your Lord inspired the bee: make your homes in the mountains, in the trees, and in what people build." The word used is "awha" — the same word used for divine inspiration. Allah did not just create the bee. He taught it. He inspired it.
+
+Next, think about what the bee does. She flies from flower to flower — sometimes traveling miles — collecting nectar. She takes it back to the hive, and through a process that scientists are still studying, she turns it into honey. The Quran says, "From their bellies comes a drink of varying colors, in which there is healing for people."
+
+Honey heals wounds. It soothes sore throats. It never spoils — scientists have found pots of honey in ancient Egyptian tombs that were over three thousand years old and still perfectly good to eat. Prophet Muhammad, peace be upon him, recommended honey as a medicine.
+
+But the bee does something even more important than making honey. When she visits flowers, she carries pollen from one plant to another, helping fruits and vegetables grow. Without bees, a huge portion of the food we eat would disappear. The bee feeds the world without even knowing it.
+
+And here is the most beautiful part: the bee never harms a flower. She takes only what she needs, and she leaves the flower better than she found it. She does not sting unless she is threatened. She works all day, every day, without complaining.
+
+{childName}, Allah put the bee in the Quran to teach us something. Be useful. Build something beautiful. Share what you have. Leave every place better than you found it. And never underestimate what a small creature — or a small child — can do. Goodnight, busy bee. The world is sweeter because you are in it.`,
+      },
+    ],
+  },
+  {
+    id: 'islamic-manners',
+    title: 'Islamic Manners — The Adab Series',
+    icon: '🤲',
+    gradient: 'linear-gradient(135deg, #2d3748 0%, #4a5568 50%, #a0aec0 100%)',
+    description: 'Beautiful manners taught by Prophet Muhammad, peace be upon him — the small things that make the biggest difference.',
+    ageRange: '4-10',
+    totalEpisodes: 5,
+    episodes: [
+      {
+        id: 'im_ep1_salam', episodeNumber: 1, title: 'The Power of Salam',
+        subtitle: 'Two words that can turn a stranger into a friend.',
+        tradition: 'muslim', theme: 'kindness', durationMinutes: 5,
+        source: 'Islamic Manners · Episode 1',
+        body: `There are two words in Arabic that carry more warmth than a hundred hugs. Two words that can turn a stranger into a friend, calm a frightened heart, and fill a room with peace. Those words are: As-Salamu Alaikum — peace be upon you.
+
+Prophet Muhammad, peace be upon him, said, "You will not enter Paradise until you believe, and you will not believe until you love one another. Shall I tell you something that, if you do it, you will love one another? Spread the salam among yourselves."
+
+Imagine that. Saying "peace be upon you" to each other is a path to Paradise. That is how powerful these two words are.
+
+There was a boy named Bilal who was new at his school. He did not know anyone. The hallways felt long and cold. The other children were already in groups, laughing together, and Bilal stood alone by his locker, holding his backpack straps with both hands.
+
+Then a girl named Noor walked up to him. She did not know him. She had never seen him before. But she smiled and said, "As-Salamu Alaikum."
+
+Bilal blinked. Then his whole face changed. The worry melted. His shoulders relaxed. He said, "Wa Alaikum As-Salam" — and upon you, peace.
+
+"Are you new?" Noor asked. "Want to sit with us at lunch?"
+
+That one salam changed Bilal's entire day. His entire week. His entire year. They became best friends.
+
+Prophet Muhammad, peace be upon him, used to give salam to everyone — young and old, rich and poor, Muslim and non-Muslim. He greeted children specially, bending down to their level, smiling at them, and making them feel like the most important person in the room.
+
+He taught that the person who says salam first earns a greater reward. So it became a beautiful competition — everyone trying to say salam before the other person. Imagine a world where people competed to spread peace instead of arguing. That is the world Prophet Muhammad, peace be upon him, was building.
+
+The salam is also a prayer. When you say "As-Salamu Alaikum," you are asking Allah to send peace upon that person. You are wrapping them in protection. You are saying, "I mean you no harm. I wish you only good."
+
+{childName}, tomorrow morning, try it. Say salam to everyone you see — your family, your friends, your neighbors. Watch how their faces change. Watch how the warmth spreads. Two small words. Infinite peace. Goodnight, little peacemaker. As-Salamu Alaikum.`,
+      },
+      {
+        id: 'im_ep2_eating', episodeNumber: 2, title: 'Eating with Barakah',
+        subtitle: 'The beautiful manners that turn an ordinary meal into a blessed one.',
+        tradition: 'muslim', theme: 'gratitude', durationMinutes: 5,
+        source: 'Islamic Manners · Episode 2',
+        body: `In the time of Prophet Muhammad, peace be upon him, a young boy named Umar ibn Abi Salamah sat down to eat with the Prophet. He was excited and hungry, and his hand darted all over the plate, picking food from every side.
+
+Prophet Muhammad, peace be upon him, did not scold him. He did not raise his voice. He smiled gently and said, "O young boy, say Bismillah, eat with your right hand, and eat from what is nearest to you."
+
+Three simple instructions. Say Bismillah — in the name of Allah. Use your right hand. Eat from your side of the plate.
+
+Umar ibn Abi Salamah never forgot those words. He said, "I ate that way for the rest of my life." One gentle moment at a table changed the way he ate forever.
+
+Why does Islam care about how we eat? Because eating is not just filling your stomach. It is an act of worship. Every bite is a gift from Allah, and the way you receive a gift matters.
+
+Saying Bismillah before you eat is like saying thank you before you even taste the food. It is reminding yourself that this plate of rice, this cup of water, this piece of bread did not appear from nowhere. The rain had to fall. The seed had to grow. The farmer had to work. The baker had to bake. And behind it all, Allah made it happen.
+
+Prophet Muhammad, peace be upon him, never ate alone if he could help it. He shared his food. He invited others to eat with him. He said, "The food of one is enough for two, and the food of two is enough for four." When you share, the food is blessed — what seems like a little becomes enough for everyone.
+
+He also taught us to never waste food. He would clean his plate with his fingers, making sure nothing was left. Not because he was poor — but because every grain of rice is a blessing, and blessings should not be thrown away.
+
+And when you finish eating, you say Alhamdulillah — all praise belongs to Allah. The meal begins with His name and ends with His praise. A sandwich becomes a prayer. A glass of milk becomes worship.
+
+{childName}, tomorrow, before your first bite of breakfast, pause. Say Bismillah quietly in your heart. Use your right hand. Eat from your side. And when you are done, say Alhamdulillah. You will taste something extra in that meal — gratitude. And gratitude is the most delicious ingredient there is. Goodnight, little one.`,
+      },
+      {
+        id: 'im_ep3_neighbors', episodeNumber: 3, title: 'The Neighbor\'s Rights',
+        subtitle: 'Prophet Muhammad, peace be upon him, said Jibreel kept reminding him about neighbors until he thought they would inherit from each other.',
+        tradition: 'muslim', theme: 'community', durationMinutes: 5,
+        source: 'Islamic Manners · Episode 3',
+        body: `Prophet Muhammad, peace be upon him, said something remarkable about neighbors: "Jibreel kept advising me about the neighbor until I thought he would make the neighbor an heir." In other words, the angel Jibreel came to Prophet Muhammad, peace be upon him, so many times about being kind to neighbors that the Prophet thought neighbors would have the same rights as family members who inherit from you. That is how important neighbors are in Islam.
+
+There was a family on Maple Street — the Hassans. When the Patels moved in next door, Mama Hassan baked a tray of baklava and brought it over on the very first day.
+
+"Welcome to the neighborhood," she said with a warm smile.
+
+Mrs. Patel looked surprised. "But — you do not even know us."
+
+"I know you are my neighbors," Mama Hassan said. "And that is all I need to know."
+
+Over the months, the two families became close. When the Hassans went on a trip, the Patels watered their garden. When Mr. Patel was sick, Mr. Hassan drove him to the doctor. The children played together in the shared yard. Mama Hassan taught the Patel kids how to make falafel. Mrs. Patel taught the Hassan kids how to fold paper cranes.
+
+Prophet Muhammad, peace be upon him, taught that your neighbor has rights over you — the right to kindness, the right to safety, the right to help when they need it. A good Muslim, he said, is someone whose neighbor feels safe from their harm. Not just safe from physical harm — but safe from gossip, from noise, from being ignored.
+
+He also said that if you cook a meal with broth, you should add extra water so you have enough to share with your neighbor. Such a small thing — a little extra water in the pot — but it means the difference between eating alone and eating together.
+
+The most incredible hadith about neighbors is this one: Prophet Muhammad, peace be upon him, said, "He is not a believer whose stomach is filled while the neighbor beside him goes hungry." Your faith is connected to whether the person next door has eaten tonight.
+
+{childName}, look around your neighborhood tomorrow. Is there someone who could use a kind word? A wave? A plate of cookies? Being a good neighbor does not require grand gestures. It just requires noticing. Goodnight, kind neighbor. The people around you are blessed to have you nearby.`,
+      },
+      {
+        id: 'im_ep4_elders', episodeNumber: 4, title: 'Respecting Elders',
+        subtitle: 'The gentle strength of saying "yes, Grandma" with love in your heart.',
+        tradition: 'muslim', theme: 'respect', durationMinutes: 5,
+        source: 'Islamic Manners · Episode 4',
+        body: `In Islam, there is a special place for elders — grandparents, parents, teachers, and anyone older than you. Respecting them is not just polite. It is an act of worship.
+
+Prophet Muhammad, peace be upon him, said, "He is not one of us who does not show mercy to our young ones and respect to our elders." Being part of the Muslim community means honoring those who came before you — the ones who walked the path before you were born, who carried burdens you have never had to carry, and who prayed for you before you even existed.
+
+There was a boy named Ibrahim who loved his grandfather, Jaddi Mansour. Jaddi Mansour was old. He walked slowly with a wooden cane. He told the same stories three times. He sometimes forgot what day it was. Ibrahim's friends thought visiting grandparents was boring.
+
+But Ibrahim noticed something. Every time he sat beside Jaddi Mansour and listened — really listened — his grandfather's eyes lit up. The wrinkles around his eyes lifted. His voice became stronger. It was as if Ibrahim's attention was medicine.
+
+One afternoon, Jaddi Mansour told a story Ibrahim had heard many times — about walking five miles to school as a child. But this time, Ibrahim asked a question he had never asked before: "Were you scared, Jaddi?"
+
+Jaddi Mansour paused. Then he said, very quietly, "Every single day. But I kept walking because my mother told me education was a treasure nobody could steal."
+
+Ibrahim felt tears in his eyes. This was not just a repetitive story. This was his grandfather's bravery, wrapped in a memory.
+
+The Quran tells us to speak to our parents gently. It says, "Do not say 'uff' to them" — that small sound of annoyance we sometimes make. Do not roll your eyes. Do not sigh with impatience. Instead, lower your voice and speak with kindness, the way a bird tucks its wings gently around its young.
+
+Prophet Muhammad, peace be upon him, taught that Paradise lies under the feet of mothers — meaning that serving your mother with love and patience is a direct path to Allah's reward. And your father — his happiness is connected to Allah's happiness with you.
+
+{childName}, the next time an elder speaks to you — your parent, your grandparent, your teacher — pause. Really listen. Their words carry years of life, love, and lessons. And when you say "yes" with love in your heart, you are doing something that reaches all the way to the heavens. Goodnight, respectful one. The angels smile at children who honor their elders.`,
+      },
+      {
+        id: 'im_ep5_promises', episodeNumber: 5, title: 'Keeping Promises',
+        subtitle: 'A promise is a bridge between two hearts — do not let it break.',
+        tradition: 'muslim', theme: 'honesty', durationMinutes: 5,
+        source: 'Islamic Manners · Episode 5',
+        body: `Prophet Muhammad, peace be upon him, said that there are three signs of a hypocrite — someone whose words and actions do not match. One of those signs is: when they make a promise, they break it.
+
+A promise is a sacred thing. It is a bridge between two hearts. When you say "I promise," you are building that bridge. And when you keep your promise, the bridge stands strong. But when you break it — the bridge falls, and trust falls with it.
+
+There was a father named Bashir who once called his son and said, "Come here, I have something for you." Prophet Muhammad, peace be upon him, happened to be nearby. He asked Bashir, "Do you really have something to give him?"
+
+Bashir said, "Yes, I was going to give him a date."
+
+Prophet Muhammad, peace be upon him, said, "If you had not given him anything after calling him, it would have been written as a lie." Even a small promise to a child — "come here, I have something" — must be kept. Children matter. Their trust matters.
+
+There was a girl named Sara who promised her little brother that she would play with him after school. But when school ended, her friend invited her to go to the park. Sara wanted to go. Playing with her little brother seemed boring compared to the park.
+
+She was about to say yes to her friend when she remembered something her mother had told her: "Your word is your honor. Once you give it, it belongs to the other person."
+
+Sara went home and played with her little brother. They built a blanket fort, pretended to be explorers, and laughed until their stomachs hurt. Her little brother looked up at her with shining eyes and said, "You came. You really came."
+
+That look was worth more than any park trip in the world.
+
+Islam takes promises so seriously that the Quran says, "Fulfill your promises. Surely you will be questioned about your promises." On the Day of Judgment, Allah will ask about every promise you made — did you keep it or did you let it fall?
+
+Prophet Muhammad, peace be upon him, was known as As-Sadiq Al-Amin — The Truthful, The Trustworthy — even before he became a prophet. People trusted him with their money, their secrets, and their lives because they knew his word was unbreakable.
+
+{childName}, if you have made a promise that you have not kept yet, tomorrow is a good day to keep it. And if someone makes a promise to you and breaks it, forgive them — but let your own promises always be bridges that never fall. Goodnight, trustworthy one. Your word is your light.`,
+      },
+    ],
+  },
+  {
+    id: 'hajj-journey',
+    title: 'The Hajj Journey',
+    icon: '🕋',
+    gradient: 'linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #e2d1c3 100%)',
+    description: 'The greatest journey a Muslim can take — five nights walking through the footsteps of Ibrahim, peace be upon him.',
+    ageRange: '4-10',
+    totalEpisodes: 5,
+    episodes: [
+      {
+        id: 'hj_ep1_what_is_hajj', episodeNumber: 1, title: 'What Is Hajj?',
+        subtitle: 'Millions of people walk to the same place, at the same time, for the same reason.',
+        tradition: 'muslim', theme: 'unity', durationMinutes: 5,
+        source: 'The Hajj Journey · Episode 1',
+        body: `Every year, something extraordinary happens. Millions of people — from every country, speaking every language, wearing the same simple white clothes — travel to one city. Makkah. They come from Indonesia and Canada. From Nigeria and Norway. From tiny villages and enormous cities. They come rich and poor, young and old, scholars and farmers. And they all come for one reason: to answer the call of Allah.
+
+This journey is called Hajj, and it is one of the five pillars of Islam. Every Muslim who is healthy and able is asked to make this journey at least once in their lifetime. It is not a vacation. It is not tourism. It is the journey of a soul going home.
+
+Thousands of years ago, Ibrahim, peace be upon him, and his son Ismail, peace be upon him, built the Kaaba — a simple, cube-shaped building made of stone. It was not decorated. It was not fancy. It was just a house built for one purpose: the worship of Allah.
+
+When they finished building it, Allah told Ibrahim, peace be upon him, to call people to come. Ibrahim, peace be upon him, looked out at the empty desert and said, "O Allah, my voice cannot reach all people."
+
+Allah said, "You call. I will make it reach."
+
+And so Ibrahim, peace be upon him, called out into the desert, and his call has never stopped echoing. Every person who has ever made Hajj — every person who will ever make Hajj — is answering that ancient call from Ibrahim, peace be upon him.
+
+When pilgrims arrive, they change into ihram — two simple white cloths for men, and modest clothing for women. No brands. No fashion. No differences. A king looks exactly like a farmer. A doctor looks exactly like a street sweeper. Everyone is equal before Allah.
+
+And they begin to say the Talbiyah — the ancient response to Ibrahim's call: "Labbayk Allahumma labbayk" — Here I am, O Allah, here I am. You have no partner. Here I am. All praise and blessing belong to You.
+
+Millions of voices saying the same words. It sounds like the ocean. It sounds like thunder. It sounds like the whole earth is breathing.
+
+{childName}, imagine standing in that crowd, shoulder to shoulder with people from every corner of the world, all saying "Here I am, O Allah." That is Hajj — the moment when the whole world becomes one family. Tonight, whisper those words in your heart: "Here I am." Allah hears you, wherever you are. Goodnight, little pilgrim.`,
+      },
+      {
+        id: 'hj_ep2_tawaf', episodeNumber: 2, title: 'The Tawaf',
+        subtitle: 'Walking around the Kaaba seven times — and feeling the universe spin with you.',
+        tradition: 'muslim', theme: 'devotion', durationMinutes: 5,
+        source: 'The Hajj Journey · Episode 2',
+        body: `At the heart of Makkah stands the Kaaba — a cube draped in black cloth embroidered with gold. It is not big. It is not tall. There are buildings a thousand times larger. But the Kaaba is the most important building on earth for Muslims. It is the direction every Muslim faces when they pray, five times a day, from every corner of the world.
+
+When pilgrims arrive for Hajj, the first thing they do is Tawaf — walking around the Kaaba seven times, counterclockwise, with the Kaaba always on their left side. Seven circles. Each one a prayer.
+
+Picture it: thousands and thousands of people, all dressed in white, all moving together around this ancient house, like a river of light flowing around a single point. From above, it looks like a human galaxy — slowly spinning, the way planets orbit the sun, the way electrons orbit an atom. Everything in creation moves in circles. And so do the pilgrims.
+
+There was a girl named Hana who made Hajj with her grandmother. When they first saw the Kaaba, Grandmother stopped walking. Tears streamed down her face. Hana had never seen her grandmother cry before.
+
+"Grandmother, why are you crying?"
+
+"Because I have waited my whole life for this moment," Grandmother whispered. "Seventy-two years. And now I am here."
+
+They began their Tawaf. The crowd was thick. People pressed close together. But something strange happened — it did not feel uncomfortable. It felt like being held. Like being part of something so much bigger than yourself.
+
+During the Tawaf, you can pray for anything. There are no special words required — you simply talk to Allah. Some people pray for health. Some pray for their families. Some pray with tears pouring down their faces. Some pray with smiles so wide you can see their joy from across the courtyard.
+
+Hana held her grandmother's hand and said, "Allah, please keep Grandmother healthy. Please make her happy. Please let us come back again."
+
+Grandmother squeezed her hand. "And I am praying for you, habibi. I am praying for every step you will ever take."
+
+After seven circles, they stood together, looking at the Kaaba under the starlight. "Every circle was a prayer," Grandmother said. "And every prayer was heard."
+
+{childName}, you do not need to be in Makkah to feel close to Allah. Wherever you are, Allah is nearer to you than your own heartbeat. But tonight, imagine walking in that beautiful circle of light, surrounded by people who love Allah, all of them praying — and some of them praying for you. Goodnight, little pilgrim. Your heart is already circling toward home.`,
+      },
+      {
+        id: 'hj_ep3_arafat', episodeNumber: 3, title: 'Standing at Arafat',
+        subtitle: 'The most important day in the Islamic calendar — when every prayer is answered.',
+        tradition: 'muslim', theme: 'humility', durationMinutes: 5,
+        source: 'The Hajj Journey · Episode 3',
+        body: `On the ninth day of Dhul Hijjah, something happens that is unlike anything else in the world. Millions of pilgrims gather on a vast, open plain called Arafat, just outside Makkah. They stand under the open sky — no roof, no walls, no shade except what they bring — and they pray. For hours. From noon until sunset. This is called Wuquf — the Standing.
+
+Prophet Muhammad, peace be upon him, said, "Hajj is Arafat." That is how central this one day is. If you miss Arafat, you have missed Hajj entirely.
+
+But what happens at Arafat is not a ceremony. There are no rituals to perform, no specific movements, no choreography. You simply stand before Allah and pour out your heart.
+
+On the plain of Arafat, there are no kings and no servants. No rich and no poor. Everyone is wearing the same white cloths. Everyone is standing on the same dusty ground. Everyone is crying the same tears. For this one day, the entire Muslim world is one person, standing before one God, asking for one thing: forgiveness.
+
+There was a man named Kareem who had come to Hajj carrying a heavy heart. He had made mistakes in his life — said hurtful things, neglected people who loved him, wasted years being selfish. He stood at Arafat with tears streaming down his face and said, "Ya Allah, I am not worthy of Your forgiveness. But I have nowhere else to go."
+
+The man standing next to him — a stranger from a country Kareem had never visited — put his arm around him and said, "Brother, do you know what Prophet Muhammad, peace be upon him, said about this day? He said that Allah descends to the nearest heaven and boasts to the angels: 'Look at My servants. They have come to Me dusty and disheveled, seeking My mercy. Bear witness that I have forgiven them all.'"
+
+Kareem wept harder. But these tears were not from sadness. They were from relief.
+
+At Arafat, scholars say that Allah forgives more people than on any other day. The gates of mercy are thrown wide open. No sin is too heavy. No past is too dark. If you stand at Arafat with sincerity in your heart, you leave it like the day you were born — clean, fresh, new.
+
+{childName}, you do not need to travel to Arafat to ask Allah for forgiveness. Tonight, right here, right now, you can close your eyes and say, "Ya Allah, forgive me for anything I have done wrong. Help me be better tomorrow." And know that He is listening — the same way He listens to every soul at Arafat. Goodnight, humble heart. Tomorrow is a clean page.`,
+      },
+      {
+        id: 'hj_ep4_sacrifice', episodeNumber: 4, title: 'The Sacrifice of Ibrahim',
+        subtitle: 'A father and son, a test of faith, and the moment that changed everything.',
+        tradition: 'muslim', theme: 'trust', durationMinutes: 5,
+        source: 'The Hajj Journey · Episode 4',
+        body: `Of all the stories in Islam, the story of Ibrahim's sacrifice, peace be upon him, is one of the most powerful. It is the story behind Eid al-Adha — the Festival of Sacrifice — and it is remembered during every Hajj.
+
+Ibrahim, peace be upon him, had waited many, many years for a child. He and his wife Hajar had prayed and prayed, and finally, Allah blessed them with a son — Ismail. Ibrahim, peace be upon him, loved Ismail more than anything in the world. Ismail was his joy, his comfort, his answered prayer.
+
+Then Allah tested Ibrahim, peace be upon him, with the hardest test a parent could face. In a dream — and the dreams of prophets are true — Allah asked Ibrahim, peace be upon him, to sacrifice his beloved son.
+
+Ibrahim, peace be upon him, was heartbroken. But he trusted Allah completely. He did not understand the reason, but he knew that Allah's wisdom is greater than human understanding.
+
+He went to Ismail and said, "O my son, I have seen in a dream that I am sacrificing you. What do you think?"
+
+And Ismail — a young boy, knowing what his father was saying — replied with words that still make people cry fourteen hundred years later: "O my father, do as you are commanded. You will find me, if Allah wills, among the patient."
+
+Father and son walked together to the place of sacrifice. Both of them had submitted to Allah's command. Both of them were trembling — not from fear, but from love and trust.
+
+Ibrahim, peace be upon him, laid Ismail down. He closed his eyes. He raised his hand. And at that exact moment — Allah called out to him: "O Ibrahim! You have already fulfilled the dream!" A ram appeared, sent from heaven, to be sacrificed instead of Ismail.
+
+It was never about the sacrifice. It was about the willingness. It was about showing that Ibrahim's love for Allah was greater than his love for anything else — even the son he had prayed decades to receive.
+
+Every year on Eid al-Adha, Muslims around the world remember this story. They sacrifice an animal and share the meat with the poor, their neighbors, and their families. It is a reminder that the things we love most belong to Allah — and when we hold them with open hands, Allah always gives us more than we could imagine.
+
+{childName}, trusting someone means believing they want what is best for you, even when you do not understand. Tonight, trust that Allah has a beautiful plan for your life. Close your eyes and let go of any worries. You are in the hands of the One who turned a sacrifice into a miracle. Goodnight, trusting heart.`,
+      },
+      {
+        id: 'hj_ep5_coming_home', episodeNumber: 5, title: 'Coming Home Changed',
+        subtitle: 'The pilgrim returns — but they are not the same person who left.',
+        tradition: 'muslim', theme: 'transformation', durationMinutes: 5,
+        source: 'The Hajj Journey · Episode 5',
+        body: `When a pilgrim finishes Hajj and goes home, something is different. They look the same. They wear the same clothes. They live in the same house. But inside — inside, they are completely new.
+
+Prophet Muhammad, peace be upon him, said, "Whoever performs Hajj and does not commit any sin or wrongdoing returns as pure as the day their mother gave birth to them." Imagine that — a person with a whole lifetime of mistakes, worries, and regrets, made completely clean. A fresh start. A new beginning. Like snow falling on a muddy road, covering everything in white.
+
+There was a grandfather named Haji Mustafa — "Haji" because he had completed the Hajj. Before he went to Makkah, his grandchildren knew him as a quiet man who prayed in the corner and did not say much. But when he came back, something had shifted.
+
+He smiled more. He hugged longer. He sat with his grandchildren and told them stories about what he had seen.
+
+"I saw people from every country in the world," he told them, "all wearing the same white clothes, all crying the same tears, all asking the same God for the same mercy. I saw a king standing next to a taxi driver. I saw a famous singer weeping beside a farmer. At Hajj, nobody is special and everybody is special."
+
+His granddaughter Amira asked, "Were you scared, Jaddi?"
+
+"Terrified," he said. "Not of danger. But of being that close to Allah. When you stand at Arafat and realize that the Creator of the universe is listening to YOU — a small, ordinary man from a small, ordinary town — it is the most humbling feeling in the world."
+
+Haji Mustafa was different after Hajj. He forgave people he had been angry at for years. He gave more in charity. He spoke more gently. He prayed longer, not because someone told him to, but because he wanted to — the way you want to call someone you love, not because you have to, but because you miss them.
+
+His grandchildren noticed the change, and it inspired them. Amira started praying alongside him. His grandson started giving part of his allowance to charity. The transformation of one person rippled outward like a stone dropped in still water.
+
+{childName}, you do not need to go to Makkah to start fresh. Every night, you can go to sleep knowing that tomorrow is a new beginning. Every single day, Allah gives you a clean page. What will you write on it? Tonight, rest. Tomorrow, write something beautiful. Goodnight, little pilgrim. Your journey is just beginning, and it is going to be wonderful.`,
+      },
+    ],
+  },
+  {
+    id: 'mosque-adventures',
+    title: 'Mosque Adventures Around the World',
+    icon: '🕌',
+    gradient: 'linear-gradient(135deg, #1a2a3a 0%, #2a4a6a 50%, #3a8abd 100%)',
+    description: 'Five incredible mosques from around the world — each one a masterpiece of faith, art, and history.',
+    ageRange: '4-10',
+    totalEpisodes: 5,
+    episodes: [
+      {
+        id: 'ma_ep1_haram', episodeNumber: 1, title: 'Masjid al-Haram — The Sacred Mosque',
+        subtitle: 'The holiest place on earth — where millions come to circle the ancient Kaaba.',
+        tradition: 'muslim', theme: 'devotion', durationMinutes: 5,
+        source: 'Mosque Adventures · Episode 1',
+        body: `In the heart of the city of Makkah, in the land of Saudi Arabia, there stands a mosque so special that the whole world turns toward it five times a day. Every Muslim on earth — in Tokyo, in Toronto, in Timbuktu — faces this mosque when they pray. It is called Masjid al-Haram, the Sacred Mosque, and at its center sits the Kaaba — the ancient stone house built by Ibrahim, peace be upon him, and his son Ismail, peace be upon him, thousands of years ago.
+
+The Kaaba is a simple cube, draped in a black cloth called the Kiswah, embroidered with golden verses from the Quran. It is not tall. It is not fancy. But it is the most important building in the world for over a billion people.
+
+Masjid al-Haram is enormous — the largest mosque in the world. It can hold over two million people at one time. Imagine a stadium, then multiply it by twenty. The white marble courtyard stretches in every direction, and at the center, the Kaaba stands like a calm heart surrounded by rivers of people performing Tawaf — walking around it in devotion.
+
+The mosque never closes. Day and night, summer and winter, people pray there. The call to prayer — the adhan — echoes from its towering minarets, and the sound fills the valley of Makkah like a river of sound flowing through the city.
+
+Inside the mosque, near the Kaaba, there is a spot called the Maqam Ibrahim — the Station of Ibrahim. It holds a stone with the footprints of Ibrahim, peace be upon him, preserved from when he stood on it to build the upper walls of the Kaaba. Imagine placing your feet near the footprints of a prophet who lived thousands of years ago. That is how connected the past and present are at this mosque.
+
+There is also the well of Zamzam — water that has been flowing since Hajar, the mother of Ismail, peace be upon him, ran between the hills of Safa and Marwah searching for water for her thirsty baby. Allah sent the angel Jibreel to strike the ground, and water gushed forth. That water has never stopped flowing.
+
+Prophet Muhammad, peace be upon him, said that one prayer in Masjid al-Haram is equal to one hundred thousand prayers anywhere else. One hundred thousand.
+
+{childName}, tonight, imagine yourself standing in that vast, beautiful mosque. The marble is cool under your feet. The Kaaba is in front of you. The stars are above you. And all around you, millions of hearts are beating in time with yours. You belong to this family. Goodnight, little one. The most sacred place in the world is praying for you too.`,
+      },
+      {
+        id: 'ma_ep2_nabawi', episodeNumber: 2, title: 'Masjid an-Nabawi — The Prophet\'s Mosque',
+        subtitle: 'The mosque that was built with the Prophet\'s own hands — and where he rests today.',
+        tradition: 'muslim', theme: 'love', durationMinutes: 5,
+        source: 'Mosque Adventures · Episode 2',
+        body: `When Prophet Muhammad, peace be upon him, arrived in Madinah after the long journey from Makkah, the people of the city rushed out to welcome him. They sang songs. They waved palm branches. Children ran alongside his camel, hoping to catch a glimpse of the man they had been waiting for.
+
+The first thing Prophet Muhammad, peace be upon him, did was build a mosque. Not a palace. Not a fort. A mosque — a place for people to pray together, to learn together, to be together.
+
+He chose a spot where his camel sat down — letting the animal decide, trusting in Allah's plan. And then he did something that shocked everyone. He did not hire builders. He picked up bricks himself. He carried mud. He laid stones. The Prophet of Allah, the most honored man in the world, was working with his hands alongside ordinary people.
+
+The mosque was simple — mud walls, a roof made of palm leaves, the floor was packed earth. There was no marble. No gold. No towering minarets. Just a humble space where hearts could meet Allah.
+
+This mosque is called Masjid an-Nabawi — the Prophet's Mosque. Over the centuries, it has been expanded and beautified. Today it is one of the largest and most magnificent mosques in the world. Its great green dome rises above the city of Madinah like a jewel. Beneath that dome is the resting place of Prophet Muhammad, peace be upon him.
+
+When visitors come to Masjid an-Nabawi, they feel something in the air that is hard to describe. A gentleness. A warmth. As if the kindness of Prophet Muhammad, peace be upon him, still lingers in every corner, in every beam of light that falls through the carved windows.
+
+Prophet Muhammad, peace be upon him, said that one prayer in his mosque is equal to one thousand prayers elsewhere. People travel from all over the world just to pray two units of prayer in this blessed space.
+
+Near the mosque, there is a garden — Rawdah — a small area between the Prophet's chamber and his pulpit. He said this area is one of the gardens of Paradise. When you pray there, the carpet is green, and the feeling is unlike anything else — a deep, quiet joy.
+
+{childName}, Masjid an-Nabawi was built with love. Every brick was placed with care. Every prayer offered there reaches the heavens. Tonight, imagine sitting in that green garden, feeling safe and loved, knowing that the kindest man who ever lived once prayed in that very same spot. Sweet dreams, beloved one. The Prophet's city is sending you peace.`,
+      },
+      {
+        id: 'ma_ep3_aqsa', episodeNumber: 3, title: 'Al-Aqsa — The Farthest Mosque',
+        subtitle: 'The mosque in Jerusalem where Prophet Muhammad, peace be upon him, led all the prophets in prayer.',
+        tradition: 'muslim', theme: 'unity', durationMinutes: 5,
+        source: 'Mosque Adventures · Episode 3',
+        body: `In the ancient city of Jerusalem — a city sacred to Muslims, Christians, and Jews — there stands a mosque that holds a special place in every Muslim's heart. It is called Masjid al-Aqsa, the Farthest Mosque, and its story is woven into one of the most miraculous nights in all of history.
+
+On the night of Isra and Mi'raj, the angel Jibreel came to Prophet Muhammad, peace be upon him, while he was resting near the Kaaba. Jibreel brought a winged creature called Al-Buraq — a beautiful animal, white and shining, larger than a donkey but smaller than a horse, with wings that stretched wide. In a single moment, Prophet Muhammad, peace be upon him, was carried from Makkah to Jerusalem — a journey that would take a caravan weeks.
+
+At Al-Aqsa, something breathtaking happened. All the prophets — Ibrahim, Musa, Isa, Dawud, Sulaiman, Yusuf, and many more, peace be upon them all — were gathered there. And Prophet Muhammad, peace be upon him, led them all in prayer. The final Prophet leading every prophet who came before him, in the city where so many of them had lived and taught.
+
+After the prayer, Prophet Muhammad, peace be upon him, was taken up through the seven heavens, rising through the sky, past the stars, beyond the universe, to a place where no human had ever been — into the direct presence of Allah. It was there that the five daily prayers were given to the Muslim community as a gift.
+
+Al-Aqsa is the third holiest mosque in Islam, after Masjid al-Haram in Makkah and Masjid an-Nabawi in Madinah. Prophet Muhammad, peace be upon him, said that one prayer in Al-Aqsa is equal to five hundred prayers elsewhere.
+
+The mosque compound is vast and beautiful. The golden Dome of the Rock shines in the sunlight, and the silver-domed Al-Aqsa prayer hall sits nearby. Olive trees line the courtyards, their roots reaching deep into earth that has been walked on by prophets for thousands of years.
+
+Jerusalem is a city of peace — its very name, Al-Quds, means The Holy. It is a place where the stories of prophets overlap, where different faiths share sacred ground, and where the call to prayer mingles with church bells and prayers at the Western Wall.
+
+{childName}, Al-Aqsa reminds us that all the prophets — every single one, peace be upon them all — brought the same message: worship one God, be kind, be just, be truthful. Tonight, imagine standing in that ancient courtyard under the stars, surrounded by the echoes of every prophet's prayer. You are part of that chain of goodness. Goodnight, little one. Jerusalem sends you peace.`,
+      },
+      {
+        id: 'ma_ep4_sultan_ahmed', episodeNumber: 4, title: 'Sultan Ahmed Mosque — The Blue Mosque',
+        subtitle: 'A young sultan builds a mosque so beautiful that people call it a poem in stone.',
+        tradition: 'muslim', theme: 'beauty', durationMinutes: 5,
+        source: 'Mosque Adventures · Episode 4',
+        body: `In the golden city of Istanbul, Turkey — a city that straddles two continents, where Europe meets Asia across a shimmering strait — there stands a mosque that takes your breath away. It is called the Sultan Ahmed Mosque, but the whole world knows it by another name: the Blue Mosque.
+
+Sultan Ahmed I ordered the mosque to be built in 1609. He was very young — barely nineteen years old — and he wanted to create something so beautiful that it would glorify Allah for centuries. He chose the finest architect, Sedefkar Mehmed Aga, a student of the legendary architect Sinan. Together, they created a masterpiece.
+
+The mosque has six minarets — tall, slender towers that reach toward the sky like fingers pointing to heaven. When it was first built, this caused a stir because the Sacred Mosque in Makkah also had six minarets. To solve this, Sultan Ahmed paid for a seventh minaret to be added to Masjid al-Haram. He never wanted to compete with the holiest mosque — he wanted to honor it.
+
+But the real magic of the Blue Mosque is inside. The walls and ceiling are covered with over twenty thousand handmade ceramic tiles — painted in shades of blue, turquoise, green, and white, with patterns of tulips, roses, carnations, and vines. When sunlight pours through the two hundred and sixty stained-glass windows, the light turns blue and dances across the tiles, and the entire interior seems to glow like the inside of a sapphire.
+
+It is called the Blue Mosque because of this — the overwhelming blueness that washes over you when you step inside. Visitors often stop and simply stare, their mouths open, their eyes wide. Some people cry. Not from sadness, but from beauty. Because beauty that points to Allah can crack open even the hardest heart.
+
+The carpets are deep red, soft under bare feet. The chandeliers hang low, hundreds of lights creating a warm golden glow against the blue. The dome above feels like the sky itself — round, endless, and held up by faith.
+
+Prophet Muhammad, peace be upon him, said, "Allah is beautiful and loves beauty." The Blue Mosque is a love letter to that hadith — an attempt to create something worthy of the One who created sunsets and starlight and the blue of the ocean.
+
+{childName}, beauty is a form of worship. When you notice a flower, a sunset, a kind face — that noticing is a prayer. Tonight, close your eyes and imagine walking through a room painted in every shade of blue, light pouring through colored glass, and know that the One who created all this beauty created you too. Goodnight, beautiful soul.`,
+      },
+      {
+        id: 'ma_ep5_hassan_ii', episodeNumber: 5, title: 'Hassan II Mosque — The Mosque on the Sea',
+        subtitle: 'A mosque built on the edge of the Atlantic Ocean — where prayer meets the waves.',
+        tradition: 'muslim', theme: 'wonder', durationMinutes: 5,
+        source: 'Mosque Adventures · Episode 5',
+        body: `On the western coast of Morocco, where the city of Casablanca meets the Atlantic Ocean, there stands a mosque that seems to float on the water. The Hassan II Mosque is built right on the edge of the sea. When the tide comes in, waves lap against the rocks beneath the mosque, and it looks like the building is rising out of the ocean itself.
+
+King Hassan II of Morocco wanted to build this mosque on the water because of a verse in the Quran: "And His Throne was upon the water." He wanted worshippers to feel as if they were praying between the sea and the sky, with nothing beneath them but the power of Allah.
+
+The mosque took seven years to build. Over ten thousand artisans and craftsmen — wood-carvers, tile-makers, marble cutters, plaster artists — worked day and night. They carved intricate patterns into cedarwood. They shaped zellige tiles — tiny geometric pieces fitted together by hand to create stunning mosaics. They polished marble from quarries in the Atlas Mountains.
+
+The minaret is the tallest in the world — rising two hundred and ten meters into the sky. At night, a laser beam shines from its top, pointing toward Makkah. A beam of light cutting through the darkness, showing the way.
+
+Inside, the mosque can hold twenty-five thousand worshippers, with another eighty thousand in the courtyards. The floor is made of heated marble — warm under bare feet, even on cold days. The roof is retractable — it slides open so that worshippers can pray under the stars and the open sky.
+
+Think about that: a roof that opens to the heavens. It is as if the mosque is saying, "We are not just praying inside this building — we are praying to the sky, to the stars, to the One who created them all."
+
+At sunset, the mosque glows orange and gold against the deep blue of the Atlantic. Fishermen in small boats pause their work and watch the light change on the white stone. The sound of the adhan — the call to prayer — drifts out across the water, and the ocean seems to listen.
+
+Morocco has a long tradition of beautiful mosques, but Hassan II is special because it brings together the land and the sea, the ancient and the modern, the handmade and the grand. Every tile was placed by a human hand. Every pattern tells a story. Every corner whispers prayers that have been said for centuries.
+
+{childName}, imagine praying in a mosque where you can hear the ocean beneath you and see the stars above you. That is what it feels like to be surrounded by Allah's creation. Tonight, listen to the quiet sounds around you — the wind, the hum of the house, your own breathing. Those sounds are your ocean. Your room is your mosque. And Allah is as close as your next heartbeat. Goodnight, little dreamer by the sea.`,
+      },
+    ],
+  },
+  {
+    id: 'bedtime-duas',
+    title: 'Bedtime Duas — Prayers Before Sleep',
+    icon: '🌟',
+    gradient: 'linear-gradient(135deg, #1a1a3e 0%, #2d2d6e 50%, #4a4aae 100%)',
+    description: 'Five gentle bedtime prayers — each one a conversation with Allah before you drift off to sleep.',
+    ageRange: '4-10',
+    totalEpisodes: 5,
+    episodes: [
+      {
+        id: 'bd_ep1_sleep_dua', episodeNumber: 1, title: 'The Sleep Dua',
+        subtitle: 'The words Prophet Muhammad, peace be upon him, said every single night before closing his eyes.',
+        tradition: 'muslim', theme: 'trust', durationMinutes: 5,
+        source: 'Bedtime Duas · Episode 1',
+        body: `Every single night, before Prophet Muhammad, peace be upon him, closed his eyes, he placed his hands together, blew gently into them, and recited three surahs from the Quran — Surah Al-Ikhlas, Surah Al-Falaq, and Surah An-Nas. Then he wiped his hands over his body, starting from his head, his face, and the front of his body. He did this three times.
+
+Then he lay down on his right side, placed his right hand under his cheek, and said: "Bismika Allahumma amutu wa ahya" — In Your name, O Allah, I die and I live.
+
+Sleep, you see, is a little like dying. Your eyes close. Your body rests. You leave this world and enter the world of dreams. And every morning, when you wake up, it is like being born again. Prophet Muhammad, peace be upon him, understood this. He knew that sleep is a gift — a soft, quiet gift from Allah — and he received it with gratitude every night.
+
+There was a boy named Adam who was afraid of the dark. Every night, when Mama turned off the light, the shadows seemed to grow. The closet door looked different. The tree outside his window made strange shapes on the wall.
+
+One night, Mama sat beside him and said, "Adam, do you know what Prophet Muhammad, peace be upon him, used to do when he went to sleep?"
+
+Adam shook his head.
+
+She taught him the sleep dua. She showed him how to cup his hands, blow gently, and recite. Then she helped him lie on his right side and place his hand under his cheek.
+
+"Now say: Bismika Allahumma amutu wa ahya."
+
+Adam whispered the words. And something shifted. The shadows were still there. The tree still moved outside. But Adam did not feel afraid anymore. He felt held — like invisible hands were wrapped around him.
+
+"What changed?" he asked Mama.
+
+"Nothing outside changed," she said. "But inside you, you remembered who is in charge of the night. And that changes everything."
+
+Prophet Muhammad, peace be upon him, also taught that when you go to bed, you should dust off your bed three times with the corner of your garment, because you do not know what may have come onto it after you left it. A simple act of care.
+
+{childName}, tonight, try the sleep dua. Cup your hands. Blow gently. Recite what you know. Lie on your right side. And say: Bismika Allahumma amutu wa ahya. In Your name, O Allah, I die and I live. The One who holds the night is holding you. Goodnight, safe one.`,
+      },
+      {
+        id: 'bd_ep2_good_dreams', episodeNumber: 2, title: 'Asking for Good Dreams',
+        subtitle: 'A prayer that invites beautiful dreams and chases away the scary ones.',
+        tradition: 'muslim', theme: 'comfort', durationMinutes: 5,
+        source: 'Bedtime Duas · Episode 2',
+        body: `Dreams are strange and wonderful things. Sometimes you dream of flying over mountains. Sometimes you dream of swimming with dolphins. Sometimes you dream of sitting in a garden with people you love, eating your favorite food. Those dreams feel like gifts — little adventures that happen while your body rests.
+
+But sometimes, dreams are not so nice. Sometimes they are dark or confusing or scary. You wake up with your heart beating fast, not sure what was real and what was not.
+
+Prophet Muhammad, peace be upon him, taught us what to do with both kinds of dreams.
+
+Good dreams, he said, are from Allah. If you have a beautiful dream, thank Allah for it. Share it with someone you love and trust. Let it warm your heart.
+
+Bad dreams, he said, are from Shaytan — the whisperer who tries to make you afraid. If you have a bad dream, Prophet Muhammad, peace be upon him, said to do three things: spit lightly to your left three times (not real spit — just a gentle puff of air), seek refuge in Allah from Shaytan, and turn to your other side. Do not tell anyone about the bad dream. And it will not harm you.
+
+There was a girl named Mariam who had a scary dream one night. She dreamed she was lost in a dark forest and could not find her way home. She woke up crying.
+
+Her father came to her room. He did not turn on the light. He sat beside her in the dark and said gently, "Spit lightly to your left, habibi."
+
+She did — three soft puffs.
+
+"Now say: A'udhu billahi min ash-Shaytanir-rajim — I seek refuge in Allah from the rejected Shaytan."
+
+Mariam whispered the words.
+
+"Now turn to your other side."
+
+She turned.
+
+"Now close your eyes and talk to Allah. Ask Him for a good dream. He is listening."
+
+Mariam closed her eyes and whispered, "Ya Allah, please give me a beautiful dream. I want to dream of a garden with butterflies."
+
+She fell back asleep. And that night, she dreamed she was sitting in a garden full of butterflies — blue ones, gold ones, ones with wings like stained glass. She woke up smiling.
+
+Prophet Muhammad, peace be upon him, said, "The good dream of a righteous person is one of forty-six parts of prophethood." That means good dreams are a tiny taste of what the prophets experienced — a small window into the unseen.
+
+{childName}, tonight, before you close your eyes, ask Allah for a beautiful dream. Imagine the most wonderful place — a garden, a sky full of stars, a table full of your favorite food — and ask Allah to take you there while you sleep. He gives the most beautiful dreams to the kindest hearts. Goodnight, dreamer. Sweet, sweet dreams await you.`,
+      },
+      {
+        id: 'bd_ep3_thanking_allah', episodeNumber: 3, title: 'Thank You for Today',
+        subtitle: 'Looking back at the day and finding a hundred reasons to say Alhamdulillah.',
+        tradition: 'muslim', theme: 'gratitude', durationMinutes: 5,
+        source: 'Bedtime Duas · Episode 3',
+        body: `Before you sleep tonight, let us try something together. Close your eyes and think about your day. Not the big things — the small things. The ones you might have forgotten.
+
+Did you breathe today? That was Allah. Did your heart beat? That was Allah. Did you see colors — the green of trees, the blue of the sky, the gold of sunlight? Those were gifts from Allah, painted fresh for you this morning.
+
+Prophet Muhammad, peace be upon him, taught a beautiful dua that is said in the evening: "Allahumma bika amsayna, wa bika asbahna, wa bika nahya, wa bika namutu, wa ilaikan-nushur" — O Allah, by You we enter the evening, and by You we enter the morning. By You we live, and by You we die, and to You is the resurrection.
+
+Every part of the day — waking up, living, sleeping — is wrapped in Allah's care.
+
+There was a family that started a Ramadan tradition that they loved so much, they kept it going all year long. Every night before bed, each person shared one thing they were grateful for. Just one.
+
+On the first night, the mother said, "I am grateful for the sound of my children laughing."
+
+The father said, "I am grateful for a warm bed."
+
+The oldest daughter said, "I am grateful for my friend Aisha, who saved me a seat at lunch."
+
+And the youngest boy, who was only four, said, "I am grateful for macaroni."
+
+Everyone laughed, but Mama said, "That is beautiful. Macaroni is a perfect thing to be grateful for."
+
+Night after night, the family shared their gratitudes. Some were deep — "I am grateful Allah helped me through a hard day." Some were funny — "I am grateful my brother did not eat my dessert." But every single one was real.
+
+Over time, something changed in the family. They started noticing good things more. The complaints got quieter. The smiles got wider. Gratitude became a habit — like brushing teeth but for the heart.
+
+Prophet Muhammad, peace be upon him, said, "If you are grateful, I will surely increase you." This is a promise from Allah in the Quran. Gratitude does not just make you feel better — it brings more blessings into your life.
+
+{childName}, what is one thing you are grateful for today? Hold it in your heart like a warm light. Now whisper: Alhamdulillah. That light you are holding? It just got brighter. Tomorrow, find another one. And the next day, another. Soon your whole heart will be glowing. Goodnight, grateful one. Allah has already prepared tomorrow's blessings. They are just waiting for you to wake up.`,
+      },
+      {
+        id: 'bd_ep4_parents_dua', episodeNumber: 4, title: 'A Prayer for My Parents',
+        subtitle: 'The most powerful dua a child can make — is the one for Mama and Baba.',
+        tradition: 'muslim', theme: 'love', durationMinutes: 5,
+        source: 'Bedtime Duas · Episode 4',
+        body: `There is a dua in the Quran that is so beautiful, so important, that Allah Himself taught it to us. It goes like this: "Rabbi irhamhuma kama rabbayanee sagheera" — My Lord, have mercy on them, as they raised me when I was small.
+
+This dua is for your parents. And it is one of the most powerful prayers a child can make.
+
+Think about what your parents have done for you. Your mother carried you inside her for nine months. She felt you move. She talked to you before you were even born. When you arrived, she held you against her chest and thought you were the most beautiful thing she had ever seen — even though you were tiny and wrinkly and crying.
+
+Your father stayed up at night when you were sick. He worked to put food on the table. He worried about you when you were not in his sight. He pretended not to be tired when he was exhausted, because being there for you mattered more than sleep.
+
+Prophet Muhammad, peace be upon him, was once asked, "Who deserves my best companionship?" He said, "Your mother." The man asked, "Then who?" He said, "Your mother." The man asked again, "Then who?" He said, "Your mother." The man asked a fourth time, "Then who?" He said, "Your father."
+
+Three times your mother, then your father. That is how much Islam honors parents.
+
+There was a boy named Hamza who was ten years old. Every night, after his parents tucked him in, he would lie in bed and pray for them. He did not tell them he was doing it. It was his secret.
+
+"Ya Allah, please make Mama and Baba happy. Keep them healthy. Forgive them for any mistakes they made. Give them the best in this life and the next. And let me be a good son to them."
+
+One night, his mother stood quietly outside his half-open door and heard him praying. She pressed her back against the wall and cried — not from sadness, but from a joy so deep she could not contain it. Her son was praying for her. Her little boy, whose diapers she used to change, who she used to rock to sleep with lullabies, was now asking Allah to take care of HER.
+
+Prophet Muhammad, peace be upon him, said that three prayers are never rejected: the prayer of a parent for their child, the prayer of a fasting person, and the prayer of a traveler. But scholars also say that the prayer of a child for their parents holds a special place — because it comes from a pure heart.
+
+{childName}, tonight, make this your dua: Rabbi irhamhuma kama rabbayanee sagheera. My Lord, have mercy on my parents, the way they took care of me when I was small. Say it with love. Say it with feeling. And know that right now, somewhere nearby, your parents are probably praying for you too. Goodnight, loving child. Your prayers are the most beautiful gift your parents will ever receive.`,
+      },
+      {
+        id: 'bd_ep5_world_dua', episodeNumber: 5, title: 'A Prayer for the Whole World',
+        subtitle: 'Your prayer is not just for you — it can reach every corner of the earth.',
+        tradition: 'muslim', theme: 'compassion', durationMinutes: 5,
+        source: 'Bedtime Duas · Episode 5',
+        body: `Tonight, we are going to pray for everyone. Not just your family. Not just your friends. Everyone. The whole world.
+
+Close your eyes and imagine the earth — that beautiful blue and green marble floating in the dark sky. Now imagine zooming in, like a camera, to different places.
+
+There is a child in Syria who just wants to sleep without hearing loud sounds. Pray for them. Ya Allah, give them peace and safety.
+
+There is a grandmother in Bangladesh sitting on her rooftop as floodwaters rise around her house. She is holding her cat and praying. Pray for her. Ya Allah, protect her and lower the waters.
+
+There is a little boy in Somalia who has not eaten today. His stomach is empty, but his eyes are bright. Pray for him. Ya Allah, feed him and let someone kind find him.
+
+There is a girl in Canada who feels lonely. She sits alone at recess because she is new and everyone already has friends. Pray for her. Ya Allah, send her a friend by tomorrow.
+
+There is a doctor in a hospital who has been working for twenty hours, trying to help a sick child. Her own children are at home, missing her. Pray for her. Ya Allah, give her strength and bring her home safely.
+
+Prophet Muhammad, peace be upon him, taught us that when you pray for someone without them knowing, an angel says, "And the same for you." That means every prayer you make for someone else, the angels are making the same prayer for YOU. Is there anything more beautiful than that?
+
+Prophet Muhammad, peace be upon him, did not just pray for Muslims. He prayed for all of humanity. He prayed for people who did not even believe in him. He said, "O Allah, guide my people, for they do not know." Even when people hurt him, he responded with prayer.
+
+You are never too small to pray for the world. Your dua travels from your lips to the throne of Allah faster than light. It crosses oceans and mountains and borders. It reaches people you have never met, in places you have never been. Your prayer matters. YOU matter.
+
+{childName}, tonight, before you sleep, take a deep breath and say: "Ya Allah, please take care of everyone tonight. The happy ones and the sad ones. The full ones and the hungry ones. The safe ones and the scared ones. Wrap the whole world in Your mercy."
+
+And then sleep peacefully, knowing that you just did something that the angels themselves are echoing back to you. Goodnight, compassionate soul. The world is a little bit better because you prayed for it.`,
+      },
+    ],
+  },
+  {
+    id: 'muslim-heroes',
+    title: 'Muslim Heroes — Scientists & Explorers',
+    icon: '🔭',
+    gradient: 'linear-gradient(135deg, #2a1a0a 0%, #8a5a2a 50%, #d4a04a 100%)',
+    description: 'Five brilliant Muslim minds who changed the world — with curiosity, courage, and faith.',
+    ageRange: '4-10',
+    totalEpisodes: 5,
+    episodes: [
+      {
+        id: 'mh_ep1_haytham', episodeNumber: 1, title: 'Ibn al-Haytham — The Father of Optics',
+        subtitle: 'The man who figured out how your eyes actually see.',
+        tradition: 'muslim', theme: 'curiosity', durationMinutes: 5,
+        source: 'Muslim Heroes · Episode 1',
+        body: `A thousand years ago, in the city of Basra in what is now Iraq, a boy named Hasan ibn al-Haytham looked at the world and asked a question that nobody could answer: "How do we see?"
+
+People in those days believed that your eyes shot out invisible beams — like tiny flashlights — that touched objects and brought the image back. Even the great Greek thinkers believed this.
+
+But Ibn al-Haytham was not satisfied. "If our eyes send out beams," he wondered, "then why does it hurt to look at the sun? If the beams come from our eyes, they should be able to handle any light." Something did not add up.
+
+So he did something revolutionary. He did not just think about the question. He tested it. He experimented. He built a dark room with a tiny hole in one wall — what we now call a camera obscura. When light from outside passed through the hole, an upside-down image of the outside world appeared on the opposite wall.
+
+This proved that light travels IN to our eyes, not out from them. We see because light bounces off objects and enters our eyes. It seems obvious now, but a thousand years ago, it was a discovery that changed everything.
+
+Ibn al-Haytham wrote a massive book called Kitab al-Manazir — The Book of Optics. It was translated into Latin and studied by European scientists for hundreds of years. Without his work, we might not have cameras, telescopes, microscopes, or even eyeglasses.
+
+But here is what made Ibn al-Haytham truly special: his method. He believed that you should not trust something just because someone famous said it. You should test it. Experiment. Observe. Question. This approach — the scientific method — is the foundation of all modern science. And Ibn al-Haytham was one of its earliest champions.
+
+He was a devout Muslim who saw no conflict between faith and science. To him, studying the world was a way of understanding Allah's creation. Every experiment was an act of worship. Every discovery was a moment of gratitude.
+
+The Quran says, "Do they not look at the sky above them?" Ibn al-Haytham took that invitation seriously. He looked. He questioned. He discovered. And the world has never been the same.
+
+{childName}, the next time you see light streaming through a window, think of Ibn al-Haytham — the man who figured out that light comes to us, not the other way around. Your curiosity is a gift from Allah. Never stop asking questions. Goodnight, little scientist.`,
+      },
+      {
+        id: 'mh_ep2_khwarizmi', episodeNumber: 2, title: 'Al-Khwarizmi — The Father of Algebra',
+        subtitle: 'The man who invented the math that makes everything work — from rockets to video games.',
+        tradition: 'muslim', theme: 'wisdom', durationMinutes: 5,
+        source: 'Muslim Heroes · Episode 2',
+        body: `You know that word "algorithm" — the thing that makes your apps work, that tells computers what to do, that runs the internet? That word comes from the name of a man. A Muslim man. His name was Muhammad ibn Musa al-Khwarizmi, and he lived in Baghdad over a thousand years ago, during the golden age of Islamic civilization.
+
+And the word "algebra"? That comes from the title of his most famous book: Al-Kitab al-Mukhtasar fi Hisab al-Jabr wal-Muqabala — The Compendious Book on Calculation by Completion and Balancing. "Al-Jabr" became "algebra."
+
+Al-Khwarizmi worked in the House of Wisdom — Bayt al-Hikmah — a legendary center of learning in Baghdad where scholars from all over the world gathered to study, translate, and create knowledge. Muslims, Christians, Jews, and people of every background worked side by side, united by one thing: the love of learning.
+
+In those days, people solved math problems with long, complicated sentences. There were no x's and y's. No equations written on a board. Al-Khwarizmi changed that. He created a system for solving problems that was clear, logical, and beautiful. He showed people how to balance equations — if you add something to one side, add it to the other. If you move something across, change its sign.
+
+But Al-Khwarizmi did not study math for fun. He studied it because it was useful. He wanted to help people calculate inheritance fairly — the Quran has specific rules about how wealth should be shared, and you need precise math to get it right. He wanted to help merchants, architects, and travelers. Math was a tool for justice, building, and exploration.
+
+He also created detailed maps of the known world and calculated the size of the earth with remarkable accuracy — over a thousand years before satellites.
+
+The Quran encourages learning. It says, "Say: Are those who know equal to those who do not know?" Al-Khwarizmi took that seriously. He spent his life knowing, learning, and sharing what he learned with everyone.
+
+Prophet Muhammad, peace be upon him, said, "Seek knowledge, even if you have to go to China." Knowledge has no borders. No nationality. No expiration date. And Al-Khwarizmi proved that a Muslim scholar from Baghdad could invent something that the entire world would use for a thousand years — and counting.
+
+{childName}, every time you solve a math problem, you are walking in the footsteps of Al-Khwarizmi. Math is not boring — it is the language of the universe. And you are learning to speak it. Goodnight, little mathematician. Numbers are beautiful, and so are you.`,
+      },
+      {
+        id: 'mh_ep3_fihri', episodeNumber: 3, title: 'Fatima al-Fihri — Founder of the First University',
+        subtitle: 'A woman\'s dream became the oldest university in the world — and it is still open today.',
+        tradition: 'muslim', theme: 'determination', durationMinutes: 5,
+        source: 'Muslim Heroes · Episode 3',
+        body: `In the year 859, in the city of Fes, Morocco, a woman named Fatima al-Fihri did something that changed the world. She founded a university. Not just any university — the oldest continuously operating university in the entire world. It is called Al-Qarawiyyin, and over a thousand years later, students are still walking through its doors.
+
+Fatima was born into a wealthy family that had moved from Qayrawan, Tunisia, to Fes. Her father was a successful merchant who valued education above everything else. He educated both his daughters — Fatima and her sister Mariam — at a time when many people believed that girls did not need to learn.
+
+When Fatima's father passed away, he left her a large inheritance. Fatima could have bought a grand house. She could have filled her life with luxury. Instead, she asked herself a question: "What would help the most people for the longest time?"
+
+The answer was education.
+
+Fatima used her inheritance to build Al-Qarawiyyin — a magnificent mosque and center of learning in the heart of Fes. She oversaw every detail of the construction. The story goes that she fasted every single day during the years of construction, praying that Allah would bless the building and the people who would learn there.
+
+Al-Qarawiyyin started as a mosque where people gathered to learn the Quran, but it quickly grew into a full university offering courses in mathematics, astronomy, medicine, grammar, music, chemistry, history, and geography. Students came from all over the Muslim world — and beyond. It became one of the most important intellectual centers in history.
+
+Some of the greatest scholars in history studied or taught there. The Jewish philosopher Maimonides studied at Al-Qarawiyyin. The geographer Al-Idrisi created some of his famous maps there. Pope Sylvester II, who introduced Arabic numerals to Europe, is believed to have studied there.
+
+All of this because one woman decided that the best use of her wealth was not comfort — it was knowledge.
+
+Prophet Muhammad, peace be upon him, said, "Seeking knowledge is an obligation upon every Muslim." Fatima al-Fihri took that seriously. She did not just seek knowledge for herself — she built a place where others could seek it for generations.
+
+{childName}, every school you walk into exists because someone believed that children deserve to learn. Fatima believed that over a thousand years ago, and her university is still standing. Your education is precious. Treat every lesson like a gift. And who knows — maybe one day, you will build something that lasts a thousand years too. Goodnight, future builder.`,
+      },
+      {
+        id: 'mh_ep4_battuta', episodeNumber: 4, title: 'Ibn Battuta — The Greatest Traveler',
+        subtitle: 'He traveled 75,000 miles in 30 years — more than Marco Polo ever dreamed.',
+        tradition: 'muslim', theme: 'adventure', durationMinutes: 5,
+        source: 'Muslim Heroes · Episode 4',
+        body: `In the year 1325, a young man named Ibn Battuta left his home in Tangier, Morocco, to make the Hajj pilgrimage to Makkah. He was twenty-one years old. He expected to be gone for a few months. Instead, he did not come home for nearly thirty years.
+
+Ibn Battuta traveled over seventy-five thousand miles — more than three times the distance around the earth. He visited every Muslim country that existed at the time, plus many more. He saw lands that most people in his era did not even know existed.
+
+He crossed the Sahara Desert on camelback, the sand stretching to the horizon like a golden ocean. He sailed the Indian Ocean, surviving shipwrecks and pirates. He walked through the snowy mountains of Turkey and the lush forests of Southeast Asia. He visited the Maldives, where he served as a judge. He went to China, where he marveled at the great cities and the silk markets.
+
+In every place he went, Ibn Battuta met people. That was his true gift — not just seeing places, but understanding people. He ate meals with kings and with farmers. He prayed in grand mosques and in tiny village prayer rooms. He learned customs, languages, and stories.
+
+What made his journeys possible was something beautiful: the Muslim world at that time was vast and interconnected. A traveler could go from Morocco to India and everywhere along the way, they would find mosques, scholars, and communities ready to welcome them. The greeting was always the same: "As-Salamu Alaikum" — and with those words, a stranger became a guest.
+
+When Ibn Battuta finally returned to Morocco, the Sultan asked him to tell his stories. A scholar named Ibn Juzayy wrote them all down in a book called the Rihla — The Journey. It is one of the greatest travel books ever written.
+
+Prophet Muhammad, peace be upon him, encouraged travel and seeking knowledge. He said that a person who goes out in search of knowledge is in the path of Allah. Ibn Battuta's entire life was that path — a thirty-year walk through the wonders of Allah's earth.
+
+{childName}, the world is enormous and full of amazing people, places, and stories. You do not have to travel seventy-five thousand miles to discover them — but never stop being curious about what lies beyond the horizon. Every new person you meet is a new country to explore. Goodnight, little explorer. The world is waiting for you.`,
+      },
+      {
+        id: 'mh_ep5_firnas', episodeNumber: 5, title: 'Abbas ibn Firnas — The Man Who Tried to Fly',
+        subtitle: 'A thousand years before the Wright Brothers, a Muslim inventor looked at the sky and jumped.',
+        tradition: 'muslim', theme: 'courage', durationMinutes: 5,
+        source: 'Muslim Heroes · Episode 5',
+        body: `Long before airplanes, long before helicopters, long before anyone believed that humans could fly, a man in Cordoba, Spain, looked up at the birds and said, "If they can do it, so can I."
+
+His name was Abbas ibn Firnas, and he lived in the ninth century in Al-Andalus — Muslim Spain — a land of learning, art, and invention. He was not just a dreamer. He was a polymath — a person who studied many subjects. He was an inventor, a poet, a musician, an astronomer, and a chemist. He created a water clock that told time with moving figures. He developed a way to manufacture colorless glass. He even built a planetarium — a mechanical model of the night sky — in his home, complete with clouds and thunder.
+
+But his greatest dream was flight.
+
+Abbas ibn Firnas spent years studying birds. He watched how they used their wings. He noticed how they angled their feathers to catch the wind. He studied air currents and how they lifted eagles effortlessly above the mountains.
+
+Then, at the age of sixty-five — an age when most people in that era were content to sit quietly — Abbas ibn Firnas built himself a pair of wings. He constructed a wooden frame covered with silk and real feathers. He put them on, climbed to a high point overlooking a valley, and — with a crowd watching in amazement — he jumped.
+
+And he flew. He actually flew. He glided through the air for several minutes, soaring like a bird above the valley of Cordoba, while the people below stared up in disbelief.
+
+The landing was rough — he hurt his back because he had not built a tail mechanism to slow his descent. "The birds use their tails to land," he realized afterward. "I forgot the tail."
+
+Even though the landing was imperfect, the flight itself was historic. Abbas ibn Firnas had proven that a human being could fly. A thousand years before the Wright Brothers, a Muslim inventor in Spain took to the sky.
+
+Today, a crater on the moon is named after him. An airport in Baghdad bears his name. A bridge in Cordoba honors him. His dream of flight inspired generations of thinkers and inventors.
+
+Prophet Muhammad, peace be upon him, said, "Tie your camel, then trust in Allah." It means do your work, prepare carefully, and then trust the outcome to Allah. Abbas ibn Firnas studied, designed, prepared — and then he leaped. That combination of effort and faith is what makes great things possible.
+
+{childName}, never let anyone tell you that your dreams are too big. A sixty-five-year-old man strapped on wings and flew. What will you do? The sky is not the limit — it is the beginning. Goodnight, future flyer. Your wings are growing while you sleep.`,
+      },
+    ],
+  },
 ];
 

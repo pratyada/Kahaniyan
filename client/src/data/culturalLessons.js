@@ -3682,6 +3682,701 @@ That night, {childName}, remember Juan Tamad. Good things do not fall from trees
   },
 );
 
+// ── Islamic Bedtime Stories ──────────────────────────────────────────
+CULTURAL_LESSONS.push(
+  {
+    id: 'mus_prophet_kindness',
+    tradition: 'muslim',
+    theme: 'compassion-animals',
+    title: 'The Prophet and the Hungry Cat',
+    durationMinutes: 5,
+    source: 'Islamic tradition · Hadith',
+    body: `One quiet morning in the city of Madinah, the Prophet Muhammad, peace be upon him, was getting ready for prayer. He reached for his cloak, which lay folded on the ground — and there, curled up right on the sleeve, was a small cat, fast asleep.
+
+The cat was thin. You could see its ribs through its dusty fur. It had wandered in from the alley, cold and hungry, and found the softest, warmest spot it could — the Prophet's own cloak.
+
+Now, {childName}, what would you have done? Many people might have shooed the cat away. After all, prayer was waiting, and the cloak was needed.
+
+But the Prophet Muhammad, peace be upon him, did not move the cat. He looked at it for a long, tender moment. Then, very carefully, he took a small knife and cut the sleeve of his cloak — right around the sleeping cat — so that it would not be disturbed.
+
+He went to prayer with a cloak that had one missing sleeve.
+
+When his companions saw this and asked what had happened, the Prophet simply smiled. "She was hungry and tired," he said. "She trusted me enough to sleep on my cloak. How could I break that trust?"
+
+Later that day, someone brought the cat a saucer of milk and a small piece of bread. The cat stayed near the mosque for many days after that, and the Prophet, peace be upon him, would always greet her gently.
+
+Now close your eyes, {childName}. Think of the smallest creature you saw today — a bird, a bug, a cat in the street. Even the tiniest living thing deserves gentleness. When you are kind to those who cannot thank you, that is when your kindness shines the brightest. Sleep well, little one.`
+  },
+  {
+    id: 'mus_ibrahim_stars',
+    tradition: 'muslim',
+    theme: 'wisdom',
+    title: 'Ibrahim and the Stars',
+    durationMinutes: 5,
+    source: 'Islamic tradition · Quran, Surah Al-An\'am',
+    body: `Long, long ago, in a land of golden sand and warm night skies, there lived a young boy named Ibrahim — Prophet Ibrahim, peace be upon him. Even as a child, Ibrahim was a thinker. He looked at the world around him and asked questions that the grown-ups could not answer.
+
+One night, Ibrahim walked outside and looked up. The sky was full of stars — thousands and thousands of them, twinkling like scattered diamonds.
+
+He saw one star that was bigger and brighter than all the rest. "Could this be my Lord?" he wondered. It was so beautiful, so powerful-looking.
+
+But then, slowly, the star began to fade. The sky grew lighter, and the star disappeared. Ibrahim shook his head. "No. Something that disappears cannot be the greatest of all."
+
+Then the moon rose — round, silver, and glowing. It lit up the whole desert. "Perhaps THIS is my Lord," Ibrahim thought. The moon was even more beautiful than the star.
+
+But as the hours passed, the moon too sank below the hills and was gone. Ibrahim felt a gentle sadness. "No. The moon also sets."
+
+Then came the morning, and the sun burst over the horizon — golden, warm, and enormous. It filled the entire sky with light. "Surely THIS must be the greatest!" Ibrahim said.
+
+But by evening, even the mighty sun dipped below the earth and was gone.
+
+And that is when young Ibrahim understood. None of these things — not the star, not the moon, not even the sun — were the Creator. They were all created things. The true Lord was the One who made them all, the One who never fades, never sets, never disappears.
+
+{childName}, tonight as you look out your window and see the stars, remember young Ibrahim, peace be upon him. The whole world is full of beautiful signs — and every single one of them is pointing you toward something even greater. Sleep now, and let the stars watch over you.`
+  },
+  {
+    id: 'mus_yusuf_patience',
+    tradition: 'muslim',
+    theme: 'patience',
+    title: 'Yusuf and the Deep Well',
+    durationMinutes: 5,
+    source: 'Islamic tradition · Quran, Surah Yusuf',
+    body: `Once, in a land of rolling hills and olive trees, there lived a boy named Yusuf — Prophet Yusuf, peace be upon him. He had the most beautiful smile, the kindest eyes, and a heart full of love. His father, Prophet Yaqub, peace be upon him, loved him very much.
+
+But Yusuf's older brothers were jealous. They wanted their father's attention all to themselves. One day, they came up with a terrible plan. They took young Yusuf far away from home, to the edge of a deep, dark well.
+
+And then — they lowered him into it and left him there, alone.
+
+{childName}, can you imagine how frightened Yusuf must have felt? It was dark. It was cold. The walls of the well were made of rough stone. He could see only a small circle of blue sky far, far above him.
+
+But here is the beautiful part of this story: Yusuf did not give up. He did not lose hope. Even at the bottom of that deep, dark well, he whispered a prayer. He trusted that Allah had not forgotten him. He believed that this was not the end of his story — it was only the beginning.
+
+And he was right.
+
+A caravan of travelers came by. They lowered a bucket into the well for water — and up came little Yusuf, holding on tight! The travelers were amazed. They took him with them to a faraway land called Egypt.
+
+And there, over many years, through more patience and more trust, Yusuf, peace be upon him, grew up to become one of the wisest and most powerful people in all the land. He forgave his brothers. He reunited with his father. And his story became one of the most beautiful stories ever told.
+
+Tonight, {childName}, if something feels hard or unfair, remember Yusuf at the bottom of the well. The darkest moment is sometimes just before the most beautiful sunrise. Be patient. Be brave. Allah never forgets you. Goodnight, dear one.`
+  },
+  {
+    id: 'mus_nuh_ark',
+    tradition: 'muslim',
+    theme: 'courage',
+    title: 'Nuh and the Great Ark',
+    durationMinutes: 5,
+    source: 'Islamic tradition · Quran, Surah Hud',
+    body: `A very, very long time ago, there lived a kind and patient man named Nuh — Prophet Nuh, peace be upon him. He loved Allah, and he tried every single day to remind the people around him to be good, to be honest, and to care for one another.
+
+But the people laughed at him. They turned away. They covered their ears with their fingers and pulled their cloaks over their heads so they would not have to listen.
+
+Still, Nuh, peace be upon him, did not stop. For hundreds of years — can you imagine, {childName}? — he kept trying.
+
+Then one day, Allah told Nuh to build something very special: a great ark, an enormous boat, right there in the middle of the dry land. There was no river nearby. There was no ocean in sight.
+
+The people laughed even harder. "A boat? In the desert? Has old Nuh lost his mind?"
+
+But Nuh, peace be upon him, picked up his tools and began to build. Plank by plank. Nail by nail. Day after day, under the hot sun, with sawdust in his beard and splinters in his hands. He built the ark exactly as Allah had told him.
+
+And when it was finished, he called out to every kind of animal — two of each — and they came walking, flying, crawling, and hopping onto the great boat. Lions walked beside lambs. Eagles perched near sparrows. Even the smallest ants marched aboard in a neat little line.
+
+Then the rain began — gentle at first, then stronger, then stronger still, until the whole world was covered in water. But the ark floated, steady and safe, carrying Nuh, his family, and all those animals through the storm.
+
+When the rain finally stopped, a dove flew out and came back with a fresh green olive leaf in its beak. Land! New land. A new beginning.
+
+{childName}, sometimes people will laugh at you for doing the right thing. That is okay. Keep building your ark. Keep doing what you know is good. The storm always passes, and on the other side, there is always a fresh, green world waiting. Sleep peacefully now.`
+  },
+  {
+    id: 'mus_sulaiman_ant',
+    tradition: 'muslim',
+    theme: 'humility',
+    title: 'Sulaiman and the Little Ant',
+    durationMinutes: 5,
+    source: 'Islamic tradition · Quran, Surah An-Naml',
+    body: `Prophet Sulaiman, peace be upon him, was the mightiest king the world had ever seen. He ruled over humans, animals, birds, and even the wind obeyed his command. His palace gleamed with gold and precious stones. His army stretched farther than the eye could see.
+
+But the most wonderful thing about Sulaiman, peace be upon him, was not his power or his riches. It was his gift from Allah — he could understand the language of every creature. He could hear the birds singing their morning prayers. He could listen to the fish whispering in the rivers. He could understand every word spoken by even the smallest insect.
+
+One day, Sulaiman was marching with his enormous army across a wide valley. Thousands of soldiers, horses, and chariots moved forward like a great wave.
+
+And then, he heard a tiny voice.
+
+"Hurry, hurry!" the voice cried. "Everyone get inside! The army of Sulaiman is coming, and they might step on us without even knowing!"
+
+It was a little ant — no bigger than a sesame seed — calling out to her family, warning them to hide.
+
+{childName}, imagine this: the most powerful king in the world, with the mightiest army behind him, stopped everything — because of one tiny ant.
+
+Sulaiman, peace be upon him, smiled. Not a proud smile, but a grateful, gentle smile. He looked down at the little ant and felt his heart fill with warmth. He raised his hands and thanked Allah. "O my Lord," he said, "thank You for all the blessings You have given me. Help me always to do good and to never be too proud to notice the smallest of Your creatures."
+
+He ordered his entire army to walk carefully around the ants, so that not a single one would be harmed.
+
+Tonight, {childName}, remember this: true greatness is not about being the biggest or the strongest. It is about being gentle enough to notice the smallest. Even an ant matters. Even you, in all your smallness, matter enormously. Goodnight, little one.`
+  },
+  {
+    id: 'mus_bilal_call',
+    tradition: 'muslim',
+    theme: 'bravery',
+    title: 'Bilal and the First Call to Prayer',
+    durationMinutes: 5,
+    source: 'Islamic tradition · Seerah',
+    body: `In the early days of Islam, in the hot, dusty city of Makkah, there lived a man named Bilal. He had a voice like honey and thunder mixed together — deep, rich, and beautiful. But in those days, Bilal was not free. He was treated unkindly by a cruel master who did not want him to believe in Allah.
+
+Every day, the cruel master would try to make Bilal give up his faith. He would place heavy stones on Bilal's chest under the burning sun and say, "Give up! Stop believing!"
+
+But Bilal, even with the weight pressing down on him, even with the sun blazing above, would whisper one word, over and over: "Ahad... Ahad..." It means "One... One..." — meaning there is only One God.
+
+{childName}, imagine how brave that is. Imagine lying under the hot sun with heavy rocks on your chest, and still whispering what you believe in your heart.
+
+One day, a kind and wealthy man named Abu Bakr came and paid for Bilal's freedom. Bilal was free at last!
+
+And when the Muslims built their first mosque in Madinah, the Prophet Muhammad, peace be upon him, turned to Bilal and said, "You, Bilal. You will be the one to call the people to prayer."
+
+Bilal climbed to the highest rooftop. The whole city fell quiet. And then his voice rang out across Madinah — strong, clear, and beautiful — calling the very first Adhan the world had ever heard.
+
+"Allahu Akbar... Allahu Akbar..."
+
+People stopped in the streets. Merchants paused at their stalls. Children looked up from their play. Some people wept, because the sound was so beautiful.
+
+The man who had once been silenced now had the most honored voice in all of Madinah.
+
+{childName}, never let anyone tell you that your voice does not matter. Even when things are hard, even when someone tries to make you quiet, hold on to what is true in your heart. One day, your voice will ring out strong and clear, just like Bilal's. Now rest, brave one. Goodnight.`
+  },
+  {
+    id: 'mus_khadijah_support',
+    tradition: 'muslim',
+    theme: 'sharing',
+    title: 'Khadijah — The First to Believe',
+    durationMinutes: 5,
+    source: 'Islamic tradition · Seerah',
+    body: `Before the Prophet Muhammad, peace be upon him, became a prophet, he was a quiet, thoughtful young man who worked as an honest trader in the city of Makkah. Everyone who knew him called him "Al-Amin" — the Trustworthy One — because he never told a lie and he always kept his promises.
+
+A wise and successful woman named Khadijah heard about this honest young man. She was one of the most respected people in all of Makkah — a merchant who ran her own business, known for her sharp mind and her generous heart. She asked Muhammad to work for her, and when she saw how honest and gentle he was, she knew he was special.
+
+They married, and their home was filled with love, laughter, and warmth.
+
+Then one day, everything changed. The Prophet Muhammad, peace be upon him, came home from a cave on a mountain called Hira, and he was trembling. He had received a message from Allah, through the angel Jibreel. He was overwhelmed. He was afraid. He wrapped himself in a blanket and whispered to Khadijah, "Cover me, cover me."
+
+And what did Khadijah do, {childName}?
+
+She did not doubt him. She did not laugh. She did not turn away.
+
+She held him close, wrapped the blanket tighter around his shoulders, and said the most beautiful words: "Be calm. Allah will never let you down. You are kind to your family. You help the poor. You are honest. You take care of those who have no one. Allah would never abandon someone like you."
+
+Khadijah was the very first person in the whole world to believe in the message of Islam. The very first. Before any king, before any warrior, before any scholar — it was Khadijah.
+
+She gave her wealth, her comfort, and her strength to support the Prophet, peace be upon him, through the hardest years of his life.
+
+{childName}, tonight remember that the greatest gift you can give someone is to believe in them when they need it most. A kind word, a warm hug, a simple "I believe in you" — these are the things that change the world. Sleep now, dear one. You are deeply loved.`
+  },
+  {
+    id: 'mus_spider_cave',
+    tradition: 'muslim',
+    theme: 'courage',
+    title: 'The Spider at the Cave',
+    durationMinutes: 5,
+    source: 'Islamic tradition · Seerah · Cave of Thawr',
+    body: `There came a night in Makkah when the enemies of the Prophet Muhammad, peace be upon him, made a terrible plan. They decided to surround his house and harm him. But Allah warned the Prophet, and under the cover of darkness, he and his closest friend Abu Bakr slipped quietly out of the city.
+
+They walked through the desert under the stars, climbing rocky hills and crossing sandy valleys, until they reached a small cave on a mountain called Thawr. They crept inside and sat in the darkness, catching their breath.
+
+Outside, they could hear the voices of the men who were searching for them. Closer and closer the voices came. Abu Bakr's heart pounded. "What if they find us?" he whispered, his voice shaking.
+
+The Prophet Muhammad, peace be upon him, placed his hand gently on Abu Bakr's shoulder and said, with the calmest voice you can imagine, "Do not be afraid. Allah is with us."
+
+And then, {childName}, something wonderful happened.
+
+A tiny spider — no bigger than a button — crawled to the opening of the cave and began to spin a web. Thread by thread, line by line, the little spider worked through the night, weaving a delicate web right across the entrance of the cave.
+
+A pair of doves also came and built a small nest right at the cave's mouth, and one of them sat quietly on her eggs.
+
+When the enemies finally reached the cave, they stopped. One of them peered at the entrance and saw the perfect, unbroken spider's web and the nesting dove. "No one has been in here," he said. "Look — the web is not torn. The bird has not been disturbed." And they turned away.
+
+The Prophet, peace be upon him, and Abu Bakr were safe.
+
+{childName}, think about that tiny spider. She did not have the strength of a lion or the speed of a horse. She only had her thread. But with that one small gift, she protected the most beloved person on earth. You do not need to be big to do something great. Your small act of goodness might be the thing that changes everything. Goodnight, brave little one.`
+  },
+  {
+    id: 'mus_date_palm',
+    tradition: 'muslim',
+    theme: 'gratitude',
+    title: 'The Crying Date Palm',
+    durationMinutes: 5,
+    source: 'Islamic tradition · Hadith',
+    body: `In the early days of the mosque in Madinah, before it was built with proper walls and pillars, the Prophet Muhammad, peace be upon him, would stand beside an old date palm tree whenever he spoke to the people. He would lean against its trunk, and the tree would stand tall and proud, as if it knew it had the most important job in the world — holding up the Prophet while he taught.
+
+Week after week, the people came to listen, and the date palm stood firm and faithful.
+
+Then one day, the companions built a small wooden pulpit — a minbar — so the Prophet, peace be upon him, could stand higher and everyone could see and hear him better. It was a kind and thoughtful gift.
+
+The Prophet climbed the new minbar and began to speak. But then — {childName}, this is the most amazing part — a sound came from the old date palm tree. A sound that made everyone in the mosque fall silent.
+
+The tree was crying.
+
+Not the way the wind makes branches creak. Not the way old wood groans in the heat. No — the date palm was weeping like a child who has lost someone it loves. A soft, sad, heartbreaking sound that everyone in the mosque could hear.
+
+The Prophet Muhammad, peace be upon him, stopped speaking. He stepped down from the minbar, walked over to the old tree, and wrapped his arms around it — the way you would hug a friend who is sad.
+
+He stroked the trunk gently and spoke to it with kind, soft words. Slowly, slowly, the crying stopped.
+
+The Prophet, peace be upon him, then turned to the people and said, "This tree is weeping because it misses being close to me. If I had not comforted it, it would have cried until the Day of Judgment."
+
+{childName}, even a tree can feel love. Even a tree can miss someone. Tonight, think about the people and things you are grateful for — your family, your warm bed, your favorite blanket. Say thank you in your heart for all of it. And know that you, too, are deeply missed whenever you are away. Goodnight, my love.`
+  },
+  {
+    id: 'mus_hungry_neighbor',
+    tradition: 'muslim',
+    theme: 'sharing',
+    title: 'The Neighbor Who Was Always Fed First',
+    durationMinutes: 5,
+    source: 'Islamic tradition · Hadith',
+    body: `In the city of Madinah, in a small mud-brick house with a palm-leaf roof, there lived a family who did not have very much. Their meals were simple — sometimes just bread and dates, sometimes only water and a handful of olives.
+
+But every single evening, before the family sat down to eat, the mother would set aside a small plate of food and carry it next door to their neighbor — an elderly man who lived alone.
+
+One night, the youngest child looked up at his mother with wide eyes and asked, "Ummi, why do we always feed our neighbor first? Sometimes there is barely enough for us."
+
+The mother knelt down and held her child's hands. "Because, my love, the Prophet Muhammad, peace be upon him, taught us that the angel Jibreel reminded him so often to take care of neighbors that he thought Allah might make neighbors into family. Our neighbor is like our family. And family eats first."
+
+The child thought about this for a moment. Then he picked up the biggest date on his own plate and placed it carefully onto the neighbor's tray. "Then he should have the best one too," the child said.
+
+The mother smiled, and her eyes shone with tears of joy.
+
+{childName}, here is what happened over time: the neighbor, who had been lonely and sad, began to smile again. He started telling the children stories every evening in return — tales of far-off lands and brave travelers and clever animals. The little house and the neighbor's house became like one big family.
+
+And one night, when the family ran out of food completely, they found a large basket on their doorstep — filled with bread, honey, cheese, and fresh fruit. There was no note. But they knew exactly who had left it.
+
+The Prophet Muhammad, peace be upon him, once said, "He is not a believer whose stomach is full while the neighbor beside him goes hungry."
+
+Tonight, {childName}, as you lie warm and safe in your bed, think about the people around you. Is there someone who might need a kind word? A shared snack? A little plate of food? You do not need to be rich to be generous. You only need a generous heart. Goodnight, sweet one.`
+  },
+  {
+    id: 'mus_well_zamzam',
+    tradition: 'muslim',
+    theme: 'patience',
+    title: 'Baby Ismail and the Well of Zamzam',
+    durationMinutes: 5,
+    source: 'Islamic tradition · Quran and Seerah',
+    body: `A very long time ago, Prophet Ibrahim, peace be upon him, brought his wife Hajar and their baby son Ismail to a valley in the desert. There were no trees. No water. No houses. Just sand and sky and silence.
+
+Allah had asked Ibrahim, peace be upon him, to leave them there, and though his heart ached, he trusted Allah's plan. Hajar watched him walk away and called out, "Has Allah commanded this?" Ibrahim nodded. And Hajar said, with the bravest voice, "Then He will not let us down."
+
+But soon, baby Ismail began to cry. He was thirsty. The sun was hot, and there was not a single drop of water anywhere.
+
+Hajar looked left — nothing. She looked right — nothing. So she began to run. She ran to the top of a hill called Safa and looked out across the desert. Nothing. She ran back down and up another hill called Marwa. Still nothing. Back and forth she ran, seven times, her heart beating fast, praying with every step.
+
+{childName}, imagine running in the hot sand, back and forth, back and forth, with your baby crying behind you. That is how much a mother's love can carry.
+
+And then — a miracle.
+
+Baby Ismail, lying on the sand, kicked his tiny heels against the ground. And right there, right where his little feet had touched the earth, water began to bubble up. Cool, clear, beautiful water — rising out of the dry desert sand like a gift from the sky.
+
+Hajar rushed back and cried, "Zam! Zam!" — which means "Stop flowing! Stop flowing!" — because there was so much water she was afraid it would flood. She scooped it up in her hands and gave baby Ismail a long, cool drink.
+
+That well is called Zamzam, and, {childName}, it is still flowing today — thousands and thousands of years later. Millions of people drink from it every year.
+
+Tonight, when you take a sip of water before bed, remember baby Ismail and his brave mother Hajar. Remember that even in the driest desert, help is never far away. Allah always provides. Sleep well, little one.`
+  },
+  {
+    id: 'mus_mercy_birds',
+    tradition: 'muslim',
+    theme: 'compassion-animals',
+    title: 'The Prophet and the Mother Bird',
+    durationMinutes: 5,
+    source: 'Islamic tradition · Hadith of Abu Dawud',
+    body: `One day, the Prophet Muhammad, peace be upon him, was traveling with his companions through a dry, sandy landscape dotted with small bushes and thorn trees. They stopped to rest under the shade of an acacia tree.
+
+While they rested, one of the companions noticed a small bird's nest tucked in a low bush nearby. Inside the nest were two tiny baby birds — fluffy, helpless little things with their beaks open wide, chirping for their mother.
+
+The companion, without thinking, reached in and picked up the two baby birds to look at them more closely. He held them gently in his cupped hands.
+
+Within moments, the mother bird came swooping back. When she saw that her babies were gone from the nest, she began to fly in circles over the companion's head — frantic, crying, beating her small wings as fast as she could. Her tiny voice was full of worry.
+
+The Prophet Muhammad, peace be upon him, looked up and saw what was happening. His face filled with concern. He stood and said, gently but firmly, "Who has taken the babies of this bird? You have caused her pain. Return them. Return them now."
+
+The companion immediately placed the baby birds back in the nest. The mother bird swooped down, settled over her babies, and tucked them under her warm wings. She grew calm. Her little heart stopped racing.
+
+The Prophet, peace be upon him, watched this and said to his companions, "Look at this mother bird and how distressed she was for her young ones. Allah is even more merciful to you than this mother bird is to her babies."
+
+{childName}, can you picture that little mother bird, so worried about her children? That is how much you are loved — by your family, and by Allah. Even more than a mother bird loves her babies. You are watched over, protected, and cherished beyond anything you can imagine. Close your eyes now and sleep safely, wrapped in that love. Goodnight.`
+  },
+  {
+    id: 'mus_honest_merchant',
+    tradition: 'muslim',
+    theme: 'honesty',
+    title: 'The Honest Merchant',
+    durationMinutes: 5,
+    source: 'Islamic tradition · Hadith of Tirmidhi',
+    body: `In the bustling market of Madinah, where colorful cloths hung from wooden poles and the smell of spices filled the air, there were many merchants selling their goods. Some sold dates and honey. Some sold beautiful fabrics. Some sold pots and pans that gleamed in the sunlight.
+
+Among them was a quiet merchant named Khalid. His stall was small — just a wooden table with baskets of grain and dried fruit. But there was something different about Khalid. Whenever he measured out grain for a customer, he always gave a little extra. If a date was bruised or old, he would point it out himself, even if the customer had not noticed.
+
+One day, a traveler came to Khalid's stall and asked for a bag of the finest dates. Khalid filled the bag, then paused. He reached in, pulled out three dates from the bottom, and showed them to the traveler. "These three are not as fresh as the rest," he said. "I will replace them for you."
+
+The traveler stared. "You could have left them in and I would never have known."
+
+Khalid smiled softly. "But I would have known. And Allah would have known."
+
+{childName}, word spread through the market about the honest merchant who never cheated, never lied, and never tried to hide anything. Soon, Khalid's small stall had the longest line in the entire market. People came from faraway villages just to buy from him — not because his dates were better than anyone else's, but because they trusted him completely.
+
+The Prophet Muhammad, peace be upon him, once said, "The honest and trustworthy merchant will be with the prophets and the truthful ones on the Day of Judgment."
+
+Can you imagine that, {childName}? A simple merchant who sells dates — standing beside the prophets — all because he chose honesty, every single day, even when no one was watching.
+
+Tonight, as you drift off to sleep, make a little promise in your heart: I will be honest, even when it is hard. Even when no one is watching. Because honesty is not just a rule — it is a light that shines from inside you. Goodnight, truthful one.`
+  },
+  {
+    id: 'mus_forgiveness_makkah',
+    tradition: 'muslim',
+    theme: 'forgiveness',
+    title: 'The Day Makkah Was Opened',
+    durationMinutes: 5,
+    source: 'Islamic tradition · Seerah · Fath Makkah',
+    body: `For many years, the people of Makkah had been unkind to the Prophet Muhammad, peace be upon him, and to the Muslims. They had thrown stones at him. They had called him names. They had driven him and his followers out of their own homes, forcing them to walk across the burning desert to a new city called Madinah.
+
+Years passed. The Muslims grew stronger. And then, one day, the Prophet Muhammad, peace be upon him, returned to Makkah — not with anger, but with an army of ten thousand, marching peacefully under a clear blue sky.
+
+The people of Makkah were terrified. They remembered all the cruel things they had done. They expected punishment. They expected revenge. They gathered in the center of the city, trembling, and waited.
+
+The Prophet Muhammad, peace be upon him, rode in on his camel, his head bowed so low in humility that his forehead nearly touched the camel's neck. He was not proud. He was not boasting. He was grateful to Allah.
+
+He looked out at the frightened crowd — the same people who had hurt him, mocked him, and chased him away — and he asked them a question.
+
+"People of Makkah, what do you think I will do with you today?"
+
+The crowd was silent. Then someone said, quietly, "You are a kind man, and the son of a kind man. We hope for the best."
+
+And the Prophet Muhammad, peace be upon him, said the most beautiful words: "Go. You are all free. I say to you what the Prophet Yusuf, peace be upon him, said to his brothers — there is no blame on you today."
+
+{childName}, he forgave them. All of them. Every single one. On the day when he had the power to punish, he chose mercy instead. On the day when revenge was easy, he chose forgiveness.
+
+Tonight, if someone was unkind to you today, or if you are holding a little knot of anger in your heart, try to let it go — the way the Prophet, peace be upon him, let it go. Forgiveness does not make you weak. It makes you free. Sleep well, gentle heart.`
+  },
+  {
+    id: 'mus_ramadan_moon',
+    tradition: 'muslim',
+    theme: 'gratitude',
+    title: 'The First Ramadan Moon',
+    durationMinutes: 5,
+    source: 'Islamic tradition · Quran and Hadith',
+    body: `One evening, just as the sky was turning soft shades of pink and orange, the whole city of Madinah became very excited. People climbed onto their rooftops. Children ran to the tallest hills. Everyone was looking up at the sky, waiting, waiting, waiting...
+
+And then someone shouted, "There it is!"
+
+A thin, silver crescent moon — as slender as an eyelash — appeared just above the horizon. The new moon! The first moon of Ramadan!
+
+{childName}, Ramadan is a very special month for Muslims all around the world. During Ramadan, grown-ups and older children fast — that means they do not eat or drink anything from the time the sun rises until it sets. It sounds hard, doesn't it? But it is done with love, because it helps people feel closer to Allah and closer to each other.
+
+In those early days in Madinah, the Prophet Muhammad, peace be upon him, would fast all day long. And when the sun finally set and it was time to eat, do you know what he broke his fast with? Not a big fancy meal. Not a royal feast.
+
+Three dates and a sip of water.
+
+Three small, sweet dates. That was enough.
+
+And yet, every evening during Ramadan, the Prophet, peace be upon him, would share whatever he had. If someone brought him food, he would give most of it away to his neighbors. If a hungry traveler knocked on the door, the Prophet would serve the traveler first, even if it meant he himself would go without.
+
+The companions said that during Ramadan, the Prophet, peace be upon him, was more generous than the wind — because the wind touches everyone and everything, and so did his kindness.
+
+And at the end of Ramadan, there was a celebration called Eid — a day of joy, new clothes, sweets, and hugs. A day when everyone, rich and poor, celebrated together.
+
+{childName}, tonight, think about all the food you ate today. The breakfast, the lunch, the little snacks. Now imagine choosing to share some of it with someone who has nothing. That feeling — that warm glow in your chest — that is what Ramadan feels like. Gratitude, generosity, and love, all wrapped in the silver light of the moon. Goodnight, dear one.`
+  },
+  {
+    id: 'mus_garden_brothers',
+    tradition: 'muslim',
+    theme: 'sharing',
+    title: 'The Owners of the Garden',
+    durationMinutes: 5,
+    source: 'Islamic tradition · Quran, Surah Al-Qalam',
+    body: `Once upon a time, there was a kind old man who owned a beautiful garden. It was filled with date palms, pomegranate trees, grapevines, and flowers of every color. Every harvest, the old man would gather the best fruits and set aside a large portion for the poor people who lived nearby.
+
+"This garden is a gift from Allah," he would say. "And gifts are meant to be shared."
+
+The poor families loved the old man. They would come on harvest day with their baskets, and he would fill them to the brim — dates, figs, grapes, and sometimes even a jar of golden honey.
+
+Then, one day, the kind old man passed away. His sons inherited the garden. But the sons were not like their father.
+
+"Why should we give our fruit away for free?" one said.
+
+"We could sell it all and keep the money," said another.
+
+"Let us pick everything before sunrise," said the third, "so that the poor people will not even know the harvest has come."
+
+And so, in the dark of night, they made a plan to sneak into the garden at dawn and pick every last fruit before anyone could see.
+
+But when they arrived at the garden the next morning, {childName}, they stopped and stared. The garden was destroyed. Every tree was black and bare. Every vine had withered. Every fruit had turned to dust. It looked as if a great fire had passed through, though there was no smoke and no ash.
+
+The brothers fell to their knees. They understood. They had planned to steal what belonged to the poor, and Allah had shown them that the garden was never truly theirs. It had always been a trust.
+
+"We were wrong," they cried. "We were so wrong. If only we could go back..."
+
+{childName}, this is a story from the Quran itself. It reminds us that everything we have — our toys, our food, our home — is a trust from Allah. And the best thing we can do with what we have is share it with those who have less. When you share, your blessings grow. When you hold on too tight, they slip away. Goodnight now. May your heart always be as open as the kind old man's garden.`
+  },
+  {
+    id: 'mus_sleepers_cave',
+    tradition: 'muslim',
+    theme: 'courage',
+    title: 'The Sleepers of the Cave',
+    durationMinutes: 5,
+    source: 'Islamic tradition · Quran, Surah Al-Kahf',
+    body: `Long ago, in a city ruled by a powerful and unkind king, there lived a group of young people who believed in Allah. In their city, everyone else had forgotten about the One true God. The king wanted everyone to worship only him, and he punished anyone who refused.
+
+But these brave young people would not give up their faith. They looked around at the mountains, the rivers, the stars, and the sunrise, and they knew — truly knew — that there was a Creator far greater than any king.
+
+One day, they realized they were no longer safe. The king's soldiers were searching for them. So, {childName}, do you know what they did? They gathered their courage, left the city quietly, and walked into the mountains.
+
+They found a cave — deep and cool and hidden behind rocky walls. They went inside with their faithful dog, who lay down at the entrance to guard them. And there, inside that cave, they made a prayer: "Our Lord, give us mercy and guide us through this."
+
+Then something miraculous happened. Allah placed them into a gentle, deep sleep. Not for a night. Not for a week. Not even for a year. They slept for more than three hundred years.
+
+While they slept, the world outside changed completely. The cruel king was long gone. New people lived in the city. Kindness had returned.
+
+When the young people finally woke up, they stretched and yawned and thought they had only slept for a day. One of them went into the city to buy bread — and everyone stared at him, because his clothes and his coins were from a time long, long ago.
+
+The people realized who he was. The story of the brave sleepers spread across the land, and everyone understood that Allah protects those who stand up for what is right, even if the whole world is against them.
+
+{childName}, tonight as you close your eyes, you are safe — just like those brave young people in the cave. You are protected. You are watched over. And no matter what tomorrow brings, you have the courage inside you to stand for what is good. Sleep now, just as they did, peacefully and without fear. Goodnight.`
+  },
+  {
+    id: 'mus_mother_paradise',
+    tradition: 'muslim',
+    theme: 'respect',
+    title: 'Paradise Lies at the Feet of Your Mother',
+    durationMinutes: 5,
+    source: 'Islamic tradition · Hadith of An-Nasa\'i',
+    body: `One day, a young man came to the Prophet Muhammad, peace be upon him, with an important question. He wanted to know the very best thing he could do in this world — the one action that would bring him closest to Paradise.
+
+"O Messenger of Allah," the young man asked, "who deserves my best treatment?"
+
+The Prophet, peace be upon him, answered without hesitation: "Your mother."
+
+The young man nodded, then asked again, "And then who?"
+
+"Your mother."
+
+The young man paused, surprised. He asked a third time: "And then who?"
+
+"Your mother."
+
+Only on the fourth time did the Prophet say, "And then your father."
+
+{childName}, three times the Prophet, peace be upon him, said "your mother" before he said anyone else. Three times! That is how important your mother is.
+
+And do you know why? Think about everything your mother does for you. She carried you before you were even born, when you were no bigger than a tiny seed. She stayed awake all through the night when you were a baby, rocking you and singing to you. She worries about you when you are sick. She celebrates when you are happy. She loves you in a way that is so deep and so steady that it never, ever runs out.
+
+The Prophet Muhammad, peace be upon him, also said, "Paradise lies at the feet of your mother." That does not mean Paradise is literally under her shoes, {childName} — it means that the way to goodness, to happiness, to the very best life, begins with how you treat her.
+
+A smile you give your mother. A hug when she is tired. Saying "thank you" for the meal she made. Picking up your toys without being asked. Telling her "I love you" before you go to sleep. These small, simple things — they matter more than you know.
+
+And it is not just mothers — it is fathers too, and grandparents, and anyone who takes care of you with love.
+
+{childName}, tonight before you close your eyes, whisper a little prayer for your mother. And tomorrow, give her an extra hug. Because every hug you give is a little piece of Paradise. Goodnight, sweet one.`
+  },
+  {
+    id: 'mus_two_brothers_field',
+    tradition: 'muslim',
+    theme: 'sharing',
+    title: 'The Two Brothers and the Wheat Field',
+    durationMinutes: 5,
+    source: 'Islamic tradition · Folk parable',
+    body: `Once, there were two brothers who lived side by side in a small village. Between their houses was a golden wheat field, which they shared equally after every harvest. Each brother took his half and stored it in his own barn.
+
+The older brother was married and had a big, happy family. The younger brother lived alone.
+
+One night, the younger brother lay in his bed thinking. "My brother has so many mouths to feed — his wife, his children, his elderly parents. He needs more wheat than I do. I live alone. I have more than enough."
+
+So he got up in the middle of the night, very quietly, filled a large sack with wheat from his own barn, and tiptoed across the moonlit field to his brother's barn. He poured the wheat in, crept back home, and went to sleep with a smile.
+
+That very same night, {childName}, the older brother was also lying awake. "My poor brother," he thought. "He lives all alone. He has no family to comfort him, no children to make him laugh. The least I can do is make sure he has plenty. He deserves more than me."
+
+So the older brother got up, filled a sack with wheat from his barn, and tiptoed across the moonlit field to his younger brother's barn. He poured the wheat in, crept back home, and went to sleep with a smile.
+
+The next morning, both brothers looked at their barns — and both were confused. "How can it be? I gave away a sack last night, but my barn still looks full!"
+
+Night after night, the same thing happened. Each brother secretly carried wheat to the other, and each morning, the barns seemed unchanged.
+
+Then one night, in the middle of the moonlit field, they bumped into each other. Each one was carrying a heavy sack of wheat — heading to the other's barn.
+
+They stopped. They looked at each other. And then they laughed and laughed and hugged each other tight, right there under the stars.
+
+{childName}, this is what love looks like. Not keeping count. Not giving to get. Just quietly, secretly, wanting the best for someone else. That moonlit field where the two brothers met? Some say that is the most blessed spot on earth — because that is where two hearts full of love found each other. Sleep now, generous one. Goodnight.`
+  },
+  {
+    id: 'mus_barakah_bismillah',
+    tradition: 'muslim',
+    theme: 'gratitude',
+    title: 'Saying Bismillah Before Everything',
+    durationMinutes: 5,
+    source: 'Islamic tradition · Hadith',
+    body: `In a small house in Madinah, a little girl sat down for dinner with her family. The food was simple — a bowl of warm lentil soup and a round piece of flatbread. Her stomach was rumbling.
+
+She reached her hand toward the bread, ready to tear off a big piece, when her grandmother gently touched her wrist. "Wait, little one. What do you say first?"
+
+The girl paused. Then she smiled and said, "Bismillah." In the Name of Allah.
+
+Her grandmother nodded, her eyes twinkling. "Now you may eat."
+
+{childName}, Bismillah is one of the most beautiful words in the world. It means "In the Name of Allah," and Muslims say it before doing almost anything — before eating, before drinking water, before opening a door, before starting a journey, even before putting on their shoes.
+
+But why?
+
+The Prophet Muhammad, peace be upon him, taught that when you say Bismillah, you are inviting blessings into whatever you are about to do. It is like wrapping everything in a warm blanket of light. The food tastes better. The water is more refreshing. The journey feels safer. Not because something magical happens — but because you have remembered that every good thing comes from Allah, and that remembering fills your heart with peace.
+
+One day, the little girl asked her grandmother, "What happens if I forget to say it?"
+
+Her grandmother smiled. "Then you say it when you remember. It is never too late. Allah loves that you are trying."
+
+The girl started saying Bismillah before everything. Before brushing her teeth. Before picking up her cat. Before drawing a picture. Before going to sleep. And she noticed something wonderful — she felt more grateful. She noticed the sweetness of dates more. She appreciated the coolness of water. She felt thankful for her warm bed.
+
+It was as if the whole world had become more beautiful, just because she was paying attention.
+
+{childName}, tonight, as you settle into your pillow, try whispering "Bismillah" — softly, gently, like a little prayer. Let it be the last word on your lips before you drift off. And know that with that one small word, you have wrapped your whole night in light and love. Bismillah. Goodnight.`
+  },
+  {
+    id: 'mus_prophet_smile',
+    tradition: 'muslim',
+    theme: 'wisdom',
+    title: 'The Prophet\'s Smile',
+    durationMinutes: 5,
+    source: 'Islamic tradition · Hadith of Tirmidhi',
+    body: `The companions of the Prophet Muhammad, peace be upon him, used to say that they had never seen anyone who smiled more than he did. Think about that, {childName} — the busiest person, the most important person, the one who carried the weight of the whole community on his shoulders — and he was always smiling.
+
+When someone came to visit, the Prophet, peace be upon him, would turn his whole body to face them and give them the warmest smile, as if that person were the most important one in the world.
+
+When children ran up to him in the streets, he would stop, kneel down to their level, and smile at them until they smiled back. He would sometimes race with the children and let them win, just to hear them laugh.
+
+When an elderly woman needed help carrying her groceries, he would walk beside her, carry her bags, and smile the whole way — never rushing, never making her feel like a burden.
+
+One day, a companion said to the Prophet, "O Messenger of Allah, I do not have much money to give in charity. What can I do?"
+
+The Prophet Muhammad, peace be upon him, looked at him with those kind, gentle eyes and said, "Your smile in the face of your brother is charity."
+
+{childName}, let those words sink in. Your smile — the one you give your mother in the morning, the one you share with your friend at school, the one you offer a stranger who looks sad — that is a gift. That is charity. That is goodness.
+
+You do not need coins. You do not need gold. You do not need to be rich or strong or famous. You just need to smile.
+
+The Prophet, peace be upon him, taught that even the smallest kindness counts, and a smile is the easiest kindness of all. It costs nothing, but it can light up someone's entire day.
+
+Tonight, {childName}, smile right now — even in the dark, even under your blanket. Feel how it changes the way your whole face feels. That is your gift to the world. Carry it with you tomorrow and give it away freely. Goodnight, and sweet dreams.`
+  },
+  {
+    id: 'mus_trust_allah_camel',
+    tradition: 'muslim',
+    theme: 'wisdom',
+    title: 'Trust in Allah, but Tie Your Camel',
+    durationMinutes: 5,
+    source: 'Islamic tradition · Hadith of Tirmidhi',
+    body: `One afternoon in the hot Arabian sun, a traveler arrived at the mosque in Madinah on the back of his camel. He had been riding for days across the desert, and he was tired, dusty, and grateful to have finally arrived.
+
+He slid off his camel and hurried toward the mosque, leaving the camel standing outside — untied, with its reins hanging loose.
+
+The Prophet Muhammad, peace be upon him, saw this and gently called out to the man. "Where are you going?"
+
+"To pray," the traveler said cheerfully. "I trust in Allah. He will take care of my camel."
+
+The Prophet, peace be upon him, smiled — that kind, wise smile of his — and said, "Trust in Allah, but tie your camel first."
+
+{childName}, this is one of the most famous things the Prophet ever said, and it teaches something very important: trusting Allah does not mean you sit still and do nothing. It means you do your best — you study for your test, you pack your bag the night before, you practice your reading, you brush your teeth — and THEN you trust that Allah will take care of the rest.
+
+It is like planting a seed. You dig the hole. You drop in the seed. You water it and give it sunshine. That is your part. Then you trust that Allah will make it grow. But if you just leave the seed sitting on the table and say, "I trust Allah will make a tree" — well, that is not how it works, is it?
+
+The traveler laughed, went back outside, tied his camel securely to a post, and then returned to pray with a peaceful heart.
+
+And you know what? His camel was right there waiting for him when he came out. Safe and sound.
+
+{childName}, tomorrow, when you have something important to do — a test, a chore, a new challenge — remember the traveler and the camel. Do your best. Prepare. Try hard. And then let go of the worry, because you have done your part, and Allah will take care of the rest. Now close your eyes and rest. You have tied your camel for today. Goodnight.`
+  },
+  {
+    id: 'mus_cleaning_path',
+    tradition: 'muslim',
+    theme: 'humility',
+    title: 'Removing Harm from the Path',
+    durationMinutes: 5,
+    source: 'Islamic tradition · Hadith of Muslim',
+    body: `The Prophet Muhammad, peace be upon him, once told a very simple story. He said that a person was walking along a road and saw a thorny branch lying right in the middle of the path. The branch had sharp, pointy thorns that could hurt anyone who stepped on it — a child running barefoot, an old woman carrying a basket, a traveler who was not looking down.
+
+The person stopped. They did not have to stop. No one was watching. No one would have blamed them for walking around the branch and continuing on their way. After all, it was not their branch. It was not their road. It was not their problem.
+
+But the person bent down, picked up the thorny branch — carefully, so as not to get pricked — and moved it off the road. Then they continued walking.
+
+That was it. No speech. No announcement. No one saying "Thank you." Just a quiet, simple act on a quiet, ordinary day.
+
+And the Prophet Muhammad, peace be upon him, said that because of this one small act, Allah was pleased with that person and forgave their sins.
+
+{childName}, think about how tiny that act was. Picking up a branch. Moving it aside. It took a few seconds. No one saw. No one clapped. But it mattered.
+
+You know what? You do things like this more than you realize. When you pick up a toy that someone else dropped. When you hold the door for the person behind you. When you push in a chair so nobody bumps into it. When you wipe up a little spill on the table. These are all the same as removing the branch from the path.
+
+The Prophet, peace be upon him, taught that every good deed — even the smallest, most invisible one — is a form of charity. You do not need to do something big and loud and famous. You just need to leave the world a little better than you found it, one tiny branch at a time.
+
+{childName}, tonight as you close your eyes, know that every small kindness you did today — even the ones nobody noticed — they all counted. Every single one. Goodnight, kind heart.`
+  },
+  {
+    id: 'mus_aisha_generosity',
+    tradition: 'muslim',
+    theme: 'sharing',
+    title: 'Aisha and Her Last Meal',
+    durationMinutes: 5,
+    source: 'Islamic tradition · Hadith',
+    body: `Aisha was the wife of the Prophet Muhammad, peace be upon him, and she was known throughout Madinah for her sharp mind, her beautiful memory, and her incredible generosity. She remembered everything the Prophet taught, and she passed those teachings on to hundreds of people after him.
+
+But the thing that amazed people most about Aisha was not her knowledge — it was her heart.
+
+One evening, Aisha had nothing in her house except one small loaf of bread. That was it. One loaf. There was nothing else to eat — no dates, no milk, no honey, no soup. Just one small loaf for her dinner.
+
+She sat down and was about to break the bread when there was a knock at the door. A poor woman stood outside with her two little daughters. Their clothes were dusty and their eyes were tired. "Please," the woman said softly. "We have not eaten all day."
+
+{childName}, what would you do? You have one loaf. Just one. If you give it away, you will have nothing.
+
+Aisha did not hesitate. She picked up the loaf, broke it into three pieces, and gave one piece to the mother and one piece to each of the two girls. She kept nothing for herself.
+
+The woman's eyes filled with tears. "May Allah bless you," she whispered, and she took her children home.
+
+That night, Aisha went to sleep hungry. But she slept with a heart so full that she did not feel the emptiness in her stomach.
+
+When the Prophet Muhammad, peace be upon him, heard what Aisha had done, he was deeply moved. He said that whoever gives up something they love for the sake of others, Allah will replace it with something even better.
+
+And indeed, the very next morning, a neighbor brought Aisha a large tray of food — more than enough for several meals.
+
+{childName}, generosity is not about giving away what you do not need. It is about giving away what you DO need, trusting that kindness always comes back around. You do not have to give away your dinner, of course. But maybe you could share your favorite snack, or lend your favorite toy, or give someone the bigger piece. That is the spirit of Aisha. Goodnight, generous one. May your heart always be full.`
+  },
+  {
+    id: 'mus_luqman_wisdom',
+    tradition: 'muslim',
+    theme: 'wisdom',
+    title: 'Luqman\'s Advice to His Son',
+    durationMinutes: 5,
+    source: 'Islamic tradition · Quran, Surah Luqman',
+    body: `A very long time ago, there lived a wise man named Luqman. He was not a king. He was not a prophet. He was not rich or famous. But Allah loved him so much that He put Luqman's words right into the Quran — the holy book itself — so that people would remember them forever.
+
+And the most beautiful words Luqman ever spoke were the ones he said to his son.
+
+One evening, Luqman sat down with his boy under a wide, old tree. The stars were beginning to appear. The air was cool. And Luqman began to talk, gently, the way a father does when he wants his child to remember every word.
+
+"My dear son," Luqman said, "never set up anything as equal to Allah. He alone created you, and He alone takes care of you."
+
+The boy listened quietly.
+
+"Be kind to your mother and father," Luqman continued. "They carried you when you were weak. They fed you when you were hungry. They stayed awake so you could sleep. You can never repay them, but you can love them and honor them every day."
+
+The boy nodded.
+
+"And my son — pray. Pray every day. Not because you have to, but because prayer is your conversation with the One who made you. It is the rope that keeps you connected to everything good."
+
+Luqman paused and looked up at the stars. Then he said something that {childName} should hear too:
+
+"My dear child, even if something you did — good or bad — were as tiny as a mustard seed, hidden inside a rock, buried inside the earth, Allah would bring it to light. Nothing is hidden from Him. So always choose goodness, even when no one is watching."
+
+Then Luqman gave his son one last piece of advice — and it is so simple and so perfect:
+
+"Do not turn your face away from people with pride. And do not walk on the earth with arrogance. Be humble. Speak gently. The harshest of all voices is the braying of a donkey — so let your voice be soft."
+
+The boy smiled. Luqman smiled back.
+
+{childName}, these words were spoken thousands of years ago, but they are just as true tonight as they were then. Be kind. Be humble. Be honest. Speak gently. And know that every tiny good thing you do — even the ones no one sees — matters more than you will ever know. Goodnight, wise little one.`
+  },
+);
+
 export const lessonsByTheme = (theme) => CULTURAL_LESSONS.filter((l) => l.theme === theme);
 export const lessonsByTradition = (tradition) =>
   CULTURAL_LESSONS.filter((l) => l.tradition === tradition);

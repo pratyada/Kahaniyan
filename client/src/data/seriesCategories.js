@@ -42,6 +42,17 @@ export const SERIES_CATEGORIES = {
   'discover-spain': ['geography'],
   'discover-newzealand': ['geography'],
   'tallest-towers': ['geography', 'science'],
+  // Islamic series
+  'stories-of-the-prophets': ['life-skills', 'history'],
+  'names-of-allah': ['life-skills'],
+  'ramadan-adventures': ['life-skills'],
+  'companions-of-prophet': ['history'],
+  'animals-in-quran': ['science'],
+  'islamic-manners': ['life-skills'],
+  'hajj-journey': ['geography'],
+  'mosque-adventures': ['geography'],
+  'bedtime-duas': ['life-skills'],
+  'muslim-heroes': ['science', 'history'],
 };
 
 export const COLLECTION_CATEGORIES = {

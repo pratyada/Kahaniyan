@@ -7,12 +7,14 @@ import ShelfSection from './ShelfSection.jsx';
 import ShelfRow from './ShelfRow.jsx';
 import SeriesCard from '../cards/SeriesCard.jsx';
 import { useLocalizedSeries } from '../../hooks/useLocalizedData.js';
+import { useFamilyProfile } from '../../hooks/useFamilyProfile.js';
 
 // Preferred order for live series
 const LIVE_ORDER = ['rainbow-kindergarten-jlps-yr25-26', 'dr-spock-parenting'];
 
 export default function SeriesShelf() {
   const SERIES = useLocalizedSeries();
+  const { profile } = useFamilyProfile();
   const navigate = useNavigate();
   const [coverImages, setCoverImages] = useState({});
   const [galleryImages, setGalleryImages] = useState({});
@@ -35,8 +37,17 @@ export default function SeriesShelf() {
 
   if (SERIES.length === 0) return null;
 
+  // Filter by beliefs — religious series only show if belief matches
+  const beliefs = profile?.beliefs || [];
+  const filtered = SERIES.filter(s => {
+    const tradition = s.episodes?.[0]?.tradition;
+    if (!tradition || tradition === 'universal') return true;
+    if (beliefs.length === 0) return tradition === 'universal';
+    return beliefs.includes(tradition) || beliefs.includes('universal');
+  });
+
   // Sort: live series in preferred order first, then coming soon
-  const sorted = [...SERIES].sort((a, b) => {
+  const sorted = [...filtered].sort((a, b) => {
     const aLive = !a.comingSoon;
     const bLive = !b.comingSoon;
     if (aLive && !bLive) return -1;

@@ -7,11 +7,13 @@ import ShelfSection from './ShelfSection.jsx';
 import ShelfRow from './ShelfRow.jsx';
 import SeriesCard from '../cards/SeriesCard.jsx';
 import { useLocalizedSeries } from '../../hooks/useLocalizedData.js';
+import { useFamilyProfile } from '../../hooks/useFamilyProfile.js';
 import { CATEGORIES, SERIES_CATEGORIES, COLLECTION_CATEGORIES } from '../../data/seriesCategories.js';
 import { COLLECTIONS } from '../../data/collections.js';
 
 export default function CategoryShelves({ wisdomImageUrls }) {
   const SERIES = useLocalizedSeries();
+  const { profile } = useFamilyProfile();
   const navigate = useNavigate();
   const [coverImages, setCoverImages] = useState({});
 
@@ -27,6 +29,15 @@ export default function CategoryShelves({ wisdomImageUrls }) {
     })();
   }, []);
 
+  // Filter series by user's beliefs — religious series only show if belief matches
+  const beliefs = profile?.beliefs || [];
+  const seriesMatchesBelief = (s) => {
+    const tradition = s.episodes?.[0]?.tradition;
+    if (!tradition || tradition === 'universal') return true; // non-religious → always show
+    if (beliefs.length === 0) return tradition === 'universal'; // no beliefs → universal only
+    return beliefs.includes(tradition) || beliefs.includes('universal');
+  };
+
   // Build category data
   const categoryData = useMemo(() => {
     return CATEGORIES.map(cat => {
@@ -36,7 +47,8 @@ export default function CategoryShelves({ wisdomImageUrls }) {
         .map(([id]) => id);
       const series = seriesIds
         .map(id => SERIES.find(s => s.id === id))
-        .filter(Boolean);
+        .filter(Boolean)
+        .filter(seriesMatchesBelief);
 
       // Get collections in this category
       const colIds = Object.entries(COLLECTION_CATEGORIES)
@@ -48,7 +60,7 @@ export default function CategoryShelves({ wisdomImageUrls }) {
 
       return { ...cat, series, collections, total: series.length + collections.length };
     }).filter(cat => cat.total > 0);
-  }, [SERIES]);
+  }, [SERIES, beliefs]);
 
   const getSeriesCover = (series) => {
     for (const ep of series.episodes) {
