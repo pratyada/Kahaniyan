@@ -273,7 +273,6 @@ export default function Settings() {
       <SectionCard title={t('settings.customize')}>
         <div className="grid grid-cols-2 gap-2">
           <Tile icon="👨‍👩‍👧" title={t('settings.storyCast')} sub={`${profile.characters?.length || 0} ${t('common.chars')}`} onClick={() => navigate('/characters')} />
-          <Tile icon="🪷" title={t('settings.wisdomStories')} sub={t('settings.byBelief')} onClick={() => navigate('/lessons')} />
           <Tile icon={<Mic size={18} />} title={t('settings.voices')} sub={`${voices.length} ${t('settings.saved')}`} onClick={() => navigate('/voices')} />
           <Tile icon={<Home size={18} />} title={t('settings.editFamily')} sub={t('settings.nameAgeBelief')} onClick={() => navigate('/family')} />
         </div>
