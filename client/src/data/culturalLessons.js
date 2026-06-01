@@ -3151,7 +3151,7 @@ export const TRADITIONS = [
   { key: 'catholic', label: 'Catholic', icon: '⛪' },
   { key: 'filipino', label: 'Filipino', icon: '🇵🇭' },
   { key: 'chinese', label: 'Chinese', icon: '🇨🇳' },
-  { key: 'universal', label: 'Universal', icon: '🌍' },
+  { key: 'universal', label: 'No specific belief', icon: '🌍' },
 ];
 
 export const THEMES = [

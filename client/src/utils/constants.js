@@ -59,7 +59,7 @@ export const RELIGIONS = [
   { key: 'buddhist', label: 'Buddhism', icon: '☸️' },
   { key: 'jain', label: 'Jainism', icon: '🪷' },
   { key: 'jewish', label: 'Judaism', icon: '✡️' },
-  { key: 'universal', label: 'Universal', icon: '🌍' },
+  { key: 'universal', label: 'No specific belief', icon: '🌍' },
 ];
 
 // Family member relationships used in voice studio
