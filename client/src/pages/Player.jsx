@@ -693,24 +693,6 @@ function PlayerInner() {
               </div>
             </div>
 
-            {/* Cover art — large, centered */}
-            <motion.div
-              initial={{ scale: 0.85, opacity: 0 }}
-              animate={{ scale: 1, opacity: 1 }}
-              transition={{ duration: 0.7, type: 'spring', stiffness: 100 }}
-              className="relative mx-auto mb-4 h-36 w-36 overflow-hidden rounded-3xl shadow-lift"
-              style={{
-                boxShadow: `0 8px 40px ${meta.color}33, 0 0 80px ${meta.color}11`,
-              }}
-            >
-              <div className="absolute inset-0 grid place-items-center" style={{ background: storyArtData?.gradient || `radial-gradient(circle at 30% 30%, ${meta.color}aa, ${meta.color}22 60%, transparent)` }}>
-                <span className="text-5xl opacity-60">{storyArtData?.icon || meta.emoji}</span>
-              </div>
-              {bgImage && (
-                <img src={bgImage} alt="" className="absolute inset-0 h-full w-full object-cover" onError={(e) => { e.target.style.display = 'none'; }} />
-              )}
-            </motion.div>
-
             {/* Title + meta — centered (or generating message) */}
             <div className="mb-3 text-center">
               {isGenerating ? (
