@@ -103,6 +103,12 @@ export default function Home() {
       .slice(0, 10);
   }, [allLessons, beliefs]);
 
+  // Wisdom stories grouped by user's selected beliefs
+  const traditionShelves = useMemo(
+    () => buildTraditionShelves(allLessons, beliefs),
+    [allLessons, beliefs]
+  );
+
   // Theme-filtered stories
   const themeStories = useMemo(() => {
     if (!activeTheme) return [];
@@ -288,6 +294,17 @@ export default function Home() {
           </ShelfRow>
         )}
       </section>
+
+      {/* Wisdom stories by belief */}
+      {traditionShelves.length > 0 && traditionShelves.map((shelf) => (
+        <ShelfSection key={shelf.id} title={shelf.title}>
+          <ShelfRow>
+            {shelf.stories.slice(0, 12).map((lesson) => (
+              <StoryTile key={lesson.id} lesson={lesson} imageUrl={wisdomImageUrls[lesson.id]} onPlay={handlePlay} />
+            ))}
+          </ShelfRow>
+        </ShelfSection>
+      ))}
 
       {/* 4-11. Collections (lazy-loaded as user scrolls) */}
           {COLLECTIONS.slice(0, visibleCollections).map((col) => (

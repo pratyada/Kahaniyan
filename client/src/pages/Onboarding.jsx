@@ -178,9 +178,13 @@ export default function Onboarding() {
                         onClick={() =>
                           setDraft((d) => {
                             const cur = d.beliefs || [];
-                            const next = cur.includes(r.key)
-                              ? cur.filter((x) => x !== r.key)
-                              : [...cur, r.key];
+                            if (r.key === 'universal') {
+                              return { ...d, beliefs: cur.includes('universal') ? [] : ['universal'] };
+                            }
+                            const without = cur.filter((x) => x !== 'universal');
+                            const next = without.includes(r.key)
+                              ? without.filter((x) => x !== r.key)
+                              : [...without, r.key];
                             return { ...d, beliefs: next };
                           })
                         }

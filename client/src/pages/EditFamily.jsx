@@ -226,9 +226,14 @@ export default function EditFamily() {
                   key={r.key}
                   onClick={() => {
                     const cur = draft.beliefs || [];
-                    const next = cur.includes(r.key)
-                      ? cur.filter((x) => x !== r.key)
-                      : [...cur, r.key];
+                    if (r.key === 'universal') {
+                      setDraft({ ...draft, beliefs: cur.includes('universal') ? [] : ['universal'] });
+                      return;
+                    }
+                    const without = cur.filter((x) => x !== 'universal');
+                    const next = without.includes(r.key)
+                      ? without.filter((x) => x !== r.key)
+                      : [...without, r.key];
                     setDraft({ ...draft, beliefs: next });
                   }}
                   className={`flex items-center gap-2 rounded-2xl px-3 py-3 text-left transition ${
