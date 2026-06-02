@@ -4791,6 +4791,7 @@ function TaskBoard({ team = [], adminEmails = [] }) {
   const [filterAssignee, setFilterAssignee] = useState('all');
   const [showAddForm, setShowAddForm] = useState(false);
   const [emailPreview, setEmailPreview] = useState(null);
+  const [editingTask, setEditingTask] = useState(null); // task being edited
 
   const [newTask, setNewTask] = useState({ title: '', description: '', activity: 'content', assignee: '', priority: 'normal', status: 'todo' });
 
@@ -5008,6 +5009,45 @@ function TaskBoard({ team = [], adminEmails = [] }) {
               {memberTasks.map(task => {
                 const act = ACTIVITIES.find(a => a.key === task.activity);
                 const sta = TASK_STATUS.find(s => s.key === task.status);
+                // Inline edit mode
+                if (editingTask?.id === task.id) {
+                  const e = editingTask;
+                  return (
+                    <div key={task.id} className="px-5 py-3 space-y-2 bg-[#f0a500]/5">
+                      <input value={e.title} onChange={ev => setEditingTask({ ...e, title: ev.target.value })}
+                        className="w-full rounded-lg bg-white/5 px-3 py-2 text-sm text-[#f5f0e8] border border-[#f0a500]/30 outline-none" />
+                      <textarea value={e.description || ''} onChange={ev => setEditingTask({ ...e, description: ev.target.value })}
+                        className="w-full rounded-lg bg-white/5 px-3 py-1.5 text-xs text-[#c8c3ba] border border-white/10 outline-none resize-none h-12" placeholder="Description..." />
+                      <div className="flex flex-wrap gap-2">
+                        <select value={e.activity} onChange={ev => setEditingTask({ ...e, activity: ev.target.value })}
+                          className="rounded-lg bg-white/5 px-2 py-1.5 text-xs text-[#f5f0e8] border border-white/10 outline-none">
+                          {ACTIVITIES.map(a => <option key={a.key} value={a.key}>{a.icon} {a.label}</option>)}
+                        </select>
+                        <select value={e.assignee} onChange={ev => setEditingTask({ ...e, assignee: ev.target.value })}
+                          className="rounded-lg bg-white/5 px-2 py-1.5 text-xs text-[#f5f0e8] border border-white/10 outline-none">
+                          <option value="">Unassigned</option>
+                          {allAssignees.map(m => <option key={m.email} value={m.email}>{m.name}</option>)}
+                        </select>
+                        <select value={e.priority} onChange={ev => setEditingTask({ ...e, priority: ev.target.value })}
+                          className="rounded-lg bg-white/5 px-2 py-1.5 text-xs text-[#f5f0e8] border border-white/10 outline-none">
+                          <option value="urgent">Urgent</option>
+                          <option value="high">High</option>
+                          <option value="normal">Normal</option>
+                          <option value="low">Low</option>
+                        </select>
+                        <select value={e.status} onChange={ev => setEditingTask({ ...e, status: ev.target.value })}
+                          className="rounded-lg bg-white/5 px-2 py-1.5 text-xs text-[#f5f0e8] border border-white/10 outline-none">
+                          {TASK_STATUS.map(s => <option key={s.key} value={s.key}>{s.label}</option>)}
+                        </select>
+                        <button onClick={async () => { await saveTask(e); setEditingTask(null); }}
+                          className="rounded-lg bg-[#f0a500] px-4 py-1.5 text-xs font-bold text-[#0f0f17]">Save</button>
+                        <button onClick={() => setEditingTask(null)}
+                          className="rounded-lg bg-white/5 px-3 py-1.5 text-xs text-[#6e6a63]">Cancel</button>
+                      </div>
+                    </div>
+                  );
+                }
+
                 return (
                   <div key={task.id} className={`flex items-start gap-3 px-5 py-3 ${task.status === 'done' ? 'opacity-50' : ''}`}>
                     <button onClick={() => {
@@ -5018,7 +5058,7 @@ function TaskBoard({ team = [], adminEmails = [] }) {
                       style={{ border: `2px solid ${sta?.color}`, background: task.status === 'done' ? '#48bb78' : 'transparent' }}>
                       {task.status === 'done' && <span className="text-[10px] text-white">✓</span>}
                     </button>
-                    <div className="flex-1 min-w-0">
+                    <div className="flex-1 min-w-0 cursor-pointer" onClick={() => setEditingTask({ ...task })}>
                       <div className="flex items-center gap-2 flex-wrap">
                         <span className={`text-sm font-bold ${task.status === 'done' ? 'line-through text-[#6e6a63]' : 'text-[#f5f0e8]'}`}>{task.title}</span>
                         {task.priority === 'urgent' && <span className="text-[9px] bg-[#f3727f]/20 text-[#f3727f] px-1.5 rounded-full font-bold">URGENT</span>}
@@ -5034,8 +5074,10 @@ function TaskBoard({ team = [], adminEmails = [] }) {
                         </span>
                       </div>
                     </div>
-                    <button onClick={() => { if (confirm('Delete?')) deleteTask(task.id); }}
-                      className="text-[10px] text-[#6e6a63] hover:text-[#f3727f] mt-1">✕</button>
+                    <div className="flex gap-1 mt-1">
+                      <button onClick={() => setEditingTask({ ...task })} className="text-[10px] text-[#6e6a63] hover:text-[#f0a500]">✎</button>
+                      <button onClick={() => { if (confirm('Delete?')) deleteTask(task.id); }} className="text-[10px] text-[#6e6a63] hover:text-[#f3727f]">✕</button>
+                    </div>
                   </div>
                 );
               })}
