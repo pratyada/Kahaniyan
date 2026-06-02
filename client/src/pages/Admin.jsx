@@ -4688,18 +4688,23 @@ function TaskBoard({ team = [], adminEmails = [] }) {
   }, []);
 
   const saveTask = async (task) => {
+    const id = task.id || `task_${Date.now()}_${Math.random().toString(36).slice(2, 6)}`;
+    const data = { ...task, id, updatedAt: new Date().toISOString() };
+    if (!task.createdAt) data.createdAt = new Date().toISOString();
     try {
-      if (!db) return;
-      const id = task.id || `task_${Date.now()}_${Math.random().toString(36).slice(2, 6)}`;
-      const data = { ...task, id, updatedAt: new Date().toISOString() };
-      if (!task.createdAt) data.createdAt = new Date().toISOString();
+      if (!db) { console.error('Save task: db is null'); return; }
+      console.log('[TaskBoard] Saving task:', id, data.title, data.dueDate);
       await setDoc(doc(db, 'dailyTasks', id), data, { merge: true });
-      setTasks(prev => {
-        const exists = prev.find(t => t.id === id);
-        return exists ? prev.map(t => t.id === id ? data : t) : [...prev, data];
-      });
-      return data;
-    } catch (e) { console.error('Save task error:', e); }
+      console.log('[TaskBoard] Saved OK');
+    } catch (e) {
+      console.error('[TaskBoard] Firestore save failed:', e.message);
+      // Fallback: still add to local state even if Firestore fails
+    }
+    setTasks(prev => {
+      const exists = prev.find(t => t.id === id);
+      return exists ? prev.map(t => t.id === id ? data : t) : [...prev, data];
+    });
+    return data;
   };
 
   const deleteTask = async (id) => {
