@@ -3,9 +3,8 @@
 // Triggered by CloudWatch Events or manually via POST /api/evening-summary
 
 import { SESClient, SendEmailCommand } from '@aws-sdk/client-ses';
+import { getFirestore } from './_firebase.js';
 
-const PROJECT_ID = process.env.FIREBASE_PROJECT_ID || 'qissaa-61a78';
-const FIRESTORE_URL = `https://firestore.googleapis.com/v1/projects/${PROJECT_ID}/databases/(default)/documents`;
 const FROM_EMAIL = 'hello@mysleepytale.com';
 const ses = new SESClient({ region: 'us-east-1' });
 
@@ -21,25 +20,10 @@ const ACTIVITIES = {
 async function getTodayTasks() {
   const today = new Date().toLocaleDateString('en-CA');
   try {
-    const res = await fetch(`${FIRESTORE_URL}/dailyTasks`);
-    if (!res.ok) return [];
-    const data = await res.json();
-    const docs = data.documents || [];
-    return docs
-      .map(d => {
-        const f = d.fields || {};
-        return {
-          id: f.id?.stringValue || '',
-          title: f.title?.stringValue || '',
-          description: f.description?.stringValue || '',
-          activity: f.activity?.stringValue || '',
-          assignee: f.assignee?.stringValue || '',
-          priority: f.priority?.stringValue || 'normal',
-          status: f.status?.stringValue || 'todo',
-          dueDate: f.dueDate?.stringValue || '',
-        };
-      })
-      .filter(t => t.dueDate === today);
+    const db = await getFirestore();
+    if (!db) { console.error('[evening-summary] Firestore not configured'); return []; }
+    const snap = await db.collection('dailyTasks').where('dueDate', '==', today).get();
+    return snap.docs.map(d => ({ id: d.id, ...d.data() }));
   } catch (e) {
     console.error('[evening-summary] Firestore error:', e.message);
     return [];
@@ -48,19 +32,12 @@ async function getTodayTasks() {
 
 async function getTeam() {
   try {
-    const res = await fetch(`${FIRESTORE_URL}/config/admin`);
-    if (!res.ok) return [];
-    const data = await res.json();
-    const teamField = data.fields?.team?.arrayValue?.values || [];
-    return teamField.map(v => {
-      const m = v.mapValue?.fields || {};
-      return {
-        email: m.email?.stringValue || '',
-        name: m.name?.stringValue || '',
-        role: m.role?.stringValue || '',
-        status: m.status?.stringValue || 'active',
-      };
-    }).filter(m => m.status === 'active' && m.email);
+    const db = await getFirestore();
+    if (!db) return [];
+    const doc = await db.collection('config').doc('admin').get();
+    if (!doc.exists) return [];
+    const team = doc.data()?.team || [];
+    return team.filter(m => m.status === 'active' && m.email);
   } catch (e) {
     console.error('[evening-summary] Team fetch error:', e.message);
     return [];
