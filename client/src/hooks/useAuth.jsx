@@ -43,11 +43,23 @@ export function AuthProvider({ children }) {
       if (u?.uid) {
         import('../lib/firebase.js').then(({ db }) => {
           if (!db) return;
-          import('firebase/firestore').then(({ doc, setDoc }) => {
-            const updates = { email: u.email || '' };
-            if (u.photoURL) updates.photoURL = u.photoURL;
-            if (u.displayName) updates.displayName = u.displayName;
-            setDoc(doc(db, 'users', u.uid), updates, { merge: true }).catch(() => {});
+          import('firebase/firestore').then(({ doc, setDoc, getDoc }) => {
+            // Check if first-time user (doc doesn't exist yet)
+            getDoc(doc(db, 'users', u.uid)).then(snap => {
+              const isNewUser = !snap.exists();
+              const updates = { email: u.email || '' };
+              if (u.photoURL) updates.photoURL = u.photoURL;
+              if (u.displayName) updates.displayName = u.displayName;
+              setDoc(doc(db, 'users', u.uid), updates, { merge: true }).catch(() => {});
+              // Send welcome email for first-time users
+              if (isNewUser && u.email) {
+                fetch('/api/marketing-welcome', {
+                  method: 'POST',
+                  headers: { 'Content-Type': 'application/json' },
+                  body: JSON.stringify({ to: u.email }),
+                }).catch(() => {});
+              }
+            }).catch(() => {});
             // Auto-generate referral code if user doesn't have one
             import('../utils/referralHelper.js').then(({ ensureReferralCode }) => {
               ensureReferralCode(u.uid, u.displayName?.split(' ')[0]).catch(() => {});
