@@ -23,21 +23,21 @@ function buildHtml(email, role) {
   <div style="max-width:560px;margin:0 auto;padding:40px 24px;">
     <div style="text-align:center;margin-bottom:32px;">
       <span style="font-size:40px;">🌙</span>
-      <h1 style="color:#f0a500;font-size:22px;margin:12px 0 4px;">Welcome to the Team!</h1>
-      <p style="color:#6e6a63;font-size:13px;margin:0;">My Sleepy Tale</p>
+      <h1 style="color:#f0a500;font-size:22px;margin:12px 0 4px;">You're a Tale Teller Now!</h1>
+      <p style="color:#6e6a63;font-size:13px;margin:0;">Welcome Onboard</p>
     </div>
 
     <div style="background:#12121c;border-radius:16px;padding:28px;border:1px solid rgba(255,255,255,0.05);">
       <p style="color:#c8c3ba;font-size:15px;line-height:1.7;margin:0 0 16px;">
-        You have been added to the <strong style="color:#f5f0e8;">My Sleepy Tale</strong> team as a <strong style="color:#f0a500;">${roleLabel}</strong>.
+        Welcome to <strong style="color:#f5f0e8;">My Sleepy Tale</strong>! You are now part of the <strong style="color:#f0a500;">${roleLabel} team</strong>.
       </p>
 
       <p style="color:#c8c3ba;font-size:15px;line-height:1.7;margin:0 0 16px;">
-        My Sleepy Tale is a bedtime stories app for kids — personalized, multilingual, and rooted in cultural traditions. We are building something meaningful for families around the world, and we are glad to have you on board.
+        We are a small team with a big dream — building a bedtime stories app that helps kids fall asleep with stories rooted in their own culture, personalized with their name, and narrated with love. Every story we create reaches families around the world, and now you are part of that magic.
       </p>
 
       <p style="color:#c8c3ba;font-size:15px;line-height:1.7;margin:0 0 24px;">
-        Here is what you need to know:
+        Here is how we work together:
       </p>
 
       <div style="background:#0a0a0f;border-radius:12px;padding:16px;margin-bottom:20px;">
@@ -54,7 +54,7 @@ function buildHtml(email, role) {
       </div>
 
       <p style="color:#c8c3ba;font-size:15px;line-height:1.7;margin:0;">
-        If you have any questions, just reply to this email. Welcome aboard!
+        If you have any questions, just reply to this email. We are so glad you are here. Let's build something beautiful together.
       </p>
     </div>
 
@@ -68,11 +68,11 @@ function buildHtml(email, role) {
 
 function buildText(email, role) {
   const roleLabel = ROLE_LABELS[role] || role;
-  return `Welcome to the My Sleepy Tale Team!
+  return `Welcome to My Sleepy Tale — You're a Tale Teller Now!
 
-You have been added as a ${roleLabel}.
+Welcome! You are now part of the ${roleLabel} team.
 
-My Sleepy Tale is a bedtime stories app for kids — personalized, multilingual, and rooted in cultural traditions.
+We are a small team with a big dream — building a bedtime stories app that helps kids fall asleep with stories rooted in their own culture, personalized with their name, and narrated with love.
 
 Your Daily Tasks:
 Every morning at 7 AM, you will receive an email with your tasks for the day.
@@ -80,7 +80,7 @@ View and update them at: https://mysleepytale.com/my-tasks
 
 The App: https://mysleepytale.com
 
-If you have any questions, just reply to this email. Welcome aboard!
+If you have any questions, just reply to this email. We are so glad you are here. Let's build something beautiful together.
 
 — My Sleepy Tale Team`;
 }
@@ -98,7 +98,7 @@ export default async function handler(req, res) {
       Source: `My Sleepy Tale <${FROM_EMAIL}>`,
       Destination: { ToAddresses: [email] },
       Message: {
-        Subject: { Data: `Welcome to My Sleepy Tale — You're now a ${roleLabel}!` },
+        Subject: { Data: `Welcome to My Sleepy Tale — You're a Tale Teller Now!` },
         Body: {
           Text: { Data: buildText(email, role) },
           Html: { Data: buildHtml(email, role) },
