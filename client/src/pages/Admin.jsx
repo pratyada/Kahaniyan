@@ -698,6 +698,37 @@ export default function Admin() {
           <>
             <AdminManagement />
             <div className="mt-6" />
+            {/* Team management — inline in Settings */}
+            <div className="rounded-2xl bg-[#1a1a28] p-6 mb-6">
+              <h3 className="mb-4 text-xs font-bold uppercase tracking-wider text-[#f0a500]">Team Members</h3>
+              <p className="text-[10px] text-[#6e6a63] mb-4">Team members can access /my-tasks to view and update their daily tasks.</p>
+              <div className="flex gap-2 mb-4">
+                <input type="text" placeholder="Email address..." value={newTeamEmail} onChange={(e) => setNewTeamEmail(e.target.value)}
+                  className="flex-1 rounded-xl bg-[#0f0f17] px-4 py-3 text-sm text-[#f5f0e8] placeholder-[#6e6a63] outline-none ring-1 ring-white/5 focus:ring-[#f0a500]" />
+                <select value={newTeamRole} onChange={(e) => setNewTeamRole(e.target.value)}
+                  className="rounded-xl bg-[#0f0f17] px-3 py-3 text-sm text-[#f5f0e8] outline-none ring-1 ring-white/5">
+                  <option value="tester">Tester</option>
+                  <option value="marketing">Marketing</option>
+                  <option value="content">Content</option>
+                  <option value="dev">Developer</option>
+                </select>
+                <button onClick={() => { if (newTeamEmail.trim()) { addTeamMember(newTeamEmail, newTeamRole); setNewTeamEmail(''); } }}
+                  className="rounded-xl bg-[#f0a500] px-4 py-3 text-sm font-bold text-[#0f0f17]">Add</button>
+              </div>
+              {team.length > 0 && (
+                <div className="space-y-2">
+                  {team.map(m => (
+                    <div key={m.email} className="flex items-center justify-between rounded-xl bg-[#0f0f17] px-4 py-3 ring-1 ring-white/5">
+                      <div>
+                        <span className="text-sm text-[#f5f0e8]">{m.email}</span>
+                        <span className="ml-2 text-[10px] text-[#6e6a63]">{m.role}</span>
+                      </div>
+                      <button onClick={() => removeTeamMember(m.email)} className="text-[10px] text-[#f3727f] hover:underline">Remove</button>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
             <StoryLab showSettingsTabs />
           </>
         )}
