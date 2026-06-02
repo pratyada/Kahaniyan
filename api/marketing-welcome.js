@@ -5,7 +5,7 @@
 
 import { SESClient, SendEmailCommand } from '@aws-sdk/client-ses';
 
-const FROM_EMAIL = 'hello@mysleepytale_official.com';
+const FROM_EMAIL = 'hello@mysleepytale.com';
 // const CC_EMAIL = 'i@yprateek.com'; // disabled — not needed for marketing emails
 const ses = new SESClient({ region: 'us-east-1' });
 
@@ -161,8 +161,8 @@ function buildHtml(name) {
       <table style="width:100%;border-collapse:collapse;">
         <tr>
           <td style="text-align:center;padding:8px;">
-            <a href="mailto:hello@mysleepytale_official.com" style="color:#f0a500;font-size:13px;text-decoration:none;">
-              📧 hello@mysleepytale_official.com
+            <a href="mailto:hello@mysleepytale.com" style="color:#f0a500;font-size:13px;text-decoration:none;">
+              📧 hello@mysleepytale.com
             </a>
           </td>
         </tr>
@@ -233,7 +233,7 @@ STORIES YOUR FAMILY WILL LOVE
 Explore now: https://mysleepytale.com
 
 STAY CONNECTED
-Email: hello@mysleepytale_official.com
+Email: hello@mysleepytale.com
 Web: https://mysleepytale.com
 Instagram: @mysleepytale_official
 
