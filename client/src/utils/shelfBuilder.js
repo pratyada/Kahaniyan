@@ -29,18 +29,18 @@ export function buildTraditionShelves(allLessons, beliefs) {
     });
   }
 
-  // Discover more — traditions the user hasn't selected
-  const otherTraditions = TRADITIONS.filter(
-    (t) => t.key !== 'universal' && !userTraditions.includes(t.key)
-  );
-  for (const meta of otherTraditions) {
-    const stories = allLessons.filter((l) => l.tradition === meta.key);
-    if (stories.length < 2) continue;
-    shelves.push({
-      id: `discover-${meta.key}`,
-      title: `${meta.icon} Discover ${meta.label}`,
-      stories,
-    });
+  // Only show "Discover more" if user has NO beliefs selected (guest or new user)
+  if (userTraditions.length === 0) {
+    const otherTraditions = TRADITIONS.filter((t) => t.key !== 'universal');
+    for (const meta of otherTraditions) {
+      const stories = allLessons.filter((l) => l.tradition === meta.key);
+      if (stories.length < 2) continue;
+      shelves.push({
+        id: `discover-${meta.key}`,
+        title: `${meta.icon} Discover ${meta.label}`,
+        stories,
+      });
+    }
   }
 
   return shelves;
