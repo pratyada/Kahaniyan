@@ -4556,7 +4556,7 @@ const EXPENSE_DATA = [
       { name: 'OpenAI APIs (GPT + Image Gen)', amount: 100, category: 'AI' },
       { name: 'ElevenLabs TTS API', amount: 22, category: 'AI' },
       { name: 'Anthropic Claude API', amount: 50, category: 'AI' },
-      { name: 'Google Workspace', amount: 7, category: 'SaaS' },
+      { name: 'Google Workspace', amount: 30, category: 'SaaS' },
       { name: 'AWS (S3 + CloudFront + Lambda)', amount: 50, category: 'Infra' },
     ],
   },
