@@ -32,7 +32,7 @@ function buildHtml(name) {
         Thank you for joining My Sleepy Tale! We are so glad you are here.
       </p>
       <p style="font-size:15px;line-height:1.7;margin:0;">
-        We built this app because we believe bedtime stories should do more than just help kids fall asleep. They should help children <strong style="color:#f5f0e8;">learn about their roots</strong>, <strong style="color:#f5f0e8;">explore other cultures</strong>, and <strong style="color:#f5f0e8;">grow into kind, curious humans</strong>.
+        We built this space because we believe bedtime stories should do more than just help kids fall asleep. They should help children <strong style="color:#f5f0e8;">learn about their roots</strong>, <strong style="color:#f5f0e8;">explore other cultures</strong>, and <strong style="color:#f5f0e8;">grow into kind, curious humans</strong>.
       </p>
     </div>
 
@@ -40,7 +40,7 @@ function buildHtml(name) {
     <div style="background:#12121c;border-radius:16px;padding:28px 24px;margin-bottom:24px;border:1px solid #1a1a28;">
       <h2 style="color:#f0a500;font-size:16px;margin:0 0 16px;">What are we building?</h2>
       <p style="font-size:14px;line-height:1.7;margin:0 0 12px;">
-        My Sleepy Tale is a <strong style="color:#f5f0e8;">personalized bedtime story app</strong> that brings cultural wisdom, moral lessons, and beautiful narration to your child's nightly routine.
+        My Sleepy Tale is a <strong style="color:#f5f0e8;">personalized bedtime story web space</strong> that brings cultural wisdom, moral lessons, and beautiful narration to your child's nightly routine.
       </p>
       <table style="width:100%;border-collapse:collapse;margin-top:16px;">
         <tr>
@@ -203,10 +203,10 @@ Hi${name ? ' ' + name : ''},
 
 Thank you for joining My Sleepy Tale! We are so glad you are here.
 
-We built this app because we believe bedtime stories should do more than just help kids fall asleep. They should help children learn about their roots, explore other cultures, and grow into kind, curious humans.
+We built this space because we believe bedtime stories should do more than just help kids fall asleep. They should help children learn about their roots, explore other cultures, and grow into kind, curious humans.
 
 WHAT ARE WE BUILDING?
-My Sleepy Tale is a personalized bedtime story app that brings cultural wisdom, moral lessons, and beautiful narration to your child's nightly routine.
+My Sleepy Tale is a personalized bedtime story web space that brings cultural wisdom, moral lessons, and beautiful narration to your child's nightly routine.
 - 146+ stories across 11 traditions
 - 49 story series with multi-episode adventures
 - Available in English, French, and Spanish
