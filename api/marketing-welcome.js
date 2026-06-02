@@ -289,9 +289,9 @@ export default async function handler(req, res) {
   try {
     await ses.send(new SendEmailCommand({
       Source: `My Sleepy Tale <${FROM_EMAIL}>`,
-      Destination: { ToAddresses: [toEmail], CcAddresses: [CC_EMAIL] },
+      Destination: { ToAddresses: [toEmail] },
       Message: {
-        Subject: { Data: 'Welcome to My Sleepy Tale — Where Bedtime Becomes the Best Time 🌙' },
+        Subject: { Data: 'Welcome to My Sleepy Tale' },
         Body: {
           Text: { Data: buildText('') },
           Html: { Data: buildHtml('') },
