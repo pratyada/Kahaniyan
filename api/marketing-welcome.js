@@ -247,26 +247,37 @@ export default async function handler(req, res) {
   const { to, sendAll } = req.body || {};
 
   if (sendAll) {
-    // Send to all users from Firestore
+    // Send to all users who haven't received welcome email yet
     const { getFirestore } = await import('./_firebase.js');
     const db = await getFirestore();
     if (!db) return res.status(503).json({ error: 'Firebase not configured' });
+
+    // Load already-sent list
+    const sentDoc = await db.collection('config').doc('welcomeEmailsSent').get();
+    const alreadySent = new Set(sentDoc.exists ? (sentDoc.data().emails || []) : []);
 
     const snap = await db.collection('users').get();
     const users = [];
     snap.forEach(d => {
       const data = d.data();
-      if (data.email) users.push({ email: data.email, name: data.displayName || data.name || '' });
+      if (data.email && !alreadySent.has(data.email.toLowerCase())) {
+        users.push({ email: data.email.toLowerCase(), name: data.displayName || data.name || '', uid: d.id });
+      }
     });
 
+    if (users.length === 0) {
+      return res.json({ sent: 0, total: 0, message: 'All users have already received the welcome email', alreadySentCount: alreadySent.size });
+    }
+
     const results = [];
+    const newlySent = [];
     for (const user of users) {
       try {
         await ses.send(new SendEmailCommand({
           Source: `My Sleepy Tale <${FROM_EMAIL}>`,
           Destination: { ToAddresses: [user.email] },
           Message: {
-            Subject: { Data: 'Welcome to My Sleepy Tale — Where Bedtime Becomes the Best Time 🌙' },
+            Subject: { Data: 'Welcome to My Sleepy Tale — Where Bedtime Becomes the Best Time' },
             Body: {
               Text: { Data: buildText(user.name) },
               Html: { Data: buildHtml(user.name) },
@@ -274,12 +285,23 @@ export default async function handler(req, res) {
           },
         }));
         results.push({ email: user.email, status: 'sent' });
+        newlySent.push(user.email);
       } catch (e) {
         results.push({ email: user.email, status: 'failed', error: e.message });
       }
     }
 
-    return res.json({ sent: results.filter(r => r.status === 'sent').length, total: results.length, results });
+    // Track who we sent to
+    if (newlySent.length > 0) {
+      const allSent = [...alreadySent, ...newlySent];
+      await db.collection('config').doc('welcomeEmailsSent').set({
+        emails: allSent,
+        lastSentAt: new Date().toISOString(),
+        totalSent: allSent.length,
+      });
+    }
+
+    return res.json({ sent: results.filter(r => r.status === 'sent').length, skipped: alreadySent.size, total: results.length, results });
   }
 
   // Single recipient
@@ -287,6 +309,17 @@ export default async function handler(req, res) {
   const toEmail = to.trim().toLowerCase();
 
   try {
+    // Check if already sent
+    const { getFirestore: getDb } = await import('./_firebase.js');
+    const fdb = await getDb();
+    if (fdb) {
+      const sentDoc = await fdb.collection('config').doc('welcomeEmailsSent').get();
+      const alreadySent = sentDoc.exists ? (sentDoc.data().emails || []) : [];
+      if (alreadySent.includes(toEmail)) {
+        return res.json({ sent: 0, to: toEmail, message: 'Already sent welcome email to this user' });
+      }
+    }
+
     await ses.send(new SendEmailCommand({
       Source: `My Sleepy Tale <${FROM_EMAIL}>`,
       Destination: { ToAddresses: [toEmail] },
@@ -298,6 +331,20 @@ export default async function handler(req, res) {
         },
       },
     }));
+
+    // Track single send
+    if (fdb) {
+      const sentDoc2 = await fdb.collection('config').doc('welcomeEmailsSent').get();
+      const prev = sentDoc2.exists ? (sentDoc2.data().emails || []) : [];
+      if (!prev.includes(toEmail)) {
+        await fdb.collection('config').doc('welcomeEmailsSent').set({
+          emails: [...prev, toEmail],
+          lastSentAt: new Date().toISOString(),
+          totalSent: prev.length + 1,
+        });
+      }
+    }
+
     return res.json({ sent: 1, to: toEmail });
   } catch (e) {
     return res.status(500).json({ error: e.message });
