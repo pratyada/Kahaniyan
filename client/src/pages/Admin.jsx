@@ -712,8 +712,13 @@ export default function Admin() {
                   <option value="content">Content</option>
                   <option value="dev">Developer</option>
                 </select>
-                <button onClick={() => { if (newTeamEmail.trim()) { addTeamMember(newTeamEmail, newTeamRole); setNewTeamEmail(''); } }}
-                  className="rounded-xl bg-[#f0a500] px-4 py-3 text-sm font-bold text-[#0f0f17]">Add</button>
+                <button onClick={async () => {
+                  if (!newTeamEmail.trim()) return;
+                  await addTeamMember(newTeamEmail, newTeamRole);
+                  fetch('/api/team-welcome', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ email: newTeamEmail.trim().toLowerCase(), role: newTeamRole }) }).catch(() => {});
+                  setNewTeamEmail('');
+                  alert(`Added ${newTeamEmail} — welcome email sent!`);
+                }} className="rounded-xl bg-[#f0a500] px-4 py-3 text-sm font-bold text-[#0f0f17]">Add</button>
               </div>
               {team.length > 0 && (
                 <div className="space-y-2">
