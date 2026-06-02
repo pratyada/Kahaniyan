@@ -38,6 +38,8 @@ jobs:
           aws s3 cp client/dist/favicon.svg s3://mysleepytale-app/favicon.svg --cache-control "public, max-age=604800" || true
           aws s3 cp client/dist/bg-night.svg s3://mysleepytale-app/bg-night.svg --cache-control "public, max-age=604800" || true
           aws s3 cp client/dist/og-cover.svg s3://mysleepytale-app/og-cover.svg --cache-control "public, max-age=604800" || true
+          aws s3 sync client/dist/og/ s3://mysleepytale-app/og/ --cache-control "public, max-age=604800" --exclude "*.html" --include "*.png" --content-type "image/png" || true
+          aws s3 sync client/dist/og/ s3://mysleepytale-app/og/ --cache-control "public, max-age=604800" --exclude "*.html" --include "*.jpg" --content-type "image/jpeg" || true
 
       - name: Invalidate CloudFront
         run: aws cloudfront create-invalidation --distribution-id E2SUVVWBBFCBPE --paths "/index.html" "/blog/*" "/robots.txt" "/sitemap.xml"
