@@ -430,6 +430,9 @@ dc_nz_ep5_facts: 'Fun illustration of a kiwi bird next to a kiwi fruit (same nam
   fil_tala_stars: 'Philippine night sky filled with brilliant constellations, Tala the brightest star shining golden, traditional outrigger boat (bangka) on calm sea below, celestial guide, no human figures',
   fil_juan_tamad: 'Lazy illustrated cat lying under a guava tree with ripe fruit dangling just out of reach, mouth wide open waiting for fruit to fall, humorous scene, Philippine countryside, no human figures',
 
+  // ─── Rainbow Kindergarten Episode 5 ───
+  rk_ep5_concert_spirit: 'School gymnasium stage with colorful spotlight, rows of tiny chairs, musical notes floating in the air, cowboy hats and striped shirts and sports jerseys scattered around, spirit week celebration, last day of school feeling, warm golden light, no human figures',
+
   // ─── Islamic wisdom stories ───
   mus_prophet_kindness: 'Small fluffy cat eating from a golden bowl near a mosque doorway, warm lantern light, Islamic geometric patterns on the wall, peaceful evening, no human figures',
   mus_ibrahim_stars: 'Vast desert night sky filled with millions of stars, crescent moon, silhouette of ancient stone altar below, searching for truth in the cosmos, no human figures',

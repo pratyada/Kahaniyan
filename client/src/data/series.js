@@ -614,10 +614,10 @@ That night, {childName}, remember Pluto. Being small does not mean being unimpor
     title: 'Rainbow Kindergarten Adventures',
     icon: '🌈',
     gradient: 'linear-gradient(135deg, #7c3aed 0%, #f472b6 50%, #fbbf24 100%)',
-    description: 'The Rainbow batch from JLPS explores Toronto — shapes at Canoe Landing, a concert, and a hike at Evergreen Brick Works.',
+    description: 'The Rainbow batch from JLPS explores Toronto — shapes, concerts, field trips, summer fun, and the best year-end Spirit Week ever.',
     createdBy: 'deepti.ramaul@gmail.com', creatorName: 'Deepti Ramaul', creatorUsername: 'deepti-ramaul',
     ageRange: '4-6',
-    totalEpisodes: 4,
+    totalEpisodes: 5,
     episodes: [
       {
         id: 'rk_ep1_canoe', episodeNumber: 1, title: 'Shapes at Canoe Landing',
@@ -748,6 +748,45 @@ Mr. Zak sat beside {childName}. "Everyone finds their joy. And you? You find all
 The shadows got longer. "Same time tomorrow?" called Arin. "SAME TIME TOMORROW!" echoed twenty-five voices.
 
 That night, {childName}, summer is a feeling. Warm grass, friends all around. Same SUN. Same friends. Sleep now.`,
+      },
+      {
+        id: 'rk_ep5_concert_spirit', episodeNumber: 5, title: 'The Concert, Spirit Week & the Last Day',
+        subtitle: 'The Rainbow class sings at the Kindergarten Concert, dresses up for Spirit Week, and says goodbye to the best year ever.',
+        tradition: 'universal', theme: 'courage', durationMinutes: 4,
+        source: 'Rainbow Kindergarten · Episode 5 · June Newsletter 2026',
+        body: `On Wednesday morning, the gym at Jean Lumb Public School smelled like fresh flowers and floor polish. Rows of chairs filled with mums, dads, grandparents, and little brothers in strollers. A banner said: KINDERGARTEN CONCERT.
+
+{childName} stood backstage with the whole Rainbow class. Twenty-five kids in matching t-shirts, hearts beating fast.
+
+Shelagh peeked through the curtain. "The gym is FULL." Mr. Zak knelt down. "Remember — sing loud, smile big, and if you forget the words, just keep moving your mouth. Nobody will know."
+
+The music started. The Rainbow class walked onto the stage. Arin waved at his dad. Eleen froze for one second, then found her spot. Ostap stood perfectly still, hands behind his back — the most serious performer in the room.
+
+{childName} opened their mouth and sang. Every word. Every note. The parents leaned forward. Some of them cried. Not because it was sad — because twenty-five small voices singing together is one of the most beautiful sounds on Earth.
+
+When the song ended, the gym exploded with clapping. Dhruv bowed three times. Sanvi curtsied. Lingen just stood there, grinning so wide his face might break.
+
+Then came SPIRIT WEEK.
+
+Monday was Striped Shirt Day. {childName} wore red and white stripes. Aarhi wore rainbow stripes — of course she did.
+
+Tuesday was Sports Jersey Day. Hunter wore a Maple Leafs jersey. Wesley wore a Blue Jays jersey two sizes too big. "I'll grow into it," he said seriously.
+
+Wednesday was Cultural Day. The hallways became a world map. Saris and dashikis and kilts and hanbok and guayaberas. Michelle wore a beautiful traditional dress with embroidered flowers. Mishaal wore a thobe so white it glowed.
+
+Thursday was Western Day AND Play Day. Cowboy hats everywhere. The morning was pure chaos — relay races, water balloons, obstacle courses, tug of war. Sisilia won the sack race. Mira won the egg-and-spoon. {childName} won the three-legged race with Aryan — stumbling, laughing, falling across the finish line together.
+
+Friday was Anything But a Backpack Day. Ava carried her books in a laundry basket. Luna used a guitar case. Sayer brought a shopping cart. Mr. Zak brought his supplies in a baby stroller and pushed it down the hallway with a completely straight face.
+
+Then came the last day.
+
+Report cards went home. Hugs happened — lots of them. Shelagh took one final photo. Twenty-five Rainbow kids, arms around each other, standing in front of the big red canoe at Canoe Landing.
+
+"Same class next year?" whispered Arin.
+
+"Different class," said Mr. Zak. "But same friends. Always."
+
+That night, {childName}, close your eyes and hear it one more time — twenty-five voices, singing together, filling a whole gymnasium with something no microphone could ever capture. That was your year. That was your Rainbow class. And it was perfect.`,
       },
     ],
   },
