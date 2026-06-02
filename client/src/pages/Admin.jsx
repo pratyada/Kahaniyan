@@ -141,6 +141,7 @@ export default function Admin() {
     { key: 'userstories', label: 'User Stories', icon: '🌙' },
     { key: 'storylab', label: 'Story Studio', icon: '🧪' },
     { key: 'feedback', label: 'Creators', icon: '✍️' },
+    { key: 'expenses', label: 'Expenses', icon: '💰' },
     { key: 'users', label: 'Settings', icon: '⚙️' },
   ];
 
@@ -1305,6 +1306,9 @@ export default function Admin() {
 
         {/* ═══ STORY LAB ═══ */}
         {tab === 'storylab' && <StoryLab />}
+
+        {/* ═══ EXPENSES ═══ */}
+        {tab === 'expenses' && <ExpenseTracker />}
       </div>
 
       {/* Footer */}
@@ -4514,6 +4518,117 @@ function VoiceFeedbackPanel() {
             <div className="text-[8px] text-[#6e6a63]">{new Date(f.createdAt).toLocaleDateString()}</div>
           </div>
         ))}
+      </div>
+    </div>
+  );
+}
+
+// ═══════════════════════════════════════════════════════
+// EXPENSE TRACKER
+// ═══════════════════════════════════════════════════════
+
+const EXPENSE_DATA = [
+  {
+    month: 'April 2026',
+    items: [
+      { name: 'Claude Code Max Plan', amount: 200, category: 'AI' },
+      { name: 'OpenAI APIs (GPT + Image Gen)', amount: 85, category: 'AI' },
+      { name: 'ElevenLabs TTS API', amount: 22, category: 'AI' },
+      { name: 'Anthropic Claude API', amount: 45, category: 'AI' },
+      { name: 'Google Workspace', amount: 7, category: 'SaaS' },
+      { name: 'AWS (S3 + CloudFront + Lambda)', amount: 50, category: 'Infra' },
+      { name: 'Bike for Brain — Event & Promotion', amount: 50, category: 'Marketing' },
+    ],
+  },
+  {
+    month: 'May 2026',
+    items: [
+      { name: 'Claude Code Max Plan', amount: 200, category: 'AI' },
+      { name: 'OpenAI APIs (GPT + Image Gen)', amount: 120, category: 'AI' },
+      { name: 'ElevenLabs TTS API', amount: 22, category: 'AI' },
+      { name: 'Anthropic Claude API', amount: 60, category: 'AI' },
+      { name: 'Google Workspace', amount: 7, category: 'SaaS' },
+      { name: 'AWS (S3 + CloudFront + Lambda)', amount: 50, category: 'Infra' },
+      { name: 'Bike for Brain — Event & Promotion', amount: 50, category: 'Marketing' },
+    ],
+  },
+  {
+    month: 'June 2026',
+    items: [
+      { name: 'Claude Code Max Plan', amount: 200, category: 'AI' },
+      { name: 'OpenAI APIs (GPT + Image Gen)', amount: 100, category: 'AI' },
+      { name: 'ElevenLabs TTS API', amount: 22, category: 'AI' },
+      { name: 'Anthropic Claude API', amount: 50, category: 'AI' },
+      { name: 'Google Workspace', amount: 7, category: 'SaaS' },
+      { name: 'AWS (S3 + CloudFront + Lambda)', amount: 50, category: 'Infra' },
+    ],
+  },
+];
+
+const CAT_COLORS = { AI: '#9f7aea', Infra: '#4299e1', SaaS: '#48bb78', Marketing: '#f0a500' };
+
+function ExpenseTracker() {
+  const totalAll = EXPENSE_DATA.reduce((sum, m) => sum + m.items.reduce((s, i) => s + i.amount, 0), 0);
+  const totalByCategory = {};
+  EXPENSE_DATA.forEach(m => m.items.forEach(i => { totalByCategory[i.category] = (totalByCategory[i.category] || 0) + i.amount; }));
+
+  return (
+    <div className="space-y-6">
+      {/* Summary cards */}
+      <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+        <div className="rounded-2xl bg-white/5 p-4 ring-1 ring-white/5">
+          <div className="text-[10px] uppercase tracking-wider text-[#6e6a63]">Total Spent</div>
+          <div className="mt-1 text-2xl font-bold text-[#f0a500]">${totalAll.toLocaleString()}</div>
+          <div className="text-[10px] text-[#6e6a63]">{EXPENSE_DATA.length} months</div>
+        </div>
+        {Object.entries(totalByCategory).sort((a, b) => b[1] - a[1]).map(([cat, amount]) => (
+          <div key={cat} className="rounded-2xl bg-white/5 p-4 ring-1 ring-white/5">
+            <div className="text-[10px] uppercase tracking-wider text-[#6e6a63]">{cat}</div>
+            <div className="mt-1 text-xl font-bold" style={{ color: CAT_COLORS[cat] || '#f5f0e8' }}>${amount.toLocaleString()}</div>
+            <div className="text-[10px] text-[#6e6a63]">{Math.round(amount / totalAll * 100)}% of total</div>
+          </div>
+        ))}
+      </div>
+
+      {/* Monthly breakdown */}
+      {EXPENSE_DATA.map((month) => {
+        const monthTotal = month.items.reduce((s, i) => s + i.amount, 0);
+        return (
+          <div key={month.month} className="rounded-2xl bg-white/5 ring-1 ring-white/5 overflow-hidden">
+            <div className="flex items-center justify-between px-5 py-4 border-b border-white/5">
+              <h3 className="text-sm font-bold text-[#f5f0e8]">{month.month}</h3>
+              <span className="text-sm font-bold text-[#f0a500]">${monthTotal}</span>
+            </div>
+            <div className="divide-y divide-white/5">
+              {month.items.map((item, i) => (
+                <div key={i} className="flex items-center justify-between px-5 py-3">
+                  <div className="flex items-center gap-3">
+                    <span className="inline-block h-2 w-2 rounded-full" style={{ background: CAT_COLORS[item.category] || '#666' }} />
+                    <span className="text-xs text-[#c8c3ba]">{item.name}</span>
+                  </div>
+                  <div className="flex items-center gap-3">
+                    <span className="rounded-full px-2 py-0.5 text-[9px] font-bold uppercase" style={{ background: (CAT_COLORS[item.category] || '#666') + '22', color: CAT_COLORS[item.category] || '#666' }}>
+                      {item.category}
+                    </span>
+                    <span className="text-sm font-bold text-[#f5f0e8] w-16 text-right">${item.amount}</span>
+                  </div>
+                </div>
+              ))}
+            </div>
+            {/* Month bar chart */}
+            <div className="px-5 py-3 border-t border-white/5 flex gap-1 h-3 rounded-b-2xl overflow-hidden">
+              {month.items.map((item, i) => (
+                <div key={i} className="rounded-full" style={{ flex: item.amount, background: CAT_COLORS[item.category] || '#666', opacity: 0.7 }} />
+              ))}
+            </div>
+          </div>
+        );
+      })}
+
+      {/* Average monthly */}
+      <div className="rounded-2xl bg-[#f0a500]/10 ring-1 ring-[#f0a500]/20 px-5 py-4 text-center">
+        <div className="text-[10px] uppercase tracking-wider text-[#f0a500]">Average Monthly Burn</div>
+        <div className="mt-1 text-2xl font-bold text-[#f0a500]">${Math.round(totalAll / EXPENSE_DATA.length)}/mo</div>
       </div>
     </div>
   );
