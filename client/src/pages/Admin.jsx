@@ -1309,7 +1309,7 @@ export default function Admin() {
         {tab === 'storylab' && <StoryLab />}
 
         {/* ═══ TASK BOARD ═══ */}
-        {tab === 'tasks' && <TaskBoard team={team} />}
+        {tab === 'tasks' && <TaskBoard team={team} adminEmails={adminEmails} />}
 
         {/* ═══ EXPENSES ═══ */}
         {tab === 'expenses' && <ExpenseTracker />}
@@ -4655,7 +4655,16 @@ const TASK_STATUS = [
   { key: 'blocked', label: 'Blocked', color: '#f3727f' },
 ];
 
-function TaskBoard({ team = [] }) {
+function TaskBoard({ team = [], adminEmails = [] }) {
+  // Combine admins + team into one assignee list (deduplicated)
+  const allAssignees = useMemo(() => {
+    const map = new Map();
+    adminEmails.forEach(e => map.set(e, { email: e, name: e.split('@')[0], source: 'admin' }));
+    team.filter(m => m.status === 'active').forEach(m => {
+      if (!map.has(m.email)) map.set(m.email, { email: m.email, name: m.name || m.email.split('@')[0], source: 'team' });
+    });
+    return [...map.values()];
+  }, [adminEmails, team]);
   const [tasks, setTasks] = useState([]);
   const [selectedDate, setSelectedDate] = useState(() => new Date().toISOString().slice(0, 10));
   const [filterActivity, setFilterActivity] = useState('all');
@@ -4729,7 +4738,7 @@ function TaskBoard({ team = [] }) {
       briefs[assignee].push(t);
     });
     const emails = Object.entries(briefs).map(([email, memberTasks]) => {
-      const member = team.find(m => m.email === email);
+      const member = allAssignees.find(m => m.email === email);
       const name = member?.name || email.split('@')[0] || email;
       const actIcon = (key) => ACTIVITIES.find(a => a.key === key)?.icon || '';
       const priFlag = (p) => p === 'urgent' ? ' [URGENT]' : p === 'high' ? ' [HIGH]' : '';
@@ -4807,7 +4816,7 @@ function TaskBoard({ team = [] }) {
         <select value={filterAssignee} onChange={e => setFilterAssignee(e.target.value)}
           className="rounded-lg bg-white/5 px-3 py-2 text-xs text-[#f5f0e8] border border-white/10 outline-none">
           <option value="all">All Team</option>
-          {team.filter(m => m.status === 'active').map(m => <option key={m.email} value={m.email}>{m.email.split('@')[0]}</option>)}
+          {allAssignees.map(m => <option key={m.email} value={m.email}>{m.name}</option>)}
         </select>
         <div className="flex-1" />
         <button onClick={() => setShowAddForm(!showAddForm)} className="rounded-lg bg-[#f0a500] px-4 py-2 text-xs font-bold text-[#0f0f17]">+ Add Task</button>
@@ -4831,7 +4840,7 @@ function TaskBoard({ team = [] }) {
             <select value={newTask.assignee} onChange={e => setNewTask({ ...newTask, assignee: e.target.value })}
               className="rounded-lg bg-white/5 px-3 py-2 text-xs text-[#f5f0e8] border border-white/10 outline-none">
               <option value="">Assign to...</option>
-              {team.filter(m => m.status === 'active').map(m => <option key={m.email} value={m.email}>{m.email.split('@')[0]}</option>)}
+              {allAssignees.map(m => <option key={m.email} value={m.email}>{m.name}</option>)}
             </select>
             <select value={newTask.priority} onChange={e => setNewTask({ ...newTask, priority: e.target.value })}
               className="rounded-lg bg-white/5 px-3 py-2 text-xs text-[#f5f0e8] border border-white/10 outline-none">
@@ -4857,7 +4866,7 @@ function TaskBoard({ team = [] }) {
 
       {/* Task list grouped by assignee */}
       {Object.entries(byAssignee).map(([assignee, memberTasks]) => {
-        const member = team.find(m => m.email === assignee);
+        const member = allAssignees.find(m => m.email === assignee);
         const name = member?.name || assignee.split('@')[0] || 'Unassigned';
         const memberDone = memberTasks.filter(t => t.status === 'done').length;
         return (
