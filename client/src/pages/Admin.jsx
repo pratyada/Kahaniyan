@@ -4611,6 +4611,49 @@ function ExpenseTracker() {
   const totalByCategory = {};
   EXPENSE_DATA.forEach(m => m.items.forEach(i => { totalByCategory[i.category] = (totalByCategory[i.category] || 0) + i.amount; }));
 
+  // Receipt uploads
+  const [receipts, setReceipts] = useState([]);
+  const [uploading, setUploading] = useState(false);
+
+  useEffect(() => {
+    (async () => {
+      try {
+        if (!db) return;
+        const snap = await getDocs(collection(db, 'receipts'));
+        const loaded = [];
+        snap.forEach(d => loaded.push({ id: d.id, ...d.data() }));
+        setReceipts(loaded.sort((a, b) => (b.uploadedAt || '').localeCompare(a.uploadedAt || '')));
+      } catch {}
+    })();
+  }, []);
+
+  const uploadReceipt = async (file) => {
+    if (!file) return;
+    setUploading(true);
+    try {
+      const { storage } = await import('../lib/firebase.js');
+      const { ref, uploadBytes, getDownloadURL } = await import('firebase/storage');
+      const id = `receipt_${Date.now()}_${Math.random().toString(36).slice(2, 6)}`;
+      const ext = file.name.split('.').pop() || 'png';
+      const storageRef = ref(storage, `receipts/${id}.${ext}`);
+      await uploadBytes(storageRef, file, { contentType: file.type });
+      const url = await getDownloadURL(storageRef);
+      const data = { id, url, fileName: file.name, fileType: file.type, uploadedAt: new Date().toISOString(), uploadedBy: 'admin' };
+      await setDoc(doc(db, 'receipts', id), data);
+      setReceipts(prev => [data, ...prev]);
+    } catch (e) { console.error('Receipt upload error:', e); alert('Upload failed: ' + e.message); }
+    setUploading(false);
+  };
+
+  const deleteReceipt = async (r) => {
+    if (!confirm('Delete this receipt?')) return;
+    try {
+      const { deleteDoc: fdel } = await import('firebase/firestore');
+      await fdel(doc(db, 'receipts', r.id));
+      setReceipts(prev => prev.filter(x => x.id !== r.id));
+    } catch {}
+  };
+
   return (
     <div className="space-y-6">
       {/* Summary cards */}
@@ -4668,6 +4711,47 @@ function ExpenseTracker() {
       <div className="rounded-2xl bg-[#f0a500]/10 ring-1 ring-[#f0a500]/20 px-5 py-4 text-center">
         <div className="text-[10px] uppercase tracking-wider text-[#f0a500]">Average Monthly Burn</div>
         <div className="mt-1 text-2xl font-bold text-[#f0a500]">CA${Math.round(totalAll / EXPENSE_DATA.length)}/mo</div>
+      </div>
+
+      {/* Receipt uploads */}
+      <div className="rounded-2xl bg-white/5 ring-1 ring-white/5 overflow-hidden">
+        <div className="flex items-center justify-between px-5 py-4 border-b border-white/5">
+          <h3 className="text-sm font-bold text-[#f5f0e8]">Receipts</h3>
+          <label className={`rounded-lg px-4 py-2 text-xs font-bold cursor-pointer transition ${uploading ? 'bg-white/5 text-[#6e6a63]' : 'bg-[#f0a500] text-[#0f0f17]'}`}>
+            {uploading ? 'Uploading...' : '+ Upload Receipt'}
+            <input type="file" accept="image/*,.pdf" className="hidden" disabled={uploading}
+              onChange={(e) => { if (e.target.files?.[0]) uploadReceipt(e.target.files[0]); e.target.value = ''; }} />
+          </label>
+        </div>
+        {receipts.length === 0 && (
+          <div className="px-5 py-8 text-center">
+            <p className="text-2xl mb-2">🧾</p>
+            <p className="text-[11px] text-[#6e6a63]">No receipts uploaded yet</p>
+          </div>
+        )}
+        {receipts.length > 0 && (
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3 p-4">
+            {receipts.map(r => (
+              <div key={r.id} className="group relative rounded-xl bg-[#0f0f17] ring-1 ring-white/5 overflow-hidden">
+                {r.fileType?.startsWith('image') ? (
+                  <a href={r.url} target="_blank" rel="noreferrer">
+                    <img src={r.url} alt={r.fileName} className="w-full aspect-[3/4] object-cover" />
+                  </a>
+                ) : (
+                  <a href={r.url} target="_blank" rel="noreferrer" className="flex items-center justify-center w-full aspect-[3/4] bg-[#1a1a28]">
+                    <span className="text-3xl">📄</span>
+                  </a>
+                )}
+                <div className="px-2 py-2">
+                  <p className="text-[10px] text-[#c8c3ba] truncate">{r.fileName}</p>
+                  <p className="text-[9px] text-[#6e6a63]">{new Date(r.uploadedAt).toLocaleDateString()}</p>
+                </div>
+                <button onClick={() => deleteReceipt(r)}
+                  className="absolute top-1 right-1 hidden group-hover:grid h-5 w-5 place-items-center rounded-full bg-black/70 text-[10px] text-[#f3727f]">✕</button>
+              </div>
+            ))}
+          </div>
+        )}
       </div>
     </div>
   );
