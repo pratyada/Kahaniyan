@@ -97,51 +97,52 @@ function buildHtml(name) {
     <!-- What stories we have -->
     <div style="background:#12121c;border-radius:16px;padding:28px 24px;margin-bottom:24px;border:1px solid #1a1a28;">
       <h2 style="color:#f0a500;font-size:16px;margin:0 0 16px;">Stories your family will love</h2>
+
+      <!-- Category pills -->
       <table style="width:100%;border-collapse:collapse;">
         <tr>
-          <td style="padding:8px 0;border-bottom:1px solid #1a1a28;">
-            <span style="font-size:14px;">🕌</span>
-            <span style="color:#f5f0e8;font-size:13px;margin-left:8px;font-weight:bold;">Islamic Heroes & Wisdom</span>
-            <span style="color:#6e6a63;font-size:11px;float:right;">28 stories</span>
+          <td style="padding:4px;">
+            <span style="display:inline-block;padding:8px 14px;background:#4299e120;border:1px solid #4299e130;border-radius:12px;font-size:13px;color:#4299e1;font-weight:bold;">🚀 Space Adventures</span>
+          </td>
+          <td style="padding:4px;">
+            <span style="display:inline-block;padding:8px 14px;background:#48bb7820;border:1px solid #48bb7830;border-radius:12px;font-size:13px;color:#48bb78;font-weight:bold;">🔢 Maths & Numbers</span>
           </td>
         </tr>
         <tr>
-          <td style="padding:8px 0;border-bottom:1px solid #1a1a28;">
-            <span style="font-size:14px;">💃</span>
-            <span style="color:#f5f0e8;font-size:13px;margin-left:8px;font-weight:bold;">Hispanic & Latino Tales</span>
-            <span style="color:#6e6a63;font-size:11px;float:right;">25 stories</span>
+          <td style="padding:4px;">
+            <span style="display:inline-block;padding:8px 14px;background:#f0a50020;border:1px solid #f0a50030;border-radius:12px;font-size:13px;color:#f0a500;font-weight:bold;">💪 Motivation & Courage</span>
+          </td>
+          <td style="padding:4px;">
+            <span style="display:inline-block;padding:8px 14px;background:#9f7aea20;border:1px solid #9f7aea30;border-radius:12px;font-size:13px;color:#9f7aea;font-weight:bold;">🪷 Faith & Beliefs</span>
           </td>
         </tr>
         <tr>
-          <td style="padding:8px 0;border-bottom:1px solid #1a1a28;">
-            <span style="font-size:14px;">⛪</span>
-            <span style="color:#f5f0e8;font-size:13px;margin-left:8px;font-weight:bold;">Catholic Traditions</span>
-            <span style="color:#6e6a63;font-size:11px;float:right;">25 stories</span>
+          <td style="padding:4px;">
+            <span style="display:inline-block;padding:8px 14px;background:#f472b620;border:1px solid #f472b630;border-radius:12px;font-size:13px;color:#f472b6;font-weight:bold;">🌿 Nature & Animals</span>
+          </td>
+          <td style="padding:4px;">
+            <span style="display:inline-block;padding:8px 14px;background:#ed893620;border:1px solid #ed893630;border-radius:12px;font-size:13px;color:#ed8936;font-weight:bold;">🏛️ History & Heroes</span>
           </td>
         </tr>
         <tr>
-          <td style="padding:8px 0;border-bottom:1px solid #1a1a28;">
-            <span style="font-size:14px;">🙏</span>
-            <span style="color:#f5f0e8;font-size:13px;margin-left:8px;font-weight:bold;">Hindu Mythology & Values</span>
-            <span style="color:#6e6a63;font-size:11px;float:right;">22 stories</span>
+          <td style="padding:4px;">
+            <span style="display:inline-block;padding:8px 14px;background:#f3727f20;border:1px solid #f3727f30;border-radius:12px;font-size:13px;color:#f3727f;font-weight:bold;">🔬 Science & Discovery</span>
+          </td>
+          <td style="padding:4px;">
+            <span style="display:inline-block;padding:8px 14px;background:#63b3ed20;border:1px solid #63b3ed30;border-radius:12px;font-size:13px;color:#63b3ed;font-weight:bold;">🗺️ Adventure & Travel</span>
           </td>
         </tr>
         <tr>
-          <td style="padding:8px 0;border-bottom:1px solid #1a1a28;">
-            <span style="font-size:14px;">🇵🇭</span>
-            <span style="color:#f5f0e8;font-size:13px;margin-left:8px;font-weight:bold;">Filipino Folklore</span>
-            <span style="color:#6e6a63;font-size:11px;float:right;">20 stories</span>
+          <td style="padding:4px;">
+            <span style="display:inline-block;padding:8px 14px;background:#fbd38d20;border:1px solid #fbd38d30;border-radius:12px;font-size:13px;color:#fbd38d;font-weight:bold;">💛 Kindness & Sharing</span>
           </td>
-        </tr>
-        <tr>
-          <td style="padding:8px 0;">
-            <span style="font-size:14px;">🌍</span>
-            <span style="color:#f5f0e8;font-size:13px;margin-left:8px;font-weight:bold;">Universal, Sikh, Jewish, Buddhist, Christian & more</span>
-            <span style="color:#6e6a63;font-size:11px;float:right;">26 stories</span>
+          <td style="padding:4px;">
+            <span style="display:inline-block;padding:8px 14px;background:#b794f420;border:1px solid #b794f430;border-radius:12px;font-size:13px;color:#b794f4;font-weight:bold;">📚 Multi-Episode Series</span>
           </td>
         </tr>
       </table>
-      <p style="font-size:12px;color:#6e6a63;margin:12px 0 0;text-align:center;">New stories added every week</p>
+
+      <p style="font-size:12px;color:#6e6a63;margin:16px 0 0;text-align:center;">49 series · 146+ stories · New ones added every week</p>
     </div>
 
     <!-- CTA -->
@@ -217,14 +218,18 @@ WHY DOES THIS MATTER?
 - Representation: Hindu, Islamic, Christian, Catholic, Sikh, Buddhist, Jewish, Filipino, Hispanic — every child deserves to see themselves in stories.
 
 STORIES YOUR FAMILY WILL LOVE
-- Islamic Heroes & Wisdom (28 stories)
-- Hispanic & Latino Tales (25 stories)
-- Catholic Traditions (25 stories)
-- Hindu Mythology & Values (22 stories)
-- Filipino Folklore (20 stories)
-- Universal, Sikh, Jewish, Buddhist, Christian & more (26 stories)
+- Space Adventures
+- Maths & Numbers
+- Motivation & Courage
+- Faith & Beliefs
+- Nature & Animals
+- History & Heroes
+- Science & Discovery
+- Adventure & Travel
+- Kindness & Sharing
+- Multi-Episode Series
 
-New stories added every week!
+49 series · 146+ stories · New ones added every week!
 
 Explore now: https://mysleepytale.com
 
