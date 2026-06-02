@@ -47,9 +47,9 @@ function buildHtml(email, role) {
       </div>
 
       <div style="background:#0a0a0f;border-radius:12px;padding:16px;margin-bottom:20px;">
-        <p style="color:#f0a500;font-size:12px;font-weight:bold;text-transform:uppercase;letter-spacing:1px;margin:0 0 8px;">The App</p>
+        <p style="color:#f0a500;font-size:12px;font-weight:bold;text-transform:uppercase;letter-spacing:1px;margin:0 0 8px;">The Website</p>
         <p style="color:#c8c3ba;font-size:13px;margin:0;">
-          <a href="https://mysleepytale.com" style="color:#f0a500;">mysleepytale.com</a> — sign in with your Google account to explore the app.
+          <a href="https://mysleepytale.com" style="color:#f0a500;">mysleepytale.com</a> — sign in with your Google account to explore the website.
         </p>
       </div>
 
@@ -78,7 +78,7 @@ Your Daily Tasks:
 Every morning at 7 AM, you will receive an email with your tasks for the day.
 View and update them at: https://mysleepytale.com/my-tasks
 
-The App: https://mysleepytale.com
+The Website: https://mysleepytale.com
 
 If you have any questions, just reply to this email. We are so glad you are here. Let's build something beautiful together.
 
