@@ -25,6 +25,7 @@ import CreatorProfile from './pages/CreatorProfile.jsx';
 import CuratorPage from './pages/CuratorPage.jsx';
 import Curators from './pages/Curators.jsx';
 import SeriesDetail from './pages/SeriesDetail.jsx';
+import MyTasks from './pages/MyTasks.jsx';
 import BottomNav from './components/BottomNav.jsx';
 import BadgeUnlockToast from './components/BadgeUnlockToast.jsx';
 import PlayerBar from './components/PlayerBar.jsx';
@@ -150,6 +151,7 @@ function Shell() {
             <Route path="/creator" element={<Navigate to="/creation" replace />} />
             <Route path="/creators" element={<Curators />} />
             <Route path="/creator/:slug" element={<CuratorPage />} />
+            <Route path="/my-tasks" element={<MyTasks />} />
             <Route path="/admin" element={<Admin />} />
             <Route path="*" element={<Navigate to="/" replace />} />
           </Routes>

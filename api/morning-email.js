@@ -93,7 +93,8 @@ Priority: ${tasks.filter(t => t.priority === 'urgent').length} urgent, ${tasks.f
 Please reply to this email with your status update by end of day.
 
 — My Sleepy Tale Team
-https://mysleepytale.com/admin`;
+
+Update your tasks: https://mysleepytale.com/my-tasks`;
 }
 
 function buildHtmlBody(name, tasks, today) {
@@ -148,7 +149,7 @@ function buildHtmlBody(name, tasks, today) {
     </div>
 
     <p style="color:#4a4a5a;font-size:11px;text-align:center;margin-top:32px;">
-      My Sleepy Tale · <a href="https://mysleepytale.com/admin" style="color:#f0a500;">Open Admin</a>
+      My Sleepy Tale · <a href="https://mysleepytale.com/my-tasks" style="color:#f0a500;">Update My Tasks</a>
     </p>
   </div>
 </body>
