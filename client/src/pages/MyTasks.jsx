@@ -5,6 +5,7 @@
 import { useEffect, useState, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../hooks/useAuth.jsx';
+import { useAdmin } from '../hooks/useAdmin.jsx';
 import { db } from '../lib/firebase.js';
 import { collection, getDocs, doc, setDoc } from 'firebase/firestore';
 import PageTransition from '../components/PageTransition.jsx';
@@ -28,8 +29,16 @@ const STATUS_META = {
 export default function MyTasks() {
   const navigate = useNavigate();
   const { user } = useAuth();
+  const { isAdmin, team, adminEmails } = useAdmin();
   const [tasks, setTasks] = useState([]);
   const [loading, setLoading] = useState(true);
+
+  // Check if user is admin or team member
+  const isAuthorized = user && (
+    isAdmin ||
+    (adminEmails || []).includes(user.email) ||
+    (team || []).some(m => m.email === user.email && m.status === 'active')
+  );
   const [updating, setUpdating] = useState(null);
 
   const getLocalDate = () => {
@@ -99,6 +108,16 @@ export default function MyTasks() {
         <p className="text-4xl mb-4">🔒</p>
         <p className="text-sm text-ink-muted">Sign in to see your tasks</p>
         <button onClick={() => navigate('/login')} className="mt-4 btn-primary px-6 py-2 text-sm">Sign In</button>
+      </PageTransition>
+    );
+  }
+
+  if (!isAuthorized) {
+    return (
+      <PageTransition className="page-scroll px-5 pt-20 safe-top text-center">
+        <p className="text-4xl mb-4">🚫</p>
+        <p className="text-sm text-ink-muted">This page is for team members only</p>
+        <a href="/" className="mt-4 inline-block rounded-full bg-gold px-6 py-2 text-sm font-bold text-bg-base">Go Home</a>
       </PageTransition>
     );
   }
