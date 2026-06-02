@@ -5157,6 +5157,8 @@ function TaskBoard({ team = [], adminEmails = [] }) {
                           className="rounded-lg bg-white/5 px-2 py-1.5 text-xs text-[#f5f0e8] border border-white/10 outline-none">
                           {TASK_STATUS.map(s => <option key={s.key} value={s.key}>{s.label}</option>)}
                         </select>
+                        <input type="date" value={e.dueDate || ''} onChange={ev => setEditingTask({ ...e, dueDate: ev.target.value })}
+                          className="rounded-lg bg-white/5 px-2 py-1.5 text-xs text-[#f5f0e8] border border-white/10 outline-none" />
                         <button onClick={async () => { await saveTask(e); setEditingTask(null); }}
                           className="rounded-lg bg-[#f0a500] px-4 py-1.5 text-xs font-bold text-[#0f0f17]">Save</button>
                         <button onClick={() => setEditingTask(null)}
