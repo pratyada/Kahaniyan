@@ -284,11 +284,12 @@ export default async function handler(req, res) {
 
   // Single recipient
   if (!to || !to.includes('@')) return res.status(400).json({ error: 'Provide "to" email or { sendAll: true }' });
+  const toEmail = to.trim().toLowerCase();
 
   try {
     await ses.send(new SendEmailCommand({
       Source: `My Sleepy Tale <${FROM_EMAIL}>`,
-      Destination: { ToAddresses: [to], CcAddresses: [CC_EMAIL] },
+      Destination: { ToAddresses: [toEmail], CcAddresses: [CC_EMAIL] },
       Message: {
         Subject: { Data: 'Welcome to My Sleepy Tale — Where Bedtime Becomes the Best Time 🌙' },
         Body: {
@@ -297,7 +298,7 @@ export default async function handler(req, res) {
         },
       },
     }));
-    return res.json({ sent: 1, to });
+    return res.json({ sent: 1, to: toEmail });
   } catch (e) {
     return res.status(500).json({ error: e.message });
   }
