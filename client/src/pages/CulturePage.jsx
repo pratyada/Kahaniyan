@@ -79,7 +79,8 @@ export default function CulturePage() {
       .sort((a, b) => b[1].length - a[1].length);
   }, [stories]);
 
-  const ogImage = culture === 'muslim' ? 'https://mysleepytale.com/og/islamic.png' : 'https://mysleepytale.com/og/cover.jpg';
+  const OG_IMAGES = { muslim: 'islamic', hindu: 'hindu', christian: 'christian', catholic: 'catholic', hispanic: 'hispanic', sikh: 'sikh', buddhist: 'buddhist', jewish: 'jewish' };
+  const ogImage = `https://mysleepytale.com/og/${OG_IMAGES[culture] || 'cover'}.png`;
 
   return (
     <PageTransition className="page-scroll safe-top">

@@ -6,7 +6,7 @@ const CULTURES = {
   hindu: {
     title: 'Hindu & Panchatantra Bedtime Stories — My Sleepy Tale',
     description: 'Krishna, Hanuman, Ganesh, Panchatantra tales & more — personalized bedtime stories from Hindu tradition. Your child\'s name in every story. Free.',
-    image: 'https://mysleepytale.com/og/cover.jpg',
+    image: 'https://mysleepytale.com/og/hindu.png',
     icon: '🕉️',
   },
   muslim: {
@@ -18,37 +18,37 @@ const CULTURES = {
   christian: {
     title: 'Christian Bedtime Stories — Bible Tales for Kids — My Sleepy Tale',
     description: 'Good Samaritan, Loaves & Fishes, Nativity & more — Christian bedtime stories personalized with your child\'s name. Free.',
-    image: 'https://mysleepytale.com/og/cover.jpg',
+    image: 'https://mysleepytale.com/og/christian.png',
     icon: '✝️',
   },
   catholic: {
     title: 'Catholic Bedtime Stories — Saints & Parables — My Sleepy Tale',
     description: 'Saint Francis, Joan of Arc, the Nativity & 25 more — Catholic bedtime stories personalized with your child\'s name. Free.',
-    image: 'https://mysleepytale.com/og/jungle.jpg',
+    image: 'https://mysleepytale.com/og/catholic.png',
     icon: '⛪',
   },
   hispanic: {
     title: 'Hispanic Bedtime Stories — Latino Folklore — My Sleepy Tale',
     description: 'El Coquí, Quetzalcoatl, Día de los Muertos & more — 25 Latino bedtime stories personalized with your child\'s name. Free.',
-    image: 'https://mysleepytale.com/og/car.jpg',
+    image: 'https://mysleepytale.com/og/hispanic.png',
     icon: '🌺',
   },
   sikh: {
     title: 'Sikh Bedtime Stories for Kids — My Sleepy Tale',
     description: 'Guru Nanak, Bhai Kanhaiya & Sikh traditions — personalized bedtime stories with your child\'s name. Free.',
-    image: 'https://mysleepytale.com/og/space.jpg',
+    image: 'https://mysleepytale.com/og/sikh.png',
     icon: '☬',
   },
   buddhist: {
     title: 'Buddhist Bedtime Stories for Kids — My Sleepy Tale',
     description: 'Buddha, Jataka tales & lessons of compassion — personalized bedtime stories with your child\'s name. Free.',
-    image: 'https://mysleepytale.com/og/space.jpg',
+    image: 'https://mysleepytale.com/og/buddhist.png',
     icon: '☸️',
   },
   jewish: {
     title: 'Jewish Bedtime Stories for Kids — My Sleepy Tale',
     description: 'Noah, Abraham & Jewish wisdom — personalized bedtime stories with your child\'s name. Free.',
-    image: 'https://mysleepytale.com/og/toronto.jpg',
+    image: 'https://mysleepytale.com/og/jewish.png',
     icon: '✡️',
   },
 };
