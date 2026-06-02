@@ -4666,7 +4666,8 @@ function TaskBoard({ team = [], adminEmails = [] }) {
     return [...map.values()];
   }, [adminEmails, team]);
   const [tasks, setTasks] = useState([]);
-  const [selectedDate, setSelectedDate] = useState(() => new Date().toISOString().slice(0, 10));
+  const getLocalDate = () => { const d = new Date(); return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`; };
+  const [selectedDate, setSelectedDate] = useState(getLocalDate);
   const [filterActivity, setFilterActivity] = useState('all');
   const [filterAssignee, setFilterAssignee] = useState('all');
   const [showAddForm, setShowAddForm] = useState(false);
@@ -4796,7 +4797,7 @@ function TaskBoard({ team = [], adminEmails = [] }) {
           <input type="date" value={selectedDate} onChange={e => setSelectedDate(e.target.value)}
             className="rounded-lg bg-white/5 px-3 py-2 text-sm font-bold text-[#f5f0e8] border border-white/10 outline-none" />
           <button onClick={() => shiftDate(1)} className="rounded-lg bg-white/5 px-3 py-2 text-xs font-bold text-[#a8a39a] hover:text-[#f5f0e8]">&rarr;</button>
-          <button onClick={() => setSelectedDate(new Date().toISOString().slice(0, 10))} className="rounded-lg bg-[#f0a500]/15 px-3 py-2 text-xs font-bold text-[#f0a500]">Today</button>
+          <button onClick={() => setSelectedDate(getLocalDate())} className="rounded-lg bg-[#f0a500]/15 px-3 py-2 text-xs font-bold text-[#f0a500]">Today</button>
         </div>
         <div className="flex items-center gap-3 text-xs">
           <span className="text-[#6e6a63]">{totalToday} tasks</span>
