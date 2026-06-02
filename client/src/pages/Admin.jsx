@@ -4787,6 +4787,7 @@ function TaskBoard({ team = [], adminEmails = [] }) {
   const [tasks, setTasks] = useState([]);
   const getLocalDate = () => { const d = new Date(); return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`; };
   const [selectedDate, setSelectedDate] = useState(getLocalDate);
+  const [viewMode, setViewMode] = useState('day'); // day | week | month
   const [filterActivity, setFilterActivity] = useState('all');
   const [filterAssignee, setFilterAssignee] = useState('all');
   const [showAddForm, setShowAddForm] = useState(false);
@@ -4836,14 +4837,42 @@ function TaskBoard({ team = [], adminEmails = [] }) {
     } catch {}
   };
 
+  // Date range helpers for week/month views
+  const getDateRange = useMemo(() => {
+    const sel = new Date(selectedDate + 'T12:00:00');
+    if (viewMode === 'day') return { start: selectedDate, end: selectedDate };
+    if (viewMode === 'week') {
+      const day = sel.getDay();
+      const mon = new Date(sel); mon.setDate(sel.getDate() - ((day + 6) % 7)); // Monday
+      const sun = new Date(mon); sun.setDate(mon.getDate() + 6);
+      return { start: mon.toISOString().slice(0, 10), end: sun.toISOString().slice(0, 10) };
+    }
+    // month
+    const first = new Date(sel.getFullYear(), sel.getMonth(), 1);
+    const last = new Date(sel.getFullYear(), sel.getMonth() + 1, 0);
+    return { start: first.toISOString().slice(0, 10), end: last.toISOString().slice(0, 10) };
+  }, [selectedDate, viewMode]);
+
   const dayTasks = tasks
-    .filter(t => t.dueDate === selectedDate)
+    .filter(t => t.dueDate >= getDateRange.start && t.dueDate <= getDateRange.end)
     .filter(t => filterActivity === 'all' || t.activity === filterActivity)
     .filter(t => filterAssignee === 'all' || t.assignee === filterAssignee)
     .sort((a, b) => {
       const pri = { urgent: 0, high: 1, normal: 2, low: 3 };
+      if (a.dueDate !== b.dueDate) return a.dueDate.localeCompare(b.dueDate);
       return (pri[a.priority] || 2) - (pri[b.priority] || 2);
     });
+
+  // For week/month views — group tasks by date
+  const tasksByDate = useMemo(() => {
+    if (viewMode === 'day') return null;
+    const grouped = {};
+    dayTasks.forEach(t => {
+      if (!grouped[t.dueDate]) grouped[t.dueDate] = [];
+      grouped[t.dueDate].push(t);
+    });
+    return grouped;
+  }, [dayTasks, viewMode]);
 
   const byAssignee = {};
   dayTasks.forEach(t => {
@@ -4885,9 +4914,11 @@ function TaskBoard({ team = [], adminEmails = [] }) {
     alert(`Copied email for ${email.name}`);
   };
 
-  const shiftDate = (days) => {
-    const d = new Date(selectedDate);
-    d.setDate(d.getDate() + days);
+  const shiftDate = (dir) => {
+    const d = new Date(selectedDate + 'T12:00:00');
+    if (viewMode === 'day') d.setDate(d.getDate() + dir);
+    else if (viewMode === 'week') d.setDate(d.getDate() + dir * 7);
+    else d.setMonth(d.getMonth() + dir);
     setSelectedDate(d.toISOString().slice(0, 10));
   };
 
@@ -4915,14 +4946,33 @@ function TaskBoard({ team = [], adminEmails = [] }) {
 
   return (
     <div className="space-y-5">
+      {/* View mode toggle */}
+      <div className="flex items-center gap-1 rounded-lg bg-white/5 p-1 w-fit ring-1 ring-white/10">
+        {['day', 'week', 'month'].map(m => (
+          <button key={m} onClick={() => setViewMode(m)}
+            className={`rounded-md px-4 py-1.5 text-xs font-bold transition ${viewMode === m ? 'bg-[#f0a500] text-[#0f0f17]' : 'text-[#6e6a63] hover:text-[#f5f0e8]'}`}>
+            {m.charAt(0).toUpperCase() + m.slice(1)}
+          </button>
+        ))}
+      </div>
+
       {/* Date nav + stats */}
       <div className="flex flex-wrap items-center justify-between gap-3">
         <div className="flex items-center gap-2">
           <button onClick={() => shiftDate(-1)} className="rounded-lg bg-white/5 px-3 py-2 text-xs font-bold text-[#a8a39a] hover:text-[#f5f0e8]">&larr;</button>
-          <input type="date" value={selectedDate} onChange={e => setSelectedDate(e.target.value)}
-            className="rounded-lg bg-white/5 px-3 py-2 text-sm font-bold text-[#f5f0e8] border border-white/10 outline-none" />
+          {viewMode === 'day' ? (
+            <input type="date" value={selectedDate} onChange={e => setSelectedDate(e.target.value)}
+              className="rounded-lg bg-white/5 px-3 py-2 text-sm font-bold text-[#f5f0e8] border border-white/10 outline-none" />
+          ) : (
+            <span className="rounded-lg bg-white/5 px-3 py-2 text-sm font-bold text-[#f5f0e8] border border-white/10">
+              {viewMode === 'week'
+                ? `${new Date(getDateRange.start + 'T12:00:00').toLocaleDateString('en-US', { month: 'short', day: 'numeric' })} — ${new Date(getDateRange.end + 'T12:00:00').toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}`
+                : new Date(selectedDate + 'T12:00:00').toLocaleDateString('en-US', { month: 'long', year: 'numeric' })
+              }
+            </span>
+          )}
           <button onClick={() => shiftDate(1)} className="rounded-lg bg-white/5 px-3 py-2 text-xs font-bold text-[#a8a39a] hover:text-[#f5f0e8]">&rarr;</button>
-          <button onClick={() => setSelectedDate(getLocalDate())} className="rounded-lg bg-[#f0a500]/15 px-3 py-2 text-xs font-bold text-[#f0a500]">Today</button>
+          <button onClick={() => { setSelectedDate(getLocalDate()); setViewMode('day'); }} className="rounded-lg bg-[#f0a500]/15 px-3 py-2 text-xs font-bold text-[#f0a500]">Today</button>
         </div>
         <div className="flex items-center gap-3 text-xs">
           <span className="text-[#6e6a63]">{totalToday} tasks</span>
@@ -4981,8 +5031,8 @@ function TaskBoard({ team = [], adminEmails = [] }) {
         </div>
       )}
 
-      {/* Empty state */}
-      {Object.keys(byAssignee).length === 0 && (
+      {/* Empty state (day view) */}
+      {viewMode === 'day' && Object.keys(byAssignee).length === 0 && (
         <div className="rounded-2xl bg-white/5 p-10 text-center ring-1 ring-white/5">
           <p className="text-3xl mb-2">📋</p>
           <p className="text-sm text-[#6e6a63]">No tasks for {selectedDate}</p>
@@ -4990,8 +5040,76 @@ function TaskBoard({ team = [], adminEmails = [] }) {
         </div>
       )}
 
-      {/* Task list grouped by assignee */}
-      {Object.entries(byAssignee).map(([assignee, memberTasks]) => {
+      {/* Week/month: date section headers with per-date grouping */}
+      {viewMode !== 'day' && tasksByDate && Object.keys(tasksByDate).length > 0 && (
+        <div className="space-y-4">
+          {Object.entries(tasksByDate).sort(([a], [b]) => a.localeCompare(b)).map(([date, dateTasks]) => {
+            const dateDone = dateTasks.filter(t => t.status === 'done').length;
+            const isToday = date === getLocalDate();
+            const dateLabel = new Date(date + 'T12:00:00').toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' });
+            return (
+              <div key={date}>
+                <div className="flex items-center gap-3 mb-2">
+                  <span className={`text-xs font-bold ${isToday ? 'text-[#f0a500]' : 'text-[#6e6a63]'}`}>
+                    {isToday ? 'Today' : dateLabel}
+                  </span>
+                  <span className="text-[10px] text-[#6e6a63]">{date}</span>
+                  <div className="flex-1 h-px bg-white/5" />
+                  <span className="text-[10px] font-bold text-[#48bb78]">{dateDone}/{dateTasks.length}</span>
+                  {dateTasks.length > 0 && (
+                    <div className="w-16 h-1.5 rounded-full bg-white/10 overflow-hidden">
+                      <div className="h-full rounded-full bg-[#48bb78]" style={{ width: `${Math.round(dateDone / dateTasks.length * 100)}%` }} />
+                    </div>
+                  )}
+                </div>
+                {(() => {
+                  const dateByAssignee = {};
+                  dateTasks.forEach(t => {
+                    const key = t.assignee || 'Unassigned';
+                    if (!dateByAssignee[key]) dateByAssignee[key] = [];
+                    dateByAssignee[key].push(t);
+                  });
+                  return Object.entries(dateByAssignee).map(([assignee, memberTasks]) => {
+                    const member = allAssignees.find(m => m.email === assignee);
+                    const name = member?.name || assignee.split('@')[0] || 'Unassigned';
+                    return (
+                      <div key={`${date}-${assignee}`} className="rounded-xl bg-white/5 ring-1 ring-white/5 overflow-hidden mb-2 ml-4">
+                        <div className="flex items-center justify-between px-4 py-2 border-b border-white/5">
+                          <span className="text-xs font-bold text-[#f5f0e8]">👤 {name}</span>
+                          <span className="text-[9px] text-[#48bb78]">{memberTasks.filter(t => t.status === 'done').length}/{memberTasks.length}</span>
+                        </div>
+                        <div className="divide-y divide-white/5">
+                          {memberTasks.map(task => {
+                            const act = ACTIVITIES.find(a => a.key === task.activity);
+                            const sta = TASK_STATUS.find(s => s.key === task.status);
+                            return (
+                              <div key={task.id} className={`flex items-center gap-2 px-4 py-2 ${task.status === 'done' ? 'opacity-50' : ''}`}>
+                                <button onClick={() => {
+                                  const order = ['todo', 'in_progress', 'done'];
+                                  handleUpdateStatus(task, order[(order.indexOf(task.status) + 1) % order.length]);
+                                }} className="shrink-0 grid h-4 w-4 place-items-center rounded-full"
+                                  style={{ border: `2px solid ${sta?.color}`, background: task.status === 'done' ? '#48bb78' : 'transparent' }}>
+                                  {task.status === 'done' && <span className="text-[8px] text-white">✓</span>}
+                                </button>
+                                <span className={`text-xs flex-1 ${task.status === 'done' ? 'line-through text-[#6e6a63]' : 'text-[#f5f0e8]'}`}>{task.title}</span>
+                                <span className="text-[8px] px-1.5 py-0.5 rounded-full font-bold" style={{ background: (act?.color || '#666') + '22', color: act?.color || '#666' }}>{act?.icon}</span>
+                                {task.priority === 'urgent' && <span className="text-[8px] text-[#f3727f] font-bold">!</span>}
+                              </div>
+                            );
+                          })}
+                        </div>
+                      </div>
+                    );
+                  });
+                })()}
+              </div>
+            );
+          })}
+        </div>
+      )}
+
+      {/* Day view: Task list grouped by assignee */}
+      {viewMode === 'day' && Object.entries(byAssignee).map(([assignee, memberTasks]) => {
         const member = allAssignees.find(m => m.email === assignee);
         const name = member?.name || assignee.split('@')[0] || 'Unassigned';
         const memberDone = memberTasks.filter(t => t.status === 'done').length;
@@ -5085,6 +5203,14 @@ function TaskBoard({ team = [], adminEmails = [] }) {
           </div>
         );
       })}
+
+      {/* Week/month empty state */}
+      {viewMode !== 'day' && (!tasksByDate || Object.keys(tasksByDate).length === 0) && (
+        <div className="rounded-2xl bg-white/5 p-10 text-center ring-1 ring-white/5">
+          <p className="text-3xl mb-2">📋</p>
+          <p className="text-sm text-[#6e6a63]">No tasks for this {viewMode}</p>
+        </div>
+      )}
 
       {/* Email preview modal */}
       {emailPreview && (
