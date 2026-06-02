@@ -6,7 +6,7 @@
 import { SESClient, SendEmailCommand } from '@aws-sdk/client-ses';
 import { getFirestore } from './_firebase.js';
 
-const FROM_EMAIL = 'hello@mysleepytale.com';
+const FROM_EMAIL = 'hello@mysleepytale_official.com';
 const CC_EMAIL = 'i@yprateek.com';
 const ses = new SESClient({ region: 'us-east-1' });
 
@@ -161,8 +161,8 @@ function buildHtml(name) {
       <table style="width:100%;border-collapse:collapse;">
         <tr>
           <td style="text-align:center;padding:8px;">
-            <a href="mailto:hello@mysleepytale.com" style="color:#f0a500;font-size:13px;text-decoration:none;">
-              📧 hello@mysleepytale.com
+            <a href="mailto:hello@mysleepytale_official.com" style="color:#f0a500;font-size:13px;text-decoration:none;">
+              📧 hello@mysleepytale_official.com
             </a>
           </td>
         </tr>
@@ -175,8 +175,8 @@ function buildHtml(name) {
         </tr>
         <tr>
           <td style="text-align:center;padding:8px;">
-            <a href="https://www.instagram.com/mysleepytale" style="color:#f0a500;font-size:13px;text-decoration:none;">
-              📸 @mysleepytale
+            <a href="https://www.instagram.com/mysleepytale_official" style="color:#f0a500;font-size:13px;text-decoration:none;">
+              📸 @mysleepytale_official
             </a>
           </td>
         </tr>
@@ -229,9 +229,9 @@ New stories added every week!
 Explore now: https://mysleepytale.com
 
 STAY CONNECTED
-Email: hello@mysleepytale.com
+Email: hello@mysleepytale_official.com
 Web: https://mysleepytale.com
-Instagram: @mysleepytale
+Instagram: @mysleepytale_official
 
 Made with love for families everywhere.
 My Sleepy Tale · Toronto, Canada`;
