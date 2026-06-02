@@ -4627,18 +4627,19 @@ function ExpenseTracker() {
     })();
   }, []);
 
-  const uploadReceipt = async (file) => {
+  // expenseKey = "april-2026_3" (month slug + item index)
+  const uploadReceipt = async (file, expenseKey) => {
     if (!file) return;
-    setUploading(true);
+    setUploading(expenseKey);
     try {
       const { storage } = await import('../lib/firebase.js');
       const { ref, uploadBytes, getDownloadURL } = await import('firebase/storage');
-      const id = `receipt_${Date.now()}_${Math.random().toString(36).slice(2, 6)}`;
+      const id = `receipt_${expenseKey}_${Date.now()}`;
       const ext = file.name.split('.').pop() || 'png';
       const storageRef = ref(storage, `receipts/${id}.${ext}`);
       await uploadBytes(storageRef, file, { contentType: file.type });
       const url = await getDownloadURL(storageRef);
-      const data = { id, url, fileName: file.name, fileType: file.type, uploadedAt: new Date().toISOString(), uploadedBy: 'admin' };
+      const data = { id, expenseKey, url, fileName: file.name, fileType: file.type, uploadedAt: new Date().toISOString() };
       await setDoc(doc(db, 'receipts', id), data);
       setReceipts(prev => [data, ...prev]);
     } catch (e) { console.error('Receipt upload error:', e); alert('Upload failed: ' + e.message); }
@@ -4653,6 +4654,8 @@ function ExpenseTracker() {
       setReceipts(prev => prev.filter(x => x.id !== r.id));
     } catch {}
   };
+
+  const getReceiptsForExpense = (expenseKey) => receipts.filter(r => r.expenseKey === expenseKey);
 
   return (
     <div className="space-y-6">
@@ -4682,20 +4685,48 @@ function ExpenseTracker() {
               <span className="text-sm font-bold text-[#f0a500]">CA${monthTotal}</span>
             </div>
             <div className="divide-y divide-white/5">
-              {month.items.map((item, i) => (
-                <div key={i} className="flex items-center justify-between px-5 py-3">
-                  <div className="flex items-center gap-3">
-                    <span className="inline-block h-2 w-2 rounded-full" style={{ background: CAT_COLORS[item.category] || '#666' }} />
-                    <span className="text-xs text-[#c8c3ba]">{item.name}</span>
+              {month.items.map((item, i) => {
+                const key = `${month.month.toLowerCase().replace(/\s/g, '-')}_${i}`;
+                const itemReceipts = getReceiptsForExpense(key);
+                return (
+                <div key={i} className="px-5 py-3">
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center gap-3">
+                      <span className="inline-block h-2 w-2 rounded-full" style={{ background: CAT_COLORS[item.category] || '#666' }} />
+                      <span className="text-xs text-[#c8c3ba]">{item.name}</span>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <label className="cursor-pointer rounded-full bg-white/5 px-2 py-1 text-[9px] text-[#6e6a63] hover:text-[#f0a500] hover:bg-[#f0a500]/10 transition">
+                        {uploading === key ? '...' : itemReceipts.length > 0 ? `🧾 ${itemReceipts.length}` : '+ Receipt'}
+                        <input type="file" accept="image/*,.pdf" className="hidden" disabled={uploading === key}
+                          onChange={(e) => { if (e.target.files?.[0]) uploadReceipt(e.target.files[0], key); e.target.value = ''; }} />
+                      </label>
+                      <span className="rounded-full px-2 py-0.5 text-[9px] font-bold uppercase" style={{ background: (CAT_COLORS[item.category] || '#666') + '22', color: CAT_COLORS[item.category] || '#666' }}>
+                        {item.category}
+                      </span>
+                      <span className="text-sm font-bold text-[#f5f0e8] w-16 text-right">CA${item.amount}</span>
+                    </div>
                   </div>
-                  <div className="flex items-center gap-3">
-                    <span className="rounded-full px-2 py-0.5 text-[9px] font-bold uppercase" style={{ background: (CAT_COLORS[item.category] || '#666') + '22', color: CAT_COLORS[item.category] || '#666' }}>
-                      {item.category}
-                    </span>
-                    <span className="text-sm font-bold text-[#f5f0e8] w-16 text-right">CA${item.amount}</span>
-                  </div>
+                  {itemReceipts.length > 0 && (
+                    <div className="flex gap-2 mt-2 overflow-x-auto">
+                      {itemReceipts.map(r => (
+                        <div key={r.id} className="group relative shrink-0">
+                          {r.fileType?.startsWith('image') ? (
+                            <a href={r.url} target="_blank" rel="noreferrer">
+                              <img src={r.url} alt="" className="h-12 w-12 rounded-lg object-cover ring-1 ring-white/10" />
+                            </a>
+                          ) : (
+                            <a href={r.url} target="_blank" rel="noreferrer" className="flex h-12 w-12 items-center justify-center rounded-lg bg-[#1a1a28] ring-1 ring-white/10 text-lg">📄</a>
+                          )}
+                          <button onClick={() => deleteReceipt(r)}
+                            className="absolute -top-1 -right-1 hidden group-hover:grid h-4 w-4 place-items-center rounded-full bg-[#f3727f] text-[8px] text-white">✕</button>
+                        </div>
+                      ))}
+                    </div>
+                  )}
                 </div>
-              ))}
+                );
+              })}
             </div>
             {/* Month bar chart */}
             <div className="px-5 py-3 border-t border-white/5 flex gap-1 h-3 rounded-b-2xl overflow-hidden">
@@ -4713,46 +4744,12 @@ function ExpenseTracker() {
         <div className="mt-1 text-2xl font-bold text-[#f0a500]">CA${Math.round(totalAll / EXPENSE_DATA.length)}/mo</div>
       </div>
 
-      {/* Receipt uploads */}
-      <div className="rounded-2xl bg-white/5 ring-1 ring-white/5 overflow-hidden">
-        <div className="flex items-center justify-between px-5 py-4 border-b border-white/5">
-          <h3 className="text-sm font-bold text-[#f5f0e8]">Receipts</h3>
-          <label className={`rounded-lg px-4 py-2 text-xs font-bold cursor-pointer transition ${uploading ? 'bg-white/5 text-[#6e6a63]' : 'bg-[#f0a500] text-[#0f0f17]'}`}>
-            {uploading ? 'Uploading...' : '+ Upload Receipt'}
-            <input type="file" accept="image/*,.pdf" className="hidden" disabled={uploading}
-              onChange={(e) => { if (e.target.files?.[0]) uploadReceipt(e.target.files[0]); e.target.value = ''; }} />
-          </label>
+      {/* Total receipts count */}
+      {receipts.length > 0 && (
+        <div className="text-center text-[10px] text-[#6e6a63]">
+          {receipts.length} receipt{receipts.length !== 1 ? 's' : ''} uploaded
         </div>
-        {receipts.length === 0 && (
-          <div className="px-5 py-8 text-center">
-            <p className="text-2xl mb-2">🧾</p>
-            <p className="text-[11px] text-[#6e6a63]">No receipts uploaded yet</p>
-          </div>
-        )}
-        {receipts.length > 0 && (
-          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3 p-4">
-            {receipts.map(r => (
-              <div key={r.id} className="group relative rounded-xl bg-[#0f0f17] ring-1 ring-white/5 overflow-hidden">
-                {r.fileType?.startsWith('image') ? (
-                  <a href={r.url} target="_blank" rel="noreferrer">
-                    <img src={r.url} alt={r.fileName} className="w-full aspect-[3/4] object-cover" />
-                  </a>
-                ) : (
-                  <a href={r.url} target="_blank" rel="noreferrer" className="flex items-center justify-center w-full aspect-[3/4] bg-[#1a1a28]">
-                    <span className="text-3xl">📄</span>
-                  </a>
-                )}
-                <div className="px-2 py-2">
-                  <p className="text-[10px] text-[#c8c3ba] truncate">{r.fileName}</p>
-                  <p className="text-[9px] text-[#6e6a63]">{new Date(r.uploadedAt).toLocaleDateString()}</p>
-                </div>
-                <button onClick={() => deleteReceipt(r)}
-                  className="absolute top-1 right-1 hidden group-hover:grid h-5 w-5 place-items-center rounded-full bg-black/70 text-[10px] text-[#f3727f]">✕</button>
-              </div>
-            ))}
-          </div>
-        )}
-      </div>
+      )}
     </div>
   );
 }
