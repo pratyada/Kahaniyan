@@ -4932,12 +4932,21 @@ function TaskBoard({ team = [] }) {
                 <pre className="text-[11px] text-[#c8c3ba] whitespace-pre-wrap font-sans leading-relaxed">{email.body}</pre>
               </div>
             ))}
+            <button onClick={async () => {
+              try {
+                const resp = await fetch('/api/morning-email', { method: 'POST' });
+                const data = await resp.json();
+                alert(`Sent ${data.sent}/${data.total} emails via SES`);
+              } catch (e) { alert('Send failed: ' + e.message); }
+            }} className="w-full rounded-lg bg-[#f0a500] py-3 text-sm font-bold text-[#0f0f17] mt-2">
+              Send All via Email (SES)
+            </button>
             <button onClick={() => {
               emailPreview.forEach(e => {
                 window.open(`mailto:${e.to}?subject=${encodeURIComponent(e.subject)}&body=${encodeURIComponent(e.body)}`);
               });
-            }} className="w-full rounded-lg bg-[#f0a500] py-3 text-sm font-bold text-[#0f0f17] mt-2">
-              Open All in Email Client
+            }} className="w-full rounded-lg bg-white/5 py-3 text-sm font-bold text-[#a8a39a] mt-2 ring-1 ring-white/10">
+              Open in Gmail Instead
             </button>
           </div>
         </div>

@@ -43,16 +43,16 @@ export const SERIES_CATEGORIES = {
   'discover-newzealand': ['geography'],
   'tallest-towers': ['geography', 'science'],
   // Islamic series
-  'stories-of-the-prophets': ['life-skills', 'history'],
-  'names-of-allah': ['life-skills'],
-  'ramadan-adventures': ['life-skills'],
-  'companions-of-prophet': ['history'],
-  'animals-in-quran': ['science'],
-  'islamic-manners': ['life-skills'],
-  'hajj-journey': ['geography'],
-  'mosque-adventures': ['geography'],
-  'bedtime-duas': ['life-skills'],
-  'muslim-heroes': ['science', 'history'],
+  'stories-of-the-prophets': ['islamic'],
+  'names-of-allah': ['islamic'],
+  'ramadan-adventures': ['islamic'],
+  'companions-of-prophet': ['islamic'],
+  'animals-in-quran': ['islamic'],
+  'islamic-manners': ['islamic'],
+  'hajj-journey': ['islamic'],
+  'mosque-adventures': ['islamic'],
+  'bedtime-duas': ['islamic'],
+  'muslim-heroes': ['islamic'],
 };
 
 export const COLLECTION_CATEGORIES = {
@@ -67,6 +67,7 @@ export const COLLECTION_CATEGORIES = {
 };
 
 export const CATEGORIES = [
+  { key: 'islamic', label: '☪️ Islamic Series', gradient: 'from-emerald-900/30 to-green-900/20', belief: 'muslim' },
   { key: 'adventure', label: '🏔️ Adventure', gradient: 'from-orange-900/30 to-red-900/20' },
   { key: 'space', label: '🚀 Space & Universe', gradient: 'from-indigo-900/30 to-purple-900/20' },
   { key: 'maths', label: '🔢 Maths & Geometry', gradient: 'from-emerald-900/30 to-teal-900/20' },

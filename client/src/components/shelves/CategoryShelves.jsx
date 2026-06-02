@@ -42,9 +42,18 @@ export default function CategoryShelves({ wisdomImageUrls, cultureFilter }) {
     return beliefs.includes(tradition) || beliefs.includes('universal');
   };
 
-  // Build category data
+  // Build category data — hide belief-specific categories if user doesn't have that belief
   const categoryData = useMemo(() => {
-    return CATEGORIES.map(cat => {
+    return CATEGORIES
+    .filter(cat => {
+      // Belief-specific categories only show if user has that belief or culture filter matches
+      if (cat.belief) {
+        if (cultureFilter) return cat.belief === cultureFilter;
+        return beliefs.includes(cat.belief);
+      }
+      return true;
+    })
+    .map(cat => {
       // Get series in this category
       const seriesIds = Object.entries(SERIES_CATEGORIES)
         .filter(([, cats]) => cats.includes(cat.key))
