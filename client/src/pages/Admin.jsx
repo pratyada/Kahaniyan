@@ -4531,19 +4531,18 @@ const EXPENSE_DATA = [
   {
     month: 'April 2026',
     items: [
-      { name: 'Claude Code Max Plan', amount: 200, category: 'AI' },
+      { name: 'Claude Code Max Plan', amount: 100, category: 'AI' },
       { name: 'OpenAI APIs (GPT + Image Gen)', amount: 85, category: 'AI' },
       { name: 'ElevenLabs TTS API', amount: 22, category: 'AI' },
       { name: 'Anthropic Claude API', amount: 45, category: 'AI' },
       { name: 'Google Workspace', amount: 7, category: 'SaaS' },
       { name: 'AWS (S3 + CloudFront + Lambda)', amount: 50, category: 'Infra' },
-      { name: 'Bike for Brain — Event & Promotion', amount: 50, category: 'Marketing' },
     ],
   },
   {
     month: 'May 2026',
     items: [
-      { name: 'Claude Code Max Plan', amount: 200, category: 'AI' },
+      { name: 'Claude Code Max Plan', amount: 100, category: 'AI' },
       { name: 'OpenAI APIs (GPT + Image Gen)', amount: 120, category: 'AI' },
       { name: 'ElevenLabs TTS API', amount: 22, category: 'AI' },
       { name: 'Anthropic Claude API', amount: 60, category: 'AI' },
@@ -4555,7 +4554,7 @@ const EXPENSE_DATA = [
   {
     month: 'June 2026',
     items: [
-      { name: 'Claude Code Max Plan', amount: 200, category: 'AI' },
+      { name: 'Claude Code Max Plan', amount: 100, category: 'AI' },
       { name: 'OpenAI APIs (GPT + Image Gen)', amount: 100, category: 'AI' },
       { name: 'ElevenLabs TTS API', amount: 22, category: 'AI' },
       { name: 'Anthropic Claude API', amount: 50, category: 'AI' },
