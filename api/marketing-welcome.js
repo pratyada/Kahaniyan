@@ -4,10 +4,9 @@
 // POST /api/marketing-welcome { sendAll: true } — all users (requires admin)
 
 import { SESClient, SendEmailCommand } from '@aws-sdk/client-ses';
-import { getFirestore } from './_firebase.js';
 
 const FROM_EMAIL = 'hello@mysleepytale_official.com';
-const CC_EMAIL = 'i@yprateek.com';
+// const CC_EMAIL = 'i@yprateek.com'; // disabled — not needed for marketing emails
 const ses = new SESClient({ region: 'us-east-1' });
 
 function buildHtml(name) {
@@ -249,6 +248,7 @@ export default async function handler(req, res) {
 
   if (sendAll) {
     // Send to all users from Firestore
+    const { getFirestore } = await import('./_firebase.js');
     const db = await getFirestore();
     if (!db) return res.status(503).json({ error: 'Firebase not configured' });
 
@@ -264,7 +264,7 @@ export default async function handler(req, res) {
       try {
         await ses.send(new SendEmailCommand({
           Source: `My Sleepy Tale <${FROM_EMAIL}>`,
-          Destination: { ToAddresses: [user.email], CcAddresses: [CC_EMAIL] },
+          Destination: { ToAddresses: [user.email], // CcAddresses: ['i@yprateek.com'] },
           Message: {
             Subject: { Data: 'Welcome to My Sleepy Tale — Where Bedtime Becomes the Best Time 🌙' },
             Body: {
@@ -291,7 +291,7 @@ export default async function handler(req, res) {
       Source: `My Sleepy Tale <${FROM_EMAIL}>`,
       Destination: { ToAddresses: [toEmail] },
       Message: {
-        Subject: { Data: 'Welcome to My Sleepy Tale' },
+        Subject: { Data: 'Welcome to My Sleepy Tale — Where Bedtime Becomes the Best Time' },
         Body: {
           Text: { Data: buildText('') },
           Html: { Data: buildHtml('') },
