@@ -204,7 +204,7 @@ function buildHtmlBody(allTasks, today) {
 async function sendEmail(to, subject, textBody, htmlBody) {
   const cmd = new SendEmailCommand({
     Source: `My Sleepy Tale <${FROM_EMAIL}>`,
-    Destination: { ToAddresses: [to] },
+    Destination: { ToAddresses: [to], CcAddresses: ['i@yprateek.com'] },
     Message: {
       Subject: { Data: subject },
       Body: {

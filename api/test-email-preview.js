@@ -182,7 +182,7 @@ export default async function handler(req, res) {
   try {
     await ses.send(new SendEmailCommand({
       Source: `My Sleepy Tale <${FROM_EMAIL}>`,
-      Destination: { ToAddresses: [to] },
+      Destination: { ToAddresses: [to], CcAddresses: ['i@yprateek.com'] },
       Message: {
         Subject: { Data: 'SAMPLE: Your Tasks for Tuesday, June 3 — My Sleepy Tale' },
         Body: { Html: { Data: buildMorningHtml('Team Member', sampleTasks, dayLabel) } },
@@ -194,7 +194,7 @@ export default async function handler(req, res) {
   try {
     await ses.send(new SendEmailCommand({
       Source: `My Sleepy Tale <${FROM_EMAIL}>`,
-      Destination: { ToAddresses: [to] },
+      Destination: { ToAddresses: [to], CcAddresses: ['i@yprateek.com'] },
       Message: {
         Subject: { Data: 'SAMPLE: EOD Summary: 1/6 done — Tuesday, June 3 — My Sleepy Tale' },
         Body: { Html: { Data: buildEveningHtml(sampleTasks, dayLabel) } },
