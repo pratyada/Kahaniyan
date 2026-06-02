@@ -11,6 +11,8 @@ const ROLE_LABELS = {
   marketing: 'Marketing',
   content: 'Content Creator',
   dev: 'Developer',
+  advisor: 'Advisor',
+  ambassador: 'Ambassador',
 };
 
 function buildHtml(email, role) {

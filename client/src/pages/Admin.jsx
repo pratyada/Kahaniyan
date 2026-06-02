@@ -711,6 +711,8 @@ export default function Admin() {
                   <option value="marketing">Marketing</option>
                   <option value="content">Content</option>
                   <option value="dev">Developer</option>
+                  <option value="advisor">Advisor</option>
+                  <option value="ambassador">Ambassador</option>
                 </select>
                 <button onClick={async () => {
                   if (!newTeamEmail.trim()) return;
