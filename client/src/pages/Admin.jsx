@@ -141,6 +141,7 @@ export default function Admin() {
     { key: 'userstories', label: 'User Stories', icon: '🌙' },
     { key: 'storylab', label: 'Story Studio', icon: '🧪' },
     { key: 'feedback', label: 'Creators', icon: '✍️' },
+    { key: 'tasks', label: 'Tasks', icon: '📋' },
     { key: 'expenses', label: 'Expenses', icon: '💰' },
     { key: 'users', label: 'Settings', icon: '⚙️' },
   ];
@@ -1306,6 +1307,9 @@ export default function Admin() {
 
         {/* ═══ STORY LAB ═══ */}
         {tab === 'storylab' && <StoryLab />}
+
+        {/* ═══ TASK BOARD ═══ */}
+        {tab === 'tasks' && <TaskBoard team={team} />}
 
         {/* ═══ EXPENSES ═══ */}
         {tab === 'expenses' && <ExpenseTracker />}
@@ -4627,6 +4631,317 @@ function ExpenseTracker() {
         <div className="text-[10px] uppercase tracking-wider text-[#f0a500]">Average Monthly Burn</div>
         <div className="mt-1 text-2xl font-bold text-[#f0a500]">CA${Math.round(totalAll / EXPENSE_DATA.length)}/mo</div>
       </div>
+    </div>
+  );
+}
+
+// ═══════════════════════════════════════════════════════
+// TASK BOARD — Daily Task Management
+// ═══════════════════════════════════════════════════════
+
+const ACTIVITIES = [
+  { key: 'content', label: 'Content', icon: '📝', color: '#9f7aea' },
+  { key: 'marketing', label: 'Marketing', icon: '📣', color: '#f0a500' },
+  { key: 'tech', label: 'Tech', icon: '💻', color: '#4299e1' },
+  { key: 'design', label: 'Design', icon: '🎨', color: '#f472b6' },
+  { key: 'ops', label: 'Operations', icon: '⚙️', color: '#48bb78' },
+  { key: 'outreach', label: 'Outreach', icon: '🤝', color: '#ed8936' },
+];
+
+const TASK_STATUS = [
+  { key: 'todo', label: 'To Do', color: '#6e6a63' },
+  { key: 'in_progress', label: 'In Progress', color: '#f0a500' },
+  { key: 'done', label: 'Done', color: '#48bb78' },
+  { key: 'blocked', label: 'Blocked', color: '#f3727f' },
+];
+
+function TaskBoard({ team = [] }) {
+  const [tasks, setTasks] = useState([]);
+  const [selectedDate, setSelectedDate] = useState(() => new Date().toISOString().slice(0, 10));
+  const [filterActivity, setFilterActivity] = useState('all');
+  const [filterAssignee, setFilterAssignee] = useState('all');
+  const [showAddForm, setShowAddForm] = useState(false);
+  const [emailPreview, setEmailPreview] = useState(null);
+
+  const [newTask, setNewTask] = useState({ title: '', description: '', activity: 'content', assignee: '', priority: 'normal', status: 'todo' });
+
+  useEffect(() => {
+    (async () => {
+      try {
+        if (!db) return;
+        const snap = await getDocs(collection(db, 'dailyTasks'));
+        const loaded = [];
+        snap.forEach(d => loaded.push({ id: d.id, ...d.data() }));
+        setTasks(loaded);
+      } catch {}
+    })();
+  }, []);
+
+  const saveTask = async (task) => {
+    try {
+      if (!db) return;
+      const id = task.id || `task_${Date.now()}_${Math.random().toString(36).slice(2, 6)}`;
+      const data = { ...task, id, updatedAt: new Date().toISOString() };
+      if (!task.createdAt) data.createdAt = new Date().toISOString();
+      await setDoc(doc(db, 'dailyTasks', id), data, { merge: true });
+      setTasks(prev => {
+        const exists = prev.find(t => t.id === id);
+        return exists ? prev.map(t => t.id === id ? data : t) : [...prev, data];
+      });
+      return data;
+    } catch (e) { console.error('Save task error:', e); }
+  };
+
+  const deleteTask = async (id) => {
+    try {
+      if (!db) return;
+      const { deleteDoc: fdel } = await import('firebase/firestore');
+      await fdel(doc(db, 'dailyTasks', id));
+      setTasks(prev => prev.filter(t => t.id !== id));
+    } catch {}
+  };
+
+  const dayTasks = tasks
+    .filter(t => t.dueDate === selectedDate)
+    .filter(t => filterActivity === 'all' || t.activity === filterActivity)
+    .filter(t => filterAssignee === 'all' || t.assignee === filterAssignee)
+    .sort((a, b) => {
+      const pri = { urgent: 0, high: 1, normal: 2, low: 3 };
+      return (pri[a.priority] || 2) - (pri[b.priority] || 2);
+    });
+
+  const byAssignee = {};
+  dayTasks.forEach(t => {
+    const key = t.assignee || 'Unassigned';
+    if (!byAssignee[key]) byAssignee[key] = [];
+    byAssignee[key].push(t);
+  });
+
+  const totalToday = dayTasks.length;
+  const doneToday = dayTasks.filter(t => t.status === 'done').length;
+  const inProgress = dayTasks.filter(t => t.status === 'in_progress').length;
+
+  const generateEmailBrief = () => {
+    const briefs = {};
+    dayTasks.forEach(t => {
+      const assignee = t.assignee || 'Unassigned';
+      if (!briefs[assignee]) briefs[assignee] = [];
+      briefs[assignee].push(t);
+    });
+    const emails = Object.entries(briefs).map(([email, memberTasks]) => {
+      const member = team.find(m => m.email === email);
+      const name = member?.name || email.split('@')[0] || email;
+      const actIcon = (key) => ACTIVITIES.find(a => a.key === key)?.icon || '';
+      const priFlag = (p) => p === 'urgent' ? ' [URGENT]' : p === 'high' ? ' [HIGH]' : '';
+      const taskLines = memberTasks.map((t, i) =>
+        `${i + 1}. ${actIcon(t.activity)} [${t.activity.toUpperCase()}]${priFlag(t.priority)} ${t.title}${t.description ? '\n   ' + t.description : ''}`
+      ).join('\n');
+      return {
+        to: email, name,
+        subject: `Your Tasks for ${new Date(selectedDate).toLocaleDateString('en-CA', { weekday: 'long', month: 'long', day: 'numeric' })} — My Sleepy Tale`,
+        body: `Good morning ${name}!\n\nHere are your tasks for today:\n\n${taskLines}\n\n---\nTotal: ${memberTasks.length} tasks\nPlease update status by end of day.\nReply to this email with your updates.\n\n— My Sleepy Tale Team`,
+      };
+    });
+    setEmailPreview(emails);
+  };
+
+  const copyEmail = (email) => {
+    navigator.clipboard.writeText(`To: ${email.to}\nSubject: ${email.subject}\n\n${email.body}`);
+    alert(`Copied email for ${email.name}`);
+  };
+
+  const shiftDate = (days) => {
+    const d = new Date(selectedDate);
+    d.setDate(d.getDate() + days);
+    setSelectedDate(d.toISOString().slice(0, 10));
+  };
+
+  const carryIncomplete = async () => {
+    const tomorrow = new Date(selectedDate);
+    tomorrow.setDate(tomorrow.getDate() + 1);
+    const target = tomorrow.toISOString().slice(0, 10);
+    const incomplete = dayTasks.filter(t => t.status !== 'done');
+    for (const t of incomplete) {
+      await saveTask({ ...t, id: null, dueDate: target, status: 'todo', createdAt: null });
+    }
+    alert(`${incomplete.length} tasks carried to ${target}`);
+  };
+
+  const handleAddTask = async () => {
+    if (!newTask.title.trim()) return;
+    await saveTask({ ...newTask, dueDate: selectedDate });
+    setNewTask({ title: '', description: '', activity: 'content', assignee: '', priority: 'normal', status: 'todo' });
+    setShowAddForm(false);
+  };
+
+  const handleUpdateStatus = async (task, status) => {
+    await saveTask({ ...task, status, completedAt: status === 'done' ? new Date().toISOString() : null });
+  };
+
+  return (
+    <div className="space-y-5">
+      {/* Date nav + stats */}
+      <div className="flex flex-wrap items-center justify-between gap-3">
+        <div className="flex items-center gap-2">
+          <button onClick={() => shiftDate(-1)} className="rounded-lg bg-white/5 px-3 py-2 text-xs font-bold text-[#a8a39a] hover:text-[#f5f0e8]">&larr;</button>
+          <input type="date" value={selectedDate} onChange={e => setSelectedDate(e.target.value)}
+            className="rounded-lg bg-white/5 px-3 py-2 text-sm font-bold text-[#f5f0e8] border border-white/10 outline-none" />
+          <button onClick={() => shiftDate(1)} className="rounded-lg bg-white/5 px-3 py-2 text-xs font-bold text-[#a8a39a] hover:text-[#f5f0e8]">&rarr;</button>
+          <button onClick={() => setSelectedDate(new Date().toISOString().slice(0, 10))} className="rounded-lg bg-[#f0a500]/15 px-3 py-2 text-xs font-bold text-[#f0a500]">Today</button>
+        </div>
+        <div className="flex items-center gap-3 text-xs">
+          <span className="text-[#6e6a63]">{totalToday} tasks</span>
+          <span className="text-[#f0a500]">{inProgress} in progress</span>
+          <span className="text-[#48bb78]">{doneToday} done</span>
+          {totalToday > 0 && <span className="text-[#f5f0e8] font-bold">{Math.round(doneToday / totalToday * 100)}%</span>}
+        </div>
+      </div>
+
+      {/* Filters + actions */}
+      <div className="flex flex-wrap gap-2">
+        <select value={filterActivity} onChange={e => setFilterActivity(e.target.value)}
+          className="rounded-lg bg-white/5 px-3 py-2 text-xs text-[#f5f0e8] border border-white/10 outline-none">
+          <option value="all">All Activities</option>
+          {ACTIVITIES.map(a => <option key={a.key} value={a.key}>{a.icon} {a.label}</option>)}
+        </select>
+        <select value={filterAssignee} onChange={e => setFilterAssignee(e.target.value)}
+          className="rounded-lg bg-white/5 px-3 py-2 text-xs text-[#f5f0e8] border border-white/10 outline-none">
+          <option value="all">All Team</option>
+          {team.filter(m => m.status === 'active').map(m => <option key={m.email} value={m.email}>{m.email.split('@')[0]}</option>)}
+        </select>
+        <div className="flex-1" />
+        <button onClick={() => setShowAddForm(!showAddForm)} className="rounded-lg bg-[#f0a500] px-4 py-2 text-xs font-bold text-[#0f0f17]">+ Add Task</button>
+        <button onClick={generateEmailBrief} className="rounded-lg bg-white/5 px-4 py-2 text-xs font-bold text-[#f0a500] ring-1 ring-[#f0a500]/30">Morning Brief</button>
+        <button onClick={carryIncomplete} className="rounded-lg bg-white/5 px-3 py-2 text-xs text-[#a8a39a] ring-1 ring-white/10">Carry &rarr;</button>
+      </div>
+
+      {/* Add task form */}
+      {showAddForm && (
+        <div className="rounded-2xl bg-white/5 p-5 ring-1 ring-white/10 space-y-3">
+          <input value={newTask.title} onChange={e => setNewTask({ ...newTask, title: e.target.value })} placeholder="Task title..."
+            className="w-full rounded-lg bg-white/5 px-4 py-3 text-sm text-[#f5f0e8] border border-white/10 outline-none placeholder:text-[#4a4a5a]"
+            onKeyDown={e => { if (e.key === 'Enter') handleAddTask(); }} />
+          <textarea value={newTask.description} onChange={e => setNewTask({ ...newTask, description: e.target.value })} placeholder="Description (optional)..."
+            className="w-full rounded-lg bg-white/5 px-4 py-2 text-xs text-[#c8c3ba] border border-white/10 outline-none resize-none h-16 placeholder:text-[#4a4a5a]" />
+          <div className="flex flex-wrap gap-2">
+            <select value={newTask.activity} onChange={e => setNewTask({ ...newTask, activity: e.target.value })}
+              className="rounded-lg bg-white/5 px-3 py-2 text-xs text-[#f5f0e8] border border-white/10 outline-none">
+              {ACTIVITIES.map(a => <option key={a.key} value={a.key}>{a.icon} {a.label}</option>)}
+            </select>
+            <select value={newTask.assignee} onChange={e => setNewTask({ ...newTask, assignee: e.target.value })}
+              className="rounded-lg bg-white/5 px-3 py-2 text-xs text-[#f5f0e8] border border-white/10 outline-none">
+              <option value="">Assign to...</option>
+              {team.filter(m => m.status === 'active').map(m => <option key={m.email} value={m.email}>{m.email.split('@')[0]}</option>)}
+            </select>
+            <select value={newTask.priority} onChange={e => setNewTask({ ...newTask, priority: e.target.value })}
+              className="rounded-lg bg-white/5 px-3 py-2 text-xs text-[#f5f0e8] border border-white/10 outline-none">
+              <option value="urgent">Urgent</option>
+              <option value="high">High</option>
+              <option value="normal">Normal</option>
+              <option value="low">Low</option>
+            </select>
+            <button onClick={handleAddTask} className="rounded-lg bg-[#f0a500] px-6 py-2 text-xs font-bold text-[#0f0f17]">Add</button>
+            <button onClick={() => setShowAddForm(false)} className="rounded-lg bg-white/5 px-4 py-2 text-xs text-[#6e6a63]">Cancel</button>
+          </div>
+        </div>
+      )}
+
+      {/* Empty state */}
+      {Object.keys(byAssignee).length === 0 && (
+        <div className="rounded-2xl bg-white/5 p-10 text-center ring-1 ring-white/5">
+          <p className="text-3xl mb-2">📋</p>
+          <p className="text-sm text-[#6e6a63]">No tasks for {selectedDate}</p>
+          <button onClick={() => setShowAddForm(true)} className="mt-3 rounded-lg bg-[#f0a500]/15 px-4 py-2 text-xs font-bold text-[#f0a500]">Add first task</button>
+        </div>
+      )}
+
+      {/* Task list grouped by assignee */}
+      {Object.entries(byAssignee).map(([assignee, memberTasks]) => {
+        const member = team.find(m => m.email === assignee);
+        const name = member?.name || assignee.split('@')[0] || 'Unassigned';
+        const memberDone = memberTasks.filter(t => t.status === 'done').length;
+        return (
+          <div key={assignee} className="rounded-2xl bg-white/5 ring-1 ring-white/5 overflow-hidden">
+            <div className="flex items-center justify-between px-5 py-3 border-b border-white/5">
+              <div className="flex items-center gap-2">
+                <span className="text-sm">👤</span>
+                <span className="text-sm font-bold text-[#f5f0e8]">{name}</span>
+                <span className="text-[10px] text-[#6e6a63]">{assignee}</span>
+              </div>
+              <span className="text-[10px] font-bold text-[#48bb78]">{memberDone}/{memberTasks.length} done</span>
+            </div>
+            <div className="divide-y divide-white/5">
+              {memberTasks.map(task => {
+                const act = ACTIVITIES.find(a => a.key === task.activity);
+                const sta = TASK_STATUS.find(s => s.key === task.status);
+                return (
+                  <div key={task.id} className={`flex items-start gap-3 px-5 py-3 ${task.status === 'done' ? 'opacity-50' : ''}`}>
+                    <button onClick={() => {
+                      const order = ['todo', 'in_progress', 'done'];
+                      const next = order[(order.indexOf(task.status) + 1) % order.length];
+                      handleUpdateStatus(task, next);
+                    }} className="mt-0.5 shrink-0 grid h-5 w-5 place-items-center rounded-full transition"
+                      style={{ border: `2px solid ${sta?.color}`, background: task.status === 'done' ? '#48bb78' : 'transparent' }}>
+                      {task.status === 'done' && <span className="text-[10px] text-white">✓</span>}
+                    </button>
+                    <div className="flex-1 min-w-0">
+                      <div className="flex items-center gap-2 flex-wrap">
+                        <span className={`text-sm font-bold ${task.status === 'done' ? 'line-through text-[#6e6a63]' : 'text-[#f5f0e8]'}`}>{task.title}</span>
+                        {task.priority === 'urgent' && <span className="text-[9px] bg-[#f3727f]/20 text-[#f3727f] px-1.5 rounded-full font-bold">URGENT</span>}
+                        {task.priority === 'high' && <span className="text-[9px] bg-[#f0a500]/20 text-[#f0a500] px-1.5 rounded-full font-bold">HIGH</span>}
+                      </div>
+                      {task.description && <p className="text-[11px] text-[#6e6a63] mt-0.5">{task.description}</p>}
+                      <div className="flex items-center gap-2 mt-1">
+                        <span className="text-[9px] px-2 py-0.5 rounded-full font-bold" style={{ background: (act?.color || '#666') + '22', color: act?.color || '#666' }}>
+                          {act?.icon} {act?.label}
+                        </span>
+                        <span className="text-[9px] px-2 py-0.5 rounded-full font-bold" style={{ background: (sta?.color || '#666') + '22', color: sta?.color || '#666' }}>
+                          {sta?.label}
+                        </span>
+                      </div>
+                    </div>
+                    <button onClick={() => { if (confirm('Delete?')) deleteTask(task.id); }}
+                      className="text-[10px] text-[#6e6a63] hover:text-[#f3727f] mt-1">✕</button>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+        );
+      })}
+
+      {/* Email preview modal */}
+      {emailPreview && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 p-4" onClick={() => setEmailPreview(null)}>
+          <div className="max-w-2xl w-full max-h-[80vh] overflow-y-auto rounded-2xl bg-[#1a1a28] p-6 ring-1 ring-white/10" onClick={e => e.stopPropagation()}>
+            <div className="flex items-center justify-between mb-4">
+              <h3 className="text-lg font-bold text-[#f0a500]">Morning Brief — {selectedDate}</h3>
+              <button onClick={() => setEmailPreview(null)} className="text-[#6e6a63] hover:text-[#f5f0e8]">✕</button>
+            </div>
+            {emailPreview.length === 0 && <p className="text-sm text-[#6e6a63]">No tasks assigned for today.</p>}
+            {emailPreview.map((email, i) => (
+              <div key={i} className="mb-4 rounded-xl bg-white/5 p-4 ring-1 ring-white/5">
+                <div className="flex items-center justify-between mb-2">
+                  <div>
+                    <p className="text-sm font-bold text-[#f5f0e8]">{email.name}</p>
+                    <p className="text-[10px] text-[#6e6a63]">{email.to}</p>
+                  </div>
+                  <button onClick={() => copyEmail(email)} className="rounded-lg bg-[#f0a500] px-3 py-1.5 text-[10px] font-bold text-[#0f0f17]">Copy</button>
+                </div>
+                <p className="text-[10px] font-bold text-[#f0a500] mb-1">{email.subject}</p>
+                <pre className="text-[11px] text-[#c8c3ba] whitespace-pre-wrap font-sans leading-relaxed">{email.body}</pre>
+              </div>
+            ))}
+            <button onClick={() => {
+              emailPreview.forEach(e => {
+                window.open(`mailto:${e.to}?subject=${encodeURIComponent(e.subject)}&body=${encodeURIComponent(e.body)}`);
+              });
+            }} className="w-full rounded-lg bg-[#f0a500] py-3 text-sm font-bold text-[#0f0f17] mt-2">
+              Open All in Email Client
+            </button>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
