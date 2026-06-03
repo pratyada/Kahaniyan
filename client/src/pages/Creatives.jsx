@@ -1,8 +1,9 @@
 // Marketing Creatives — print-ready designs in My Sleepy Tale brand.
 // mysleepytale.com/creatives
 
-import { useState } from 'react';
+import { useState, useRef, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { toPng } from 'html-to-image';
 import PageTransition from '../components/PageTransition.jsx';
 
 const CREATIVES = [
@@ -406,7 +407,26 @@ const COMPONENTS = {
 
 export default function Creatives() {
   const [active, setActive] = useState('flyer');
+  const [downloading, setDownloading] = useState(false);
+  const creativeRef = useRef(null);
   const ActiveComponent = COMPONENTS[active];
+
+  const downloadPng = useCallback(async () => {
+    if (!creativeRef.current) return;
+    setDownloading(true);
+    try {
+      // Run twice — first pass warms up fonts/styles, second is clean
+      await toPng(creativeRef.current, { pixelRatio: 3 });
+      const dataUrl = await toPng(creativeRef.current, { pixelRatio: 3 });
+      const link = document.createElement('a');
+      link.download = `mysleepytale-${active}.png`;
+      link.href = dataUrl;
+      link.click();
+    } catch (e) {
+      console.error('Download failed:', e);
+    }
+    setDownloading(false);
+  }, [active]);
 
   return (
     <PageTransition>
@@ -436,21 +456,20 @@ export default function Creatives() {
         <div className="flex justify-center overflow-x-auto">
           <AnimatePresence mode="wait">
             <motion.div key={active} initial={{ opacity: 0, scale: 0.97 }} animate={{ opacity: 1, scale: 1 }} exit={{ opacity: 0, scale: 0.97 }} transition={{ duration: 0.2 }}
+              ref={creativeRef}
               style={{ boxShadow: '0 8px 60px rgba(0,0,0,0.4), 0 0 0 1px rgba(255,255,255,0.05)' }}>
               <ActiveComponent />
             </motion.div>
           </AnimatePresence>
         </div>
 
-        {/* Export instructions */}
-        <div className="mt-8 rounded-2xl bg-white/5 ring-1 ring-white/5 p-5 max-w-lg mx-auto">
-          <p className="text-xs font-bold text-ink mb-2">How to export</p>
-          <ol className="text-[11px] text-ink-muted space-y-1 list-decimal list-inside">
-            <li>Select a creative above</li>
-            <li>Screenshot it (Cmd+Shift+4 on Mac, or use browser DevTools)</li>
-            <li>Replace QR placeholder with a real QR from any QR generator</li>
-            <li>Print or post on social media</li>
-          </ol>
+        {/* Download button */}
+        <div className="mt-8 text-center">
+          <button onClick={downloadPng} disabled={downloading}
+            className="rounded-full bg-gold px-8 py-3 text-sm font-bold text-bg-base shadow-glow transition hover:brightness-110 active:scale-95 disabled:opacity-50">
+            {downloading ? 'Generating...' : `Download "${CREATIVES.find(c => c.id === active)?.label}" as PNG`}
+          </button>
+          <p className="text-[10px] text-ink-muted mt-3">High-res 3x — print-ready quality</p>
         </div>
       </div>
     </PageTransition>
