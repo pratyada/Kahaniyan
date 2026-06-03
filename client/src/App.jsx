@@ -26,6 +26,7 @@ import CuratorPage from './pages/CuratorPage.jsx';
 import Curators from './pages/Curators.jsx';
 import SeriesDetail from './pages/SeriesDetail.jsx';
 import MyTasks from './pages/MyTasks.jsx';
+import SearchPage from './pages/Search.jsx';
 import BottomNav from './components/BottomNav.jsx';
 import BadgeUnlockToast from './components/BadgeUnlockToast.jsx';
 import PlayerBar from './components/PlayerBar.jsx';
@@ -137,6 +138,7 @@ function Shell() {
             <Route path="/player" element={<Player />} />
             <Route path="/library" element={<Library />} />
             <Route path="/creation" element={<Library />} />
+            <Route path="/search" element={<SearchPage />} />
             <Route path="/radio" element={<Radio />} />
             <Route path="/blog" element={<Blog />} />
             <Route path="/lessons" element={<CulturalLessons />} />

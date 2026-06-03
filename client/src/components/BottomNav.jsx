@@ -4,10 +4,11 @@ import { useState, useEffect } from 'react';
 import { NavLink } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { useAuth } from '../hooks/useAuth.jsx';
-import { Moon, Feather, Radio, BookOpen, User, Sparkles } from 'lucide-react';
+import { Moon, Search, Feather, Radio, BookOpen, User, Sparkles } from 'lucide-react';
 
 const TAB_KEYS = [
   { to: '/', key: 'home', Icon: Moon },
+  { to: '/search', key: 'search', Icon: Search },
   { to: '/creation', key: 'creation', Icon: Feather, labelOverride: 'Create' },
   { to: '/radio', key: 'radio', Icon: Radio },
   { to: '/blog', key: 'blog', Icon: BookOpen },
