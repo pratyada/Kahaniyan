@@ -1,4 +1,4 @@
-// Marketing Creatives — preview & screenshot print-ready designs.
+// Marketing Creatives — print-ready designs in My Sleepy Tale brand.
 // mysleepytale.com/creatives
 
 import { useState } from 'react';
@@ -6,130 +6,127 @@ import { motion, AnimatePresence } from 'framer-motion';
 import PageTransition from '../components/PageTransition.jsx';
 
 const CREATIVES = [
-  { id: 'pamphlet', label: 'Pamphlet', icon: '📄' },
+  { id: 'flyer', label: 'Flyer / Poster', icon: '📄' },
   { id: 'standee', label: 'Event Standee', icon: '🪧' },
   { id: 'social', label: 'Social Post', icon: '📱' },
   { id: 'sticker', label: 'Car Sticker', icon: '🚗' },
-  { id: 'house', label: 'House Standee', icon: '🏠' },
+  { id: 'house', label: 'House Sign', icon: '🏠' },
+  { id: 'pamphlet', label: 'Tri-Fold Pamphlet', icon: '📰' },
+  { id: 'tvad', label: 'TV / Digital Ad', icon: '📺' },
 ];
 
-function QRPlaceholder({ size = 120, dark = false }) {
+// ─── Shared brand elements ───
+
+const NAVY = '#1a1040';
+const NAVY_DARK = '#0f0a2a';
+const BLACK = '#0a0a0f';
+const GOLD = '#f0a500';
+const GOLD_LIGHT = '#ffd98a';
+const BLUE = '#5ba4d9';
+const CREAM = '#f5f0e8';
+const MUTED = '#8a8494';
+const SERIF = "'Georgia', 'Fraunces', 'Times New Roman', serif";
+const SANS = "'Helvetica Neue', 'Arial', sans-serif";
+
+function Moon({ size = 48 }) {
   return (
-    <div style={{ width: size, height: size, background: dark ? '#f5f0e8' : '#fff', borderRadius: 12, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', position: 'relative', overflow: 'hidden' }}>
-      {/* QR grid pattern */}
-      <div style={{ position: 'absolute', inset: 8, display: 'grid', gridTemplateColumns: 'repeat(7, 1fr)', gridTemplateRows: 'repeat(7, 1fr)', gap: 2 }}>
-        {Array.from({ length: 49 }).map((_, i) => {
-          const row = Math.floor(i / 7);
-          const col = i % 7;
-          const isCorner = (row < 3 && col < 3) || (row < 3 && col > 3) || (row > 3 && col < 3);
-          const fill = isCorner || Math.random() > 0.5;
-          return <div key={i} style={{ background: fill ? (dark ? '#0a0a0f' : '#1a1a28') : 'transparent', borderRadius: 1 }} />;
-        })}
-      </div>
-      <span style={{ position: 'relative', zIndex: 1, fontSize: 9, fontWeight: 800, color: dark ? '#0a0a0f' : '#1a1a28', letterSpacing: 2, textTransform: 'uppercase', background: dark ? '#f5f0e8' : '#fff', padding: '2px 6px' }}>QR CODE</span>
+    <svg width={size} height={size} viewBox="0 0 64 64" style={{ display: 'block', margin: '0 auto' }}>
+      <defs>
+        <radialGradient id="moonG" cx="35%" cy="35%" r="65%">
+          <stop offset="0%" stopColor="#ffd98a" />
+          <stop offset="60%" stopColor="#f0a500" />
+          <stop offset="100%" stopColor="#b87f00" />
+        </radialGradient>
+      </defs>
+      <circle cx="30" cy="28" r="20" fill="url(#moonG)" />
+      <circle cx="40" cy="20" r="18" fill={NAVY} />
+    </svg>
+  );
+}
+
+function Stars({ style = {} }) {
+  return (
+    <div style={{ position: 'absolute', inset: 0, pointerEvents: 'none', ...style }}>
+      {[
+        { t: '12%', l: '8%', s: 2.5 }, { t: '8%', l: '25%', s: 1.5 }, { t: '18%', l: '72%', s: 2 },
+        { t: '6%', l: '85%', s: 3 }, { t: '22%', l: '45%', s: 1.5 }, { t: '15%', l: '60%', s: 2 },
+        { t: '28%', l: '15%', s: 1.5 }, { t: '5%', l: '50%', s: 2 }, { t: '25%', l: '90%', s: 1.5 },
+        { t: '10%', l: '38%', s: 2.5 }, { t: '20%', l: '78%', s: 1.5 },
+      ].map((s, i) => (
+        <div key={i} style={{ position: 'absolute', top: s.t, left: s.l, width: s.s, height: s.s, borderRadius: '50%', background: '#fff', opacity: 0.5 + Math.random() * 0.3 }} />
+      ))}
     </div>
   );
 }
 
-function Stars({ count = 5 }) {
-  return <span style={{ color: '#f0a500', fontSize: 11, letterSpacing: 1 }}>{'★'.repeat(count)}</span>;
+function QRCard({ size = 140, label = 'SCAN TO START' }) {
+  return (
+    <div style={{ background: '#fff', borderRadius: 16, padding: 20, display: 'inline-flex', flexDirection: 'column', alignItems: 'center', gap: 10, boxShadow: '0 4px 30px rgba(0,0,0,0.3)' }}>
+      <p style={{ margin: 0, fontSize: 11, fontWeight: 700, letterSpacing: 3, color: '#666', fontFamily: SANS }}>{label}</p>
+      <div style={{ width: size, height: size, background: '#f8f8f8', border: '2px solid #e0e0e0', borderRadius: 8, display: 'grid', gridTemplateColumns: 'repeat(9, 1fr)', gridTemplateRows: 'repeat(9, 1fr)', gap: 1, padding: 6 }}>
+        {Array.from({ length: 81 }).map((_, i) => {
+          const r = Math.floor(i / 9), c = i % 9;
+          const isCorner = (r < 3 && c < 3) || (r < 3 && c > 5) || (r > 5 && c < 3);
+          const fill = isCorner || [4, 13, 22, 31, 40, 49, 58, 67, 76].includes(i) || Math.random() > 0.55;
+          return <div key={i} style={{ background: fill ? '#1a1a28' : 'transparent', borderRadius: 0.5 }} />;
+        })}
+      </div>
+      <p style={{ margin: 0, fontSize: 13, fontWeight: 700, color: '#333', fontFamily: SANS }}>mysleepytale.com</p>
+    </div>
+  );
 }
 
-// ━━━ 1. PAMPHLET ━━━
-function Pamphlet() {
+function BrandName({ size = 18 }) {
   return (
-    <div style={{ width: 900, display: 'flex', fontFamily: "'Fraunces', Georgia, serif" }}>
-      {/* Front Panel */}
-      <div style={{ width: 300, minHeight: 420, background: 'linear-gradient(160deg, #0a0a0f 0%, #1a1a28 50%, #0f0f1a 100%)', padding: 40, display: 'flex', flexDirection: 'column', justifyContent: 'space-between', position: 'relative', overflow: 'hidden', borderRadius: '16px 0 0 16px' }}>
-        <div style={{ position: 'absolute', top: -60, right: -60, width: 200, height: 200, borderRadius: '50%', background: 'radial-gradient(circle, #f0a50020 0%, transparent 70%)' }} />
-        <div style={{ position: 'absolute', bottom: -40, left: -40, width: 150, height: 150, borderRadius: '50%', background: 'radial-gradient(circle, #9f7aea10 0%, transparent 70%)' }} />
-        <div>
-          <div style={{ fontSize: 48, marginBottom: 8 }}>🌙</div>
-          <h1 style={{ fontSize: 28, color: '#f0a500', lineHeight: 1.2, margin: 0, fontWeight: 800 }}>My Sleepy Tale</h1>
-          <div style={{ width: 40, height: 3, background: '#f0a500', borderRadius: 2, margin: '16px 0' }} />
-          <p style={{ fontSize: 15, color: '#f5f0e8', lineHeight: 1.5, margin: 0, fontFamily: 'system-ui, sans-serif' }}>Bedtime Stories That Teach Roots & Values</p>
-          <p style={{ fontSize: 11, color: '#6e6a63', marginTop: 12, fontFamily: 'system-ui, sans-serif' }}>A bedtime story web space for families who want their children to learn about their culture.</p>
-        </div>
-        <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
-          <QRPlaceholder size={70} />
-          <div>
-            <p style={{ fontSize: 10, color: '#f0a500', margin: 0, fontFamily: 'system-ui, sans-serif', fontWeight: 700 }}>SCAN TO EXPLORE</p>
-            <p style={{ fontSize: 9, color: '#6e6a63', margin: 0, fontFamily: 'system-ui, sans-serif' }}>mysleepytale.com</p>
-          </div>
-        </div>
+    <p style={{ margin: 0, fontFamily: SERIF, fontSize: size, color: CREAM, letterSpacing: 0.5 }}>
+      My <span style={{ fontStyle: 'italic', color: GOLD_LIGHT }}>Sleepy</span> Tale
+    </p>
+  );
+}
+
+function GoldButton({ children, small = false }) {
+  return (
+    <div style={{ display: 'inline-flex', alignItems: 'center', gap: 6, background: GOLD, borderRadius: 999, padding: small ? '8px 20px' : '12px 32px', fontFamily: SANS, fontSize: small ? 12 : 14, fontWeight: 700, color: BLACK }}>
+      <span style={{ fontSize: small ? 12 : 14 }}>✨</span> {children}
+    </div>
+  );
+}
+
+function CurvedDivider() {
+  return (
+    <svg viewBox="0 0 800 80" style={{ width: '100%', display: 'block', marginTop: -1 }} preserveAspectRatio="none">
+      <path d="M0,0 C200,80 600,80 800,0 L800,80 L0,80 Z" fill={BLACK} />
+    </svg>
+  );
+}
+
+// ━━━ 1. FLYER / POSTER ━━━
+function Flyer() {
+  return (
+    <div style={{ width: 480, height: 680, display: 'flex', flexDirection: 'column', overflow: 'hidden', borderRadius: 4 }}>
+      {/* Navy top */}
+      <div style={{ background: `linear-gradient(180deg, ${NAVY} 0%, ${NAVY_DARK} 100%)`, padding: '48px 40px 0', textAlign: 'center', position: 'relative', flex: '0 0 auto' }}>
+        <Stars />
+        <Moon size={56} />
+        <div style={{ marginTop: 12 }}><BrandName size={20} /></div>
+        <h1 style={{ fontFamily: SERIF, fontSize: 34, color: '#fff', fontWeight: 800, lineHeight: 1.2, margin: '20px 0 0' }}>
+          Help your baby<br />
+          <span style={{ color: GOLD }}>sleep</span> <span style={{ color: GOLD }}>&</span> <span style={{ color: BLUE }}>learn</span> with<br />
+          creative stories
+        </h1>
+        <p style={{ fontFamily: SERIF, fontStyle: 'italic', fontSize: 14, color: GOLD_LIGHT, margin: '16px 0 24px', opacity: 0.9 }}>
+          Personalized bedtime tales, made just<br />for your little one.
+        </p>
+        <CurvedDivider />
       </div>
-
-      {/* Inside Panel 1 */}
-      <div style={{ width: 300, minHeight: 420, background: '#12121c', padding: 32, display: 'flex', flexDirection: 'column', gap: 20, borderLeft: '1px solid #1a1a2840' }}>
-        <div style={{ textAlign: 'center', paddingBottom: 16, borderBottom: '1px solid #ffffff08' }}>
-          <p style={{ fontSize: 11, color: '#f0a500', fontWeight: 700, letterSpacing: 2, textTransform: 'uppercase', margin: 0, fontFamily: 'system-ui, sans-serif' }}>BY THE NUMBERS</p>
-          <div style={{ display: 'flex', justifyContent: 'center', gap: 20, marginTop: 16 }}>
-            {[{ n: '146+', l: 'Stories' }, { n: '49', l: 'Series' }, { n: '11', l: 'Traditions' }].map(s => (
-              <div key={s.l} style={{ textAlign: 'center' }}>
-                <div style={{ fontSize: 24, fontWeight: 800, color: '#f0a500' }}>{s.n}</div>
-                <div style={{ fontSize: 9, color: '#6e6a63', fontFamily: 'system-ui, sans-serif' }}>{s.l}</div>
-              </div>
-            ))}
-          </div>
-        </div>
-        <div>
-          <p style={{ fontSize: 11, color: '#f0a500', fontWeight: 700, letterSpacing: 2, textTransform: 'uppercase', margin: '0 0 12px', fontFamily: 'system-ui, sans-serif' }}>WHY PARENTS LOVE IT</p>
-          {[
-            { icon: '🪷', title: 'Cultural Roots', desc: 'Stories from Hindu, Islamic, Catholic, Sikh, Filipino, Hispanic traditions & more' },
-            { icon: '💛', title: 'Values That Stick', desc: 'Every story teaches kindness, courage, gratitude, or empathy' },
-            { icon: '🎧', title: 'Audio Narration', desc: 'Professional voices. Press play, dim the lights, sleep.' },
-            { icon: '✨', title: 'Personalized', desc: "Your child's name appears inside every story" },
-          ].map(b => (
-            <div key={b.title} style={{ display: 'flex', gap: 10, marginBottom: 12 }}>
-              <span style={{ fontSize: 18, flexShrink: 0 }}>{b.icon}</span>
-              <div>
-                <p style={{ fontSize: 11, fontWeight: 700, color: '#f5f0e8', margin: 0, fontFamily: 'system-ui, sans-serif' }}>{b.title}</p>
-                <p style={{ fontSize: 9, color: '#6e6a63', margin: '2px 0 0', lineHeight: 1.4, fontFamily: 'system-ui, sans-serif' }}>{b.desc}</p>
-              </div>
-            </div>
-          ))}
-        </div>
-      </div>
-
-      {/* Inside Panel 2 / Back */}
-      <div style={{ width: 300, minHeight: 420, background: 'linear-gradient(160deg, #12121c 0%, #0a0a0f 100%)', padding: 32, display: 'flex', flexDirection: 'column', justifyContent: 'space-between', borderRadius: '0 16px 16px 0', borderLeft: '1px solid #1a1a2840' }}>
-        <div>
-          <p style={{ fontSize: 11, color: '#f0a500', fontWeight: 700, letterSpacing: 2, textTransform: 'uppercase', margin: '0 0 14px', fontFamily: 'system-ui, sans-serif' }}>STORY CATEGORIES</p>
-          <div style={{ display: 'flex', flexWrap: 'wrap', gap: 6 }}>
-            {[
-              { icon: '🚀', label: 'Space', color: '#4299e1' },
-              { icon: '🔢', label: 'Maths', color: '#48bb78' },
-              { icon: '💪', label: 'Motivation', color: '#f0a500' },
-              { icon: '🪷', label: 'Beliefs', color: '#9f7aea' },
-              { icon: '🌿', label: 'Nature', color: '#f472b6' },
-              { icon: '🏛️', label: 'History', color: '#ed8936' },
-              { icon: '🔬', label: 'Science', color: '#f3727f' },
-              { icon: '🗺️', label: 'Adventure', color: '#63b3ed' },
-              { icon: '💛', label: 'Kindness', color: '#fbd38d' },
-              { icon: '📚', label: 'Series', color: '#b794f4' },
-            ].map(c => (
-              <span key={c.label} style={{ fontSize: 9, padding: '4px 10px', borderRadius: 20, fontWeight: 700, background: c.color + '18', color: c.color, fontFamily: 'system-ui, sans-serif' }}>
-                {c.icon} {c.label}
-              </span>
-            ))}
-          </div>
-        </div>
-
-        <div style={{ padding: '16px 0', borderTop: '1px solid #ffffff08', borderBottom: '1px solid #ffffff08' }}>
-          <p style={{ fontSize: 11, color: '#f5f0e8', fontWeight: 700, margin: '0 0 4px', fontFamily: 'system-ui, sans-serif' }}>How It Works</p>
-          {['Tell us about your child', 'Pick a story', 'Press play & sleep'].map((s, i) => (
-            <div key={i} style={{ display: 'flex', alignItems: 'center', gap: 8, marginTop: 8 }}>
-              <span style={{ width: 20, height: 20, borderRadius: '50%', background: '#f0a50020', color: '#f0a500', fontSize: 10, fontWeight: 800, display: 'grid', placeItems: 'center', flexShrink: 0 }}>{i + 1}</span>
-              <span style={{ fontSize: 10, color: '#a8a39a', fontFamily: 'system-ui, sans-serif' }}>{s}</span>
-            </div>
-          ))}
-        </div>
-
-        <div style={{ textAlign: 'center' }}>
-          <p style={{ fontSize: 10, color: '#f5f0e8', margin: '0 0 4px', fontWeight: 700, fontFamily: 'system-ui, sans-serif' }}>📸 @mysleepytale_official</p>
-          <p style={{ fontSize: 10, color: '#6e6a63', margin: '0 0 2px', fontFamily: 'system-ui, sans-serif' }}>📧 hello@mysleepytale.com</p>
-          <p style={{ fontSize: 10, color: '#6e6a63', margin: 0, fontFamily: 'system-ui, sans-serif' }}>🌐 mysleepytale.com</p>
-          <p style={{ fontSize: 8, color: '#4a4a5a', marginTop: 8, fontFamily: 'system-ui, sans-serif' }}>Made with love in Toronto, Canada 🇨🇦</p>
+      {/* Black bottom */}
+      <div style={{ background: BLACK, flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', padding: '0 40px 36px', gap: 16 }}>
+        <QRCard size={120} />
+        <p style={{ fontFamily: SERIF, fontSize: 18, fontWeight: 700, color: GOLD, margin: 0, fontStyle: 'italic' }}>Scan. Tap. Bedtime magic.</p>
+        <GoldButton>Free to start</GoldButton>
+        <div style={{ display: 'flex', gap: 24, fontSize: 12, color: MUTED, fontFamily: SANS }}>
+          <span>Ages 0-5</span>
+          <span>A new story every night</span>
         </div>
       </div>
     </div>
@@ -139,105 +136,76 @@ function Pamphlet() {
 // ━━━ 2. EVENT STANDEE ━━━
 function EventStandee() {
   return (
-    <div style={{ width: 320, height: 800, background: 'linear-gradient(180deg, #0a0a0f 0%, #12121c 40%, #0f0f1a 70%, #0a0a0f 100%)', borderRadius: 20, padding: '48px 32px 40px', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'space-between', position: 'relative', overflow: 'hidden', fontFamily: "'Fraunces', Georgia, serif" }}>
-      {/* Decorative circles */}
-      <div style={{ position: 'absolute', top: -80, right: -80, width: 250, height: 250, borderRadius: '50%', background: 'radial-gradient(circle, #f0a50012 0%, transparent 70%)' }} />
-      <div style={{ position: 'absolute', bottom: 200, left: -100, width: 200, height: 200, borderRadius: '50%', background: 'radial-gradient(circle, #9f7aea08 0%, transparent 70%)' }} />
-
-      {/* Top */}
-      <div style={{ textAlign: 'center', position: 'relative' }}>
-        <div style={{ fontSize: 56, marginBottom: 8 }}>🌙</div>
-        <h1 style={{ fontSize: 32, color: '#f0a500', margin: 0, fontWeight: 800, lineHeight: 1.1 }}>My Sleepy<br />Tale</h1>
-        <div style={{ width: 50, height: 3, background: '#f0a500', borderRadius: 2, margin: '16px auto' }} />
-      </div>
-
-      {/* Middle */}
-      <div style={{ textAlign: 'center', position: 'relative' }}>
-        <p style={{ fontSize: 17, color: '#f5f0e8', fontWeight: 600, lineHeight: 1.4, margin: 0, fontFamily: 'system-ui, sans-serif' }}>
-          Bedtime Stories from<br />
-          <span style={{ color: '#f0a500', fontSize: 20, fontWeight: 800 }}>11 Cultural Traditions</span>
+    <div style={{ width: 340, height: 850, display: 'flex', flexDirection: 'column', overflow: 'hidden', borderRadius: 4 }}>
+      {/* Navy top */}
+      <div style={{ background: `linear-gradient(180deg, ${NAVY} 0%, ${NAVY_DARK} 100%)`, padding: '48px 28px 0', textAlign: 'center', position: 'relative' }}>
+        <Stars />
+        <Moon size={64} />
+        <div style={{ marginTop: 12 }}><BrandName size={22} /></div>
+        <h1 style={{ fontFamily: SERIF, fontSize: 28, color: '#fff', fontWeight: 800, lineHeight: 1.25, margin: '24px 0 0' }}>
+          Bedtime stories from<br />
+          <span style={{ color: GOLD }}>11 cultural traditions</span>
+        </h1>
+        <p style={{ fontFamily: SERIF, fontStyle: 'italic', fontSize: 13, color: GOLD_LIGHT, margin: '12px 0 0', opacity: 0.9 }}>
+          Hindu · Islamic · Catholic · Filipino · Hispanic<br />Sikh · Buddhist · Jewish · Christian & more
         </p>
-        <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center', gap: 8, marginTop: 20 }}>
-          {['🕉️ Hindu', '☪️ Islamic', '✝️ Catholic', '🇵🇭 Filipino', '💃 Hispanic', '☸️ Sikh', '☸️ Buddhist', '✡️ Jewish', '🌍 Universal'].map(t => (
-            <span key={t} style={{ fontSize: 10, padding: '5px 10px', borderRadius: 20, background: '#ffffff08', color: '#a8a39a', fontFamily: 'system-ui, sans-serif', fontWeight: 600 }}>{t}</span>
-          ))}
-        </div>
-
-        <div style={{ display: 'flex', justifyContent: 'center', gap: 24, marginTop: 24, padding: '16px 0', borderTop: '1px solid #ffffff08', borderBottom: '1px solid #ffffff08' }}>
+        <div style={{ display: 'flex', justifyContent: 'center', gap: 20, margin: '20px 0 6px' }}>
           {[{ n: '146+', l: 'Stories' }, { n: '49', l: 'Series' }, { n: '3', l: 'Languages' }].map(s => (
             <div key={s.l} style={{ textAlign: 'center' }}>
-              <div style={{ fontSize: 22, fontWeight: 800, color: '#f0a500' }}>{s.n}</div>
-              <div style={{ fontSize: 8, color: '#6e6a63', fontFamily: 'system-ui, sans-serif', textTransform: 'uppercase', letterSpacing: 1 }}>{s.l}</div>
+              <div style={{ fontSize: 26, fontWeight: 800, color: GOLD, fontFamily: SERIF }}>{s.n}</div>
+              <div style={{ fontSize: 9, color: MUTED, fontFamily: SANS, textTransform: 'uppercase', letterSpacing: 1.5 }}>{s.l}</div>
             </div>
           ))}
         </div>
+        <CurvedDivider />
       </div>
-
-      {/* Bottom */}
-      <div style={{ textAlign: 'center', position: 'relative' }}>
-        <QRPlaceholder size={130} />
-        <p style={{ fontSize: 14, color: '#f0a500', fontWeight: 700, marginTop: 12, fontFamily: 'system-ui, sans-serif' }}>Scan to explore free stories</p>
-        <p style={{ fontSize: 12, color: '#6e6a63', margin: '4px 0 0', fontFamily: 'system-ui, sans-serif' }}>mysleepytale.com</p>
-        <p style={{ fontSize: 9, color: '#4a4a5a', margin: '8px 0 0', fontFamily: 'system-ui, sans-serif' }}>Free to use · No downloads · No signup</p>
+      {/* Black bottom */}
+      <div style={{ background: BLACK, flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', padding: '0 28px 40px', gap: 14 }}>
+        <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center', gap: 6, marginBottom: 8 }}>
+          {['🚀 Space', '🔢 Maths', '💪 Courage', '🪷 Beliefs', '🌿 Nature', '🏛️ History', '🔬 Science', '📚 Series'].map(c => (
+            <span key={c} style={{ fontSize: 10, padding: '4px 10px', borderRadius: 20, background: '#ffffff0d', color: CREAM, fontFamily: SANS, fontWeight: 600 }}>{c}</span>
+          ))}
+        </div>
+        <QRCard size={140} label="SCAN TO EXPLORE" />
+        <p style={{ fontFamily: SERIF, fontSize: 16, fontWeight: 700, color: GOLD, margin: 0, fontStyle: 'italic' }}>Scan. Tap. Bedtime magic.</p>
+        <GoldButton>Free to start</GoldButton>
+        <p style={{ fontSize: 10, color: MUTED, fontFamily: SANS, margin: 0 }}>No downloads · No signup · Ages 0-10</p>
       </div>
     </div>
   );
 }
 
-// ━━━ 3. SOCIAL POST ━━━
+// ━━━ 3. SOCIAL POST (Square) ━━━
 function SocialPost() {
   return (
-    <div style={{ width: 480, height: 480, background: 'linear-gradient(145deg, #0a0a0f 0%, #12121c 50%, #1a1028 100%)', borderRadius: 24, padding: 40, display: 'flex', flexDirection: 'column', justifyContent: 'space-between', position: 'relative', overflow: 'hidden', fontFamily: "'Fraunces', Georgia, serif" }}>
-      {/* Glow effects */}
-      <div style={{ position: 'absolute', top: -60, right: -60, width: 250, height: 250, borderRadius: '50%', background: 'radial-gradient(circle, #f0a50018 0%, transparent 60%)' }} />
-      <div style={{ position: 'absolute', bottom: -40, left: -40, width: 200, height: 200, borderRadius: '50%', background: 'radial-gradient(circle, #9f7aea10 0%, transparent 60%)' }} />
-      {/* Stars */}
-      {[{ t: 30, l: 60, s: 3 }, { t: 50, l: 380, s: 4 }, { t: 120, l: 420, s: 2.5 }, { t: 200, l: 30, s: 2 }, { t: 80, l: 200, s: 3 }].map((star, i) => (
-        <div key={i} style={{ position: 'absolute', top: star.t, left: star.l, width: star.s, height: star.s, borderRadius: '50%', background: '#f5f0e8', opacity: 0.4 }} />
-      ))}
-
-      {/* Top */}
-      <div style={{ position: 'relative' }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 20 }}>
-          <span style={{ fontSize: 32 }}>🌙</span>
-          <span style={{ fontSize: 13, color: '#f0a500', fontWeight: 700, fontFamily: 'system-ui, sans-serif' }}>MY SLEEPY TALE</span>
+    <div style={{ width: 480, height: 480, display: 'flex', flexDirection: 'column', overflow: 'hidden', borderRadius: 4 }}>
+      {/* Navy top */}
+      <div style={{ background: `linear-gradient(180deg, ${NAVY} 0%, ${NAVY_DARK} 100%)`, padding: '36px 36px 0', textAlign: 'center', position: 'relative' }}>
+        <Stars />
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 10 }}>
+          <Moon size={36} />
+          <BrandName size={16} />
         </div>
-        <h1 style={{ fontSize: 30, color: '#f5f0e8', margin: 0, lineHeight: 1.25, fontWeight: 800 }}>
-          Make Your Baby<br />
-          <span style={{ color: '#f0a500' }}>Sleep</span> with<br />
-          Beautiful Stories
+        <h1 style={{ fontFamily: SERIF, fontSize: 30, color: '#fff', fontWeight: 800, lineHeight: 1.2, margin: '16px 0 0' }}>
+          Make your baby<br />
+          <span style={{ color: GOLD }}>sleep</span> & <span style={{ color: BLUE }}>learn</span><br />
+          with stories
         </h1>
-      </div>
-
-      {/* Middle */}
-      <div style={{ position: 'relative' }}>
-        <p style={{ fontSize: 14, color: '#a8a39a', margin: '0 0 16px', fontFamily: 'system-ui, sans-serif', lineHeight: 1.5 }}>
-          Learning through creative cultural stories.<br />
-          146+ stories from 11 traditions.
+        <p style={{ fontFamily: SERIF, fontStyle: 'italic', fontSize: 12, color: GOLD_LIGHT, margin: '10px 0 16px', opacity: 0.9 }}>
+          146+ stories from 11 cultural traditions
         </p>
-        <div style={{ display: 'flex', flexWrap: 'wrap', gap: 6 }}>
-          {[
-            { icon: '🚀', label: 'Space', color: '#4299e1' },
-            { icon: '🔢', label: 'Maths', color: '#48bb78' },
-            { icon: '💪', label: 'Courage', color: '#f0a500' },
-            { icon: '🪷', label: 'Beliefs', color: '#9f7aea' },
-            { icon: '🌿', label: 'Nature', color: '#f472b6' },
-            { icon: '🏛️', label: 'History', color: '#ed8936' },
-          ].map(c => (
-            <span key={c.label} style={{ fontSize: 10, padding: '4px 10px', borderRadius: 16, fontWeight: 700, background: c.color + '18', color: c.color, fontFamily: 'system-ui, sans-serif' }}>
-              {c.icon} {c.label}
-            </span>
-          ))}
-        </div>
+        <CurvedDivider />
       </div>
-
-      {/* Bottom */}
-      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', position: 'relative' }}>
-        <div>
-          <p style={{ fontSize: 16, color: '#f0a500', fontWeight: 800, margin: 0, fontFamily: 'system-ui, sans-serif' }}>Free to explore</p>
-          <p style={{ fontSize: 11, color: '#6e6a63', margin: '2px 0 0', fontFamily: 'system-ui, sans-serif' }}>mysleepytale.com</p>
+      {/* Black bottom */}
+      <div style={{ background: BLACK, flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '0 36px 28px', gap: 24 }}>
+        <div style={{ textAlign: 'center' }}>
+          <QRCard size={90} label="SCAN" />
         </div>
-        <QRPlaceholder size={80} />
+        <div style={{ textAlign: 'left' }}>
+          <p style={{ fontFamily: SERIF, fontSize: 16, fontWeight: 700, color: GOLD, margin: '0 0 6px', fontStyle: 'italic' }}>Scan. Tap.<br />Bedtime magic.</p>
+          <GoldButton small>Free to start</GoldButton>
+          <p style={{ fontSize: 9, color: MUTED, fontFamily: SANS, margin: '8px 0 0' }}>Ages 0-5 · No downloads</p>
+        </div>
       </div>
     </div>
   );
@@ -246,81 +214,200 @@ function SocialPost() {
 // ━━━ 4. CAR STICKER ━━━
 function CarSticker() {
   return (
-    <div style={{ width: 520, height: 140, background: 'linear-gradient(135deg, #0a0a0f 0%, #12121c 60%, #1a1028 100%)', borderRadius: 16, padding: '20px 28px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', position: 'relative', overflow: 'hidden', fontFamily: "'Fraunces', Georgia, serif", border: '2px solid #f0a50030' }}>
-      {/* Glow */}
-      <div style={{ position: 'absolute', top: -30, left: -30, width: 120, height: 120, borderRadius: '50%', background: 'radial-gradient(circle, #f0a50010 0%, transparent 70%)' }} />
+    <div style={{ width: 540, height: 160, display: 'flex', overflow: 'hidden', borderRadius: 4 }}>
+      {/* Navy left */}
+      <div style={{ background: `linear-gradient(135deg, ${NAVY} 0%, ${NAVY_DARK} 100%)`, flex: 1, padding: '20px 24px', display: 'flex', alignItems: 'center', gap: 14, position: 'relative' }}>
+        <Stars />
+        <Moon size={44} />
+        <div style={{ position: 'relative' }}>
+          <BrandName size={20} />
+          <p style={{ fontFamily: SERIF, fontSize: 13, color: '#fff', fontWeight: 700, margin: '4px 0 0' }}>
+            Help your baby <span style={{ color: GOLD }}>sleep</span> & <span style={{ color: BLUE }}>learn</span>
+          </p>
+          <p style={{ fontFamily: SANS, fontSize: 9, color: MUTED, margin: '4px 0 0' }}>146+ bedtime stories · 11 traditions · Free</p>
+        </div>
+      </div>
+      {/* Black right with QR */}
+      <div style={{ background: BLACK, width: 160, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', padding: 12, borderLeft: `2px solid ${GOLD}30` }}>
+        <QRCard size={70} label="" />
+        <p style={{ fontSize: 8, color: MUTED, fontFamily: SANS, margin: '4px 0 0' }}>mysleepytale.com</p>
+      </div>
+    </div>
+  );
+}
 
-      {/* Left */}
-      <div style={{ display: 'flex', alignItems: 'center', gap: 16, position: 'relative' }}>
-        <span style={{ fontSize: 40 }}>🌙</span>
-        <div>
-          <h1 style={{ fontSize: 22, color: '#f0a500', margin: 0, fontWeight: 800 }}>My Sleepy Tale</h1>
-          <p style={{ fontSize: 12, color: '#a8a39a', margin: '2px 0 0', fontFamily: 'system-ui, sans-serif' }}>Bedtime Stories for Kids</p>
-          <p style={{ fontSize: 9, color: '#6e6a63', margin: '4px 0 0', fontFamily: 'system-ui, sans-serif' }}>146+ stories · 11 traditions · Free</p>
+// ━━━ 5. HOUSE SIGN ━━━
+function HouseSign() {
+  return (
+    <div style={{ width: 560, height: 360, display: 'flex', flexDirection: 'column', overflow: 'hidden', borderRadius: 4 }}>
+      {/* Navy top */}
+      <div style={{ background: `linear-gradient(180deg, ${NAVY} 0%, ${NAVY_DARK} 100%)`, padding: '28px 40px 0', display: 'flex', alignItems: 'center', gap: 24, position: 'relative' }}>
+        <Stars />
+        <div style={{ position: 'relative', flex: 1 }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 10 }}>
+            <Moon size={40} />
+            <BrandName size={18} />
+          </div>
+          <h1 style={{ fontFamily: SERIF, fontSize: 28, color: '#fff', fontWeight: 800, lineHeight: 1.2, margin: 0 }}>
+            Free bedtime stories<br />for <span style={{ color: GOLD }}>your kids</span>
+          </h1>
+          <p style={{ fontFamily: SERIF, fontStyle: 'italic', fontSize: 12, color: GOLD_LIGHT, margin: '8px 0 0', opacity: 0.9 }}>
+            Personalized · Narrated · 11 traditions
+          </p>
+        </div>
+        <div style={{ position: 'relative', transform: 'translateY(10px)' }}>
+          <QRCard size={100} label="SCAN" />
+        </div>
+      </div>
+      <CurvedDivider />
+      {/* Black bottom */}
+      <div style={{ background: BLACK, flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '0 40px', gap: 24 }}>
+        <p style={{ fontFamily: SERIF, fontSize: 18, fontWeight: 700, color: GOLD, margin: 0, fontStyle: 'italic' }}>Scan & listen tonight.</p>
+        <GoldButton small>Free to start</GoldButton>
+        <p style={{ fontSize: 10, color: MUTED, fontFamily: SANS, margin: 0 }}>Ages 0-10</p>
+      </div>
+    </div>
+  );
+}
+
+// ━━━ 6. TRI-FOLD PAMPHLET ━━━
+function Pamphlet() {
+  return (
+    <div style={{ width: 900, display: 'flex', borderRadius: 4, overflow: 'hidden' }}>
+      {/* Panel 1: Cover */}
+      <div style={{ width: 300, minHeight: 440, background: `linear-gradient(180deg, ${NAVY} 0%, ${NAVY_DARK} 60%, ${BLACK} 100%)`, padding: '48px 28px 32px', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'space-between', position: 'relative' }}>
+        <Stars />
+        <div style={{ textAlign: 'center', position: 'relative' }}>
+          <Moon size={60} />
+          <div style={{ marginTop: 12 }}><BrandName size={20} /></div>
+          <h2 style={{ fontFamily: SERIF, fontSize: 22, color: '#fff', fontWeight: 800, lineHeight: 1.25, margin: '20px 0 0' }}>
+            Help your baby<br />
+            <span style={{ color: GOLD }}>sleep</span> & <span style={{ color: BLUE }}>learn</span><br />
+            with creative stories
+          </h2>
+          <p style={{ fontFamily: SERIF, fontStyle: 'italic', fontSize: 11, color: GOLD_LIGHT, margin: '12px 0 0', opacity: 0.9 }}>
+            Personalized bedtime tales,<br />made just for your little one.
+          </p>
+        </div>
+        <div style={{ textAlign: 'center', position: 'relative' }}>
+          <QRCard size={80} label="SCAN" />
         </div>
       </div>
 
-      {/* Right */}
-      <div style={{ display: 'flex', alignItems: 'center', gap: 12, position: 'relative' }}>
-        <div style={{ width: 1, height: 60, background: '#ffffff10' }} />
-        <div style={{ textAlign: 'center' }}>
-          <QRPlaceholder size={72} />
-          <p style={{ fontSize: 7, color: '#6e6a63', margin: '4px 0 0', fontFamily: 'system-ui, sans-serif' }}>mysleepytale.com</p>
+      {/* Panel 2: Why parents love it */}
+      <div style={{ width: 300, minHeight: 440, background: BLACK, padding: '36px 24px', display: 'flex', flexDirection: 'column', gap: 16, borderLeft: `1px solid ${NAVY}40`, borderRight: `1px solid ${NAVY}40` }}>
+        <p style={{ fontSize: 10, color: GOLD, fontWeight: 700, letterSpacing: 2.5, textTransform: 'uppercase', margin: 0, fontFamily: SANS }}>WHY PARENTS LOVE IT</p>
+        {[
+          { icon: '🪷', title: 'Cultural Roots', desc: 'Stories from Hindu, Islamic, Catholic, Sikh, Filipino, Hispanic & more traditions' },
+          { icon: '💛', title: 'Values That Stick', desc: 'Kindness, courage, gratitude & empathy woven into every tale' },
+          { icon: '🎧', title: 'Audio Narration', desc: 'Warm voices read every story. Press play, dim the lights, sleep.' },
+          { icon: '✨', title: 'Personalized', desc: "Your child's name appears inside the story" },
+          { icon: '🧒', title: 'Learning In Sleep', desc: 'Space, maths, science, history — disguised as bedtime adventures' },
+        ].map(b => (
+          <div key={b.title} style={{ display: 'flex', gap: 10 }}>
+            <span style={{ fontSize: 20, flexShrink: 0 }}>{b.icon}</span>
+            <div>
+              <p style={{ fontSize: 12, fontWeight: 700, color: CREAM, margin: 0, fontFamily: SANS }}>{b.title}</p>
+              <p style={{ fontSize: 9.5, color: MUTED, margin: '2px 0 0', lineHeight: 1.45, fontFamily: SANS }}>{b.desc}</p>
+            </div>
+          </div>
+        ))}
+        <div style={{ marginTop: 'auto', display: 'flex', justifyContent: 'center', gap: 20 }}>
+          {[{ n: '146+', l: 'Stories' }, { n: '49', l: 'Series' }, { n: '11', l: 'Traditions' }].map(s => (
+            <div key={s.l} style={{ textAlign: 'center' }}>
+              <div style={{ fontSize: 22, fontWeight: 800, color: GOLD, fontFamily: SERIF }}>{s.n}</div>
+              <div style={{ fontSize: 8, color: MUTED, fontFamily: SANS, textTransform: 'uppercase', letterSpacing: 1.5 }}>{s.l}</div>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* Panel 3: Categories + contact */}
+      <div style={{ width: 300, minHeight: 440, background: `linear-gradient(180deg, ${BLACK} 0%, ${NAVY_DARK} 100%)`, padding: '36px 24px', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
+        <div>
+          <p style={{ fontSize: 10, color: GOLD, fontWeight: 700, letterSpacing: 2.5, textTransform: 'uppercase', margin: '0 0 14px', fontFamily: SANS }}>STORY CATEGORIES</p>
+          <div style={{ display: 'flex', flexWrap: 'wrap', gap: 6 }}>
+            {['🚀 Space', '🔢 Maths', '💪 Motivation', '🪷 Beliefs', '🌿 Nature', '🏛️ History', '🔬 Science', '🗺️ Adventure', '💛 Kindness', '📚 Series'].map(c => (
+              <span key={c} style={{ fontSize: 10, padding: '5px 11px', borderRadius: 20, background: '#ffffff0a', color: CREAM, fontFamily: SANS, fontWeight: 600, border: '1px solid #ffffff10' }}>{c}</span>
+            ))}
+          </div>
+        </div>
+
+        <div>
+          <p style={{ fontSize: 10, color: GOLD, fontWeight: 700, letterSpacing: 2.5, textTransform: 'uppercase', margin: '0 0 10px', fontFamily: SANS }}>HOW IT WORKS</p>
+          {['Tell us about your child', 'Pick a story or series', 'Press play & sleep'].map((s, i) => (
+            <div key={i} style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 10 }}>
+              <span style={{ width: 22, height: 22, borderRadius: '50%', background: `${GOLD}20`, color: GOLD, fontSize: 11, fontWeight: 800, display: 'grid', placeItems: 'center', flexShrink: 0, fontFamily: SANS }}>{i + 1}</span>
+              <span style={{ fontSize: 11, color: CREAM, fontFamily: SANS }}>{s}</span>
+            </div>
+          ))}
+        </div>
+
+        <div style={{ textAlign: 'center', padding: '16px 0 0', borderTop: '1px solid #ffffff0a' }}>
+          <BrandName size={14} />
+          <p style={{ fontSize: 10, color: CREAM, margin: '8px 0 2px', fontFamily: SANS }}>📸 @mysleepytale_official</p>
+          <p style={{ fontSize: 10, color: MUTED, margin: '0 0 2px', fontFamily: SANS }}>📧 hello@mysleepytale.com</p>
+          <p style={{ fontSize: 10, color: MUTED, margin: 0, fontFamily: SANS }}>🌐 mysleepytale.com</p>
+          <p style={{ fontSize: 8, color: '#555', marginTop: 8, fontFamily: SANS }}>Made with love in Toronto, Canada 🇨🇦</p>
         </div>
       </div>
     </div>
   );
 }
 
-// ━━━ 5. HOUSE STANDEE ━━━
-function HouseStandee() {
+// ━━━ 7. TV / DIGITAL AD ━━━
+function TVAd() {
   return (
-    <div style={{ width: 560, height: 340, background: 'linear-gradient(160deg, #0a0a0f 0%, #12121c 50%, #0f0f1a 100%)', borderRadius: 24, padding: '40px 48px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', position: 'relative', overflow: 'hidden', fontFamily: "'Fraunces', Georgia, serif", border: '3px solid #f0a50020' }}>
-      {/* Decorative */}
-      <div style={{ position: 'absolute', top: -80, right: -80, width: 280, height: 280, borderRadius: '50%', background: 'radial-gradient(circle, #f0a50010 0%, transparent 60%)' }} />
-      <div style={{ position: 'absolute', bottom: -60, left: -60, width: 200, height: 200, borderRadius: '50%', background: 'radial-gradient(circle, #9f7aea08 0%, transparent 60%)' }} />
-      {/* Stars */}
-      {[{ t: 20, l: 40, s: 3 }, { t: 30, l: 300, s: 4 }, { t: 60, l: 480, s: 2.5 }, { t: 280, l: 500, s: 3 }].map((star, i) => (
-        <div key={i} style={{ position: 'absolute', top: star.t, left: star.l, width: star.s, height: star.s, borderRadius: '50%', background: '#f5f0e8', opacity: 0.3 }} />
-      ))}
+    <div style={{ width: 640, height: 360, display: 'flex', overflow: 'hidden', borderRadius: 4, position: 'relative' }}>
+      {/* Full navy bg */}
+      <div style={{ position: 'absolute', inset: 0, background: `linear-gradient(135deg, ${NAVY} 0%, ${NAVY_DARK} 60%, ${BLACK} 100%)` }} />
+      <Stars />
+      {/* Bottom curve */}
+      <div style={{ position: 'absolute', bottom: 0, left: 0, right: 0 }}>
+        <svg viewBox="0 0 640 60" style={{ width: '100%', display: 'block' }} preserveAspectRatio="none">
+          <path d="M0,30 C160,60 480,60 640,30 L640,60 L0,60 Z" fill={BLACK} opacity="0.6" />
+        </svg>
+      </div>
 
       {/* Left content */}
-      <div style={{ position: 'relative', maxWidth: 320 }}>
+      <div style={{ position: 'relative', flex: 1, padding: '40px 20px 40px 48px', display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 16 }}>
-          <span style={{ fontSize: 36 }}>🌙</span>
-          <span style={{ fontSize: 12, color: '#f0a500', fontWeight: 700, letterSpacing: 2, fontFamily: 'system-ui, sans-serif' }}>MY SLEEPY TALE</span>
+          <Moon size={36} />
+          <BrandName size={16} />
         </div>
-        <h1 style={{ fontSize: 28, color: '#f5f0e8', margin: 0, lineHeight: 1.2, fontWeight: 800 }}>
-          Free Bedtime<br />
-          Stories for<br />
-          <span style={{ color: '#f0a500' }}>Your Kids</span>
+        <h1 style={{ fontFamily: SERIF, fontSize: 32, color: '#fff', fontWeight: 800, lineHeight: 1.15, margin: 0 }}>
+          Help your baby<br />
+          <span style={{ color: GOLD }}>sleep</span> & <span style={{ color: BLUE }}>learn</span>
         </h1>
-        <p style={{ fontSize: 12, color: '#a8a39a', margin: '12px 0 0', fontFamily: 'system-ui, sans-serif', lineHeight: 1.5 }}>
-          146+ stories from 11 cultural traditions.<br />
-          Personalized. Narrated. Completely free.
+        <p style={{ fontFamily: SERIF, fontStyle: 'italic', fontSize: 13, color: GOLD_LIGHT, margin: '12px 0 0', opacity: 0.9 }}>
+          Personalized bedtime tales from<br />11 cultural traditions
         </p>
+        <div style={{ marginTop: 16 }}>
+          <GoldButton small>Free to start</GoldButton>
+        </div>
       </div>
 
       {/* Right QR */}
-      <div style={{ textAlign: 'center', position: 'relative' }}>
-        <QRPlaceholder size={140} />
-        <p style={{ fontSize: 14, color: '#f0a500', fontWeight: 700, marginTop: 10, fontFamily: 'system-ui, sans-serif' }}>Scan & Listen<br />Tonight</p>
-        <p style={{ fontSize: 10, color: '#6e6a63', margin: '4px 0 0', fontFamily: 'system-ui, sans-serif' }}>mysleepytale.com</p>
+      <div style={{ position: 'relative', width: 220, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', padding: 20 }}>
+        <QRCard size={100} label="SCAN" />
+        <p style={{ fontFamily: SERIF, fontSize: 12, fontWeight: 700, color: GOLD, margin: '10px 0 0', fontStyle: 'italic', textAlign: 'center' }}>Scan. Tap.<br />Bedtime magic.</p>
       </div>
     </div>
   );
 }
 
 const COMPONENTS = {
-  pamphlet: Pamphlet,
+  flyer: Flyer,
   standee: EventStandee,
   social: SocialPost,
   sticker: CarSticker,
-  house: HouseStandee,
+  house: HouseSign,
+  pamphlet: Pamphlet,
+  tvad: TVAd,
 };
 
 export default function Creatives() {
-  const [active, setActive] = useState('pamphlet');
+  const [active, setActive] = useState('flyer');
   const ActiveComponent = COMPONENTS[active];
 
   return (
@@ -333,50 +420,38 @@ export default function Creatives() {
           </a>
           <h1 className="text-2xl font-bold text-ink" style={{ fontFamily: 'Fraunces, serif' }}>Marketing Creatives</h1>
         </div>
-        <p className="text-xs text-ink-muted mb-6 ml-11">Preview & screenshot print-ready designs</p>
+        <p className="text-xs text-ink-muted mb-6 ml-11">Print-ready designs — screenshot to export</p>
 
         {/* Selector */}
         <div className="flex gap-2 overflow-x-auto pb-2 mb-8 scrollbar-hide">
           {CREATIVES.map(c => (
-            <button
-              key={c.id}
-              onClick={() => setActive(c.id)}
+            <button key={c.id} onClick={() => setActive(c.id)}
               className={`shrink-0 rounded-xl px-4 py-2.5 text-xs font-bold ring-1 transition ${
-                active === c.id
-                  ? 'bg-gold/20 text-gold ring-gold/30'
-                  : 'bg-white/5 text-ink-muted ring-white/5 hover:text-ink'
-              }`}
-            >
+                active === c.id ? 'bg-gold/20 text-gold ring-gold/30' : 'bg-white/5 text-ink-muted ring-white/5 hover:text-ink'
+              }`}>
               {c.icon} {c.label}
             </button>
           ))}
         </div>
 
-        {/* Creative preview */}
-        <div className="flex justify-center">
+        {/* Preview */}
+        <div className="flex justify-center overflow-x-auto">
           <AnimatePresence mode="wait">
-            <motion.div
-              key={active}
-              initial={{ opacity: 0, scale: 0.96 }}
-              animate={{ opacity: 1, scale: 1 }}
-              exit={{ opacity: 0, scale: 0.96 }}
-              transition={{ duration: 0.25 }}
-              style={{ boxShadow: '0 8px 60px rgba(240, 165, 0, 0.08), 0 0 0 1px rgba(255,255,255,0.05)' }}
-              className="rounded-2xl overflow-hidden"
-            >
+            <motion.div key={active} initial={{ opacity: 0, scale: 0.97 }} animate={{ opacity: 1, scale: 1 }} exit={{ opacity: 0, scale: 0.97 }} transition={{ duration: 0.2 }}
+              style={{ boxShadow: '0 8px 60px rgba(0,0,0,0.4), 0 0 0 1px rgba(255,255,255,0.05)' }}>
               <ActiveComponent />
             </motion.div>
           </AnimatePresence>
         </div>
 
-        {/* Instructions */}
+        {/* Export instructions */}
         <div className="mt-8 rounded-2xl bg-white/5 ring-1 ring-white/5 p-5 max-w-lg mx-auto">
           <p className="text-xs font-bold text-ink mb-2">How to export</p>
           <ol className="text-[11px] text-ink-muted space-y-1 list-decimal list-inside">
             <li>Select a creative above</li>
-            <li>Take a screenshot (Cmd+Shift+4 on Mac)</li>
-            <li>Replace "QR CODE" placeholder with real QR from any QR generator</li>
-            <li>Send to print or post on social media</li>
+            <li>Screenshot it (Cmd+Shift+4 on Mac, or use browser DevTools)</li>
+            <li>Replace QR placeholder with a real QR from any QR generator</li>
+            <li>Print or post on social media</li>
           </ol>
         </div>
       </div>
