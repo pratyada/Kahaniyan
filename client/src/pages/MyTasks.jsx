@@ -40,6 +40,8 @@ export default function MyTasks() {
     (team || []).some(m => m.email === user.email && m.status === 'active')
   );
   const [updating, setUpdating] = useState(null);
+  const [showAddForm, setShowAddForm] = useState(false);
+  const [newTask, setNewTask] = useState({ title: '', description: '', activity: 'content', priority: 'normal' });
 
   const getLocalDate = () => {
     const d = new Date();
@@ -122,6 +124,28 @@ export default function MyTasks() {
     }
     setTasks(prev => prev.map(t => t.id === task.id ? updated : t));
     setUpdating(null);
+  };
+
+  const addTask = async () => {
+    if (!newTask.title.trim() || !user?.email) return;
+    const id = `task_${Date.now()}_${Math.random().toString(36).slice(2, 6)}`;
+    const task = {
+      id,
+      ...newTask,
+      assignee: user.email,
+      dueDate: selectedDate,
+      status: 'todo',
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString(),
+    };
+    try {
+      if (db) await setDoc(doc(db, 'dailyTasks', id), task, { merge: true });
+    } catch (e) {
+      console.error('[MyTasks] Add error:', e.message);
+    }
+    setTasks(prev => [...prev, task]);
+    setNewTask({ title: '', description: '', activity: 'content', priority: 'normal' });
+    setShowAddForm(false);
   };
 
   const shiftDate = (dir) => {
@@ -210,6 +234,43 @@ export default function MyTasks() {
             <div className="h-full rounded-full bg-gold transition-all duration-500" style={{ width: `${Math.round(doneCount / totalCount * 100)}%` }} />
           </div>
         )}
+
+        {/* Add task button + form */}
+        <div className="mb-4">
+          {!showAddForm ? (
+            <button onClick={() => setShowAddForm(true)}
+              className="w-full rounded-2xl border-2 border-dashed border-white/10 py-3 text-xs font-bold text-ink-muted hover:border-gold/30 hover:text-gold transition">
+              + Add Task
+            </button>
+          ) : (
+            <div className="rounded-2xl bg-white/5 p-4 ring-1 ring-white/10 space-y-3">
+              <input value={newTask.title} onChange={e => setNewTask({ ...newTask, title: e.target.value })}
+                placeholder="What do you need to do?"
+                className="w-full rounded-lg bg-white/5 px-4 py-3 text-sm text-ink ring-1 ring-white/10 outline-none placeholder:text-ink-muted focus:ring-gold/30"
+                onKeyDown={e => { if (e.key === 'Enter') addTask(); }}
+                autoFocus />
+              <textarea value={newTask.description} onChange={e => setNewTask({ ...newTask, description: e.target.value })}
+                placeholder="Details (optional)"
+                className="w-full rounded-lg bg-white/5 px-4 py-2 text-xs text-ink-muted ring-1 ring-white/10 outline-none resize-none h-14 placeholder:text-ink-muted" />
+              <div className="flex flex-wrap gap-2">
+                <select value={newTask.activity} onChange={e => setNewTask({ ...newTask, activity: e.target.value })}
+                  className="rounded-lg bg-white/5 px-3 py-2 text-xs text-ink ring-1 ring-white/10 outline-none">
+                  {Object.entries(ACTIVITIES).map(([k, v]) => <option key={k} value={k}>{v.icon} {v.label}</option>)}
+                </select>
+                <select value={newTask.priority} onChange={e => setNewTask({ ...newTask, priority: e.target.value })}
+                  className="rounded-lg bg-white/5 px-3 py-2 text-xs text-ink ring-1 ring-white/10 outline-none">
+                  <option value="urgent">Urgent</option>
+                  <option value="high">High</option>
+                  <option value="normal">Normal</option>
+                  <option value="low">Low</option>
+                </select>
+                <div className="flex-1" />
+                <button onClick={addTask} className="rounded-lg bg-gold px-5 py-2 text-xs font-bold text-bg-base">Add</button>
+                <button onClick={() => setShowAddForm(false)} className="rounded-lg bg-white/5 px-4 py-2 text-xs text-ink-muted">Cancel</button>
+              </div>
+            </div>
+          )}
+        </div>
 
         {/* Loading */}
         {loading && (
