@@ -27,6 +27,7 @@ import Curators from './pages/Curators.jsx';
 import SeriesDetail from './pages/SeriesDetail.jsx';
 import MyTasks from './pages/MyTasks.jsx';
 import SearchPage from './pages/Search.jsx';
+import AboutUs from './pages/AboutUs.jsx';
 import BottomNav from './components/BottomNav.jsx';
 import BadgeUnlockToast from './components/BadgeUnlockToast.jsx';
 import PlayerBar from './components/PlayerBar.jsx';
@@ -139,6 +140,7 @@ function Shell() {
             <Route path="/library" element={<Library />} />
             <Route path="/creation" element={<Library />} />
             <Route path="/search" element={<SearchPage />} />
+            <Route path="/aboutus" element={<AboutUs />} />
             <Route path="/radio" element={<Radio />} />
             <Route path="/blog" element={<Blog />} />
             <Route path="/lessons" element={<CulturalLessons />} />
