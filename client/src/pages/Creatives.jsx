@@ -405,7 +405,7 @@ const COMPONENTS = {
   tvad: TVAd,
 };
 
-export default function Creatives() {
+export default function Creatives({ embedded = false }) {
   const [active, setActive] = useState('flyer');
   const [downloading, setDownloading] = useState(false);
   const creativeRef = useRef(null);
@@ -430,15 +430,17 @@ export default function Creatives() {
 
   return (
     <PageTransition>
-      <div className="px-5 pt-10 pb-40 max-w-5xl mx-auto">
-        {/* Header */}
-        <div className="flex items-center gap-3 mb-2">
-          <a href="/" className="grid h-8 w-8 place-items-center rounded-full bg-gold text-bg-base shadow-glow transition active:scale-95">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><polyline points="15 18 9 12 15 6"/></svg>
-          </a>
-          <h1 className="text-2xl font-bold text-ink" style={{ fontFamily: 'Fraunces, serif' }}>Marketing Creatives</h1>
-        </div>
-        <p className="text-xs text-ink-muted mb-6 ml-11">Print-ready designs — screenshot to export</p>
+      <div className={embedded ? 'pb-20' : 'px-5 pt-10 pb-40 max-w-5xl mx-auto'}>
+        {/* Header — hidden when embedded in Studio */}
+        {!embedded && (<>
+          <div className="flex items-center gap-3 mb-2">
+            <a href="/" className="grid h-8 w-8 place-items-center rounded-full bg-gold text-bg-base shadow-glow transition active:scale-95">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><polyline points="15 18 9 12 15 6"/></svg>
+            </a>
+            <h1 className="text-2xl font-bold text-ink" style={{ fontFamily: 'Fraunces, serif' }}>Marketing Creatives</h1>
+          </div>
+          <p className="text-xs text-ink-muted mb-6 ml-11">Print-ready designs — screenshot to export</p>
+        </>)}
 
         {/* Selector */}
         <div className="flex gap-2 overflow-x-auto pb-2 mb-8 scrollbar-hide">

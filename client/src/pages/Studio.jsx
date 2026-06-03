@@ -1,10 +1,12 @@
 // Studio — 30-day content calendar & creative pipeline for social media.
 // mysleepytale.com/studio
 
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, lazy, Suspense } from 'react';
 import { Link } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import PageTransition from '../components/PageTransition.jsx';
+
+const Creatives = lazy(() => import('./Creatives.jsx'));
 
 // ─── Brand tokens ───
 const BLACK = '#0a0a0f';
