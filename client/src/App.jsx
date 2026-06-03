@@ -28,6 +28,7 @@ import SeriesDetail from './pages/SeriesDetail.jsx';
 import MyTasks from './pages/MyTasks.jsx';
 import SearchPage from './pages/Search.jsx';
 import AboutUs from './pages/AboutUs.jsx';
+import Creatives from './pages/Creatives.jsx';
 import BottomNav from './components/BottomNav.jsx';
 import BadgeUnlockToast from './components/BadgeUnlockToast.jsx';
 import PlayerBar from './components/PlayerBar.jsx';
@@ -141,6 +142,7 @@ function Shell() {
             <Route path="/creation" element={<Library />} />
             <Route path="/search" element={<SearchPage />} />
             <Route path="/aboutus" element={<AboutUs />} />
+            <Route path="/creatives" element={<Creatives />} />
             <Route path="/radio" element={<Radio />} />
             <Route path="/blog" element={<Blog />} />
             <Route path="/lessons" element={<CulturalLessons />} />
