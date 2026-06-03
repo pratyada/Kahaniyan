@@ -114,7 +114,8 @@ function Shell() {
   // Voice recording link — public, no auth, no shell
   if (location.pathname.startsWith('/record/')) return <RecordVoice />;
 
-  const showNav = !isPlayerRoute && !isOnboardingRoute && !isLoginRoute;
+  const isAboutRoute = location.pathname === '/aboutus';
+  const showNav = !isPlayerRoute && !isOnboardingRoute && !isLoginRoute && !isAboutRoute;
 
   return (
     <div className="phone-shell">
