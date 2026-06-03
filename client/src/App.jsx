@@ -29,6 +29,7 @@ import MyTasks from './pages/MyTasks.jsx';
 import SearchPage from './pages/Search.jsx';
 import AboutUs from './pages/AboutUs.jsx';
 import Creatives from './pages/Creatives.jsx';
+import Studio from './pages/Studio.jsx';
 import BottomNav from './components/BottomNav.jsx';
 import BadgeUnlockToast from './components/BadgeUnlockToast.jsx';
 import PlayerBar from './components/PlayerBar.jsx';
@@ -122,10 +123,11 @@ function Shell() {
       </div>
     );
   }
-  if (location.pathname === '/creatives') {
+  if (location.pathname === '/creatives' || location.pathname === '/studio') {
+    const StudioOrCreatives = location.pathname === '/studio' ? Studio : Creatives;
     return (
       <div style={{ background: 'var(--bg-base)', minHeight: '100dvh', overflowY: 'auto' }}>
-        <Creatives />
+        <StudioOrCreatives />
       </div>
     );
   }
@@ -159,6 +161,7 @@ function Shell() {
             <Route path="/search" element={<SearchPage />} />
             <Route path="/aboutus" element={<AboutUs />} />
             <Route path="/creatives" element={<Creatives />} />
+            <Route path="/studio" element={<Studio />} />
             <Route path="/radio" element={<Radio />} />
             <Route path="/blog" element={<Blog />} />
             <Route path="/lessons" element={<CulturalLessons />} />
