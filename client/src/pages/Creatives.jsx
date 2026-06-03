@@ -110,12 +110,11 @@ function Flyer() {
         <Moon size={56} />
         <div style={{ marginTop: 12 }}><BrandName size={20} /></div>
         <h1 style={{ fontFamily: SERIF, fontSize: 34, color: '#fff', fontWeight: 800, lineHeight: 1.2, margin: '20px 0 0' }}>
-          Help your baby<br />
-          <span style={{ color: GOLD }}>sleep</span> <span style={{ color: GOLD }}>&</span> <span style={{ color: BLUE }}>learn</span> with<br />
-          creative stories
+          Tuck them in with<br />
+          <span style={{ color: GOLD }}>stories</span> from <span style={{ color: BLUE }}>home</span>
         </h1>
         <p style={{ fontFamily: SERIF, fontStyle: 'italic', fontSize: 14, color: GOLD_LIGHT, margin: '16px 0 24px', opacity: 0.9 }}>
-          Personalized bedtime tales, made just<br />for your little one.
+          Bedtime tales from your culture,<br />personalized for your little one.
         </p>
         <CurvedDivider />
       </div>
@@ -143,8 +142,8 @@ function EventStandee() {
         <Moon size={64} />
         <div style={{ marginTop: 12 }}><BrandName size={22} /></div>
         <h1 style={{ fontFamily: SERIF, fontSize: 28, color: '#fff', fontWeight: 800, lineHeight: 1.25, margin: '24px 0 0' }}>
-          Bedtime stories from<br />
-          <span style={{ color: GOLD }}>11 cultural traditions</span>
+          A bedtime story<br />
+          <span style={{ color: GOLD }}>from their roots</span>
         </h1>
         <p style={{ fontFamily: SERIF, fontStyle: 'italic', fontSize: 13, color: GOLD_LIGHT, margin: '12px 0 0', opacity: 0.9 }}>
           Hindu · Islamic · Catholic · Filipino · Hispanic<br />Sikh · Buddhist · Jewish · Christian & more
@@ -187,12 +186,12 @@ function SocialPost() {
           <BrandName size={16} />
         </div>
         <h1 style={{ fontFamily: SERIF, fontSize: 30, color: '#fff', fontWeight: 800, lineHeight: 1.2, margin: '16px 0 0' }}>
-          Make your baby<br />
-          <span style={{ color: GOLD }}>sleep</span> & <span style={{ color: BLUE }}>learn</span><br />
-          with stories
+          The story they<br />
+          <span style={{ color: GOLD }}>ask for</span> every<br />
+          <span style={{ color: BLUE }}>night</span>
         </h1>
         <p style={{ fontFamily: SERIF, fontStyle: 'italic', fontSize: 12, color: GOLD_LIGHT, margin: '10px 0 16px', opacity: 0.9 }}>
-          146+ stories from 11 cultural traditions
+          146+ bedtime tales from 11 traditions
         </p>
         <CurvedDivider />
       </div>
@@ -222,9 +221,9 @@ function CarSticker() {
         <div style={{ position: 'relative' }}>
           <BrandName size={20} />
           <p style={{ fontFamily: SERIF, fontSize: 13, color: '#fff', fontWeight: 700, margin: '4px 0 0' }}>
-            Help your baby <span style={{ color: GOLD }}>sleep</span> & <span style={{ color: BLUE }}>learn</span>
+            Bedtime stories <span style={{ color: GOLD }}>from their roots</span>
           </p>
-          <p style={{ fontFamily: SANS, fontSize: 9, color: MUTED, margin: '4px 0 0' }}>146+ bedtime stories · 11 traditions · Free</p>
+          <p style={{ fontFamily: SANS, fontSize: 9, color: MUTED, margin: '4px 0 0' }}>146+ stories · 11 traditions · Free</p>
         </div>
       </div>
       {/* Black right with QR */}
@@ -249,10 +248,10 @@ function HouseSign() {
             <BrandName size={18} />
           </div>
           <h1 style={{ fontFamily: SERIF, fontSize: 28, color: '#fff', fontWeight: 800, lineHeight: 1.2, margin: 0 }}>
-            Free bedtime stories<br />for <span style={{ color: GOLD }}>your kids</span>
+            Every child deserves<br />a story <span style={{ color: GOLD }}>from home</span>
           </h1>
           <p style={{ fontFamily: SERIF, fontStyle: 'italic', fontSize: 12, color: GOLD_LIGHT, margin: '8px 0 0', opacity: 0.9 }}>
-            Personalized · Narrated · 11 traditions
+            Free · Personalized · Narrated · 11 traditions
           </p>
         </div>
         <div style={{ position: 'relative', transform: 'translateY(10px)' }}>
@@ -281,12 +280,11 @@ function Pamphlet() {
           <Moon size={60} />
           <div style={{ marginTop: 12 }}><BrandName size={20} /></div>
           <h2 style={{ fontFamily: SERIF, fontSize: 22, color: '#fff', fontWeight: 800, lineHeight: 1.25, margin: '20px 0 0' }}>
-            Help your baby<br />
-            <span style={{ color: GOLD }}>sleep</span> & <span style={{ color: BLUE }}>learn</span><br />
-            with creative stories
+            Tuck them in with<br />
+            <span style={{ color: GOLD }}>stories</span> from <span style={{ color: BLUE }}>home</span>
           </h2>
           <p style={{ fontFamily: SERIF, fontStyle: 'italic', fontSize: 11, color: GOLD_LIGHT, margin: '12px 0 0', opacity: 0.9 }}>
-            Personalized bedtime tales,<br />made just for your little one.
+            Bedtime tales from your culture,<br />personalized for your child.
           </p>
         </div>
         <div style={{ textAlign: 'center', position: 'relative' }}>
@@ -376,11 +374,11 @@ function TVAd() {
           <BrandName size={16} />
         </div>
         <h1 style={{ fontFamily: SERIF, fontSize: 32, color: '#fff', fontWeight: 800, lineHeight: 1.15, margin: 0 }}>
-          Help your baby<br />
-          <span style={{ color: GOLD }}>sleep</span> & <span style={{ color: BLUE }}>learn</span>
+          Where <span style={{ color: GOLD }}>bedtime</span><br />
+          becomes the <span style={{ color: BLUE }}>best time</span>
         </h1>
         <p style={{ fontFamily: SERIF, fontStyle: 'italic', fontSize: 13, color: GOLD_LIGHT, margin: '12px 0 0', opacity: 0.9 }}>
-          Personalized bedtime tales from<br />11 cultural traditions
+          146+ bedtime tales from<br />11 cultural traditions
         </p>
         <div style={{ marginTop: 16 }}>
           <GoldButton small>Free to start</GoldButton>
