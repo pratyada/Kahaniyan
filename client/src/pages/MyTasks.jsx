@@ -41,7 +41,7 @@ export default function MyTasks() {
   );
   const [updating, setUpdating] = useState(null);
   const [showAddForm, setShowAddForm] = useState(false);
-  const [newTask, setNewTask] = useState({ title: '', description: '', activity: 'content', priority: 'normal' });
+  const [newTask, setNewTask] = useState({ title: '', description: '', activity: 'content', priority: 'normal', dueDate: '' });
 
   const getLocalDate = () => {
     const d = new Date();
@@ -133,7 +133,7 @@ export default function MyTasks() {
       id,
       ...newTask,
       assignee: user.email,
-      dueDate: selectedDate,
+      dueDate: newTask.dueDate || selectedDate,
       status: 'todo',
       createdAt: new Date().toISOString(),
       updatedAt: new Date().toISOString(),
@@ -144,7 +144,7 @@ export default function MyTasks() {
       console.error('[MyTasks] Add error:', e.message);
     }
     setTasks(prev => [...prev, task]);
-    setNewTask({ title: '', description: '', activity: 'content', priority: 'normal' });
+    setNewTask({ title: '', description: '', activity: 'content', priority: 'normal', dueDate: '' });
     setShowAddForm(false);
   };
 
@@ -264,6 +264,8 @@ export default function MyTasks() {
                   <option value="normal">Normal</option>
                   <option value="low">Low</option>
                 </select>
+                <input type="date" value={newTask.dueDate || selectedDate} onChange={e => setNewTask({ ...newTask, dueDate: e.target.value })}
+                  className="rounded-lg bg-white/5 px-3 py-2 text-xs text-ink ring-1 ring-white/10 outline-none" />
                 <div className="flex-1" />
                 <button onClick={addTask} className="rounded-lg bg-gold px-5 py-2 text-xs font-bold text-bg-base">Add</button>
                 <button onClick={() => setShowAddForm(false)} className="rounded-lg bg-white/5 px-4 py-2 text-xs text-ink-muted">Cancel</button>
