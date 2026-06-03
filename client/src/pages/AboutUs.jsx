@@ -2,8 +2,16 @@
 // mysleepytale.com/aboutus
 
 import { useNavigate } from 'react-router-dom';
+import { Helmet } from 'react-helmet-async';
 import { motion } from 'framer-motion';
 import PageTransition from '../components/PageTransition.jsx';
+
+const SEO = {
+  title: 'About Us — My Sleepy Tale | Bedtime Stories That Teach Roots & Values',
+  description: 'My Sleepy Tale is a free bedtime story web space for multicultural families. 146+ stories from 11 cultural traditions — Hindu, Islamic, Catholic, Filipino, Hispanic & more. Personalized with your child\'s name, narrated with warm voices. Built in Toronto for families everywhere.',
+  ogImage: 'https://storage.googleapis.com/qissaa-61a78.firebasestorage.app/og/aboutus.png',
+  url: 'https://mysleepytale.com/aboutus',
+};
 
 const fadeUp = { initial: { opacity: 0, y: 24 }, whileInView: { opacity: 1, y: 0 }, viewport: { once: true, margin: '-40px' }, transition: { duration: 0.5 } };
 
@@ -130,6 +138,20 @@ export default function AboutUs() {
 
   return (
     <PageTransition className="page-scroll">
+      <Helmet>
+        <title>{SEO.title}</title>
+        <meta name="description" content={SEO.description} />
+        <link rel="canonical" href={SEO.url} />
+        <meta property="og:title" content={SEO.title} />
+        <meta property="og:description" content={SEO.description} />
+        <meta property="og:image" content={SEO.ogImage} />
+        <meta property="og:url" content={SEO.url} />
+        <meta property="og:type" content="website" />
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content={SEO.title} />
+        <meta name="twitter:description" content={SEO.description} />
+        <meta name="twitter:image" content={SEO.ogImage} />
+      </Helmet>
       <div className="min-h-screen">
 
         {/* ═══ HERO ═══ */}
