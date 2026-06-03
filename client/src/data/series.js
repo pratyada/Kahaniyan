@@ -754,7 +754,11 @@ That night, {childName}, summer is a feeling. Warm grass, friends all around. Sa
         subtitle: 'The Rainbow class sings at the Kindergarten Concert, dresses up for Spirit Week, and says goodbye to the best year ever.',
         tradition: 'universal', theme: 'courage', durationMinutes: 4,
         source: 'Rainbow Kindergarten · Episode 5 · June Newsletter 2026',
-        body: `On Wednesday morning, the gym at Jean Lumb Public School smelled like fresh flowers and floor polish. Rows of chairs filled with mums, dads, grandparents, and little brothers in strollers. A banner said: KINDERGARTEN CONCERT.
+        body: `One evening, a monthly newsletter arrived from Principal Diane Jamieson at Jean Lumb Public School. It had colourful photos, little updates, and stories from every class. But one part made {childName}'s family smile the most — the news from the Rainbow Kindergarten class, taught by Mr. Zak and Shelagh.
+
+And oh, what a month it had been.
+
+On Wednesday morning, the gym smelled like fresh flowers and floor polish. Rows of chairs filled with mums, dads, grandparents, and little brothers in strollers. A banner hung above the stage: KINDERGARTEN CONCERT.
 
 {childName} stood backstage with the whole Rainbow class. Twenty-five kids in matching t-shirts, hearts beating fast.
 
@@ -766,27 +770,31 @@ The music started. The Rainbow class walked onto the stage. Arin waved at his da
 
 When the song ended, the gym exploded with clapping. Dhruv bowed three times. Sanvi curtsied. Lingen just stood there, grinning so wide his face might break.
 
-Then came SPIRIT WEEK.
+Mr. Zak clapped the loudest of all. Shelagh wiped her eyes and said, "That was the best concert I have ever seen."
+
+Then came SPIRIT WEEK — and Principal Jamieson's newsletter had photos of every single day.
 
 Monday was Striped Shirt Day. {childName} wore red and white stripes. Aarhi wore rainbow stripes — of course she did.
 
-Tuesday was Sports Jersey Day. Hunter wore a Maple Leafs jersey. Wesley wore a Blue Jays jersey two sizes too big. "I'll grow into it," he said seriously.
+Tuesday was Sports Jersey Day. Hunter wore a Maple Leafs jersey. Wesley wore a Blue Jays jersey two sizes too big. "I'll grow into it," he said seriously. Mr. Zak wore a vintage Raptors jersey and pretended to dribble down the hallway.
 
-Wednesday was Cultural Day. The hallways became a world map. Saris and dashikis and kilts and hanbok and guayaberas. Michelle wore a beautiful traditional dress with embroidered flowers. Mishaal wore a thobe so white it glowed.
+Wednesday was Cultural Day. The hallways became a world map. Saris and dashikis and kilts and hanbok and guayaberas. Michelle wore a beautiful traditional dress with embroidered flowers. Mishaal wore a thobe so white it glowed. Shelagh set up a little display in the classroom where every child shared one thing about where their family came from.
 
-Thursday was Western Day AND Play Day. Cowboy hats everywhere. The morning was pure chaos — relay races, water balloons, obstacle courses, tug of war. Sisilia won the sack race. Mira won the egg-and-spoon. {childName} won the three-legged race with Aryan — stumbling, laughing, falling across the finish line together.
+Thursday was Western Day AND Play Day. Cowboy hats everywhere. The morning was pure chaos — relay races, water balloons, obstacle courses, tug of war. Sisilia won the sack race. Mira won the egg-and-spoon. {childName} won the three-legged race with Aryan — stumbling, laughing, falling across the finish line together. Mr. Zak wore a cowboy hat and refereed every race with a whistle that didn't actually work.
 
-Friday was Anything But a Backpack Day. Ava carried her books in a laundry basket. Luna used a guitar case. Sayer brought a shopping cart. Mr. Zak brought his supplies in a baby stroller and pushed it down the hallway with a completely straight face.
+Friday was Anything But a Backpack Day. Ava carried her books in a laundry basket. Luna used a guitar case. Sayer brought a shopping cart. Mr. Zak brought his supplies in a baby stroller and pushed it down the hallway with a completely straight face. Shelagh carried hers in a beach bucket and pretended it was completely normal.
 
 Then came the last day.
 
-Report cards went home. Hugs happened — lots of them. Shelagh took one final photo. Twenty-five Rainbow kids, arms around each other, standing in front of the big red canoe at Canoe Landing.
+Report cards went home. Hugs happened — lots of them. Shelagh gathered the class one final time and took one last photo. Twenty-five Rainbow kids, arms around each other, standing in front of the big red canoe at Canoe Landing. Mr. Zak stood to the side, arms folded, trying very hard not to cry. He did anyway.
 
 "Same class next year?" whispered Arin.
 
-"Different class," said Mr. Zak. "But same friends. Always."
+"Different class," said Mr. Zak quietly. "But same friends. Always."
 
-That night, {childName}, close your eyes and hear it one more time — twenty-five voices, singing together, filling a whole gymnasium with something no microphone could ever capture. That was your year. That was your Rainbow class. And it was perfect.`,
+Shelagh added, "And you will always be our Rainbow class. No matter where you go."
+
+That night, {childName}, close your eyes and hear it one more time — twenty-five voices, singing together, filling a whole gymnasium with something no microphone could ever capture. Principal Diane Jamieson wrote in her newsletter that it was the highlight of the year. And she was right. That was your year. That was your Rainbow class. And it was perfect.`,
       },
     ],
   },
