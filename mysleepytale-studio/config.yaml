@@ -1,0 +1,54 @@
+# mysleepytale-studio configuration
+
+brand:
+  name: "My Sleepy Tale"
+  tagline: "Bedtime stories that teach roots & values"
+  url: "mysleepytale.com"
+  instagram: "@mysleepytale_official"
+  colors:
+    bg: "#0a0a0f"
+    navy: "#1a1040"
+    gold: "#f0a500"
+    cream: "#f5f0e8"
+
+image:
+  # Gemini model tier: flash (cheap) or pro (better text)
+  model: "gemini-2.0-flash-exp"
+  width: 1080
+  height: 1920
+  style_preamble: >
+    Cinematic, calm, nighttime, soft warm low light, muted desaturated palette,
+    dreamy, gentle, no people's faces, no text, vertical 9:16 composition,
+    children's storybook aesthetic, watercolor textures, Pixar-meets-Ghibli warmth.
+
+voice:
+  model: "gpt-4o-mini-tts"
+  voice: "sage"
+  speed: 0.9
+  instructions: >
+    Speak very slowly and softly, in a warm, hushed, near-whisper bedtime tone.
+    Long, calm pauses between sentences. Soothing and unhurried, like reading
+    someone to sleep.
+
+reel:
+  duration_min: 7
+  duration_max: 15
+  target_duration: 10
+  resolution: "1080x1920"
+  fps: 30
+  # Ken Burns: gentle zoom factor over duration
+  zoom_factor: 1.04
+  # Audio levels
+  voice_lufs: -14
+  music_lufs: -22
+  # music_mode: voice_only | full
+  music_mode: "voice_only"
+  fade_duration: 0.5
+
+cover:
+  sizes:
+    - [1080, 1350]  # 4:5 Instagram
+    - [1080, 1080]  # 1:1 Square
+
+caption:
+  disclosure: "🎧 AI narration"
