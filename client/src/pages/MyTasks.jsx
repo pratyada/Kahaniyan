@@ -7,7 +7,7 @@ import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../hooks/useAuth.jsx';
 import { useAdmin } from '../hooks/useAdmin.jsx';
 import { db } from '../lib/firebase.js';
-import { collection, getDocs, doc, setDoc, query, where } from 'firebase/firestore';
+import { collection, getDocs, doc, setDoc } from 'firebase/firestore';
 import PageTransition from '../components/PageTransition.jsx';
 
 const ACTIVITIES = {
@@ -50,15 +50,17 @@ export default function MyTasks() {
   const [selectedDate, setSelectedDate] = useState(getLocalDate);
   const [viewMode, setViewMode] = useState('day'); // day | week | month
 
-  // Load only my tasks (filtered by assignee)
+  // Load tasks
   useEffect(() => {
     if (!db || !user?.email) return;
     (async () => {
       try {
-        const q = query(collection(db, 'dailyTasks'), where('assignee', '==', user.email));
-        const snap = await getDocs(q);
+        const snap = await getDocs(collection(db, 'dailyTasks'));
         const loaded = [];
-        snap.forEach(d => loaded.push({ id: d.id, ...d.data() }));
+        snap.forEach(d => {
+          const data = d.data();
+          if (data.assignee === user.email) loaded.push({ id: d.id, ...data });
+        });
         setTasks(loaded);
       } catch (e) {
         console.error('[MyTasks] Load error:', e.message);
