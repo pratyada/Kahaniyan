@@ -114,8 +114,16 @@ function Shell() {
   // Voice recording link — public, no auth, no shell
   if (location.pathname.startsWith('/record/')) return <RecordVoice />;
 
-  const isAboutRoute = location.pathname === '/aboutus';
-  const showNav = !isPlayerRoute && !isOnboardingRoute && !isLoginRoute && !isAboutRoute;
+  // About Us — full-screen landing, no phone shell
+  if (location.pathname === '/aboutus') {
+    return (
+      <div style={{ background: 'var(--bg-base)', minHeight: '100dvh', overflowY: 'auto' }}>
+        <AboutUs />
+      </div>
+    );
+  }
+
+  const showNav = !isPlayerRoute && !isOnboardingRoute && !isLoginRoute;
 
   return (
     <div className="phone-shell">

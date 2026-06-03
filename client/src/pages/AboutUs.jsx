@@ -137,7 +137,7 @@ export default function AboutUs() {
   const navigate = useNavigate();
 
   return (
-    <PageTransition className="page-scroll">
+    <PageTransition>
       <Helmet>
         <title>{SEO.title}</title>
         <meta name="description" content={SEO.description} />
