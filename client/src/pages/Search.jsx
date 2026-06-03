@@ -78,8 +78,8 @@ export default function SearchPage() {
   const showResults = hasQuery || hasFilters;
 
   return (
-    <PageTransition>
-      <div className="min-h-screen pb-28 px-4 pt-4 max-w-3xl mx-auto">
+    <PageTransition className="page-scroll">
+      <div className="px-4 pt-4 max-w-3xl mx-auto">
 
         {/* Search bar */}
         <div className="sticky top-0 z-20 bg-bg-base/95 backdrop-blur-xl pb-3 -mx-4 px-4 pt-1">
