@@ -144,6 +144,17 @@ export default function Studio() {
   const [statuses, setStatuses] = useState(loadStatuses);
   const [expandedDay, setExpandedDay] = useState(null);
   const [toast, setToast] = useState(null);
+  const [selectedWeek, setSelectedWeek] = useState(1); // 1-5 (week selector)
+
+  const WEEKS = [
+    { id: 1, label: 'Week 1', days: [1, 2, 3, 4, 5, 6, 7], range: 'Jun 8 – 14' },
+    { id: 2, label: 'Week 2', days: [8, 9, 10, 11, 12, 13, 14], range: 'Jun 15 – 21' },
+    { id: 3, label: 'Week 3', days: [15, 16, 17, 18, 19, 20, 21], range: 'Jun 22 – 28' },
+    { id: 4, label: 'Week 4', days: [22, 23, 24, 25, 26, 27, 28], range: 'Jun 29 – Jul 5' },
+    { id: 5, label: 'Week 5', days: [29, 30], range: 'Jul 6 – 7' },
+  ];
+  const currentWeek = WEEKS.find(w => w.id === selectedWeek);
+  const weekDays = new Set(currentWeek.days);
 
   const showToast = useCallback((msg) => setToast(msg), []);
 
@@ -234,14 +245,41 @@ export default function Studio() {
               </button>
             ))}
           </div>
+
+          {/* Week selector */}
+          {tab !== 'creatives' && (
+            <div style={{ display: 'flex', gap: 6, marginBottom: 20, overflowX: 'auto', paddingBottom: 4 }}>
+              {WEEKS.map(w => {
+                const weekIgDone = w.days.filter(d => getStatus('ig', d) === 'done').length;
+                const weekXDone = w.days.filter(d => getStatus('x', d) === 'done').length;
+                const weekTotal = w.days.length * 2;
+                const weekDone = weekIgDone + weekXDone;
+                return (
+                  <button key={w.id} onClick={() => setSelectedWeek(w.id)}
+                    style={{
+                      background: selectedWeek === w.id ? `${GOLD}20` : '#12121e',
+                      color: selectedWeek === w.id ? GOLD : MUTED,
+                      border: `1px solid ${selectedWeek === w.id ? GOLD + '50' : '#222'}`,
+                      borderRadius: 10, padding: '8px 14px', cursor: 'pointer', fontFamily: SANS,
+                      fontSize: 12, fontWeight: 600, whiteSpace: 'nowrap', transition: 'all 0.2s',
+                      display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 2, minWidth: 90,
+                    }}>
+                    <span style={{ fontWeight: 700, fontSize: 13 }}>{w.label}</span>
+                    <span style={{ fontSize: 10, opacity: 0.7 }}>{w.range}</span>
+                    <span style={{ fontSize: 9, color: weekDone === weekTotal ? GREEN : MUTED }}>{weekDone}/{weekTotal}</span>
+                  </button>
+                );
+              })}
+            </div>
+          )}
         </div>
 
         {/* Tab content */}
         <div style={{ maxWidth: 1200, margin: '0 auto', padding: '0 20px 60px' }}>
           <AnimatePresence mode="wait">
-            {tab === 'calendar' && <CalendarTab key="cal" statuses={statuses} getStatus={getStatus} cycleStatus={cycleStatus} expandedDay={expandedDay} setExpandedDay={setExpandedDay} emptySlots={emptySlots} startDate={startDate} />}
-            {tab === 'instagram' && <InstagramTab key="ig" getStatus={getStatus} cycleStatus={cycleStatus} copyToClipboard={copyToClipboard} />}
-            {tab === 'xposts' && <XPostsTab key="x" getStatus={getStatus} cycleStatus={cycleStatus} copyToClipboard={copyToClipboard} />}
+            {tab === 'calendar' && <CalendarTab key="cal" statuses={statuses} getStatus={getStatus} cycleStatus={cycleStatus} expandedDay={expandedDay} setExpandedDay={setExpandedDay} emptySlots={emptySlots} startDate={startDate} weekDays={weekDays} />}
+            {tab === 'instagram' && <InstagramTab key="ig" getStatus={getStatus} cycleStatus={cycleStatus} copyToClipboard={copyToClipboard} weekDays={weekDays} />}
+            {tab === 'xposts' && <XPostsTab key="x" getStatus={getStatus} cycleStatus={cycleStatus} copyToClipboard={copyToClipboard} weekDays={weekDays} />}
             {tab === 'creatives' && <CreativesTab key="cr" />}
           </AnimatePresence>
         </div>
@@ -258,7 +296,7 @@ export default function Studio() {
 // ═══════════════════════════════════════════════════
 // Calendar Tab
 // ═══════════════════════════════════════════════════
-function CalendarTab({ getStatus, cycleStatus, expandedDay, setExpandedDay, emptySlots, startDate }) {
+function CalendarTab({ getStatus, cycleStatus, expandedDay, setExpandedDay, emptySlots, startDate, weekDays }) {
   const getDayDate = (dayNum) => {
     const d = new Date(startDate);
     d.setDate(d.getDate() + dayNum - 1);
@@ -286,13 +324,8 @@ function CalendarTab({ getStatus, cycleStatus, expandedDay, setExpandedDay, empt
       }}
         className="studio-cal-grid"
       >
-        {/* Empty slots for days before Jun 8 */}
-        {Array.from({ length: emptySlots }).map((_, i) => (
-          <div key={`empty-${i}`} style={{ minHeight: 90 }} />
-        ))}
-
-        {/* Day cells */}
-        {INSTAGRAM_PLAN.map((ig) => {
+        {/* Day cells — filtered by selected week */}
+        {INSTAGRAM_PLAN.filter(ig => weekDays.has(ig.day)).map((ig) => {
           const xp = PLATFORM_X_PLAN[ig.day - 1];
           const igStatus = getStatus('ig', ig.day);
           const xStatus = getStatus('x', ig.day);
@@ -415,13 +448,13 @@ function ExpandedDayCard({ day, getStatus, cycleStatus, onClose }) {
 // ═══════════════════════════════════════════════════
 // Instagram Tab
 // ═══════════════════════════════════════════════════
-function InstagramTab({ getStatus, cycleStatus, copyToClipboard }) {
+function InstagramTab({ getStatus, cycleStatus, copyToClipboard, weekDays }) {
   const [expanded, setExpanded] = useState(null);
 
   return (
     <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.2 }}>
       <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
-        {INSTAGRAM_PLAN.map(ig => {
+        {INSTAGRAM_PLAN.filter(ig => weekDays.has(ig.day)).map(ig => {
           const isOpen = expanded === ig.day;
           const fullCaption = `${ig.caption}\n\n${ig.cta}\n\n${ig.hashtags}`;
 
@@ -501,13 +534,13 @@ function InstagramTab({ getStatus, cycleStatus, copyToClipboard }) {
 // ═══════════════════════════════════════════════════
 // X Posts Tab
 // ═══════════════════════════════════════════════════
-function XPostsTab({ getStatus, cycleStatus, copyToClipboard }) {
+function XPostsTab({ getStatus, cycleStatus, copyToClipboard, weekDays }) {
   const [expanded, setExpanded] = useState(null);
 
   return (
     <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.2 }}>
       <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
-        {PLATFORM_X_PLAN.map(xp => {
+        {PLATFORM_X_PLAN.filter(xp => weekDays.has(xp.day)).map(xp => {
           const isOpen = expanded === xp.day;
 
           return (
