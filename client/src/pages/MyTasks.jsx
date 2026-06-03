@@ -7,7 +7,7 @@ import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../hooks/useAuth.jsx';
 import { useAdmin } from '../hooks/useAdmin.jsx';
 import { db } from '../lib/firebase.js';
-import { collection, getDocs, doc, setDoc } from 'firebase/firestore';
+import { collection, getDocs, doc, setDoc, query, where } from 'firebase/firestore';
 import PageTransition from '../components/PageTransition.jsx';
 
 const ACTIVITIES = {
@@ -50,12 +50,13 @@ export default function MyTasks() {
   const [selectedDate, setSelectedDate] = useState(getLocalDate);
   const [viewMode, setViewMode] = useState('day'); // day | week | month
 
-  // Load all tasks
+  // Load only my tasks (filtered by assignee)
   useEffect(() => {
-    if (!db || !user) return;
+    if (!db || !user?.email) return;
     (async () => {
       try {
-        const snap = await getDocs(collection(db, 'dailyTasks'));
+        const q = query(collection(db, 'dailyTasks'), where('assignee', '==', user.email));
+        const snap = await getDocs(q);
         const loaded = [];
         snap.forEach(d => loaded.push({ id: d.id, ...d.data() }));
         setTasks(loaded);
@@ -85,7 +86,7 @@ export default function MyTasks() {
   const myTasks = useMemo(() => {
     if (!user?.email) return [];
     return tasks
-      .filter(t => t.assignee === user.email && t.dueDate >= dateRange.start && t.dueDate <= dateRange.end)
+      .filter(t => t.dueDate >= dateRange.start && t.dueDate <= dateRange.end)
       .sort((a, b) => {
         if (a.dueDate !== b.dueDate) return a.dueDate.localeCompare(b.dueDate);
         const pri = { urgent: 0, high: 1, normal: 2, low: 3 };
