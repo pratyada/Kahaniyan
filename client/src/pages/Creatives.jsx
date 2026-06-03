@@ -409,7 +409,7 @@ export default function Creatives() {
   const ActiveComponent = COMPONENTS[active];
 
   return (
-    <PageTransition className="page-scroll safe-top">
+    <PageTransition>
       <div className="px-5 pt-10 pb-40 max-w-5xl mx-auto">
         {/* Header */}
         <div className="flex items-center gap-3 mb-2">

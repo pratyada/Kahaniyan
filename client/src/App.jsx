@@ -114,11 +114,18 @@ function Shell() {
   // Voice recording link — public, no auth, no shell
   if (location.pathname.startsWith('/record/')) return <RecordVoice />;
 
-  // About Us — full-screen landing, no phone shell
+  // Full-screen pages — no phone shell, no nav
   if (location.pathname === '/aboutus') {
     return (
       <div style={{ background: 'var(--bg-base)', minHeight: '100dvh', overflowY: 'auto' }}>
         <AboutUs />
+      </div>
+    );
+  }
+  if (location.pathname === '/creatives') {
+    return (
+      <div style={{ background: 'var(--bg-base)', minHeight: '100dvh', overflowY: 'auto' }}>
+        <Creatives />
       </div>
     );
   }
