@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Private Series &amp; Contributor Flow — Create Family Stories Together | My Sleepy Tale</title>
-  <meta name="description" content="Create private bedtime story series on My Sleepy Tale. Share with family across cities. Let grandparents, cousins, and friends contribute their own episodes. Owner reviews, edits, adds images, generates AI audio, and publishes. A shared family story journal in audio form. Free, private, and yours.">
+  <meta name="description" content="Create private bedtime story series on My Sleepy Tale. Share with family across cities. Let grandparents, cousins, and friends contribute their own episodes. Owner reviews, edits, adds images, generates AI audio, and publishes. Free, private, and yours.">
   <link rel="canonical" href="https://mysleepytale.com/blog/private-series-contributor-guide">
   <meta property="og:title" content="Private Series &amp; Contributor Flow — Create Family Stories Together | My Sleepy Tale">
   <meta property="og:description" content="Create private bedtime stories, share with family and friends, and let them contribute episodes. Owner reviews, edits, generates AI audio, and publishes. Build a shared family story collection together.">
@@ -24,249 +24,268 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,700&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
   <style>
+    /* ── Top bar ── */
     .topbar{position:sticky;top:0;z-index:40;background:rgba(10,10,15,.92);backdrop-filter:blur(16px);border-bottom:1px solid rgba(255,255,255,.05)}
     .topbar-inner{max-width:800px;margin:0 auto;padding:.75rem 1.5rem;display:flex;align-items:center;justify-content:space-between}
     .topbar .back{display:flex;align-items:center;gap:.4rem;font-size:.85rem;font-weight:600;color:#a8a39a;transition:color .2s}
     .topbar .back:hover{color:#f0a500}
     .topbar .back svg{width:18px;height:18px}
     .topbar .brand{font-family:Fraunces,Georgia,serif;font-size:.95rem;font-weight:700;color:#f5f0e8;display:flex;align-items:center;gap:.4rem}
+    /* ── Bottom nav ── */
     .bottom-nav{position:fixed;bottom:0;left:0;right:0;z-index:40;background:rgba(10,10,15,.95);backdrop-filter:blur(16px);border-top:1px solid rgba(255,255,255,.05);padding-bottom:env(safe-area-inset-bottom)}
     .bottom-nav ul{display:flex;max-width:500px;margin:0 auto;padding:.5rem .5rem 0;list-style:none}
     .bottom-nav li{flex:1;text-align:center}
     .bottom-nav a{display:flex;flex-direction:column;align-items:center;gap:.2rem;padding:.5rem 0;color:#6e6a63;font-size:.6rem;font-weight:700;text-transform:uppercase;letter-spacing:.12em;transition:color .2s;text-decoration:none}
     .bottom-nav a:hover,.bottom-nav a.on{color:#f0a500}
     .bottom-nav svg{width:22px;height:22px;stroke-width:1.8}
+    /* ── Related ── */
     .related{margin-top:3rem;padding-top:2rem;border-top:1px solid rgba(255,255,255,.06)}.related h3{font-family:Fraunces,Georgia,serif;font-size:1.1rem;color:#f5f0e8;margin-bottom:1rem}.related-grid{display:grid;grid-template-columns:1fr;gap:.8rem}@media(min-width:520px){.related-grid{grid-template-columns:1fr 1fr}}.related-card{display:flex;gap:.8rem;padding:1rem;border-radius:1rem;background:rgba(255,255,255,.025);border:1px solid rgba(255,255,255,.06);transition:all .2s}.related-card:hover{border-color:rgba(240,165,0,.2);transform:translateY(-1px)}.related-card .rc-text{min-width:0}.related-card h4{font-size:.82rem;font-weight:700;color:#f5f0e8;line-height:1.3;margin-bottom:.2rem}.related-card span{font-size:.7rem;color:#6e6a63}
     *{margin:0;padding:0;box-sizing:border-box}
     body{font-family:'DM Sans',system-ui,sans-serif;background:#0a0a0f;color:#f5f0e8;line-height:1.9}
     a{color:#f0a500;text-decoration:none}
-    .c{max-width:760px;margin:0 auto;padding:2rem 1.5rem 6rem}
+    .c{max-width:760px;margin:0 auto;padding:2rem 1.5rem}
 
     .hero{text-align:center;padding:3rem 0;border-bottom:1px solid rgba(255,255,255,.06);margin-bottom:3rem}
     .hero .ey{display:inline-block;background:rgba(240,165,0,.08);border:1px solid rgba(240,165,0,.2);border-radius:2rem;padding:.3rem 1rem;font-size:.7rem;font-weight:700;color:#f0a500;letter-spacing:.08em;text-transform:uppercase;margin-bottom:1.2rem}
-    .hero h1{font-family:Fraunces,Georgia,serif;font-size:2.2rem;font-weight:700;line-height:1.15;margin-bottom:1rem}
+    .hero h1{font-family:Fraunces,Georgia,serif;font-size:2.4rem;font-weight:700;line-height:1.15;margin-bottom:1rem}
     .hero h1 em{color:#f0a500;font-style:normal}
     .hero .sub{color:#a8a39a;font-size:1rem;max-width:560px;margin:0 auto}
 
-    h2{font-family:Fraunces,Georgia,serif;font-size:1.5rem;color:#f5f0e8;margin:2.5rem 0 1rem;padding-top:1rem;border-top:1px solid rgba(255,255,255,.06)}
-    h3{font-family:Fraunces,Georgia,serif;font-size:1.15rem;color:#f0a500;margin:2rem 0 .8rem}
-    p{color:#c8c3ba;margin-bottom:1.2rem}
+    h2{font-family:Fraunces,Georgia,serif;font-size:1.5rem;font-weight:700;color:#f5f0e8;margin:3.5rem 0 .8rem}
+    h2 em{color:#f0a500;font-style:normal}
+    h3{font-size:1.05rem;font-weight:700;margin-bottom:.3rem}
+    p{font-size:.92rem;color:#a8a39a;margin-bottom:1.1rem}
     strong{color:#f5f0e8}
 
-    .step-img{width:100%;border-radius:1rem;margin:1.5rem 0;border:1px solid rgba(255,255,255,.08);box-shadow:0 4px 24px rgba(0,0,0,.4)}
+    /* Flow box */
+    .fb{background:rgba(255,255,255,.02);border:1px solid rgba(255,255,255,.06);border-radius:1.5rem;padding:2rem;margin:2rem 0}
+    .fb h3{color:#f0a500;text-align:center;margin-bottom:1.5rem;font-size:1.15rem}
+    .fr{display:flex;align-items:stretch;gap:.4rem;margin-bottom:.4rem;flex-wrap:wrap}
+    .fs{flex:1;min-width:70px;text-align:center;padding:.7rem .4rem;border-radius:.8rem;font-size:.68rem;font-weight:700;line-height:1.3}
+    .fg{background:rgba(240,165,0,.1);border:1px solid rgba(240,165,0,.25);color:#f0a500}
+    .fbl{background:rgba(59,130,246,.1);border:1px solid rgba(59,130,246,.25);color:#3b82f6}
+    .fgr{background:rgba(34,197,94,.1);border:1px solid rgba(34,197,94,.25);color:#22c55e}
+    .fp{background:rgba(168,85,247,.1);border:1px solid rgba(168,85,247,.25);color:#a855f7}
+    .fa{display:flex;align-items:center;justify-content:center;font-size:1rem;color:rgba(240,165,0,.5);min-width:16px}
+    .fad{text-align:center;font-size:1rem;color:rgba(240,165,0,.5);padding:.2rem 0}
 
-    .flow-diagram{background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.08);border-radius:1.2rem;padding:2rem;margin:2rem 0}
-    .flow-diagram h3{margin-top:0;border:none;padding:0}
-    .flow-steps{display:flex;flex-direction:column;gap:0}
-    .flow-step{display:flex;align-items:flex-start;gap:1rem;padding:1rem 0}
-    .flow-step .icon{width:48px;height:48px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:1.4rem;flex-shrink:0}
-    .flow-step .icon.blue{background:rgba(59,130,246,.15);border:1px solid rgba(59,130,246,.3)}
-    .flow-step .icon.gold{background:rgba(240,165,0,.15);border:1px solid rgba(240,165,0,.3)}
-    .flow-step .icon.green{background:rgba(72,187,120,.15);border:1px solid rgba(72,187,120,.3)}
-    .flow-step .icon.purple{background:rgba(159,122,234,.15);border:1px solid rgba(159,122,234,.3)}
-    .flow-step .text h4{font-size:.95rem;font-weight:700;color:#f5f0e8;margin-bottom:.2rem}
-    .flow-step .text p{font-size:.85rem;color:#a8a39a;margin:0}
-    .flow-arrow{text-align:center;font-size:1.2rem;color:#4a4a5a;padding:.2rem 0}
+    /* Timeline */
+    .tl{position:relative;margin:2rem 0;padding-left:3rem}
+    .tl::before{content:'';position:absolute;left:15px;top:0;bottom:0;width:3px;background:linear-gradient(180deg,#f0a500 0%,#3b82f6 40%,#22c55e 70%,#a855f7 100%);border-radius:2px}
+    .ts{position:relative;margin-bottom:2.5rem}.ts:last-child{margin-bottom:0}
+    .td{position:absolute;left:-3rem;top:.15rem;width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.8rem;font-weight:800}
+    .tc{background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.08);border-radius:1.2rem;padding:1.4rem}
+    .tc h3{font-size:1rem;margin-bottom:.2rem;color:#f5f0e8}
+    .tc p{font-size:.85rem;margin:.3rem 0 0}
+    .tg{display:inline-block;font-size:.62rem;font-weight:700;padding:.2rem .6rem;border-radius:1rem;margin-top:.5rem}
+    .tgg{background:rgba(240,165,0,.1);color:#f0a500}
+    .tgb{background:rgba(59,130,246,.1);color:#3b82f6}
+    .tggr{background:rgba(34,197,94,.1);color:#22c55e}
+    .tgp{background:rgba(168,85,247,.1);color:#a855f7}
 
-    .role-grid{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin:1.5rem 0}
-    @media(max-width:520px){.role-grid{grid-template-columns:1fr}}
-    .role-card{padding:1.5rem;border-radius:1rem;border:1px solid rgba(255,255,255,.08)}
-    .role-card.owner{background:rgba(240,165,0,.05);border-color:rgba(240,165,0,.2)}
-    .role-card.contributor{background:rgba(59,130,246,.05);border-color:rgba(59,130,246,.2)}
-    .role-card h4{font-size:1rem;font-weight:700;margin-bottom:.5rem}
-    .role-card.owner h4{color:#f0a500}
-    .role-card.contributor h4{color:#3b82f6}
-    .role-card ul{list-style:none;padding:0}
-    .role-card li{font-size:.85rem;color:#a8a39a;padding:.3rem 0;padding-left:1.2rem;position:relative}
-    .role-card li::before{content:'';position:absolute;left:0;top:.7rem;width:6px;height:6px;border-radius:50%}
-    .role-card.owner li::before{background:#f0a500}
-    .role-card.contributor li::before{background:#3b82f6}
+    /* Compare */
+    .cmp{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin:1.2rem 0}
+    @media(max-width:500px){.cmp{grid-template-columns:1fr}}
+    .cm{background:rgba(255,255,255,.02);border:1px solid rgba(255,255,255,.06);border-radius:1rem;padding:1.2rem}
+    .cm h4{font-size:.95rem;margin-bottom:.5rem;display:flex;align-items:center;gap:.4rem}
+    .cm ul{list-style:none;padding:0;font-size:.82rem;color:#a8a39a}
+    .cm li{padding:.25rem 0;padding-left:1rem;position:relative}
+    .cm li::before{content:'';position:absolute;left:0;top:.55rem;width:5px;height:5px;border-radius:50%;background:#f0a500}
 
-    .cta-box{text-align:center;padding:2.5rem;background:rgba(240,165,0,.05);border:1px solid rgba(240,165,0,.2);border-radius:1.2rem;margin:2.5rem 0}
-    .cta-box h3{color:#f0a500;margin-top:0}
-    .cta-box .btn{display:inline-block;background:#f0a500;color:#0a0a0f;font-size:1rem;font-weight:700;padding:.8rem 2rem;border-radius:3rem;margin-top:1rem;transition:transform .2s}
-    .cta-box .btn:hover{transform:scale(1.03)}
+    /* Example callout */
+    .ex{background:rgba(240,165,0,.04);border-left:4px solid #f0a500;border-radius:0 1rem 1rem 0;padding:1.2rem 1.4rem;margin:1.2rem 0}
+    .ex h4{color:#f0a500;font-size:.85rem;margin-bottom:.4rem}
+    .ex p{font-size:.83rem;color:#a8a39a;margin:0}
+
+    /* Screenshot */
+    .ss{width:100%;border-radius:1rem;margin:1.5rem 0;border:1px solid rgba(255,255,255,.08);box-shadow:0 4px 24px rgba(0,0,0,.4)}
+
+    /* CTA */
+    .cta{background:linear-gradient(135deg,rgba(240,165,0,.15),rgba(240,165,0,.03));border:2px solid rgba(240,165,0,.3);border-radius:1.5rem;padding:3rem 2rem;text-align:center;margin:3rem 0}
+    .cta h2{margin-top:0;color:#f5f0e8;font-size:1.7rem}
+    .cta p{color:#a8a39a;font-size:.95rem;margin-bottom:1.2rem;max-width:480px;margin-left:auto;margin-right:auto}
+    .cta .btn{display:inline-block;background:#f0a500;color:#0a0a0f;font-weight:700;padding:.9rem 2.5rem;border-radius:2rem;font-size:1.05rem}
+    .cta .sm{margin-top:.8rem;font-size:.72rem;color:#6e6a63}
+
+    footer{text-align:center;padding:2rem 0;color:rgba(245,240,232,.25);font-size:.78rem;border-top:1px solid rgba(255,255,255,.05);margin-top:3rem}
   </style>
 </head>
 <body>
 
-<!-- Top bar -->
-<div class="topbar">
-  <div class="topbar-inner">
-    <a href="/blog" class="back"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><polyline points="15 18 9 12 15 6"/></svg> Blog</a>
-    <a href="/" class="brand"><span>🌙</span> My Sleepy Tale</a>
-  </div>
-</div>
+  <div class="topbar"><div class="topbar-inner">
+    <a href="/blog" class="back"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M15 18l-6-6 6-6"/></svg>Blog</a>
+    <a href="/" class="brand">🌙 My Sleepy Tale</a>
+  </div></div>
 
 <div class="c">
 
-  <!-- Hero -->
   <div class="hero">
-    <div class="ey">New Feature</div>
-    <h1>Private Series &amp; <em>Contributor Flow</em></h1>
-    <p class="sub">Create private bedtime story series for your family. Share them with loved ones. Let anyone you trust contribute their own episodes. Together, you build a story collection that is truly yours.</p>
+    <div class="ey">New Feature · June 2026</div>
+    <h1>Private Series &amp;<br><em>Contributor Flow</em></h1>
+    <p class="sub">Create private bedtime story series for your family. Share them with loved ones. Let anyone you trust contribute their own episodes. Together, build a story collection that is truly yours.</p>
   </div>
 
   <!-- What is this -->
-  <h2>What Are Private Series?</h2>
-  <p>
-    On My Sleepy Tale, you can now create two types of series:
-  </p>
-  <div class="role-grid">
-    <div class="role-card owner">
-      <h4>Public Series</h4>
+  <h2>Public vs <em>Personal</em></h2>
+  <p>You can now create two types of series on My Sleepy Tale:</p>
+
+  <div class="cmp">
+    <div class="cm">
+      <h4 style="color:#f0a500">🌍 Public Series</h4>
       <ul>
-        <li>Visible to all My Sleepy Tale users worldwide</li>
-        <li>Goes through admin review before publishing</li>
-        <li>Listed in Search, Series tab, and Creator profiles</li>
-        <li>Great for sharing cultural stories with the community</li>
+        <li>Visible to everyone worldwide</li>
+        <li>Admin review before publishing</li>
+        <li>Listed in Search and Series tab</li>
+        <li>Great for community stories</li>
       </ul>
     </div>
-    <div class="role-card contributor">
-      <h4>Private Series</h4>
+    <div class="cm">
+      <h4 style="color:#3b82f6">🔒 Personal Series</h4>
       <ul>
-        <li>Only visible to you and people you share with</li>
-        <li>Published instantly, no review needed</li>
-        <li>Perfect for family memories, personal stories</li>
-        <li>Shared users can listen and contribute episodes</li>
+        <li>Only you and shared people can see</li>
+        <li>Published instantly, no review</li>
+        <li>Perfect for family memories</li>
+        <li>Shared users can contribute episodes</li>
       </ul>
     </div>
   </div>
-  <p>
-    Think of a private series as a <strong>shared family journal in audio form</strong>. A grandmother in India can start a series about family traditions. A cousin in Canada can add an episode about their first snow day. A friend in the US can contribute their favourite childhood memory. Everyone who is shared can listen to the whole collection at bedtime.
-  </p>
 
-  <!-- Flow Diagram -->
-  <h2>How It Works — The Complete Flow</h2>
+  <div class="ex">
+    <h4>Think of it this way</h4>
+    <p>A private series is a shared family journal in audio form. A grandmother in India starts a series about family traditions. A cousin in Canada adds an episode about their first snow day. A friend in the US contributes their favourite memory. Everyone listens at bedtime.</p>
+  </div>
 
-  <div class="flow-diagram">
-    <h3>The Journey of a Private Series</h3>
-    <div class="flow-steps">
-      <div class="flow-step">
-        <div class="icon gold">1</div>
-        <div class="text">
-          <h4>Owner Creates a Private Series</h4>
-          <p>Go to Create, choose "Series", toggle visibility to "Personal", add episodes with story text and images. Published instantly.</p>
-        </div>
-      </div>
-      <div class="flow-arrow">|</div>
-      <div class="flow-step">
-        <div class="icon gold">2</div>
-        <div class="text">
-          <h4>Owner Shares with Family &amp; Friends</h4>
-          <p>From the series card in "My Creations", tap "+ Share with someone" and enter their email. They are instantly added.</p>
-        </div>
-      </div>
-      <div class="flow-arrow">|</div>
-      <div class="flow-step">
-        <div class="icon blue">3</div>
-        <div class="text">
-          <h4>Shared User Sees "Shared with me" Tab</h4>
-          <p>On their homepage, a new tab appears: "Shared with me (1)". They see the series with all episodes, ready to listen.</p>
-        </div>
-      </div>
-      <div class="flow-arrow">|</div>
-      <div class="flow-step">
-        <div class="icon blue">4</div>
-        <div class="text">
-          <h4>Contributor Adds an Episode</h4>
-          <p>Inside the series, they tap "+ Contribute an episode". They write a title, story text (or quick bullet points), and upload photos. Then submit for review.</p>
-        </div>
-      </div>
-      <div class="flow-arrow">|</div>
-      <div class="flow-step">
-        <div class="icon gold">5</div>
-        <div class="text">
-          <h4>Owner Reviews the Submission</h4>
-          <p>The owner sees a greyed-out "Pending" card. They tap to review: see the original text, submitted photos, edit the story, polish the writing.</p>
-        </div>
-      </div>
-      <div class="flow-arrow">|</div>
-      <div class="flow-step">
-        <div class="icon green">6</div>
-        <div class="text">
-          <h4>Owner Publishes the Episode</h4>
-          <p>One tap on "Publish as Episode" and it becomes the next episode in the series. The owner can then add images and generate AI audio narration.</p>
-        </div>
-      </div>
-      <div class="flow-arrow">|</div>
-      <div class="flow-step">
-        <div class="icon purple">7</div>
-        <div class="text">
-          <h4>Everyone Sees the New Episode</h4>
-          <p>All shared users (and the owner) instantly see the new episode in the series. Ready to listen at bedtime.</p>
-        </div>
-      </div>
+  <!-- Flow diagram -->
+  <h2>The Complete <em>Flow</em></h2>
+
+  <div class="fb">
+    <h3>From Creation to Listening</h3>
+    <div class="fr">
+      <div class="fs fg">Create<br>Series</div>
+      <div class="fa">→</div>
+      <div class="fs fg">Share by<br>Email</div>
+      <div class="fa">→</div>
+      <div class="fs fbl">Shared User<br>Sees Tab</div>
+      <div class="fa">→</div>
+      <div class="fs fbl">Contribute<br>Episode</div>
+      <div class="fa">→</div>
+      <div class="fs fg">Owner<br>Reviews</div>
+      <div class="fa">→</div>
+      <div class="fs fgr">Publish</div>
+      <div class="fa">→</div>
+      <div class="fs fp">Everyone<br>Listens</div>
     </div>
   </div>
 
-  <!-- Step by step with screenshots -->
-  <h2>Step-by-Step with Screenshots</h2>
+  <!-- Timeline steps with screenshots -->
+  <h2>Step by <em>Step</em></h2>
 
-  <h3>Step 1: "Shared with me" on the Homepage</h3>
-  <p>
-    When someone shares a private series with you, a new <strong>"Shared with me"</strong> tab appears on your homepage, right next to Story and Series. You see the series title, the creator's name, and all episode cards — ready to play.
-  </p>
-  <img src="/blog/images/shared-tab-homepage.jpeg" alt="Shared with me tab on the My Sleepy Tale homepage showing Veda's Mountain Love series with 2 episodes" class="step-img">
+  <div class="tl">
 
-  <h3>Step 2: Open the Series &amp; Contribute</h3>
-  <p>
-    Tap into the series to see all episodes. Below the episode cards, you will find the <strong>"+ Contribute an episode to this series"</strong> button. This is your invitation to add your own story to the collection.
-  </p>
-  <img src="/blog/images/contribute-button.jpeg" alt="Series detail page showing 2 episodes and the Contribute an episode button highlighted" class="step-img">
+    <div class="ts">
+      <div class="td" style="background:rgba(240,165,0,.15);color:#f0a500">1</div>
+      <div class="tc">
+        <h3>"Shared with me" on the Homepage</h3>
+        <p>When someone shares a private series with you, a new <strong>"Shared with me"</strong> tab appears on your homepage, right next to Story and Series. You see the series title, creator's name, and all episode cards.</p>
+        <span class="tg tgb">Shared User</span>
+      </div>
+      <img src="/blog/images/shared-tab-homepage.jpeg" alt="Shared with me tab on homepage" class="ss">
+    </div>
 
-  <h3>Step 3: Write &amp; Submit Your Episode</h3>
-  <p>
-    Write your episode title and story text. You can write a full story or just quick bullet points of memories — the series owner can polish it later. You can also <strong>upload multiple photos</strong> to go with your episode. All images are automatically compressed for fast loading.
-  </p>
-  <p>
-    Hit <strong>"Submit for review"</strong> and you will see a confirmation that your episode has been submitted. The series owner will be notified.
-  </p>
-  <img src="/blog/images/episode-submitted.jpeg" alt="Episode submitted confirmation showing Deepti Ramaul will review and publish it" class="step-img">
+    <div class="ts">
+      <div class="td" style="background:rgba(59,130,246,.15);color:#3b82f6">2</div>
+      <div class="tc">
+        <h3>Open the Series &amp; Contribute</h3>
+        <p>Tap into the series to see all episodes. Below the episode cards, find the <strong>"+ Contribute an episode to this series"</strong> button. Write a title, story text (full story or quick bullet points), and upload multiple photos.</p>
+        <span class="tg tgb">Contributor</span>
+      </div>
+      <img src="/blog/images/contribute-button.jpeg" alt="Contribute button highlighted" class="ss">
+    </div>
 
-  <h3>Step 4: Owner Sees Pending Contributions</h3>
-  <p>
-    The series owner opens their series and sees a new section: <strong>"Pending Contributions"</strong>. The submitted episode appears as a greyed-out card with a "PENDING" badge, showing the contributor's name, word count, and submission date.
-  </p>
-  <img src="/blog/images/pending-contribution.jpeg" alt="Owner's view showing Edit series button and a pending contribution card from Prateek Yadav" class="step-img">
+    <div class="ts">
+      <div class="td" style="background:rgba(59,130,246,.15);color:#3b82f6">3</div>
+      <div class="tc">
+        <h3>Submit for Review</h3>
+        <p>Hit <strong>"Submit for review"</strong> and see a confirmation. The series owner will be notified and can review your submission.</p>
+        <span class="tg tgb">Contributor</span>
+      </div>
+      <img src="/blog/images/episode-submitted.jpeg" alt="Episode submitted confirmation" class="ss">
+    </div>
 
-  <h3>Step 5: Owner Reviews, Edits &amp; Publishes</h3>
-  <p>
-    The owner taps the pending card to open the <strong>review panel</strong>. Here they can see:
-  </p>
-  <ul style="color:#c8c3ba;margin-bottom:1.5rem;padding-left:1.5rem">
-    <li><strong>Submitted photos</strong> — all images the contributor uploaded, displayed as a scrollable gallery</li>
-    <li><strong>Original submission</strong> — the raw text exactly as the contributor wrote it</li>
-    <li><strong>Editable title and body</strong> — the owner can rewrite, polish, expand, or restructure the story as needed</li>
-  </ul>
-  <p>
-    When ready, the owner taps <strong>"Publish as Episode"</strong> to add it to the series. Or <strong>"Reject"</strong> with optional feedback if changes are needed.
-  </p>
-  <img src="/blog/images/owner-review-panel.jpeg" alt="Owner review panel showing submitted photos, original text, editable fields, and Publish/Reject buttons" class="step-img">
+    <div class="ts">
+      <div class="td" style="background:rgba(240,165,0,.15);color:#f0a500">4</div>
+      <div class="tc">
+        <h3>Owner Sees Pending Contributions</h3>
+        <p>The owner opens their series and sees <strong>"Pending Contributions"</strong> — a greyed-out card with "PENDING" badge, contributor's name, word count, and date.</p>
+        <span class="tg tgg">Series Owner</span>
+      </div>
+      <img src="/blog/images/pending-contribution.jpeg" alt="Pending contribution card" class="ss">
+    </div>
 
-  <h3>Step 6: Published — Everyone Can Listen</h3>
-  <p>
-    After publishing, the new episode appears alongside the existing ones. In this example, the series now has <strong>3 episodes</strong> — two by the original creator and one contributed by a family member. The hero collage at the top updates with images from all episodes.
-  </p>
-  <p>
-    The owner can further enhance the published episode using <strong>Edit mode</strong>: upload more photos, edit the story text, and generate fresh <strong>AI audio narration</strong> — all in one tap.
-  </p>
-  <img src="/blog/images/published-3-episodes.jpeg" alt="Series detail page showing 3 published episodes with photo collage header and Edit series button" class="step-img">
+    <div class="ts">
+      <div class="td" style="background:rgba(240,165,0,.15);color:#f0a500">5</div>
+      <div class="tc">
+        <h3>Review, Edit &amp; Publish</h3>
+        <p>The owner taps the pending card to open the review panel. They see <strong>submitted photos</strong>, the <strong>original text</strong>, and editable fields for title and body. Polish the story, then tap <strong>"Publish as Episode"</strong> or <strong>"Reject"</strong> with feedback.</p>
+        <span class="tg tgg">Series Owner</span>
+      </div>
+      <img src="/blog/images/owner-review-panel.jpeg" alt="Owner review panel with photos and edit fields" class="ss">
+    </div>
+
+    <div class="ts">
+      <div class="td" style="background:rgba(34,197,94,.15);color:#22c55e">6</div>
+      <div class="tc">
+        <h3>Published — Everyone Can Listen</h3>
+        <p>The new episode appears alongside existing ones. The owner can further enhance it using <strong>Edit mode</strong>: upload more photos, edit text, and generate fresh <strong>AI audio narration</strong> — all in one tap.</p>
+        <span class="tg tggr">Published</span>
+      </div>
+      <img src="/blog/images/published-3-episodes.jpeg" alt="Series with 3 published episodes" class="ss">
+    </div>
+
+  </div>
+
+  <!-- Two roles -->
+  <h2>Two Roles, <em>One Story</em></h2>
+
+  <div class="cmp">
+    <div class="cm">
+      <h4 style="color:#f0a500">Series Owner</h4>
+      <ul>
+        <li>Creates and names the series</li>
+        <li>Adds the initial episodes</li>
+        <li>Shares with people by email</li>
+        <li>Reviews and edits contributions</li>
+        <li>Uploads images, generates audio</li>
+        <li>Full creative control</li>
+      </ul>
+    </div>
+    <div class="cm">
+      <h4 style="color:#3b82f6">Contributor</h4>
+      <ul>
+        <li>Sees series in "Shared with me"</li>
+        <li>Listens to all published episodes</li>
+        <li>Submits episodes (text + photos)</li>
+        <li>Quick pointers or full stories</li>
+        <li>Owner polishes before publishing</li>
+        <li>No technical skills needed</li>
+      </ul>
+    </div>
+  </div>
 
   <!-- Who is this for -->
-  <h2>Who Is This For?</h2>
+  <h2>Who Is This <em>For?</em></h2>
 
-  <div class="role-grid">
-    <div class="role-card owner">
+  <div class="cmp">
+    <div class="cm">
       <h4>Families</h4>
       <ul>
         <li>Document family memories as bedtime stories</li>
-        <li>Let grandparents, aunts, and cousins contribute</li>
+        <li>Let grandparents, aunts, cousins contribute</li>
         <li>Create a private audio archive for your children</li>
         <li>Share across cities and countries</li>
       </ul>
     </div>
-    <div class="role-card contributor">
+    <div class="cm">
       <h4>Friends &amp; Communities</h4>
       <ul>
         <li>Book clubs creating shared story collections</li>
@@ -277,77 +296,33 @@
     </div>
   </div>
 
-  <!-- Roles explained -->
-  <h2>Two Roles, One Story</h2>
-  <div class="role-grid">
-    <div class="role-card owner">
-      <h4>Series Owner</h4>
-      <ul>
-        <li>Creates and names the series</li>
-        <li>Adds the initial episodes</li>
-        <li>Shares with people by email</li>
-        <li>Reviews and edits contributions</li>
-        <li>Publishes or rejects submissions</li>
-        <li>Uploads images and generates audio</li>
-        <li>Full creative control</li>
-      </ul>
-    </div>
-    <div class="role-card contributor">
-      <h4>Contributor</h4>
-      <ul>
-        <li>Sees shared series on their homepage</li>
-        <li>Listens to all published episodes</li>
-        <li>Submits new episodes (text + photos)</li>
-        <li>Can write full stories or quick bullet points</li>
-        <li>Owner polishes before publishing</li>
-        <li>No technical skills needed</li>
-        <li>Just share your memories</li>
-      </ul>
-    </div>
-  </div>
-
   <!-- Credits -->
-  <h2>Built with Love — Thank You</h2>
-  <p>
-    This feature was born from a real conversation. <strong>Deepti Ramaul</strong> and <strong>Sravanthi Somalaraju</strong> came up with the idea of turning family memories into private bedtime stories that everyone could contribute to — not just one person writing, but the whole family adding their own chapters.
-  </p>
-  <p>
-    Deepti created the first private series — <em>"Veda's Mountain Love — Denver Stories 2022-23"</em> — documenting her family's adventure moving from Toronto to Colorado. Sravanthi and Prateek tested the full contributor flow end to end, finding bugs, suggesting improvements, and making sure it felt natural for real families.
-  </p>
-  <p>
-    Thank you, Deepti and Sravanthi, for believing in this idea and helping us build it right. This feature exists because of you.
-  </p>
+  <div class="ex">
+    <h4>Built with Love</h4>
+    <p>This feature was born from a real conversation. <strong>Deepti Ramaul</strong> and <strong>Sravanthi Somalaraju</strong> came up with the idea of turning family memories into private bedtime stories that everyone could contribute to. Deepti created the first series — "Veda's Mountain Love — Denver Stories 2022-23". Sravanthi and Prateek tested the full flow end to end. Thank you both for believing in this idea.</p>
+  </div>
 
   <!-- CTA -->
-  <div class="cta-box">
-    <h3>Start Your Family Series Today</h3>
-    <p style="color:#a8a39a;font-size:.95rem">Create a private series, share it with your family, and start building your bedtime story collection together. It is free, it is private, and it is yours.</p>
-    <a href="/creation" class="btn">Create a Series</a>
+  <div class="cta">
+    <h2>Start Your <em>Family Series</em></h2>
+    <p>Create a private series, share it with your family, and build your bedtime story collection together. Free, private, and yours.</p>
+    <a href="/creation" class="btn">Create a Series →</a>
+    <p class="sm">Free forever. No sign-up needed to listen.</p>
   </div>
 
-  <!-- Related -->
   <div class="related">
-    <h3>Related Guides</h3>
+    <h3>Keep Reading</h3>
     <div class="related-grid">
-      <a href="/blog/become-a-creator" class="related-card">
-        <div class="rc-text">
-          <h4>Become a Story Creator</h4>
-          <span>The complete guide to creating stories and series</span>
-        </div>
-      </a>
-      <a href="/blog/creator-credits-guide" class="related-card">
-        <div class="rc-text">
-          <h4>Creator Credits Guide</h4>
-          <span>How credits work for published creators</span>
-        </div>
-      </a>
+      <a href="/blog/become-a-creator" class="related-card"><div class="rc-text"><h4>How to Become a Story Creator</h4><span>10 min read</span></div></a>
+      <a href="/blog/creator-credits-guide" class="related-card"><div class="rc-text"><h4>Creator Credits Guide</h4><span>5 min read</span></div></a>
     </div>
   </div>
+
+  <footer>🌙 My Sleepy Tale — bedtime stories that feel like home</footer>
 
 </div>
 
-<!-- Bottom nav -->
-<nav class="bottom-nav"><ul>
+  <nav class="bottom-nav"><ul>
     <li><a href="/"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg>Home</a></li>
     <li><a href="/creation"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M20.24 12.24a6 6 0 00-8.49-8.49L5 10.5V19h8.5z"/><line x1="16" y1="8" x2="2" y2="22"/><line x1="17.5" y1="15" x2="9" y2="15"/></svg>Creation</a></li>
     <li><a href="/radio"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M4.9 19.1C1 15.2 1 8.8 4.9 4.9"/><path d="M7.8 16.2a5.5 5.5 0 010-8.4"/><path d="M16.2 7.8a5.5 5.5 0 010 8.4"/><path d="M19.1 4.9C23 8.8 23 15.1 19.1 19"/><circle cx="12" cy="12" r="1"/></svg>Radio</a></li>
