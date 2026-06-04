@@ -187,12 +187,36 @@ async function sendEmail(to, contactName, businessName) {
 export default async function handler(req, res) {
   if (req.method !== 'POST') return res.status(405).json({ error: 'POST only' });
 
-  const { to, contactName, businessName } = req.body || {};
+  const { to, contactName, businessName, force } = req.body || {};
   if (!to) return res.status(400).json({ error: 'Missing "to" email' });
 
+  const toEmail = to.trim().toLowerCase();
+
   try {
-    await sendEmail(to.trim(), contactName, businessName);
-    return res.json({ sent: true, to: to.trim() });
+    const db = await getFirestore();
+
+    // Check if already sent (skip with force: true)
+    if (db && !force) {
+      const sentDoc = await db.collection('config').doc('outreachEmailsSent').get();
+      const alreadySent = sentDoc.exists ? (sentDoc.data().emails || []) : [];
+      if (alreadySent.includes(toEmail)) {
+        return res.json({ sent: false, to: toEmail, message: 'Already sent outreach to this email' });
+      }
+    }
+
+    await sendEmail(toEmail, contactName, businessName);
+
+    // Track sent email
+    if (db) {
+      const { FieldValue } = await import('firebase-admin/firestore');
+      await db.collection('config').doc('outreachEmailsSent').set({
+        emails: FieldValue.arrayUnion(toEmail),
+        lastSent: new Date().toISOString(),
+        [`log_${Date.now()}`]: { email: toEmail, businessName: businessName || '', contactName: contactName || '', sentAt: new Date().toISOString() },
+      }, { merge: true });
+    }
+
+    return res.json({ sent: true, to: toEmail });
   } catch (e) {
     console.error('[outreach-email] Error:', e.message);
     return res.status(500).json({ error: e.message });
