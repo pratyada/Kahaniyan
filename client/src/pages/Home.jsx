@@ -48,6 +48,31 @@ export default function Home() {
   const [activeTheme, setActiveTheme] = useState('compassion-animals');
   const [visibleCollections, setVisibleCollections] = useState(8);
 
+  // Shared with me
+  const [sharedSeries, setSharedSeries] = useState([]);
+  const [sharedLoading, setSharedLoading] = useState(false);
+
+  useEffect(() => {
+    if (!user?.email) { setSharedSeries([]); return; }
+    setSharedLoading(true);
+    (async () => {
+      try {
+        const { db } = await import('../lib/firebase.js');
+        const { collection, query, where, getDocs } = await import('firebase/firestore');
+        if (!db) { setSharedLoading(false); return; }
+        const q = query(collection(db, 'creatorSeries'), where('sharedWith', 'array-contains', user.email.toLowerCase()));
+        const snap = await getDocs(q);
+        const items = [];
+        snap.forEach(d => {
+          const data = d.data();
+          if (data.authorUid !== user.uid) items.push({ id: d.id, ...data });
+        });
+        setSharedSeries(items);
+      } catch {}
+      setSharedLoading(false);
+    })();
+  }, [user]);
+
   // Onboarding popup state
   const needsOnboarding = user && !profile?.childName;
   const [obName, setObName] = useState('');
@@ -238,6 +263,16 @@ export default function Home() {
           >
             Series
           </button>
+          {user && sharedSeries.length > 0 && (
+            <button
+              onClick={() => setViewMode('shared')}
+              className={`rounded-full px-5 py-2 text-xs font-bold transition ${
+                viewMode === 'shared' ? 'bg-blue-500 text-white shadow-glow' : 'text-ink-muted'
+              }`}
+            >
+              Shared ({sharedSeries.length})
+            </button>
+          )}
         </div>
       </div>
 
@@ -273,6 +308,39 @@ export default function Home() {
       {/* ═══ SERIES VIEW — Netflix-style category shelves ═══ */}
       {viewMode === 'series' && (
         <CategoryShelves wisdomImageUrls={wisdomImageUrls} cultureFilter={cultureFilter} />
+      )}
+
+      {/* ═══ SHARED WITH ME VIEW ═══ */}
+      {viewMode === 'shared' && (
+        <div className="space-y-4 mb-8">
+          <ShelfSection title="🔒 Shared with me">
+            {sharedLoading ? (
+              <p className="text-ink-muted text-sm px-2">Loading...</p>
+            ) : sharedSeries.length === 0 ? (
+              <p className="text-ink-muted text-sm px-2">Nothing shared with you yet</p>
+            ) : (
+              <div className="space-y-3 px-1">
+                {sharedSeries.map(s => (
+                  <motion.div key={s.id} whileTap={{ scale: 0.98 }}
+                    onClick={() => navigate(`/series/${s.id}`)}
+                    className="flex items-center gap-4 rounded-2xl bg-bg-surface p-4 ring-1 ring-blue-500/10 cursor-pointer active:bg-white/5 transition">
+                    <div className="flex h-14 w-14 items-center justify-center rounded-xl bg-blue-500/10 text-2xl shrink-0">
+                      {s.icon || '📚'}
+                    </div>
+                    <div className="flex-1 min-w-0">
+                      <h3 className="text-sm font-bold text-ink truncate">{s.title}</h3>
+                      <p className="text-[11px] text-ink-muted mt-0.5">by {s.authorName} · {s.totalEpisodes || s.episodes?.length || 0} episodes</p>
+                      {s.description && <p className="text-[10px] text-ink-dim mt-1 line-clamp-2">{s.description}</p>}
+                    </div>
+                    <div className="shrink-0">
+                      <span className="rounded-full bg-blue-500/20 px-2.5 py-1 text-[9px] font-bold text-blue-400">PERSONAL</span>
+                    </div>
+                  </motion.div>
+                ))}
+              </div>
+            )}
+          </ShelfSection>
+        </div>
       )}
 
       {viewMode === 'episodes' && (<>
