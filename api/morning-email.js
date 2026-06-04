@@ -19,7 +19,7 @@ const ACTIVITIES = {
 
 // Fetch today's tasks from Firestore (authenticated)
 async function getTodayTasks() {
-  const today = new Date().toLocaleDateString('en-CA'); // YYYY-MM-DD
+  const today = new Date().toLocaleDateString('en-CA', { timeZone: 'America/Toronto' }); // YYYY-MM-DD
   try {
     const db = await getFirestore();
     if (!db) { console.error('[morning-email] Firestore not configured'); return []; }
@@ -151,7 +151,7 @@ async function sendEmail(to, subject, textBody, htmlBody) {
 
 export default async function handler(req, res) {
   // Allow both POST (manual trigger) and GET (cron trigger)
-  const today = new Date().toLocaleDateString('en-CA');
+  const today = new Date().toLocaleDateString('en-CA', { timeZone: 'America/Toronto' });
   console.log(`[morning-email] Starting for ${today}`);
 
   const [tasks, team] = await Promise.all([getTodayTasks(), getTeam()]);

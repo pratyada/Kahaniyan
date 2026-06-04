@@ -18,7 +18,7 @@ const ACTIVITIES = {
 };
 
 async function getTodayTasks() {
-  const today = new Date().toLocaleDateString('en-CA');
+  const today = new Date().toLocaleDateString('en-CA', { timeZone: 'America/Toronto' });
   try {
     const db = await getFirestore();
     if (!db) { console.error('[evening-summary] Firestore not configured'); return []; }
@@ -217,7 +217,7 @@ async function sendEmail(to, subject, textBody, htmlBody) {
 }
 
 export default async function handler(req, res) {
-  const today = new Date().toLocaleDateString('en-CA');
+  const today = new Date().toLocaleDateString('en-CA', { timeZone: 'America/Toronto' });
   console.log(`[evening-summary] Starting for ${today}`);
 
   const [allTasks, team] = await Promise.all([getTodayTasks(), getTeam()]);
