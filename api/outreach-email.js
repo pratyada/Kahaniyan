@@ -30,7 +30,10 @@ function buildHtml(contactName, businessName) {
         Hi <strong style="color:#f5f0e8;">${name}</strong>,
       </p>
       <p style="font-size:15px;line-height:1.7;margin:0 0 16px;">
-        My name is Prat, and I am the founder of <strong style="color:#f0a500;">My Sleepy Tale</strong> — a free platform of audio bedtime stories designed to help children learn about their cultural roots, moral values, and the world around them, all while drifting off to sleep.
+        My name is Deepti, and I am the Co-Founder of <strong style="color:#f0a500;">My Sleepy Tale</strong> — and a parent of a 5-year-old here in downtown Toronto. We built a free platform of audio bedtime stories designed to help children learn about their cultural roots, moral values, and the world around them, all while drifting off to sleep.
+      </p>
+      <p style="font-size:15px;line-height:1.7;margin:0 0 16px;">
+        As a parent myself, I know how hard it is to find bedtime content that is both calming and meaningful. That is exactly why we created My Sleepy Tale.
       </p>
       <p style="font-size:15px;line-height:1.7;margin:0;">
         I am reaching out to <strong style="color:#f5f0e8;">${biz}</strong> because I believe our mission aligns with the incredible work you do for families and children in our Toronto community.
@@ -111,12 +114,12 @@ function buildHtml(contactName, businessName) {
     <!-- Personal note -->
     <div style="background:#12121c;border-radius:16px;padding:28px 24px;margin-bottom:24px;border:1px solid #1a1a28;">
       <p style="font-size:14px;line-height:1.7;margin:0 0 12px;">
-        I would love to connect over a quick call or coffee to explore how My Sleepy Tale can benefit the families you serve. I am based in Toronto and happy to meet in person.
+        I would love to connect over a quick call or coffee to explore how My Sleepy Tale can benefit the families you serve. I am based in downtown Toronto and happy to meet in person.
       </p>
       <p style="font-size:14px;line-height:1.7;margin:0;">
         Warm regards,<br>
-        <strong style="color:#f5f0e8;">Prat</strong><br>
-        <span style="color:#6e6a63;">Founder, My Sleepy Tale</span><br>
+        <strong style="color:#f5f0e8;">Deepti</strong><br>
+        <span style="color:#6e6a63;">Co-Founder &amp; Parent, My Sleepy Tale</span><br>
         <a href="https://mysleepytale.com" style="color:#f0a500;text-decoration:none;">mysleepytale.com</a> · <a href="https://instagram.com/mysleepytale_official" style="color:#f0a500;text-decoration:none;">@mysleepytale_official</a>
       </p>
     </div>
@@ -137,7 +140,9 @@ function buildText(contactName, businessName) {
 
   return `Hi ${name},
 
-My name is Prat, and I am the founder of My Sleepy Tale — a free platform of audio bedtime stories designed to help children learn about their cultural roots, moral values, and the world around them, all while drifting off to sleep.
+My name is Deepti, and I am the Co-Founder of My Sleepy Tale — and a parent of a 5-year-old here in downtown Toronto. We built a free platform of audio bedtime stories designed to help children learn about their cultural roots, moral values, and the world around them, all while drifting off to sleep.
+
+As a parent myself, I know how hard it is to find bedtime content that is both calming and meaningful. That is exactly why we created My Sleepy Tale.
 
 I am reaching out to ${biz} because I believe our mission aligns with the incredible work you do for families and children in our Toronto community.
 
@@ -155,18 +160,18 @@ HOW CAN WE WORK TOGETHER?
 
 Explore: https://mysleepytale.com
 
-I would love to connect over a quick call or coffee to explore how My Sleepy Tale can benefit the families you serve. I am based in Toronto and happy to meet in person.
+I would love to connect over a quick call or coffee to explore how My Sleepy Tale can benefit the families you serve. I am based in downtown Toronto and happy to meet in person.
 
 Warm regards,
-Prat
-Founder, My Sleepy Tale
+Deepti
+Co-Founder & Parent, My Sleepy Tale
 mysleepytale.com | @mysleepytale_official`;
 }
 
 async function sendEmail(to, contactName, businessName) {
   const subject = `My Sleepy Tale — Free bedtime stories for the families you serve`;
   const cmd = new SendEmailCommand({
-    Source: `Prat from My Sleepy Tale <${FROM_EMAIL}>`,
+    Source: `Deepti from My Sleepy Tale <${FROM_EMAIL}>`,
     Destination: { ToAddresses: [to], CcAddresses: ['i@yprateek.com'] },
     Message: {
       Subject: { Data: subject },
