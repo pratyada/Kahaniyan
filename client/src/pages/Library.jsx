@@ -170,6 +170,14 @@ export default function Library() {
   const [mySeries, setMySeries] = useState([]);
   const [credits, setCredits] = useState(0);
 
+  // Contributor state
+  const [pendingSubmissions, setPendingSubmissions] = useState([]);
+  const [inviteEmail, setInviteEmail] = useState('');
+  const [invitingSeriesId, setInvitingSeriesId] = useState(null);
+  const [sendingInvite, setSendingInvite] = useState(false);
+  const [reviewingSubmission, setReviewingSubmission] = useState(null);
+  const [approving, setApproving] = useState(null);
+
   // Story form
   const [title, setTitle] = useState('');
   const [tradition, setTradition] = useState(profile?.beliefs?.[0] || 'universal');
@@ -216,6 +224,13 @@ export default function Library() {
         // Credits
         const creditDoc = await getDoc(doc(db, 'creatorCredits', user.uid));
         if (creditDoc.exists()) setCredits(creditDoc.data().total || 0);
+
+        // Pending contributor submissions for my series
+        const subQ = query(collection(db, 'seriesSubmissions'), where('ownerUid', '==', user.uid));
+        const subSnap = await getDocs(subQ);
+        const subs = [];
+        subSnap.forEach((d) => subs.push({ id: d.id, ...d.data() }));
+        setPendingSubmissions(subs.sort((a, b) => new Date(b.submittedAt) - new Date(a.submittedAt)));
       } catch {}
     })();
   }, [user]);
@@ -821,6 +836,112 @@ export default function Library() {
                       className="mt-2 text-[10px] text-red-400/60 hover:text-red-400">
                       {t('common.delete')}
                     </button>
+                  )}
+
+                  {/* Invite contributor */}
+                  {s.status === 'approved' && (
+                    <div className="mt-3 border-t border-white/5 pt-3">
+                      {invitingSeriesId === s.id ? (
+                        <div className="flex gap-2">
+                          <input type="email" value={inviteEmail} onChange={e => setInviteEmail(e.target.value)}
+                            placeholder="contributor@email.com"
+                            className="flex-1 rounded-lg bg-white/5 px-3 py-1.5 text-[11px] text-ink placeholder-ink-dim ring-1 ring-white/10 outline-none" />
+                          <button disabled={sendingInvite || !inviteEmail.includes('@')}
+                            onClick={async () => {
+                              setSendingInvite(true);
+                              try {
+                                const resp = await fetch('/api/contributor-invite', {
+                                  method: 'POST', headers: { 'Content-Type': 'application/json' },
+                                  body: JSON.stringify({ seriesId: s.id, seriesTitle: s.title, contributorEmail: inviteEmail, ownerUid: user.uid, ownerEmail: user.email, ownerName: user.displayName || '' }),
+                                });
+                                const data = await resp.json();
+                                if (data.sent) { showToast('Invitation sent!'); setInviteEmail(''); setInvitingSeriesId(null); }
+                                else alert(data.error || 'Failed');
+                              } catch (e) { alert('Failed: ' + e.message); }
+                              setSendingInvite(false);
+                            }}
+                            className="rounded-lg bg-gold/20 px-3 py-1.5 text-[10px] font-bold text-gold disabled:opacity-50">
+                            {sendingInvite ? '...' : 'Send'}
+                          </button>
+                          <button onClick={() => { setInvitingSeriesId(null); setInviteEmail(''); }}
+                            className="text-[10px] text-ink-dim">Cancel</button>
+                        </div>
+                      ) : (
+                        <button onClick={() => setInvitingSeriesId(s.id)}
+                          className="text-[10px] text-gold/70 hover:text-gold">
+                          + Invite Contributor
+                        </button>
+                      )}
+                    </div>
+                  )}
+
+                  {/* Pending submissions for this series */}
+                  {pendingSubmissions.filter(sub => sub.seriesId === s.id && sub.status === 'pending').length > 0 && (
+                    <div className="mt-3 border-t border-white/5 pt-3">
+                      <p className="text-[10px] font-bold text-gold mb-2">
+                        {pendingSubmissions.filter(sub => sub.seriesId === s.id && sub.status === 'pending').length} pending submission(s)
+                      </p>
+                      {pendingSubmissions.filter(sub => sub.seriesId === s.id && sub.status === 'pending').map(sub => (
+                        <div key={sub.id} className="rounded-lg bg-white/3 ring-1 ring-white/5 p-3 mb-2">
+                          <div className="flex items-center justify-between gap-2">
+                            <div className="min-w-0">
+                              <p className="text-[11px] font-bold text-ink truncate">{sub.episodeTitle}</p>
+                              <p className="text-[9px] text-ink-dim">by {sub.contributorName} · {sub.wordCount} words · {new Date(sub.submittedAt).toLocaleDateString()}</p>
+                            </div>
+                            <button onClick={() => setReviewingSubmission(reviewingSubmission === sub.id ? null : sub.id)}
+                              className="shrink-0 rounded-lg bg-gold/20 px-2 py-1 text-[9px] font-bold text-gold">
+                              Review
+                            </button>
+                          </div>
+                          {reviewingSubmission === sub.id && (
+                            <div className="mt-3 space-y-3">
+                              {sub.coverImage && <img src={sub.coverImage} alt="" className="w-full max-h-40 object-cover rounded-lg" />}
+                              <div className="rounded-lg bg-white/5 p-3 max-h-48 overflow-y-auto">
+                                <p className="text-[11px] text-ink-muted leading-relaxed whitespace-pre-wrap">{sub.body}</p>
+                              </div>
+                              <div className="flex gap-2">
+                                <button disabled={approving === sub.id}
+                                  onClick={async () => {
+                                    setApproving(sub.id);
+                                    try {
+                                      const { updateDoc: uDoc, doc: fDoc, getDoc: gDoc, arrayUnion } = await import('firebase/firestore');
+                                      // Get current series to find next episode number
+                                      const serDoc = await gDoc(fDoc(db, 'creatorSeries', sub.seriesId));
+                                      const serData = serDoc.data();
+                                      const nextEp = (serData.totalEpisodes || serData.episodes?.length || 0) + 1;
+                                      // Add episode to series
+                                      await uDoc(fDoc(db, 'creatorSeries', sub.seriesId), {
+                                        episodes: arrayUnion({ episodeNumber: nextEp, title: sub.episodeTitle, body: sub.body, wordCount: sub.wordCount, coverImage: sub.coverImage || null, contributorName: sub.contributorName }),
+                                        totalEpisodes: nextEp,
+                                      });
+                                      // Update submission
+                                      await uDoc(fDoc(db, 'seriesSubmissions', sub.id), { status: 'approved', reviewedAt: new Date().toISOString(), publishedEpisodeNumber: nextEp });
+                                      setPendingSubmissions(prev => prev.map(p => p.id === sub.id ? { ...p, status: 'approved' } : p));
+                                      showToast(`Episode "${sub.episodeTitle}" published as Ep ${nextEp}!`);
+                                      setReviewingSubmission(null);
+                                    } catch (e) { alert('Approve failed: ' + e.message); }
+                                    setApproving(null);
+                                  }}
+                                  className="flex-1 rounded-lg bg-green-500/20 py-2 text-[10px] font-bold text-green-400 disabled:opacity-50">
+                                  {approving === sub.id ? 'Publishing...' : 'Approve & Publish'}
+                                </button>
+                                <button onClick={async () => {
+                                  const feedback = prompt('Feedback for contributor (optional):');
+                                  const { updateDoc: uDoc, doc: fDoc } = await import('firebase/firestore');
+                                  await uDoc(fDoc(db, 'seriesSubmissions', sub.id), { status: 'rejected', reviewedAt: new Date().toISOString(), ownerFeedback: feedback || '' });
+                                  setPendingSubmissions(prev => prev.map(p => p.id === sub.id ? { ...p, status: 'rejected' } : p));
+                                  showToast('Submission rejected');
+                                  setReviewingSubmission(null);
+                                }}
+                                  className="flex-1 rounded-lg bg-red-500/20 py-2 text-[10px] font-bold text-red-400">
+                                  Reject
+                                </button>
+                              </div>
+                            </div>
+                          )}
+                        </div>
+                      ))}
+                    </div>
                   )}
                 </div>
               ))}

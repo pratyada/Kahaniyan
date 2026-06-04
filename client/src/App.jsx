@@ -30,6 +30,7 @@ import SearchPage from './pages/Search.jsx';
 import AboutUs from './pages/AboutUs.jsx';
 import Creatives from './pages/Creatives.jsx';
 import Studio from './pages/Studio.jsx';
+import ContributeEpisode from './pages/ContributeEpisode.jsx';
 import BottomNav from './components/BottomNav.jsx';
 import BadgeUnlockToast from './components/BadgeUnlockToast.jsx';
 import PlayerBar from './components/PlayerBar.jsx';
@@ -172,6 +173,7 @@ function Shell() {
             <Route path="/settings" element={<Settings />} />
             <Route path="/roadmap" element={<Roadmap />} />
             <Route path="/collection/:collectionId" element={<Home />} />
+            <Route path="/contribute/:token" element={<ContributeEpisode />} />
             <Route path="/series/:seriesId" element={<SeriesDetail />} />
             <Route path="/creator" element={<Navigate to="/creation" replace />} />
             <Route path="/creators" element={<Curators />} />

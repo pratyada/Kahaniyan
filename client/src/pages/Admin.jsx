@@ -5314,6 +5314,8 @@ function OutreachDatabase() {
   const [search, setSearch] = useState('');
   const [sending, setSending] = useState(null);
   const [stats, setStats] = useState({ total: 0, new: 0, contacted: 0, responded: 0, signed_up: 0, paid: 0, not_interested: 0 });
+  const [page, setPage] = useState(0);
+  const PAGE_SIZE = 100;
 
   useEffect(() => {
     if (!db) return;
@@ -5388,7 +5390,7 @@ function OutreachDatabase() {
           { key: 'all', label: 'Total', count: stats.total, color: '#f5f0e8' },
           ...OUTREACH_STATUS_OPTIONS.map(s => ({ key: s, label: OUTREACH_STATUS_LABELS[s], count: stats[s] || 0, color: OUTREACH_STATUS_BADGE[s] })),
         ].map(s => (
-          <button key={s.key} onClick={() => setFilter(s.key)}
+          <button key={s.key} onClick={() => { setFilter(s.key); setPage(0); }}
             className={`rounded-2xl p-3 ring-1 text-center transition ${filter === s.key ? 'ring-[#f0a500] bg-[#f0a500]/10' : 'ring-white/5 bg-white/5'}`}>
             <div className="text-xl font-bold" style={{ color: s.color }}>{s.count}</div>
             <div className="text-[10px] text-[#6e6a63] mt-1">{s.label}</div>
@@ -5406,14 +5408,14 @@ function OutreachDatabase() {
       {/* Search */}
       <div className="flex gap-3">
         <input type="text" placeholder="Search by name, email, phone..."
-          value={search} onChange={e => setSearch(e.target.value)}
+          value={search} onChange={e => { setSearch(e.target.value); setPage(0); }}
           className="flex-1 rounded-xl bg-white/5 px-4 py-3 text-sm text-[#f5f0e8] placeholder-[#6e6a63] ring-1 ring-white/10 focus:ring-[#f0a500] outline-none" />
         <div className="text-xs text-[#6e6a63] self-center whitespace-nowrap">{filtered.length} leads</div>
       </div>
 
       {/* Lead list */}
       <div className="space-y-2">
-        {filtered.slice(0, 100).map(lead => (
+        {filtered.slice(page * PAGE_SIZE, (page + 1) * PAGE_SIZE).map(lead => (
           <div key={lead.id} className="rounded-2xl bg-white/5 ring-1 ring-white/5 overflow-hidden">
             <div className="px-5 py-3">
               <div className="flex items-center justify-between gap-3">
@@ -5454,8 +5456,21 @@ function OutreachDatabase() {
             </div>
           </div>
         ))}
-        {filtered.length > 100 && (
-          <div className="text-center text-xs text-[#6e6a63] py-4">Showing 100 of {filtered.length} — use search to narrow down</div>
+        {filtered.length > PAGE_SIZE && (
+          <div className="flex items-center justify-center gap-4 py-4">
+            <button onClick={() => setPage(p => Math.max(0, p - 1))} disabled={page === 0}
+              className="rounded-lg bg-white/5 px-4 py-2 text-xs font-bold text-[#c8c3ba] ring-1 ring-white/10 disabled:opacity-30">
+              Previous
+            </button>
+            <span className="text-xs text-[#6e6a63]">
+              Page {page + 1} of {Math.ceil(filtered.length / PAGE_SIZE)} ({filtered.length} leads)
+            </span>
+            <button onClick={() => setPage(p => Math.min(Math.ceil(filtered.length / PAGE_SIZE) - 1, p + 1))}
+              disabled={(page + 1) * PAGE_SIZE >= filtered.length}
+              className="rounded-lg bg-white/5 px-4 py-2 text-xs font-bold text-[#c8c3ba] ring-1 ring-white/10 disabled:opacity-30">
+              Next
+            </button>
+          </div>
         )}
         {filtered.length === 0 && (
           <div className="text-center text-[#6e6a63] py-12">No leads found</div>
