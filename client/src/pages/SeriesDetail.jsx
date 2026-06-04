@@ -127,6 +127,11 @@ export default function SeriesDetail() {
   // Owner edit state
   const [editMode, setEditMode] = useState(false);
   const [uploadingEp, setUploadingEp] = useState(null);
+  const [editingEpIndex, setEditingEpIndex] = useState(null);
+  const [editTitle, setEditTitle] = useState('');
+  const [editBody, setEditBody] = useState('');
+  const [savingText, setSavingText] = useState(false);
+  const [generatingAudio, setGeneratingAudio] = useState(null);
 
   const isOwner = firestoreSeries && user?.uid === firestoreSeries?.authorUid;
 
@@ -197,6 +202,80 @@ export default function SeriesDetail() {
     setUploadingEp(null);
   };
 
+  const startEditingEpisode = (epIndex) => {
+    const ep = firestoreSeries.episodes[epIndex];
+    setEditingEpIndex(epIndex);
+    setEditTitle(ep.title);
+    setEditBody(ep.body || '');
+  };
+
+  const saveEpisodeText = async () => {
+    if (editingEpIndex === null || !isOwner) return;
+    setSavingText(true);
+    try {
+      const { db: fireDb } = await import('../lib/firebase.js');
+      const { doc: fDoc, updateDoc: uDoc, getDoc: gDoc } = await import('firebase/firestore');
+      const serDoc = await gDoc(fDoc(fireDb, 'creatorSeries', seriesId));
+      const episodes = serDoc.data().episodes || [];
+      episodes[editingEpIndex] = {
+        ...episodes[editingEpIndex],
+        title: editTitle.trim(),
+        body: editBody.trim(),
+        wordCount: editBody.trim().split(/\s+/).length,
+      };
+      await uDoc(fDoc(fireDb, 'creatorSeries', seriesId), { episodes });
+
+      setFirestoreSeries(prev => ({
+        ...prev,
+        episodes: prev.episodes.map((ep, i) => i === editingEpIndex ? {
+          ...ep,
+          title: editTitle.trim(),
+          body: editBody.trim(),
+          subtitle: editTitle.trim(),
+        } : ep),
+      }));
+      setEditingEpIndex(null);
+    } catch (e) { alert('Save failed: ' + e.message); }
+    setSavingText(false);
+  };
+
+  const regenerateAudio = async (epIndex) => {
+    const ep = firestoreSeries.episodes[epIndex];
+    if (!ep?.body) return alert('No story text to generate audio from');
+    setGeneratingAudio(epIndex);
+    try {
+      const resp = await fetch('/api/tts', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ text: ep.body, narrator: 'AI Narrator', speed: 0.9 }),
+      });
+      if (!resp.ok) { const e = await resp.json(); throw new Error(e.error || 'TTS failed'); }
+      const audioBlob = await resp.blob();
+
+      // Upload to Firebase Storage
+      const { storage, db: fireDb } = await import('../lib/firebase.js');
+      const { ref, uploadBytes, getDownloadURL } = await import('firebase/storage');
+      const { doc: fDoc, updateDoc: uDoc, getDoc: gDoc } = await import('firebase/firestore');
+
+      const storageRef = ref(storage, `creator-audio/${user.uid}/series_${seriesId}_ep${epIndex}_${Date.now()}.opus`);
+      await uploadBytes(storageRef, audioBlob, { contentType: 'audio/opus' });
+      const audioUrl = await getDownloadURL(storageRef);
+
+      // Save audioUrl to episode in Firestore
+      const serDoc = await gDoc(fDoc(fireDb, 'creatorSeries', seriesId));
+      const episodes = serDoc.data().episodes || [];
+      episodes[epIndex] = { ...episodes[epIndex], audioUrl };
+      await uDoc(fDoc(fireDb, 'creatorSeries', seriesId), { episodes });
+
+      setFirestoreSeries(prev => ({
+        ...prev,
+        episodes: prev.episodes.map((ep, i) => i === epIndex ? { ...ep, audioUrl } : ep),
+      }));
+      alert('Audio generated!');
+    } catch (e) { alert('Audio generation failed: ' + e.message); }
+    setGeneratingAudio(null);
+  };
+
   const series = staticSeries || firestoreSeries;
 
   if (!series && fsLoading) {
@@ -238,7 +317,7 @@ export default function SeriesDetail() {
       isWisdom: true,
       seriesId: series.id,
       episodeId: episode.id,
-      audioUrl: audioUrls[episode.id],
+      audioUrl: audioUrls[episode.id] || episode.audioUrl,
     });
     navigate('/player');
   };
@@ -455,24 +534,33 @@ export default function SeriesDetail() {
                 </div>
               )}
 
-              {/* Edit mode — upload image overlay */}
+              {/* Edit mode — overlay with image upload + edit text + audio buttons */}
               {editMode && isOwner && (
-                <label className="absolute inset-0 z-10 flex flex-col items-center justify-center bg-black/60 cursor-pointer"
+                <div className="absolute inset-0 z-10 flex flex-col items-center justify-center bg-black/70 gap-2"
                   onClick={e => e.stopPropagation()}>
                   {uploadingEp === i ? (
                     <span className="text-white text-xs font-bold animate-pulse">Uploading...</span>
                   ) : (
                     <>
-                      <span className="text-2xl mb-1">📷</span>
-                      <span className="text-[10px] font-bold text-white">
-                        {ep.gallery?.length > 0 ? `${ep.gallery.length} photos — add more` : ep.coverImage ? 'Add more photos' : 'Add photos'}
-                      </span>
-                      <span className="text-[8px] text-white/50 mt-1">Select multiple</span>
+                      {/* Upload photos */}
+                      <label className="rounded-lg bg-blue-500/30 px-4 py-2 text-[10px] font-bold text-blue-300 cursor-pointer">
+                        📷 {ep.gallery?.length > 0 ? `${ep.gallery.length} photos — add more` : 'Add photos'}
+                        <input type="file" accept="image/*" multiple className="hidden"
+                          onChange={e => { if (e.target.files?.length) handleEpisodeImageUpload(i, Array.from(e.target.files)); e.target.value = ''; }} />
+                      </label>
+                      {/* Edit text */}
+                      <button onClick={() => startEditingEpisode(i)}
+                        className="rounded-lg bg-gold/30 px-4 py-2 text-[10px] font-bold text-gold">
+                        ✏️ Edit story text
+                      </button>
+                      {/* Generate audio */}
+                      <button onClick={() => regenerateAudio(i)} disabled={generatingAudio === i}
+                        className="rounded-lg bg-green-500/30 px-4 py-2 text-[10px] font-bold text-green-300 disabled:opacity-50">
+                        {generatingAudio === i ? '🔄 Generating...' : ep.audioUrl ? '🔊 Regenerate audio' : '🔊 Generate audio'}
+                      </button>
                     </>
                   )}
-                  <input type="file" accept="image/*" multiple className="hidden"
-                    onChange={e => { if (e.target.files?.length) handleEpisodeImageUpload(i, Array.from(e.target.files)); e.target.value = ''; }} />
-                </label>
+                </div>
               )}
 
               {/* Bottom content */}
@@ -498,6 +586,47 @@ export default function SeriesDetail() {
           );
         })}
       </div>
+
+      {/* Episode text editor (edit mode) */}
+      {editMode && isOwner && editingEpIndex !== null && (
+        <div className="px-5 mt-4">
+          <div className="rounded-2xl bg-bg-surface ring-1 ring-gold/20 p-5 space-y-4">
+            <div className="flex items-center justify-between">
+              <h3 className="text-sm font-bold text-gold">
+                Editing Episode {firestoreSeries.episodes[editingEpIndex]?.episodeNumber}
+              </h3>
+              <button onClick={() => setEditingEpIndex(null)} className="text-[10px] text-ink-dim">Cancel</button>
+            </div>
+
+            <div>
+              <label className="text-[10px] text-ink-dim block mb-1">Episode Title</label>
+              <input value={editTitle} onChange={e => setEditTitle(e.target.value)}
+                className="w-full rounded-xl bg-black/30 px-4 py-3 text-sm text-white ring-1 ring-white/10 outline-none focus:ring-gold" />
+            </div>
+
+            <div>
+              <label className="text-[10px] text-ink-dim block mb-1">
+                Story Text <span className="text-ink-dim">({editBody.split(/\s+/).filter(Boolean).length} words)</span>
+              </label>
+              <textarea value={editBody} onChange={e => setEditBody(e.target.value)}
+                rows={12}
+                className="w-full rounded-xl bg-black/30 px-4 py-3 text-sm text-white ring-1 ring-white/10 outline-none focus:ring-gold resize-y leading-relaxed" />
+            </div>
+
+            <div className="flex gap-3">
+              <button onClick={saveEpisodeText} disabled={savingText || !editTitle.trim() || !editBody.trim()}
+                className="flex-1 rounded-xl bg-gold py-3 text-sm font-bold text-bg-base disabled:opacity-50">
+                {savingText ? 'Saving...' : 'Save text'}
+              </button>
+              <button onClick={async () => { await saveEpisodeText(); regenerateAudio(editingEpIndex); }}
+                disabled={savingText || generatingAudio !== null || !editBody.trim()}
+                className="flex-1 rounded-xl bg-green-500/20 py-3 text-sm font-bold text-green-400 ring-1 ring-green-500/30 disabled:opacity-50">
+                {generatingAudio === editingEpIndex ? 'Generating...' : 'Save + Generate Audio'}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* Completion state */}
       {completedCount === series.totalEpisodes && (
