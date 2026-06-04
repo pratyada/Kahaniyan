@@ -353,13 +353,18 @@ function PlayerInner() {
           console.log('[My Sleepy Tale:Player] Playing cached audio from Firebase');
           audio = narrator.loadCached(current.audioUrl);
           // Wait briefly to see if audio actually loads, fallback to TTS if not
-          await new Promise((resolve) => {
+          const loadedOk = await new Promise((resolve) => {
             let resolved = false;
-            audio.oncanplay = () => { if (!resolved) { resolved = true; resolve(); } };
-            audio.onerror = () => { if (!resolved) { resolved = true; audio = null; } resolve(); };
-            setTimeout(() => { if (!resolved) { resolved = true; resolve(); } }, 5000);
+            audio.oncanplay = () => { if (!resolved) { resolved = true; resolve(true); } };
+            audio.onerror = () => { if (!resolved) { resolved = true; resolve(false); } };
+            setTimeout(() => { if (!resolved) { resolved = true; resolve(false); } }, 5000);
           });
-          if (!audio) console.warn('[My Sleepy Tale:Player] Cached audio failed, falling back to TTS');
+          if (!loadedOk) {
+            console.warn('[My Sleepy Tale:Player] Cached audio failed, falling back to TTS');
+            // CRITICAL: stop and discard the failed audio element before TTS fallback
+            try { audio.pause(); audio.src = ''; audio.load(); } catch {}
+            audio = null;
+          }
         }
 
         // Priority 3: Generate via TTS API (fallback if cached audio failed or no pre-gen)
