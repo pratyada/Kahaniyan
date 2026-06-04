@@ -312,34 +312,71 @@ export default function Home() {
 
       {/* ═══ SHARED WITH ME VIEW ═══ */}
       {viewMode === 'shared' && (
-        <div className="space-y-4 mb-8">
-          <ShelfSection title="🔒 Shared with me">
-            {sharedLoading ? (
-              <p className="text-ink-muted text-sm px-2">Loading...</p>
-            ) : sharedSeries.length === 0 ? (
-              <p className="text-ink-muted text-sm px-2">Nothing shared with you yet</p>
-            ) : (
-              <div className="space-y-3 px-1">
-                {sharedSeries.map(s => (
-                  <motion.div key={s.id} whileTap={{ scale: 0.98 }}
-                    onClick={() => navigate(`/series/${s.id}`)}
-                    className="flex items-center gap-4 rounded-2xl bg-bg-surface p-4 ring-1 ring-blue-500/10 cursor-pointer active:bg-white/5 transition">
-                    <div className="flex h-14 w-14 items-center justify-center rounded-xl bg-blue-500/10 text-2xl shrink-0">
-                      {s.icon || '📚'}
-                    </div>
-                    <div className="flex-1 min-w-0">
-                      <h3 className="text-sm font-bold text-ink truncate">{s.title}</h3>
-                      <p className="text-[11px] text-ink-muted mt-0.5">by {s.authorName} · {s.totalEpisodes || s.episodes?.length || 0} episodes</p>
-                      {s.description && <p className="text-[10px] text-ink-dim mt-1 line-clamp-2">{s.description}</p>}
-                    </div>
-                    <div className="shrink-0">
-                      <span className="rounded-full bg-blue-500/20 px-2.5 py-1 text-[9px] font-bold text-blue-400">PERSONAL</span>
+        <div className="space-y-6 mb-8">
+          {sharedLoading ? (
+            <p className="text-ink-muted text-sm px-5">Loading...</p>
+          ) : sharedSeries.length === 0 ? (
+            <p className="text-ink-muted text-sm px-5">Nothing shared with you yet</p>
+          ) : (
+            sharedSeries.map(s => (
+              <div key={s.id}>
+                {/* Series header — tap to open full series page */}
+                <div className="px-5 mb-3 flex items-center justify-between">
+                  <motion.div whileTap={{ scale: 0.97 }} onClick={() => navigate(`/series/${s.id}`)}
+                    className="flex items-center gap-2 cursor-pointer">
+                    <span className="text-xl">{s.icon || '📚'}</span>
+                    <div>
+                      <h2 className="text-sm font-bold text-ink" style={{ fontFamily: 'Fraunces, serif' }}>{s.title}</h2>
+                      <p className="text-[10px] text-ink-muted">by {s.authorName} · {s.totalEpisodes || s.episodes?.length || 0} episodes</p>
                     </div>
                   </motion.div>
-                ))}
+                  <button onClick={() => navigate(`/series/${s.id}`)}
+                    className="rounded-full bg-blue-500/20 px-3 py-1 text-[9px] font-bold text-blue-400">
+                    View all
+                  </button>
+                </div>
+
+                {/* Episode tiles grid */}
+                <div className="px-5 grid grid-cols-2 md:grid-cols-3 gap-3">
+                  {(s.episodes || []).map((ep, i) => (
+                    <motion.div key={`${s.id}_ep${i}`} whileTap={{ scale: 0.98 }}
+                      onClick={() => navigate(`/series/${s.id}`)}
+                      className="w-full overflow-hidden rounded-2xl text-left transition relative ring-1 ring-white/5 cursor-pointer"
+                      style={{ aspectRatio: '3/4', maxHeight: 280 }}>
+                      {/* Background */}
+                      {(ep.coverImage || (ep.gallery || [])[0]) ? (
+                        <img src={ep.coverImage || ep.gallery[0]} alt="" className="absolute inset-0 h-full w-full object-cover" onError={e => { e.target.style.display = 'none'; }} />
+                      ) : (
+                        <div className="absolute inset-0 bg-gradient-to-t from-[#1a1040] to-[#0a0a0f]" />
+                      )}
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/30 to-black/10" />
+
+                      {/* Episode number */}
+                      <div className="absolute top-2 left-2 grid h-7 w-7 place-items-center rounded-full bg-black/50 text-[11px] font-bold text-white backdrop-blur-sm">
+                        {ep.episodeNumber || i + 1}
+                      </div>
+
+                      {/* Play icon */}
+                      <div className="absolute top-2 right-2 grid h-7 w-7 place-items-center rounded-full bg-black/30 text-white/80 backdrop-blur-sm">
+                        <Play size={10} fill="currentColor" />
+                      </div>
+
+                      {/* Title + info */}
+                      <div className="absolute bottom-0 left-0 right-0 p-3">
+                        <p className="text-xs font-bold text-white leading-snug" style={{ fontFamily: 'Fraunces, serif', textShadow: '0 1px 4px rgba(0,0,0,0.5)' }}>
+                          {ep.title}
+                        </p>
+                        <p className="text-[9px] text-white/50 mt-0.5">
+                          {Math.max(1, Math.round((ep.wordCount || ep.body?.split?.(/\s+/).length || 200) / 150))} min
+                          {ep.contributorName && ` · by ${ep.contributorName}`}
+                        </p>
+                      </div>
+                    </motion.div>
+                  ))}
+                </div>
               </div>
-            )}
-          </ShelfSection>
+            ))
+          )}
         </div>
       )}
 
