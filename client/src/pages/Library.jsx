@@ -817,7 +817,42 @@ export default function Library() {
           ) : (
             <div className="space-y-3">
               {/* Published community stories */}
-              {(SERIES.some(s => s.createdBy === user?.email) || myStories.length > 0 || mySeries.length > 0) && (
+              {/* Personal series */}
+              {mySeries.filter(s => s.visibility === 'personal').length > 0 && (
+                <div className="mb-4">
+                  <div className="mb-2">
+                    <h3 className="text-sm font-bold text-ink mb-1" style={{ fontFamily: 'Fraunces, serif' }}>
+                      🔒 My Personal Series
+                    </h3>
+                    <p className="text-[10px] text-ink-dim">Private — only visible to you and people you share with</p>
+                  </div>
+                  {mySeries.filter(s => s.visibility === 'personal').map((s) => (
+                    <div key={`personal-${s.id}`} className="rounded-xl bg-bg-surface p-4 ring-1 ring-blue-500/10 mb-2 cursor-pointer" onClick={() => navigate(`/series/${s.id}`)}>
+                      <div className="flex items-start justify-between gap-3">
+                        <div className="min-w-0 flex-1">
+                          <div className="flex items-center gap-2 mb-1">
+                            <span className="text-lg">{s.icon}</span>
+                            <h3 className="text-sm font-bold text-ink">{s.title}</h3>
+                            <span className="rounded-full bg-blue-500/20 px-2 py-0.5 text-[8px] font-bold text-blue-400">PERSONAL</span>
+                          </div>
+                          <p className="text-[10px] text-ink-muted">{s.totalEpisodes} episodes · {s.ageRange}</p>
+                          {s.sharedWith?.length > 0 && (
+                            <p className="text-[9px] text-ink-dim mt-1">Shared with {s.sharedWith.length} people</p>
+                          )}
+                          <div className="mt-2 space-y-0.5">
+                            {(s.episodes || []).map((ep, i) => (
+                              <p key={i} className="text-[10px] text-ink-dim">Ep {ep.episodeNumber}: {ep.title}</p>
+                            ))}
+                          </div>
+                        </div>
+                        <span className="shrink-0 rounded-full px-2.5 py-1 text-[10px] font-bold bg-blue-500/10 text-blue-400">personal</span>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              )}
+
+              {(SERIES.some(s => s.createdBy === user?.email) || myStories.length > 0 || mySeries.filter(s => s.visibility !== 'personal').length > 0) && (
                 <div className="mb-2">
                   <h3 className="text-sm font-bold text-ink mb-1" style={{ fontFamily: 'Fraunces, serif' }}>
                     📚 Published for Community
@@ -850,8 +885,8 @@ export default function Library() {
                 </div>
               ))}
 
-              {/* User-submitted series */}
-              {mySeries.map((s) => (
+              {/* User-submitted series (public only — personal shown above) */}
+              {mySeries.filter(s => s.visibility !== 'personal').map((s) => (
                 <div key={s.id} className="rounded-xl bg-bg-surface p-4 ring-1 ring-white/5">
                   <div className="flex items-start justify-between gap-3">
                     <div className="min-w-0 flex-1">
