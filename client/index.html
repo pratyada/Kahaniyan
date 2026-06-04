@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, maximum-scale=1" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
     <meta name="theme-color" content="#0a0a0f" />
     <meta name="google-site-verification" content="wnQB3zTDDszBNZpaQy6_lpAjPPtI1W9RECDr4Gjrm3s" />
 
@@ -35,7 +35,7 @@
 
     <!-- Open Graph / Facebook / WhatsApp / iMessage -->
     <meta property="og:type" content="website" />
-    <meta property="og:url" content="https://mysleepytale.com" />
+    <meta property="og:url" content="https://mysleepytale.com/" />
     <meta property="og:site_name" content="My Sleepy Tale" />
     <meta property="og:title" content="My Sleepy Tale — A bedtime story made just for your child" />
     <meta property="og:description" content="Every night, a fresh story with your child's name, their family, their pet, and the lesson you choose. AI-narrated in a voice that sounds like home. Try free." />
@@ -77,6 +77,61 @@
         "@type": "Organization",
         "name": "My Sleepy Tale",
         "url": "https://mysleepytale.com"
+      }
+    }
+    </script>
+
+    <!-- Schema.org — Organization -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      "@id": "https://mysleepytale.com/#organization",
+      "name": "My Sleepy Tale",
+      "url": "https://mysleepytale.com",
+      "logo": {
+        "@type": "ImageObject",
+        "url": "https://mysleepytale.com/icon-180.png",
+        "width": 180,
+        "height": 180
+      },
+      "description": "A bedtime story platform for multicultural families. 150+ audio stories from 11 cultural traditions including Hindu, Islamic, Catholic, Sikh, Filipino, and Hispanic. Personalized with your child's name. Made in Toronto.",
+      "foundingDate": "2024",
+      "foundingLocation": {
+        "@type": "Place",
+        "name": "Toronto, Ontario, Canada"
+      },
+      "address": {
+        "@type": "PostalAddress",
+        "addressLocality": "Toronto",
+        "addressRegion": "ON",
+        "addressCountry": "CA"
+      },
+      "email": "hello@mysleepytale.com",
+      "sameAs": [
+        "https://www.instagram.com/mysleepytale_official"
+      ]
+    }
+    </script>
+
+    <!-- Schema.org — WebSite with SearchAction -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebSite",
+      "@id": "https://mysleepytale.com/#website",
+      "name": "My Sleepy Tale",
+      "url": "https://mysleepytale.com",
+      "publisher": {
+        "@id": "https://mysleepytale.com/#organization"
+      },
+      "potentialAction": {
+        "@type": "SearchAction",
+        "target": {
+          "@type": "EntryPoint",
+          "urlTemplate": "https://mysleepytale.com/search?q={search_term_string}"
+        },
+        "query-input": "required name=search_term_string"
       }
     }
     </script>

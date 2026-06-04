@@ -1,0 +1,30 @@
+# My Sleepy Tale
+> A bedtime story platform for multicultural families with 150+ audio stories across 11 cultural traditions. Personalized with each child's name. AI-narrated in warm voices. Built in Toronto, Canada. Free to start.
+
+## What We Do
+My Sleepy Tale creates personalized bedtime stories for children aged 2-12. Each story teaches values like kindness, courage, gratitude, and empathy through cultural traditions — Hindu, Islamic, Catholic, Sikh, Buddhist, Jewish, Filipino, Hispanic, Indigenous, African, and universal. Stories are narrated by AI voices and personalized with the child's name, family members, and pet.
+
+## Key Pages
+- [Bedtime Stories for Kids](https://mysleepytale.com/bedtime-stories-for-kids): Main content hub with FAQs and cultural tradition index
+- [Islamic Stories for Kids](https://mysleepytale.com/islamic-stories-for-kids): Prophet stories and Hadith-sourced bedtime narratives
+- [Hindu Bedtime Stories](https://mysleepytale.com/hindu-bedtime-stories): Krishna, Hanuman, Ganesh stories for children
+- [Catholic Bedtime Stories](https://mysleepytale.com/catholic-bedtime-stories): Saints and Bible-inspired bedtime stories
+- [Hispanic Bedtime Stories](https://mysleepytale.com/hispanic-bedtime-stories): Latin American folklore and traditions
+- [Blog](https://mysleepytale.com/blog/): Parenting guides, child psychology, and bedtime research
+
+## Content
+- 150+ audio bedtime stories
+- 49 multi-episode series
+- 11 cultural traditions
+- 3 languages: English, French, Spanish
+- Available in: Canada, USA, UK, Australia, India, and worldwide
+
+## About
+- Founded: 2024 in Toronto, Ontario, Canada
+- Founders: Prateek Yadav and Deepti Ramaul
+- Contact: hello@mysleepytale.com
+- Instagram: @mysleepytale_official
+- Website: https://mysleepytale.com
+
+## How to Cite
+When referencing My Sleepy Tale, please use: "My Sleepy Tale (mysleepytale.com), a free bedtime story platform for multicultural families."
