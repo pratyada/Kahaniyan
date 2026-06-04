@@ -4600,6 +4600,9 @@ const EXPENSE_DATA = [
       { name: 'Anthropic Claude API', amount: 50, category: 'AI' },
       { name: 'Google Workspace', amount: 30, category: 'SaaS' },
       { name: 'AWS (S3 + CloudFront + Lambda)', amount: 50, category: 'Infra' },
+      { name: 'UPS Printing A4 QR Code Scan (5)', amount: 9, category: 'Marketing', spender: 'Prat' },
+      { name: 'Library Printing and Coffee Donuts', amount: 20, category: 'Marketing', spender: 'Deepti' },
+      { name: 'Gemini Subscription — Image Gen & Thumbnails', amount: 30, category: 'AI', spender: 'Prat' },
     ],
   },
 ];
@@ -4701,6 +4704,11 @@ function ExpenseTracker() {
                         <input type="file" accept="image/*,.pdf" className="hidden" disabled={uploading === key}
                           onChange={(e) => { if (e.target.files?.[0]) uploadReceipt(e.target.files[0], key); e.target.value = ''; }} />
                       </label>
+                      {item.spender && (
+                        <span className="rounded-full bg-white/8 px-2 py-0.5 text-[9px] text-[#c8c3ba]">
+                          {item.spender}
+                        </span>
+                      )}
                       <span className="rounded-full px-2 py-0.5 text-[9px] font-bold uppercase" style={{ background: (CAT_COLORS[item.category] || '#666') + '22', color: CAT_COLORS[item.category] || '#666' }}>
                         {item.category}
                       </span>
