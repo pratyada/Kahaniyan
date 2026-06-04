@@ -253,7 +253,7 @@ export default function Home() {
               viewMode === 'episodes' ? 'bg-gold text-bg-base shadow-glow' : 'text-ink-muted'
             }`}
           >
-            Episodes
+            Story
           </button>
           <button
             onClick={() => setViewMode('series')}
@@ -270,7 +270,7 @@ export default function Home() {
                 viewMode === 'shared' ? 'bg-blue-500 text-white shadow-glow' : 'text-ink-muted'
               }`}
             >
-              Shared ({sharedSeries.length})
+              Shared with me ({sharedSeries.length})
             </button>
           )}
         </div>
