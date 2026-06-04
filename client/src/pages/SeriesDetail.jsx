@@ -286,6 +286,19 @@ export default function SeriesDetail() {
       setContributionSubmitted(true);
       setShowContributeForm(false);
       setContributeImages([]);
+
+      // Notify owner via email
+      fetch('/api/series-notify', {
+        method: 'POST', headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          type: 'submitted', seriesId, seriesTitle: firestoreSeries.title,
+          episodeTitle: contributeTitle.trim(),
+          contributorName: user.displayName || user.email.split('@')[0],
+          contributorEmail: user.email,
+          ownerEmail: firestoreSeries.createdBy,
+          ownerName: firestoreSeries.authorName,
+        }),
+      }).catch(() => {});
     } catch (e) { alert('Submit failed: ' + e.message); }
     setSubmittingContribution(false);
   };
@@ -341,6 +354,21 @@ export default function SeriesDetail() {
         }],
       }));
       setEditingSubmission(null);
+
+      // Notify all shared users that a new episode was published
+      fetch('/api/series-notify', {
+        method: 'POST', headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          type: 'published', seriesId,
+          seriesTitle: firestoreSeries.title,
+          episodeTitle: title,
+          contributorName: sub.contributorName,
+          contributorEmail: sub.contributorEmail,
+          ownerEmail: user.email,
+          ownerName: user.displayName || user.email.split('@')[0],
+          sharedWith: firestoreSeries.sharedWith || [],
+        }),
+      }).catch(() => {});
     } catch (e) { alert('Approve failed: ' + e.message); }
     setSavingText(false);
   };
