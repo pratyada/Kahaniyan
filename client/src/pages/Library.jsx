@@ -178,6 +178,9 @@ export default function Library() {
   const [reviewingSubmission, setReviewingSubmission] = useState(null);
   const [approving, setApproving] = useState(null);
 
+  // Shared with me
+  const [sharedSeries, setSharedSeries] = useState([]);
+
   // Story form
   const [title, setTitle] = useState('');
   const [tradition, setTradition] = useState(profile?.beliefs?.[0] || 'universal');
@@ -193,6 +196,8 @@ export default function Library() {
   const [seriesIcon, setSeriesIcon] = useState('📚');
   const [seriesAge, setSeriesAge] = useState('3-8');
   const [seriesTradition, setSeriesTradition] = useState('universal');
+  const [seriesVisibility, setSeriesVisibility] = useState('public'); // public | personal
+  const [seriesSharedWith, setSeriesSharedWith] = useState(''); // comma-separated emails for personal
   const [episodes, setEpisodes] = useState([{ title: '', body: '', image: null }]);
 
   const fileRef = useRef(null);
@@ -231,6 +236,18 @@ export default function Library() {
         const subs = [];
         subSnap.forEach((d) => subs.push({ id: d.id, ...d.data() }));
         setPendingSubmissions(subs.sort((a, b) => new Date(b.submittedAt) - new Date(a.submittedAt)));
+
+        // Series shared with me (personal series where my email is in sharedWith)
+        if (user.email) {
+          const sharedQ = query(collection(db, 'creatorSeries'), where('sharedWith', 'array-contains', user.email.toLowerCase()));
+          const sharedSnap = await getDocs(sharedQ);
+          const shared = [];
+          sharedSnap.forEach((d) => {
+            const data = d.data();
+            if (data.authorUid !== user.uid) shared.push({ id: d.id, ...data });
+          });
+          setSharedSeries(shared);
+        }
       } catch {}
     })();
   }, [user]);
@@ -348,6 +365,10 @@ export default function Library() {
         });
       }
 
+      const sharedEmails = seriesVisibility === 'personal'
+        ? seriesSharedWith.split(',').map(e => e.trim().toLowerCase()).filter(e => e.includes('@'))
+        : [];
+
       await addDoc(collection(db, 'creatorSeries'), {
         title: seriesTitle.trim(),
         description: seriesDesc.trim(),
@@ -360,11 +381,13 @@ export default function Library() {
         authorName: user.displayName || user.email?.split('@')[0] || 'Anonymous',
         authorEmail: user.email || '',
         authorUsername: (await import('../utils/usernameHelper.js').then(m => m.getOrCreateUsername())) || '',
-        status: 'pending',
+        status: seriesVisibility === 'personal' ? 'approved' : 'pending',
+        visibility: seriesVisibility,
+        sharedWith: sharedEmails,
         submittedAt: new Date().toISOString(),
         type: 'series',
       });
-      showToast('Series submitted! We\'ll review within 48 hours.');
+      showToast(seriesVisibility === 'personal' ? 'Personal series created!' : 'Series submitted! We\'ll review within 48 hours.');
       setSeriesTitle(''); setSeriesDesc(''); setSeriesIcon('📚');
       setEpisodes([{ title: '', body: '', image: null }]);
       setCreateMode(null);
@@ -647,6 +670,32 @@ export default function Library() {
             </select>
           </div>
 
+          {/* Visibility */}
+          <div className="rounded-xl bg-bg-surface p-4 ring-1 ring-white/8 space-y-3">
+            <h4 className="text-xs font-bold text-ink">Visibility</h4>
+            <div className="flex gap-2">
+              <button onClick={() => setSeriesVisibility('public')}
+                className={`flex-1 rounded-lg py-2.5 text-xs font-bold transition ${seriesVisibility === 'public' ? 'bg-gold/20 text-gold ring-1 ring-gold/30' : 'bg-white/5 text-ink-muted ring-1 ring-white/10'}`}>
+                🌍 Public
+              </button>
+              <button onClick={() => setSeriesVisibility('personal')}
+                className={`flex-1 rounded-lg py-2.5 text-xs font-bold transition ${seriesVisibility === 'personal' ? 'bg-blue-500/20 text-blue-400 ring-1 ring-blue-500/30' : 'bg-white/5 text-ink-muted ring-1 ring-white/10'}`}>
+                🔒 Personal
+              </button>
+            </div>
+            <p className="text-[10px] text-ink-dim">
+              {seriesVisibility === 'public' ? 'Published for everyone after review.' : 'Only visible to you and people you share with. No review needed.'}
+            </p>
+            {seriesVisibility === 'personal' && (
+              <div>
+                <label className="text-[10px] text-ink-dim block mb-1">Share with (comma-separated emails)</label>
+                <input value={seriesSharedWith} onChange={e => setSeriesSharedWith(e.target.value)}
+                  placeholder="friend@email.com, family@email.com"
+                  className="field text-sm" />
+              </div>
+            )}
+          </div>
+
           {/* Episodes */}
           <div className="space-y-4">
             <div className="flex items-center justify-between">
@@ -810,7 +859,9 @@ export default function Library() {
                         <span className="text-lg">{s.icon}</span>
                         <h3 className="text-sm font-bold text-ink">{s.title}</h3>
                       </div>
-                      <p className="text-[10px] text-ink-muted">Series · {s.totalEpisodes} episodes · {s.ageRange}</p>
+                      <p className="text-[10px] text-ink-muted">
+                        {s.visibility === 'personal' ? '🔒 Personal' : '🌍 Public'} · {s.totalEpisodes} episodes · {s.ageRange}
+                      </p>
                       <div className="mt-2 space-y-0.5">
                         {(s.episodes || []).map((ep, i) => (
                           <p key={i} className="text-[10px] text-ink-dim">Ep {ep.episodeNumber}: {ep.title}</p>
@@ -951,6 +1002,36 @@ export default function Library() {
                 <div className="flex items-center justify-between rounded-xl bg-gold/10 p-4 ring-1 ring-gold/20">
                   <span className="text-sm font-bold text-ink">Total Credits</span>
                   <span className="text-lg font-bold text-gold">{credits}</span>
+                </div>
+              )}
+
+              {/* Shared with me */}
+              {sharedSeries.length > 0 && (
+                <div className="space-y-3">
+                  <h3 className="text-xs font-bold uppercase tracking-wider text-blue-400 mt-4">Shared with me</h3>
+                  {sharedSeries.map((s) => (
+                    <div key={s.id} className="rounded-xl bg-bg-surface p-4 ring-1 ring-blue-500/10">
+                      <div className="flex items-start justify-between gap-3">
+                        <div className="min-w-0 flex-1">
+                          <div className="flex items-center gap-2 mb-1">
+                            <span className="text-lg">{s.icon}</span>
+                            <h3 className="text-sm font-bold text-ink">{s.title}</h3>
+                            <span className="rounded-full bg-blue-500/20 px-2 py-0.5 text-[8px] font-bold text-blue-400">PERSONAL</span>
+                          </div>
+                          <p className="text-[10px] text-ink-muted">by {s.authorName} · {s.totalEpisodes} episodes · {s.ageRange}</p>
+                          <div className="mt-2 space-y-0.5">
+                            {(s.episodes || []).map((ep, i) => (
+                              <p key={i} className="text-[10px] text-ink-dim">Ep {ep.episodeNumber}: {ep.title}</p>
+                            ))}
+                          </div>
+                        </div>
+                        <button onClick={() => navigate(`/series/${s.id}`)}
+                          className="shrink-0 rounded-lg bg-blue-500/20 px-3 py-1.5 text-[10px] font-bold text-blue-400">
+                          Listen
+                        </button>
+                      </div>
+                    </div>
+                  ))}
                 </div>
               )}
 

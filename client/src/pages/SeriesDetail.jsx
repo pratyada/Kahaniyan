@@ -68,7 +68,70 @@ export default function SeriesDetail() {
     })();
   }, [seriesId]);
 
-  const series = SERIES.find((s) => s.id === seriesId);
+  // Firestore fallback for creator/personal series
+  const [firestoreSeries, setFirestoreSeries] = useState(null);
+  const [fsLoading, setFsLoading] = useState(false);
+
+  const staticSeries = SERIES.find((s) => s.id === seriesId);
+
+  useEffect(() => {
+    if (staticSeries || firestoreSeries) return;
+    setFsLoading(true);
+    (async () => {
+      try {
+        const { db } = await import('../lib/firebase.js');
+        const { doc, getDoc } = await import('firebase/firestore');
+        if (!db) { setFsLoading(false); return; }
+        const snap = await getDoc(doc(db, 'creatorSeries', seriesId));
+        if (snap.exists()) {
+          const data = snap.data();
+          const userEmail = user?.email?.toLowerCase();
+          const isOwner = data.authorUid === user?.uid;
+          const isShared = (data.sharedWith || []).includes(userEmail);
+          const isPublic = data.visibility !== 'personal';
+          if (isOwner || isShared || isPublic) {
+            // Map to series format the component expects
+            setFirestoreSeries({
+              id: snap.id,
+              title: data.title,
+              icon: data.icon || '📚',
+              description: data.description || '',
+              ageRange: data.ageRange || '3-8',
+              totalEpisodes: data.totalEpisodes || data.episodes?.length || 0,
+              gradient: 'from-[#1a1040] to-[#0a0a0f]',
+              createdBy: data.authorEmail,
+              visibility: data.visibility || 'public',
+              episodes: (data.episodes || []).map((ep, i) => ({
+                id: `${snap.id}_ep${ep.episodeNumber || i + 1}`,
+                episodeNumber: ep.episodeNumber || i + 1,
+                title: ep.title,
+                body: ep.body,
+                subtitle: ep.title,
+                tradition: data.tradition || 'universal',
+                theme: 'courage',
+                durationMinutes: Math.ceil((ep.wordCount || ep.body?.split(/\s+/).length || 200) / 150),
+                source: `${data.title} · Episode ${ep.episodeNumber || i + 1}`,
+                coverImage: ep.coverImage,
+                contributorName: ep.contributorName,
+              })),
+            });
+          }
+        }
+      } catch {}
+      setFsLoading(false);
+    })();
+  }, [seriesId, staticSeries, user]);
+
+  const series = staticSeries || firestoreSeries;
+
+  if (!series && fsLoading) {
+    return (
+      <PageTransition className="page-scroll px-5 pt-10 safe-top">
+        <div className="mt-20 text-center"><p className="text-ink-muted">Loading...</p></div>
+      </PageTransition>
+    );
+  }
+
   if (!series) {
     return (
       <PageTransition className="page-scroll px-5 pt-10 safe-top">
