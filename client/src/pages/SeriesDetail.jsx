@@ -100,6 +100,8 @@ export default function SeriesDetail() {
               totalEpisodes: data.totalEpisodes || data.episodes?.length || 0,
               gradient: 'from-[#1a1040] to-[#0a0a0f]',
               createdBy: data.authorEmail,
+              authorUid: data.authorUid,
+              authorName: data.authorName,
               visibility: data.visibility || 'public',
               episodes: (data.episodes || []).map((ep, i) => ({
                 id: `${snap.id}_ep${ep.episodeNumber || i + 1}`,
