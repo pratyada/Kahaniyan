@@ -138,6 +138,7 @@ export default function SeriesDetail() {
   const [showContributeForm, setShowContributeForm] = useState(false);
   const [contributeTitle, setContributeTitle] = useState('');
   const [contributeBody, setContributeBody] = useState('');
+  const [contributeImages, setContributeImages] = useState([]); // { file, preview }
   const [submittingContribution, setSubmittingContribution] = useState(false);
   const [contributionSubmitted, setContributionSubmitted] = useState(false);
 
@@ -234,13 +235,35 @@ export default function SeriesDetail() {
     })();
   }, [isOwner, firestoreSeries, seriesId]);
 
+  // Handle contributor image selection
+  const handleContributeImages = (e) => {
+    const files = Array.from(e.target.files || []);
+    files.forEach(file => {
+      const reader = new FileReader();
+      reader.onload = (ev) => setContributeImages(prev => [...prev, { file, preview: ev.target.result }]);
+      reader.readAsDataURL(file);
+    });
+  };
+
   // Submit contribution (shared user)
   const submitContribution = async () => {
     if (!contributeTitle.trim() || !contributeBody.trim()) return;
     setSubmittingContribution(true);
     try {
-      const { db: fireDb } = await import('../lib/firebase.js');
+      const { db: fireDb, storage } = await import('../lib/firebase.js');
       const { collection, addDoc } = await import('firebase/firestore');
+      const { ref, uploadBytes, getDownloadURL } = await import('firebase/storage');
+
+      // Upload and compress images
+      const uploadedUrls = [];
+      for (const img of contributeImages) {
+        const compressed = await compressImage(img.file);
+        const storageRef = ref(storage, `contributor-images/${user.uid}/${Date.now()}_${uploadedUrls.length}.jpg`);
+        await uploadBytes(storageRef, compressed, { contentType: 'image/jpeg' });
+        const url = await getDownloadURL(storageRef);
+        uploadedUrls.push(url);
+      }
+
       await addDoc(collection(fireDb, 'seriesSubmissions'), {
         seriesId,
         seriesTitle: firestoreSeries.title,
@@ -251,7 +274,8 @@ export default function SeriesDetail() {
         episodeTitle: contributeTitle.trim(),
         body: contributeBody.trim(),
         wordCount: contributeBody.trim().split(/\s+/).length,
-        coverImage: null,
+        coverImage: uploadedUrls[0] || null,
+        gallery: uploadedUrls,
         status: 'pending',
         ownerUid: firestoreSeries.authorUid,
         ownerFeedback: null,
@@ -261,6 +285,7 @@ export default function SeriesDetail() {
       });
       setContributionSubmitted(true);
       setShowContributeForm(false);
+      setContributeImages([]);
     } catch (e) { alert('Submit failed: ' + e.message); }
     setSubmittingContribution(false);
   };
@@ -281,14 +306,14 @@ export default function SeriesDetail() {
       const episodes = serData.episodes || [];
       const nextEp = episodes.length + 1;
 
-      // Add episode
+      // Add episode — carry over contributor's images
       episodes.push({
         episodeNumber: nextEp,
         title,
         body,
         wordCount: body.split(/\s+/).length,
-        coverImage: null,
-        gallery: [],
+        coverImage: (sub.gallery || [])[0] || sub.coverImage || null,
+        gallery: sub.gallery || [],
         contributorName: sub.contributorName,
       });
       await uDoc(fDoc(fireDb, 'creatorSeries', seriesId), { episodes, totalEpisodes: nextEp });
@@ -729,10 +754,33 @@ export default function SeriesDetail() {
                   className="w-full rounded-xl bg-black/30 px-4 py-3 text-sm text-white ring-1 ring-white/10 outline-none focus:ring-blue-500 resize-y leading-relaxed" />
                 <p className="text-[10px] text-ink-dim mt-1">{contributeBody.split(/\s+/).filter(Boolean).length} words</p>
               </div>
+              {/* Image upload */}
+              <div>
+                <label className="text-[10px] text-ink-dim block mb-1">Photos (optional — multiple allowed)</label>
+                <label className="flex items-center justify-center rounded-xl bg-black/30 ring-1 ring-white/10 p-4 cursor-pointer hover:ring-blue-500 transition">
+                  <div className="text-center">
+                    <span className="text-xl">📷</span>
+                    <p className="text-[10px] text-ink-muted mt-1">{contributeImages.length > 0 ? `${contributeImages.length} photo(s) selected — tap to add more` : 'Tap to add photos'}</p>
+                  </div>
+                  <input type="file" accept="image/*" multiple className="hidden" onChange={handleContributeImages} />
+                </label>
+                {contributeImages.length > 0 && (
+                  <div className="flex gap-2 mt-2 overflow-x-auto">
+                    {contributeImages.map((img, idx) => (
+                      <div key={idx} className="relative shrink-0">
+                        <img src={img.preview} alt="" className="h-16 w-16 rounded-lg object-cover ring-1 ring-white/10" />
+                        <button onClick={() => setContributeImages(prev => prev.filter((_, i) => i !== idx))}
+                          className="absolute -top-1 -right-1 grid h-4 w-4 place-items-center rounded-full bg-red-500 text-[8px] text-white">✕</button>
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </div>
+
               <button onClick={submitContribution}
                 disabled={submittingContribution || !contributeTitle.trim() || !contributeBody.trim()}
                 className="w-full rounded-xl bg-blue-500 py-4 text-sm font-bold text-white disabled:opacity-50">
-                {submittingContribution ? 'Submitting...' : 'Submit for review'}
+                {submittingContribution ? (contributeImages.length > 0 ? 'Uploading photos & submitting...' : 'Submitting...') : 'Submit for review'}
               </button>
               <p className="text-[10px] text-ink-dim text-center">
                 {firestoreSeries?.authorName || 'The series owner'} will review, edit, and publish your episode.
@@ -794,6 +842,18 @@ export default function SeriesDetail() {
                 <h3 className="text-sm font-bold text-gold">Review contribution from {sub.contributorName}</h3>
                 <button onClick={() => setEditingSubmission(null)} className="text-[10px] text-ink-dim">Close</button>
               </div>
+
+              {/* Submitted images */}
+              {(sub.gallery || []).length > 0 && (
+                <div>
+                  <p className="text-[9px] font-bold text-ink-dim uppercase tracking-wider mb-1">Submitted photos</p>
+                  <div className="flex gap-2 overflow-x-auto">
+                    {sub.gallery.map((url, idx) => (
+                      <img key={idx} src={url} alt="" className="h-24 w-24 rounded-lg object-cover ring-1 ring-white/10 shrink-0" />
+                    ))}
+                  </div>
+                </div>
+              )}
 
               {/* Original text preview */}
               <div className="rounded-lg bg-black/20 p-3 ring-1 ring-white/5">
