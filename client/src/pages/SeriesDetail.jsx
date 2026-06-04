@@ -130,48 +130,70 @@ export default function SeriesDetail() {
 
   const isOwner = firestoreSeries && user?.uid === firestoreSeries?.authorUid;
 
-  const handleEpisodeImageUpload = async (epIndex, file) => {
-    if (!file || !isOwner) return;
+  const compressImage = (file) => new Promise((resolve) => {
+    if (!file.type.startsWith('image/')) return resolve(file);
+    const img = new window.Image();
+    const url = URL.createObjectURL(file);
+    img.onload = () => {
+      const MAX = 1200;
+      let { width: w, height: h } = img;
+      if (w > MAX || h > MAX) { const s = MAX / Math.max(w, h); w = Math.round(w * s); h = Math.round(h * s); }
+      const canvas = document.createElement('canvas');
+      canvas.width = w; canvas.height = h;
+      canvas.getContext('2d').drawImage(img, 0, 0, w, h);
+      canvas.toBlob(blob => { URL.revokeObjectURL(url); resolve(new File([blob], 'ep.jpg', { type: 'image/jpeg' })); }, 'image/jpeg', 0.8);
+    };
+    img.onerror = () => { URL.revokeObjectURL(url); resolve(file); };
+    img.src = url;
+  });
+
+  const handleEpisodeImageUpload = async (epIndex, files) => {
+    if (!files?.length || !isOwner) return;
     setUploadingEp(epIndex);
     try {
-      const { storage } = await import('../lib/firebase.js');
+      const { storage, db: fireDb } = await import('../lib/firebase.js');
       const { ref, uploadBytes, getDownloadURL } = await import('firebase/storage');
-      const { doc: fDoc, updateDoc: uDoc } = await import('firebase/firestore');
+      const { doc: fDoc, updateDoc: uDoc, getDoc: gDoc } = await import('firebase/firestore');
 
-      // Compress image
-      const compressed = await new Promise((resolve) => {
-        const img = new window.Image();
-        const url = URL.createObjectURL(file);
-        img.onload = () => {
-          const MAX = 1200;
-          let { width: w, height: h } = img;
-          if (w > MAX || h > MAX) { const s = MAX / Math.max(w, h); w = Math.round(w * s); h = Math.round(h * s); }
-          const canvas = document.createElement('canvas');
-          canvas.width = w; canvas.height = h;
-          canvas.getContext('2d').drawImage(img, 0, 0, w, h);
-          canvas.toBlob(blob => { URL.revokeObjectURL(url); resolve(new File([blob], 'ep.jpg', { type: 'image/jpeg' })); }, 'image/jpeg', 0.8);
-        };
-        img.onerror = () => { URL.revokeObjectURL(url); resolve(file); };
-        img.src = url;
-      });
+      const uploadedUrls = [];
+      for (let f = 0; f < files.length; f++) {
+        const compressed = await compressImage(files[f]);
+        const storageRef = ref(storage, `creator-images/${user.uid}/series_${seriesId}_ep${epIndex}_${Date.now()}_${f}.jpg`);
+        await uploadBytes(storageRef, compressed, { contentType: 'image/jpeg' });
+        const imageUrl = await getDownloadURL(storageRef);
+        uploadedUrls.push(imageUrl);
+      }
 
-      const storageRef = ref(storage, `creator-images/${user.uid}/series_${seriesId}_ep${epIndex}_${Date.now()}.jpg`);
-      await uploadBytes(storageRef, compressed, { contentType: 'image/jpeg' });
-      const imageUrl = await getDownloadURL(storageRef);
-
-      // Update the episode's coverImage in Firestore
-      const serDoc = await (await import('firebase/firestore')).getDoc(fDoc(db, 'creatorSeries', seriesId));
+      // Read current episodes from Firestore
+      const serDoc = await gDoc(fDoc(fireDb, 'creatorSeries', seriesId));
       const episodes = serDoc.data().episodes || [];
-      episodes[epIndex] = { ...episodes[epIndex], coverImage: imageUrl };
-      await uDoc(fDoc(db, 'creatorSeries', seriesId), { episodes });
+
+      // First uploaded image becomes coverImage, all go into gallery array
+      const existingGallery = episodes[epIndex]?.gallery || [];
+      const newGallery = [...existingGallery, ...uploadedUrls];
+      episodes[epIndex] = {
+        ...episodes[epIndex],
+        coverImage: episodes[epIndex]?.coverImage || uploadedUrls[0],
+        gallery: newGallery,
+      };
+      await uDoc(fDoc(fireDb, 'creatorSeries', seriesId), { episodes });
 
       // Update local state
       setFirestoreSeries(prev => {
         if (!prev) return prev;
-        const updated = { ...prev, episodes: prev.episodes.map((ep, i) => i === epIndex ? { ...ep, coverImage: imageUrl } : ep) };
-        return updated;
+        return {
+          ...prev,
+          episodes: prev.episodes.map((ep, i) => i === epIndex ? {
+            ...ep,
+            coverImage: ep.coverImage || uploadedUrls[0],
+            gallery: newGallery,
+          } : ep),
+        };
       });
-    } catch (e) { alert('Upload failed: ' + e.message); }
+    } catch (e) {
+      console.error('Upload error:', e);
+      alert('Upload failed: ' + e.message);
+    }
     setUploadingEp(null);
   };
 
@@ -227,9 +249,10 @@ export default function SeriesDetail() {
   // Collect all images — uploaded gallery first, then AI covers as fallback
   const allPhotos = series.episodes.flatMap(ep => {
     const gallery = galleryImages[ep.id] || [];
-    const cover = coverImages[ep.id];
-    // Gallery (uploaded) takes priority, AI cover only if no gallery
-    return gallery.length > 0 ? gallery : cover ? [cover] : [];
+    const fsGallery = ep.gallery || [];
+    const cover = coverImages[ep.id] || ep.coverImage;
+    // Gallery (uploaded) takes priority, then Firestore gallery, then cover
+    return gallery.length > 0 ? gallery : fsGallery.length > 0 ? fsGallery : cover ? [cover] : [];
   });
 
   return (
@@ -384,7 +407,7 @@ export default function SeriesDetail() {
             >
               {/* Full card background — image or gradient */}
               {(() => {
-                const epImg = (galleryImages[ep.id] || [])[0] || coverImages[ep.id] || ep.coverImage;
+                const epImg = (galleryImages[ep.id] || [])[0] || coverImages[ep.id] || ep.coverImage || (ep.gallery || [])[0];
                 return epImg ? (
                   <img src={epImg} alt="" className="absolute inset-0 h-full w-full object-cover" onError={(e) => { e.target.style.display = 'none'; }} />
                 ) : (
@@ -437,15 +460,18 @@ export default function SeriesDetail() {
                 <label className="absolute inset-0 z-10 flex flex-col items-center justify-center bg-black/60 cursor-pointer"
                   onClick={e => e.stopPropagation()}>
                   {uploadingEp === i ? (
-                    <span className="text-white text-xs font-bold">Uploading...</span>
+                    <span className="text-white text-xs font-bold animate-pulse">Uploading...</span>
                   ) : (
                     <>
                       <span className="text-2xl mb-1">📷</span>
-                      <span className="text-[10px] font-bold text-white">{ep.coverImage ? 'Change image' : 'Add image'}</span>
+                      <span className="text-[10px] font-bold text-white">
+                        {ep.gallery?.length > 0 ? `${ep.gallery.length} photos — add more` : ep.coverImage ? 'Add more photos' : 'Add photos'}
+                      </span>
+                      <span className="text-[8px] text-white/50 mt-1">Select multiple</span>
                     </>
                   )}
-                  <input type="file" accept="image/*" className="hidden"
-                    onChange={e => { if (e.target.files?.[0]) handleEpisodeImageUpload(i, e.target.files[0]); e.target.value = ''; }} />
+                  <input type="file" accept="image/*" multiple className="hidden"
+                    onChange={e => { if (e.target.files?.length) handleEpisodeImageUpload(i, Array.from(e.target.files)); e.target.value = ''; }} />
                 </label>
               )}
 
