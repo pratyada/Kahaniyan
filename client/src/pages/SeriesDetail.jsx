@@ -445,6 +445,9 @@ export default function SeriesDetail() {
 
   const playEpisode = (episode) => {
     const filledText = fillTokens(episode.body || '', user ? profile : null);
+    // Get the best image for this episode (uploaded gallery > cover > fallback)
+    const epImage = episode.coverImage || (episode.gallery || [])[0] ||
+      (galleryImages[episode.id] || [])[0] || coverImages[episode.id] || null;
     load({
       id: episode.id,
       title: episode.title,
@@ -461,6 +464,8 @@ export default function SeriesDetail() {
       seriesId: series.id,
       episodeId: episode.id,
       audioUrl: audioUrls[episode.id] || episode.audioUrl,
+      coverImage: epImage,
+      gallery: episode.gallery || galleryImages[episode.id] || [],
     });
     navigate('/player');
   };

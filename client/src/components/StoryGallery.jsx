@@ -6,14 +6,23 @@ import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { X } from 'lucide-react';
 
-export default function StoryGallery({ storyId, coverImage }) {
+export default function StoryGallery({ storyId, coverImage, extraImages = [] }) {
   const [images, setImages] = useState([]);
   const [current, setCurrent] = useState(0);
   const [fullscreen, setFullscreen] = useState(false);
 
-  // Load gallery from Firestore
+  // Load gallery from Firestore or use extraImages (for personal/creator series)
   useEffect(() => {
     if (!storyId) return;
+
+    // If extraImages provided (from personal/creator series), use those directly
+    if (extraImages.length > 0) {
+      const all = coverImage && !extraImages.includes(coverImage)
+        ? [coverImage, ...extraImages] : extraImages;
+      setImages(all.filter(Boolean));
+      return;
+    }
+
     (async () => {
       try {
         const { db } = await import('../lib/firebase.js');
@@ -29,7 +38,7 @@ export default function StoryGallery({ storyId, coverImage }) {
         }
       } catch {}
     })();
-  }, [storyId, coverImage]);
+  }, [storyId, coverImage, extraImages.length]);
 
   if (images.length === 0) return null;
 

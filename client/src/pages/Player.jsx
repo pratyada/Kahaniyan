@@ -758,7 +758,8 @@ function PlayerInner() {
             {/* Photo gallery — swipe through story images */}
             <StoryGallery
               storyId={current?.id?.startsWith('lesson_') ? current.id.slice(7) : current?.id}
-              coverImage={wisdomImageUrls[current?.id?.startsWith('lesson_') ? current.id.slice(7) : current?.id]}
+              coverImage={current?.coverImage || wisdomImageUrls[current?.id?.startsWith('lesson_') ? current.id.slice(7) : current?.id]}
+              extraImages={current?.gallery || []}
             />
 
             {current?.text && <HighlightedText text={current.text} progress={progress} />}
