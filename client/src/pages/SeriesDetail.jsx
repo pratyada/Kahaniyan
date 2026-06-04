@@ -122,6 +122,57 @@ export default function SeriesDetail() {
     })();
   }, [seriesId, staticSeries, user]);
 
+  // Owner edit state
+  const [editMode, setEditMode] = useState(false);
+  const [uploadingEp, setUploadingEp] = useState(null);
+
+  const isOwner = firestoreSeries && user?.uid === firestoreSeries?.authorUid;
+
+  const handleEpisodeImageUpload = async (epIndex, file) => {
+    if (!file || !isOwner) return;
+    setUploadingEp(epIndex);
+    try {
+      const { storage } = await import('../lib/firebase.js');
+      const { ref, uploadBytes, getDownloadURL } = await import('firebase/storage');
+      const { doc: fDoc, updateDoc: uDoc } = await import('firebase/firestore');
+
+      // Compress image
+      const compressed = await new Promise((resolve) => {
+        const img = new window.Image();
+        const url = URL.createObjectURL(file);
+        img.onload = () => {
+          const MAX = 1200;
+          let { width: w, height: h } = img;
+          if (w > MAX || h > MAX) { const s = MAX / Math.max(w, h); w = Math.round(w * s); h = Math.round(h * s); }
+          const canvas = document.createElement('canvas');
+          canvas.width = w; canvas.height = h;
+          canvas.getContext('2d').drawImage(img, 0, 0, w, h);
+          canvas.toBlob(blob => { URL.revokeObjectURL(url); resolve(new File([blob], 'ep.jpg', { type: 'image/jpeg' })); }, 'image/jpeg', 0.8);
+        };
+        img.onerror = () => { URL.revokeObjectURL(url); resolve(file); };
+        img.src = url;
+      });
+
+      const storageRef = ref(storage, `creator-images/${user.uid}/series_${seriesId}_ep${epIndex}_${Date.now()}.jpg`);
+      await uploadBytes(storageRef, compressed, { contentType: 'image/jpeg' });
+      const imageUrl = await getDownloadURL(storageRef);
+
+      // Update the episode's coverImage in Firestore
+      const serDoc = await (await import('firebase/firestore')).getDoc(fDoc(db, 'creatorSeries', seriesId));
+      const episodes = serDoc.data().episodes || [];
+      episodes[epIndex] = { ...episodes[epIndex], coverImage: imageUrl };
+      await uDoc(fDoc(db, 'creatorSeries', seriesId), { episodes });
+
+      // Update local state
+      setFirestoreSeries(prev => {
+        if (!prev) return prev;
+        const updated = { ...prev, episodes: prev.episodes.map((ep, i) => i === epIndex ? { ...ep, coverImage: imageUrl } : ep) };
+        return updated;
+      });
+    } catch (e) { alert('Upload failed: ' + e.message); }
+    setUploadingEp(null);
+  };
+
   const series = staticSeries || firestoreSeries;
 
   if (!series && fsLoading) {
@@ -263,6 +314,14 @@ export default function SeriesDetail() {
             </button>
           )}
 
+          {/* Owner edit toggle */}
+          {isOwner && (
+            <button onClick={() => setEditMode(!editMode)}
+              className="mb-3 rounded-full bg-gold/20 px-4 py-1.5 text-[10px] font-bold text-gold ring-1 ring-gold/30">
+              {editMode ? 'Done editing' : '✏️ Edit series'}
+            </button>
+          )}
+
           {/* Progress */}
           <div className="flex items-center gap-3">
             <div className="flex gap-1.5 flex-1">
@@ -323,7 +382,7 @@ export default function SeriesDetail() {
             >
               {/* Full card background — image or gradient */}
               {(() => {
-                const epImg = (galleryImages[ep.id] || [])[0] || coverImages[ep.id];
+                const epImg = (galleryImages[ep.id] || [])[0] || coverImages[ep.id] || ep.coverImage;
                 return epImg ? (
                   <img src={epImg} alt="" className="absolute inset-0 h-full w-full object-cover" onError={(e) => { e.target.style.display = 'none'; }} />
                 ) : (
@@ -369,6 +428,23 @@ export default function SeriesDetail() {
                 <div className="absolute top-2 left-1/2 -translate-x-1/2 rounded-full bg-black/50 px-2 py-0.5 backdrop-blur-sm">
                   <span className="text-[8px] font-bold text-white/80">📷 {(galleryImages[ep.id] || []).length}</span>
                 </div>
+              )}
+
+              {/* Edit mode — upload image overlay */}
+              {editMode && isOwner && (
+                <label className="absolute inset-0 z-10 flex flex-col items-center justify-center bg-black/60 cursor-pointer"
+                  onClick={e => e.stopPropagation()}>
+                  {uploadingEp === i ? (
+                    <span className="text-white text-xs font-bold">Uploading...</span>
+                  ) : (
+                    <>
+                      <span className="text-2xl mb-1">📷</span>
+                      <span className="text-[10px] font-bold text-white">{ep.coverImage ? 'Change image' : 'Add image'}</span>
+                    </>
+                  )}
+                  <input type="file" accept="image/*" className="hidden"
+                    onChange={e => { if (e.target.files?.[0]) handleEpisodeImageUpload(i, e.target.files[0]); e.target.value = ''; }} />
+                </label>
               )}
 
               {/* Bottom content */}
