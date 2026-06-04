@@ -66,7 +66,7 @@ You will be asked to sign in with Google to submit.
 export default async function handler(req, res) {
   if (req.method !== 'POST') return res.status(405).json({ error: 'POST only' });
 
-  const { seriesId, seriesTitle, contributorEmail, ownerUid, ownerEmail, ownerName } = req.body || {};
+  const { seriesId, seriesTitle, contributorEmail, ownerUid, ownerEmail, ownerName, ccOwner } = req.body || {};
   if (!seriesId || !contributorEmail || !ownerUid) {
     return res.status(400).json({ error: 'Missing required fields' });
   }
@@ -98,7 +98,7 @@ export default async function handler(req, res) {
     const subject = `${ownerName || 'Someone'} invited you to contribute to "${seriesTitle}" — My Sleepy Tale`;
     const cmd = new SendEmailCommand({
       Source: `My Sleepy Tale <${FROM_EMAIL}>`,
-      Destination: { ToAddresses: [email] },
+      Destination: { ToAddresses: [email], ...(ccOwner && ownerEmail ? { CcAddresses: [ownerEmail] } : {}) },
       Message: {
         Subject: { Data: subject },
         Body: {
