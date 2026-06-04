@@ -181,6 +181,11 @@ export default function Library() {
   // Shared with me
   const [sharedSeries, setSharedSeries] = useState([]);
 
+  // Share series UI
+  const [sharingSeriesId, setSharingSeriesId] = useState(null);
+  const [shareEmail, setShareEmail] = useState('');
+  const [sharing, setSharing] = useState(false);
+
   // Story form
   const [title, setTitle] = useState('');
   const [tradition, setTradition] = useState(profile?.beliefs?.[0] || 'universal');
@@ -827,8 +832,8 @@ export default function Library() {
                     <p className="text-[10px] text-ink-dim">Private — only visible to you and people you share with</p>
                   </div>
                   {mySeries.filter(s => s.visibility === 'personal').map((s) => (
-                    <div key={`personal-${s.id}`} className="rounded-xl bg-bg-surface p-4 ring-1 ring-blue-500/10 mb-2 cursor-pointer" onClick={() => navigate(`/series/${s.id}`)}>
-                      <div className="flex items-start justify-between gap-3">
+                    <div key={`personal-${s.id}`} className="rounded-xl bg-bg-surface p-4 ring-1 ring-blue-500/10 mb-2">
+                      <div className="flex items-start justify-between gap-3 cursor-pointer" onClick={() => navigate(`/series/${s.id}`)}>
                         <div className="min-w-0 flex-1">
                           <div className="flex items-center gap-2 mb-1">
                             <span className="text-lg">{s.icon}</span>
@@ -836,9 +841,6 @@ export default function Library() {
                             <span className="rounded-full bg-blue-500/20 px-2 py-0.5 text-[8px] font-bold text-blue-400">PERSONAL</span>
                           </div>
                           <p className="text-[10px] text-ink-muted">{s.totalEpisodes} episodes · {s.ageRange}</p>
-                          {s.sharedWith?.length > 0 && (
-                            <p className="text-[9px] text-ink-dim mt-1">Shared with {s.sharedWith.length} people</p>
-                          )}
                           <div className="mt-2 space-y-0.5">
                             {(s.episodes || []).map((ep, i) => (
                               <p key={i} className="text-[10px] text-ink-dim">Ep {ep.episodeNumber}: {ep.title}</p>
@@ -846,6 +848,57 @@ export default function Library() {
                           </div>
                         </div>
                         <span className="shrink-0 rounded-full px-2.5 py-1 text-[10px] font-bold bg-blue-500/10 text-blue-400">personal</span>
+                      </div>
+
+                      {/* Shared with list */}
+                      {s.sharedWith?.length > 0 && (
+                        <div className="mt-3 border-t border-white/5 pt-2">
+                          <p className="text-[9px] text-ink-dim mb-1">Shared with:</p>
+                          <div className="flex flex-wrap gap-1">
+                            {s.sharedWith.map(email => (
+                              <span key={email} className="rounded-full bg-blue-500/10 px-2 py-0.5 text-[9px] text-blue-400">{email}</span>
+                            ))}
+                          </div>
+                        </div>
+                      )}
+
+                      {/* Share + Invite buttons */}
+                      <div className="mt-3 border-t border-white/5 pt-3">
+                        {sharingSeriesId === s.id ? (
+                          <div className="flex gap-2">
+                            <input type="email" value={shareEmail} onChange={e => setShareEmail(e.target.value)}
+                              placeholder="email@example.com"
+                              className="flex-1 rounded-lg bg-white/5 px-3 py-1.5 text-[11px] text-ink placeholder-ink-dim ring-1 ring-white/10 outline-none" />
+                            <button disabled={sharing || !shareEmail.includes('@')}
+                              onClick={async (e) => {
+                                e.stopPropagation();
+                                setSharing(true);
+                                try {
+                                  const { updateDoc: uDoc, doc: fDoc, arrayUnion } = await import('firebase/firestore');
+                                  const emailToShare = shareEmail.trim().toLowerCase();
+                                  await uDoc(fDoc(db, 'creatorSeries', s.id), { sharedWith: arrayUnion(emailToShare) });
+                                  // Update local state
+                                  setMySeries(prev => prev.map(ms => ms.id === s.id ? { ...ms, sharedWith: [...(ms.sharedWith || []), emailToShare] } : ms));
+                                  showToast(`Shared with ${emailToShare}!`);
+                                  setShareEmail('');
+                                  setSharingSeriesId(null);
+                                } catch (err) { alert('Share failed: ' + err.message); }
+                                setSharing(false);
+                              }}
+                              className="rounded-lg bg-blue-500/20 px-3 py-1.5 text-[10px] font-bold text-blue-400 disabled:opacity-50">
+                              {sharing ? '...' : 'Share'}
+                            </button>
+                            <button onClick={(e) => { e.stopPropagation(); setSharingSeriesId(null); setShareEmail(''); }}
+                              className="text-[10px] text-ink-dim">Cancel</button>
+                          </div>
+                        ) : (
+                          <div className="flex gap-2">
+                            <button onClick={(e) => { e.stopPropagation(); setSharingSeriesId(s.id); }}
+                              className="text-[10px] text-blue-400/70 hover:text-blue-400">
+                              + Share with someone
+                            </button>
+                          </div>
+                        )}
                       </div>
                     </div>
                   ))}
