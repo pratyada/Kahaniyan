@@ -103,6 +103,7 @@ export default function SeriesDetail() {
               authorUid: data.authorUid,
               authorName: data.authorName,
               visibility: data.visibility || 'public',
+              sharedWith: data.sharedWith || [],
               episodes: (data.episodes || []).map((ep, i) => ({
                 id: `${snap.id}_ep${ep.episodeNumber || i + 1}`,
                 episodeNumber: ep.episodeNumber || i + 1,
@@ -133,7 +134,22 @@ export default function SeriesDetail() {
   const [savingText, setSavingText] = useState(false);
   const [generatingAudio, setGeneratingAudio] = useState(null);
 
+  // Contributor state
+  const [showContributeForm, setShowContributeForm] = useState(false);
+  const [contributeTitle, setContributeTitle] = useState('');
+  const [contributeBody, setContributeBody] = useState('');
+  const [submittingContribution, setSubmittingContribution] = useState(false);
+  const [contributionSubmitted, setContributionSubmitted] = useState(false);
+
+  // Pending submissions (for owner)
+  const [pendingSubmissions, setPendingSubmissions] = useState([]);
+  const [editingSubmission, setEditingSubmission] = useState(null);
+  const [subEditTitle, setSubEditTitle] = useState('');
+  const [subEditBody, setSubEditBody] = useState('');
+
   const isOwner = firestoreSeries && user?.uid === firestoreSeries?.authorUid;
+  const isSharedUser = firestoreSeries && !isOwner && user?.email &&
+    (firestoreSeries.sharedWith || []).includes(user.email.toLowerCase());
 
   const compressImage = (file) => new Promise((resolve) => {
     if (!file.type.startsWith('image/')) return resolve(file);
@@ -200,6 +216,108 @@ export default function SeriesDetail() {
       alert('Upload failed: ' + e.message);
     }
     setUploadingEp(null);
+  };
+
+  // Fetch pending submissions for owner
+  useEffect(() => {
+    if (!isOwner || !firestoreSeries) return;
+    (async () => {
+      try {
+        const { db: fireDb } = await import('../lib/firebase.js');
+        const { collection, query, where, getDocs } = await import('firebase/firestore');
+        const q = query(collection(fireDb, 'seriesSubmissions'), where('seriesId', '==', seriesId));
+        const snap = await getDocs(q);
+        const subs = [];
+        snap.forEach(d => subs.push({ id: d.id, ...d.data() }));
+        setPendingSubmissions(subs.sort((a, b) => new Date(b.submittedAt) - new Date(a.submittedAt)));
+      } catch {}
+    })();
+  }, [isOwner, firestoreSeries, seriesId]);
+
+  // Submit contribution (shared user)
+  const submitContribution = async () => {
+    if (!contributeTitle.trim() || !contributeBody.trim()) return;
+    setSubmittingContribution(true);
+    try {
+      const { db: fireDb } = await import('../lib/firebase.js');
+      const { collection, addDoc } = await import('firebase/firestore');
+      await addDoc(collection(fireDb, 'seriesSubmissions'), {
+        seriesId,
+        seriesTitle: firestoreSeries.title,
+        invitationId: null,
+        contributorUid: user.uid,
+        contributorEmail: user.email,
+        contributorName: user.displayName || user.email.split('@')[0],
+        episodeTitle: contributeTitle.trim(),
+        body: contributeBody.trim(),
+        wordCount: contributeBody.trim().split(/\s+/).length,
+        coverImage: null,
+        status: 'pending',
+        ownerUid: firestoreSeries.authorUid,
+        ownerFeedback: null,
+        submittedAt: new Date().toISOString(),
+        reviewedAt: null,
+        publishedEpisodeNumber: null,
+      });
+      setContributionSubmitted(true);
+      setShowContributeForm(false);
+    } catch (e) { alert('Submit failed: ' + e.message); }
+    setSubmittingContribution(false);
+  };
+
+  // Owner approves a submission (with edited text)
+  const approveSubmission = async (sub) => {
+    setSavingText(true);
+    try {
+      const { db: fireDb } = await import('../lib/firebase.js');
+      const { doc: fDoc, updateDoc: uDoc, getDoc: gDoc } = await import('firebase/firestore');
+
+      const title = subEditTitle.trim() || sub.episodeTitle;
+      const body = subEditBody.trim() || sub.body;
+
+      // Get current series for next episode number
+      const serDoc = await gDoc(fDoc(fireDb, 'creatorSeries', seriesId));
+      const serData = serDoc.data();
+      const episodes = serData.episodes || [];
+      const nextEp = episodes.length + 1;
+
+      // Add episode
+      episodes.push({
+        episodeNumber: nextEp,
+        title,
+        body,
+        wordCount: body.split(/\s+/).length,
+        coverImage: null,
+        gallery: [],
+        contributorName: sub.contributorName,
+      });
+      await uDoc(fDoc(fireDb, 'creatorSeries', seriesId), { episodes, totalEpisodes: nextEp });
+
+      // Mark submission approved
+      await uDoc(fDoc(fireDb, 'seriesSubmissions', sub.id), {
+        status: 'approved',
+        reviewedAt: new Date().toISOString(),
+        publishedEpisodeNumber: nextEp,
+      });
+
+      // Update local state
+      setPendingSubmissions(prev => prev.map(p => p.id === sub.id ? { ...p, status: 'approved' } : p));
+      setFirestoreSeries(prev => ({
+        ...prev,
+        totalEpisodes: nextEp,
+        episodes: [...prev.episodes, {
+          id: `${seriesId}_ep${nextEp}`,
+          episodeNumber: nextEp,
+          title, body, subtitle: title,
+          tradition: 'universal', theme: 'courage',
+          durationMinutes: Math.ceil(body.split(/\s+/).length / 150),
+          source: `${prev.title} · Episode ${nextEp}`,
+          coverImage: null, gallery: [], contributorName: sub.contributorName,
+        }],
+      }));
+      setEditingSubmission(null);
+    } catch (e) { alert('Approve failed: ' + e.message); }
+    setSavingText(false);
   };
 
   const startEditingEpisode = (epIndex) => {
@@ -586,6 +704,140 @@ export default function SeriesDetail() {
           );
         })}
       </div>
+
+      {/* ═══ CONTRIBUTE BUTTON (shared users) ═══ */}
+      {isSharedUser && !contributionSubmitted && (
+        <div className="px-5 mt-4">
+          {!showContributeForm ? (
+            <button onClick={() => setShowContributeForm(true)}
+              className="w-full rounded-2xl bg-blue-500/20 py-4 text-sm font-bold text-blue-400 ring-1 ring-blue-500/30 transition active:scale-98">
+              + Contribute an episode to this series
+            </button>
+          ) : (
+            <div className="rounded-2xl bg-bg-surface ring-1 ring-blue-500/20 p-5 space-y-4">
+              <div className="flex items-center justify-between">
+                <h3 className="text-sm font-bold text-blue-400">Add your episode</h3>
+                <button onClick={() => setShowContributeForm(false)} className="text-[10px] text-ink-dim">Cancel</button>
+              </div>
+              <input value={contributeTitle} onChange={e => setContributeTitle(e.target.value)}
+                placeholder="Episode title — e.g. Our First Snow Day in Denver"
+                className="w-full rounded-xl bg-black/30 px-4 py-3 text-sm text-white ring-1 ring-white/10 outline-none focus:ring-blue-500" />
+              <div>
+                <textarea value={contributeBody} onChange={e => setContributeBody(e.target.value)}
+                  placeholder="Write your story here — quick bullet points of memories work too! The series owner can polish the text before publishing."
+                  rows={8}
+                  className="w-full rounded-xl bg-black/30 px-4 py-3 text-sm text-white ring-1 ring-white/10 outline-none focus:ring-blue-500 resize-y leading-relaxed" />
+                <p className="text-[10px] text-ink-dim mt-1">{contributeBody.split(/\s+/).filter(Boolean).length} words</p>
+              </div>
+              <button onClick={submitContribution}
+                disabled={submittingContribution || !contributeTitle.trim() || !contributeBody.trim()}
+                className="w-full rounded-xl bg-blue-500 py-4 text-sm font-bold text-white disabled:opacity-50">
+                {submittingContribution ? 'Submitting...' : 'Submit for review'}
+              </button>
+              <p className="text-[10px] text-ink-dim text-center">
+                {firestoreSeries?.authorName || 'The series owner'} will review, edit, and publish your episode.
+              </p>
+            </div>
+          )}
+        </div>
+      )}
+      {isSharedUser && contributionSubmitted && (
+        <div className="px-5 mt-4">
+          <div className="rounded-2xl bg-blue-500/10 ring-1 ring-blue-500/20 p-5 text-center">
+            <span className="text-2xl">🎉</span>
+            <p className="text-sm font-bold text-blue-400 mt-2">Episode submitted!</p>
+            <p className="text-[11px] text-ink-muted mt-1">{firestoreSeries?.authorName} will review and publish it.</p>
+          </div>
+        </div>
+      )}
+
+      {/* ═══ PENDING SUBMISSIONS (owner sees greyed-out cards) ═══ */}
+      {isOwner && pendingSubmissions.filter(s => s.status === 'pending').length > 0 && (
+        <div className="px-5 mt-6">
+          <h3 className="text-xs font-bold uppercase tracking-wider text-gold/70 mb-3">
+            Pending contributions ({pendingSubmissions.filter(s => s.status === 'pending').length})
+          </h3>
+          <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
+            {pendingSubmissions.filter(s => s.status === 'pending').map(sub => (
+              <div key={sub.id}
+                onClick={() => {
+                  if (editingSubmission === sub.id) { setEditingSubmission(null); return; }
+                  setEditingSubmission(sub.id);
+                  setSubEditTitle(sub.episodeTitle);
+                  setSubEditBody(sub.body);
+                }}
+                className="w-full overflow-hidden rounded-2xl text-left transition relative ring-1 ring-gold/30 opacity-60 hover:opacity-100 cursor-pointer"
+                style={{ aspectRatio: '3/4', maxHeight: 280 }}>
+                <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-[#1a1040]/50 to-[#1a1040]/30" />
+                <div className="absolute top-2 left-2 rounded-full bg-gold/20 px-2 py-0.5 text-[8px] font-bold text-gold">PENDING</div>
+                <div className="absolute top-2 right-2 rounded-full bg-black/50 px-2 py-0.5 text-[8px] text-white/60">by {sub.contributorName}</div>
+                <div className="absolute bottom-0 left-0 right-0 p-3">
+                  <p className="text-xs font-bold text-white leading-snug" style={{ fontFamily: 'Fraunces, serif' }}>
+                    {sub.episodeTitle}
+                  </p>
+                  <p className="text-[9px] text-white/50 mt-0.5">{sub.wordCount} words · {new Date(sub.submittedAt).toLocaleDateString()}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+
+      {/* ═══ SUBMISSION EDITOR (owner reviews + edits + publishes) ═══ */}
+      {isOwner && editingSubmission && (() => {
+        const sub = pendingSubmissions.find(s => s.id === editingSubmission);
+        if (!sub || sub.status !== 'pending') return null;
+        return (
+          <div className="px-5 mt-4">
+            <div className="rounded-2xl bg-bg-surface ring-1 ring-gold/20 p-5 space-y-4">
+              <div className="flex items-center justify-between">
+                <h3 className="text-sm font-bold text-gold">Review contribution from {sub.contributorName}</h3>
+                <button onClick={() => setEditingSubmission(null)} className="text-[10px] text-ink-dim">Close</button>
+              </div>
+
+              {/* Original text preview */}
+              <div className="rounded-lg bg-black/20 p-3 ring-1 ring-white/5">
+                <p className="text-[9px] font-bold text-ink-dim uppercase tracking-wider mb-1">Original submission</p>
+                <p className="text-[11px] text-ink-muted leading-relaxed whitespace-pre-wrap max-h-32 overflow-y-auto">{sub.body}</p>
+              </div>
+
+              {/* Editable fields */}
+              <div>
+                <label className="text-[10px] text-ink-dim block mb-1">Episode Title (edit as needed)</label>
+                <input value={subEditTitle} onChange={e => setSubEditTitle(e.target.value)}
+                  className="w-full rounded-xl bg-black/30 px-4 py-3 text-sm text-white ring-1 ring-white/10 outline-none focus:ring-gold" />
+              </div>
+              <div>
+                <label className="text-[10px] text-ink-dim block mb-1">
+                  Story Text — edit, polish, expand ({subEditBody.split(/\s+/).filter(Boolean).length} words)
+                </label>
+                <textarea value={subEditBody} onChange={e => setSubEditBody(e.target.value)}
+                  rows={12}
+                  className="w-full rounded-xl bg-black/30 px-4 py-3 text-sm text-white ring-1 ring-white/10 outline-none focus:ring-gold resize-y leading-relaxed" />
+              </div>
+
+              <div className="flex gap-3">
+                <button onClick={() => approveSubmission(sub)}
+                  disabled={savingText || !subEditTitle.trim() || !subEditBody.trim()}
+                  className="flex-1 rounded-xl bg-gold py-4 text-sm font-bold text-bg-base disabled:opacity-50">
+                  {savingText ? 'Publishing...' : 'Publish as Episode'}
+                </button>
+                <button onClick={async () => {
+                  const feedback = prompt('Feedback for contributor (optional):');
+                  const { db: fireDb } = await import('../lib/firebase.js');
+                  const { doc: fDoc, updateDoc: uDoc } = await import('firebase/firestore');
+                  await uDoc(fDoc(fireDb, 'seriesSubmissions', sub.id), { status: 'rejected', reviewedAt: new Date().toISOString(), ownerFeedback: feedback || '' });
+                  setPendingSubmissions(prev => prev.map(p => p.id === sub.id ? { ...p, status: 'rejected' } : p));
+                  setEditingSubmission(null);
+                }}
+                  className="rounded-xl bg-red-500/20 px-6 py-4 text-sm font-bold text-red-400 ring-1 ring-red-500/30">
+                  Reject
+                </button>
+              </div>
+            </div>
+          </div>
+        );
+      })()}
 
       {/* Episode text editor (edit mode) */}
       {editMode && isOwner && editingEpIndex !== null && (
