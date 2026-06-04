@@ -8,7 +8,7 @@ import { SERIES as SERIES_DATA } from '../data/series.js';
 import { RELIGIONS, COUNTRIES, VALUES, DURATIONS, LANGUAGES } from '../utils/constants.js';
 import { APP_NAME, APP_VERSION } from '../utils/version.js';
 import { GA_MEASUREMENT_ID, db } from '../lib/firebase.js';
-import { doc, setDoc, collection, getDocs } from 'firebase/firestore';
+import { doc, setDoc, collection, getDocs, query, orderBy, limit, startAfter, where, updateDoc, getCountFromServer } from 'firebase/firestore';
 
 const STATUS_COLORS = {
   active: '#7ad9a1',
@@ -143,6 +143,7 @@ export default function Admin() {
     { key: 'feedback', label: 'Creators', icon: '✍️' },
     { key: 'tasks', label: 'Tasks', icon: '📋' },
     { key: 'expenses', label: 'Expenses', icon: '💰' },
+    { key: 'outreach', label: 'Outreach', icon: '📧' },
     { key: 'users', label: 'Settings', icon: '⚙️' },
   ];
 
@@ -1351,6 +1352,9 @@ export default function Admin() {
 
         {/* ═══ EXPENSES ═══ */}
         {tab === 'expenses' && <ExpenseTracker />}
+
+        {/* ═══ OUTREACH DATABASE ═══ */}
+        {tab === 'outreach' && <OutreachDatabase />}
       </div>
 
       {/* Footer */}
@@ -5290,6 +5294,173 @@ function TaskBoard({ team = [], adminEmails = [] }) {
           </div>
         </div>
       )}
+    </div>
+  );
+}
+
+// ═══════════════════════════════════════════════════════
+// OUTREACH DATABASE
+// ═══════════════════════════════════════════════════════
+
+const OUTREACH_STATUS_OPTIONS = ['new', 'contacted', 'responded', 'signed_up', 'paid', 'not_interested'];
+const OUTREACH_STATUS_LABELS = { new: 'New', contacted: 'Contacted', responded: 'Responded', signed_up: 'Signed Up', paid: 'Paid', not_interested: 'Not Interested' };
+const OUTREACH_STATUS_BADGE = { new: '#6e6a63', contacted: '#4299e1', responded: '#f0a500', signed_up: '#48bb78', paid: '#9f7aea', not_interested: '#f3727f' };
+const OUTREACH_SOURCE_LABELS = { sheet1: 'Sheet 1', meta_leads: 'Meta Leads', google_registration: 'Google Reg' };
+
+function OutreachDatabase() {
+  const [leads, setLeads] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [filter, setFilter] = useState('all');
+  const [search, setSearch] = useState('');
+  const [sending, setSending] = useState(null);
+  const [stats, setStats] = useState({ total: 0, new: 0, contacted: 0, responded: 0, signed_up: 0, paid: 0, not_interested: 0 });
+
+  useEffect(() => {
+    if (!db) return;
+    (async () => {
+      try {
+        const snap = await getDocs(collection(db, 'outreachLeads'));
+        const all = snap.docs.map(d => ({ id: d.id, ...d.data() }));
+        all.sort((a, b) => (a.firstName || '').localeCompare(b.firstName || ''));
+        setLeads(all);
+        const s = { total: all.length, new: 0, contacted: 0, responded: 0, signed_up: 0, paid: 0, not_interested: 0 };
+        all.forEach(l => { s[l.status] = (s[l.status] || 0) + 1; });
+        setStats(s);
+      } catch (e) { console.error('Outreach load error:', e); }
+      setLoading(false);
+    })();
+  }, []);
+
+  const updateStatus = async (lead, newStatus) => {
+    try {
+      const updates = { status: newStatus };
+      if (newStatus === 'contacted') { updates.outreachSent = true; updates.outreachSentAt = new Date().toISOString(); }
+      if (newStatus === 'signed_up') { updates.signedUp = true; updates.signedUpAt = new Date().toISOString(); }
+      if (newStatus === 'paid') { updates.isPaid = true; updates.paidAt = new Date().toISOString(); }
+      await updateDoc(doc(db, 'outreachLeads', lead.id), updates);
+      setLeads(prev => prev.map(l => l.id === lead.id ? { ...l, ...updates } : l));
+      setStats(prev => {
+        const next = { ...prev };
+        next[lead.status] = Math.max(0, (next[lead.status] || 0) - 1);
+        next[newStatus] = (next[newStatus] || 0) + 1;
+        return next;
+      });
+    } catch (e) { alert('Update failed: ' + e.message); }
+  };
+
+  const sendOutreach = async (lead) => {
+    setSending(lead.id);
+    try {
+      const resp = await fetch('/api/outreach-email', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ to: lead.email, contactName: lead.firstName, businessName: '' }),
+      });
+      const data = await resp.json();
+      if (data.sent) {
+        await updateStatus(lead, 'contacted');
+      } else {
+        alert(data.message || 'Failed to send');
+      }
+    } catch (e) { alert('Send failed: ' + e.message); }
+    setSending(null);
+  };
+
+  const filtered = leads.filter(l => {
+    if (filter !== 'all' && l.status !== filter) return false;
+    if (search) {
+      const q = search.toLowerCase();
+      return (l.firstName || '').toLowerCase().includes(q) ||
+        (l.lastName || '').toLowerCase().includes(q) ||
+        (l.email || '').toLowerCase().includes(q) ||
+        (l.phone || '').includes(q);
+    }
+    return true;
+  });
+
+  if (loading) return <div className="text-center py-20 text-[#6e6a63]">Loading outreach database...</div>;
+
+  return (
+    <div className="space-y-6">
+      {/* Stats cards */}
+      <div className="grid grid-cols-3 sm:grid-cols-7 gap-3">
+        {[
+          { key: 'all', label: 'Total', count: stats.total, color: '#f5f0e8' },
+          ...OUTREACH_STATUS_OPTIONS.map(s => ({ key: s, label: OUTREACH_STATUS_LABELS[s], count: stats[s] || 0, color: OUTREACH_STATUS_BADGE[s] })),
+        ].map(s => (
+          <button key={s.key} onClick={() => setFilter(s.key)}
+            className={`rounded-2xl p-3 ring-1 text-center transition ${filter === s.key ? 'ring-[#f0a500] bg-[#f0a500]/10' : 'ring-white/5 bg-white/5'}`}>
+            <div className="text-xl font-bold" style={{ color: s.color }}>{s.count}</div>
+            <div className="text-[10px] text-[#6e6a63] mt-1">{s.label}</div>
+          </button>
+        ))}
+      </div>
+
+      {/* Funnel bar */}
+      <div className="flex gap-1 h-3 rounded-full overflow-hidden bg-white/5">
+        {OUTREACH_STATUS_OPTIONS.filter(s => stats[s] > 0).map(s => (
+          <div key={s} className="rounded-full" style={{ flex: stats[s], background: OUTREACH_STATUS_BADGE[s], opacity: 0.8 }} title={`${OUTREACH_STATUS_LABELS[s]}: ${stats[s]}`} />
+        ))}
+      </div>
+
+      {/* Search */}
+      <div className="flex gap-3">
+        <input type="text" placeholder="Search by name, email, phone..."
+          value={search} onChange={e => setSearch(e.target.value)}
+          className="flex-1 rounded-xl bg-white/5 px-4 py-3 text-sm text-[#f5f0e8] placeholder-[#6e6a63] ring-1 ring-white/10 focus:ring-[#f0a500] outline-none" />
+        <div className="text-xs text-[#6e6a63] self-center whitespace-nowrap">{filtered.length} leads</div>
+      </div>
+
+      {/* Lead list */}
+      <div className="space-y-2">
+        {filtered.slice(0, 100).map(lead => (
+          <div key={lead.id} className="rounded-2xl bg-white/5 ring-1 ring-white/5 overflow-hidden">
+            <div className="px-5 py-3">
+              <div className="flex items-center justify-between gap-3">
+                <div className="flex-1 min-w-0">
+                  <div className="flex items-center gap-2 flex-wrap">
+                    <span className="text-sm font-bold text-[#f5f0e8] truncate">{lead.firstName} {lead.lastName}</span>
+                    <span className="rounded-full px-2 py-0.5 text-[8px] font-bold uppercase" style={{ background: OUTREACH_STATUS_BADGE[lead.status] + '22', color: OUTREACH_STATUS_BADGE[lead.status] }}>
+                      {OUTREACH_STATUS_LABELS[lead.status] || lead.status}
+                    </span>
+                    <span className="rounded-full bg-white/5 px-2 py-0.5 text-[8px] text-[#6e6a63]">
+                      {OUTREACH_SOURCE_LABELS[lead.source] || lead.source}
+                    </span>
+                  </div>
+                  <div className="flex items-center gap-4 mt-1 text-xs text-[#6e6a63]">
+                    <span>{lead.email}</span>
+                    {lead.phone && <span>{lead.phone}</span>}
+                    {lead.postalCode && <span>{lead.postalCode}</span>}
+                  </div>
+                </div>
+                <div className="flex items-center gap-2 shrink-0">
+                  <select value={lead.status} onChange={e => updateStatus(lead, e.target.value)}
+                    className="rounded-lg bg-white/5 px-2 py-1 text-[10px] text-[#c8c3ba] ring-1 ring-white/10 outline-none cursor-pointer">
+                    {OUTREACH_STATUS_OPTIONS.map(s => <option key={s} value={s}>{OUTREACH_STATUS_LABELS[s]}</option>)}
+                  </select>
+                  {lead.status === 'new' && (
+                    <button onClick={() => sendOutreach(lead)} disabled={sending === lead.id}
+                      className="rounded-lg bg-[#f0a500]/20 px-3 py-1 text-[10px] font-bold text-[#f0a500] hover:bg-[#f0a500]/30 transition disabled:opacity-50">
+                      {sending === lead.id ? 'Sending...' : 'Send Email'}
+                    </button>
+                  )}
+                  {lead.outreachSentAt && (
+                    <span className="text-[9px] text-[#6e6a63]">
+                      Sent {new Date(lead.outreachSentAt).toLocaleDateString()}
+                    </span>
+                  )}
+                </div>
+              </div>
+            </div>
+          </div>
+        ))}
+        {filtered.length > 100 && (
+          <div className="text-center text-xs text-[#6e6a63] py-4">Showing 100 of {filtered.length} — use search to narrow down</div>
+        )}
+        {filtered.length === 0 && (
+          <div className="text-center text-[#6e6a63] py-12">No leads found</div>
+        )}
+      </div>
     </div>
   );
 }
