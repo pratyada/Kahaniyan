@@ -4573,33 +4573,33 @@ const EXPENSE_DATA = [
   {
     month: 'April 2026',
     items: [
-      { name: 'Claude Code Max Plan', amount: 150, category: 'AI' },
-      { name: 'OpenAI APIs (GPT + Image Gen)', amount: 85, category: 'AI' },
-      { name: 'ElevenLabs TTS API', amount: 22, category: 'AI' },
-      { name: 'Anthropic Claude API', amount: 45, category: 'AI' },
-      { name: 'AWS (S3 + CloudFront + Lambda)', amount: 50, category: 'Infra' },
+      { name: 'Claude Code Max Plan', amount: 150, category: 'AI', spender: 'Prat' },
+      { name: 'OpenAI APIs (GPT + Image Gen)', amount: 85, category: 'AI', spender: 'Prat' },
+      { name: 'ElevenLabs TTS API', amount: 22, category: 'AI', spender: 'Prat' },
+      { name: 'Anthropic Claude API', amount: 45, category: 'AI', spender: 'Prat' },
+      { name: 'AWS (S3 + CloudFront + Lambda)', amount: 50, category: 'Infra', spender: 'Prat' },
     ],
   },
   {
     month: 'May 2026',
     items: [
-      { name: 'Claude Code Max Plan', amount: 150, category: 'AI' },
-      { name: 'OpenAI APIs (GPT + Image Gen)', amount: 120, category: 'AI' },
-      { name: 'ElevenLabs TTS API', amount: 22, category: 'AI' },
-      { name: 'Anthropic Claude API', amount: 60, category: 'AI' },
-      { name: 'AWS (S3 + CloudFront + Lambda)', amount: 50, category: 'Infra' },
-      { name: 'Bike for Brain — Event & Promotion', amount: 50, category: 'Marketing' },
+      { name: 'Claude Code Max Plan', amount: 150, category: 'AI', spender: 'Prat' },
+      { name: 'OpenAI APIs (GPT + Image Gen)', amount: 120, category: 'AI', spender: 'Prat' },
+      { name: 'ElevenLabs TTS API', amount: 22, category: 'AI', spender: 'Prat' },
+      { name: 'Anthropic Claude API', amount: 60, category: 'AI', spender: 'Prat' },
+      { name: 'AWS (S3 + CloudFront + Lambda)', amount: 50, category: 'Infra', spender: 'Prat' },
+      { name: 'Bike for Brain — Event & Promotion', amount: 50, category: 'Marketing', spender: 'Prat' },
     ],
   },
   {
     month: 'June 2026',
     items: [
-      { name: 'Claude Code Max Plan', amount: 150, category: 'AI' },
-      { name: 'OpenAI APIs (GPT + Image Gen)', amount: 100, category: 'AI' },
-      { name: 'ElevenLabs TTS API', amount: 22, category: 'AI' },
-      { name: 'Anthropic Claude API', amount: 50, category: 'AI' },
-      { name: 'Google Workspace', amount: 30, category: 'SaaS' },
-      { name: 'AWS (S3 + CloudFront + Lambda)', amount: 50, category: 'Infra' },
+      { name: 'Claude Code Max Plan', amount: 150, category: 'AI', spender: 'Prat' },
+      { name: 'OpenAI APIs (GPT + Image Gen)', amount: 100, category: 'AI', spender: 'Prat' },
+      { name: 'ElevenLabs TTS API', amount: 22, category: 'AI', spender: 'Prat' },
+      { name: 'Anthropic Claude API', amount: 50, category: 'AI', spender: 'Prat' },
+      { name: 'Google Workspace', amount: 30, category: 'SaaS', spender: 'Prat' },
+      { name: 'AWS (S3 + CloudFront + Lambda)', amount: 50, category: 'Infra', spender: 'Prat' },
       { name: 'UPS Printing A4 QR Code Scan (5)', amount: 9, category: 'Marketing', spender: 'Prat' },
       { name: 'Library Printing and Coffee Donuts', amount: 20, category: 'Marketing', spender: 'Deepti' },
       { name: 'Gemini Subscription — Image Gen & Thumbnails', amount: 30, category: 'AI', spender: 'Prat' },
@@ -4630,19 +4630,46 @@ function ExpenseTracker() {
     })();
   }, []);
 
+  // Compress image before upload (max 1200px, JPEG 0.7 quality)
+  const compressImage = (file) => new Promise((resolve) => {
+    if (!file.type.startsWith('image/')) return resolve(file); // skip non-images (PDFs)
+    const img = new window.Image();
+    const url = URL.createObjectURL(file);
+    img.onload = () => {
+      const MAX = 1200;
+      let { width: w, height: h } = img;
+      if (w > MAX || h > MAX) {
+        const scale = MAX / Math.max(w, h);
+        w = Math.round(w * scale);
+        h = Math.round(h * scale);
+      }
+      const canvas = document.createElement('canvas');
+      canvas.width = w;
+      canvas.height = h;
+      canvas.getContext('2d').drawImage(img, 0, 0, w, h);
+      canvas.toBlob((blob) => {
+        URL.revokeObjectURL(url);
+        resolve(new File([blob], file.name.replace(/\.\w+$/, '.jpg'), { type: 'image/jpeg' }));
+      }, 'image/jpeg', 0.7);
+    };
+    img.onerror = () => { URL.revokeObjectURL(url); resolve(file); };
+    img.src = url;
+  });
+
   // expenseKey = "april-2026_3" (month slug + item index)
   const uploadReceipt = async (file, expenseKey) => {
     if (!file) return;
     setUploading(expenseKey);
     try {
+      const compressed = await compressImage(file);
       const { storage } = await import('../lib/firebase.js');
       const { ref, uploadBytes, getDownloadURL } = await import('firebase/storage');
       const id = `receipt_${expenseKey}_${Date.now()}`;
-      const ext = file.name.split('.').pop() || 'png';
+      const ext = compressed.name.split('.').pop() || 'jpg';
       const storageRef = ref(storage, `receipts/${id}.${ext}`);
-      await uploadBytes(storageRef, file, { contentType: file.type });
+      await uploadBytes(storageRef, compressed, { contentType: compressed.type });
       const url = await getDownloadURL(storageRef);
-      const data = { id, expenseKey, url, fileName: file.name, fileType: file.type, uploadedAt: new Date().toISOString() };
+      const data = { id, expenseKey, url, fileName: compressed.name, fileType: compressed.type, uploadedAt: new Date().toISOString() };
       await setDoc(doc(db, 'receipts', id), data);
       setReceipts(prev => [data, ...prev]);
     } catch (e) { console.error('Receipt upload error:', e); alert('Upload failed: ' + e.message); }
