@@ -613,17 +613,11 @@ export default function SeriesDetail() {
                 className="w-full rounded-xl bg-black/30 px-4 py-3 text-sm text-white ring-1 ring-white/10 outline-none focus:ring-gold resize-y leading-relaxed" />
             </div>
 
-            <div className="flex gap-3">
-              <button onClick={saveEpisodeText} disabled={savingText || !editTitle.trim() || !editBody.trim()}
-                className="flex-1 rounded-xl bg-gold py-3 text-sm font-bold text-bg-base disabled:opacity-50">
-                {savingText ? 'Saving...' : 'Save text'}
-              </button>
-              <button onClick={async () => { await saveEpisodeText(); regenerateAudio(editingEpIndex); }}
-                disabled={savingText || generatingAudio !== null || !editBody.trim()}
-                className="flex-1 rounded-xl bg-green-500/20 py-3 text-sm font-bold text-green-400 ring-1 ring-green-500/30 disabled:opacity-50">
-                {generatingAudio === editingEpIndex ? 'Generating...' : 'Save + Generate Audio'}
-              </button>
-            </div>
+            <button onClick={async () => { await saveEpisodeText(); await regenerateAudio(editingEpIndex); }}
+              disabled={savingText || generatingAudio !== null || !editTitle.trim() || !editBody.trim()}
+              className="w-full rounded-xl bg-gold py-4 text-sm font-bold text-bg-base disabled:opacity-50">
+              {savingText ? 'Saving text...' : generatingAudio === editingEpIndex ? 'Generating audio...' : 'Save & Generate Audio'}
+            </button>
           </div>
         </div>
       )}
