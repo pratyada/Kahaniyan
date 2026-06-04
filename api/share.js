@@ -276,42 +276,71 @@ export default async function handler(req, res) {
 
   const lessonId = storyId.startsWith('lesson_') ? storyId.slice(7) : storyId;
   // Check both the raw storyId and lessonId (series IDs have hyphens, not lesson_ prefix)
-  const story = TITLES[storyId] || TITLES[lessonId];
+  let story = TITLES[storyId] || TITLES[lessonId];
 
-  const isSeries = story?.isSeries;
-  const title = story ? story.title : 'A Bedtime Story';
-  const tradition = story ? story.tradition : '';
-  const duration = story?.duration ? `${story.duration} min` : '';
+  let title, description, image, redirectUrl;
 
-  let description;
-  if (isSeries) {
-    description = `${story.description || ''} ${story.totalEp} bedtime episodes. Free on My Sleepy Tale.`;
-  } else {
-    const seriesInfo = story?.series ? `Episode ${story.ep} of ${story.totalEp} in "${story.series}". ` : '';
-    description = story
-      ? `${seriesInfo}Listen to "${title}" — a ${tradition} bedtime story that teaches real values. ${duration}. Free on My Sleepy Tale.`
-      : 'A personalized bedtime story that teaches values. Free on My Sleepy Tale.';
+  // Try Firestore creatorSeries if not found in static TITLES
+  if (!story) {
+    try {
+      const fsRes = await fetch(`${FIRESTORE_URL}/creatorSeries/${storyId}`);
+      if (fsRes.ok) {
+        const data = await fsRes.json();
+        const fields = data.fields || {};
+        const fsTitle = fields.title?.stringValue || 'A Bedtime Series';
+        const fsDesc = fields.description?.stringValue || '';
+        const fsIcon = fields.icon?.stringValue || '📚';
+        const totalEp = fields.totalEpisodes?.integerValue || '0';
+        const authorName = fields.authorName?.stringValue || '';
+        const episodes = fields.episodes?.arrayValue?.values || [];
+        // Get first episode cover image
+        let fsImage = '';
+        for (const ep of episodes) {
+          const epFields = ep.mapValue?.fields || {};
+          const cover = epFields.coverImage?.stringValue;
+          if (cover) { fsImage = cover; break; }
+          const gallery = epFields.gallery?.arrayValue?.values || [];
+          if (gallery.length > 0 && gallery[0].stringValue) { fsImage = gallery[0].stringValue; break; }
+        }
+
+        title = `${fsIcon} ${fsTitle}`;
+        description = `${fsDesc ? fsDesc + ' ' : ''}${totalEp} bedtime episodes by ${authorName}. Listen free on My Sleepy Tale.`;
+        image = fsImage || DEFAULT_OG_IMAGE;
+        redirectUrl = `https://mysleepytale.com/series/${storyId}`;
+      }
+    } catch {}
   }
 
-  // Get actual generated image from Firestore
-  const { images: wisdomImages, gallery: wisdomGallery } = await getWisdomImages();
-  // For series, look up first episode's image
-  const imageKey = isSeries ? (story.firstEpId || lessonId) : lessonId;
-  let image = wisdomImages[imageKey] || wisdomImages[storyId] || '';
-  if (!image) {
-    const galleryPhotos = wisdomGallery[imageKey] || wisdomGallery[storyId] || wisdomGallery[lessonId] || [];
-    if (galleryPhotos.length > 0) image = galleryPhotos[0];
-  }
+  // Static story path
+  if (!title) {
+    const isSeries = story?.isSeries;
+    title = story ? story.title : 'A Bedtime Story';
+    const tradition = story ? story.tradition : '';
+    const duration = story?.duration ? `${story.duration} min` : '';
 
-  // Fallback to our own generated default image
-  if (!image) {
-    image = DEFAULT_OG_IMAGE;
-  }
+    if (isSeries) {
+      description = `${story.description || ''} ${story.totalEp} bedtime episodes. Free on My Sleepy Tale.`;
+    } else {
+      const seriesInfo = story?.series ? `Episode ${story.ep} of ${story.totalEp} in "${story.series}". ` : '';
+      description = story
+        ? `${seriesInfo}Listen to "${title}" — a ${tradition} bedtime story that teaches real values. ${duration}. Free on My Sleepy Tale.`
+        : 'A personalized bedtime story that teaches values. Free on My Sleepy Tale.';
+    }
 
-  // Series → redirect to series page, episodes/stories → redirect to player
-  const redirectUrl = isSeries
-    ? `https://mysleepytale.com${story.seriesUrl}`
-    : `https://mysleepytale.com/player?storyId=${storyId || 'lesson_' + lessonId}`;
+    // Get actual generated image from Firestore
+    const { images: wisdomImages, gallery: wisdomGallery } = await getWisdomImages();
+    const imageKey = isSeries ? (story.firstEpId || lessonId) : lessonId;
+    image = wisdomImages[imageKey] || wisdomImages[storyId] || '';
+    if (!image) {
+      const galleryPhotos = wisdomGallery[imageKey] || wisdomGallery[storyId] || wisdomGallery[lessonId] || [];
+      if (galleryPhotos.length > 0) image = galleryPhotos[0];
+    }
+    if (!image) image = DEFAULT_OG_IMAGE;
+
+    redirectUrl = isSeries
+      ? `https://mysleepytale.com${story.seriesUrl}`
+      : `https://mysleepytale.com/player?storyId=${storyId || 'lesson_' + lessonId}`;
+  }
 
   const html = `<!DOCTYPE html>
 <html>

@@ -4,6 +4,7 @@ import { useMemo, useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate, useParams, useSearchParams } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
+import { Play } from 'lucide-react';
 import PageTransition from '../components/PageTransition.jsx';
 import HeroSlider from '../components/HeroSlider.jsx';
 import CreateFAB from '../components/CreateFAB.jsx';
