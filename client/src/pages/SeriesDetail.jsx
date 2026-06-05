@@ -115,6 +115,7 @@ export default function SeriesDetail() {
                 durationMinutes: Math.ceil((ep.wordCount || ep.body?.split(/\s+/).length || 200) / 150),
                 source: `${data.title} · Episode ${ep.episodeNumber || i + 1}`,
                 coverImage: ep.coverImage,
+                gallery: ep.gallery || [],
                 contributorName: ep.contributorName,
               })),
             });
