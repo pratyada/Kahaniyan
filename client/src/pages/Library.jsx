@@ -874,9 +874,10 @@ export default function Library() {
                                 e.stopPropagation();
                                 setSharing(true);
                                 try {
+                                  const { db: fireDb } = await import('../lib/firebase.js');
                                   const { updateDoc: uDoc, doc: fDoc, arrayUnion } = await import('firebase/firestore');
                                   const emailToShare = shareEmail.trim().toLowerCase();
-                                  await uDoc(fDoc(db, 'creatorSeries', s.id), { sharedWith: arrayUnion(emailToShare) });
+                                  await uDoc(fDoc(fireDb, 'creatorSeries', s.id), { sharedWith: arrayUnion(emailToShare) });
                                   // Update local state
                                   setMySeries(prev => prev.map(ms => ms.id === s.id ? { ...ms, sharedWith: [...(ms.sharedWith || []), emailToShare] } : ms));
                                   showToast(`Shared with ${emailToShare}!`);
