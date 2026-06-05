@@ -319,8 +319,10 @@ export default function Library() {
         } catch {}
       }
 
-      await addDoc(collection(db, 'creatorStories'), storyData);
+      const storyRef = await addDoc(collection(db, 'creatorStories'), storyData);
       showToast('Story submitted! We\'ll review within 48 hours.');
+      // Notify creator via email
+      try { await fetch('/api/story-created-notify', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ type: 'story', title: title.trim(), authorEmail: user.email, authorName: user.displayName || user.email?.split('@')[0] || 'Anonymous', storyId: storyRef.id }) }); } catch {}
       setTitle(''); setBody(''); setSource(''); setStoryImage(null);
       setCreateMode(null);
       // Switch to My Creations and refresh
@@ -374,7 +376,8 @@ export default function Library() {
         ? seriesSharedWith.split(',').map(e => e.trim().toLowerCase()).filter(e => e.includes('@'))
         : [];
 
-      await addDoc(collection(db, 'creatorSeries'), {
+      const authorName = user.displayName || user.email?.split('@')[0] || 'Anonymous';
+      const seriesRef = await addDoc(collection(db, 'creatorSeries'), {
         title: seriesTitle.trim(),
         description: seriesDesc.trim(),
         icon: seriesIcon,
@@ -383,7 +386,7 @@ export default function Library() {
         episodes: epData,
         totalEpisodes: epData.length,
         authorUid: user.uid,
-        authorName: user.displayName || user.email?.split('@')[0] || 'Anonymous',
+        authorName,
         authorEmail: user.email || '',
         authorUsername: (await import('../utils/usernameHelper.js').then(m => m.getOrCreateUsername())) || '',
         status: seriesVisibility === 'personal' ? 'approved' : 'pending',
@@ -393,6 +396,14 @@ export default function Library() {
         type: 'series',
       });
       showToast(seriesVisibility === 'personal' ? 'Personal series created!' : 'Series submitted! We\'ll review within 48 hours.');
+      // Notify creator via email
+      try { await fetch('/api/story-created-notify', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ type: 'series', title: seriesTitle.trim(), authorEmail: user.email, authorName, storyId: seriesRef.id }) }); } catch {}
+      // Notify shared users via email
+      if (sharedEmails.length > 0) {
+        for (const sharedEmail of sharedEmails) {
+          try { await fetch('/api/series-shared-notify', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ seriesTitle: seriesTitle.trim(), seriesId: seriesRef.id, ownerName: authorName, sharedWithEmail: sharedEmail }) }); } catch {}
+        }
+      }
       setSeriesTitle(''); setSeriesDesc(''); setSeriesIcon('📚');
       setEpisodes([{ title: '', body: '', image: null }]);
       setCreateMode(null);

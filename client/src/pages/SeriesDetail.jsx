@@ -1024,6 +1024,8 @@ export default function SeriesDetail() {
                   const { db: fireDb } = await import('../lib/firebase.js');
                   const { doc: fDoc, updateDoc: uDoc } = await import('firebase/firestore');
                   await uDoc(fDoc(fireDb, 'seriesSubmissions', sub.id), { status: 'rejected', reviewedAt: new Date().toISOString(), ownerFeedback: feedback || '' });
+                  // Notify contributor via email
+                  try { await fetch('/api/contribution-rejected-notify', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ episodeTitle: sub.title, seriesTitle: series.title, contributorEmail: sub.contributorEmail, contributorName: sub.contributorName, ownerName: series.authorName || user?.displayName || '', feedback: feedback || '' }) }); } catch {}
                   setPendingSubmissions(prev => prev.map(p => p.id === sub.id ? { ...p, status: 'rejected' } : p));
                   setEditingSubmission(null);
                 }}
