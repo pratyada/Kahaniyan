@@ -15,13 +15,15 @@ export default async function handler(req, res) {
   }
 
   const { tier, uid, email } = req.body || {};
+  const ADMIN_EMAILS = ['prateekyadav2010@gmail.com', 'sahil.faraz@gmail.com', 'deepti.ramaul@gmail.com'];
+  const isAdmin = ADMIN_EMAILS.includes((email || '').toLowerCase());
 
   if (!tier || !PRICE_MAP[tier]) {
     return res.status(400).json({ error: 'Invalid tier. Use "pro" or "enterprise".' });
   }
 
   try {
-    const session = await stripe.checkout.sessions.create({
+    const sessionParams = {
       mode: 'subscription',
       payment_method_types: ['card'],
       customer_email: email || undefined,
@@ -32,7 +34,16 @@ export default async function handler(req, res) {
       subscription_data: {
         metadata: { uid: uid || '', tier },
       },
-    });
+    };
+
+    // Admins get 100% off for testing
+    if (isAdmin) {
+      sessionParams.discounts = [{ coupon: 'G4m3N5HS' }];
+    } else {
+      sessionParams.allow_promotion_codes = true;
+    }
+
+    const session = await stripe.checkout.sessions.create(sessionParams);
 
     return res.status(200).json({ url: session.url, sessionId: session.id });
   } catch (err) {
