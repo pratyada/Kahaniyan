@@ -2,6 +2,7 @@
 // POST /api/subscription-notify { type: "confirmed"|"failed"|"cancelled", email, tier, userName }
 
 import { SESClient, SendEmailCommand } from '@aws-sdk/client-ses';
+import { logEmail } from './_emailThrottle.js';
 
 const FROM_EMAIL = 'hello@mysleepytale.com';
 const ses = new SESClient({ region: 'us-east-1' });
@@ -168,6 +169,7 @@ export default async function handler(req, res) {
 
   try {
     await sendEmail(email, emailData.subject, emailData.html, emailData.text);
+    await logEmail(email, `subscription-${type}`, 'transactional', emailData.subject);
     return res.json({ sent: 1, email, type });
   } catch (e) {
     return res.status(500).json({ error: e.message });

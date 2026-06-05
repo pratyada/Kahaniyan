@@ -3,6 +3,7 @@
 
 import { SESClient, SendEmailCommand } from '@aws-sdk/client-ses';
 import { getFirestore } from './_firebase.js';
+import { canSendEmail, logEmail } from './_emailThrottle.js';
 
 const FROM_EMAIL = 'hello@mysleepytale.com';
 const ses = new SESClient({ region: 'us-east-1' });
@@ -76,10 +77,16 @@ export default async function handler(req, res) {
       const text = `${contributorName} submitted "${episodeTitle}" for your series "${seriesTitle}". Review it at: https://mysleepytale.com/series/${seriesId}`;
 
       if (ownerEmail) {
-        try {
-          await sendEmail(ownerEmail, subject, html, text);
-          results.push({ email: ownerEmail, status: 'sent', type: 'owner-notify' });
-        } catch (e) { results.push({ email: ownerEmail, status: 'failed', error: e.message }); }
+        const throttle = await canSendEmail(ownerEmail, 'activity');
+        if (!throttle.allowed) {
+          results.push({ email: ownerEmail, status: 'throttled', reason: throttle.reason });
+        } else {
+          try {
+            await sendEmail(ownerEmail, subject, html, text);
+            await logEmail(ownerEmail, 'contribution-submitted', 'activity', subject);
+            results.push({ email: ownerEmail, status: 'sent', type: 'owner-notify' });
+          } catch (e) { results.push({ email: ownerEmail, status: 'failed', error: e.message }); }
+        }
       }
     }
 
@@ -117,8 +124,14 @@ export default async function handler(req, res) {
       const text = `New episode "${episodeTitle}" published in "${seriesTitle}". ${contributorName ? contributorName + ' contributed.' : ''} ${ownerName ? ownerName + ' published.' : ''} Listen: https://mysleepytale.com/series/${seriesId}`;
 
       for (const email of emails) {
+        const throttle = await canSendEmail(email, 'activity');
+        if (!throttle.allowed) {
+          results.push({ email, status: 'throttled', reason: throttle.reason });
+          continue;
+        }
         try {
           await sendEmail(email, subject, html, text);
+          await logEmail(email, 'episode-published', 'activity', subject);
           results.push({ email, status: 'sent', type: 'published-notify' });
         } catch (e) { results.push({ email, status: 'failed', error: e.message }); }
       }

@@ -2,6 +2,7 @@
 // POST /api/story-created-notify { type: "story"|"series", title, authorEmail, authorName, storyId }
 
 import { SESClient, SendEmailCommand } from '@aws-sdk/client-ses';
+import { canSendEmail, logEmail } from './_emailThrottle.js';
 
 const FROM_EMAIL = 'hello@mysleepytale.com';
 const ses = new SESClient({ region: 'us-east-1' });
@@ -49,6 +50,9 @@ export default async function handler(req, res) {
     return res.status(400).json({ error: 'Missing title or authorEmail' });
   }
 
+  const throttle = await canSendEmail(authorEmail, 'activity');
+  if (!throttle.allowed) return res.json({ sent: 0, throttled: true, reason: throttle.reason });
+
   const isSeries = type === 'series';
   const label = isSeries ? 'series' : 'story';
   const subject = `Thank you for creating "${title}"!`;
@@ -79,6 +83,7 @@ export default async function handler(req, res) {
 
   try {
     await sendEmail(authorEmail, subject, html, text);
+    await logEmail(authorEmail, 'story-created', 'activity', subject);
     return res.json({ sent: 1, email: authorEmail });
   } catch (e) {
     return res.status(500).json({ error: e.message });

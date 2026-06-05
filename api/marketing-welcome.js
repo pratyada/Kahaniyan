@@ -4,6 +4,7 @@
 // POST /api/marketing-welcome { sendAll: true } — all users (requires admin)
 
 import { SESClient, SendEmailCommand } from '@aws-sdk/client-ses';
+import { logEmail } from './_emailThrottle.js';
 
 const FROM_EMAIL = 'hello@mysleepytale.com';
 // const CC_EMAIL = 'i@yprateek.com'; // disabled — not needed for marketing emails
@@ -284,6 +285,7 @@ export default async function handler(req, res) {
             },
           },
         }));
+        await logEmail(user.email, 'welcome', 'transactional', 'Welcome to My Sleepy Tale');
         results.push({ email: user.email, status: 'sent' });
         newlySent.push(user.email);
       } catch (e) {
@@ -331,6 +333,8 @@ export default async function handler(req, res) {
         },
       },
     }));
+
+    await logEmail(toEmail, 'welcome', 'transactional', 'Welcome to My Sleepy Tale');
 
     // Track single send
     if (fdb) {

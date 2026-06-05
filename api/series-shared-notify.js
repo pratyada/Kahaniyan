@@ -3,6 +3,7 @@
 // POST /api/series-shared-notify { seriesTitle, seriesId, ownerName, sharedWithEmail, ownerEmail }
 
 import { SESClient, SendEmailCommand } from '@aws-sdk/client-ses';
+import { canSendEmail, logEmail } from './_emailThrottle.js';
 
 const FROM_EMAIL = 'hello@mysleepytale.com';
 const ses = new SESClient({ region: 'us-east-1' });
@@ -49,6 +50,9 @@ export default async function handler(req, res) {
   if (!seriesTitle || !seriesId || !sharedWithEmail) {
     return res.status(400).json({ error: 'Missing seriesTitle, seriesId, or sharedWithEmail' });
   }
+
+  const throttle = await canSendEmail(sharedWithEmail, 'activity');
+  if (!throttle.allowed) return res.json({ sent: 0, throttled: true, reason: throttle.reason });
 
   const subject = `${ownerName || 'Someone'} shared a bedtime story series with you — listen & contribute`;
   const html = wrap('A Story Series Awaits You!', `
@@ -105,6 +109,7 @@ Free to use. No credit card needed.
 
   try {
     await sendEmail(sharedWithEmail, subject, html, text, ownerEmail || null);
+    await logEmail(sharedWithEmail, 'series-shared', 'activity', subject);
     return res.json({ sent: 1, email: sharedWithEmail });
   } catch (e) {
     return res.status(500).json({ error: e.message });

@@ -4,6 +4,7 @@
 
 import { SESClient, SendEmailCommand } from '@aws-sdk/client-ses';
 import { getFirestore } from './_firebase.js';
+import { canSendEmail, logEmail, isUnsubscribed } from './_emailThrottle.js';
 
 const FROM_EMAIL = 'hello@mysleepytale.com';
 const ses = new SESClient({ region: 'us-east-1' });
@@ -162,9 +163,15 @@ export default async function handler(req, res) {
 
   // Single recipient
   if (to && !sendAll) {
+    const toEmail = to.trim().toLowerCase();
+    const unsub = await isUnsubscribed(toEmail);
+    if (unsub) return res.json({ sent: 0, throttled: true, reason: 'User unsubscribed from marketing emails' });
+    const throttle = await canSendEmail(toEmail, 'marketing');
+    if (!throttle.allowed) return res.json({ sent: 0, throttled: true, reason: throttle.reason });
     try {
-      await sendEmail(to.trim());
-      return res.json({ sent: 1, to: to.trim() });
+      await sendEmail(toEmail);
+      await logEmail(toEmail, 'blog-announcement', 'marketing', 'New on My Sleepy Tale: Private Series');
+      return res.json({ sent: 1, to: toEmail });
     } catch (e) {
       return res.status(500).json({ error: e.message });
     }
@@ -184,8 +191,13 @@ export default async function handler(req, res) {
 
     const results = [];
     for (const email of emails) {
+      const unsub = await isUnsubscribed(email);
+      if (unsub) { results.push({ email, status: 'throttled', reason: 'unsubscribed' }); continue; }
+      const throttle = await canSendEmail(email, 'marketing');
+      if (!throttle.allowed) { results.push({ email, status: 'throttled', reason: throttle.reason }); continue; }
       try {
         await sendEmail(email);
+        await logEmail(email, 'blog-announcement', 'marketing', 'New on My Sleepy Tale: Private Series');
         results.push({ email, status: 'sent' });
       } catch (e) {
         results.push({ email, status: 'failed', error: e.message });

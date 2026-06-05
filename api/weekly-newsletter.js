@@ -4,6 +4,7 @@
 
 import { SESClient, SendEmailCommand } from '@aws-sdk/client-ses';
 import { getFirestore } from './_firebase.js';
+import { canSendEmail, logEmail, isUnsubscribed } from './_emailThrottle.js';
 
 const FROM_EMAIL = 'hello@mysleepytale.com';
 const ses = new SESClient({ region: 'us-east-1' });
@@ -159,8 +160,13 @@ export default async function handler(req, res) {
 
   // Single test send
   if (to && !sendAll) {
+    const unsub = await isUnsubscribed(to);
+    if (unsub) return res.json({ sent: 0, throttled: true, reason: 'User unsubscribed from marketing emails' });
+    const throttle = await canSendEmail(to, 'marketing');
+    if (!throttle.allowed) return res.json({ sent: 0, throttled: true, reason: throttle.reason });
     try {
       await sendEmail(to, subject, html, text);
+      await logEmail(to, 'weekly-newsletter', 'marketing', subject);
       return res.json({ sent: 1, email: to });
     } catch (e) {
       return res.status(500).json({ error: e.message });
@@ -198,8 +204,14 @@ export default async function handler(req, res) {
 
   const results = [];
   for (const email of allEmails) {
+    const throttle = await canSendEmail(email, 'marketing');
+    if (!throttle.allowed) {
+      results.push({ email, status: 'throttled', reason: throttle.reason });
+      continue;
+    }
     try {
       await sendEmail(email, subject, html, text);
+      await logEmail(email, 'weekly-newsletter', 'marketing', subject);
       results.push({ email, status: 'sent' });
     } catch (e) {
       results.push({ email, status: 'failed', error: e.message });

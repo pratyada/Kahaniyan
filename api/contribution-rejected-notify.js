@@ -2,6 +2,7 @@
 // POST /api/contribution-rejected-notify { episodeTitle, seriesTitle, contributorEmail, contributorName, ownerName, feedback }
 
 import { SESClient, SendEmailCommand } from '@aws-sdk/client-ses';
+import { canSendEmail, logEmail } from './_emailThrottle.js';
 
 const FROM_EMAIL = 'hello@mysleepytale.com';
 const ses = new SESClient({ region: 'us-east-1' });
@@ -49,6 +50,9 @@ export default async function handler(req, res) {
     return res.status(400).json({ error: 'Missing contributorEmail or seriesTitle' });
   }
 
+  const throttle = await canSendEmail(contributorEmail, 'activity');
+  if (!throttle.allowed) return res.json({ sent: 0, throttled: true, reason: throttle.reason });
+
   const subject = `Update on your episode submission`;
 
   const feedbackSection = feedback
@@ -81,6 +85,7 @@ export default async function handler(req, res) {
 
   try {
     await sendEmail(contributorEmail, subject, html, text);
+    await logEmail(contributorEmail, 'contribution-rejected', 'activity', subject);
     return res.json({ sent: 1, email: contributorEmail });
   } catch (e) {
     return res.status(500).json({ error: e.message });

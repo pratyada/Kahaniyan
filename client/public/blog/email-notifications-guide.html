@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+<html lang="en-CA">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Email Notifications &mdash; How We Keep You Updated Without the Spam | My Sleepy Tale</title>
+  <meta name="description" content="Learn how My Sleepy Tale handles email notifications. Three categories, smart throttling, and full opt-out control. We send meaningful updates, never spam.">
+  <link rel="canonical" href="https://mysleepytale.com/blog/email-notifications-guide">
+  <meta property="og:title" content="Email Notifications &mdash; How We Keep You Updated Without the Spam | My Sleepy Tale">
+  <meta property="og:description" content="Three email categories, smart throttling rules, and full opt-out control. Here is exactly how My Sleepy Tale communicates with you.">
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://mysleepytale.com/blog/email-notifications-guide">
+  <meta property="og:image" content="https://mysleepytale.com/og/cover.jpg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:locale" content="en_CA">
+  <meta property="og:site_name" content="My Sleepy Tale">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Email Notifications &mdash; How We Keep You Updated Without the Spam">
+  <meta name="twitter:description" content="Three email categories, smart throttling, and full opt-out. How My Sleepy Tale keeps you informed without cluttering your inbox.">
+  <meta name="twitter:image" content="https://mysleepytale.com/og/cover.jpg">
+  <link rel="icon" href="/favicon.svg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,700&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+  <style>
+    /* Top bar */
+    .topbar{position:sticky;top:0;z-index:40;background:rgba(10,10,15,.92);backdrop-filter:blur(16px);border-bottom:1px solid rgba(255,255,255,.05)}
+    .topbar-inner{max-width:800px;margin:0 auto;padding:.75rem 1.5rem;display:flex;align-items:center;justify-content:space-between}
+    .topbar .back{display:flex;align-items:center;gap:.4rem;font-size:.85rem;font-weight:600;color:#a8a39a;transition:color .2s}
+    .topbar .back:hover{color:#f0a500}
+    .topbar .back svg{width:18px;height:18px}
+    .topbar .brand{font-family:Fraunces,Georgia,serif;font-size:.95rem;font-weight:700;color:#f5f0e8;display:flex;align-items:center;gap:.4rem}
+    /* Bottom nav */
+    .bottom-nav{position:fixed;bottom:0;left:0;right:0;z-index:40;background:rgba(10,10,15,.95);backdrop-filter:blur(16px);border-top:1px solid rgba(255,255,255,.05);padding-bottom:env(safe-area-inset-bottom)}
+    .bottom-nav ul{display:flex;max-width:500px;margin:0 auto;padding:.5rem .5rem 0;list-style:none}
+    .bottom-nav li{flex:1;text-align:center}
+    .bottom-nav a{display:flex;flex-direction:column;align-items:center;gap:.2rem;padding:.5rem 0;color:#6e6a63;font-size:.6rem;font-weight:700;text-transform:uppercase;letter-spacing:.12em;transition:color .2s;text-decoration:none}
+    .bottom-nav a:hover,.bottom-nav a.on{color:#f0a500}
+    .bottom-nav svg{width:22px;height:22px;stroke-width:1.8}
+    /* Related */
+    .related{margin-top:3rem;padding-top:2rem;border-top:1px solid rgba(255,255,255,.06)}.related h3{font-family:Fraunces,Georgia,serif;font-size:1.1rem;color:#f5f0e8;margin-bottom:1rem}.related-grid{display:grid;grid-template-columns:1fr;gap:.8rem}@media(min-width:520px){.related-grid{grid-template-columns:1fr 1fr}}.related-card{display:flex;gap:.8rem;padding:1rem;border-radius:1rem;background:rgba(255,255,255,.025);border:1px solid rgba(255,255,255,.06);transition:all .2s}.related-card:hover{border-color:rgba(240,165,0,.2);transform:translateY(-1px)}.related-card .rc-text{min-width:0}.related-card h4{font-size:.82rem;font-weight:700;color:#f5f0e8;line-height:1.3;margin-bottom:.2rem}.related-card span{font-size:.7rem;color:#6e6a63}
+    *{margin:0;padding:0;box-sizing:border-box}
+    body{font-family:'DM Sans',system-ui,sans-serif;background:#0a0a0f;color:#f5f0e8;line-height:1.9}
+    a{color:#f0a500;text-decoration:none}
+    .c{max-width:760px;margin:0 auto;padding:2rem 1.5rem}
+
+    .hero{text-align:center;padding:3rem 0;border-bottom:1px solid rgba(255,255,255,.06);margin-bottom:3rem}
+    .hero .ey{display:inline-block;background:rgba(240,165,0,.08);border:1px solid rgba(240,165,0,.2);border-radius:2rem;padding:.3rem 1rem;font-size:.7rem;font-weight:700;color:#f0a500;letter-spacing:.08em;text-transform:uppercase;margin-bottom:1.2rem}
+    .hero h1{font-family:Fraunces,Georgia,serif;font-size:2.4rem;font-weight:700;line-height:1.15;margin-bottom:1rem}
+    .hero h1 em{color:#f0a500;font-style:normal}
+    .hero .sub{color:#a8a39a;font-size:1rem;max-width:560px;margin:0 auto}
+
+    h2{font-family:Fraunces,Georgia,serif;font-size:1.5rem;font-weight:700;color:#f5f0e8;margin:3.5rem 0 .8rem}
+    h2 em{color:#f0a500;font-style:normal}
+    h3{font-size:1.05rem;font-weight:700;margin-bottom:.3rem}
+    p{font-size:.92rem;color:#a8a39a;margin-bottom:1.1rem}
+    strong{color:#f5f0e8}
+
+    /* Flow box */
+    .fb{background:rgba(255,255,255,.02);border:1px solid rgba(255,255,255,.06);border-radius:1.5rem;padding:2rem;margin:2rem 0}
+    .fb h3{color:#f0a500;text-align:center;margin-bottom:1.5rem;font-size:1.15rem}
+    .fr{display:flex;align-items:stretch;gap:.4rem;margin-bottom:.4rem;flex-wrap:wrap}
+    .fs{flex:1;min-width:70px;text-align:center;padding:.7rem .4rem;border-radius:.8rem;font-size:.68rem;font-weight:700;line-height:1.3}
+    .fg{background:rgba(240,165,0,.1);border:1px solid rgba(240,165,0,.25);color:#f0a500}
+    .fbl{background:rgba(59,130,246,.1);border:1px solid rgba(59,130,246,.25);color:#3b82f6}
+    .fgr{background:rgba(34,197,94,.1);border:1px solid rgba(34,197,94,.25);color:#22c55e}
+    .fp{background:rgba(168,85,247,.1);border:1px solid rgba(168,85,247,.25);color:#a855f7}
+    .frd{background:rgba(239,68,68,.1);border:1px solid rgba(239,68,68,.25);color:#ef4444}
+    .fa{display:flex;align-items:center;justify-content:center;font-size:1rem;color:rgba(240,165,0,.5);min-width:16px}
+    .fad{text-align:center;font-size:1rem;color:rgba(240,165,0,.5);padding:.2rem 0}
+
+    /* Timeline */
+    .tl{position:relative;margin:2rem 0;padding-left:3rem}
+    .tl::before{content:'';position:absolute;left:15px;top:0;bottom:0;width:3px;background:linear-gradient(180deg,#f0a500 0%,#3b82f6 40%,#22c55e 70%,#a855f7 100%);border-radius:2px}
+    .ts{position:relative;margin-bottom:2.5rem}.ts:last-child{margin-bottom:0}
+    .td{position:absolute;left:-3rem;top:.15rem;width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.8rem;font-weight:800}
+    .tc{background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.08);border-radius:1.2rem;padding:1.4rem}
+    .tc h3{font-size:1rem;margin-bottom:.2rem;color:#f5f0e8}
+    .tc p{font-size:.85rem;margin:.3rem 0 0}
+    .tg{display:inline-block;font-size:.62rem;font-weight:700;padding:.2rem .6rem;border-radius:1rem;margin-top:.5rem}
+    .tgg{background:rgba(240,165,0,.1);color:#f0a500}
+    .tgb{background:rgba(59,130,246,.1);color:#3b82f6}
+    .tggr{background:rgba(34,197,94,.1);color:#22c55e}
+    .tgp{background:rgba(168,85,247,.1);color:#a855f7}
+
+    /* Compare */
+    .cmp{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin:1.2rem 0}
+    @media(max-width:500px){.cmp{grid-template-columns:1fr}}
+    .cm{background:rgba(255,255,255,.02);border:1px solid rgba(255,255,255,.06);border-radius:1rem;padding:1.2rem}
+    .cm h4{font-size:.95rem;margin-bottom:.5rem;display:flex;align-items:center;gap:.4rem}
+    .cm ul{list-style:none;padding:0;font-size:.82rem;color:#a8a39a}
+    .cm li{padding:.25rem 0;padding-left:1rem;position:relative}
+    .cm li::before{content:'';position:absolute;left:0;top:.55rem;width:5px;height:5px;border-radius:50%;background:#f0a500}
+
+    /* Example callout */
+    .ex{background:rgba(240,165,0,.04);border-left:4px solid #f0a500;border-radius:0 1rem 1rem 0;padding:1.2rem 1.4rem;margin:1.2rem 0}
+    .ex h4{color:#f0a500;font-size:.85rem;margin-bottom:.4rem}
+    .ex p{font-size:.83rem;color:#a8a39a;margin:0}
+
+    /* Table */
+    .etable{width:100%;border-collapse:collapse;margin:1.5rem 0;font-size:.78rem}
+    .etable th{text-align:left;padding:.6rem .5rem;color:#f0a500;font-size:.7rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;border-bottom:2px solid rgba(240,165,0,.2);white-space:nowrap}
+    .etable td{padding:.55rem .5rem;border-bottom:1px solid rgba(255,255,255,.04);color:#a8a39a;vertical-align:top}
+    .etable tr:hover td{background:rgba(255,255,255,.02)}
+    .etable .cat-t{color:#22c55e;font-weight:700;font-size:.68rem}
+    .etable .cat-a{color:#3b82f6;font-weight:700;font-size:.68rem}
+    .etable .cat-m{color:#a855f7;font-weight:700;font-size:.68rem}
+    .etable .opt-no{color:#ef4444;font-weight:600}
+    .etable .opt-yes{color:#22c55e;font-weight:600}
+
+    /* CTA */
+    .cta{background:linear-gradient(135deg,rgba(240,165,0,.15),rgba(240,165,0,.03));border:2px solid rgba(240,165,0,.3);border-radius:1.5rem;padding:3rem 2rem;text-align:center;margin:3rem 0}
+    .cta h2{margin-top:0;color:#f5f0e8;font-size:1.7rem}
+    .cta p{color:#a8a39a;font-size:.95rem;margin-bottom:1.2rem;max-width:480px;margin-left:auto;margin-right:auto}
+    .cta .btn{display:inline-block;background:#f0a500;color:#0a0a0f;font-weight:700;padding:.9rem 2.5rem;border-radius:2rem;font-size:1.05rem}
+    .cta .sm{margin-top:.8rem;font-size:.72rem;color:#6e6a63}
+
+    footer{text-align:center;padding:2rem 0;color:rgba(245,240,232,.25);font-size:.78rem;border-top:1px solid rgba(255,255,255,.05);margin-top:3rem}
+  </style>
+</head>
+<body>
+
+  <div class="topbar"><div class="topbar-inner">
+    <a href="/blog" class="back"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M15 18l-6-6 6-6"/></svg>Blog</a>
+    <a href="/" class="brand">🌙 My Sleepy Tale</a>
+  </div></div>
+
+<div class="c">
+
+  <div class="hero">
+    <div class="ey">Transparency</div>
+    <h1>Email Notifications &mdash;<br>How We Keep You Updated<br><em>Without the Spam</em></h1>
+    <p class="sub">We believe in meaningful communication. Here is exactly what emails we send, when we send them, and how you stay in control.</p>
+  </div>
+
+  <!-- 1. Our Email Philosophy -->
+  <h2>Our Email <em>Philosophy</em></h2>
+  <p>We built My Sleepy Tale for families. Families are busy. The last thing any parent needs is another platform flooding their inbox with noise.</p>
+  <p>So we made a promise to ourselves: <strong>every email we send must be useful, timely, and wanted.</strong> If an email does not help you enjoy the platform better, we do not send it.</p>
+  <p>We built a throttle layer into every single email endpoint. It checks category limits, respects your preferences, and silently skips anything that would be excessive. You will never get five "contribution submitted" emails in a row if your family is having a productive storytelling evening.</p>
+
+  <div class="ex">
+    <h4>Our rule of thumb</h4>
+    <p>If we would not want to receive this email ourselves at 10pm after putting kids to bed, we do not send it.</p>
+  </div>
+
+  <!-- 2. Email Categories -->
+  <h2>Email <em>Categories</em></h2>
+  <p>Every email we send falls into one of three categories. Each category has different rules about frequency and opt-out.</p>
+
+  <table class="etable">
+    <thead>
+      <tr>
+        <th>Email</th>
+        <th>When It Is Sent</th>
+        <th>Category</th>
+        <th>Opt Out?</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>Welcome</strong></td>
+        <td>First time you sign in</td>
+        <td><span class="cat-t">Transactional</span></td>
+        <td><span class="opt-no">No</span></td>
+      </tr>
+      <tr>
+        <td><strong>Payment Confirmed</strong></td>
+        <td>Subscription activated</td>
+        <td><span class="cat-t">Transactional</span></td>
+        <td><span class="opt-no">No</span></td>
+      </tr>
+      <tr>
+        <td><strong>Payment Failed</strong></td>
+        <td>Card declined or expired</td>
+        <td><span class="cat-t">Transactional</span></td>
+        <td><span class="opt-no">No</span></td>
+      </tr>
+      <tr>
+        <td><strong>Subscription Cancelled</strong></td>
+        <td>You cancel your plan</td>
+        <td><span class="cat-t">Transactional</span></td>
+        <td><span class="opt-no">No</span></td>
+      </tr>
+      <tr>
+        <td><strong>Story Approved</strong></td>
+        <td>Admin publishes your story</td>
+        <td><span class="cat-a">Activity</span></td>
+        <td><span class="opt-no">No</span></td>
+      </tr>
+      <tr>
+        <td><strong>Story Created</strong></td>
+        <td>You submit a story for review</td>
+        <td><span class="cat-a">Activity</span></td>
+        <td><span class="opt-no">No</span></td>
+      </tr>
+      <tr>
+        <td><strong>Series Shared</strong></td>
+        <td>Someone shares a series with you</td>
+        <td><span class="cat-a">Activity</span></td>
+        <td><span class="opt-no">No</span></td>
+      </tr>
+      <tr>
+        <td><strong>Contribution Submitted</strong></td>
+        <td>Contributor submits an episode for your series</td>
+        <td><span class="cat-a">Activity</span></td>
+        <td><span class="opt-no">No</span></td>
+      </tr>
+      <tr>
+        <td><strong>Episode Published</strong></td>
+        <td>Owner publishes a new episode in a shared series</td>
+        <td><span class="cat-a">Activity</span></td>
+        <td><span class="opt-no">No</span></td>
+      </tr>
+      <tr>
+        <td><strong>Contribution Rejected</strong></td>
+        <td>Owner declines your submitted episode</td>
+        <td><span class="cat-a">Activity</span></td>
+        <td><span class="opt-no">No</span></td>
+      </tr>
+      <tr>
+        <td><strong>Contributor Invite</strong></td>
+        <td>Owner invites you to contribute to a series</td>
+        <td><span class="cat-a">Activity</span></td>
+        <td><span class="opt-no">No</span></td>
+      </tr>
+      <tr>
+        <td><strong>Weekly Newsletter</strong></td>
+        <td>Once per week (new stories, tips)</td>
+        <td><span class="cat-m">Marketing</span></td>
+        <td><span class="opt-yes">Yes</span></td>
+      </tr>
+      <tr>
+        <td><strong>Blog Announcement</strong></td>
+        <td>New feature or blog post launch</td>
+        <td><span class="cat-m">Marketing</span></td>
+        <td><span class="opt-yes">Yes</span></td>
+      </tr>
+      <tr>
+        <td><strong>Morning Summary</strong></td>
+        <td>Daily team digest (internal only)</td>
+        <td><span class="cat-t">Transactional</span></td>
+        <td><span class="opt-no">N/A</span></td>
+      </tr>
+      <tr>
+        <td><strong>Evening Summary</strong></td>
+        <td>Daily team digest (internal only)</td>
+        <td><span class="cat-t">Transactional</span></td>
+        <td><span class="opt-no">N/A</span></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <!-- 3. Throttling Rules -->
+  <h2>Throttling <em>Rules</em></h2>
+  <p>Every email passes through our throttle layer before it reaches your inbox. Here is how it works for each category:</p>
+
+  <div class="tl">
+    <div class="ts">
+      <div class="td" style="background:rgba(34,197,94,.15);color:#22c55e">1</div>
+      <div class="tc">
+        <h3>Transactional &mdash; Always Sent</h3>
+        <p>Welcome emails, payment confirmations, payment failures, and subscription changes are <strong>never throttled</strong>. These are critical messages you need to receive immediately, no matter what.</p>
+        <span class="tg tggr">No limit</span>
+      </div>
+    </div>
+
+    <div class="ts">
+      <div class="td" style="background:rgba(59,130,246,.15);color:#3b82f6">2</div>
+      <div class="tc">
+        <h3>Activity &mdash; Max 5 per Day</h3>
+        <p>Contributions submitted, episodes published, series shared, stories created, and rejections are capped at <strong>5 emails per user per 24 hours</strong>. If you hit the limit, the system silently skips additional emails until the window resets.</p>
+        <span class="tg tgb">5 per user per day</span>
+      </div>
+    </div>
+
+    <div class="ts">
+      <div class="td" style="background:rgba(168,85,247,.15);color:#a855f7">3</div>
+      <div class="tc">
+        <h3>Marketing &mdash; Max 1 per Week</h3>
+        <p>Weekly newsletters and blog announcements are limited to <strong>1 marketing email per user per 7 days</strong>. Even if we publish three blog posts in one week, you will only receive the first notification. The system also checks your unsubscribe preference before attempting to send.</p>
+        <span class="tg tgp">1 per user per week</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="ex">
+    <h4>What happens to skipped emails?</h4>
+    <p>Nothing bad. The action still completes (your story is still submitted, your series is still shared). The only thing that does not happen is the email notification. You can always check the platform directly to see updates.</p>
+  </div>
+
+  <!-- 4. Flow Diagram -->
+  <h2>How It <em>Works</em></h2>
+
+  <div class="fb">
+    <h3>Email Decision Flow</h3>
+    <div class="fr">
+      <div class="fs fg">User<br>Action</div>
+      <div class="fa">&rarr;</div>
+      <div class="fs fbl">Category<br>Check</div>
+      <div class="fa">&rarr;</div>
+      <div class="fs fp">Throttle<br>Check</div>
+      <div class="fa">&rarr;</div>
+      <div class="fs fgr">Unsubscribe<br>Check</div>
+      <div class="fa">&rarr;</div>
+      <div class="fs fg">Send</div>
+    </div>
+    <div class="fad">&darr; If any check fails</div>
+    <div class="fr">
+      <div class="fs frd" style="max-width:200px;margin:0 auto;">Skip Silently<br>(action still completes)</div>
+    </div>
+  </div>
+
+  <p>Every email endpoint runs through this flow. Transactional emails skip the throttle and unsubscribe checks entirely. Activity emails check the daily limit. Marketing emails check both the weekly limit and your unsubscribe preference.</p>
+
+  <div class="cmp">
+    <div class="cm">
+      <h4 style="color:#22c55e">Transactional Path</h4>
+      <ul>
+        <li>Category: transactional</li>
+        <li>Throttle check: skipped</li>
+        <li>Unsubscribe check: skipped</li>
+        <li>Result: always sent</li>
+      </ul>
+    </div>
+    <div class="cm">
+      <h4 style="color:#a855f7">Marketing Path</h4>
+      <ul>
+        <li>Category: marketing</li>
+        <li>Unsubscribe check: first</li>
+        <li>Throttle check: 1/week limit</li>
+        <li>Result: sent only if allowed</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- 5. Unsubscribe -->
+  <h2>How to <em>Unsubscribe</em></h2>
+  <p>You can opt out of marketing emails (newsletters and blog announcements) at any time. There are two ways:</p>
+
+  <div class="tl">
+    <div class="ts">
+      <div class="td" style="background:rgba(240,165,0,.15);color:#f0a500">1</div>
+      <div class="tc">
+        <h3>From the Settings Page</h3>
+        <p>Go to <a href="/settings">Settings</a> and toggle off newsletter notifications. Changes take effect immediately.</p>
+        <span class="tg tgg">Recommended</span>
+      </div>
+    </div>
+
+    <div class="ts">
+      <div class="td" style="background:rgba(59,130,246,.15);color:#3b82f6">2</div>
+      <div class="tc">
+        <h3>From Any Marketing Email</h3>
+        <p>Every newsletter and blog announcement email includes an <strong>Unsubscribe</strong> link at the bottom. One click and you are removed from the marketing list.</p>
+        <span class="tg tgb">One click</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="ex">
+    <h4>What you will still receive</h4>
+    <p>Unsubscribing only affects marketing emails (newsletters and announcements). You will still receive transactional emails (payment confirmations) and activity emails (when someone contributes to your series). These are essential platform notifications.</p>
+  </div>
+
+  <!-- 6. What We Never Do -->
+  <h2>What We <em>Never Do</em></h2>
+  <p>This is just as important as what we do. Here are six commitments we make to every user:</p>
+
+  <div class="cmp">
+    <div class="cm">
+      <h4 style="color:#ef4444">We Never</h4>
+      <ul>
+        <li>Sell your email address to third parties</li>
+        <li>Send cold emails to people who never signed up</li>
+        <li>Send daily marketing blasts</li>
+      </ul>
+    </div>
+    <div class="cm">
+      <h4 style="color:#ef4444">We Also Never</h4>
+      <ul>
+        <li>Share your data with advertisers</li>
+        <li>Use dark patterns to prevent unsubscribing</li>
+        <li>Re-subscribe you after you opt out</li>
+      </ul>
+    </div>
+  </div>
+
+  <p>Your inbox is your personal space. We treat it with the same care we put into making bedtime stories for your children.</p>
+
+  <!-- CTA -->
+  <div class="cta">
+    <h2>Questions About <em>Your Emails?</em></h2>
+    <p>If you have questions about the emails you receive, or if something does not look right, reach out to us directly.</p>
+    <a href="mailto:hello@mysleepytale.com" class="btn">Email Us</a>
+    <p class="sm">hello@mysleepytale.com &middot; We reply within 24 hours</p>
+  </div>
+
+  <div class="related">
+    <h3>Keep Reading</h3>
+    <div class="related-grid">
+      <a href="/blog/private-series-contributor-guide" class="related-card"><div class="rc-text"><h4>Private Series &amp; Contributor Flow</h4><span>8 min read</span></div></a>
+      <a href="/blog/become-a-creator" class="related-card"><div class="rc-text"><h4>How to Become a Story Creator</h4><span>10 min read</span></div></a>
+    </div>
+  </div>
+
+  <footer>🌙 My Sleepy Tale &mdash; bedtime stories that feel like home</footer>
+
+</div>
+
+  <nav class="bottom-nav"><ul>
+    <li><a href="/"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg>Home</a></li>
+    <li><a href="/creation"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M20.24 12.24a6 6 0 00-8.49-8.49L5 10.5V19h8.5z"/><line x1="16" y1="8" x2="2" y2="22"/><line x1="17.5" y1="15" x2="9" y2="15"/></svg>Creation</a></li>
+    <li><a href="/radio"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M4.9 19.1C1 15.2 1 8.8 4.9 4.9"/><path d="M7.8 16.2a5.5 5.5 0 010-8.4"/><path d="M16.2 7.8a5.5 5.5 0 010 8.4"/><path d="M19.1 4.9C23 8.8 23 15.1 19.1 19"/><circle cx="12" cy="12" r="1"/></svg>Radio</a></li>
+    <li><a href="/blog" class="on"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M2 3h6a4 4 0 014 4v14a3 3 0 00-3-3H2z"/><path d="M22 3h-6a4 4 0 00-4 4v14a3 3 0 013-3h7z"/></svg>Blog</a></li>
+    <li><a href="/settings"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>Me</a></li>
+  </ul></nav>
+
+</body>
+</html>
