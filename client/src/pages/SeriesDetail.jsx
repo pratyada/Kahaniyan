@@ -148,6 +148,8 @@ export default function SeriesDetail() {
   const [subEditTitle, setSubEditTitle] = useState('');
   const [subEditBody, setSubEditBody] = useState('');
 
+  const [managingPhotosEp, setManagingPhotosEp] = useState(null);
+
   const isOwner = firestoreSeries && user?.uid === firestoreSeries?.authorUid;
   const isSharedUser = firestoreSeries && !isOwner && user?.email &&
     (firestoreSeries.sharedWith || []).includes(user.email.toLowerCase());
@@ -371,6 +373,50 @@ export default function SeriesDetail() {
       }).catch(() => {});
     } catch (e) { alert('Approve failed: ' + e.message); }
     setSavingText(false);
+  };
+
+  const removeEpisodeImage = async (epIndex, imgIndex) => {
+    try {
+      const { db: fireDb } = await import('../lib/firebase.js');
+      const { doc: fDoc, updateDoc: uDoc, getDoc: gDoc } = await import('firebase/firestore');
+      const serDoc = await gDoc(fDoc(fireDb, 'creatorSeries', seriesId));
+      const episodes = serDoc.data().episodes || [];
+      const ep = episodes[epIndex];
+      const newGallery = (ep.gallery || []).filter((_, i) => i !== imgIndex);
+      const newCover = newGallery[0] || null;
+      episodes[epIndex] = { ...ep, gallery: newGallery, coverImage: newCover };
+      await uDoc(fDoc(fireDb, 'creatorSeries', seriesId), { episodes });
+      setFirestoreSeries(prev => ({
+        ...prev,
+        episodes: prev.episodes.map((e, i) => i === epIndex ? { ...e, gallery: newGallery, coverImage: newCover } : e),
+      }));
+    } catch (e) { alert('Remove failed: ' + e.message); }
+  };
+
+  const replaceAllEpisodeImages = async (epIndex, files) => {
+    if (!files?.length) return;
+    setUploadingEp(epIndex);
+    try {
+      const { storage, db: fireDb } = await import('../lib/firebase.js');
+      const { ref, uploadBytes, getDownloadURL } = await import('firebase/storage');
+      const { doc: fDoc, updateDoc: uDoc, getDoc: gDoc } = await import('firebase/firestore');
+      const uploadedUrls = [];
+      for (let f = 0; f < files.length; f++) {
+        const compressed = await compressImage(files[f]);
+        const storageRef = ref(storage, `creator-images/${user.uid}/series_${seriesId}_ep${epIndex}_${Date.now()}_${f}.jpg`);
+        await uploadBytes(storageRef, compressed, { contentType: 'image/jpeg' });
+        uploadedUrls.push(await getDownloadURL(storageRef));
+      }
+      const serDoc = await gDoc(fDoc(fireDb, 'creatorSeries', seriesId));
+      const episodes = serDoc.data().episodes || [];
+      episodes[epIndex] = { ...episodes[epIndex], gallery: uploadedUrls, coverImage: uploadedUrls[0] };
+      await uDoc(fDoc(fireDb, 'creatorSeries', seriesId), { episodes });
+      setFirestoreSeries(prev => ({
+        ...prev,
+        episodes: prev.episodes.map((e, i) => i === epIndex ? { ...e, gallery: uploadedUrls, coverImage: uploadedUrls[0] } : e),
+      }));
+    } catch (e) { alert('Replace failed: ' + e.message); }
+    setUploadingEp(null);
   };
 
   const startEditingEpisode = (epIndex) => {
@@ -720,9 +766,21 @@ export default function SeriesDetail() {
                     <>
                       {/* Upload photos */}
                       <label className="rounded-lg bg-blue-500/30 px-4 py-2 text-[10px] font-bold text-blue-300 cursor-pointer">
-                        📷 {ep.gallery?.length > 0 ? `${ep.gallery.length} photos — add more` : 'Add photos'}
+                        📷 {ep.gallery?.length > 0 ? `Add more photos` : 'Add photos'}
                         <input type="file" accept="image/*" multiple className="hidden"
                           onChange={e => { if (e.target.files?.length) handleEpisodeImageUpload(i, Array.from(e.target.files)); e.target.value = ''; }} />
+                      </label>
+                      {/* Manage / replace photos */}
+                      {(ep.gallery?.length > 0 || ep.coverImage) && (
+                        <button onClick={() => setManagingPhotosEp(managingPhotosEp === i ? null : i)}
+                          className="rounded-lg bg-red-500/20 px-4 py-2 text-[10px] font-bold text-red-300">
+                          🔄 Manage {ep.gallery?.length || 1} photos
+                        </button>
+                      )}
+                      <label className="rounded-lg bg-purple-500/20 px-4 py-2 text-[10px] font-bold text-purple-300 cursor-pointer">
+                        Replace all photos
+                        <input type="file" accept="image/*" multiple className="hidden"
+                          onChange={e => { if (e.target.files?.length) replaceAllEpisodeImages(i, Array.from(e.target.files)); e.target.value = ''; }} />
                       </label>
                       {/* Edit text */}
                       <button onClick={() => startEditingEpisode(i)}
@@ -762,6 +820,47 @@ export default function SeriesDetail() {
           );
         })}
       </div>
+
+      {/* ═══ PHOTO MANAGER (owner edit mode) ═══ */}
+      {editMode && isOwner && managingPhotosEp !== null && (() => {
+        const ep = firestoreSeries.episodes[managingPhotosEp];
+        if (!ep) return null;
+        const photos = ep.gallery || (ep.coverImage ? [ep.coverImage] : []);
+        return (
+          <div className="px-5 mt-4">
+            <div className="rounded-2xl bg-bg-surface ring-1 ring-red-500/20 p-5 space-y-4">
+              <div className="flex items-center justify-between">
+                <h3 className="text-sm font-bold text-red-400">
+                  Manage photos — Episode {ep.episodeNumber}: {ep.title}
+                </h3>
+                <button onClick={() => setManagingPhotosEp(null)} className="text-[10px] text-ink-dim">Close</button>
+              </div>
+              {photos.length === 0 ? (
+                <p className="text-xs text-ink-dim">No photos yet</p>
+              ) : (
+                <div className="grid grid-cols-3 sm:grid-cols-4 gap-2">
+                  {photos.map((url, idx) => (
+                    <div key={idx} className="relative group">
+                      <img src={url} alt="" className="w-full aspect-square object-cover rounded-lg ring-1 ring-white/10" />
+                      {idx === 0 && <span className="absolute top-1 left-1 rounded bg-gold/80 px-1.5 py-0.5 text-[7px] font-bold text-black">COVER</span>}
+                      <a href={url} download={`ep${ep.episodeNumber}_photo${idx + 1}.jpg`} target="_blank" rel="noreferrer"
+                        onClick={e => e.stopPropagation()}
+                        className="absolute bottom-1 left-1 hidden group-hover:grid h-5 w-5 place-items-center rounded-full bg-blue-500 text-[9px] text-white font-bold">
+                        ↓
+                      </a>
+                      <button onClick={() => removeEpisodeImage(managingPhotosEp, idx)}
+                        className="absolute top-1 right-1 hidden group-hover:grid h-5 w-5 place-items-center rounded-full bg-red-500 text-[9px] text-white font-bold">
+                        ✕
+                      </button>
+                    </div>
+                  ))}
+                </div>
+              )}
+              <p className="text-[9px] text-ink-dim">Tap ✕ to remove a photo. First photo becomes the cover image.</p>
+            </div>
+          </div>
+        );
+      })()}
 
       {/* ═══ CONTRIBUTE BUTTON (shared users) ═══ */}
       {isSharedUser && !contributionSubmitted && (
@@ -882,7 +981,11 @@ export default function SeriesDetail() {
                   <p className="text-[9px] font-bold text-ink-dim uppercase tracking-wider mb-1">Submitted photos</p>
                   <div className="flex gap-2 overflow-x-auto">
                     {sub.gallery.map((url, idx) => (
-                      <img key={idx} src={url} alt="" className="h-24 w-24 rounded-lg object-cover ring-1 ring-white/10 shrink-0" />
+                      <div key={idx} className="relative shrink-0 group">
+                        <img src={url} alt="" className="h-24 w-24 rounded-lg object-cover ring-1 ring-white/10" />
+                        <a href={url} download={`contribution_photo${idx + 1}.jpg`} target="_blank" rel="noreferrer"
+                          className="absolute bottom-1 right-1 hidden group-hover:grid h-5 w-5 place-items-center rounded-full bg-blue-500 text-[8px] text-white">↓</a>
+                      </div>
                     ))}
                   </div>
                 </div>
