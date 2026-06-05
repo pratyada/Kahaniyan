@@ -2,6 +2,7 @@
 // POST /api/contributor-invite { seriesId, seriesTitle, contributorEmail, ownerUid, ownerEmail, ownerName }
 
 import { SESClient, SendEmailCommand } from '@aws-sdk/client-ses';
+import { escapeHtml, sanitizeEmail } from './_emailSanitize.js';
 import { getFirestore } from './_firebase.js';
 import crypto from 'crypto';
 

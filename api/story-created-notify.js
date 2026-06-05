@@ -2,6 +2,7 @@
 // POST /api/story-created-notify { type: "story"|"series", title, authorEmail, authorName, storyId }
 
 import { SESClient, SendEmailCommand } from '@aws-sdk/client-ses';
+import { escapeHtml, sanitizeEmail } from './_emailSanitize.js';
 import { canSendEmail, logEmail } from './_emailThrottle.js';
 
 const FROM_EMAIL = 'hello@mysleepytale.com';

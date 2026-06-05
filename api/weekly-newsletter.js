@@ -3,6 +3,7 @@
 // POST /api/weekly-newsletter { to: "email" } — single test send
 
 import { SESClient, SendEmailCommand } from '@aws-sdk/client-ses';
+import { escapeHtml, sanitizeEmail } from './_emailSanitize.js';
 import { getFirestore } from './_firebase.js';
 import { canSendEmail, logEmail, isUnsubscribed } from './_emailThrottle.js';
 

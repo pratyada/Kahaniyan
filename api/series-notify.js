@@ -2,6 +2,7 @@
 // POST /api/series-notify { type: "submitted" | "published", ... }
 
 import { SESClient, SendEmailCommand } from '@aws-sdk/client-ses';
+import { escapeHtml, sanitizeEmail } from './_emailSanitize.js';
 import { getFirestore } from './_firebase.js';
 import { canSendEmail, logEmail } from './_emailThrottle.js';
 

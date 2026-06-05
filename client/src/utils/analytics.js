@@ -43,8 +43,8 @@ export function trackSignUp() {
   trackEvent('sign_up', 'acquisition', 'google', 1);
 }
 
-export function trackOnboardingComplete(childName) {
-  trackEvent('onboarding_complete', 'activation', childName, 1);
+export function trackOnboardingComplete() {
+  trackEvent('onboarding_complete', 'activation', 'completed', 1);
 }
 
 export function trackShareStory(storyId) {

@@ -16,10 +16,18 @@ async function getAdmin() {
   return admin;
 }
 
+const ADMIN_EMAILS = ['prateekyadav2010@gmail.com', 'sahil.faraz@gmail.com', 'deepti.ramaul@gmail.com'];
+
 export default async function handler(req, res) {
   if (req.method !== 'POST') return res.status(405).json({ error: 'POST only' });
 
-  const { tasks } = req.body || {};
+  // Auth check — require admin email or admin secret
+  const { tasks, adminEmail, secret } = req.body || {};
+  const ADMIN_SECRET = process.env.ADMIN_SECRET;
+  const isAuthed = (adminEmail && ADMIN_EMAILS.includes(adminEmail.toLowerCase())) ||
+                   (secret && ADMIN_SECRET && secret === ADMIN_SECRET);
+  if (!isAuthed) return res.status(403).json({ error: 'Unauthorized — admin access required' });
+
   if (!tasks || !Array.isArray(tasks)) return res.status(400).json({ error: 'tasks array required' });
 
   const fb = await getAdmin();

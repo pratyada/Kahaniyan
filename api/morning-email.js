@@ -3,6 +3,7 @@
 // Reads tasks from Firestore dailyTasks collection, sends via SES from hello@mysleepytale.com
 
 import { SESClient, SendEmailCommand } from '@aws-sdk/client-ses';
+import { escapeHtml, sanitizeEmail } from './_emailSanitize.js';
 import { getFirestore } from './_firebase.js';
 
 const FROM_EMAIL = 'hello@mysleepytale.com';

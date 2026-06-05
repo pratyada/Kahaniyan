@@ -3,13 +3,14 @@
 // Sends a personalized outreach email introducing My Sleepy Tale as a partnership opportunity
 
 import { SESClient, SendEmailCommand } from '@aws-sdk/client-ses';
+import { escapeHtml, sanitizeEmail } from './_emailSanitize.js';
 
 const FROM_EMAIL = 'hello@mysleepytale.com';
 const ses = new SESClient({ region: 'us-east-1' });
 
 function buildHtml(contactName, businessName) {
-  const name = contactName || 'there';
-  const biz = businessName || 'your organization';
+  const name = escapeHtml(contactName || 'there');
+  const biz = escapeHtml(businessName || 'your organization');
 
   return `<!DOCTYPE html>
 <html>
@@ -190,7 +191,7 @@ export default async function handler(req, res) {
   const { to, contactName, businessName, force } = req.body || {};
   if (!to) return res.status(400).json({ error: 'Missing "to" email' });
 
-  const toEmail = to.trim().toLowerCase();
+  const toEmail = sanitizeEmail(to);
 
   try {
     const db = await getFirestore();

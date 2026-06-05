@@ -2,6 +2,7 @@
 // POST /api/subscription-notify { type: "confirmed"|"failed"|"cancelled", email, tier, userName }
 
 import { SESClient, SendEmailCommand } from '@aws-sdk/client-ses';
+import { escapeHtml, sanitizeEmail } from './_emailSanitize.js';
 import { logEmail } from './_emailThrottle.js';
 
 const FROM_EMAIL = 'hello@mysleepytale.com';
