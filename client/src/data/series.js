@@ -1,7 +1,10 @@
 // Series — multi-episode story arcs with recurring characters.
 // Each episode is standalone (complete arc) but same characters across the series.
 
+import { SIKH_SERIES } from './sikhSeries.js';
+
 export const SERIES = [
+  ...SIKH_SERIES,
   {
     id: 'fire-truck-academy',
     title: 'Fire Truck Academy',

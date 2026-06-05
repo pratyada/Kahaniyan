@@ -4377,6 +4377,399 @@ The boy smiled. Luqman smiled back.
   },
 );
 
+// ── Sikh standalone wisdom stories ──────────────────────────────
+CULTURAL_LESSONS.push(
+  {
+    id: 'sikh_river_teaches',
+    tradition: 'sikh',
+    theme: 'wisdom',
+    title: 'The River That Teaches',
+    subtitle: 'Guru Nanak Dev Ji shows that direction matters more than distance',
+    durationMinutes: 3,
+    source: 'Sikh Tradition',
+    imagePrompt: 'Cinematic nighttime scene of a calm river in Punjab with golden moonlight reflecting on the water, silhouette of a figure by the riverbank throwing water toward distant fields, soft warm glow on the horizon, peaceful farmland, stars overhead, NO faces of Gurus, NO text',
+    body: `One evening by a wide river in Punjab, a group of travellers stopped to wash and pray. They faced the setting sun and threw handfuls of water toward it, sending the drops flying far into the golden light. They believed the water would reach their ancestors in heaven.
+
+Nearby, a kind and gentle teacher — Guru Nanak Dev Ji — knelt at the same river. But instead of throwing water toward the sun, he turned around and began tossing water in the opposite direction, toward the east.
+
+The travellers stared. "What are you doing?" they asked. "Why are you throwing water the wrong way?"
+
+Guru Nanak Dev Ji smiled softly. "I am watering my fields in Talwandi. They are very thirsty."
+
+The travellers laughed. "That is silly! Your fields are hundreds of miles away. The water will never reach them!"
+
+Guru Nanak Dev Ji nodded gently. "If your water can reach the sun, which is millions of miles away, surely my water can reach my little farm just down the road?"
+
+The travellers grew quiet. They understood. Sometimes we do things without thinking about whether they truly make sense. The real offering is not water — it is love, kindness, and a thoughtful heart.
+
+That night, {childName}, as you close your eyes, remember the river. The most important thing is not how far you throw — it is the direction your heart is pointing. Point it toward kindness, and it will always reach exactly where it needs to go. Goodnight, dear one.`
+  },
+  {
+    id: 'sikh_needle_thread',
+    tradition: 'sikh',
+    theme: 'sharing',
+    title: 'The Needle and the Thread',
+    subtitle: 'What can you truly take with you when you leave this world?',
+    durationMinutes: 3,
+    source: 'Sikh Tradition',
+    imagePrompt: 'Cinematic nighttime scene of a single golden needle and thread resting on a soft white cloth, warm candlelight glow, a gurdwara dome silhouetted against a starry sky in the background, soft mist, Punjab landscape, NO faces of Gurus, NO text',
+    body: `Long ago, a very rich man came to visit Guru Nanak Dev Ji. The rich man wore silk robes and golden rings. His servants carried trays of sweets and bags of coins. He wanted to show everyone how important he was.
+
+"Guru Ji," said the rich man proudly, "I have more gold than anyone in the land. I have the finest horses. I have everything."
+
+Guru Nanak Dev Ji listened quietly. Then he reached into his pocket and pulled out a small sewing needle. He held it out to the rich man.
+
+"Will you do me a small favour?" Guru Nanak Dev Ji asked gently. "Please keep this needle safe for me. I will ask for it back in the next life, after we have both left this world."
+
+The rich man looked confused. "But Guru Ji, how can I take a needle with me after I leave this world? You cannot take anything with you when you go."
+
+Guru Nanak Dev Ji smiled warmly. "If you cannot take even a tiny needle with you, then what good is all that gold and silk? The only things that follow you are the kind deeds you have done and the love you have shared."
+
+The rich man stood very still. Then, slowly, he nodded. He understood.
+
+That night, {childName}, remember the little needle. The things that matter most are not things at all — they are the hugs you give, the words of kindness you speak, and the smiles you share. Those are the treasures you carry with you forever. Sleep softly, little one.`
+  },
+  {
+    id: 'sikh_bhai_lalo_bread',
+    tradition: 'sikh',
+    theme: 'honesty',
+    title: "Bhai Lalo's Simple Bread",
+    subtitle: 'Honest earnings are sweeter than a feast of pride',
+    durationMinutes: 3,
+    source: 'Sikh Tradition',
+    imagePrompt: 'Cinematic nighttime scene of a humble Punjabi kitchen with warm firelight, simple flatbread on a clay plate, a small oil lamp glowing, rustic wooden walls, peaceful village outside the window under stars, NO faces of Gurus, NO text',
+    body: `When Guru Nanak Dev Ji arrived in the town of Saidpur, a wealthy man named Malik Bhago invited everyone to a grand feast. The tables were heavy with rich foods — creamy curries, sweet puddings, golden rice.
+
+But Guru Nanak Dev Ji did not go to the feast. Instead, he walked to the small home of Bhai Lalo, a humble carpenter. Bhai Lalo had only simple bread made from his honest day's work. His hands were rough from building and mending, but his heart was full of love.
+
+Bhai Lalo placed the simple bread before Guru Nanak Dev Ji with trembling hands. "It is not much, Guru Ji," he whispered.
+
+Guru Nanak Dev Ji held up the simple bread in one hand. Then he thought of Malik Bhago's grand feast — food earned by treating workers unfairly and keeping too much for himself.
+
+"This bread," said Guru Nanak Dev Ji, holding Bhai Lalo's roti, "is made with honest hands and a loving heart. It nourishes the body and the soul. A feast earned through unkindness may fill the stomach, but it leaves the heart empty."
+
+Bhai Lalo's eyes filled with happy tears. His simple meal was the richest offering of all.
+
+That night, {childName}, remember Bhai Lalo's bread. It does not matter if what you have is small or simple. If it comes from honesty and love, it is worth more than all the grand feasts in the world. Goodnight, sweet one.`
+  },
+  {
+    id: 'sikh_jasmine_garden',
+    tradition: 'sikh',
+    theme: 'respect',
+    title: 'The Jasmine Garden',
+    subtitle: 'Guru Har Rai Ji teaches gentleness with every living thing',
+    durationMinutes: 3,
+    source: 'Sikh Tradition',
+    imagePrompt: 'Cinematic nighttime scene of a beautiful Mughal-style garden with jasmine flowers in full bloom, moonlight on white petals, a flowing robe brushing past flower bushes, soft golden lantern light, dew drops on leaves, NO faces of Gurus, NO text',
+    body: `In a beautiful garden filled with jasmine, roses, and marigolds, young Har Rai walked every morning. He loved the flowers so much that he would whisper good morning to each one.
+
+One day, as he walked along the narrow path, his long robe caught on a jasmine bush. When he turned, a small branch snapped, and several delicate white flowers tumbled to the ground.
+
+Har Rai knelt down and gently picked up the fallen blossoms. He held them in his palms like tiny sleeping birds. His eyes grew soft with sadness.
+
+From that day on, young Har Rai — who would grow up to become Guru Har Rai Ji, the seventh Guru — always gathered his robe close when walking through the garden. He stepped so carefully that not a single petal was disturbed. Not a single stem was bent.
+
+His companions asked, "Why do you take such care? They are only flowers."
+
+Guru Har Rai Ji shook his head gently. "Nothing alive is only anything. Every petal, every leaf, every tiny bud is a gift from Waheguru. If I cannot be gentle with a flower, how will I be gentle with a person?"
+
+The garden seemed to bloom even brighter after that, as if the flowers themselves were grateful.
+
+That night, {childName}, remember the jasmine garden. Be gentle with the small things — the ladybird on the leaf, the dandelion in the grass, the feelings of a friend. Gentleness is not weakness. It is the strongest kind of love. Sleep peacefully, little one.`
+  },
+  {
+    id: 'sikh_cobbler_prayer',
+    tradition: 'sikh',
+    theme: 'courage',
+    title: "The Cobbler's Prayer",
+    subtitle: 'Bhagat Ravidas Ji shows that devotion has no rank',
+    durationMinutes: 3,
+    source: 'Sikh Tradition',
+    imagePrompt: 'Cinematic nighttime scene of a humble cobbler workshop with leather and tools, a single oil lamp casting warm golden light, the Ik Onkar symbol glowing faintly in the light, a pair of handmade shoes on the workbench, starry sky through an open window, NO faces, NO text',
+    body: `In the city of Varanasi, there lived a cobbler named Ravidas. He mended shoes all day long, stitching leather and hammering tiny nails. Many people looked down on him because of his work. They said a cobbler could never be close to Waheguru.
+
+But Ravidas knew something they did not. He knew that every stitch he sewed with love was a prayer. Every shoe he mended with care was an offering. His hands worked with leather, but his heart sang with devotion.
+
+While he worked, Ravidas would sing the sweetest hymns. His voice floated out of his tiny workshop and drifted through the streets like the scent of blooming jasmine.
+
+People passing by would stop. Rich merchants paused their busy walks. Children sat on the doorstep to listen. Even the birds on the rooftop grew still.
+
+"How can a simple cobbler sing like that?" they whispered.
+
+But a wise woman in the crowd smiled and said, "It is not about what your hands do. It is about what your heart holds. His heart holds Waheguru."
+
+Bhagat Ravidas Ji taught the world that no work is too humble, no person too small, and no prayer too quiet for Waheguru to hear. Every soul is equal in the eyes of the Creator.
+
+That night, {childName}, remember Ravidas Ji. It does not matter what you do — it matters how much love you put into it. Even the smallest act, done with a full heart, reaches the highest skies. Goodnight, brave one.`
+  },
+  {
+    id: 'sikh_milk_jasmine',
+    tradition: 'sikh',
+    theme: 'wisdom',
+    title: 'The Milk and the Jasmine',
+    subtitle: 'A beautiful lesson about making room for goodness',
+    durationMinutes: 3,
+    source: 'Sikh Tradition',
+    imagePrompt: 'Cinematic nighttime scene of a brass bowl filled with milk and a single jasmine flower floating on its surface, warm candlelight, a courtyard in old Delhi with arched doorways, moonlit sky, soft golden tones, NO faces of Gurus, NO text',
+    body: `When Guru Nanak Dev Ji arrived in the great city of Delhi, a holy man who lived there heard the news. This holy man was respected by everyone, and he worried. "If this new teacher comes here, there will be too many guides and not enough people to listen," he thought.
+
+So the holy man sent a messenger to Guru Nanak Dev Ji carrying a bowl filled to the very brim with milk. Not a single drop more could fit. The message was clear: "This city is already full. There is no room for you."
+
+Guru Nanak Dev Ji looked at the bowl of milk and smiled. He did not pour any milk out. He did not argue. Instead, he gently placed a single jasmine flower on top of the milk. The flower floated softly on the surface, and not a single drop spilled.
+
+Then Guru Nanak Dev Ji sent the bowl back with his own quiet message: "I have not come to push anyone aside. I have come like this jasmine — to add sweetness and beauty without disturbing what is already here."
+
+When the holy man saw the floating flower, his heart melted. He understood that goodness does not take up space. It only adds fragrance.
+
+That night, {childName}, remember the jasmine and the milk. You never need to push others down to find your place. Just be kind, be gentle, and be yourself — and the world will always have room for you. Sweet dreams, dear one.`
+  },
+  {
+    id: 'sikh_two_swords',
+    tradition: 'sikh',
+    theme: 'courage',
+    title: 'Two Swords, One Heart',
+    subtitle: 'Guru Hargobind Ji teaches the balance of strength and kindness',
+    durationMinutes: 3,
+    source: 'Sikh Tradition',
+    imagePrompt: 'Cinematic nighttime scene of two ornate swords crossed gently on a velvet cloth, one glowing with warm golden light and one with cool silver light, a gurdwara dome in the background under a starry sky, soft peaceful atmosphere, NO faces of Gurus, NO text',
+    body: `When Guru Hargobind Ji became the sixth Guru, he did something no Guru had done before. On the day of his ceremony, he asked for not one, but two swords.
+
+The elders looked at each other, puzzled. "Two swords, Guru Ji? Why two?"
+
+Guru Hargobind Ji placed one sword on his left side and one on his right. He touched the first sword gently. "This one is called Miri," he said. "It stands for the strength to protect those who cannot protect themselves — the weak, the hungry, the frightened."
+
+Then he touched the second sword. "This one is called Piri. It stands for the love of Waheguru, prayer, and compassion — the gentle power that heals hearts."
+
+A young child in the crowd raised her hand. "But Guru Ji, why do you need both? Is not one enough?"
+
+Guru Hargobind Ji knelt so he could look into her eyes. "Little one, strength without kindness is like thunder without rain — it only frightens. And kindness without strength is like a candle in a storm — it goes out too easily. You need both. A strong heart and a gentle hand."
+
+The child nodded slowly. She understood.
+
+From that day on, the two swords reminded every Sikh that true courage is not just about being brave — it is about using your bravery to be kind.
+
+That night, {childName}, remember the two swords. Be strong enough to stand up for what is right, and gentle enough to comfort those who are hurting. That is the balance of a beautiful heart. Goodnight, little warrior of kindness.`
+  },
+  {
+    id: 'sikh_bhai_kanhaiya',
+    tradition: 'sikh',
+    theme: 'compassion-animals',
+    title: 'The Boy Who Served Water to All',
+    subtitle: 'Bhai Kanhaiya Ji sees Waheguru in every face',
+    durationMinutes: 3,
+    source: 'Sikh Tradition',
+    imagePrompt: 'Cinematic nighttime scene of a young man carrying a water pouch across a moonlit battlefield, tending to a fallen soldier with gentle care, soft blue and gold light, a distant gurdwara silhouette, compassionate atmosphere, NO faces of Gurus, NO text',
+    body: `Long ago, during a time of great trouble, a kind man named Bhai Kanhaiya Ji walked across a dusty field carrying a leather pouch full of cool, fresh water. All around him, people lay tired and thirsty — some from his own side, and some from the other.
+
+Bhai Kanhaiya Ji knelt beside each person and gently poured water into their mouths. He did not ask which side they belonged to. He did not check if they were friend or stranger. He simply saw thirsty people, and he gave them water.
+
+Some Sikh soldiers were upset. "Why are you helping the other side?" they asked. "They are against us!"
+
+They brought Bhai Kanhaiya Ji before Guru Gobind Singh Ji. "Guru Ji, he is giving water to everyone — even those who fight against us."
+
+Guru Gobind Singh Ji looked at Bhai Kanhaiya Ji and asked, "Is this true?"
+
+Bhai Kanhaiya Ji folded his hands and said softly, "Guru Ji, I do not see enemies or friends out there. I see only the face of Waheguru in every person. When they are thirsty, Waheguru is thirsty. How can I not give water?"
+
+A beautiful silence filled the room. Then Guru Gobind Singh Ji smiled — a wide, warm, proud smile. "You have understood the truest teaching," he said. And he gave Bhai Kanhaiya Ji medicine and bandages too, saying, "Now heal their wounds as well."
+
+That night, {childName}, remember Bhai Kanhaiya Ji. Kindness does not choose sides. When someone is hurting, help them — no matter who they are. That is the deepest courage of all. Sleep well, compassionate one.`
+  },
+  {
+    id: 'sikh_mata_khivi_langar',
+    tradition: 'sikh',
+    theme: 'sharing',
+    title: 'Mata Khivi and the Blessed Langar',
+    subtitle: 'The woman whose love fed thousands and started a tradition',
+    durationMinutes: 3,
+    source: 'Sikh Tradition',
+    imagePrompt: 'Cinematic nighttime scene of a warm langar hall kitchen with large pots of food simmering over gentle flames, golden light filling the room, hands stirring a pot of kheer, a long row of plates set out on the floor, community atmosphere, NO faces of Gurus, NO text',
+    body: `In the time of the second Guru, there lived a woman of extraordinary kindness named Mata Khivi Ji. She was the wife of Guru Angad Dev Ji, but she was much more than that — she was the heart and hands behind the langar, the free kitchen where everyone was welcome.
+
+Every morning before the sun woke up, Mata Khivi Ji was already in the kitchen. She stirred great pots of creamy kheer — a sweet rice pudding made with love and patience. She kneaded dough for fresh rotis. She chopped vegetables and added just the right amount of spice.
+
+But the most special ingredient was one you could not see or taste. It was love. Mata Khivi Ji believed that food made with love could heal a tired heart.
+
+People came from far and wide. Rich and poor sat side by side on the same floor, eating the same food from the same kitchen. A queen sat next to a farmer. A child sat next to a grandmother. No one was turned away. No one was treated differently.
+
+"Why do you work so hard?" someone once asked Mata Khivi Ji.
+
+She wiped her hands on her cloth and smiled. "When a hungry person eats and their eyes light up — that is Waheguru smiling through them. How could I ever stop?"
+
+Her langar grew and grew. And to this day, in every gurdwara in the world, the langar continues — free food for anyone who is hungry, served with the same love that Mata Khivi Ji stirred into her very first pot of kheer.
+
+That night, {childName}, remember Mata Khivi Ji. Feeding someone is not just about food — it is about telling them, "You matter. You belong here." Goodnight, generous one.`
+  },
+  {
+    id: 'sikh_youngest_guru',
+    tradition: 'sikh',
+    theme: 'compassion-animals',
+    title: 'The Youngest Guru',
+    subtitle: 'Guru Har Krishan Ji heals with selfless love at the age of five',
+    durationMinutes: 3,
+    source: 'Sikh Tradition',
+    imagePrompt: 'Cinematic nighttime scene of a small child figure surrounded by soft golden healing light, silhouetted against a starry sky, people sitting peacefully around, gentle glow emanating outward, a distant gurdwara dome, warm and hopeful atmosphere, NO faces of Gurus, NO text',
+    body: `Of all the ten Gurus, the youngest was Guru Har Krishan Ji. He became Guru when he was only five years old — younger than many of the children who listen to this story.
+
+Some grown-ups doubted him. "How can such a small child lead?" they whispered. "He is just a boy."
+
+But Guru Har Krishan Ji had a heart far bigger than his little body. When a terrible sickness spread through Delhi, people were frightened. Many fell ill. Families wept.
+
+Guru Har Krishan Ji did not hide. He did not run away. Instead, he walked among the sick. He sat beside them. He placed his small hands on their foreheads. He whispered prayers. He brought them water and comfort.
+
+Day after day, the young Guru helped anyone who came to him — Hindu, Muslim, rich, poor, old, young. He did not ask their name or their belief. He only asked, "How can I help?"
+
+The people of Delhi began to call him "Bala Pir" — the child saint. His kindness was like a cool breeze on a burning day.
+
+Guru Har Krishan Ji taught the world a lesson that even grown-ups sometimes forget: you are never too young to make a difference. You are never too small to help. And the biggest hearts often come in the smallest packages.
+
+That night, {childName}, remember the youngest Guru. You do not need to wait until you are big to be kind. You can start right now, right where you are, with whatever you have. Goodnight, little healer.`
+  },
+  {
+    id: 'sikh_lion_roars',
+    tradition: 'sikh',
+    theme: 'courage',
+    title: 'Why the Lion Roars',
+    subtitle: 'The meaning of Singh and the courage that lives inside every heart',
+    durationMinutes: 3,
+    source: 'Sikh Tradition',
+    imagePrompt: 'Cinematic nighttime scene of a majestic lion sitting peacefully on a hilltop under a vast starry sky, golden mane glowing in moonlight, the Khanda symbol subtly formed in the stars above, Punjab wheat fields below, powerful yet peaceful, NO faces of Gurus, NO text',
+    body: `Once upon a time, a little lion cub named Tej lived at the edge of a great golden forest. Tej was small, fluffy, and a little bit shy. The bigger animals would stomp and roar, and Tej would hide behind his mother.
+
+"Why can I not roar like them?" Tej whispered one evening, his voice barely louder than a leaf falling.
+
+His mother nuzzled him gently. "Let me tell you a story," she said. "Long ago, Guru Gobind Singh Ji gave his followers a special name — Singh, which means lion. But he did not give them this name because they were the biggest or the loudest."
+
+"Then why?" asked Tej.
+
+"Because a lion's true roar does not come from its throat," his mother said. "It comes from its heart. Guru Gobind Singh Ji wanted every person to remember that inside them lives a lion — brave, noble, and unafraid to stand up for what is right."
+
+"Even small ones like me?" Tej asked.
+
+"Especially small ones like you," his mother smiled. "The roar is not about being loud. It is about being true. When you speak the truth, when you protect a friend, when you stand tall even though you are scared — that is your roar."
+
+That night, Tej closed his eyes under the wide, starry sky. And deep inside his small chest, he felt something warm and strong begin to grow. It was not a sound yet. But it was there — waiting for the right moment.
+
+{childName}, you have a lion inside you too. It does not matter how small you are. Your courage, your kindness, your truth — that is your roar. And when the moment comes, you will know exactly how to let it out. Goodnight, little Singh.`
+  },
+  {
+    id: 'sikh_string_of_kite',
+    tradition: 'sikh',
+    theme: 'patience',
+    title: 'The String of the Kite',
+    subtitle: 'Learning to hold on and let go with trust in Waheguru',
+    durationMinutes: 3,
+    source: 'Sikh Tradition',
+    imagePrompt: 'Cinematic nighttime scene of a colorful kite flying high against a deep purple and gold sunset sky over Punjab rooftops, a child silhouette holding the string from a rooftop, warm evening light, stars beginning to appear, peaceful and dreamy, NO faces of Gurus, NO text',
+    body: `On a breezy afternoon in a small Punjab village, a child named {childName} stood on the rooftop flying a beautiful orange kite. The kite danced and dipped and soared higher and higher until it was just a tiny dot against the wide blue sky.
+
+{childName}'s grandmother sat nearby on a wooden chair, watching with a warm smile.
+
+"Nani Ji," said {childName}, "the string is pulling so hard. The kite wants to fly away. Should I let go?"
+
+Grandmother shook her head gently. "Not yet. Hold on, but do not pull too tight. Let the string out a little. Give it room to dance."
+
+{childName} loosened the string, just a bit. The kite climbed even higher, spinning with joy.
+
+"Nani Ji, the kite is so far away now. I cannot even see it clearly. What if it gets lost?"
+
+Grandmother reached over and placed her warm hand on {childName}'s. "The kite is like life, little one. Sometimes you must hold on tight — to your family, your prayers, your love for Waheguru. And sometimes you must let go a little — let things be, trust the wind, trust that Waheguru is holding the other end of the string."
+
+{childName} looked up at the tiny orange dot dancing in the sky and felt something settle in their heart. The kite was far away, but it was not lost. The string was thin, but it was strong.
+
+"I understand, Nani Ji," {childName} whispered. "Hold on with love. Let go with trust."
+
+Grandmother kissed {childName}'s forehead. "That is all you ever need to know."
+
+That night, as the kite rested on the rooftop and the stars came out to play, {childName} fell asleep knowing that some strings — the ones made of love and faith — never break. Goodnight, little one.`
+  },
+  {
+    id: 'sikh_guru_ka_langar',
+    tradition: 'sikh',
+    theme: 'sharing',
+    title: 'Guru Ka Langar — No One Goes Hungry',
+    subtitle: 'A child serves in the langar for the first time and learns about community',
+    durationMinutes: 3,
+    source: 'Sikh Tradition',
+    imagePrompt: 'Cinematic nighttime scene of a warm gurdwara langar hall with rows of people sitting on the floor eating together, golden warm light from hanging lanterns, a child carefully carrying a bowl of dal, community and togetherness, soft glowing atmosphere, NO faces of Gurus, NO text',
+    body: `It was {childName}'s very first time helping in the langar at the gurdwara. The kitchen smelled of warm dal, fresh rotis, and sweet kheer. Steam curled up from big silver pots like gentle clouds.
+
+{childName}'s papa tied a small cloth around {childName}'s head and said, "Today, you are a sevadaar — a person who serves. Are you ready?"
+
+{childName} nodded, holding a small steel jug of water very carefully in both hands.
+
+The langar hall was full. Rows and rows of people sat on the floor — old grandmothers, tiny babies, men in turbans, women in colourful dupattas, children giggling, and a few people who looked tired and hungry, as if they had walked a very long way.
+
+{childName} walked slowly down the row, pouring water into each glass. A grandmother smiled and said, "Waheguru Ji Ka Khalsa, Waheguru Ji Ki Fateh." {childName} smiled back, even though the jug was getting heavy.
+
+A little boy at the end of the row had no shoes. His clothes were dusty. But when {childName} poured water into his glass, the boy looked up with the brightest eyes and whispered, "Thank you."
+
+{childName}'s heart felt so full it could burst.
+
+After the langar was over, {childName} sat with papa on the cool marble floor. "Papa, why do we give food to everyone — even people we do not know?"
+
+Papa put his arm around {childName}. "Because in the langar, there are no strangers. Everyone is family. Guru Nanak Dev Ji taught us that no one should ever go hungry. When you serve food with love, you are serving Waheguru."
+
+That night, {childName}, remember the langar. You do not need to be rich to be generous. You just need a willing heart and two open hands. Goodnight, little sevadaar.`
+  },
+  {
+    id: 'sikh_sound_waheguru',
+    tradition: 'sikh',
+    theme: 'gratitude',
+    title: 'The Sound of Waheguru',
+    subtitle: 'A child learns to find peace through quiet prayer before sleep',
+    durationMinutes: 3,
+    source: 'Sikh Tradition',
+    imagePrompt: 'Cinematic nighttime scene of a child sitting cross-legged on a soft blanket by a window, moonlight streaming in, hands resting gently on knees in peaceful meditation, the Ik Onkar symbol glowing softly in the moonlight on the wall, stars visible outside, calm and serene, NO faces of Gurus, NO text',
+    body: `Every night before bed, {childName} would hear Mummy softly say a word over and over: "Waheguru... Waheguru... Waheguru..." It sounded like a river flowing. Like a heartbeat. Like the whole world breathing in and breathing out.
+
+One night, {childName} asked, "Mummy, what does Waheguru mean?"
+
+Mummy sat on the edge of the bed and pulled the blanket up gently. "Waheguru means wonderful teacher — the one who brings us from darkness into light. When you say it slowly, something beautiful happens inside."
+
+"What happens?" asked {childName}.
+
+"Try it," Mummy whispered. "Close your eyes. Take a deep breath. And say it very softly — Waheguru."
+
+{childName} closed their eyes. "Wah... hey... gu... roo..."
+
+The room seemed to grow quieter. The sounds of the street faded away. Even {childName}'s busy, bouncing thoughts began to settle, like leaves floating down from a tree.
+
+"Waheguru..." {childName} whispered again.
+
+This time, it felt warm — like sunlight on closed eyelids, like a hug from the inside. The word was not just a sound. It was a feeling. A feeling of being safe, being loved, being part of something much bigger and much gentler than anything {childName} could see.
+
+"Mummy," {childName} murmured, already half asleep, "I think Waheguru is listening."
+
+Mummy kissed {childName}'s forehead. "Waheguru is always listening, my love. Every whisper, every thank-you, every prayer before sleep — it all reaches exactly where it needs to go."
+
+That night, {childName}, as you lie in your bed, try whispering "Waheguru" just once. Feel the warmth. Feel the peace. And know that you are never, ever alone. Goodnight, precious one.`
+  },
+  {
+    id: 'sikh_stars_amritsar',
+    tradition: 'sikh',
+    theme: 'gratitude',
+    title: 'Stars Over Amritsar',
+    subtitle: 'Imagining the Golden Temple at night, where peace lives in the water',
+    durationMinutes: 3,
+    source: 'Sikh Tradition',
+    imagePrompt: 'Cinematic nighttime scene of the Golden Temple (Harmandir Sahib) reflected perfectly in the still sacred pool, warm golden glow of the temple against a deep starry sky, the causeway leading to the temple, peaceful water, no people visible up close, serene and magical, NO faces of Gurus, NO text',
+    body: `Have you ever seen a building made of gold? In the city of Amritsar, in the land of Punjab, there stands the most beautiful place in the world — the Harmandir Sahib, which many people call the Golden Temple.
+
+It sits in the middle of a great pool of still, sacred water called the Amrit Sarovar — the Pool of Nectar. At night, when the sky turns deep blue and the stars come out, the Golden Temple glows like a warm lantern floating on a dark, peaceful sea.
+
+{childName}, imagine you are there now. You are walking barefoot along the cool marble path. The water sparkles on both sides of you, reflecting a thousand stars. Soft music drifts through the air — the sound of the Guru Granth Sahib Ji being read aloud, a gentle song that has not stopped, day or night, for hundreds of years.
+
+You step onto the golden bridge that leads to the temple. The air smells of flowers and warm prasad — sweet, buttery, and made with love. Inside, people sit quietly. Some have their eyes closed. Some are smiling. Some have tears of happiness on their cheeks. Everyone is welcome. Everyone belongs.
+
+You sit down on the soft carpet and close your eyes. The music wraps around you like a warm blanket. The water outside whispers. The stars above watch over you.
+
+And in that moment, you feel it — a deep, quiet peace. The kind of peace that tells you everything is exactly as it should be.
+
+That night, {childName}, even if you are far from Amritsar, the Golden Temple shines for you. Its light reaches everywhere — into every home, every heart, every child who closes their eyes and believes in something beautiful. Goodnight, little light. The stars are watching over you too.`
+  },
+);
+
 export const lessonsByTheme = (theme) => CULTURAL_LESSONS.filter((l) => l.theme === theme);
 export const lessonsByTradition = (tradition) =>
   CULTURAL_LESSONS.filter((l) => l.tradition === tradition);
