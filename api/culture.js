@@ -62,7 +62,7 @@ export default async function handler(req, res) {
     } catch {}
   }
 
-  culture = culture.toLowerCase();
+  culture = culture.toLowerCase().replace(/[^a-z0-9-]/g, '');
   const data = CULTURES[culture] || {
     title: 'My Sleepy Tale — Bedtime Stories for Every Culture',
     description: 'Personalized bedtime stories from Hindu, Muslim, Christian, Sikh, Buddhist, Catholic, Hispanic & more traditions. Free.',

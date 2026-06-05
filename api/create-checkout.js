@@ -15,7 +15,7 @@ export default async function handler(req, res) {
   }
 
   const { tier, uid, email } = req.body || {};
-  const ADMIN_EMAILS = ['prateekyadav2010@gmail.com', 'sahil.faraz@gmail.com', 'deepti.ramaul@gmail.com'];
+  const ADMIN_EMAILS = (process.env.ADMIN_EMAILS || 'prateekyadav2010@gmail.com,sahil.faraz@gmail.com,deepti.ramaul@gmail.com').split(',').map(e => e.trim().toLowerCase());
   const isAdmin = ADMIN_EMAILS.includes((email || '').toLowerCase());
 
   if (!tier || !PRICE_MAP[tier]) {

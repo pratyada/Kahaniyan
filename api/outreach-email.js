@@ -173,7 +173,7 @@ async function sendEmail(to, contactName, businessName) {
   const subject = `My Sleepy Tale — Free bedtime stories for the families you serve`;
   const cmd = new SendEmailCommand({
     Source: `Deepti from My Sleepy Tale <${FROM_EMAIL}>`,
-    Destination: { ToAddresses: [to], CcAddresses: ['i@yprateek.com'] },
+    Destination: { ToAddresses: [to],  },
     Message: {
       Subject: { Data: subject },
       Body: {

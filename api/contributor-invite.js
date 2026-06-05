@@ -72,13 +72,22 @@ export default async function handler(req, res) {
     return res.status(400).json({ error: 'Missing required fields' });
   }
 
-  const email = contributorEmail.trim().toLowerCase();
+  const email = sanitizeEmail(contributorEmail);
   const token = crypto.randomUUID();
 
   try {
     const db = await getFirestore();
 
-    // Save invitation to Firestore
+    // Verify the requester is the series owner
+    if (db) {
+      const serDoc = await db.collection('creatorSeries').doc(seriesId).get();
+      if (!serDoc.exists) return res.status(404).json({ error: 'Series not found' });
+      if (serDoc.data().authorUid !== ownerUid) {
+        return res.status(403).json({ error: 'Only the series owner can invite contributors' });
+      }
+    }
+
+    // Save invitation to Firestore (with 30-day expiry)
     if (db) {
       await db.collection('seriesInvitations').add({
         seriesId,
@@ -90,6 +99,7 @@ export default async function handler(req, res) {
         token,
         status: 'pending',
         createdAt: new Date().toISOString(),
+        expiresAt: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString(),
         acceptedAt: null,
         contributorUid: null,
       });

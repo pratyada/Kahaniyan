@@ -91,7 +91,15 @@ export default async function handler(req, res) {
     country = 'OTHER',
     beliefs = [],
     speed = 0.9,
+    uid,
   } = req.body || {};
+
+  // Basic abuse prevention — require a user identifier or referrer from our domain
+  const referer = req.headers['referer'] || req.headers['origin'] || '';
+  const isFromOurSite = referer.includes('mysleepytale.com') || referer.includes('localhost');
+  if (!uid && !req.headers['x-user-uid'] && !isFromOurSite) {
+    return res.status(401).json({ error: 'Unauthorized request' });
+  }
 
   if (!text || text.length < 10) {
     return res.status(400).json({ error: 'Text too short' });

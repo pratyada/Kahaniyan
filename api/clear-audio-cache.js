@@ -26,8 +26,8 @@ export default async function handler(req, res) {
 
   // Verify admin — simple secret check since Firebase Admin may not have service account
   const { email, secret } = req.body || {};
-  const ADMIN_SECRET = process.env.ADMIN_SECRET || 'mysleepytale2024';
-  if (secret !== ADMIN_SECRET) {
+  const ADMIN_SECRET = process.env.ADMIN_SECRET;
+  if (!ADMIN_SECRET || secret !== ADMIN_SECRET) {
     // Try Firestore admin check as fallback
     try {
       const configDoc = await db.collection('config').doc('app').get();
