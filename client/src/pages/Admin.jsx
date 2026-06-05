@@ -4607,6 +4607,7 @@ const EXPENSE_DATA = [
       { name: 'UPS Printing A4 QR Code Scan (5)', amount: 9, category: 'Marketing', spender: 'Prat' },
       { name: 'Library Printing and Coffee Donuts', amount: 20, category: 'Marketing', spender: 'Deepti' },
       { name: 'Gemini Subscription — Image Gen & Thumbnails', amount: 30, category: 'AI', spender: 'Prat' },
+      { name: 'Vista Print — Visiting Cards & Flyers', amount: 95.54, category: 'Marketing', spender: 'Prat' },
     ],
   },
 ];
