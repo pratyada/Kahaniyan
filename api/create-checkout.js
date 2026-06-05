@@ -5,7 +5,8 @@ const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
 
 const PRICE_MAP = {
   pro: process.env.STRIPE_PRO_PRICE_ID,
-  enterprise: process.env.STRIPE_ENTERPRISE_PRICE_ID,
+  family: process.env.STRIPE_ENTERPRISE_PRICE_ID,
+  enterprise: process.env.STRIPE_ENTERPRISE_PRICE_ID, // legacy alias
 };
 
 export default async function handler(req, res) {
@@ -25,8 +26,8 @@ export default async function handler(req, res) {
       payment_method_types: ['card'],
       customer_email: email || undefined,
       line_items: [{ price: PRICE_MAP[tier], quantity: 1 }],
-      success_url: `${req.headers.origin || 'https://kahaniyan-sage.vercel.app'}/settings?upgraded=${tier}`,
-      cancel_url: `${req.headers.origin || 'https://kahaniyan-sage.vercel.app'}/settings?cancelled=true`,
+      success_url: `${req.headers.origin || 'https://mysleepytale.com'}/settings?upgraded=${tier}`,
+      cancel_url: `${req.headers.origin || 'https://mysleepytale.com'}/settings?cancelled=true`,
       metadata: { uid: uid || '', tier },
       subscription_data: {
         metadata: { uid: uid || '', tier },

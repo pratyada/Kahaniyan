@@ -30,9 +30,10 @@ export const TIERS = {
     personalizedAudio: true,
     personalizedPerDay: 3,
   },
-  enterprise: {
-    label: 'Enterprise',
-    price: 'CA$24.99/mo',
+  family: {
+    label: 'Family',
+    price: 'CA$59/mo',
+    originalPrice: 'CA$199/mo',
     storiesPerWeek: Infinity,
     maxDuration: 30,
     languageCount: Infinity,
@@ -42,10 +43,13 @@ export const TIERS = {
     festivalPacks: true,
     offline: true,
     voiceCloning: true,
+    personalizedAudio: true,
+    personalizedPerDay: 50,
+    storiesPerDay: 50,
   },
   // Legacy tiers — map to new ones
-  family: { label: 'Pro', price: 'CA$9.99/mo', storiesPerWeek: Infinity, maxDuration: 30, languageCount: Infinity, archiveDays: 90, customVoices: 3, childProfiles: 3, festivalPacks: true, offline: false, voiceCloning: true },
-  annual: { label: 'Enterprise', price: 'CA$24.99/mo', storiesPerWeek: Infinity, maxDuration: 30, languageCount: Infinity, archiveDays: Infinity, customVoices: Infinity, childProfiles: 10, festivalPacks: true, offline: true, voiceCloning: true },
+  enterprise: { label: 'Family', price: 'CA$59/mo', storiesPerWeek: Infinity, maxDuration: 30, languageCount: Infinity, archiveDays: Infinity, customVoices: Infinity, childProfiles: 10, festivalPacks: true, offline: true, voiceCloning: true, personalizedAudio: true, personalizedPerDay: 50, storiesPerDay: 50 },
+  annual: { label: 'Family', price: 'CA$59/mo', storiesPerWeek: Infinity, maxDuration: 30, languageCount: Infinity, archiveDays: Infinity, customVoices: Infinity, childProfiles: 10, festivalPacks: true, offline: true, voiceCloning: true, personalizedAudio: true, personalizedPerDay: 50, storiesPerDay: 50 },
 };
 
 const USAGE_KEY = 'mst:usage';

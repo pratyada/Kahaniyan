@@ -7,21 +7,56 @@ const PLANS = [
     key: 'free',
     label: 'Free',
     price: 'CA$0',
-    features: ['3 stories / week', 'Up to 5 min', '1 child profile', '2 languages'],
+    period: 'forever',
+    features: [
+      '150+ pre-recorded stories',
+      'Text personalized with child name',
+      '3 story generations / week',
+      '1 child profile',
+      'Up to 5 min stories',
+    ],
     current: true,
   },
   {
     key: 'pro',
     label: 'Pro',
-    price: 'CA$9.99/mo',
-    features: ['Unlimited stories', 'Up to 30 min', '3 child profiles', 'All languages', 'Voice cloning', 'Festival packs'],
+    price: 'CA$9',
+    originalPrice: 'CA$29',
+    period: '/month',
+    discount: '69% off — Summer 2026',
+    features: [
+      'Everything in Free',
+      'Audio personalized with child name (3/day)',
+      'Unlimited story generation',
+      'Up to 30 min stories',
+      '3 child profiles',
+      'Voice cloning',
+      'Festival story packs',
+      'Private series + contributors',
+      '90-day story archive',
+    ],
     highlight: true,
+    color: 'gold',
   },
   {
-    key: 'enterprise',
-    label: 'Enterprise',
-    price: 'CA$24.99/mo',
-    features: ['Everything in Pro', '10 child profiles', 'Unlimited voices', 'Offline download', 'Priority support'],
+    key: 'family',
+    label: 'Family',
+    price: 'CA$59',
+    originalPrice: 'CA$199',
+    period: '/month',
+    discount: '70% off — Summer 2026',
+    features: [
+      'Everything in Pro',
+      '50 personalized stories / day',
+      '50 story generations / day',
+      '10 child profiles',
+      'Unlimited voice cloning',
+      'Offline listening',
+      'Priority AI narration',
+      'Creator program access',
+      'Unlimited story archive',
+    ],
+    color: 'purple',
   },
 ];
 
@@ -75,7 +110,7 @@ export default function UpgradeModal({ open, onClose, reason }) {
             <div className="mx-auto mb-4 h-1 w-12 rounded-full bg-white/20" />
             <h2 className="display-title mb-1 text-gold">Unlock more bedtime magic</h2>
             <p className="mb-5 text-sm text-ink-muted">
-              {reason || 'Upgrade to unlock longer stories, more voices, and all languages.'}
+              {reason || 'Upgrade for personalized audio, unlimited stories, and more.'}
             </p>
 
             <div className="space-y-3">
@@ -84,21 +119,34 @@ export default function UpgradeModal({ open, onClose, reason }) {
                   key={plan.key}
                   className={`rounded-2xl p-4 ${
                     plan.highlight
-                      ? 'bg-gold/10 ring-1 ring-gold'
+                      ? 'bg-gold/10 ring-2 ring-gold relative'
+                      : plan.color === 'purple'
+                      ? 'bg-purple-500/5 ring-1 ring-purple-500/20'
                       : 'bg-bg-surface ring-1 ring-white/5'
                   }`}
                 >
+                  {plan.highlight && (
+                    <span className="absolute -top-2.5 left-4 rounded-full bg-gold px-3 py-0.5 text-[8px] font-bold uppercase tracking-wider text-bg-base">
+                      Most Popular
+                    </span>
+                  )}
                   <div className="flex items-center justify-between">
                     <div>
-                      <div className="flex items-center gap-2">
-                        <span className="font-ui text-sm font-bold text-ink">{plan.label}</span>
-                        {plan.highlight && (
-                          <span className="rounded-full bg-gold/20 px-2 py-0.5 text-[8px] font-bold uppercase tracking-wider text-gold">
-                            Popular
-                          </span>
+                      <span className={`font-ui text-sm font-bold ${plan.color === 'purple' ? 'text-purple-400' : 'text-ink'}`}>
+                        {plan.label}
+                      </span>
+                      <div className="mt-0.5 flex items-baseline gap-2">
+                        <span className={`font-display text-xl font-bold ${plan.color === 'purple' ? 'text-purple-400' : 'text-gold'}`}>
+                          {plan.price}
+                        </span>
+                        {plan.originalPrice && (
+                          <span className="text-xs text-ink-dim line-through">{plan.originalPrice}</span>
                         )}
+                        <span className="text-[10px] text-ink-dim">{plan.period}</span>
                       </div>
-                      <div className="mt-0.5 font-display text-lg font-bold text-gold">{plan.price}</div>
+                      {plan.discount && (
+                        <p className="text-[9px] font-bold text-green-400 mt-0.5">{plan.discount}</p>
+                      )}
                     </div>
                     {plan.current ? (
                       <span className="text-[10px] uppercase tracking-wider text-ink-dim">Current</span>
@@ -106,16 +154,22 @@ export default function UpgradeModal({ open, onClose, reason }) {
                       <button
                         onClick={() => handleCheckout(plan.key)}
                         disabled={loading === plan.key}
-                        className="btn-primary disabled:opacity-60"
+                        className={`rounded-full px-5 py-2 text-xs font-bold transition active:scale-95 disabled:opacity-60 ${
+                          plan.highlight
+                            ? 'bg-gold text-bg-base shadow-glow'
+                            : plan.color === 'purple'
+                            ? 'bg-purple-500/20 text-purple-400 ring-1 ring-purple-500/30'
+                            : 'bg-white/10 text-ink'
+                        }`}
                       >
-                        {loading === plan.key ? 'Loading…' : 'Choose'}
+                        {loading === plan.key ? 'Loading...' : 'Choose'}
                       </button>
                     )}
                   </div>
-                  <ul className="mt-3 space-y-1">
+                  <ul className="mt-3 space-y-1.5">
                     {plan.features.map((f, i) => (
-                      <li key={i} className="flex items-center gap-2 text-xs text-ink-muted">
-                        <span className="text-[10px] text-gold">✓</span>
+                      <li key={i} className="flex items-start gap-2 text-xs text-ink-muted">
+                        <span className={`text-[10px] mt-0.5 ${plan.color === 'purple' ? 'text-purple-400' : 'text-gold'}`}>✓</span>
                         {f}
                       </li>
                     ))}
@@ -124,7 +178,9 @@ export default function UpgradeModal({ open, onClose, reason }) {
               ))}
             </div>
 
-            <button onClick={onClose} className="mt-5 w-full text-center text-sm text-ink-muted">
+            <p className="mt-4 text-center text-[9px] text-ink-dim">Cancel anytime. Summer pricing through September 2026.</p>
+
+            <button onClick={onClose} className="mt-4 w-full text-center text-sm text-ink-muted">
               Maybe later
             </button>
           </motion.div>
