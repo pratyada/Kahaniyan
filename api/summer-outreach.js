@@ -15,101 +15,27 @@ function buildHtml(firstName) {
   return `<!DOCTYPE html>
 <html>
 <head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"></head>
-<body style="margin:0;padding:0;background:#0a0a0f;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;color:#c8c3ba;">
-  <div style="max-width:600px;margin:0 auto;padding:40px 24px;">
+<body style="margin:0;padding:0;font-family:Georgia,serif;color:#333;line-height:1.8;">
+  <div style="max-width:580px;margin:0 auto;padding:32px 20px;">
 
-    <!-- Header -->
-    <div style="text-align:center;margin-bottom:32px;">
-      <span style="font-size:48px;">🌙</span>
-      <h1 style="color:#f0a500;font-size:22px;margin:12px 0 4px;">My Sleepy Tale</h1>
-      <p style="color:#6e6a63;font-size:13px;margin:0;">Bedtime stories that teach roots &amp; values</p>
-    </div>
+    <p style="font-size:16px;margin:0 0 16px;">Hi ${name},</p>
 
-    <!-- Summer Banner -->
-    <div style="background:linear-gradient(135deg,#f0a50015,#f0a50005);border:1px solid #f0a50030;border-radius:16px;padding:24px;text-align:center;margin-bottom:24px;">
-      <span style="font-size:32px;">☀️</span>
-      <h2 style="color:#f0a500;font-size:18px;margin:8px 0 4px;">Summer is here, ${name}!</h2>
-      <p style="color:#a8a39a;font-size:14px;margin:0;">The perfect time to start a bedtime tradition your children will remember forever.</p>
-    </div>
+    <p style="font-size:15px;margin:0 0 16px;">I wanted to share something my wife and I built for our son this year. Summer evenings are long, bedtime gets pushed later, and we were looking for something better than screen time before sleep.</p>
 
-    <!-- Main Content -->
-    <div style="background:#12121c;border-radius:16px;padding:28px 24px;margin-bottom:24px;border:1px solid #1a1a28;">
-      <p style="font-size:15px;line-height:1.7;margin:0 0 16px;">
-        Hi <strong style="color:#f5f0e8;">${name}</strong>,
-      </p>
-      <p style="font-size:15px;line-height:1.7;margin:0 0 16px;">
-        Imagine this: your child drifts off to sleep hearing a story with <strong style="color:#f0a500;">their own name</strong> in it. A story about courage from their own culture. Narrated in a warm, soothing voice.
-      </p>
-      <p style="font-size:15px;line-height:1.7;margin:0 0 16px;">
-        That is what <strong style="color:#f5f0e8;">My Sleepy Tale</strong> does. We have built a free bedtime story platform with <strong style="color:#f0a500;">150+ audio stories</strong> from 11 cultural traditions — Hindu, Islamic, Sikh, Catholic, Buddhist, Filipino, Hispanic, and more.
-      </p>
-      <p style="font-size:14px;line-height:1.7;margin:0;color:#a8a39a;">
-        Every story is personalized with your child's name, teaches real values like kindness and courage, and is designed to be the last beautiful thing they hear before sleep.
-      </p>
-    </div>
+    <p style="font-size:15px;margin:0 0 16px;">So we made <strong>My Sleepy Tale</strong> — audio bedtime stories that use your child's actual name. The stories teach values like kindness and courage, and come from different cultures — Hindu, Sikh, Islamic, Catholic, Filipino, and more.</p>
 
-    <!-- What makes it special -->
-    <div style="background:#12121c;border-radius:16px;padding:28px 24px;margin-bottom:24px;border:1px solid #1a1a28;">
-      <h3 style="color:#f0a500;font-size:15px;margin:0 0 16px;">Why families love it this summer</h3>
-      <table style="width:100%;border-collapse:collapse;">
-        <tr>
-          <td style="padding:10px 12px;vertical-align:top;width:28px;font-size:18px;">🎧</td>
-          <td style="padding:10px 0;">
-            <strong style="color:#f5f0e8;font-size:13px;">No screens</strong>
-            <p style="font-size:12px;color:#a8a39a;margin:4px 0 0;">Audio-only stories. No blue light. No screen time guilt. Just a warm voice and imagination.</p>
-          </td>
-        </tr>
-        <tr>
-          <td style="padding:10px 12px;vertical-align:top;width:28px;font-size:18px;">🌍</td>
-          <td style="padding:10px 0;">
-            <strong style="color:#f5f0e8;font-size:13px;">Your culture, their bedtime</strong>
-            <p style="font-size:12px;color:#a8a39a;margin:4px 0 0;">Stories from your tradition — so your child grows up knowing where they come from.</p>
-          </td>
-        </tr>
-        <tr>
-          <td style="padding:10px 12px;vertical-align:top;width:28px;font-size:18px;">✨</td>
-          <td style="padding:10px 0;">
-            <strong style="color:#f5f0e8;font-size:13px;">Their name in every story</strong>
-            <p style="font-size:12px;color:#a8a39a;margin:4px 0 0;">Add your child's name, family members, even their pet — and hear it woven into the story.</p>
-          </td>
-        </tr>
-        <tr>
-          <td style="padding:10px 12px;vertical-align:top;width:28px;font-size:18px;">🆓</td>
-          <td style="padding:10px 0;">
-            <strong style="color:#f5f0e8;font-size:13px;">100% free to start</strong>
-            <p style="font-size:12px;color:#a8a39a;margin:4px 0 0;">No credit card. No catch. Listen to stories tonight.</p>
-          </td>
-        </tr>
-      </table>
-    </div>
+    <p style="font-size:15px;margin:0 0 16px;">Our son falls asleep to these every night now. No screen. Just a warm voice telling him a story where he is the main character.</p>
 
-    <!-- CTA -->
-    <div style="text-align:center;margin-bottom:24px;">
-      <a href="https://mysleepytale.com" style="display:inline-block;background:#f0a500;color:#0a0a0f;font-size:16px;font-weight:bold;padding:14px 36px;border-radius:50px;text-decoration:none;">
-        Try a Free Bedtime Story Tonight
-      </a>
-      <p style="color:#6e6a63;font-size:12px;margin:12px 0 0;">
-        No signup needed to browse. Takes 30 seconds.
-      </p>
-    </div>
+    <p style="font-size:15px;margin:0 0 16px;">We have 150+ stories and it is completely free to try. If your kids are between 2 and 10, I think they would love it.</p>
 
-    <!-- Personal note -->
-    <div style="background:#12121c;border-radius:16px;padding:20px 24px;margin-bottom:24px;border:1px solid #1a1a28;">
-      <p style="font-size:13px;line-height:1.7;margin:0;">
-        We are a small team of parents in Toronto who built this for our own kids. We hope your family loves it as much as ours does.
-      </p>
-      <p style="font-size:13px;line-height:1.7;margin:8px 0 0;">
-        Warm regards,<br>
-        <strong style="color:#f5f0e8;">Deepti &amp; Prat</strong><br>
-        <span style="color:#6e6a63;">Founders, My Sleepy Tale</span>
-      </p>
-    </div>
+    <p style="font-size:15px;margin:0 0 24px;"><a href="https://mysleepytale.com" style="color:#b8860b;">mysleepytale.com</a></p>
 
-    <!-- Footer -->
-    <p style="color:#4a4a5a;font-size:11px;text-align:center;margin-top:32px;">
-      My Sleepy Tale · Toronto, Canada<br>
-      <a href="https://mysleepytale.com" style="color:#f0a500;">mysleepytale.com</a> · <a href="https://instagram.com/mysleepytale_official" style="color:#f0a500;">@mysleepytale_official</a><br>
-      <span style="color:#3a3832;font-size:10px;margin-top:8px;display:inline-block;">You received this because you expressed interest in children's activities in Toronto. <a href="https://mysleepytale.com/settings?unsubscribe=true" style="color:#4a4a5a;">Unsubscribe</a></span>
+    <p style="font-size:15px;margin:0 0 4px;">Cheers,</p>
+    <p style="font-size:15px;margin:0 0 4px;"><strong>Prat</strong></p>
+    <p style="font-size:13px;color:#888;margin:0;">Dad of a 5-year-old in Toronto</p>
+
+    <p style="font-size:11px;color:#bbb;margin:32px 0 0;border-top:1px solid #eee;padding-top:12px;">
+      <a href="https://mysleepytale.com/settings?unsubscribe=true" style="color:#bbb;">Unsubscribe</a>
     </p>
   </div>
 </body>
@@ -120,32 +46,25 @@ function buildText(firstName) {
   const name = firstName || 'there';
   return `Hi ${name},
 
-Summer is here! The perfect time to start a bedtime tradition your children will remember forever.
+I wanted to share something my wife and I built for our son this year. Summer evenings are long, bedtime gets pushed later, and we were looking for something better than screen time before sleep.
 
-Imagine this: your child drifts off to sleep hearing a story with their own name in it. A story about courage from their own culture. Narrated in a warm, soothing voice.
+So we made My Sleepy Tale — audio bedtime stories that use your child's actual name. The stories teach values like kindness and courage, and come from different cultures.
 
-That is what My Sleepy Tale does. 150+ audio bedtime stories from 11 cultural traditions — Hindu, Islamic, Sikh, Catholic, Buddhist, Filipino, Hispanic, and more.
+Our son falls asleep to these every night now. No screen. Just a warm voice telling him a story where he is the main character.
 
-Why families love it:
-- No screens — audio only, no blue light
-- Your culture, their bedtime — stories from your tradition
-- Their name in every story — personalized narration
-- 100% free to start — no credit card needed
+We have 150+ stories and it is completely free to try. If your kids are between 2 and 10, I think they would love it.
 
-Try a free story tonight: https://mysleepytale.com
+mysleepytale.com
 
-We are a small team of parents in Toronto who built this for our own kids.
-
-Warm regards,
-Deepti & Prat
-Founders, My Sleepy Tale
-mysleepytale.com | @mysleepytale_official
+Cheers,
+Prat
+Dad of a 5-year-old in Toronto
 
 Unsubscribe: https://mysleepytale.com/settings?unsubscribe=true`;
 }
 
 async function sendOne(to, firstName) {
-  const subject = `${firstName || 'Hey'}, summer bedtime stories your kids will remember forever ☀️`;
+  const subject = `${firstName || 'Hi'}, something we built for our kids this summer`;
   const cmd = new SendEmailCommand({
     Source: `My Sleepy Tale <${FROM_EMAIL}>`,
     Destination: { ToAddresses: [to] },
