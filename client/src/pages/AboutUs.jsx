@@ -8,7 +8,7 @@ import PageTransition from '../components/PageTransition.jsx';
 
 const SEO = {
   title: 'About Us — My Sleepy Tale | Bedtime Stories That Teach Roots & Values',
-  description: 'My Sleepy Tale is a free bedtime story web space for multicultural families. 146+ stories from 11 cultural traditions — Hindu, Islamic, Catholic, Filipino, Hispanic & more. Personalized with your child\'s name, narrated with warm voices. Built in Toronto for families everywhere.',
+  description: 'My Sleepy Tale is a free bedtime story web space for multicultural families. 150+ stories from 11 cultural traditions — Hindu, Islamic, Catholic, Filipino, Hispanic & more. Personalized with your child\'s name, narrated with warm voices. Built in Toronto for families everywhere.',
   ogImage: 'https://storage.googleapis.com/qissaa-61a78.firebasestorage.app/og/aboutus.png',
   url: 'https://mysleepytale.com/aboutus',
 };
@@ -16,7 +16,7 @@ const SEO = {
 const fadeUp = { initial: { opacity: 0, y: 24 }, whileInView: { opacity: 1, y: 0 }, viewport: { once: true, margin: '-40px' }, transition: { duration: 0.5 } };
 
 const STATS = [
-  { num: '146+', label: 'Bedtime Stories', icon: '📖' },
+  { num: '150+', label: 'Bedtime Stories', icon: '📖' },
   { num: '49', label: 'Story Series', icon: '📚' },
   { num: '11', label: 'Cultural Traditions', icon: '🌍' },
   { num: '3', label: 'Languages', icon: '🗣️' },
@@ -293,13 +293,133 @@ export default function AboutUs() {
               Start Your Child's Journey Tonight
             </h2>
             <p className="text-sm text-ink-muted mt-3 max-w-md mx-auto">
-              146+ stories from 11 traditions. Personalized. Narrated. Free.
+              150+ stories from 11 traditions. Personalized. Narrated. Free.
             </p>
             <button onClick={() => navigate('/')}
               className="mt-6 rounded-full bg-gold px-10 py-4 text-base font-bold text-bg-base shadow-glow transition hover:brightness-110 active:scale-95">
               Explore Stories Now
             </button>
             <p className="text-[10px] text-ink-muted mt-3">No signup required to browse. Free forever for basic access.</p>
+          </motion.div>
+        </section>
+
+        {/* ═══ PRICING ═══ */}
+        <section className="px-6 py-20">
+          <motion.div {...fadeUp} className="max-w-5xl mx-auto">
+            <div className="text-center mb-12">
+              <span className="inline-block bg-gold/10 text-gold text-[10px] font-bold uppercase tracking-widest px-4 py-1.5 rounded-full ring-1 ring-gold/20 mb-4">Pricing</span>
+              <h2 className="text-3xl lg:text-4xl font-bold text-ink" style={{ fontFamily: 'Fraunces, serif' }}>
+                Simple, Fair Pricing
+              </h2>
+              <p className="text-sm text-ink-muted mt-3 max-w-lg mx-auto">Start free. Upgrade when your family wants more. Cancel anytime.</p>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
+
+              {/* Free */}
+              <div className="rounded-2xl bg-white/[.03] ring-1 ring-white/10 p-6 flex flex-col">
+                <div className="mb-4">
+                  <h3 className="text-lg font-bold text-ink">Free</h3>
+                  <p className="text-3xl font-bold text-ink mt-2" style={{ fontFamily: 'Fraunces, serif' }}>CA$0</p>
+                  <p className="text-xs text-ink-muted mt-1">forever</p>
+                </div>
+                <ul className="space-y-3 flex-1 mb-6">
+                  {[
+                    '150+ pre-recorded bedtime stories',
+                    '49 multi-episode series',
+                    '11 cultural traditions',
+                    'Audio narration (generic)',
+                    'Text personalized with child name',
+                    '3 stories per week generation',
+                    '1 child profile',
+                  ].map(f => (
+                    <li key={f} className="flex items-start gap-2 text-xs text-ink-muted">
+                      <span className="text-green-400 mt-0.5 shrink-0">✓</span> {f}
+                    </li>
+                  ))}
+                </ul>
+                <button onClick={() => navigate('/')}
+                  className="w-full rounded-xl bg-white/5 py-3 text-sm font-bold text-ink ring-1 ring-white/10 transition hover:ring-gold/30">
+                  Get Started Free
+                </button>
+              </div>
+
+              {/* Pro — Summer Sale */}
+              <div className="rounded-2xl bg-gold/[.06] ring-2 ring-gold/30 p-6 flex flex-col relative">
+                <div className="absolute -top-3 left-1/2 -translate-x-1/2 bg-gold text-bg-base text-[10px] font-bold px-4 py-1 rounded-full uppercase tracking-wider">
+                  Most Popular
+                </div>
+                <div className="mb-4">
+                  <h3 className="text-lg font-bold text-gold">Pro</h3>
+                  <div className="flex items-baseline gap-2 mt-2">
+                    <p className="text-3xl font-bold text-gold" style={{ fontFamily: 'Fraunces, serif' }}>CA$9</p>
+                    <span className="text-sm text-ink-dim line-through">CA$29</span>
+                    <span className="text-[10px] text-green-400 font-bold">/month</span>
+                  </div>
+                  <p className="text-xs text-green-400 mt-1 font-bold">Summer 2026 discount — 69% off</p>
+                </div>
+                <ul className="space-y-3 flex-1 mb-6">
+                  {[
+                    'Everything in Free',
+                    'Audio personalized with child name',
+                    '3 personalized stories per day',
+                    'Unlimited story generation',
+                    'Up to 30 min stories',
+                    '3 child profiles',
+                    'Voice cloning',
+                    'Festival story packs',
+                    'Private series + contributor flow',
+                    '90-day story archive',
+                  ].map(f => (
+                    <li key={f} className="flex items-start gap-2 text-xs text-ink-muted">
+                      <span className="text-gold mt-0.5 shrink-0">✓</span> {f}
+                    </li>
+                  ))}
+                </ul>
+                <button onClick={() => navigate('/settings')}
+                  className="w-full rounded-xl bg-gold py-3 text-sm font-bold text-bg-base shadow-glow transition hover:brightness-110 active:scale-95">
+                  Upgrade to Pro
+                </button>
+              </div>
+
+              {/* Family — Summer Sale */}
+              <div className="rounded-2xl bg-purple-500/[.04] ring-1 ring-purple-500/20 p-6 flex flex-col">
+                <div className="mb-4">
+                  <h3 className="text-lg font-bold text-purple-400">Family</h3>
+                  <div className="flex items-baseline gap-2 mt-2">
+                    <p className="text-3xl font-bold text-purple-400" style={{ fontFamily: 'Fraunces, serif' }}>CA$59</p>
+                    <span className="text-sm text-ink-dim line-through">CA$199</span>
+                    <span className="text-[10px] text-green-400 font-bold">/month</span>
+                  </div>
+                  <p className="text-xs text-green-400 mt-1 font-bold">Summer 2026 discount — 70% off</p>
+                </div>
+                <ul className="space-y-3 flex-1 mb-6">
+                  {[
+                    'Everything in Pro',
+                    '50 personalized stories per day',
+                    '50 story generations per day',
+                    '10 child profiles',
+                    'Unlimited voice cloning',
+                    'Offline listening',
+                    'Priority AI narration',
+                    'Creator program access',
+                    'Unlimited story archive',
+                    'Early access to new features',
+                  ].map(f => (
+                    <li key={f} className="flex items-start gap-2 text-xs text-ink-muted">
+                      <span className="text-purple-400 mt-0.5 shrink-0">✓</span> {f}
+                    </li>
+                  ))}
+                </ul>
+                <button onClick={() => navigate('/settings')}
+                  className="w-full rounded-xl bg-purple-500/20 py-3 text-sm font-bold text-purple-400 ring-1 ring-purple-500/30 transition hover:bg-purple-500/30 active:scale-95">
+                  Upgrade to Family
+                </button>
+              </div>
+
+            </div>
+
+            <p className="text-center text-[10px] text-ink-dim mt-6">All plans cancel anytime. No contracts. Summer pricing available through September 2026.</p>
           </motion.div>
         </section>
 

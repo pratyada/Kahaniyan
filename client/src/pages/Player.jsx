@@ -87,6 +87,7 @@ import { useFamilyProfile } from '../hooks/useFamilyProfile.js';
 import { useNarrator } from '../hooks/useNarrator.js';
 import { valueMeta } from '../utils/constants.js';
 import { useStreak } from '../hooks/useStreak.js';
+import { canPersonalize, recordPersonalized, personalizedToday, personalizeLimit } from '../utils/tierGate.js';
 import PostStoryReflection from '../components/PostStoryReflection.jsx';
 import ShareCardSheet from '../components/ShareCardSheet.jsx';
 import { useSeriesProgress } from '../hooks/useSeriesProgress.js';
@@ -341,8 +342,21 @@ function PlayerInner() {
       try {
         let audio;
 
+        // Priority 0: Check for personalized cached audio (child-name specific)
+        const childName = profile?.childName;
+        const hasPersonalizedName = childName && childName !== 'little one' && current?.text?.includes(childName);
+        if (hasPersonalizedName && current.id) {
+          const personalBlob = await getCachedAudio(`${current.id}_${childName}`);
+          if (personalBlob) {
+            console.log(`[My Sleepy Tale:Player] Playing personalized cache for ${childName}`);
+            const url = URL.createObjectURL(personalBlob);
+            audio = narrator.loadCached(url);
+            setPersonalized(true);
+          }
+        }
+
         // Priority 1: Check IndexedDB for locally cached blob (instant)
-        const localBlob = current.id ? await getCachedAudio(current.id) : null;
+        const localBlob = (!audio && current.id) ? await getCachedAudio(current.id) : null;
         if (localBlob) {
           console.log('[My Sleepy Tale:Player] Playing from local cache (instant)');
           const url = URL.createObjectURL(localBlob);
@@ -479,6 +493,8 @@ function PlayerInner() {
   // When story ends, show reflection → share card → feedback (or next episode for series)
   const [showReflection, setShowReflection] = useState(false);
   const [showShareCard, setShowShareCard] = useState(false);
+  const [personalizing, setPersonalizing] = useState(false);
+  const [personalized, setPersonalized] = useState(false);
   const [showFeedback, setShowFeedback] = useState(false);
   const [nextSeriesEpisode, setNextSeriesEpisode] = useState(null);
   const [feedbackRating, setFeedbackRating] = useState(0);
@@ -907,6 +923,65 @@ function PlayerInner() {
                   <RotateCcw size={14} />
                 </button>
               </div>
+
+              {/* Personalize with child's name — Pro feature */}
+              {profile?.childName && profile.childName !== 'little one' && current?.text?.includes(profile.childName) && !personalized && (
+                <div className="mt-4 flex justify-center">
+                  {canPersonalize(profile?.tier) ? (
+                    <button
+                      disabled={personalizing}
+                      onClick={async () => {
+                        setPersonalizing(true);
+                        try {
+                          // Stop current audio
+                          narrator.stop();
+                          // Generate personalized TTS
+                          const audio = await narrator.generate({
+                            text: current.text,
+                            narrator: narratorName,
+                            language: lang,
+                            customVoiceId,
+                            country: profile?.country || 'OTHER',
+                            beliefs: profile?.beliefs || [],
+                          });
+                          if (audio) {
+                            setAudio(audio);
+                            audio.playbackRate = speed;
+                            audio.onplay = () => setIsPlaying(true);
+                            audio.onpause = () => setIsPlaying(false);
+                            await audio.play();
+                            // Cache with child-name key
+                            const blob = narrator.getBlob();
+                            if (blob && current.id) {
+                              setCachedAudio(`${current.id}_${profile.childName}`, blob);
+                              pruneAudioCache(20);
+                            }
+                            recordPersonalized();
+                            setPersonalized(true);
+                          }
+                        } catch (e) {
+                          alert('Personalization failed: ' + e.message);
+                        }
+                        setPersonalizing(false);
+                      }}
+                      className="rounded-full bg-gold/20 px-5 py-2 text-[11px] font-bold text-gold ring-1 ring-gold/30 transition active:scale-95 disabled:opacity-50"
+                    >
+                      {personalizing ? '✨ Generating...' : `✨ Personalize for ${profile.childName} (${personalizedToday()}/${personalizeLimit(profile?.tier)} today)`}
+                    </button>
+                  ) : profile?.tier === 'free' ? (
+                    <button
+                      onClick={() => navigate('/settings')}
+                      className="rounded-full bg-gold/10 px-5 py-2 text-[11px] font-bold text-gold/60 ring-1 ring-gold/20 transition active:scale-95"
+                    >
+                      🔒 Personalize for {profile.childName} — Pro feature
+                    </button>
+                  ) : (
+                    <span className="text-[10px] text-gold/50">
+                      ✨ Personalization limit reached ({personalizeLimit(profile?.tier)}/day)
+                    </span>
+                  )}
+                </div>
+              )}
             </div>
 
 

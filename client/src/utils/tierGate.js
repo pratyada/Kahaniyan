@@ -12,6 +12,8 @@ export const TIERS = {
     festivalPacks: false,
     offline: false,
     voiceCloning: false,
+    personalizedAudio: false,
+    personalizedPerDay: 0,
   },
   pro: {
     label: 'Pro',
@@ -25,6 +27,8 @@ export const TIERS = {
     festivalPacks: true,
     offline: false,
     voiceCloning: true,
+    personalizedAudio: true,
+    personalizedPerDay: 3,
   },
   enterprise: {
     label: 'Enterprise',
@@ -96,4 +100,37 @@ export { isPromoActive };
 
 export function archiveDaysFor(tierKey) {
   return (TIERS[tierKey] || TIERS.free).archiveDays;
+}
+
+// Personalized audio tracking
+const PERSONALIZE_KEY = 'mst:personalizeUsage';
+
+function loadPersonalizeUsage() {
+  try {
+    const raw = JSON.parse(localStorage.getItem(PERSONALIZE_KEY) || '{"date":"","count":0}');
+    const today = new Date().toISOString().slice(0, 10);
+    if (raw.date !== today) return { date: today, count: 0 };
+    return raw;
+  } catch { return { date: new Date().toISOString().slice(0, 10), count: 0 }; }
+}
+
+export function personalizedToday() {
+  return loadPersonalizeUsage().count;
+}
+
+export function canPersonalize(tierKey) {
+  const tier = TIERS[tierKey] || TIERS.free;
+  if (!tier.personalizedAudio) return false;
+  return loadPersonalizeUsage().count < tier.personalizedPerDay;
+}
+
+export function recordPersonalized() {
+  const u = loadPersonalizeUsage();
+  u.count++;
+  localStorage.setItem(PERSONALIZE_KEY, JSON.stringify(u));
+  return u;
+}
+
+export function personalizeLimit(tierKey) {
+  return (TIERS[tierKey] || TIERS.free).personalizedPerDay;
 }
