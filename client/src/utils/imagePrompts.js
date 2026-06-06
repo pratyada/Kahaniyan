@@ -530,6 +530,58 @@ dc_nz_ep5_facts: 'Fun illustration of a kiwi bird next to a kiwi fruit (same nam
   mh_ep4_battuta: 'Ancient map unrolling across continents, golden path traced across Africa, Asia, Europe, compass rose, greatest journey ever, no human figures',
   mh_ep5_firnas: 'Pair of wings made of silk and feathers spread wide against a blue sky, clouds parting, dream of flight, no human figures',
 
+  // ─── Sikh standalone stories ───
+  sikh_river_teaches: 'A calm river flowing through golden Punjab fields at sunset, moonlight reflecting on water, misty banks, a trail of golden sparkles in the water, no text',
+  sikh_needle_thread: 'A single golden needle and thread resting on a soft cloth beside a flickering oil lamp, simple Punjabi room, starry night visible through window, no text',
+  sikh_bhai_lalo_bread: 'A humble Punjab kitchen with warm firelight, simple roti on a hot tawa, earthen pots on wooden shelf, cozy village night, steam rising, no text',
+  sikh_jasmine_garden: 'A moonlit Mughal garden with blooming jasmine flowers, dewdrops on petals, a single torn flower on the path, gentle peaceful night, no text',
+  sikh_cobbler_prayer: 'A humble cobbler workshop with leather and tools, a small oil lamp glowing warmly, devotional atmosphere, Punjab village at night, no text',
+  sikh_milk_jasmine: 'A brass bowl filled to the brim with milk and a single jasmine flower floating in it, warm candlelight on a simple table, nighttime, no text',
+  sikh_two_swords: 'Two ornate ceremonial swords crossed on deep blue velvet, the Khanda symbol glowing softly in golden light behind them, candlelight, no text',
+  sikh_bhai_kanhaiya: 'A leather water pouch and a small cup resting on a moonlit field, gentle golden glow, dewdrops on grass, peaceful night, no text',
+  sikh_mata_khivi_langar: 'A warm gurdwara langar kitchen with large copper pots bubbling with food, steam rising, oil lamps casting golden light, chapati on tawa, no text',
+  sikh_youngest_guru: 'A small glowing lamp surrounded by healing herbs and a bowl of water, soft golden light radiating outward in concentric circles, misty atmosphere, no text',
+  sikh_lion_roars: 'A majestic illustrated lion sitting peacefully on a Punjab hilltop, golden mane glowing in moonlight, wheat fields stretching below, starry sky, no text',
+  sikh_string_of_kite: 'A colorful kite soaring high against a deep purple and gold sunset sky over Punjab wheat fields, the string catching golden light, no text',
+  sikh_guru_ka_langar: 'A warm gurdwara langar hall with rows of identical steel plates on the floor, oil lamps along the walls, golden community kitchen glow, no text',
+  sikh_sound_waheguru: 'A child sitting cross-legged on a blanket by a window at night, eyes closed, moonlight and stars, a single candle, peaceful meditation, no text',
+  sikh_stars_amritsar: 'The Golden Temple (Harmandir Sahib) reflected perfectly in the sacred pool at night, deep blue starry sky, golden dome glowing warmly, serene, no text',
+
+  // ─── Sikh series: Ten Gurus — Lights of Wisdom ───
+  stgl_ep1_first_light: 'A glowing golden Ik Onkar symbol floating above a calm Punjabi river at night, soft moonlight, misty banks, golden sparkles in the air, watercolor style, no text',
+  stgl_ep2_gift_of_letters: 'Gurmukhi script letters glowing in soft gold light on an ancient scroll, a candle nearby, ink pot and reed pen, Punjab night sky through window, no text',
+  stgl_ep3_sits_together: 'A warm langar hall with rows of simple plates and bowls on the floor, golden lamplight, steam rising from pots of dal and rice, peaceful, no text',
+  stgl_ep4_golden_city: 'The Golden Temple reflected in the sacred pool under a canopy of stars, golden dome glowing against deep navy sky, no people, watercolor, no text',
+  stgl_ep5_holy_book: 'The Guru Granth Sahib resting on a decorated palki throne with marigold garlands, soft golden candlelight, silk rumala cloths, serene atmosphere, no text',
+
+  // ─── Sikh series: Ten Gurus — Warriors of Peace ───
+  stgw_ep1_two_swords: 'Two ornate swords (miri-piri) crossed elegantly on velvet, Khanda symbol glowing softly behind them in golden light, candlelight atmosphere, no text',
+  stgw_ep2_healing_garden: 'A moonlit medicinal herb garden with colorful healing plants, mortar and pestle, dewdrops catching starlight, peaceful Punjab landscape, no text',
+  stgw_ep3_young_guru: 'A small glowing golden lamp surrounded by healing herbs and a bowl of water, soft light radiating outward, mist and golden sparkles, no text',
+  stgw_ep4_shield_of_faith: 'A golden shield with the Khanda symbol standing upright in moonlight, different prayer symbols (cross, crescent, om) protected behind it, no text',
+  stgw_ep5_brave_khalsa: 'Five kesri (saffron) Nishan Sahib flags standing tall on a hilltop at dawn, golden light breaking through dramatic clouds, Punjab vista, no text',
+
+  // ─── Sikh series: Stories from the Gurdwara ───
+  ssfg_ep1_langar: 'Large copper pots of food in a gurdwara kitchen, warm bubbling steam, golden light from oil lamps, chapati on a hot tawa, community kitchen, no text',
+  ssfg_ep2_karah_prasad: 'A brass bowl of golden karah prasad with a small wooden spoon, marigold petals scattered around, warm candlelight on cloth, no text',
+  ssfg_ep3_kirtan: 'Harmonium and tabla instruments arranged in a gurdwara, soft golden light filtering in, Guru Granth Sahib draped in silk visible in background, peaceful, no text',
+  ssfg_ep4_seva: 'Clean shoes arranged neatly in rows outside a gurdwara entrance, a small broom leaning against the marble wall, moonlight on the floor, no text',
+  ssfg_ep5_panj_pyare: 'Five kesri turbans arranged in a circle on the ground, a steel bowl of amrit with a khanda dagger resting in the center, starlight, no text',
+
+  // ─── Sikh series: Brave Hearts of Punjab ───
+  sbhp_ep1_kanhaiya: 'A leather water pouch (mushak) resting on moonlit grass on a quiet battlefield at dusk, water droplets glistening, peaceful contrast, no text',
+  sbhp_ep2_mai_bhago: 'A powerful horse standing proud on a Punjab hilltop at golden dusk, a spear planted in the ground beside it, kesri flag waving, no text',
+  sbhp_ep3_banda_singh: 'A simple throne with balanced scales of justice on it, Punjab fortress walls in background, moonlight, wheat fields surrounding, no text',
+  sbhp_ep4_mani_singh: 'Ancient manuscripts and scrolls spread on a scholar desk, quill pen, oil lamp glowing, beautiful Gurmukhi text on pages, library, no text',
+  sbhp_ep5_hari_singh: 'A majestic fortress gate in a mountain pass, lion statues flanking the entrance, moonlit snow-capped peaks, Punjab flag, no text',
+
+  // ─── Sikh series: Little Sikh, Big Heart ───
+  slbh_ep1_patka: 'A small colorful patka (head covering) folded neatly on a child bedside table, a wooden kangha comb beside it, warm lamplight, cozy bedroom, no text',
+  slbh_ep2_waheguru_before_bed: 'A small steel kara bracelet resting on a prayer cushion beside a child bed, moonlight streaming through curtains, stars visible outside, peaceful, no text',
+  slbh_ep3_first_gurdwara: 'A gurdwara exterior with beautiful golden domes glowing against a starry night sky, small shoes at the entrance, warm welcoming light from within, no text',
+  slbh_ep4_sharing_plate: 'Overhead view of small hands placing a warm roti on a shared steel plate, warm kitchen light, simple Punjabi meal with dal and sabzi, no text',
+  slbh_ep5_everyone_equal: 'A long row of identical simple steel plates and glasses set up for langar, warm golden light from oil lamps along the row, all equal, no text',
+
 };
 
 
