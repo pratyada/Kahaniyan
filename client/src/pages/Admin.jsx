@@ -6,6 +6,8 @@ import { useAuth } from '../hooks/useAuth.jsx';
 import { COLLECTIONS as COLLECTIONS_DATA } from '../data/collections.js';
 import { SERIES as SERIES_DATA } from '../data/series.js';
 import { RELIGIONS, COUNTRIES, VALUES, DURATIONS, LANGUAGES } from '../utils/constants.js';
+import { CULTURAL_LESSONS as ALL_LESSONS_DATA } from '../data/culturalLessons.js';
+import { SERIES as ALL_SERIES_DATA } from '../data/series.js';
 import { APP_NAME, APP_VERSION } from '../utils/version.js';
 import { GA_MEASUREMENT_ID, db } from '../lib/firebase.js';
 import { doc, setDoc, collection, getDocs, query, orderBy, limit, startAfter, where, updateDoc, getCountFromServer } from 'firebase/firestore';
@@ -243,15 +245,11 @@ export default function Admin() {
                   {(() => {
                     // Count stories per tradition from actual data
                     const storyCounts = {};
-                    try {
-                      const { CULTURAL_LESSONS } = require('../data/culturalLessons.js');
-                      const { SERIES } = require('../data/series.js');
-                      CULTURAL_LESSONS.forEach(l => { storyCounts[l.tradition] = (storyCounts[l.tradition] || 0) + 1; });
-                      SERIES.forEach(s => {
-                        const t = s.tradition || 'universal';
-                        storyCounts[t] = (storyCounts[t] || 0) + (s.episodes?.length || 0);
-                      });
-                    } catch {}
+                    ALL_LESSONS_DATA.forEach(l => { storyCounts[l.tradition] = (storyCounts[l.tradition] || 0) + 1; });
+                    ALL_SERIES_DATA.forEach(s => {
+                      const t = s.tradition || 'universal';
+                      storyCounts[t] = (storyCounts[t] || 0) + (s.episodes?.length || 0);
+                    });
 
                     // Merge user belief counts + story counts
                     const allKeys = new Set([...Object.keys(stats.beliefs), ...Object.keys(storyCounts)]);
