@@ -10,6 +10,7 @@ const makeSteps = (name, t) => {
   const n = name || 'your child';
   return [
     { key: 'childName', title: t('onboarding.childName'), placeholder: 'e.g. Arjun', type: 'text' },
+    { key: 'gender', title: `Is ${n} a boy or girl?`, subtitle: 'This helps us use the right words in stories. You can skip this.', type: 'gender', optional: true },
     { key: 'age', title: t('onboarding.childAge'), placeholder: '6', type: 'number' },
     { key: 'language', title: t('onboarding.selectLanguage'), subtitle: 'Stories will be narrated in this language.', type: 'language' },
     { key: 'country', title: `Where does ${n} live?`, subtitle: 'Stories will include local places and culture.', type: 'country' },
@@ -230,6 +231,11 @@ export default function Onboarding() {
             {step === STEPS.length - 1 ? `${t('onboarding.done')} →` : `${t('common.next')} →`}
           </button>
         </div>
+        {current.optional && (
+          <button onClick={next} className="mt-3 text-xs text-ink-dim hover:text-ink-muted transition">
+            Skip this step
+          </button>
+        )}
       </div>
     </div>
   );
