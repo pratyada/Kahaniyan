@@ -2248,7 +2248,7 @@ function StoryLab({ showSettingsTabs }) {
     { key: 'wisdom-audio', label: 'Wisdom Stories', icon: '📖' },
     { key: 'collections', label: 'Collections', icon: '🎬' },
     { key: 'series', label: 'Series', icon: '📺' },
-    { key: 'user-stories', label: 'User Stories', icon: '✍️' },
+    { key: 'user-content', label: 'User Content', icon: '✍️' },
   ];
 
   const SETTINGS_TABS = [
@@ -2727,7 +2727,7 @@ function StoryLab({ showSettingsTabs }) {
       {subTab === 'wisdom-audio' && <WisdomAudioPanel />}
       {subTab === 'collections' && <CollectionsPanel />}
       {subTab === 'series' && <SeriesPanel />}
-      {subTab === 'user-stories' && <UserStoriesPanel />}
+      {subTab === 'user-content' && <UserStoriesPanel />}
 
       {/* ══════ VOICE FEEDBACK ══════ */}
       {subTab === 'voice-feedback' && <VoiceFeedbackPanel />}
