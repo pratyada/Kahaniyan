@@ -7,7 +7,7 @@ import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 
 export default function ContributeEpisode() {
   const { token } = useParams();
-  const { user, login } = useAuth();
+  const { user, loginGoogle } = useAuth();
   const navigate = useNavigate();
 
   const [invitation, setInvitation] = useState(null);
@@ -164,7 +164,7 @@ export default function ContributeEpisode() {
         {!user ? (
           <div className="rounded-2xl bg-white/5 ring-1 ring-white/10 p-8 text-center">
             <p className="text-[#c8c3ba] text-sm mb-4">Sign in with Google to submit your episode</p>
-            <button onClick={login}
+            <button onClick={loginGoogle}
               className="rounded-full bg-[#f0a500] px-8 py-3 text-sm font-bold text-[#0f0f17]">
               Sign in with Google
             </button>

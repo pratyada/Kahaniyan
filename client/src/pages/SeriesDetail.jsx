@@ -21,7 +21,7 @@ export default function SeriesDetail() {
   const { seriesId } = useParams();
   const navigate = useNavigate();
   const { load } = usePlayer();
-  const { user, login } = useAuth();
+  const { user, loginGoogle } = useAuth();
   const { profile } = useFamilyProfile();
   const { getSeriesProgress, isEpisodeComplete } = useSeriesProgress();
   const [galleryImages, setGalleryImages] = useState({});
@@ -523,7 +523,7 @@ export default function SeriesDetail() {
           <p className="text-sm text-ink-muted mt-2">
             Sign in to listen to the episodes and contribute your own.
           </p>
-          <button onClick={() => login()}
+          <button onClick={() => loginGoogle()}
             className="mt-6 rounded-full bg-gold px-8 py-3 text-sm font-bold text-bg-base shadow-glow transition active:scale-95">
             Sign in with Google
           </button>
