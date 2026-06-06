@@ -34,9 +34,9 @@ const CULTURES = {
     icon: '🌺',
   },
   sikh: {
-    title: 'Sikh Bedtime Stories for Kids — My Sleepy Tale',
-    description: 'Guru Nanak, Bhai Kanhaiya & Sikh traditions — personalized bedtime stories with your child\'s name. Free.',
-    image: 'https://mysleepytale.com/og/sikh.png',
+    title: 'Sikh Bedtime Stories for Kids — Guru Nanak, Ten Gurus & Punjab Tales | My Sleepy Tale',
+    description: '43 Sikh bedtime stories for kids. Guru Nanak Dev Ji, the Ten Gurus, Khalsa, langar, and Punjab tales. 5 series with 25 episodes. Audio stories personalized with your child\'s name. Free.',
+    image: 'https://mysleepytale.com/og/sikh-stories.jpg',
     icon: '☬',
   },
   buddhist: {

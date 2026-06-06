@@ -100,12 +100,12 @@ const FOOTER_LINKS = [
     title: 'Stories',
     links: [
       { label: 'Browse All Stories', to: '/' },
-      { label: 'Hindu Stories', to: '/?culture=hindu' },
-      { label: 'Sikh Stories', to: '/?culture=sikh' },
-      { label: 'Islamic Stories', to: '/?culture=muslim' },
-      { label: 'Catholic Stories', to: '/?culture=catholic' },
+      { label: 'Hindu Stories', to: '/hindu-bedtime-stories' },
+      { label: 'Sikh Stories', to: '/sikh-bedtime-stories' },
+      { label: 'Islamic Stories', to: '/islamic-stories-for-kids' },
+      { label: 'Catholic Stories', to: '/catholic-bedtime-stories' },
       { label: 'Filipino Stories', to: '/?culture=filipino' },
-      { label: 'Hispanic Stories', to: '/?culture=hispanic' },
+      { label: 'Hispanic Stories', to: '/hispanic-bedtime-stories' },
     ],
   },
   {
