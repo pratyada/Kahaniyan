@@ -234,29 +234,47 @@ export default function Admin() {
                 </div>
               </div>
 
-              {/* Beliefs */}
+              {/* Beliefs — Users + Stories */}
               <div className="rounded-2xl bg-[#1a1a28] p-6">
                 <h3 className="mb-4 text-xs font-bold uppercase tracking-wider text-[#a8a39a]">
                   Beliefs
                 </h3>
                 <div className="space-y-2">
-                  {Object.entries(stats.beliefs)
-                    .sort((a, b) => b[1] - a[1])
-                    .map(([key, count]) => {
-                      const r = RELIGIONS.find((x) => x.key === key);
-                      return (
-                        <div key={key} className="flex items-center justify-between">
-                          <span className="flex items-center gap-2 text-sm text-[#f5f0e8]">
-                            <span>{r?.icon}</span>
-                            {r?.label || key}
-                          </span>
-                          <span className="text-sm font-bold text-[#f0a500]">{count}</span>
-                        </div>
-                      );
-                    })}
-                  {Object.keys(stats.beliefs).length === 0 && (
-                    <p className="text-sm text-[#6e6a63]">No belief data yet.</p>
-                  )}
+                  {(() => {
+                    // Count stories per tradition from actual data
+                    const storyCounts = {};
+                    try {
+                      const { CULTURAL_LESSONS } = require('../data/culturalLessons.js');
+                      const { SERIES } = require('../data/series.js');
+                      CULTURAL_LESSONS.forEach(l => { storyCounts[l.tradition] = (storyCounts[l.tradition] || 0) + 1; });
+                      SERIES.forEach(s => {
+                        const t = s.tradition || 'universal';
+                        storyCounts[t] = (storyCounts[t] || 0) + (s.episodes?.length || 0);
+                      });
+                    } catch {}
+
+                    // Merge user belief counts + story counts
+                    const allKeys = new Set([...Object.keys(stats.beliefs), ...Object.keys(storyCounts)]);
+                    return [...allKeys]
+                      .sort((a, b) => (storyCounts[b] || 0) - (storyCounts[a] || 0))
+                      .map(key => {
+                        const r = RELIGIONS.find(x => x.key === key);
+                        const userCount = stats.beliefs[key] || 0;
+                        const storyCount = storyCounts[key] || 0;
+                        return (
+                          <div key={key} className="flex items-center justify-between">
+                            <span className="flex items-center gap-2 text-sm text-[#f5f0e8]">
+                              <span>{r?.icon || '🌍'}</span>
+                              {r?.label || key}
+                            </span>
+                            <span className="flex items-center gap-3">
+                              <span className="text-[10px] text-[#6e6a63]">{userCount} users</span>
+                              <span className="text-sm font-bold text-[#f0a500]">{storyCount} stories</span>
+                            </span>
+                          </div>
+                        );
+                      });
+                  })()}
                 </div>
               </div>
 
