@@ -3106,27 +3106,56 @@ function WisdomAudioPanel() {
       </div>
 
       {/* ── Bulk Generate (OpenAI) ── */}
-      <div className="flex flex-wrap items-center gap-2 rounded-xl bg-bg-elevated p-3 ring-1 ring-white/5">
-        <span className="text-[10px] font-bold uppercase tracking-wider text-ink-dim w-full sm:w-auto">OpenAI Bulk ({filtered.filter(l => !urls[l.id] || !imageUrls[l.id]).length} incomplete)</span>
-        <button onClick={() => bulkGenerate('audio')} disabled={bulkRunning || !!generating}
-          className="rounded-lg bg-[#f0a500]/10 px-4 py-2 text-xs font-bold text-gold hover:bg-[#f0a500]/20 disabled:opacity-30">
-          All Audio
-        </button>
-        <button onClick={() => bulkGenerate('image')} disabled={bulkRunning || !!generating}
-          className="rounded-lg bg-[#539df5]/10 px-4 py-2 text-xs font-bold text-[#539df5] hover:bg-[#539df5]/20 disabled:opacity-30">
-          All Images
-        </button>
-        <button onClick={() => bulkGenerate('all')} disabled={bulkRunning || !!generating}
-          className="rounded-lg bg-[#7ad9a1]/10 px-4 py-2 text-xs font-bold text-[#7ad9a1] hover:bg-[#7ad9a1]/20 disabled:opacity-30">
-          Audio + Images
-        </button>
-        {bulkRunning && (
-          <button onClick={() => { bulkAbort.current = true; }}
-            className="rounded-lg bg-red-400/10 px-4 py-2 text-xs font-bold text-red-400 hover:bg-red-400/20">
-            Stop
+      <div className="rounded-xl bg-bg-elevated p-4 ring-1 ring-white/5 space-y-3">
+        <div className="flex items-center justify-between">
+          <span className="text-xs font-bold uppercase tracking-wider text-ink-dim">Bulk Generate Missing</span>
+          <span className="text-xs text-ink-dim">{filtered.length} stories in view</span>
+        </div>
+
+        {/* Missing counts */}
+        <div className="grid grid-cols-3 gap-2">
+          <div className="rounded-lg bg-gold/5 p-2 text-center ring-1 ring-gold/10">
+            <div className="text-lg font-bold text-gold">{filtered.filter(l => !urls[l.id]).length}</div>
+            <div className="text-[8px] text-ink-dim">Missing Audio</div>
+          </div>
+          <div className="rounded-lg bg-info/5 p-2 text-center ring-1 ring-info/10">
+            <div className="text-lg font-bold text-info">{filtered.filter(l => !imageUrls[l.id]).length}</div>
+            <div className="text-[8px] text-ink-dim">Missing Images</div>
+          </div>
+          <div className="rounded-lg bg-negative/5 p-2 text-center ring-1 ring-negative/10">
+            <div className="text-lg font-bold text-negative">{filtered.filter(l => !urls[l.id] || !imageUrls[l.id]).length}</div>
+            <div className="text-[8px] text-ink-dim">Total Incomplete</div>
+          </div>
+        </div>
+
+        {/* Generate buttons */}
+        <div className="flex flex-wrap gap-2">
+          <button onClick={() => bulkGenerate('audio')} disabled={bulkRunning || !!generating || filtered.filter(l => !urls[l.id]).length === 0}
+            className="flex-1 rounded-lg bg-gold/10 px-4 py-2.5 text-xs font-bold text-gold hover:bg-gold/20 disabled:opacity-30 transition">
+            🔊 Generate {filtered.filter(l => !urls[l.id]).length} Missing Audio
           </button>
+          <button onClick={() => bulkGenerate('image')} disabled={bulkRunning || !!generating || filtered.filter(l => !imageUrls[l.id]).length === 0}
+            className="flex-1 rounded-lg bg-info/10 px-4 py-2.5 text-xs font-bold text-info hover:bg-info/20 disabled:opacity-30 transition">
+            🖼️ Generate {filtered.filter(l => !imageUrls[l.id]).length} Missing Images
+          </button>
+        </div>
+        <button onClick={() => bulkGenerate('all')} disabled={bulkRunning || !!generating || filtered.filter(l => !urls[l.id] || !imageUrls[l.id]).length === 0}
+          className="w-full rounded-lg bg-[#7ad9a1]/10 px-4 py-2.5 text-xs font-bold text-[#7ad9a1] hover:bg-[#7ad9a1]/20 disabled:opacity-30 transition">
+          ⚡ Generate All Missing (Audio + Images)
+        </button>
+        {/* Progress + Stop */}
+        {(bulkRunning || bulkProgress) && (
+          <div className="flex items-center gap-3 rounded-lg bg-bg-card p-3 ring-1 ring-white/5">
+            {bulkRunning && <div className="h-4 w-4 animate-spin rounded-full border-2 border-gold/30 border-t-gold shrink-0" />}
+            <span className="text-[11px] text-gold truncate flex-1">{bulkProgress}</span>
+            {bulkRunning && (
+              <button onClick={() => { bulkAbort.current = true; }}
+                className="shrink-0 rounded-lg bg-negative/10 px-3 py-1.5 text-[10px] font-bold text-negative hover:bg-negative/20">
+                Stop
+              </button>
+            )}
+          </div>
         )}
-        {bulkProgress && <span className="text-[10px] text-gold truncate ml-auto">{bulkProgress}</span>}
       </div>
 
       {/* ── ElevenLabs Premium Audio ── */}
