@@ -77,26 +77,26 @@ export default function RecordVoice() {
   };
 
   return (
-    <div className="flex min-h-screen flex-col items-center justify-center bg-[#0a0a0f] px-6 py-10 text-[#f5f0e8]">
+    <div className="flex min-h-screen flex-col items-center justify-center bg-bg-base px-6 py-10 text-ink">
       <div className="w-full max-w-md">
         {/* Brand */}
         <div className="mb-8 text-center">
           <div className="mb-2 text-4xl">🌙</div>
-          <h1 className="font-display text-2xl font-bold text-[#f0a500]">{APP_NAME}</h1>
-          <p className="mt-1 text-sm text-[#a8a39a]">Voice recording</p>
+          <h1 className="font-display text-2xl font-bold text-gold">{APP_NAME}</h1>
+          <p className="mt-1 text-sm text-ink-muted">Voice recording</p>
         </div>
 
         {/* LOADING */}
         {status === 'loading' && (
-          <div className="text-center text-sm text-[#a8a39a]">Loading…</div>
+          <div className="text-center text-sm text-ink-muted">Loading…</div>
         )}
 
         {/* EXPIRED */}
         {status === 'expired' && (
-          <div className="rounded-2xl bg-[#1a1a28] p-6 text-center">
+          <div className="rounded-2xl bg-bg-elevated p-6 text-center">
             <div className="mb-3 text-4xl">⏰</div>
-            <h2 className="font-display text-xl font-bold text-[#f0a500]">Link expired</h2>
-            <p className="mt-2 text-sm text-[#a8a39a]">
+            <h2 className="font-display text-xl font-bold text-gold">Link expired</h2>
+            <p className="mt-2 text-sm text-ink-muted">
               This recording link has expired. Ask {link?.userEmail?.split('@')[0] || 'the sender'} to
               send a new one from the app.
             </p>
@@ -105,10 +105,10 @@ export default function RecordVoice() {
 
         {/* ERROR */}
         {status === 'error' && (
-          <div className="rounded-2xl bg-[#1a1a28] p-6 text-center">
+          <div className="rounded-2xl bg-bg-elevated p-6 text-center">
             <div className="mb-3 text-4xl">❌</div>
             <h2 className="font-display text-xl font-bold text-[#f3727f]">Something went wrong</h2>
-            <p className="mt-2 text-sm text-[#a8a39a]">
+            <p className="mt-2 text-sm text-ink-muted">
               This link may be invalid or your browser doesn't support recording.
             </p>
           </div>
@@ -116,23 +116,23 @@ export default function RecordVoice() {
 
         {/* DONE */}
         {status === 'done' && (
-          <div className="rounded-2xl bg-[#1a1a28] p-6 text-center">
+          <div className="rounded-2xl bg-bg-elevated p-6 text-center">
             <div className="mb-3 text-4xl">✅</div>
             <h2 className="font-display text-xl font-bold text-[#7ad9a1]">Voice recorded!</h2>
-            <p className="mt-2 text-sm text-[#a8a39a]">
+            <p className="mt-2 text-sm text-ink-muted">
               Thank you{link?.characterName ? `, ${link.characterName}` : ''}! Your voice has been
               saved. {link?.userEmail?.split('@')[0] || 'The family'} can now use it in bedtime
               stories.
             </p>
-            <p className="mt-4 text-xs text-[#6e6a63]">You can close this tab.</p>
+            <p className="mt-4 text-xs text-ink-dim">You can close this tab.</p>
           </div>
         )}
 
         {/* UPLOADING */}
         {status === 'uploading' && (
-          <div className="rounded-2xl bg-[#1a1a28] p-6 text-center">
+          <div className="rounded-2xl bg-bg-elevated p-6 text-center">
             <div className="mb-3 text-4xl animate-pulse">☁️</div>
-            <h2 className="text-lg font-bold text-[#f0a500]">Saving your voice…</h2>
+            <h2 className="text-lg font-bold text-gold">Saving your voice…</h2>
           </div>
         )}
 
@@ -140,26 +140,26 @@ export default function RecordVoice() {
         {(status === 'ready' || status === 'recording') && link && (
           <div className="space-y-6">
             {/* Who is recording */}
-            <div className="rounded-2xl bg-[#1a1a28] p-4 text-center">
+            <div className="rounded-2xl bg-bg-elevated p-4 text-center">
               <div className="mb-2 text-3xl">{link.emoji || '🎤'}</div>
-              <div className="text-lg font-bold text-[#f5f0e8]">
+              <div className="text-lg font-bold text-ink">
                 Recording as: {link.characterName}
               </div>
-              <div className="mt-1 text-xs text-[#a8a39a]">
+              <div className="mt-1 text-xs text-ink-muted">
                 Requested by {link.userEmail?.split('@')[0] || 'family'} ·
                 expires in {Math.max(0, Math.round((new Date(link.expiresAt) - new Date()) / 60000))} min
               </div>
             </div>
 
             {/* Training paragraph */}
-            <div className="rounded-2xl bg-[#1a1a28] p-4">
-              <div className="mb-2 text-[10px] font-bold uppercase tracking-[0.16em] text-[#f0a500]">
+            <div className="rounded-2xl bg-bg-elevated p-4">
+              <div className="mb-2 text-[10px] font-bold uppercase tracking-[0.16em] text-gold">
                 Read this paragraph aloud
               </div>
-              <p className="font-story text-[15px] leading-relaxed text-[#a8a39a]">
+              <p className="font-story text-[15px] leading-relaxed text-ink-muted">
                 {VOICE_TRAINING_PARAGRAPH}
               </p>
-              <p className="mt-3 text-[10px] text-[#6e6a63]">
+              <p className="mt-3 text-[10px] text-ink-dim">
                 ~30–45 seconds · speak naturally
               </p>
             </div>
@@ -197,7 +197,7 @@ export default function RecordVoice() {
               </motion.button>
 
               {status === 'recording' && (
-                <div className="text-2xl font-bold tabular-nums text-[#f0a500]">
+                <div className="text-2xl font-bold tabular-nums text-gold">
                   {elapsed.toFixed(1)}s
                 </div>
               )}
@@ -205,7 +205,7 @@ export default function RecordVoice() {
           </div>
         )}
 
-        <footer className="mt-10 text-center text-[10px] uppercase tracking-[0.2em] text-[#6e6a63]">
+        <footer className="mt-10 text-center text-[10px] uppercase tracking-[0.2em] text-ink-dim">
           {APP_NAME} · v{APP_VERSION}
         </footer>
       </div>

@@ -71,7 +71,7 @@ export default function Admin() {
 
   if (loading) {
     return (
-      <div className="flex h-screen items-center justify-center bg-[#0f0f17]">
+      <div className="flex h-screen items-center justify-center bg-bg-base">
         <div className="text-gold text-lg font-bold">Loading admin…</div>
       </div>
     );
@@ -79,10 +79,10 @@ export default function Admin() {
 
   if (!isAdmin) {
     return (
-      <div className="flex h-screen flex-col items-center justify-center bg-[#0f0f17] text-center">
+      <div className="flex h-screen flex-col items-center justify-center bg-bg-base text-center">
         <div className="mb-4 text-5xl">🔒</div>
-        <h1 className="font-display text-2xl font-bold text-[#f5f0e8]">Access denied</h1>
-        <p className="mt-2 text-sm text-[#a8a39a]">You are not an admin.</p>
+        <h1 className="font-display text-2xl font-bold text-ink">Access denied</h1>
+        <p className="mt-2 text-sm text-ink-muted">You are not an admin.</p>
         <button
           onClick={() => navigate('/')}
           className="mt-6 rounded-full bg-[#f0a500] px-6 py-3 text-sm font-bold text-[#0f0f17]"
@@ -150,24 +150,24 @@ export default function Admin() {
   ];
 
   return (
-    <div className="min-h-screen bg-[#0f0f17] text-[#f5f0e8]">
+    <div className="min-h-screen bg-bg-base text-ink">
       {/* ─── TOP BAR ─── */}
-      <header className="sticky top-0 z-30 border-b border-white/5 bg-[#0f0f17]/95 backdrop-blur-xl">
+      <header className="sticky top-0 z-30 border-b border-white/5 bg-bg-base/95 backdrop-blur-xl">
         <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-4">
           <div className="flex items-center gap-3">
             <span className="text-2xl">🌙</span>
             <div>
-              <span className="font-display text-lg font-bold text-[#f0a500]">{APP_NAME}</span>
-              <span className="ml-2 rounded-full bg-[#f0a500]/15 px-2 py-0.5 text-[9px] font-bold uppercase tracking-wider text-[#f0a500]">
+              <span className="font-display text-lg font-bold text-gold">{APP_NAME}</span>
+              <span className="ml-2 rounded-full bg-[#f0a500]/15 px-2 py-0.5 text-[9px] font-bold uppercase tracking-wider text-gold">
                 Admin
               </span>
             </div>
           </div>
           <div className="flex items-center gap-4">
-            <span className="hidden text-xs text-[#a8a39a] sm:block">{user?.email}</span>
+            <span className="hidden text-xs text-ink-muted sm:block">{user?.email}</span>
             <button
               onClick={() => navigate('/')}
-              className="rounded-full bg-white/5 px-4 py-2 text-xs font-bold text-[#a8a39a] hover:text-[#f5f0e8]"
+              className="rounded-full bg-white/5 px-4 py-2 text-xs font-bold text-ink-muted hover:text-ink"
             >
               ← Back to app
             </button>
@@ -177,7 +177,7 @@ export default function Admin() {
 
       <div className="mx-auto max-w-7xl px-6 py-6">
         {/* ─── TABS ─── */}
-        <div className="mb-6 grid grid-cols-4 gap-1 rounded-2xl bg-[#1a1a28] p-1">
+        <div className="mb-6 grid grid-cols-4 gap-1 rounded-2xl bg-bg-elevated p-1">
           {TABS.map((t) => (
             <button
               key={t.key}
@@ -185,7 +185,7 @@ export default function Admin() {
               className={`flex flex-col items-center gap-1 rounded-xl px-2 py-3 text-[11px] sm:text-sm sm:flex-row sm:gap-2 sm:px-5 font-bold transition ${
                 tab === t.key
                   ? 'bg-[#f0a500] text-[#0f0f17]'
-                  : 'text-[#a8a39a] hover:text-[#f5f0e8]'
+                  : 'text-ink-muted hover:text-ink'
               }`}
             >
               <span>{t.icon}</span>
@@ -209,8 +209,8 @@ export default function Admin() {
 
             <div className="grid gap-6 lg:grid-cols-3">
               {/* Subscriptions */}
-              <div className="rounded-2xl bg-[#1a1a28] p-6">
-                <h3 className="mb-4 text-xs font-bold uppercase tracking-wider text-[#a8a39a]">
+              <div className="rounded-2xl bg-bg-elevated p-6">
+                <h3 className="mb-4 text-xs font-bold uppercase tracking-wider text-ink-muted">
                   Subscriptions
                 </h3>
                 <div className="space-y-3">
@@ -219,12 +219,12 @@ export default function Admin() {
                     return (
                       <div key={tier}>
                         <div className="mb-1 flex items-center justify-between text-sm">
-                          <span className="font-bold capitalize text-[#f5f0e8]">{tier}</span>
-                          <span className="text-[#a8a39a]">
+                          <span className="font-bold capitalize text-ink">{tier}</span>
+                          <span className="text-ink-muted">
                             {count} ({pct}%)
                           </span>
                         </div>
-                        <div className="h-2 overflow-hidden rounded-full bg-[#0f0f17]">
+                        <div className="h-2 overflow-hidden rounded-full bg-bg-base">
                           <div
                             className="h-full rounded-full bg-[#f0a500]"
                             style={{ width: `${pct}%` }}
@@ -237,8 +237,8 @@ export default function Admin() {
               </div>
 
               {/* Beliefs — Users + Stories */}
-              <div className="rounded-2xl bg-[#1a1a28] p-6">
-                <h3 className="mb-4 text-xs font-bold uppercase tracking-wider text-[#a8a39a]">
+              <div className="rounded-2xl bg-bg-elevated p-6">
+                <h3 className="mb-4 text-xs font-bold uppercase tracking-wider text-ink-muted">
                   Beliefs
                 </h3>
                 <div className="space-y-2">
@@ -264,13 +264,13 @@ export default function Admin() {
                         const storyCount = storyCounts[key] || 0;
                         return (
                           <div key={key} className="flex items-center justify-between">
-                            <span className="flex items-center gap-2 text-sm text-[#f5f0e8]">
+                            <span className="flex items-center gap-2 text-sm text-ink">
                               <span>{r?.icon || '🌍'}</span>
                               {r?.label || key}
                             </span>
                             <span className="flex items-center gap-3">
-                              <span className="text-[10px] text-[#6e6a63]">{userCount} users</span>
-                              <span className="text-sm font-bold text-[#f0a500]">{storyCount} stories</span>
+                              <span className="text-[10px] text-ink-dim">{userCount} users</span>
+                              <span className="text-sm font-bold text-gold">{storyCount} stories</span>
                             </span>
                           </div>
                         );
@@ -280,8 +280,8 @@ export default function Admin() {
               </div>
 
               {/* Account statuses */}
-              <div className="rounded-2xl bg-[#1a1a28] p-6">
-                <h3 className="mb-4 text-xs font-bold uppercase tracking-wider text-[#a8a39a]">
+              <div className="rounded-2xl bg-bg-elevated p-6">
+                <h3 className="mb-4 text-xs font-bold uppercase tracking-wider text-ink-muted">
                   Account status
                 </h3>
                 <div className="space-y-3">
@@ -291,14 +291,14 @@ export default function Admin() {
                     ).length;
                     return (
                       <div key={s} className="flex items-center justify-between">
-                        <span className="flex items-center gap-2 text-sm capitalize text-[#f5f0e8]">
+                        <span className="flex items-center gap-2 text-sm capitalize text-ink">
                           <span
                             className="h-2.5 w-2.5 rounded-full"
                             style={{ background: STATUS_COLORS[s] }}
                           />
                           {s}
                         </span>
-                        <span className="text-sm font-bold text-[#f0a500]">{count}</span>
+                        <span className="text-sm font-bold text-gold">{count}</span>
                       </div>
                     );
                   })}
@@ -309,8 +309,8 @@ export default function Admin() {
             {/* Geo / Regions */}
             <div className="grid gap-6 lg:grid-cols-3">
               {/* Countries */}
-              <div className="rounded-2xl bg-[#1a1a28] p-6">
-                <h3 className="mb-4 text-xs font-bold uppercase tracking-wider text-[#a8a39a]">
+              <div className="rounded-2xl bg-bg-elevated p-6">
+                <h3 className="mb-4 text-xs font-bold uppercase tracking-wider text-ink-muted">
                   🌍 Users by country
                 </h3>
                 <div className="space-y-2">
@@ -322,27 +322,27 @@ export default function Admin() {
                       return (
                         <div key={key}>
                           <div className="mb-1 flex items-center justify-between text-sm">
-                            <span className="flex items-center gap-2 text-[#f5f0e8]">
+                            <span className="flex items-center gap-2 text-ink">
                               <span>{c?.flag || '🌍'}</span>
                               {c?.label || key}
                             </span>
-                            <span className="text-[#a8a39a]">{count} ({pct}%)</span>
+                            <span className="text-ink-muted">{count} ({pct}%)</span>
                           </div>
-                          <div className="h-1.5 overflow-hidden rounded-full bg-[#0f0f17]">
+                          <div className="h-1.5 overflow-hidden rounded-full bg-bg-base">
                             <div className="h-full rounded-full bg-[#f0a500]" style={{ width: `${pct}%` }} />
                           </div>
                         </div>
                       );
                     })}
                   {Object.keys(stats.countries || {}).length === 0 && (
-                    <p className="text-sm text-[#6e6a63]">No country data yet.</p>
+                    <p className="text-sm text-ink-dim">No country data yet.</p>
                   )}
                 </div>
               </div>
 
               {/* Timezones */}
-              <div className="rounded-2xl bg-[#1a1a28] p-6">
-                <h3 className="mb-4 text-xs font-bold uppercase tracking-wider text-[#a8a39a]">
+              <div className="rounded-2xl bg-bg-elevated p-6">
+                <h3 className="mb-4 text-xs font-bold uppercase tracking-wider text-ink-muted">
                   🕐 Timezones
                 </h3>
                 <div className="space-y-2">
@@ -351,19 +351,19 @@ export default function Admin() {
                     .slice(0, 10)
                     .map(([tz, count]) => (
                       <div key={tz} className="flex items-center justify-between">
-                        <span className="truncate text-sm text-[#f5f0e8]">{tz}</span>
-                        <span className="shrink-0 text-sm font-bold text-[#f0a500]">{count}</span>
+                        <span className="truncate text-sm text-ink">{tz}</span>
+                        <span className="shrink-0 text-sm font-bold text-gold">{count}</span>
                       </div>
                     ))}
                   {Object.keys(stats.tzCities || {}).length === 0 && (
-                    <p className="text-sm text-[#6e6a63]">No timezone data yet.</p>
+                    <p className="text-sm text-ink-dim">No timezone data yet.</p>
                   )}
                 </div>
               </div>
 
               {/* Browser languages */}
-              <div className="rounded-2xl bg-[#1a1a28] p-6">
-                <h3 className="mb-4 text-xs font-bold uppercase tracking-wider text-[#a8a39a]">
+              <div className="rounded-2xl bg-bg-elevated p-6">
+                <h3 className="mb-4 text-xs font-bold uppercase tracking-wider text-ink-muted">
                   🗣️ Browser languages
                 </h3>
                 <div className="space-y-2">
@@ -371,12 +371,12 @@ export default function Admin() {
                     .sort((a, b) => b[1] - a[1])
                     .map(([lang, count]) => (
                       <div key={lang} className="flex items-center justify-between">
-                        <span className="text-sm text-[#f5f0e8]">{lang}</span>
-                        <span className="text-sm font-bold text-[#f0a500]">{count}</span>
+                        <span className="text-sm text-ink">{lang}</span>
+                        <span className="text-sm font-bold text-gold">{count}</span>
                       </div>
                     ))}
                   {Object.keys(stats.languages || {}).length === 0 && (
-                    <p className="text-sm text-[#6e6a63]">No language data yet.</p>
+                    <p className="text-sm text-ink-dim">No language data yet.</p>
                   )}
                 </div>
               </div>
@@ -386,8 +386,8 @@ export default function Admin() {
             {GA_MEASUREMENT_ID && (
               <div className="space-y-4">
                 {/* Deployment timeline */}
-                <div className="rounded-2xl bg-[#1a1a28] p-6">
-                  <h3 className="mb-4 text-xs font-bold uppercase tracking-wider text-[#a8a39a]">
+                <div className="rounded-2xl bg-bg-elevated p-6">
+                  <h3 className="mb-4 text-xs font-bold uppercase tracking-wider text-ink-muted">
                     📊 Analytics since mysleepytale.com launch
                   </h3>
                   <div className="mb-4 space-y-2">
@@ -403,28 +403,28 @@ export default function Admin() {
                       <div key={i} className="flex items-center gap-3">
                         <span className="text-lg">{m.icon}</span>
                         <div className="h-px flex-1 bg-white/5" />
-                        <span className="shrink-0 text-xs text-[#6e6a63]">{m.date}</span>
+                        <span className="shrink-0 text-xs text-ink-dim">{m.date}</span>
                         <div className="h-px flex-1 bg-white/5" />
-                        <span className="shrink-0 text-xs text-[#a8a39a]">{m.event}</span>
+                        <span className="shrink-0 text-xs text-ink-muted">{m.event}</span>
                       </div>
                     ))}
                   </div>
-                  <div className="rounded-xl bg-[#f0a500]/10 p-3 ring-1 ring-[#f0a500]/20">
-                    <div className="text-xs font-bold text-[#f0a500]">Key metrics to track post-launch</div>
-                    <div className="mt-2 grid gap-2 sm:grid-cols-3 text-[11px] text-[#a8a39a]">
-                      <div>📈 <strong className="text-[#f5f0e8]">Sessions</strong> — are people visiting?</div>
-                      <div>⏱️ <strong className="text-[#f5f0e8]">Avg session</strong> — are they staying?</div>
-                      <div>🔁 <strong className="text-[#f5f0e8]">Returning users</strong> — are they coming back?</div>
-                      <div>🌍 <strong className="text-[#f5f0e8]">Countries</strong> — where are they from?</div>
-                      <div>📱 <strong className="text-[#f5f0e8]">Device split</strong> — mobile vs desktop?</div>
-                      <div>🚪 <strong className="text-[#f5f0e8]">Bounce rate</strong> — leaving immediately?</div>
+                  <div className="rounded-xl bg-[#f0a500]/10 p-3 ring-1 ring-gold/20">
+                    <div className="text-xs font-bold text-gold">Key metrics to track post-launch</div>
+                    <div className="mt-2 grid gap-2 sm:grid-cols-3 text-[11px] text-ink-muted">
+                      <div>📈 <strong className="text-ink">Sessions</strong> — are people visiting?</div>
+                      <div>⏱️ <strong className="text-ink">Avg session</strong> — are they staying?</div>
+                      <div>🔁 <strong className="text-ink">Returning users</strong> — are they coming back?</div>
+                      <div>🌍 <strong className="text-ink">Countries</strong> — where are they from?</div>
+                      <div>📱 <strong className="text-ink">Device split</strong> — mobile vs desktop?</div>
+                      <div>🚪 <strong className="text-ink">Bounce rate</strong> — leaving immediately?</div>
                     </div>
                   </div>
                 </div>
 
                 {/* GA report links */}
-                <div className="rounded-2xl bg-[#1a1a28] p-6">
-                  <h3 className="mb-4 text-xs font-bold uppercase tracking-wider text-[#a8a39a]">
+                <div className="rounded-2xl bg-bg-elevated p-6">
+                  <h3 className="mb-4 text-xs font-bold uppercase tracking-wider text-ink-muted">
                     Open in Google Analytics
                   </h3>
                   <div className="grid gap-2 sm:grid-cols-2 lg:grid-cols-3">
@@ -444,17 +444,17 @@ export default function Admin() {
                         href={`https://analytics.google.com/analytics/web/#/p${GA_MEASUREMENT_ID.replace('G-', '')}/${r.path}`}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="flex items-center gap-3 rounded-xl bg-[#0f0f17] p-3 transition hover:bg-white/[0.03]"
+                        className="flex items-center gap-3 rounded-xl bg-bg-base p-3 transition hover:bg-white/[0.03]"
                       >
                         <span className="text-xl">{r.icon}</span>
                         <div>
-                          <div className="text-xs font-bold text-[#f5f0e8]">{r.title}</div>
-                          <div className="text-[10px] text-[#6e6a63]">{r.sub}</div>
+                          <div className="text-xs font-bold text-ink">{r.title}</div>
+                          <div className="text-[10px] text-ink-dim">{r.sub}</div>
                         </div>
                       </a>
                     ))}
                   </div>
-                  <p className="mt-3 text-[10px] text-[#6e6a63]">
+                  <p className="mt-3 text-[10px] text-ink-dim">
                     ID: {GA_MEASUREMENT_ID} · Domain: mysleepytale.com · Tracking since Apr 15, 2026
                   </p>
                 </div>
@@ -462,7 +462,7 @@ export default function Admin() {
             )}
           {/* ═══ USERS TABLE (inside Dashboard) ═══ */}
           <div className="mt-8">
-            <h3 className="text-lg font-bold text-[#f5f0e8] mb-4">Users</h3>
+            <h3 className="text-lg font-bold text-ink mb-4">Users</h3>
           <div>
             {/* Search */}
             <div className="mb-4">
@@ -471,15 +471,15 @@ export default function Admin() {
                 placeholder="Search by name, email, or kid name…"
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="w-full rounded-2xl bg-[#1a1a28] px-5 py-3 text-sm text-[#f5f0e8] placeholder-[#6e6a63] outline-none ring-1 ring-white/5 focus:ring-[#f0a500]"
+                className="w-full rounded-2xl bg-bg-elevated px-5 py-3 text-sm text-ink placeholder-[#6e6a63] outline-none ring-1 ring-white/5 focus:ring-gold"
               />
             </div>
 
             {/* Full data table */}
-            <div className="overflow-x-auto rounded-2xl bg-[#1a1a28]">
+            <div className="overflow-x-auto rounded-2xl bg-bg-elevated">
               <table className="w-full min-w-[900px] text-left text-sm">
                 <thead>
-                  <tr className="border-b border-white/10 text-[10px] font-bold uppercase tracking-wider text-[#6e6a63]">
+                  <tr className="border-b border-white/10 text-[10px] font-bold uppercase tracking-wider text-ink-dim">
                     <th className="px-4 py-3">#</th>
                     <th className="px-4 py-3">User</th>
                     <th className="px-4 py-3">Email</th>
@@ -495,7 +495,7 @@ export default function Admin() {
                 <tbody>
                   {filteredUsers.length === 0 ? (
                     <tr>
-                      <td colSpan={10} className="px-4 py-8 text-center text-[#6e6a63]">
+                      <td colSpan={10} className="px-4 py-8 text-center text-ink-dim">
                         {searchQuery ? 'No users match your search.' : 'No users yet.'}
                       </td>
                     </tr>
@@ -523,7 +523,7 @@ export default function Admin() {
                             expanded ? 'bg-white/[0.03]' : ''
                           }`}
                         >
-                          <td className="px-4 py-3 text-[#6e6a63]">{idx + 1}</td>
+                          <td className="px-4 py-3 text-ink-dim">{idx + 1}</td>
                           <td className="px-4 py-3">
                             <div className="flex items-center gap-2">
                               <div className="grid h-8 w-8 shrink-0 place-items-center overflow-hidden rounded-full bg-[#f0a500]/15">
@@ -533,26 +533,26 @@ export default function Admin() {
                                   <span className="text-sm">👤</span>
                                 )}
                               </div>
-                              <span className="font-bold text-[#f5f0e8]">
+                              <span className="font-bold text-ink">
                                 {u.displayName || u.email?.split('@')[0] || '—'}
                               </span>
                             </div>
                           </td>
-                          <td className="px-4 py-3 font-mono text-xs text-[#a8a39a]">
+                          <td className="px-4 py-3 font-mono text-xs text-ink-muted">
                             {u.email || '—'}
                           </td>
                           <td className="px-4 py-3 text-center">
-                            <span className="rounded-full bg-[#f0a500]/15 px-2 py-0.5 text-xs font-bold text-[#f0a500]">
+                            <span className="rounded-full bg-[#f0a500]/15 px-2 py-0.5 text-xs font-bold text-gold">
                               {kids.length}
                             </span>
                           </td>
-                          <td className="px-4 py-3 text-center text-xs text-[#a8a39a]">{stories}</td>
-                          <td className="px-4 py-3 text-center text-xs text-[#a8a39a]">{Math.round(minutes)}</td>
+                          <td className="px-4 py-3 text-center text-xs text-ink-muted">{stories}</td>
+                          <td className="px-4 py-3 text-center text-xs text-ink-muted">{Math.round(minutes)}</td>
                           <td className="px-4 py-3 text-center">
                             {tiers.map((t) => (
                               <span
                                 key={t}
-                                className="rounded-full bg-[#f0a500]/10 px-2 py-0.5 text-[9px] font-bold capitalize text-[#f0a500]"
+                                className="rounded-full bg-[#f0a500]/10 px-2 py-0.5 text-[9px] font-bold capitalize text-gold"
                               >
                                 {t}
                               </span>
@@ -569,7 +569,7 @@ export default function Admin() {
                               {status}
                             </span>
                           </td>
-                          <td className="px-4 py-3 text-xs text-[#6e6a63]">{lastActive}</td>
+                          <td className="px-4 py-3 text-xs text-ink-dim">{lastActive}</td>
                           <td className="px-4 py-3">
                             <div className="flex gap-1">
                               {status !== 'active' && (
@@ -601,7 +601,7 @@ export default function Admin() {
                               )}
                               <button
                                 onClick={() => setExpandedUser(expanded ? null : u.uid)}
-                                className="rounded-lg bg-white/5 px-2 py-1 text-[9px] font-bold text-[#a8a39a]"
+                                className="rounded-lg bg-white/5 px-2 py-1 text-[9px] font-bold text-ink-muted"
                                 title="Details"
                               >
                                 ⋯
@@ -627,15 +627,15 @@ export default function Admin() {
                     initial={{ opacity: 0, y: -8 }}
                     animate={{ opacity: 1, y: 0 }}
                     exit={{ opacity: 0, y: -8 }}
-                    className="mt-4 rounded-2xl bg-[#1a1a28] p-6"
+                    className="mt-4 rounded-2xl bg-bg-elevated p-6"
                   >
                     <div className="mb-4 flex items-center justify-between">
-                      <h3 className="text-sm font-bold text-[#f5f0e8]">
+                      <h3 className="text-sm font-bold text-ink">
                         {u.displayName || u.email} — full details
                       </h3>
                       <button
                         onClick={() => setExpandedUser(null)}
-                        className="text-xs text-[#6e6a63] hover:text-[#f5f0e8]"
+                        className="text-xs text-ink-dim hover:text-ink"
                       >
                         Close ✕
                       </button>
@@ -648,54 +648,54 @@ export default function Admin() {
                       <MetaItem label="Last active" value={u.lastActiveAt ? new Date(u.lastActiveAt).toLocaleString() : '—'} />
                     </div>
 
-                    <h4 className="mb-2 text-[10px] font-bold uppercase tracking-wider text-[#6e6a63]">
+                    <h4 className="mb-2 text-[10px] font-bold uppercase tracking-wider text-ink-dim">
                       Kid profiles ({(u.profiles || []).length})
                     </h4>
                     <div className="grid gap-3 sm:grid-cols-2">
                       {(u.profiles || []).map((kid, i) => (
-                        <div key={i} className="rounded-xl bg-[#0f0f17] p-4">
+                        <div key={i} className="rounded-xl bg-bg-base p-4">
                           <div className="mb-2 flex items-center justify-between">
-                            <span className="text-sm font-bold text-[#f5f0e8]">
+                            <span className="text-sm font-bold text-ink">
                               {kid.childName || `Kid ${i + 1}`}
                             </span>
                             <select
                               value={kid.tier || 'free'}
                               onChange={(e) => setUserTier(u.uid, i, e.target.value)}
-                              className="rounded-lg bg-[#1a1a28] px-2 py-1 text-[10px] font-bold text-[#f0a500] outline-none"
+                              className="rounded-lg bg-bg-elevated px-2 py-1 text-[10px] font-bold text-gold outline-none"
                             >
                               <option value="free">Free</option>
                               <option value="family">Family</option>
                               <option value="annual">Annual</option>
                             </select>
                           </div>
-                          <div className="space-y-1 text-[11px] text-[#6e6a63]">
-                            <div>Age: <span className="text-[#a8a39a]">{kid.age || '?'}</span></div>
-                            {kid.motherName && <div>Mother: <span className="text-[#a8a39a]">{kid.motherName}</span></div>}
-                            {kid.fatherName && <div>Father: <span className="text-[#a8a39a]">{kid.fatherName}</span></div>}
-                            {kid.sibling && <div>Sibling: <span className="text-[#a8a39a]">{kid.sibling}</span></div>}
-                            {kid.grandfather && <div>Grandfather: <span className="text-[#a8a39a]">{kid.grandfather}</span></div>}
-                            {kid.grandmother && <div>Grandmother: <span className="text-[#a8a39a]">{kid.grandmother}</span></div>}
-                            {kid.pet && <div>Pet: <span className="text-[#a8a39a]">{kid.pet}</span></div>}
-                            <div>Language: <span className="text-[#a8a39a]">{kid.language || 'English'}</span></div>
-                            <div>Beliefs: <span className="text-[#a8a39a]">{(kid.beliefs || []).map(b => RELIGIONS.find(r => r.key === b)?.label || b).join(', ') || 'None'}</span></div>
-                            <div>Characters: <span className="text-[#a8a39a]">{kid.characters?.length || 0}</span></div>
+                          <div className="space-y-1 text-[11px] text-ink-dim">
+                            <div>Age: <span className="text-ink-muted">{kid.age || '?'}</span></div>
+                            {kid.motherName && <div>Mother: <span className="text-ink-muted">{kid.motherName}</span></div>}
+                            {kid.fatherName && <div>Father: <span className="text-ink-muted">{kid.fatherName}</span></div>}
+                            {kid.sibling && <div>Sibling: <span className="text-ink-muted">{kid.sibling}</span></div>}
+                            {kid.grandfather && <div>Grandfather: <span className="text-ink-muted">{kid.grandfather}</span></div>}
+                            {kid.grandmother && <div>Grandmother: <span className="text-ink-muted">{kid.grandmother}</span></div>}
+                            {kid.pet && <div>Pet: <span className="text-ink-muted">{kid.pet}</span></div>}
+                            <div>Language: <span className="text-ink-muted">{kid.language || 'English'}</span></div>
+                            <div>Beliefs: <span className="text-ink-muted">{(kid.beliefs || []).map(b => RELIGIONS.find(r => r.key === b)?.label || b).join(', ') || 'None'}</span></div>
+                            <div>Characters: <span className="text-ink-muted">{kid.characters?.length || 0}</span></div>
                             {kid.characters && kid.characters.length > 0 && (
                               <div className="mt-1 flex flex-wrap gap-1">
                                 {kid.characters.map((c, ci) => (
-                                  <span key={ci} className="rounded-full bg-[#1a1a28] px-2 py-0.5 text-[9px] text-[#a8a39a]">
+                                  <span key={ci} className="rounded-full bg-bg-elevated px-2 py-0.5 text-[9px] text-ink-muted">
                                     {c.emoji || '👤'} {c.name}
                                   </span>
                                 ))}
                               </div>
                             )}
                             <div className="mt-1">
-                              Auto-play: <span className="text-[#a8a39a]">{kid.autoplayNext ? 'On' : 'Off'}</span> ·
-                              Sleep sounds: <span className="text-[#a8a39a]">{kid.whiteNoiseEnabled ? 'On' : 'Off'}</span> ·
-                              Dialogue fade: <span className="text-[#a8a39a]">{kid.dialogueFade ? 'On' : 'Off'}</span>
+                              Auto-play: <span className="text-ink-muted">{kid.autoplayNext ? 'On' : 'Off'}</span> ·
+                              Sleep sounds: <span className="text-ink-muted">{kid.whiteNoiseEnabled ? 'On' : 'Off'}</span> ·
+                              Dialogue fade: <span className="text-ink-muted">{kid.dialogueFade ? 'On' : 'Off'}</span>
                             </div>
                             <div>
-                              Cross-culture: <span className="text-[#a8a39a]">{kid.showCrossCulture ? 'On' : 'Off'}</span> ·
-                              Only my beliefs: <span className="text-[#a8a39a]">{kid.onlyMyTradition ? 'On' : 'Off'}</span>
+                              Cross-culture: <span className="text-ink-muted">{kid.showCrossCulture ? 'On' : 'Off'}</span> ·
+                              Only my beliefs: <span className="text-ink-muted">{kid.onlyMyTradition ? 'On' : 'Off'}</span>
                             </div>
                           </div>
                         </div>
@@ -719,14 +719,14 @@ export default function Admin() {
             <AdminManagement />
             <div className="mt-6" />
             {/* Team management — inline in Settings */}
-            <div className="rounded-2xl bg-[#1a1a28] p-6 mb-6">
-              <h3 className="mb-4 text-xs font-bold uppercase tracking-wider text-[#f0a500]">Team Members</h3>
-              <p className="text-[10px] text-[#6e6a63] mb-4">Team members can access /my-tasks to view and update their daily tasks.</p>
+            <div className="rounded-2xl bg-bg-elevated p-6 mb-6">
+              <h3 className="mb-4 text-xs font-bold uppercase tracking-wider text-gold">Team Members</h3>
+              <p className="text-[10px] text-ink-dim mb-4">Team members can access /my-tasks to view and update their daily tasks.</p>
               <div className="flex gap-2 mb-4">
                 <input type="text" placeholder="Email address..." value={newTeamEmail} onChange={(e) => setNewTeamEmail(e.target.value)}
-                  className="flex-1 rounded-xl bg-[#0f0f17] px-4 py-3 text-sm text-[#f5f0e8] placeholder-[#6e6a63] outline-none ring-1 ring-white/5 focus:ring-[#f0a500]" />
+                  className="flex-1 rounded-xl bg-bg-base px-4 py-3 text-sm text-ink placeholder-[#6e6a63] outline-none ring-1 ring-white/5 focus:ring-gold" />
                 <select value={newTeamRole} onChange={(e) => setNewTeamRole(e.target.value)}
-                  className="rounded-xl bg-[#0f0f17] px-3 py-3 text-sm text-[#f5f0e8] outline-none ring-1 ring-white/5">
+                  className="rounded-xl bg-bg-base px-3 py-3 text-sm text-ink outline-none ring-1 ring-white/5">
                   <option value="tester">Tester</option>
                   <option value="marketing">Marketing</option>
                   <option value="content">Content</option>
@@ -745,10 +745,10 @@ export default function Admin() {
               {team.length > 0 && (
                 <div className="space-y-2">
                   {team.map(m => (
-                    <div key={m.email} className="flex items-center justify-between rounded-xl bg-[#0f0f17] px-4 py-3 ring-1 ring-white/5">
+                    <div key={m.email} className="flex items-center justify-between rounded-xl bg-bg-base px-4 py-3 ring-1 ring-white/5">
                       <div>
-                        <span className="text-sm text-[#f5f0e8]">{m.email}</span>
-                        <span className="ml-2 text-[10px] text-[#6e6a63]">{m.role}</span>
+                        <span className="text-sm text-ink">{m.email}</span>
+                        <span className="ml-2 text-[10px] text-ink-dim">{m.role}</span>
                       </div>
                       <button onClick={() => removeTeamMember(m.email)} className="text-[10px] text-[#f3727f] hover:underline">Remove</button>
                     </div>
@@ -772,37 +772,37 @@ export default function Admin() {
             </div>
 
             {/* Cost breakdown note */}
-            <div className="rounded-2xl bg-[#1a1a28] p-6">
-              <h3 className="mb-3 text-xs font-bold uppercase tracking-wider text-[#a8a39a]">
+            <div className="rounded-2xl bg-bg-elevated p-6">
+              <h3 className="mb-3 text-xs font-bold uppercase tracking-wider text-ink-muted">
                 Cost estimation basis
               </h3>
-              <div className="grid gap-4 text-xs text-[#a8a39a] sm:grid-cols-2 lg:grid-cols-4">
-                <div className="rounded-xl bg-[#0f0f17] p-3">
-                  <div className="text-[9px] uppercase tracking-wider text-[#6e6a63]">ElevenLabs Starter</div>
-                  <div className="mt-1 font-bold text-[#f5f0e8]">CA$0.42 / 1K chars</div>
-                  <div className="text-[9px] text-[#6e6a63]">~CA$11.34 / 30 min story</div>
+              <div className="grid gap-4 text-xs text-ink-muted sm:grid-cols-2 lg:grid-cols-4">
+                <div className="rounded-xl bg-bg-base p-3">
+                  <div className="text-[9px] uppercase tracking-wider text-ink-dim">ElevenLabs Starter</div>
+                  <div className="mt-1 font-bold text-ink">CA$0.42 / 1K chars</div>
+                  <div className="text-[9px] text-ink-dim">~CA$11.34 / 30 min story</div>
                 </div>
-                <div className="rounded-xl bg-[#0f0f17] p-3">
-                  <div className="text-[9px] uppercase tracking-wider text-[#6e6a63]">ElevenLabs Scale</div>
-                  <div className="mt-1 font-bold text-[#f5f0e8]">CA$0.25 / 1K chars</div>
-                  <div className="text-[9px] text-[#6e6a63]">~CA$6.75 / 30 min story</div>
+                <div className="rounded-xl bg-bg-base p-3">
+                  <div className="text-[9px] uppercase tracking-wider text-ink-dim">ElevenLabs Scale</div>
+                  <div className="mt-1 font-bold text-ink">CA$0.25 / 1K chars</div>
+                  <div className="text-[9px] text-ink-dim">~CA$6.75 / 30 min story</div>
                 </div>
-                <div className="rounded-xl bg-[#0f0f17] p-3">
-                  <div className="text-[9px] uppercase tracking-wider text-[#6e6a63]">Claude Sonnet (story gen)</div>
-                  <div className="mt-1 font-bold text-[#f5f0e8]">CA$0.03 / story</div>
-                  <div className="text-[9px] text-[#6e6a63]">~4K tokens in, ~2K out</div>
+                <div className="rounded-xl bg-bg-base p-3">
+                  <div className="text-[9px] uppercase tracking-wider text-ink-dim">Claude Sonnet (story gen)</div>
+                  <div className="mt-1 font-bold text-ink">CA$0.03 / story</div>
+                  <div className="text-[9px] text-ink-dim">~4K tokens in, ~2K out</div>
                 </div>
-                <div className="rounded-xl bg-[#0f0f17] p-3">
-                  <div className="text-[9px] uppercase tracking-wider text-[#6e6a63]">Blended per minute</div>
-                  <div className="mt-1 font-bold text-[#f0a500]">~CA$0.25 / min</div>
-                  <div className="text-[9px] text-[#6e6a63]">Scale plan + Claude</div>
+                <div className="rounded-xl bg-bg-base p-3">
+                  <div className="text-[9px] uppercase tracking-wider text-ink-dim">Blended per minute</div>
+                  <div className="mt-1 font-bold text-gold">~CA$0.25 / min</div>
+                  <div className="text-[9px] text-ink-dim">Scale plan + Claude</div>
                 </div>
               </div>
-              <div className="mt-4 rounded-xl bg-[#0f0f17] p-3">
-                <div className="text-[9px] uppercase tracking-wider text-[#6e6a63]">ElevenLabs plan comparison (CAD)</div>
+              <div className="mt-4 rounded-xl bg-bg-base p-3">
+                <div className="text-[9px] uppercase tracking-wider text-ink-dim">ElevenLabs plan comparison (CAD)</div>
                 <table className="mt-2 w-full text-xs">
                   <thead>
-                    <tr className="text-[9px] uppercase tracking-wider text-[#6e6a63]">
+                    <tr className="text-[9px] uppercase tracking-wider text-ink-dim">
                       <th className="pb-1 text-left">Plan</th>
                       <th className="pb-1 text-right">Monthly</th>
                       <th className="pb-1 text-right">Characters</th>
@@ -810,33 +810,33 @@ export default function Admin() {
                       <th className="pb-1 text-right">~Stories / mo</th>
                     </tr>
                   </thead>
-                  <tbody className="text-[#a8a39a]">
+                  <tbody className="text-ink-muted">
                     <tr><td>Free</td><td className="text-right">CA$0</td><td className="text-right">10K</td><td className="text-right">—</td><td className="text-right">~0.4</td></tr>
                     <tr><td>Starter</td><td className="text-right">CA$7</td><td className="text-right">30K</td><td className="text-right">CA$0.42</td><td className="text-right">~1</td></tr>
                     <tr><td>Creator</td><td className="text-right">CA$31</td><td className="text-right">100K</td><td className="text-right">CA$0.31</td><td className="text-right">~4</td></tr>
                     <tr><td>Pro</td><td className="text-right">CA$137</td><td className="text-right">500K</td><td className="text-right">CA$0.27</td><td className="text-right">~18</td></tr>
-                    <tr className="font-bold text-[#f0a500]"><td>Scale</td><td className="text-right">CA$415</td><td className="text-right">2M</td><td className="text-right">CA$0.21</td><td className="text-right">~74</td></tr>
+                    <tr className="font-bold text-gold"><td>Scale</td><td className="text-right">CA$415</td><td className="text-right">2M</td><td className="text-right">CA$0.21</td><td className="text-right">~74</td></tr>
                     <tr><td>Business</td><td className="text-right">Custom</td><td className="text-right">Custom</td><td className="text-right">~CA$0.14</td><td className="text-right">—</td></tr>
                   </tbody>
                 </table>
               </div>
-              <p className="mt-3 text-[11px] text-[#6e6a63]">
+              <p className="mt-3 text-[11px] text-ink-dim">
                 All prices in CAD (1 USD ≈ 1.38 CAD). Actual costs depend on voice quality tier,
                 story caching (repeat plays = zero cost), and pre-written cultural stories (zero API cost).
               </p>
             </div>
 
             {/* Per-user usage table */}
-            <div className="rounded-2xl bg-[#1a1a28]">
+            <div className="rounded-2xl bg-bg-elevated">
               <div className="border-b border-white/5 px-6 py-4">
-                <h3 className="text-xs font-bold uppercase tracking-wider text-[#a8a39a]">
+                <h3 className="text-xs font-bold uppercase tracking-wider text-ink-muted">
                   Per-user usage
                 </h3>
               </div>
               <div className="overflow-x-auto">
                 <table className="w-full min-w-[700px] text-left text-sm">
                   <thead>
-                    <tr className="border-b border-white/10 text-[10px] font-bold uppercase tracking-wider text-[#6e6a63]">
+                    <tr className="border-b border-white/10 text-[10px] font-bold uppercase tracking-wider text-ink-dim">
                       <th className="px-4 py-3">#</th>
                       <th className="px-4 py-3">User</th>
                       <th className="px-4 py-3">Email</th>
@@ -865,21 +865,21 @@ export default function Admin() {
                           : '—';
                         return (
                           <tr key={u.uid} className="border-b border-white/5 hover:bg-white/[0.02]">
-                            <td className="px-4 py-3 text-[#6e6a63]">{idx + 1}</td>
-                            <td className="px-4 py-3 font-bold text-[#f5f0e8]">
+                            <td className="px-4 py-3 text-ink-dim">{idx + 1}</td>
+                            <td className="px-4 py-3 font-bold text-ink">
                               {u.displayName || u.email?.split('@')[0] || '—'}
                             </td>
-                            <td className="px-4 py-3 font-mono text-xs text-[#a8a39a]">{u.email || '—'}</td>
+                            <td className="px-4 py-3 font-mono text-xs text-ink-muted">{u.email || '—'}</td>
                             <td className="px-4 py-3 text-center">
-                              <span className="rounded-full bg-[#f0a500]/15 px-2 py-0.5 text-xs font-bold text-[#f0a500]">
+                              <span className="rounded-full bg-[#f0a500]/15 px-2 py-0.5 text-xs font-bold text-gold">
                                 {stories}
                               </span>
                             </td>
-                            <td className="px-4 py-3 text-center text-xs text-[#a8a39a]">{Math.round(minutes)}</td>
-                            <td className="px-4 py-3 text-center text-xs font-bold text-[#f0a500]">CA${cost}</td>
-                            <td className="px-4 py-3 text-xs text-[#6e6a63]">{lastStory}</td>
+                            <td className="px-4 py-3 text-center text-xs text-ink-muted">{Math.round(minutes)}</td>
+                            <td className="px-4 py-3 text-center text-xs font-bold text-gold">CA${cost}</td>
+                            <td className="px-4 py-3 text-xs text-ink-dim">{lastStory}</td>
                             <td className="px-4 py-3 text-center">
-                              <span className="rounded-full bg-[#f0a500]/10 px-2 py-0.5 text-[9px] font-bold capitalize text-[#f0a500]">
+                              <span className="rounded-full bg-[#f0a500]/10 px-2 py-0.5 text-[9px] font-bold capitalize text-gold">
                                 {tier}
                               </span>
                             </td>
@@ -887,7 +887,7 @@ export default function Admin() {
                               {isPaid ? (
                                 <span className="text-[#7ad9a1]">✓</span>
                               ) : (
-                                <span className="text-[#6e6a63]">—</span>
+                                <span className="text-ink-dim">—</span>
                               )}
                             </td>
                           </tr>
@@ -897,11 +897,11 @@ export default function Admin() {
                   <tfoot>
                     <tr className="border-t border-white/10 font-bold">
                       <td className="px-4 py-3" colSpan={3}>
-                        <span className="text-xs uppercase tracking-wider text-[#a8a39a]">Total</span>
+                        <span className="text-xs uppercase tracking-wider text-ink-muted">Total</span>
                       </td>
-                      <td className="px-4 py-3 text-center text-[#f0a500]">{totalStoriesAll}</td>
-                      <td className="px-4 py-3 text-center text-[#a8a39a]">{Math.round(totalMinutesAll)}</td>
-                      <td className="px-4 py-3 text-center text-[#f0a500]">CA${estimatedCost}</td>
+                      <td className="px-4 py-3 text-center text-gold">{totalStoriesAll}</td>
+                      <td className="px-4 py-3 text-center text-ink-muted">{Math.round(totalMinutesAll)}</td>
+                      <td className="px-4 py-3 text-center text-gold">CA${estimatedCost}</td>
                       <td colSpan={3} />
                     </tr>
                   </tfoot>
@@ -910,49 +910,49 @@ export default function Admin() {
             </div>
 
             {/* Pricing helper */}
-            <div className="rounded-2xl bg-[#1a1a28] p-6">
-              <h3 className="mb-3 text-xs font-bold uppercase tracking-wider text-[#a8a39a]">
+            <div className="rounded-2xl bg-bg-elevated p-6">
+              <h3 className="mb-3 text-xs font-bold uppercase tracking-wider text-ink-muted">
                 Pricing decision helper
               </h3>
               <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-                <div className="rounded-xl bg-[#0f0f17] p-4">
-                  <div className="text-[10px] uppercase tracking-wider text-[#6e6a63]">If avg = 10 min / mo</div>
-                  <div className="mt-1 text-lg font-bold text-[#f5f0e8]">
-                    CA${(10 * COST_PER_MINUTE_CAD).toFixed(2)} <span className="text-xs text-[#6e6a63]">/ user</span>
+                <div className="rounded-xl bg-bg-base p-4">
+                  <div className="text-[10px] uppercase tracking-wider text-ink-dim">If avg = 10 min / mo</div>
+                  <div className="mt-1 text-lg font-bold text-ink">
+                    CA${(10 * COST_PER_MINUTE_CAD).toFixed(2)} <span className="text-xs text-ink-dim">/ user</span>
                   </div>
                   <div className="mt-1 text-xs text-[#7ad9a1]">
                     CA$4.99/mo → CA${(4.99 - 10 * COST_PER_MINUTE_CAD).toFixed(2)} margin
                   </div>
                 </div>
-                <div className="rounded-xl bg-[#0f0f17] p-4">
-                  <div className="text-[10px] uppercase tracking-wider text-[#6e6a63]">If avg = 30 min / mo</div>
-                  <div className="mt-1 text-lg font-bold text-[#f5f0e8]">
-                    CA${(30 * COST_PER_MINUTE_CAD).toFixed(2)} <span className="text-xs text-[#6e6a63]">/ user</span>
+                <div className="rounded-xl bg-bg-base p-4">
+                  <div className="text-[10px] uppercase tracking-wider text-ink-dim">If avg = 30 min / mo</div>
+                  <div className="mt-1 text-lg font-bold text-ink">
+                    CA${(30 * COST_PER_MINUTE_CAD).toFixed(2)} <span className="text-xs text-ink-dim">/ user</span>
                   </div>
                   <div className="mt-1 text-xs text-[#ffa42b]">
                     CA$4.99/mo → CA${(4.99 - 30 * COST_PER_MINUTE_CAD).toFixed(2)} margin
                   </div>
                 </div>
-                <div className="rounded-xl bg-[#0f0f17] p-4">
-                  <div className="text-[10px] uppercase tracking-wider text-[#6e6a63]">If avg = 60 min / mo</div>
-                  <div className="mt-1 text-lg font-bold text-[#f5f0e8]">
-                    CA${(60 * COST_PER_MINUTE_CAD).toFixed(2)} <span className="text-xs text-[#6e6a63]">/ user</span>
+                <div className="rounded-xl bg-bg-base p-4">
+                  <div className="text-[10px] uppercase tracking-wider text-ink-dim">If avg = 60 min / mo</div>
+                  <div className="mt-1 text-lg font-bold text-ink">
+                    CA${(60 * COST_PER_MINUTE_CAD).toFixed(2)} <span className="text-xs text-ink-dim">/ user</span>
                   </div>
                   <div className="mt-1 text-xs text-[#f3727f]">
                     CA$9.99/mo → CA${(9.99 - 60 * COST_PER_MINUTE_CAD).toFixed(2)} margin
                   </div>
                 </div>
-                <div className="rounded-xl bg-[#0f0f17] p-4">
-                  <div className="text-[10px] uppercase tracking-wider text-[#6e6a63]">If avg = 120 min / mo</div>
-                  <div className="mt-1 text-lg font-bold text-[#f5f0e8]">
-                    CA${(120 * COST_PER_MINUTE_CAD).toFixed(2)} <span className="text-xs text-[#6e6a63]">/ user</span>
+                <div className="rounded-xl bg-bg-base p-4">
+                  <div className="text-[10px] uppercase tracking-wider text-ink-dim">If avg = 120 min / mo</div>
+                  <div className="mt-1 text-lg font-bold text-ink">
+                    CA${(120 * COST_PER_MINUTE_CAD).toFixed(2)} <span className="text-xs text-ink-dim">/ user</span>
                   </div>
                   <div className="mt-1 text-xs text-[#f3727f]">
                     CA$14.99/mo → CA${(14.99 - 120 * COST_PER_MINUTE_CAD).toFixed(2)} margin
                   </div>
                 </div>
               </div>
-              <p className="mt-3 text-[11px] text-[#6e6a63]">
+              <p className="mt-3 text-[11px] text-ink-dim">
                 All CAD. Margins improve significantly with story caching (repeat plays = zero
                 regen cost) and pre-written cultural stories (zero API cost). At scale, negotiate
                 ElevenLabs Business tier (~CA$0.14/1K chars) for 40% cost reduction.
@@ -964,8 +964,8 @@ export default function Admin() {
         {/* ═══ TEAM ═══ */}
         {tab === 'team' && (
           <div className="max-w-3xl space-y-6">
-            <div className="rounded-2xl bg-[#1a1a28] p-6">
-              <h3 className="mb-4 text-xs font-bold uppercase tracking-wider text-[#a8a39a]">
+            <div className="rounded-2xl bg-bg-elevated p-6">
+              <h3 className="mb-4 text-xs font-bold uppercase tracking-wider text-ink-muted">
                 Add team member
               </h3>
               <div className="flex gap-2">
@@ -975,7 +975,7 @@ export default function Admin() {
                     placeholder="Search by name or email..."
                     value={newTeamEmail}
                     onChange={(e) => setNewTeamEmail(e.target.value)}
-                    className="w-full rounded-xl bg-[#0f0f17] px-4 py-3 text-sm text-[#f5f0e8] placeholder-[#6e6a63] outline-none ring-1 ring-white/5 focus:ring-[#f0a500]"
+                    className="w-full rounded-xl bg-bg-base px-4 py-3 text-sm text-ink placeholder-[#6e6a63] outline-none ring-1 ring-white/5 focus:ring-gold"
                   />
                   {newTeamEmail.length >= 2 && (() => {
                     const q = newTeamEmail.toLowerCase();
@@ -985,7 +985,7 @@ export default function Admin() {
                     ).slice(0, 5);
                     if (matches.length === 0 || (matches.length === 1 && matches[0].email === newTeamEmail)) return null;
                     return (
-                      <div className="absolute left-0 right-0 top-full z-10 mt-1 rounded-xl bg-[#1a1a28] ring-1 ring-white/10 overflow-hidden">
+                      <div className="absolute left-0 right-0 top-full z-10 mt-1 rounded-xl bg-bg-elevated ring-1 ring-white/10 overflow-hidden">
                         {matches.map(u => (
                           <button key={u.uid} onClick={() => setNewTeamEmail(u.email || '')}
                             className="flex w-full items-center gap-3 px-4 py-2.5 text-left hover:bg-white/5 transition">
@@ -995,8 +995,8 @@ export default function Admin() {
                               <div className="h-6 w-6 rounded-full bg-[#f0a500]/15 grid place-items-center text-[10px]">👤</div>
                             )}
                             <div>
-                              <div className="text-xs font-bold text-[#f5f0e8]">{u.displayName || u.email}</div>
-                              <div className="text-[10px] text-[#6e6a63]">{u.email}</div>
+                              <div className="text-xs font-bold text-ink">{u.displayName || u.email}</div>
+                              <div className="text-[10px] text-ink-dim">{u.email}</div>
                             </div>
                           </button>
                         ))}
@@ -1007,7 +1007,7 @@ export default function Admin() {
                 <select
                   value={newTeamRole}
                   onChange={(e) => setNewTeamRole(e.target.value)}
-                  className="rounded-xl bg-[#0f0f17] px-3 py-3 text-sm text-[#f0a500] outline-none ring-1 ring-white/5"
+                  className="rounded-xl bg-bg-base px-3 py-3 text-sm text-gold outline-none ring-1 ring-white/5"
                 >
                   <option value="tester">🧪 Tester</option>
                   <option value="investor">💰 Investor</option>
@@ -1025,17 +1025,17 @@ export default function Admin() {
                   Add
                 </button>
               </div>
-              <p className="mt-2 text-[11px] text-[#6e6a63]">
+              <p className="mt-2 text-[11px] text-ink-dim">
                 Testers get full app access for QA. Investors can see the invest page. Marketing gets analytics + sharing.
                 You can pause or stop access anytime.
               </p>
             </div>
 
             {/* Team list */}
-            <div className="overflow-x-auto rounded-2xl bg-[#1a1a28]">
+            <div className="overflow-x-auto rounded-2xl bg-bg-elevated">
               <table className="w-full text-left text-sm">
                 <thead>
-                  <tr className="border-b border-white/10 text-[10px] font-bold uppercase tracking-wider text-[#6e6a63]">
+                  <tr className="border-b border-white/10 text-[10px] font-bold uppercase tracking-wider text-ink-dim">
                     <th className="px-4 py-3">Email</th>
                     <th className="px-4 py-3">Role</th>
                     <th className="px-4 py-3 text-center">Status</th>
@@ -1047,7 +1047,7 @@ export default function Admin() {
                 <tbody>
                   {team.length === 0 ? (
                     <tr>
-                      <td colSpan={6} className="px-4 py-8 text-center text-[#6e6a63]">
+                      <td colSpan={6} className="px-4 py-8 text-center text-ink-dim">
                         No team members yet.
                       </td>
                     </tr>
@@ -1056,11 +1056,11 @@ export default function Admin() {
                       const statusColor = t.status === 'active' ? '#7ad9a1' : t.status === 'paused' ? '#ffa42b' : '#f3727f';
                       return (
                         <tr key={t.email} className="border-b border-white/5">
-                          <td className="px-4 py-3 font-mono text-xs text-[#f5f0e8]">{t.email}</td>
+                          <td className="px-4 py-3 font-mono text-xs text-ink">{t.email}</td>
                           <td className="px-4 py-3">
                             <span className={`rounded-full px-2 py-0.5 text-[9px] font-bold uppercase ${
                               t.role === 'tester' ? 'bg-[#539df5]/15 text-[#539df5]'
-                                : t.role === 'investor' ? 'bg-[#f0a500]/15 text-[#f0a500]'
+                                : t.role === 'investor' ? 'bg-[#f0a500]/15 text-gold'
                                 : 'bg-[#e8b4ff]/15 text-[#e8b4ff]'
                             }`}>
                               {t.role === 'tester' ? '🧪 Tester' : t.role === 'investor' ? '💰 Investor' : '📣 Marketing'}
@@ -1074,8 +1074,8 @@ export default function Admin() {
                               {t.status}
                             </span>
                           </td>
-                          <td className="px-4 py-3 text-xs text-[#a8a39a]">{t.addedBy?.split('@')[0] || '—'}</td>
-                          <td className="px-4 py-3 text-xs text-[#6e6a63]">
+                          <td className="px-4 py-3 text-xs text-ink-muted">{t.addedBy?.split('@')[0] || '—'}</td>
+                          <td className="px-4 py-3 text-xs text-ink-dim">
                             {t.addedAt ? new Date(t.addedAt).toLocaleDateString(undefined, { month: 'short', day: 'numeric' }) : '—'}
                           </td>
                           <td className="px-4 py-3">
@@ -1103,7 +1103,7 @@ export default function Admin() {
                               )}
                               <button
                                 onClick={() => { if (confirm(`Remove ${t.email}?`)) removeTeamMember(t.email); }}
-                                className="rounded-lg bg-white/5 px-2 py-1 text-[9px] font-bold text-[#6e6a63]"
+                                className="rounded-lg bg-white/5 px-2 py-1 text-[9px] font-bold text-ink-dim"
                                 title="Remove"
                               >✕</button>
                             </div>
@@ -1121,9 +1121,9 @@ export default function Admin() {
         {/* ═══ EMAILS ═══ */}
         {tab === 'emails' && (
           <div className="space-y-4">
-            <div className="rounded-2xl bg-[#1a1a28] p-6">
+            <div className="rounded-2xl bg-bg-elevated p-6">
               <div className="mb-4 flex items-center justify-between">
-                <h3 className="text-xs font-bold uppercase tracking-wider text-[#a8a39a]">
+                <h3 className="text-xs font-bold uppercase tracking-wider text-ink-muted">
                   All user emails ({allEmails.length})
                 </h3>
                 <button
@@ -1136,13 +1136,13 @@ export default function Admin() {
                   Copy all
                 </button>
               </div>
-              <p className="mb-4 text-xs text-[#6e6a63]">
+              <p className="mb-4 text-xs text-ink-dim">
                 Use for newsletters, promotions, and updates. One email per line.
               </p>
-              <div className="max-h-96 overflow-y-auto rounded-xl bg-[#0f0f17] p-4">
+              <div className="max-h-96 overflow-y-auto rounded-xl bg-bg-base p-4">
                 <table className="w-full text-left text-sm">
                   <thead>
-                    <tr className="border-b border-white/5 text-[10px] uppercase tracking-wider text-[#6e6a63]">
+                    <tr className="border-b border-white/5 text-[10px] uppercase tracking-wider text-ink-dim">
                       <th className="pb-2">#</th>
                       <th className="pb-2">Email</th>
                       <th className="pb-2">Name</th>
@@ -1162,14 +1162,14 @@ export default function Admin() {
                           .join(', ');
                         return (
                           <tr key={u.uid} className="border-b border-white/5">
-                            <td className="py-2 pr-3 text-[#6e6a63]">{i + 1}</td>
-                            <td className="py-2 pr-3 font-mono text-xs text-[#f5f0e8]">
+                            <td className="py-2 pr-3 text-ink-dim">{i + 1}</td>
+                            <td className="py-2 pr-3 font-mono text-xs text-ink">
                               {u.email}
                             </td>
-                            <td className="py-2 pr-3 text-[#a8a39a]">
+                            <td className="py-2 pr-3 text-ink-muted">
                               {u.displayName || '—'}
                             </td>
-                            <td className="py-2 pr-3 text-[#a8a39a]">{kids || '—'}</td>
+                            <td className="py-2 pr-3 text-ink-muted">{kids || '—'}</td>
                             <td className="py-2">
                               <span
                                 className="rounded-full px-2 py-0.5 text-[9px] font-bold uppercase"
@@ -1211,7 +1211,7 @@ export default function Admin() {
                   a.click();
                   URL.revokeObjectURL(url);
                 }}
-                className="mt-4 rounded-full bg-white/5 px-4 py-2 text-xs font-bold text-[#a8a39a] hover:text-[#f5f0e8]"
+                className="mt-4 rounded-full bg-white/5 px-4 py-2 text-xs font-bold text-ink-muted hover:text-ink"
               >
                 📥 Export CSV
               </button>
@@ -1224,49 +1224,49 @@ export default function Admin() {
         {tab === 'investors' && (
           <div className="space-y-4">
             <div className="grid gap-3 sm:grid-cols-3">
-              <div className="rounded-2xl bg-[#1a1a28] p-4 text-center">
-                <div className="text-2xl font-bold text-[#f0a500]">{investors.filter((i) => i.status === 'confirmed').length}</div>
-                <div className="text-[10px] uppercase tracking-wider text-[#6e6a63]">Confirmed</div>
+              <div className="rounded-2xl bg-bg-elevated p-4 text-center">
+                <div className="text-2xl font-bold text-gold">{investors.filter((i) => i.status === 'confirmed').length}</div>
+                <div className="text-[10px] uppercase tracking-wider text-ink-dim">Confirmed</div>
               </div>
-              <div className="rounded-2xl bg-[#1a1a28] p-4 text-center">
+              <div className="rounded-2xl bg-bg-elevated p-4 text-center">
                 <div className="text-2xl font-bold text-[#ffa42b]">{investors.filter((i) => i.status !== 'confirmed' && i.status !== 'rejected').length}</div>
-                <div className="text-[10px] uppercase tracking-wider text-[#6e6a63]">Pending</div>
+                <div className="text-[10px] uppercase tracking-wider text-ink-dim">Pending</div>
               </div>
-              <div className="rounded-2xl bg-[#1a1a28] p-4 text-center">
-                <div className="text-2xl font-bold text-[#f0a500]">
+              <div className="rounded-2xl bg-bg-elevated p-4 text-center">
+                <div className="text-2xl font-bold text-gold">
                   CA${investors.filter((i) => i.status === 'confirmed').reduce((s, i) => s + (i.amount || 0), 0).toLocaleString()}
                 </div>
-                <div className="text-[10px] uppercase tracking-wider text-[#6e6a63]">Confirmed raised</div>
+                <div className="text-[10px] uppercase tracking-wider text-ink-dim">Confirmed raised</div>
               </div>
             </div>
 
             <div className="space-y-3">
               {investors.length === 0 ? (
-                <div className="rounded-2xl bg-[#1a1a28] p-8 text-center text-[#6e6a63]">No investors yet.</div>
+                <div className="rounded-2xl bg-bg-elevated p-8 text-center text-ink-dim">No investors yet.</div>
               ) : investors.map((inv) => {
                 const statusColor = inv.status === 'confirmed' ? '#7ad9a1' : inv.status === 'rejected' ? '#f3727f' : '#ffa42b';
                 return (
-                  <div key={inv.id} className="rounded-2xl bg-[#1a1a28] p-4">
+                  <div key={inv.id} className="rounded-2xl bg-bg-elevated p-4">
                     <div className="flex items-center gap-3">
                       {inv.photoURL ? (
                         <img src={inv.photoURL} alt="" className="h-10 w-10 rounded-full" referrerPolicy="no-referrer" />
                       ) : <div className="grid h-10 w-10 place-items-center rounded-full bg-[#f0a500]/15 text-lg">👤</div>}
                       <div className="min-w-0 flex-1">
                         <div className="flex items-center gap-2">
-                          <span className="font-bold text-[#f5f0e8]">{inv.displayName || '—'}</span>
+                          <span className="font-bold text-ink">{inv.displayName || '—'}</span>
                           <span className="rounded-full px-2 py-0.5 text-[8px] font-bold uppercase" style={{ background: `${statusColor}22`, color: statusColor }}>
                             {inv.status || 'pledged'}
                           </span>
                         </div>
-                        <div className="truncate text-xs text-[#a8a39a]">{inv.email}</div>
+                        <div className="truncate text-xs text-ink-muted">{inv.email}</div>
                       </div>
                       <div className="text-right">
-                        <div className="text-sm font-bold text-[#f5f0e8]">CA${inv.amount?.toLocaleString()}</div>
-                        <div className="text-[10px] text-[#f0a500]">{((inv.amount || 0) / 1000000 * 100).toFixed(4)}% SAFE</div>
+                        <div className="text-sm font-bold text-ink">CA${inv.amount?.toLocaleString()}</div>
+                        <div className="text-[10px] text-gold">{((inv.amount || 0) / 1000000 * 100).toFixed(4)}% SAFE</div>
                       </div>
                     </div>
                     <div className="mt-3 flex items-center justify-between">
-                      <div className="flex items-center gap-2 text-[11px] text-[#6e6a63]">
+                      <div className="flex items-center gap-2 text-[11px] text-ink-dim">
                         <span>{inv.roleLabel || inv.role}</span>
                         <span>·</span>
                         <span>{inv.createdAt ? new Date(inv.createdAt).toLocaleDateString(undefined, { month: 'short', day: 'numeric' }) : '—'}</span>
@@ -1293,7 +1293,7 @@ export default function Admin() {
                           </div>
                     </div>
                     {inv.message && (
-                      <div className="mt-2 text-[11px] italic text-[#6e6a63]">"{inv.message}"</div>
+                      <div className="mt-2 text-[11px] italic text-ink-dim">"{inv.message}"</div>
                     )}
                   </div>
                 );
@@ -1305,17 +1305,17 @@ export default function Admin() {
 
         {tab === 'admins' && (
           <div className="max-w-xl space-y-4">
-            <div className="rounded-2xl bg-[#1a1a28] p-6">
-              <h3 className="mb-4 text-xs font-bold uppercase tracking-wider text-[#a8a39a]">
+            <div className="rounded-2xl bg-bg-elevated p-6">
+              <h3 className="mb-4 text-xs font-bold uppercase tracking-wider text-ink-muted">
                 Admin users
               </h3>
               <div className="space-y-2">
                 {adminEmails.map((email) => (
                   <div
                     key={email}
-                    className="flex items-center justify-between rounded-xl bg-[#0f0f17] px-4 py-3"
+                    className="flex items-center justify-between rounded-xl bg-bg-base px-4 py-3"
                   >
-                    <span className="font-mono text-sm text-[#f5f0e8]">{email}</span>
+                    <span className="font-mono text-sm text-ink">{email}</span>
                     {adminEmails.length > 1 && (
                       <button
                         onClick={() => {
@@ -1342,7 +1342,7 @@ export default function Admin() {
                       setNewAdminEmail('');
                     }
                   }}
-                  className="flex-1 rounded-xl bg-[#0f0f17] px-4 py-3 text-sm text-[#f5f0e8] placeholder-[#6e6a63] outline-none ring-1 ring-white/5 focus:ring-[#f0a500]"
+                  className="flex-1 rounded-xl bg-bg-base px-4 py-3 text-sm text-ink placeholder-[#6e6a63] outline-none ring-1 ring-white/5 focus:ring-gold"
                 />
                 <button
                   onClick={() => {
@@ -1377,7 +1377,7 @@ export default function Admin() {
       </div>
 
       {/* Footer */}
-      <footer className="mt-12 border-t border-white/5 py-6 text-center text-[10px] uppercase tracking-[0.2em] text-[#6e6a63]">
+      <footer className="mt-12 border-t border-white/5 py-6 text-center text-[10px] uppercase tracking-[0.2em] text-ink-dim">
         {APP_NAME} Admin · v{APP_VERSION}
       </footer>
     </div>
@@ -1388,12 +1388,12 @@ export default function Admin() {
 
 function BigStat({ label, value, icon }) {
   return (
-    <div className="rounded-2xl bg-[#1a1a28] p-6">
+    <div className="rounded-2xl bg-bg-elevated p-6">
       <div className="flex items-center gap-3">
         <span className="text-3xl">{icon}</span>
         <div>
-          <div className="text-3xl font-bold text-[#f0a500]">{value}</div>
-          <div className="mt-1 text-[10px] font-bold uppercase tracking-wider text-[#a8a39a]">
+          <div className="text-3xl font-bold text-gold">{value}</div>
+          <div className="mt-1 text-[10px] font-bold uppercase tracking-wider text-ink-muted">
             {label}
           </div>
         </div>
@@ -1415,7 +1415,7 @@ function UserRow({ u, expanded, onToggle, setUserStatus, setUserTier }) {
     : '—';
 
   return (
-    <motion.div layout className="overflow-hidden rounded-2xl bg-[#1a1a28]">
+    <motion.div layout className="overflow-hidden rounded-2xl bg-bg-elevated">
       <button
         onClick={onToggle}
         className="flex w-full items-center gap-4 p-4 text-left transition hover:bg-white/[0.02]"
@@ -1430,7 +1430,7 @@ function UserRow({ u, expanded, onToggle, setUserStatus, setUserTier }) {
 
         <div className="min-w-0 flex-1">
           <div className="flex items-center gap-2">
-            <span className="truncate text-sm font-bold text-[#f5f0e8]">
+            <span className="truncate text-sm font-bold text-ink">
               {u.displayName || u.email?.split('@')[0] || u.uid.slice(0, 8)}
             </span>
             <span
@@ -1443,15 +1443,15 @@ function UserRow({ u, expanded, onToggle, setUserStatus, setUserTier }) {
               {status}
             </span>
           </div>
-          <div className="truncate text-xs text-[#a8a39a]">{u.email || 'No email'}</div>
+          <div className="truncate text-xs text-ink-muted">{u.email || 'No email'}</div>
         </div>
 
-        <div className="hidden items-center gap-6 text-xs text-[#a8a39a] lg:flex">
+        <div className="hidden items-center gap-6 text-xs text-ink-muted lg:flex">
           <span>{kids.length} {kids.length === 1 ? 'kid' : 'kids'}</span>
           <span>{lastActive}</span>
         </div>
 
-        <span className={`text-[#a8a39a] transition ${expanded ? 'rotate-180' : ''}`}>▾</span>
+        <span className={`text-ink-muted transition ${expanded ? 'rotate-180' : ''}`}>▾</span>
       </button>
 
       <AnimatePresence>
@@ -1472,30 +1472,30 @@ function UserRow({ u, expanded, onToggle, setUserStatus, setUserTier }) {
               </div>
 
               {/* Kid profiles */}
-              <h4 className="mb-2 text-[10px] font-bold uppercase tracking-wider text-[#6e6a63]">
+              <h4 className="mb-2 text-[10px] font-bold uppercase tracking-wider text-ink-dim">
                 Kid profiles
               </h4>
               <div className="mb-4 grid gap-2 sm:grid-cols-2">
                 {kids.length === 0 ? (
-                  <p className="text-xs text-[#6e6a63]">No profiles yet.</p>
+                  <p className="text-xs text-ink-dim">No profiles yet.</p>
                 ) : (
                   kids.map((kid, i) => (
-                    <div key={i} className="rounded-xl bg-[#0f0f17] p-3">
+                    <div key={i} className="rounded-xl bg-bg-base p-3">
                       <div className="flex items-center justify-between">
-                        <span className="text-sm font-bold text-[#f5f0e8]">
+                        <span className="text-sm font-bold text-ink">
                           {kid.childName || `Kid ${i + 1}`}
                         </span>
                         <select
                           value={kid.tier || 'free'}
                           onChange={(e) => setUserTier(u.uid, i, e.target.value)}
-                          className="rounded-lg bg-[#1a1a28] px-2 py-1 text-[10px] font-bold text-[#f0a500] outline-none"
+                          className="rounded-lg bg-bg-elevated px-2 py-1 text-[10px] font-bold text-gold outline-none"
                         >
                           <option value="free">Free</option>
                           <option value="family">Family</option>
                           <option value="annual">Annual</option>
                         </select>
                       </div>
-                      <div className="mt-1 text-[10px] text-[#6e6a63]">
+                      <div className="mt-1 text-[10px] text-ink-dim">
                         Age {kid.age || '?'} · {(kid.beliefs || []).join(', ') || 'No beliefs'} ·{' '}
                         {kid.characters?.length || 0} chars · {kid.language || 'English'}
                       </div>
@@ -1541,10 +1541,10 @@ function UserRow({ u, expanded, onToggle, setUserStatus, setUserTier }) {
 
 function MetaItem({ label, value, mono }) {
   return (
-    <div className="rounded-lg bg-[#0f0f17] px-3 py-2">
-      <div className="text-[9px] uppercase tracking-wider text-[#6e6a63]">{label}</div>
+    <div className="rounded-lg bg-bg-base px-3 py-2">
+      <div className="text-[9px] uppercase tracking-wider text-ink-dim">{label}</div>
       <div
-        className={`mt-0.5 truncate text-xs text-[#f5f0e8] ${mono ? 'font-mono' : ''}`}
+        className={`mt-0.5 truncate text-xs text-ink ${mono ? 'font-mono' : ''}`}
       >
         {value}
       </div>
@@ -1847,27 +1847,27 @@ function UserStoriesAdmin() {
   const [expandedUser, setExpandedUser] = useState(null);
   const [editingStory, setEditingStory] = useState(null);
 
-  if (loading) return <div className="text-center py-12 text-[#6e6a63]">Loading user stories...</div>;
+  if (loading) return <div className="text-center py-12 text-ink-dim">Loading user stories...</div>;
 
   return (
     <div className="space-y-5">
       {/* Stats */}
       <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
-        <div className="rounded-xl bg-[#1a1a28] p-4 ring-1 ring-white/5">
-          <div className="text-2xl font-bold text-[#f5f0e8]">{stories.length}</div>
-          <div className="text-[10px] font-bold uppercase tracking-wider text-[#6e6a63]">Total Stories</div>
+        <div className="rounded-xl bg-bg-elevated p-4 ring-1 ring-white/5">
+          <div className="text-2xl font-bold text-ink">{stories.length}</div>
+          <div className="text-[10px] font-bold uppercase tracking-wider text-ink-dim">Total Stories</div>
         </div>
-        <div className="rounded-xl bg-[#1a1a28] p-4 ring-1 ring-white/5">
-          <div className="text-2xl font-bold text-[#f0a500]">{userGroups.length}</div>
-          <div className="text-[10px] font-bold uppercase tracking-wider text-[#6e6a63]">Users</div>
+        <div className="rounded-xl bg-bg-elevated p-4 ring-1 ring-white/5">
+          <div className="text-2xl font-bold text-gold">{userGroups.length}</div>
+          <div className="text-[10px] font-bold uppercase tracking-wider text-ink-dim">Users</div>
         </div>
-        <div className="rounded-xl bg-[#1a1a28] p-4 ring-1 ring-white/5">
+        <div className="rounded-xl bg-bg-elevated p-4 ring-1 ring-white/5">
           <div className="text-2xl font-bold text-[#7ad9a1]">{stories.filter(s => s.audioUrl).length}</div>
-          <div className="text-[10px] font-bold uppercase tracking-wider text-[#6e6a63]">With Audio</div>
+          <div className="text-[10px] font-bold uppercase tracking-wider text-ink-dim">With Audio</div>
         </div>
-        <div className="rounded-xl bg-[#1a1a28] p-4 ring-1 ring-white/5">
+        <div className="rounded-xl bg-bg-elevated p-4 ring-1 ring-white/5">
           <div className="text-2xl font-bold text-[#539df5]">{stories.filter(s => s.coverImage).length}</div>
-          <div className="text-[10px] font-bold uppercase tracking-wider text-[#6e6a63]">With Image</div>
+          <div className="text-[10px] font-bold uppercase tracking-wider text-ink-dim">With Image</div>
         </div>
       </div>
 
@@ -1890,7 +1890,7 @@ function UserStoriesAdmin() {
             alert(`Fixed ${fixed} stories. Reload to see changes.`);
             window.location.reload();
           }}
-          className="w-full rounded-xl bg-[#f0a500]/10 p-3 text-[10px] font-bold text-[#f0a500] ring-1 ring-[#f0a500]/20"
+          className="w-full rounded-xl bg-[#f0a500]/10 p-3 text-[10px] font-bold text-gold ring-1 ring-gold/20"
         >
           ⚠️ {stories.filter(s => !s.generatedByEmail).length} stories missing user info — tap to assign to prateekyadav2010@gmail.com
         </button>
@@ -1898,7 +1898,7 @@ function UserStoriesAdmin() {
 
       {/* User cards — tap to expand */}
       {userGroups.map(group => (
-        <div key={group.email} className="rounded-xl bg-[#1a1a28] ring-1 ring-white/5 overflow-hidden">
+        <div key={group.email} className="rounded-xl bg-bg-elevated ring-1 ring-white/5 overflow-hidden">
           {/* User header */}
           <button
             onClick={() => setExpandedUser(expandedUser === group.email ? null : group.email)}
@@ -1908,37 +1908,37 @@ function UserStoriesAdmin() {
               {group.name ? group.name[0]?.toUpperCase() : '👤'}
             </div>
             <div className="min-w-0 flex-1">
-              <h3 className="text-sm font-bold text-[#f5f0e8]">{group.email}</h3>
-              <p className="text-[10px] text-[#6e6a63]">
+              <h3 className="text-sm font-bold text-ink">{group.email}</h3>
+              <p className="text-[10px] text-ink-dim">
                 {group.childName && `Child: ${group.childName} · `}{group.stories.length} stories
               </p>
             </div>
-            <span className="text-[#6e6a63] text-sm">{expandedUser === group.email ? '▲' : '▼'}</span>
+            <span className="text-ink-dim text-sm">{expandedUser === group.email ? '▲' : '▼'}</span>
           </button>
 
           {/* Expanded: show all stories for this user */}
           {expandedUser === group.email && (
             <div className="border-t border-white/5 p-3 space-y-3">
               {group.stories.map(story => (
-                <div key={story.id} className="rounded-xl bg-[#0f0f17] p-3 ring-1 ring-white/5">
+                <div key={story.id} className="rounded-xl bg-bg-base p-3 ring-1 ring-white/5">
           <div className="flex items-start gap-3">
             {story.coverImage ? (
               <img src={story.coverImage} alt="" className="h-16 w-16 shrink-0 rounded-lg object-cover" />
             ) : (
-              <div className="grid h-16 w-16 shrink-0 place-items-center rounded-lg bg-[#0f0f17] text-2xl">🌙</div>
+              <div className="grid h-16 w-16 shrink-0 place-items-center rounded-lg bg-bg-base text-2xl">🌙</div>
             )}
             <div className="min-w-0 flex-1">
-              <h3 className="text-sm font-bold text-[#f5f0e8]">{story.title}</h3>
-              <p className="text-[10px] text-[#6e6a63] mt-0.5">
+              <h3 className="text-sm font-bold text-ink">{story.title}</h3>
+              <p className="text-[10px] text-ink-dim mt-0.5">
                 {story.estimatedMinutes} min · {story.value} · {story.language}
                 {story.childName && ` · for ${story.childName}`}
               </p>
-              <p className="text-[10px] text-[#6e6a63]">
+              <p className="text-[10px] text-ink-dim">
                 {story.generatedByEmail || story.generatedByName || story.sharedBy?.slice(0, 8) || 'anonymous'}
                 {' · '}{story.createdAt ? new Date(story.createdAt).toLocaleString() : story.sharedAt ? new Date(story.sharedAt).toLocaleString() : ''}
               </p>
               {story.whisper && (
-                <p className="text-[10px] text-[#f0a500]/70 mt-0.5">💬 "{story.whisper}"</p>
+                <p className="text-[10px] text-gold/70 mt-0.5">💬 "{story.whisper}"</p>
               )}
               <div className="flex items-center gap-2 mt-1">
                 {story.audioUrl ? (
@@ -1952,7 +1952,7 @@ function UserStoriesAdmin() {
                   <span className="rounded-full bg-red-400/10 px-2 py-0.5 text-[8px] font-bold text-red-400">No image</span>
                 )}
               </div>
-              {status[story.id] && <div className="text-[9px] text-[#f0a500] mt-1">{status[story.id]}</div>}
+              {status[story.id] && <div className="text-[9px] text-gold mt-1">{status[story.id]}</div>}
             </div>
           </div>
 
@@ -1962,14 +1962,14 @@ function UserStoriesAdmin() {
               <input
                 defaultValue={story.title}
                 id={`edit-title-${story.id}`}
-                className="w-full rounded-lg bg-[#0f0f17] px-3 py-2 text-xs font-bold text-[#f5f0e8] outline-none ring-1 ring-[#f0a500]/30"
+                className="w-full rounded-lg bg-bg-base px-3 py-2 text-xs font-bold text-ink outline-none ring-1 ring-gold/30"
                 placeholder="Title"
               />
               <textarea
                 defaultValue={story.text}
                 id={`edit-text-${story.id}`}
                 rows={8}
-                className="w-full rounded-lg bg-[#0f0f17] px-3 py-2 text-[10px] text-[#a8a39a] leading-relaxed outline-none ring-1 ring-[#f0a500]/30 resize-y"
+                className="w-full rounded-lg bg-bg-base px-3 py-2 text-[10px] text-ink-muted leading-relaxed outline-none ring-1 ring-gold/30 resize-y"
               />
               <div className="flex gap-2">
                 <button onClick={async () => {
@@ -1985,14 +1985,14 @@ function UserStoriesAdmin() {
                 }} className="rounded-lg bg-[#7ad9a1]/10 px-4 py-1.5 text-[10px] font-bold text-[#7ad9a1]">
                   💾 Save
                 </button>
-                <button onClick={() => setEditingStory(null)} className="rounded-lg bg-white/5 px-4 py-1.5 text-[10px] font-bold text-[#6e6a63]">
+                <button onClick={() => setEditingStory(null)} className="rounded-lg bg-white/5 px-4 py-1.5 text-[10px] font-bold text-ink-dim">
                   Cancel
                 </button>
               </div>
             </div>
           ) : (
-            <div className="mt-2 rounded-lg bg-[#0f0f17] p-3 max-h-24 overflow-y-auto">
-              <p className="text-[10px] text-[#a8a39a] leading-relaxed whitespace-pre-wrap">{(story.text || '').slice(0, 500)}...</p>
+            <div className="mt-2 rounded-lg bg-bg-base p-3 max-h-24 overflow-y-auto">
+              <p className="text-[10px] text-ink-muted leading-relaxed whitespace-pre-wrap">{(story.text || '').slice(0, 500)}...</p>
             </div>
           )}
 
@@ -2002,7 +2002,7 @@ function UserStoriesAdmin() {
           {/* Actions */}
           <div className="flex items-center gap-2 mt-3 flex-wrap">
             <select defaultValue="george" id={`uvoice-${story.id}`}
-              className="rounded-lg bg-[#0f0f17] px-2 py-1.5 text-[10px] font-bold text-[#7ad9a1] outline-none ring-1 ring-[#7ad9a1]/20">
+              className="rounded-lg bg-bg-base px-2 py-1.5 text-[10px] font-bold text-[#7ad9a1] outline-none ring-1 ring-[#7ad9a1]/20">
               {ELEVEN_VOICES.map(v => <option key={v.key} value={v.key}>{v.label}</option>)}
             </select>
             <button onClick={() => generateAudio(story, document.getElementById(`uvoice-${story.id}`)?.value || 'george')}
@@ -2015,11 +2015,11 @@ function UserStoriesAdmin() {
               {generating === story.id + '_img' ? '...' : '🖼️ Image'}
             </button>
             <button onClick={() => setEditingStory(editingStory === story.id ? null : story.id)}
-              className="rounded-lg bg-[#f0a500]/10 px-3 py-1.5 text-[10px] font-bold text-[#f0a500]">
+              className="rounded-lg bg-[#f0a500]/10 px-3 py-1.5 text-[10px] font-bold text-gold">
               {editingStory === story.id ? '✕ Close' : '✏️ Edit'}
             </button>
             <button onClick={() => { navigator.clipboard.writeText(`https://mysleepytale.com/player?storyId=${story.id}`); setStatus(s => ({ ...s, [story.id]: 'Link copied!' })); }}
-              className="rounded-lg bg-[#f0a500]/10 px-3 py-1.5 text-[10px] font-bold text-[#f0a500]">
+              className="rounded-lg bg-[#f0a500]/10 px-3 py-1.5 text-[10px] font-bold text-gold">
               🔗 Copy Link
             </button>
             <button onClick={() => deleteStory(story.id)}
@@ -2077,12 +2077,12 @@ function AdminManagement() {
   };
 
   return (
-    <div className="rounded-xl bg-[#1a1a28] p-4 ring-1 ring-white/5">
-      <h3 className="text-sm font-bold text-[#f5f0e8] mb-3">👑 Admin Users</h3>
+    <div className="rounded-xl bg-bg-elevated p-4 ring-1 ring-white/5">
+      <h3 className="text-sm font-bold text-ink mb-3">👑 Admin Users</h3>
       <div className="space-y-2 mb-3">
         {admins.map(email => (
-          <div key={email} className="flex items-center justify-between rounded-lg bg-[#0f0f17] px-3 py-2">
-            <span className="text-xs text-[#f5f0e8]">{email}</span>
+          <div key={email} className="flex items-center justify-between rounded-lg bg-bg-base px-3 py-2">
+            <span className="text-xs text-ink">{email}</span>
             <button onClick={() => removeAdmin(email)} className="text-[10px] text-red-400/60 hover:text-red-400">Remove</button>
           </div>
         ))}
@@ -2092,7 +2092,7 @@ function AdminManagement() {
           value={newEmail}
           onChange={(e) => setNewEmail(e.target.value)}
           placeholder="email@example.com"
-          className="flex-1 rounded-lg bg-[#0f0f17] px-3 py-2 text-xs text-[#f5f0e8] outline-none ring-1 ring-white/10 placeholder:text-[#6e6a63]"
+          className="flex-1 rounded-lg bg-bg-base px-3 py-2 text-xs text-ink outline-none ring-1 ring-white/10 placeholder:text-ink-dim"
           onKeyDown={(e) => e.key === 'Enter' && addAdmin()}
         />
         <button onClick={addAdmin} disabled={saving} className="rounded-lg bg-[#7ad9a1]/10 px-4 py-2 text-[10px] font-bold text-[#7ad9a1] disabled:opacity-30">
@@ -2269,25 +2269,25 @@ function StoryLab({ showSettingsTabs }) {
       <div className="flex gap-2 overflow-x-auto pb-2">
         {SUB_TABS.map((t) => (
           <button key={t.key} onClick={() => setSubTab(t.key)}
-            className={`shrink-0 rounded-xl px-4 py-2 text-sm font-bold transition ${subTab === t.key ? 'bg-[#f0a500] text-[#0f0f17]' : 'bg-[#1a1a28] text-[#a8a39a] hover:text-[#f5f0e8]'}`}
+            className={`shrink-0 rounded-xl px-4 py-2 text-sm font-bold transition ${subTab === t.key ? 'bg-[#f0a500] text-[#0f0f17]' : 'bg-bg-elevated text-ink-muted hover:text-ink'}`}
           >{t.icon} {t.label}</button>
         ))}
       </div>
 
-      {saving && <div className="rounded-xl bg-[#f0a500]/10 p-3 text-center text-xs font-bold text-[#f0a500]">Saving...</div>}
+      {saving && <div className="rounded-xl bg-[#f0a500]/10 p-3 text-center text-xs font-bold text-gold">Saving...</div>}
       {lastSaved && <div className="rounded-xl bg-[#7ad9a1]/10 p-3 text-center text-xs font-bold text-[#7ad9a1]">Saved {lastSaved}!</div>}
 
       {/* ══════ GLOBAL RULES ══════ */}
       {subTab === 'rules' && (
-        <div className="rounded-2xl bg-[#1a1a28] p-6">
+        <div className="rounded-2xl bg-bg-elevated p-6">
           <div className="mb-4 flex items-center justify-between">
-            <h3 className="text-sm font-bold text-[#f5f0e8]">Mandatory Rules for ALL stories</h3>
+            <h3 className="text-sm font-bold text-ink">Mandatory Rules for ALL stories</h3>
             <button onClick={() => saveAll('globalRules', globalRules)} disabled={saving}
               className="rounded-full bg-[#f0a500] px-4 py-1.5 text-xs font-bold text-[#0a0a0f] disabled:opacity-50">
               {saving ? 'Saving...' : 'Save Rules'}
             </button>
           </div>
-          <p className="mb-4 text-xs text-[#6e6a63]">These rules are injected into every story generation prompt. Claude will never violate them.</p>
+          <p className="mb-4 text-xs text-ink-dim">These rules are injected into every story generation prompt. Claude will never violate them.</p>
           <div className="space-y-2">
             {globalRules.map((rule, i) => (
               <div key={i} className="flex items-start gap-2">
@@ -2296,14 +2296,14 @@ function StoryLab({ showSettingsTabs }) {
                   updated[i] = e.target.value;
                   setGlobalRules(updated);
                 }} rows={2}
-                className="flex-1 rounded-xl bg-[#0a0a0f] px-3 py-2 text-sm text-[#f5f0e8] outline-none ring-1 ring-white/10" />
+                className="flex-1 rounded-xl bg-bg-base px-3 py-2 text-sm text-ink outline-none ring-1 ring-white/10" />
                 <button onClick={() => setGlobalRules(globalRules.filter((_, j) => j !== i))}
                   className="mt-1 text-xs text-[#f3727f]">Remove</button>
               </div>
             ))}
           </div>
           <button onClick={() => setGlobalRules([...globalRules, ''])}
-            className="mt-3 text-xs font-bold text-[#f0a500]">+ Add rule</button>
+            className="mt-3 text-xs font-bold text-gold">+ Add rule</button>
         </div>
       )}
 
@@ -2334,22 +2334,22 @@ function StoryLab({ showSettingsTabs }) {
 
           <div className="space-y-4">
             {pgGenerating && (
-              <div className="flex items-center justify-center rounded-2xl bg-[#1a1a28] p-12">
+              <div className="flex items-center justify-center rounded-2xl bg-bg-elevated p-12">
                 <div className="text-center">
-                  <div className="mb-3 inline-block h-8 w-8 animate-spin rounded-full border-2 border-[#f0a500] border-t-transparent" />
-                  <p className="text-sm text-[#a8a39a]">Generating story with Claude...</p>
-                  <p className="mt-2 text-[10px] text-[#6e6a63]">This typically takes 10-15 seconds</p>
+                  <div className="mb-3 inline-block h-8 w-8 animate-spin rounded-full border-2 border-gold border-t-transparent" />
+                  <p className="text-sm text-ink-muted">Generating story with Claude...</p>
+                  <p className="mt-2 text-[10px] text-ink-dim">This typically takes 10-15 seconds</p>
                 </div>
               </div>
             )}
             {pgResult && (
               <LabCard title={pgResult.title} titleColor>
-                <p className="text-xs text-[#a8a39a]">{pgResult.wordCount} words · ~{Math.round(pgResult.wordCount / 130)} min · {pgResult.generatedBy}</p>
-                <div className="mt-3 max-h-[50vh] overflow-y-auto rounded-xl bg-[#0f0f17] p-4 font-story text-sm leading-relaxed text-[#f5f0e8]/80">{pgResult.text}</div>
+                <p className="text-xs text-ink-muted">{pgResult.wordCount} words · ~{Math.round(pgResult.wordCount / 130)} min · {pgResult.generatedBy}</p>
+                <div className="mt-3 max-h-[50vh] overflow-y-auto rounded-xl bg-bg-base p-4 font-story text-sm leading-relaxed text-ink/80">{pgResult.text}</div>
 
                 {/* Quality rating */}
-                <div className="mt-4 rounded-xl bg-[#0f0f17] p-4">
-                  <div className="text-[10px] font-bold uppercase tracking-wider text-[#6e6a63] mb-2">Rate this story</div>
+                <div className="mt-4 rounded-xl bg-bg-base p-4">
+                  <div className="text-[10px] font-bold uppercase tracking-wider text-ink-dim mb-2">Rate this story</div>
                   <div className="flex gap-2 mb-3">
                     {[1,2,3,4,5].map((star) => (
                       <button key={star} onClick={() => setPgRating(star)}
@@ -2357,12 +2357,12 @@ function StoryLab({ showSettingsTabs }) {
                         {star <= pgRating ? '★' : '☆'}
                       </button>
                     ))}
-                    <span className="ml-2 self-center text-xs text-[#a8a39a]">
+                    <span className="ml-2 self-center text-xs text-ink-muted">
                       {pgRating === 1 ? 'Bad' : pgRating === 2 ? 'Weak' : pgRating === 3 ? 'OK' : pgRating === 4 ? 'Good' : pgRating === 5 ? 'Amazing' : ''}
                     </span>
                   </div>
                   <textarea value={pgNotes} onChange={(e) => setPgNotes(e.target.value)} placeholder="Notes — what worked, what didn't, what to change..."
-                    className="w-full rounded-lg bg-[#1a1a28] px-3 py-2 text-sm text-[#f5f0e8] placeholder-[#6e6a63] outline-none ring-1 ring-white/5 focus:ring-[#f0a500]" rows={3} />
+                    className="w-full rounded-lg bg-bg-elevated px-3 py-2 text-sm text-ink placeholder-[#6e6a63] outline-none ring-1 ring-white/5 focus:ring-gold" rows={3} />
                 </div>
 
                 <div className="mt-3 flex gap-2">
@@ -2371,18 +2371,18 @@ function StoryLab({ showSettingsTabs }) {
                     Save to Cache
                   </button>
                   <button onClick={generateTestStory} disabled={pgGenerating}
-                    className="flex-1 rounded-xl bg-[#f0a500]/10 py-2.5 text-xs font-bold text-[#f0a500] hover:bg-[#f0a500]/20">
+                    className="flex-1 rounded-xl bg-[#f0a500]/10 py-2.5 text-xs font-bold text-gold hover:bg-[#f0a500]/20">
                     Regenerate
                   </button>
                 </div>
               </LabCard>
             )}
             {!pgGenerating && !pgResult && (
-              <div className="flex items-center justify-center rounded-2xl bg-[#1a1a28] p-12">
+              <div className="flex items-center justify-center rounded-2xl bg-bg-elevated p-12">
                 <div className="text-center">
                   <div className="mb-3 text-4xl">🧪</div>
-                  <p className="text-sm text-[#a8a39a]">Configure and generate a test story</p>
-                  <p className="mt-1 text-xs text-[#6e6a63]">Test different parameter combos. Rate results. Save the good ones.</p>
+                  <p className="text-sm text-ink-muted">Configure and generate a test story</p>
+                  <p className="mt-1 text-xs text-ink-dim">Test different parameter combos. Rate results. Save the good ones.</p>
                 </div>
               </div>
             )}
@@ -2396,17 +2396,17 @@ function StoryLab({ showSettingsTabs }) {
           <LabCard title="Character Archetypes" subtitle="Define how each role appears in stories. Your team can customize names, traits, and activities to break stereotypes and add variety.">
             <div className="space-y-3">
               {archetypes.map((arch, i) => (
-                <div key={arch.key} className="rounded-xl bg-[#0f0f17] p-4">
+                <div key={arch.key} className="rounded-xl bg-bg-base p-4">
                   <div className="flex items-center justify-between">
                     <div className="flex items-center gap-3">
                       <span className="text-lg">{arch.key === 'grandfather' ? '👴' : arch.key === 'grandmother' ? '👵' : arch.key === 'mother' ? '👩' : arch.key === 'father' ? '👨' : arch.key === 'sibling' ? '🧒' : arch.key === 'uncle' ? '🧔' : arch.key === 'aunt' ? '👩' : '🐶'}</span>
                       <div>
-                        <div className="font-bold text-[#f5f0e8] capitalize">{arch.key}</div>
-                        <div className="text-xs text-[#a8a39a]">Called: {arch.callOptions.slice(0, 4).join(', ')}{arch.callOptions.length > 4 ? ` +${arch.callOptions.length - 4}` : ''}</div>
-                        <div className="mt-1 text-[10px] text-[#6e6a63] truncate max-w-md">{arch.traits}</div>
+                        <div className="font-bold text-ink capitalize">{arch.key}</div>
+                        <div className="text-xs text-ink-muted">Called: {arch.callOptions.slice(0, 4).join(', ')}{arch.callOptions.length > 4 ? ` +${arch.callOptions.length - 4}` : ''}</div>
+                        <div className="mt-1 text-[10px] text-ink-dim truncate max-w-md">{arch.traits}</div>
                       </div>
                     </div>
-                    <button onClick={() => setEditingArch(editingArch === i ? null : i)} className="rounded-lg bg-[#1a1a28] px-3 py-1.5 text-xs font-bold text-[#f0a500]">{editingArch === i ? 'Close' : 'Edit'}</button>
+                    <button onClick={() => setEditingArch(editingArch === i ? null : i)} className="rounded-lg bg-bg-elevated px-3 py-1.5 text-xs font-bold text-gold">{editingArch === i ? 'Close' : 'Edit'}</button>
                   </div>
                   {editingArch === i && (
                     <motion.div initial={{ height: 0, opacity: 0 }} animate={{ height: 'auto', opacity: 1 }} className="mt-4 space-y-3 overflow-hidden">
@@ -2420,9 +2420,9 @@ function StoryLab({ showSettingsTabs }) {
               ))}
             </div>
             <button onClick={() => setArchetypes([...archetypes, { key: `custom_${Date.now()}`, callOptions: ['New Character'], defaultCall: 'New Character', traits: '', activities: '', isCustom: true }])}
-              className="mt-3 w-full rounded-lg border border-dashed border-white/10 py-3 text-xs font-bold text-[#a8a39a]">+ Add New Character Type (visible to all users in Characters section)</button>
+              className="mt-3 w-full rounded-lg border border-dashed border-white/10 py-3 text-xs font-bold text-ink-muted">+ Add New Character Type (visible to all users in Characters section)</button>
             <button onClick={() => saveAll('archetypes', archetypes)} disabled={saving} className="mt-3 w-full rounded-xl bg-[#f0a500] py-3 text-sm font-bold text-[#0f0f17] disabled:opacity-50">Save Archetypes</button>
-            <p className="mt-2 text-[10px] text-[#6e6a63] text-center">Custom character types added here will appear in every user's Characters section for selection</p>
+            <p className="mt-2 text-[10px] text-ink-dim text-center">Custom character types added here will appear in every user's Characters section for selection</p>
           </LabCard>
         </div>
       )}
@@ -2436,17 +2436,17 @@ function StoryLab({ showSettingsTabs }) {
                 const r = RELIGIONS.find((x) => x.key === key);
                 return (
                   <button key={key} onClick={() => setEditingCulture(editingCulture === key ? null : key)}
-                    className={`rounded-lg px-3 py-2 text-xs font-bold transition ${editingCulture === key ? 'bg-[#f0a500] text-[#0f0f17]' : 'bg-[#0f0f17] text-[#a8a39a]'}`}>
+                    className={`rounded-lg px-3 py-2 text-xs font-bold transition ${editingCulture === key ? 'bg-[#f0a500] text-[#0f0f17]' : 'bg-bg-base text-ink-muted'}`}>
                     {r?.icon || '🌍'} {r?.label || key}
                   </button>
                 );
               })}
             </div>
             {editingCulture && culturalRefs[editingCulture] && (
-              <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="space-y-3 rounded-xl bg-[#0f0f17] p-4">
+              <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="space-y-3 rounded-xl bg-bg-base p-4">
                 {Object.entries(culturalRefs[editingCulture]).map(([category, items]) => (
                   <div key={category}>
-                    <label className="mb-1 block text-[10px] font-bold uppercase tracking-wider text-[#6e6a63]">
+                    <label className="mb-1 block text-[10px] font-bold uppercase tracking-wider text-ink-dim">
                       {category === 'foods' ? '🍲 Foods' : category === 'festivals' ? '🎉 Festivals' : category === 'traditions' ? '🪷 Traditions' : category === 'places' ? '📍 Places' : category === 'music' ? '🎵 Music & Sounds' : category === 'games' ? '🎮 Games' : category === 'clothing' ? '👗 Clothing' : '👋 Greetings'}
                     </label>
                     <textarea value={Array.isArray(items) ? items.join(', ') : items}
@@ -2454,14 +2454,14 @@ function StoryLab({ showSettingsTabs }) {
                         const updated = { ...culturalRefs, [editingCulture]: { ...culturalRefs[editingCulture], [category]: e.target.value.split(',').map((s) => s.trim()).filter(Boolean) } };
                         setCulturalRefs(updated);
                       }}
-                      rows={2} className="w-full rounded-lg bg-[#1a1a28] px-3 py-2 text-sm text-[#f5f0e8] outline-none ring-1 ring-white/5 focus:ring-[#f0a500]" />
+                      rows={2} className="w-full rounded-lg bg-bg-elevated px-3 py-2 text-sm text-ink outline-none ring-1 ring-white/5 focus:ring-gold" />
                   </div>
                 ))}
                 <button onClick={() => saveAll('culturalRefs', culturalRefs)} disabled={saving} className="w-full rounded-xl bg-[#f0a500] py-2.5 text-sm font-bold text-[#0f0f17] disabled:opacity-50">Save {RELIGIONS.find((r) => r.key === editingCulture)?.label || editingCulture}</button>
               </motion.div>
             )}
             {!editingCulture && (
-              <p className="text-center text-xs text-[#6e6a63] py-6">Select a belief system above to edit its cultural references</p>
+              <p className="text-center text-xs text-ink-dim py-6">Select a belief system above to edit its cultural references</p>
             )}
           </LabCard>
         </div>
@@ -2481,32 +2481,32 @@ function StoryLab({ showSettingsTabs }) {
           <LabCard title="Quick Whispers" subtitle="Pre-set whisper suggestions shown to parents. 6 per belief + country combo. Parents see these as one-tap options before typing their own.">
             <div className="flex flex-wrap gap-3 mb-4">
               <div className="flex items-center gap-2">
-                <span className="text-[10px] font-bold uppercase text-[#6e6a63]">Belief:</span>
-                <select value={qwBelief} onChange={(e) => setQwBelief(e.target.value)} className="rounded-lg bg-[#0f0f17] px-3 py-1.5 text-xs text-[#f5f0e8] outline-none ring-1 ring-white/5">
+                <span className="text-[10px] font-bold uppercase text-ink-dim">Belief:</span>
+                <select value={qwBelief} onChange={(e) => setQwBelief(e.target.value)} className="rounded-lg bg-bg-base px-3 py-1.5 text-xs text-ink outline-none ring-1 ring-white/5">
                   {RELIGIONS.map((r) => <option key={r.key} value={r.key}>{r.icon} {r.label}</option>)}
                 </select>
               </div>
               <div className="flex items-center gap-2">
-                <span className="text-[10px] font-bold uppercase text-[#6e6a63]">Country:</span>
-                <select value={qwCountry} onChange={(e) => setQwCountry(e.target.value)} className="rounded-lg bg-[#0f0f17] px-3 py-1.5 text-xs text-[#f5f0e8] outline-none ring-1 ring-white/5">
+                <span className="text-[10px] font-bold uppercase text-ink-dim">Country:</span>
+                <select value={qwCountry} onChange={(e) => setQwCountry(e.target.value)} className="rounded-lg bg-bg-base px-3 py-1.5 text-xs text-ink outline-none ring-1 ring-white/5">
                   {COUNTRIES.map((c) => <option key={c.key} value={c.key}>{c.flag} {c.label}</option>)}
                 </select>
               </div>
             </div>
 
-            <div className="rounded-xl bg-[#0f0f17] p-4 mb-4">
-              <div className="text-[10px] font-bold uppercase tracking-wider text-[#6e6a63] mb-3">
+            <div className="rounded-xl bg-bg-base p-4 mb-4">
+              <div className="text-[10px] font-bold uppercase tracking-wider text-ink-dim mb-3">
                 6 Quick Whispers for {RELIGIONS.find((r) => r.key === qwBelief)?.icon} {RELIGIONS.find((r) => r.key === qwBelief)?.label} · {COUNTRIES.find((c) => c.key === qwCountry)?.flag} {COUNTRIES.find((c) => c.key === qwCountry)?.label}
               </div>
               <div className="space-y-2">
                 {[0,1,2,3,4,5].map((idx) => (
                   <div key={idx} className="flex items-center gap-3">
-                    <span className="text-xs font-bold text-[#f0a500] w-5">{idx + 1}</span>
+                    <span className="text-xs font-bold text-gold w-5">{idx + 1}</span>
                     <input
                       value={current[idx] || ''}
                       onChange={(e) => updateWhisper(idx, e.target.value)}
                       placeholder={`Quick whisper ${idx + 1}...`}
-                      className="flex-1 rounded-lg bg-[#1a1a28] px-3 py-2.5 text-sm text-[#f5f0e8] placeholder-[#6e6a63] outline-none ring-1 ring-white/5 focus:ring-[#f0a500]"
+                      className="flex-1 rounded-lg bg-bg-elevated px-3 py-2.5 text-sm text-ink placeholder-[#6e6a63] outline-none ring-1 ring-white/5 focus:ring-gold"
                     />
                   </div>
                 ))}
@@ -2514,20 +2514,20 @@ function StoryLab({ showSettingsTabs }) {
             </div>
 
             {/* Preview */}
-            <div className="rounded-xl bg-[#0f0f17] p-4 mb-4">
-              <div className="text-[10px] font-bold uppercase tracking-wider text-[#6e6a63] mb-2">Preview — what parents will see</div>
+            <div className="rounded-xl bg-bg-base p-4 mb-4">
+              <div className="text-[10px] font-bold uppercase tracking-wider text-ink-dim mb-2">Preview — what parents will see</div>
               <div className="flex flex-wrap gap-2">
                 {current.filter(Boolean).map((w, i) => (
-                  <span key={i} className="rounded-full bg-[#1a1a28] px-3 py-1.5 text-[11px] text-[#a8a39a] ring-1 ring-white/5">{w}</span>
+                  <span key={i} className="rounded-full bg-bg-elevated px-3 py-1.5 text-[11px] text-ink-muted ring-1 ring-white/5">{w}</span>
                 ))}
-                {current.filter(Boolean).length === 0 && <span className="text-xs text-[#6e6a63]">No whispers set — will use default suggestions</span>}
+                {current.filter(Boolean).length === 0 && <span className="text-xs text-ink-dim">No whispers set — will use default suggestions</span>}
               </div>
             </div>
 
             {/* Saved combos overview */}
             {Object.keys(quickWhispers).length > 0 && (
-              <div className="rounded-xl bg-[#0f0f17] p-4 mb-4">
-                <div className="text-[10px] font-bold uppercase tracking-wider text-[#6e6a63] mb-2">All configured combos</div>
+              <div className="rounded-xl bg-bg-base p-4 mb-4">
+                <div className="text-[10px] font-bold uppercase tracking-wider text-ink-dim mb-2">All configured combos</div>
                 <div className="flex flex-wrap gap-2">
                   {Object.entries(quickWhispers).filter(([, v]) => v.some(Boolean)).map(([k]) => {
                     const [b, c] = k.split('_');
@@ -2535,7 +2535,7 @@ function StoryLab({ showSettingsTabs }) {
                     const cr = COUNTRIES.find((x) => x.key === c);
                     return (
                       <button key={k} onClick={() => { setQwBelief(b); setQwCountry(c); }}
-                        className={`rounded-lg px-3 py-1.5 text-xs font-bold transition ${k === key ? 'bg-[#f0a500] text-[#0f0f17]' : 'bg-[#1a1a28] text-[#a8a39a]'}`}>
+                        className={`rounded-lg px-3 py-1.5 text-xs font-bold transition ${k === key ? 'bg-[#f0a500] text-[#0f0f17]' : 'bg-bg-elevated text-ink-muted'}`}>
                         {br?.icon} {cr?.flag}
                       </button>
                     );
@@ -2548,7 +2548,7 @@ function StoryLab({ showSettingsTabs }) {
               className="w-full rounded-xl bg-[#f0a500] py-3 text-sm font-bold text-[#0f0f17] disabled:opacity-50">
               Save Quick Whispers
             </button>
-            <p className="mt-2 text-[10px] text-[#6e6a63] text-center">Changes go live immediately for users matching this belief + country</p>
+            <p className="mt-2 text-[10px] text-ink-dim text-center">Changes go live immediately for users matching this belief + country</p>
           </LabCard>
         </div>
         );
@@ -2560,17 +2560,17 @@ function StoryLab({ showSettingsTabs }) {
           {/* Openers */}
           <LabCard title="Story Openers" subtitle="Great first lines that hook kids immediately. Claude picks from these.">
             {storyOpeners.map((opener, i) => (
-              <div key={i} className="mb-2 rounded-lg bg-[#0f0f17] p-3">
+              <div key={i} className="mb-2 rounded-lg bg-bg-base p-3">
                 <div className="flex items-center gap-2 mb-1">
-                  <span className="rounded bg-[#f0a500]/10 px-2 py-0.5 text-[9px] font-bold uppercase text-[#f0a500]">{opener.type}</span>
-                  <span className="text-[9px] text-[#6e6a63]">Ages {opener.ages}</span>
+                  <span className="rounded bg-[#f0a500]/10 px-2 py-0.5 text-[9px] font-bold uppercase text-gold">{opener.type}</span>
+                  <span className="text-[9px] text-ink-dim">Ages {opener.ages}</span>
                   <button onClick={() => { const u = storyOpeners.filter((_, j) => j !== i); setStoryOpeners(u); }} className="ml-auto text-[10px] text-[#f3727f]">remove</button>
                 </div>
                 <textarea value={opener.text} onChange={(e) => { const u = [...storyOpeners]; u[i] = { ...opener, text: e.target.value }; setStoryOpeners(u); }}
-                  rows={2} className="w-full rounded bg-[#1a1a28] px-2 py-1.5 text-xs text-[#f5f0e8] outline-none ring-1 ring-white/5 focus:ring-[#f0a500]" />
+                  rows={2} className="w-full rounded bg-bg-elevated px-2 py-1.5 text-xs text-ink outline-none ring-1 ring-white/5 focus:ring-gold" />
               </div>
             ))}
-            <button onClick={() => setStoryOpeners([...storyOpeners, { type: 'new', text: '', ages: '3-10' }])} className="w-full rounded-lg border border-dashed border-white/10 py-2 text-xs text-[#a8a39a]">+ Add opener</button>
+            <button onClick={() => setStoryOpeners([...storyOpeners, { type: 'new', text: '', ages: '3-10' }])} className="w-full rounded-lg border border-dashed border-white/10 py-2 text-xs text-ink-muted">+ Add opener</button>
             <button onClick={() => saveAll('storyOpeners', storyOpeners)} disabled={saving} className="mt-2 w-full rounded-xl bg-[#f0a500] py-2.5 text-sm font-bold text-[#0f0f17] disabled:opacity-50">Save Openers</button>
           </LabCard>
 
@@ -2579,11 +2579,11 @@ function StoryLab({ showSettingsTabs }) {
             {plotTwists.map((twist, i) => (
               <div key={i} className="mb-2 flex gap-2">
                 <input value={twist} onChange={(e) => { const u = [...plotTwists]; u[i] = e.target.value; setPlotTwists(u); }}
-                  className="flex-1 rounded-lg bg-[#0f0f17] px-3 py-2 text-xs text-[#f5f0e8] outline-none ring-1 ring-white/5 focus:ring-[#f0a500]" />
+                  className="flex-1 rounded-lg bg-bg-base px-3 py-2 text-xs text-ink outline-none ring-1 ring-white/5 focus:ring-gold" />
                 <button onClick={() => setPlotTwists(plotTwists.filter((_, j) => j !== i))} className="text-xs text-[#f3727f]">x</button>
               </div>
             ))}
-            <button onClick={() => setPlotTwists([...plotTwists, ''])} className="w-full rounded-lg border border-dashed border-white/10 py-2 text-xs text-[#a8a39a]">+ Add twist</button>
+            <button onClick={() => setPlotTwists([...plotTwists, ''])} className="w-full rounded-lg border border-dashed border-white/10 py-2 text-xs text-ink-muted">+ Add twist</button>
             <button onClick={() => saveAll('plotTwists', plotTwists)} disabled={saving} className="mt-2 w-full rounded-xl bg-[#f0a500] py-2.5 text-sm font-bold text-[#0f0f17] disabled:opacity-50">Save Twists</button>
           </LabCard>
 
@@ -2592,29 +2592,29 @@ function StoryLab({ showSettingsTabs }) {
             {windDowns.map((wd, i) => (
               <div key={i} className="mb-2 flex gap-2">
                 <textarea value={wd} onChange={(e) => { const u = [...windDowns]; u[i] = e.target.value; setWindDowns(u); }}
-                  rows={2} className="flex-1 rounded-lg bg-[#0f0f17] px-3 py-2 text-xs text-[#f5f0e8] outline-none ring-1 ring-white/5 focus:ring-[#f0a500]" />
+                  rows={2} className="flex-1 rounded-lg bg-bg-base px-3 py-2 text-xs text-ink outline-none ring-1 ring-white/5 focus:ring-gold" />
                 <button onClick={() => setWindDowns(windDowns.filter((_, j) => j !== i))} className="text-xs text-[#f3727f]">x</button>
               </div>
             ))}
-            <button onClick={() => setWindDowns([...windDowns, ''])} className="w-full rounded-lg border border-dashed border-white/10 py-2 text-xs text-[#a8a39a]">+ Add wind-down</button>
+            <button onClick={() => setWindDowns([...windDowns, ''])} className="w-full rounded-lg border border-dashed border-white/10 py-2 text-xs text-ink-muted">+ Add wind-down</button>
             <button onClick={() => saveAll('windDowns', windDowns)} disabled={saving} className="mt-2 w-full rounded-xl bg-[#f0a500] py-2.5 text-sm font-bold text-[#0f0f17] disabled:opacity-50">Save Wind-Downs</button>
           </LabCard>
 
           {/* Sound Effects */}
           <LabCard title="Sound Effects Library" subtitle="Fun sounds Claude weaves into the narrative">
             {soundFx.map((fx, i) => (
-              <div key={i} className="mb-2 rounded-lg bg-[#0f0f17] p-3 flex items-center gap-3">
+              <div key={i} className="mb-2 rounded-lg bg-bg-base p-3 flex items-center gap-3">
                 <span className="text-lg">{fx.emoji}</span>
                 <div className="flex-1 space-y-1">
                   <input value={fx.sound} onChange={(e) => { const u = [...soundFx]; u[i] = { ...fx, sound: e.target.value }; setSoundFx(u); }} placeholder="Sound"
-                    className="w-full rounded bg-[#1a1a28] px-2 py-1 text-xs font-bold text-[#f0a500] outline-none ring-1 ring-white/5" />
+                    className="w-full rounded bg-bg-elevated px-2 py-1 text-xs font-bold text-gold outline-none ring-1 ring-white/5" />
                   <input value={fx.when} onChange={(e) => { const u = [...soundFx]; u[i] = { ...fx, when: e.target.value }; setSoundFx(u); }} placeholder="When to use"
-                    className="w-full rounded bg-[#1a1a28] px-2 py-1 text-[10px] text-[#a8a39a] outline-none ring-1 ring-white/5" />
+                    className="w-full rounded bg-bg-elevated px-2 py-1 text-[10px] text-ink-muted outline-none ring-1 ring-white/5" />
                 </div>
                 <button onClick={() => setSoundFx(soundFx.filter((_, j) => j !== i))} className="text-xs text-[#f3727f]">x</button>
               </div>
             ))}
-            <button onClick={() => setSoundFx([...soundFx, { sound: '', when: '', emoji: '🔊' }])} className="w-full rounded-lg border border-dashed border-white/10 py-2 text-xs text-[#a8a39a]">+ Add sound</button>
+            <button onClick={() => setSoundFx([...soundFx, { sound: '', when: '', emoji: '🔊' }])} className="w-full rounded-lg border border-dashed border-white/10 py-2 text-xs text-ink-muted">+ Add sound</button>
             <button onClick={() => saveAll('soundFx', soundFx)} disabled={saving} className="mt-2 w-full rounded-xl bg-[#f0a500] py-2.5 text-sm font-bold text-[#0f0f17] disabled:opacity-50">Save Sounds</button>
           </LabCard>
 
@@ -2622,19 +2622,19 @@ function StoryLab({ showSettingsTabs }) {
           <LabCard title="World Settings" subtitle="Magical places where stories happen" colSpan>
             <div className="grid gap-3 sm:grid-cols-2">
               {settings.map((s, i) => (
-                <div key={i} className="rounded-lg bg-[#0f0f17] p-3">
+                <div key={i} className="rounded-lg bg-bg-base p-3">
                   <div className="flex items-center gap-2 mb-2">
-                    <input value={s.emoji} onChange={(e) => { const u = [...settings]; u[i] = { ...s, emoji: e.target.value }; setSettings(u); }} className="w-10 rounded bg-[#1a1a28] px-1 py-0.5 text-center text-lg outline-none" />
-                    <input value={s.name} onChange={(e) => { const u = [...settings]; u[i] = { ...s, name: e.target.value }; setSettings(u); }} className="flex-1 rounded bg-[#1a1a28] px-2 py-1 text-sm font-bold text-[#f5f0e8] outline-none ring-1 ring-white/5" />
-                    <span className="text-[9px] text-[#6e6a63]">{s.ages}</span>
+                    <input value={s.emoji} onChange={(e) => { const u = [...settings]; u[i] = { ...s, emoji: e.target.value }; setSettings(u); }} className="w-10 rounded bg-bg-elevated px-1 py-0.5 text-center text-lg outline-none" />
+                    <input value={s.name} onChange={(e) => { const u = [...settings]; u[i] = { ...s, name: e.target.value }; setSettings(u); }} className="flex-1 rounded bg-bg-elevated px-2 py-1 text-sm font-bold text-ink outline-none ring-1 ring-white/5" />
+                    <span className="text-[9px] text-ink-dim">{s.ages}</span>
                     <button onClick={() => setSettings(settings.filter((_, j) => j !== i))} className="text-xs text-[#f3727f]">x</button>
                   </div>
                   <textarea value={s.description} onChange={(e) => { const u = [...settings]; u[i] = { ...s, description: e.target.value }; setSettings(u); }}
-                    rows={2} className="w-full rounded bg-[#1a1a28] px-2 py-1 text-[11px] text-[#a8a39a] outline-none ring-1 ring-white/5 focus:ring-[#f0a500]" />
+                    rows={2} className="w-full rounded bg-bg-elevated px-2 py-1 text-[11px] text-ink-muted outline-none ring-1 ring-white/5 focus:ring-gold" />
                 </div>
               ))}
             </div>
-            <button onClick={() => setSettings([...settings, { name: 'New Setting', description: '', emoji: '✨', ages: '3-10' }])} className="mt-2 w-full rounded-lg border border-dashed border-white/10 py-2 text-xs text-[#a8a39a]">+ Add setting</button>
+            <button onClick={() => setSettings([...settings, { name: 'New Setting', description: '', emoji: '✨', ages: '3-10' }])} className="mt-2 w-full rounded-lg border border-dashed border-white/10 py-2 text-xs text-ink-muted">+ Add setting</button>
             <button onClick={() => saveAll('settings', settings)} disabled={saving} className="mt-2 w-full rounded-xl bg-[#f0a500] py-2.5 text-sm font-bold text-[#0f0f17] disabled:opacity-50">Save Settings</button>
           </LabCard>
         </div>
@@ -2647,21 +2647,21 @@ function StoryLab({ showSettingsTabs }) {
             {valueDelivery.map((vd, i) => {
               const meta = VALUES.find((v) => v.key === vd.value);
               return (
-                <div key={vd.value} className="mb-3 rounded-xl bg-[#0f0f17] p-4">
+                <div key={vd.value} className="mb-3 rounded-xl bg-bg-base p-4">
                   <div className="flex items-center gap-2 mb-3">
                     <span className="text-xl">{meta?.emoji}</span>
-                    <span className="font-bold text-[#f5f0e8] capitalize">{vd.value}</span>
+                    <span className="font-bold text-ink capitalize">{vd.value}</span>
                   </div>
                   <div className="grid gap-3 sm:grid-cols-2">
                     <div>
                       <label className="mb-1 block text-[10px] font-bold uppercase tracking-wider text-[#7ad9a1]">Do this</label>
                       <textarea value={vd.doThis} onChange={(e) => { const u = [...valueDelivery]; u[i] = { ...vd, doThis: e.target.value }; setValueDelivery(u); }}
-                        rows={4} className="w-full rounded-lg bg-[#1a1a28] px-3 py-2 text-xs text-[#f5f0e8] outline-none ring-1 ring-[#7ad9a1]/20 focus:ring-[#7ad9a1]" />
+                        rows={4} className="w-full rounded-lg bg-bg-elevated px-3 py-2 text-xs text-ink outline-none ring-1 ring-[#7ad9a1]/20 focus:ring-[#7ad9a1]" />
                     </div>
                     <div>
                       <label className="mb-1 block text-[10px] font-bold uppercase tracking-wider text-[#f3727f]">Not this</label>
                       <textarea value={vd.notThis} onChange={(e) => { const u = [...valueDelivery]; u[i] = { ...vd, notThis: e.target.value }; setValueDelivery(u); }}
-                        rows={4} className="w-full rounded-lg bg-[#1a1a28] px-3 py-2 text-xs text-[#f5f0e8] outline-none ring-1 ring-[#f3727f]/20 focus:ring-[#f3727f]" />
+                        rows={4} className="w-full rounded-lg bg-bg-elevated px-3 py-2 text-xs text-ink outline-none ring-1 ring-[#f3727f]/20 focus:ring-[#f3727f]" />
                     </div>
                   </div>
                 </div>
@@ -2677,19 +2677,19 @@ function StoryLab({ showSettingsTabs }) {
         <div className="space-y-4">
           <LabCard title="Age-Appropriate Guidelines" subtitle="How vocabulary, humor, themes, and attention span change by age">
             {ageGuides.map((ag, i) => (
-              <div key={ag.range} className="mb-4 rounded-xl bg-[#0f0f17] p-4">
+              <div key={ag.range} className="mb-4 rounded-xl bg-bg-base p-4">
                 <div className="mb-3 flex items-center gap-2">
-                  <span className="rounded-lg bg-[#f0a500]/10 px-3 py-1 text-sm font-bold text-[#f0a500]">{ag.range} years</span>
+                  <span className="rounded-lg bg-[#f0a500]/10 px-3 py-1 text-sm font-bold text-gold">{ag.range} years</span>
                 </div>
                 <div className="grid gap-3 sm:grid-cols-2">
-                  <div><label className="mb-1 block text-[10px] font-bold uppercase tracking-wider text-[#6e6a63]">Vocabulary & Language</label>
-                    <textarea value={ag.vocab} onChange={(e) => { const u = [...ageGuides]; u[i] = { ...ag, vocab: e.target.value }; setAgeGuides(u); }} rows={3} className="w-full rounded-lg bg-[#1a1a28] px-3 py-2 text-xs text-[#f5f0e8] outline-none ring-1 ring-white/5 focus:ring-[#f0a500]" /></div>
-                  <div><label className="mb-1 block text-[10px] font-bold uppercase tracking-wider text-[#6e6a63]">Humor Style</label>
-                    <textarea value={ag.humor} onChange={(e) => { const u = [...ageGuides]; u[i] = { ...ag, humor: e.target.value }; setAgeGuides(u); }} rows={3} className="w-full rounded-lg bg-[#1a1a28] px-3 py-2 text-xs text-[#f5f0e8] outline-none ring-1 ring-white/5 focus:ring-[#f0a500]" /></div>
-                  <div><label className="mb-1 block text-[10px] font-bold uppercase tracking-wider text-[#6e6a63]">Themes & Topics</label>
-                    <textarea value={ag.themes} onChange={(e) => { const u = [...ageGuides]; u[i] = { ...ag, themes: e.target.value }; setAgeGuides(u); }} rows={3} className="w-full rounded-lg bg-[#1a1a28] px-3 py-2 text-xs text-[#f5f0e8] outline-none ring-1 ring-white/5 focus:ring-[#f0a500]" /></div>
-                  <div><label className="mb-1 block text-[10px] font-bold uppercase tracking-wider text-[#6e6a63]">Attention Span & Pacing</label>
-                    <textarea value={ag.attention} onChange={(e) => { const u = [...ageGuides]; u[i] = { ...ag, attention: e.target.value }; setAgeGuides(u); }} rows={3} className="w-full rounded-lg bg-[#1a1a28] px-3 py-2 text-xs text-[#f5f0e8] outline-none ring-1 ring-white/5 focus:ring-[#f0a500]" /></div>
+                  <div><label className="mb-1 block text-[10px] font-bold uppercase tracking-wider text-ink-dim">Vocabulary & Language</label>
+                    <textarea value={ag.vocab} onChange={(e) => { const u = [...ageGuides]; u[i] = { ...ag, vocab: e.target.value }; setAgeGuides(u); }} rows={3} className="w-full rounded-lg bg-bg-elevated px-3 py-2 text-xs text-ink outline-none ring-1 ring-white/5 focus:ring-gold" /></div>
+                  <div><label className="mb-1 block text-[10px] font-bold uppercase tracking-wider text-ink-dim">Humor Style</label>
+                    <textarea value={ag.humor} onChange={(e) => { const u = [...ageGuides]; u[i] = { ...ag, humor: e.target.value }; setAgeGuides(u); }} rows={3} className="w-full rounded-lg bg-bg-elevated px-3 py-2 text-xs text-ink outline-none ring-1 ring-white/5 focus:ring-gold" /></div>
+                  <div><label className="mb-1 block text-[10px] font-bold uppercase tracking-wider text-ink-dim">Themes & Topics</label>
+                    <textarea value={ag.themes} onChange={(e) => { const u = [...ageGuides]; u[i] = { ...ag, themes: e.target.value }; setAgeGuides(u); }} rows={3} className="w-full rounded-lg bg-bg-elevated px-3 py-2 text-xs text-ink outline-none ring-1 ring-white/5 focus:ring-gold" /></div>
+                  <div><label className="mb-1 block text-[10px] font-bold uppercase tracking-wider text-ink-dim">Attention Span & Pacing</label>
+                    <textarea value={ag.attention} onChange={(e) => { const u = [...ageGuides]; u[i] = { ...ag, attention: e.target.value }; setAgeGuides(u); }} rows={3} className="w-full rounded-lg bg-bg-elevated px-3 py-2 text-xs text-ink outline-none ring-1 ring-white/5 focus:ring-gold" /></div>
                 </div>
               </div>
             ))}
@@ -2718,29 +2718,29 @@ function StoryLab({ showSettingsTabs }) {
           <LabCard title="Story Cache" subtitle="Pre-generated and hand-written stories. These can be served without API credits.">
             {cachedStories.length > 0 && (
               <div className="mb-4 grid grid-cols-4 gap-3 text-center">
-                <div className="rounded-lg bg-[#0f0f17] p-3"><div className="text-xl font-bold text-[#f0a500]">{cachedStories.length}</div><div className="text-[9px] text-[#6e6a63]">Total</div></div>
-                <div className="rounded-lg bg-[#0f0f17] p-3"><div className="text-xl font-bold text-[#7ad9a1]">{cachedStories.filter((s) => s.rating >= 4).length}</div><div className="text-[9px] text-[#6e6a63]">4-5 stars</div></div>
-                <div className="rounded-lg bg-[#0f0f17] p-3"><div className="text-xl font-bold text-[#f0a500]">{[...new Set(cachedStories.map((s) => s.value))].length}</div><div className="text-[9px] text-[#6e6a63]">Values</div></div>
-                <div className="rounded-lg bg-[#0f0f17] p-3"><div className="text-xl font-bold text-[#f0a500]">{[...new Set(cachedStories.map((s) => s.beliefs))].length}</div><div className="text-[9px] text-[#6e6a63]">Beliefs</div></div>
+                <div className="rounded-lg bg-bg-base p-3"><div className="text-xl font-bold text-gold">{cachedStories.length}</div><div className="text-[9px] text-ink-dim">Total</div></div>
+                <div className="rounded-lg bg-bg-base p-3"><div className="text-xl font-bold text-[#7ad9a1]">{cachedStories.filter((s) => s.rating >= 4).length}</div><div className="text-[9px] text-ink-dim">4-5 stars</div></div>
+                <div className="rounded-lg bg-bg-base p-3"><div className="text-xl font-bold text-gold">{[...new Set(cachedStories.map((s) => s.value))].length}</div><div className="text-[9px] text-ink-dim">Values</div></div>
+                <div className="rounded-lg bg-bg-base p-3"><div className="text-xl font-bold text-gold">{[...new Set(cachedStories.map((s) => s.beliefs))].length}</div><div className="text-[9px] text-ink-dim">Beliefs</div></div>
               </div>
             )}
             {/* Filters */}
             <div className="flex flex-wrap gap-3 mb-4">
               <div className="flex items-center gap-2">
-                <span className="text-[10px] font-bold uppercase text-[#6e6a63]">Belief:</span>
-                <select value={cacheFilterBelief} onChange={(e) => setCacheFilterBelief(e.target.value)} className="rounded-lg bg-[#0f0f17] px-3 py-1.5 text-xs text-[#f5f0e8] outline-none ring-1 ring-white/5">
+                <span className="text-[10px] font-bold uppercase text-ink-dim">Belief:</span>
+                <select value={cacheFilterBelief} onChange={(e) => setCacheFilterBelief(e.target.value)} className="rounded-lg bg-bg-base px-3 py-1.5 text-xs text-ink outline-none ring-1 ring-white/5">
                   <option value="all">All beliefs</option>
                   {RELIGIONS.map((r) => <option key={r.key} value={r.key}>{r.icon} {r.label}</option>)}
                 </select>
               </div>
               <div className="flex items-center gap-2">
-                <span className="text-[10px] font-bold uppercase text-[#6e6a63]">Country:</span>
-                <select value={cacheFilterCountry} onChange={(e) => setCacheFilterCountry(e.target.value)} className="rounded-lg bg-[#0f0f17] px-3 py-1.5 text-xs text-[#f5f0e8] outline-none ring-1 ring-white/5">
+                <span className="text-[10px] font-bold uppercase text-ink-dim">Country:</span>
+                <select value={cacheFilterCountry} onChange={(e) => setCacheFilterCountry(e.target.value)} className="rounded-lg bg-bg-base px-3 py-1.5 text-xs text-ink outline-none ring-1 ring-white/5">
                   <option value="all">All countries</option>
                   {COUNTRIES.map((c) => <option key={c.key} value={c.key}>{c.flag} {c.label}</option>)}
                 </select>
               </div>
-              <span className="self-center text-xs text-[#a8a39a]">{filtered.length} stories</span>
+              <span className="self-center text-xs text-ink-muted">{filtered.length} stories</span>
             </div>
             {/* Add manual story button */}
             <button onClick={() => setShowManualForm(!showManualForm)}
@@ -2763,11 +2763,11 @@ function StoryLab({ showSettingsTabs }) {
                 <LabSelect label="Gender" value={manualStory.gender} onChange={(v) => setManualStory({ ...manualStory, gender: v })} options={[{ value: 'girl', label: 'Girl' }, { value: 'boy', label: 'Boy' }, { value: 'other', label: 'Other' }]} />
               </div>
               <div className="mb-3">
-                <label className="mb-1 block text-[10px] font-bold uppercase tracking-wider text-[#6e6a63]">Story text (use {'{childName}'} for personalization)</label>
+                <label className="mb-1 block text-[10px] font-bold uppercase tracking-wider text-ink-dim">Story text (use {'{childName}'} for personalization)</label>
                 <textarea value={manualStory.text} onChange={(e) => setManualStory({ ...manualStory, text: e.target.value })}
                   rows={12} placeholder="Once upon a time, {childName} found something magical..."
-                  className="w-full rounded-lg bg-[#0f0f17] px-4 py-3 font-story text-sm leading-relaxed text-[#f5f0e8] placeholder-[#6e6a63] outline-none ring-1 ring-white/5 focus:ring-[#f0a500]" />
-                <div className="mt-1 text-right text-[10px] text-[#6e6a63]">{manualStory.text.split(/\s+/).filter(Boolean).length} words</div>
+                  className="w-full rounded-lg bg-bg-base px-4 py-3 font-story text-sm leading-relaxed text-ink placeholder-[#6e6a63] outline-none ring-1 ring-white/5 focus:ring-gold" />
+                <div className="mt-1 text-right text-[10px] text-ink-dim">{manualStory.text.split(/\s+/).filter(Boolean).length} words</div>
               </div>
               <button onClick={async () => {
                 if (!manualStory.title || !manualStory.text) return;
@@ -2783,8 +2783,8 @@ function StoryLab({ showSettingsTabs }) {
           )}
 
           {filtered.length === 0 ? (
-            <div className="flex items-center justify-center rounded-2xl bg-[#1a1a28] p-12">
-              <div className="text-center"><div className="mb-3 text-4xl">📦</div><p className="text-sm text-[#a8a39a]">{cachedStories.length === 0 ? 'No stories yet' : 'No stories match filters'}</p><p className="mt-1 text-xs text-[#6e6a63]">Generate in Playground or write manually</p></div>
+            <div className="flex items-center justify-center rounded-2xl bg-bg-elevated p-12">
+              <div className="text-center"><div className="mb-3 text-4xl">📦</div><p className="text-sm text-ink-muted">{cachedStories.length === 0 ? 'No stories yet' : 'No stories match filters'}</p><p className="mt-1 text-xs text-ink-dim">Generate in Playground or write manually</p></div>
             </div>
           ) : (
             <div className="space-y-3">
@@ -2802,9 +2802,9 @@ function StoryLab({ showSettingsTabs }) {
 
 function LabCard({ title, subtitle, titleColor, children, colSpan }) {
   return (
-    <div className={`rounded-2xl bg-[#1a1a28] p-6 ${colSpan ? 'sm:col-span-2' : ''}`}>
-      {title && <h3 className={`mb-1 text-sm font-bold ${titleColor ? 'font-display text-lg text-[#f0a500]' : 'text-[#f5f0e8]'}`}>{title}</h3>}
-      {subtitle && <p className="mb-4 text-xs text-[#6e6a63]">{subtitle}</p>}
+    <div className={`rounded-2xl bg-bg-elevated p-6 ${colSpan ? 'sm:col-span-2' : ''}`}>
+      {title && <h3 className={`mb-1 text-sm font-bold ${titleColor ? 'font-display text-lg text-gold' : 'text-ink'}`}>{title}</h3>}
+      {subtitle && <p className="mb-4 text-xs text-ink-dim">{subtitle}</p>}
       {children}
     </div>
   );
@@ -2813,8 +2813,8 @@ function LabCard({ title, subtitle, titleColor, children, colSpan }) {
 function LabField({ label, value, onChange }) {
   return (
     <div>
-      <label className="mb-1 block text-[10px] font-bold uppercase tracking-wider text-[#6e6a63]">{label}</label>
-      <input value={value} onChange={(e) => onChange(e.target.value)} className="w-full rounded-lg bg-[#1a1a28] px-3 py-2 text-sm text-[#f5f0e8] outline-none ring-1 ring-white/5 focus:ring-[#f0a500]" />
+      <label className="mb-1 block text-[10px] font-bold uppercase tracking-wider text-ink-dim">{label}</label>
+      <input value={value} onChange={(e) => onChange(e.target.value)} className="w-full rounded-lg bg-bg-elevated px-3 py-2 text-sm text-ink outline-none ring-1 ring-white/5 focus:ring-gold" />
     </div>
   );
 }
@@ -2823,29 +2823,29 @@ function CachedStoryCard({ story, onDelete }) {
   const [expanded, setExpanded] = useState(false);
   const meta = VALUES.find((v) => v.key === story.value);
   return (
-    <div className="rounded-xl bg-[#1a1a28] p-4">
+    <div className="rounded-xl bg-bg-elevated p-4">
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-3 min-w-0">
           <span className="text-2xl">{meta?.emoji || '📖'}</span>
           <div className="min-w-0">
-            <div className="font-bold text-[#f5f0e8] truncate">{story.title}</div>
-            <div className="text-xs text-[#a8a39a]">{story.childName} · {story.age}y · {story.wordCount}w · {story.duration}min · {meta?.label} · {story.language}</div>
+            <div className="font-bold text-ink truncate">{story.title}</div>
+            <div className="text-xs text-ink-muted">{story.childName} · {story.age}y · {story.wordCount}w · {story.duration}min · {meta?.label} · {story.language}</div>
             <div className="flex items-center gap-2 mt-1">
-              <span className="text-[10px] text-[#6e6a63]">{story.createdAt ? new Date(story.createdAt).toLocaleDateString() : ''}</span>
-              {story.rating > 0 && <span className="text-[10px] text-[#f0a500]">{'★'.repeat(story.rating)}{'☆'.repeat(5 - story.rating)}</span>}
-              {story.notes && <span className="text-[10px] text-[#6e6a63] truncate max-w-[200px]">{story.notes}</span>}
+              <span className="text-[10px] text-ink-dim">{story.createdAt ? new Date(story.createdAt).toLocaleDateString() : ''}</span>
+              {story.rating > 0 && <span className="text-[10px] text-gold">{'★'.repeat(story.rating)}{'☆'.repeat(5 - story.rating)}</span>}
+              {story.notes && <span className="text-[10px] text-ink-dim truncate max-w-[200px]">{story.notes}</span>}
             </div>
           </div>
         </div>
         <div className="flex items-center gap-2 shrink-0">
-          <button onClick={() => setExpanded(!expanded)} className="rounded-lg bg-[#0f0f17] px-3 py-1.5 text-xs font-bold text-[#f0a500]">{expanded ? 'Hide' : 'Read'}</button>
+          <button onClick={() => setExpanded(!expanded)} className="rounded-lg bg-bg-base px-3 py-1.5 text-xs font-bold text-gold">{expanded ? 'Hide' : 'Read'}</button>
           <button onClick={() => { if (confirm('Delete?')) onDelete(); }} className="rounded-lg bg-[#f3727f]/10 px-3 py-1.5 text-xs font-bold text-[#f3727f]">Del</button>
         </div>
       </div>
       <AnimatePresence>
         {expanded && (
           <motion.div initial={{ height: 0, opacity: 0 }} animate={{ height: 'auto', opacity: 1 }} exit={{ height: 0, opacity: 0 }} className="overflow-hidden">
-            <div className="mt-3 max-h-[40vh] overflow-y-auto rounded-lg bg-[#0f0f17] p-4 font-story text-sm leading-relaxed text-[#f5f0e8]/80">{story.text}</div>
+            <div className="mt-3 max-h-[40vh] overflow-y-auto rounded-lg bg-bg-base p-4 font-story text-sm leading-relaxed text-ink/80">{story.text}</div>
           </motion.div>
         )}
       </AnimatePresence>
@@ -2856,8 +2856,8 @@ function CachedStoryCard({ story, onDelete }) {
 function LabInput({ label, value, onChange, type = 'text', full }) {
   return (
     <div className={full ? 'col-span-2' : ''}>
-      <label className="mb-1 block text-[10px] font-bold uppercase tracking-wider text-[#6e6a63]">{label}</label>
-      <input type={type} value={value} onChange={(e) => onChange(e.target.value)} className="w-full rounded-lg bg-[#0f0f17] px-3 py-2 text-sm text-[#f5f0e8] outline-none ring-1 ring-white/5 focus:ring-[#f0a500]" />
+      <label className="mb-1 block text-[10px] font-bold uppercase tracking-wider text-ink-dim">{label}</label>
+      <input type={type} value={value} onChange={(e) => onChange(e.target.value)} className="w-full rounded-lg bg-bg-base px-3 py-2 text-sm text-ink outline-none ring-1 ring-white/5 focus:ring-gold" />
     </div>
   );
 }
@@ -2865,8 +2865,8 @@ function LabInput({ label, value, onChange, type = 'text', full }) {
 function LabSelect({ label, value, onChange, options }) {
   return (
     <div>
-      <label className="mb-1 block text-[10px] font-bold uppercase tracking-wider text-[#6e6a63]">{label}</label>
-      <select value={value} onChange={(e) => onChange(e.target.value)} className="w-full rounded-lg bg-[#0f0f17] px-3 py-2 text-sm text-[#f5f0e8] outline-none ring-1 ring-white/5">{options.map((o) => <option key={o.value} value={o.value}>{o.label}</option>)}</select>
+      <label className="mb-1 block text-[10px] font-bold uppercase tracking-wider text-ink-dim">{label}</label>
+      <select value={value} onChange={(e) => onChange(e.target.value)} className="w-full rounded-lg bg-bg-base px-3 py-2 text-sm text-ink outline-none ring-1 ring-white/5">{options.map((o) => <option key={o.value} value={o.value}>{o.label}</option>)}</select>
     </div>
   );
 }
@@ -3075,30 +3075,30 @@ function WisdomAudioPanel() {
     <div className="space-y-5">
       {/* ── Dashboard Header ── */}
       <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
-        <div className="rounded-xl bg-[#1a1a28] p-4 ring-1 ring-white/5">
-          <div className="text-2xl font-bold text-[#f5f0e8]">{lessons.length}</div>
-          <div className="text-[10px] font-bold uppercase tracking-wider text-[#6e6a63]">Total Stories</div>
+        <div className="rounded-xl bg-bg-elevated p-4 ring-1 ring-white/5">
+          <div className="text-2xl font-bold text-ink">{lessons.length}</div>
+          <div className="text-[10px] font-bold uppercase tracking-wider text-ink-dim">Total Stories</div>
         </div>
-        <div className="rounded-xl bg-[#1a1a28] p-4 ring-1 ring-white/5">
-          <div className={`text-2xl font-bold ${dataReady ? 'text-[#7ad9a1]' : 'text-[#f0a500] animate-pulse'}`}>{dataReady ? cached : '...'}</div>
-          <div className="text-[10px] font-bold uppercase tracking-wider text-[#6e6a63]">Audio Ready</div>
+        <div className="rounded-xl bg-bg-elevated p-4 ring-1 ring-white/5">
+          <div className={`text-2xl font-bold ${dataReady ? 'text-[#7ad9a1]' : 'text-gold animate-pulse'}`}>{dataReady ? cached : '...'}</div>
+          <div className="text-[10px] font-bold uppercase tracking-wider text-ink-dim">Audio Ready</div>
         </div>
-        <div className="rounded-xl bg-[#1a1a28] p-4 ring-1 ring-white/5">
-          <div className={`text-2xl font-bold ${dataReady ? 'text-[#539df5]' : 'text-[#f0a500] animate-pulse'}`}>{dataReady ? imagesCached : '...'}</div>
-          <div className="text-[10px] font-bold uppercase tracking-wider text-[#6e6a63]">Images Ready</div>
+        <div className="rounded-xl bg-bg-elevated p-4 ring-1 ring-white/5">
+          <div className={`text-2xl font-bold ${dataReady ? 'text-[#539df5]' : 'text-gold animate-pulse'}`}>{dataReady ? imagesCached : '...'}</div>
+          <div className="text-[10px] font-bold uppercase tracking-wider text-ink-dim">Images Ready</div>
         </div>
-        <div className="rounded-xl bg-[#1a1a28] p-4 ring-1 ring-white/5">
-          <div className={`text-2xl font-bold ${dataReady ? 'text-[#f0a500]' : 'text-[#f0a500] animate-pulse'}`}>{dataReady ? lessons.length - Math.min(cached, imagesCached) : '...'}</div>
-          <div className="text-[10px] font-bold uppercase tracking-wider text-[#6e6a63]">Incomplete</div>
+        <div className="rounded-xl bg-bg-elevated p-4 ring-1 ring-white/5">
+          <div className={`text-2xl font-bold ${dataReady ? 'text-gold' : 'text-gold animate-pulse'}`}>{dataReady ? lessons.length - Math.min(cached, imagesCached) : '...'}</div>
+          <div className="text-[10px] font-bold uppercase tracking-wider text-ink-dim">Incomplete</div>
         </div>
       </div>
 
       {/* ── Search + Add ── */}
-      <div className="flex items-center gap-3 rounded-xl bg-[#1a1a28] p-3 ring-1 ring-white/5">
+      <div className="flex items-center gap-3 rounded-xl bg-bg-elevated p-3 ring-1 ring-white/5">
         <input value={search} onChange={e => setSearch(e.target.value)}
           placeholder="Search by title, id, or source..."
-          className="flex-1 rounded-lg bg-[#0a0a0f] px-4 py-2 text-xs text-[#f5f0e8] outline-none ring-1 ring-white/10 placeholder:text-[#6e6a63]" />
-        <span className="text-xs text-[#6e6a63] shrink-0">{filtered.length} stories</span>
+          className="flex-1 rounded-lg bg-bg-base px-4 py-2 text-xs text-ink outline-none ring-1 ring-white/10 placeholder:text-ink-dim" />
+        <span className="text-xs text-ink-dim shrink-0">{filtered.length} stories</span>
         <button onClick={() => { setAddingNew(true); setEditing(null); setNewStory({ id: '', tradition: 'hindu', theme: 'compassion-animals', title: '', body: '', source: '', durationMinutes: 8, imagePrompt: '' }); }}
           className="shrink-0 rounded-lg bg-[#7ad9a1] px-4 py-2 text-xs font-bold text-[#0a0a0f]">
           + Add Story
@@ -3106,10 +3106,10 @@ function WisdomAudioPanel() {
       </div>
 
       {/* ── Bulk Generate (OpenAI) ── */}
-      <div className="flex flex-wrap items-center gap-2 rounded-xl bg-[#1a1a28] p-3 ring-1 ring-white/5">
-        <span className="text-[10px] font-bold uppercase tracking-wider text-[#6e6a63] w-full sm:w-auto">OpenAI Bulk ({filtered.filter(l => !urls[l.id] || !imageUrls[l.id]).length} incomplete)</span>
+      <div className="flex flex-wrap items-center gap-2 rounded-xl bg-bg-elevated p-3 ring-1 ring-white/5">
+        <span className="text-[10px] font-bold uppercase tracking-wider text-ink-dim w-full sm:w-auto">OpenAI Bulk ({filtered.filter(l => !urls[l.id] || !imageUrls[l.id]).length} incomplete)</span>
         <button onClick={() => bulkGenerate('audio')} disabled={bulkRunning || !!generating}
-          className="rounded-lg bg-[#f0a500]/10 px-4 py-2 text-xs font-bold text-[#f0a500] hover:bg-[#f0a500]/20 disabled:opacity-30">
+          className="rounded-lg bg-[#f0a500]/10 px-4 py-2 text-xs font-bold text-gold hover:bg-[#f0a500]/20 disabled:opacity-30">
           All Audio
         </button>
         <button onClick={() => bulkGenerate('image')} disabled={bulkRunning || !!generating}
@@ -3126,7 +3126,7 @@ function WisdomAudioPanel() {
             Stop
           </button>
         )}
-        {bulkProgress && <span className="text-[10px] text-[#f0a500] truncate ml-auto">{bulkProgress}</span>}
+        {bulkProgress && <span className="text-[10px] text-gold truncate ml-auto">{bulkProgress}</span>}
       </div>
 
       {/* ── ElevenLabs Premium Audio ── */}
@@ -3141,37 +3141,37 @@ function WisdomAudioPanel() {
           else setLessons(prev => prev.map(l => l.id === editing ? { ...l, [field]: val } : l));
         };
         return (
-          <div className="rounded-xl bg-[#1a1a28] p-5 space-y-3 ring-2 ring-[#f0a500]/30">
+          <div className="rounded-xl bg-bg-elevated p-5 space-y-3 ring-2 ring-gold/30">
             <div className="flex items-center justify-between">
-              <h4 className="text-sm font-bold text-[#f0a500]">{addingNew ? 'New Story' : `Editing: ${story.title}`}</h4>
+              <h4 className="text-sm font-bold text-gold">{addingNew ? 'New Story' : `Editing: ${story.title}`}</h4>
               <button onClick={() => { setAddingNew(false); setEditing(null); }}
-                className="text-xs text-[#6e6a63] hover:text-[#f5f0e8]">✕ Close</button>
+                className="text-xs text-ink-dim hover:text-ink">✕ Close</button>
             </div>
             {addingNew && (
               <input value={story.id} onChange={e => update('id', e.target.value.toLowerCase().replace(/\s+/g, '_').replace(/[^a-z0-9_]/g, ''))}
-                placeholder="story_id (snake_case)" className="w-full rounded-lg bg-[#0a0a0f] px-3 py-2.5 text-xs text-[#f5f0e8] outline-none ring-1 ring-white/10" />
+                placeholder="story_id (snake_case)" className="w-full rounded-lg bg-bg-base px-3 py-2.5 text-xs text-ink outline-none ring-1 ring-white/10" />
             )}
             <input value={story.title} onChange={e => update('title', e.target.value)}
-              placeholder="Story Title" className="w-full rounded-lg bg-[#0a0a0f] px-3 py-2.5 text-sm font-bold text-[#f5f0e8] outline-none ring-1 ring-white/10" />
+              placeholder="Story Title" className="w-full rounded-lg bg-bg-base px-3 py-2.5 text-sm font-bold text-ink outline-none ring-1 ring-white/10" />
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-2">
               <select value={story.tradition} onChange={e => update('tradition', e.target.value)}
-                className="rounded-lg bg-[#0a0a0f] px-3 py-2.5 text-xs text-[#f5f0e8] outline-none ring-1 ring-white/10">
+                className="rounded-lg bg-bg-base px-3 py-2.5 text-xs text-ink outline-none ring-1 ring-white/10">
                 {TRADITION_OPTIONS.filter(t => t.key !== 'all').map(t => <option key={t.key} value={t.key}>{t.icon} {t.label}</option>)}
               </select>
               <select value={story.theme} onChange={e => update('theme', e.target.value)}
-                className="rounded-lg bg-[#0a0a0f] px-3 py-2.5 text-xs text-[#f5f0e8] outline-none ring-1 ring-white/10">
+                className="rounded-lg bg-bg-base px-3 py-2.5 text-xs text-ink outline-none ring-1 ring-white/10">
                 {THEME_OPTIONS.filter(t => t !== 'all').map(t => <option key={t} value={t}>{t}</option>)}
               </select>
               <input type="number" value={story.durationMinutes} onChange={e => update('durationMinutes', parseInt(e.target.value) || 5)}
-                className="rounded-lg bg-[#0a0a0f] px-3 py-2.5 text-xs text-[#f5f0e8] outline-none ring-1 ring-white/10" placeholder="Duration (min)" />
+                className="rounded-lg bg-bg-base px-3 py-2.5 text-xs text-ink outline-none ring-1 ring-white/10" placeholder="Duration (min)" />
             </div>
             <input value={story.source || ''} onChange={e => update('source', e.target.value)}
-              placeholder="Source (e.g. Islamic tradition · Hadith)" className="w-full rounded-lg bg-[#0a0a0f] px-3 py-2.5 text-xs text-[#f5f0e8] outline-none ring-1 ring-white/10" />
+              placeholder="Source (e.g. Islamic tradition · Hadith)" className="w-full rounded-lg bg-bg-base px-3 py-2.5 text-xs text-ink outline-none ring-1 ring-white/10" />
             <textarea value={story.body} onChange={e => update('body', e.target.value)}
               placeholder="Story body (use {childName}, {sibling}, {grandfather}, {grandmother}, {pet} as placeholders)" rows={12}
-              className="w-full rounded-lg bg-[#0a0a0f] px-3 py-3 text-sm text-[#f5f0e8] outline-none ring-1 ring-white/10 leading-relaxed" />
+              className="w-full rounded-lg bg-bg-base px-3 py-3 text-sm text-ink outline-none ring-1 ring-white/10 leading-relaxed" />
             <input value={story.imagePrompt || ''} onChange={e => update('imagePrompt', e.target.value)}
-              placeholder="DALL-E image prompt (optional)" className="w-full rounded-lg bg-[#0a0a0f] px-3 py-2.5 text-xs text-[#f5f0e8] outline-none ring-1 ring-white/10" />
+              placeholder="DALL-E image prompt (optional)" className="w-full rounded-lg bg-bg-base px-3 py-2.5 text-xs text-ink outline-none ring-1 ring-white/10" />
             <div className="flex gap-2 pt-1">
               <button onClick={() => saveStory(addingNew ? newStory : story)}
                 disabled={!story.id || !story.title || !story.body}
@@ -3179,20 +3179,20 @@ function WisdomAudioPanel() {
                 {addingNew ? 'Create & Publish' : 'Save Changes'}
               </button>
               <button onClick={() => { setAddingNew(false); setEditing(null); }}
-                className="rounded-lg bg-white/5 px-5 py-2.5 text-xs font-bold text-[#6e6a63]">Cancel</button>
+                className="rounded-lg bg-white/5 px-5 py-2.5 text-xs font-bold text-ink-dim">Cancel</button>
             </div>
           </div>
         );
       })()}
 
       {/* ── Filters ── */}
-      <div className="flex flex-wrap gap-2 rounded-xl bg-[#1a1a28] p-3 ring-1 ring-white/5">
+      <div className="flex flex-wrap gap-2 rounded-xl bg-bg-elevated p-3 ring-1 ring-white/5">
         <select value={filterTradition} onChange={e => setFilterTradition(e.target.value)}
-          className="flex-1 min-w-[120px] rounded-lg bg-[#0a0a0f] px-3 py-2 text-xs font-bold text-[#f0a500] outline-none ring-1 ring-white/10">
+          className="flex-1 min-w-[120px] rounded-lg bg-bg-base px-3 py-2 text-xs font-bold text-gold outline-none ring-1 ring-white/10">
           {TRADITION_OPTIONS.map(t => <option key={t.key} value={t.key}>{t.key === 'all' ? '▼ All Beliefs' : t.icon + ' ' + t.label}</option>)}
         </select>
         <select value={filterTheme} onChange={e => setFilterTheme(e.target.value)}
-          className="flex-1 min-w-[120px] rounded-lg bg-[#0a0a0f] px-3 py-2 text-xs font-bold text-[#539df5] outline-none ring-1 ring-white/10">
+          className="flex-1 min-w-[120px] rounded-lg bg-bg-base px-3 py-2 text-xs font-bold text-[#539df5] outline-none ring-1 ring-white/10">
           {THEME_OPTIONS.map(t => <option key={t} value={t}>{t === 'all' ? '▼ All Themes' : t.charAt(0).toUpperCase() + t.slice(1).replace('-', ' ')}</option>)}
         </select>
       </div>
@@ -3200,10 +3200,10 @@ function WisdomAudioPanel() {
       {/* ── Story Cards (mobile-friendly) ── */}
       <div className="space-y-2">
         {filtered.map((l) => (
-          <div key={l.id} className="rounded-xl bg-[#1a1a28] p-3 ring-1 ring-white/5">
+          <div key={l.id} className="rounded-xl bg-bg-elevated p-3 ring-1 ring-white/5">
             {/* Top row: image + title + status badges */}
             <div className="flex items-start gap-3">
-              <div className="h-12 w-12 shrink-0 overflow-hidden rounded-lg bg-[#0a0a0f]">
+              <div className="h-12 w-12 shrink-0 overflow-hidden rounded-lg bg-bg-base">
                 {imageUrls[l.id] ? (
                   <img src={imageUrls[l.id]} alt="" className="h-full w-full object-cover" />
                 ) : (
@@ -3212,30 +3212,30 @@ function WisdomAudioPanel() {
               </div>
               <div className="min-w-0 flex-1">
                 <div className="flex items-center gap-2 flex-wrap">
-                  <span className="text-xs font-bold text-[#f5f0e8]">{l.title}</span>
-                  {l._isCustom && <span className="text-[7px] rounded bg-[#f0a500]/20 text-[#f0a500] px-1 py-0.5 font-bold shrink-0">CUSTOM</span>}
+                  <span className="text-xs font-bold text-ink">{l.title}</span>
+                  {l._isCustom && <span className="text-[7px] rounded bg-[#f0a500]/20 text-gold px-1 py-0.5 font-bold shrink-0">CUSTOM</span>}
                 </div>
-                <div className="text-[10px] text-[#6e6a63] truncate mt-0.5">{l.source || l.id}</div>
+                <div className="text-[10px] text-ink-dim truncate mt-0.5">{l.source || l.id}</div>
                 <div className="flex items-center gap-2 mt-1.5 flex-wrap">
-                  <span className="text-[10px] text-[#a8a39a]">{TRADITION_OPTIONS.find(t => t.key === l.tradition)?.icon} {l.tradition}</span>
-                  <span className="text-[10px] text-[#a8a39a]">{l.theme?.replace('-', ' ')}</span>
+                  <span className="text-[10px] text-ink-muted">{TRADITION_OPTIONS.find(t => t.key === l.tradition)?.icon} {l.tradition}</span>
+                  <span className="text-[10px] text-ink-muted">{l.theme?.replace('-', ' ')}</span>
                   {urls[l.id] ? (
                     <span className="inline-flex items-center rounded-full bg-[#7ad9a1]/10 px-2 py-0.5 text-[8px] font-bold text-[#7ad9a1]">Audio ✓</span>
                   ) : !dataReady ? (
-                    <span className="inline-flex items-center rounded-full bg-[#f0a500]/10 px-2 py-0.5 text-[8px] font-bold text-[#f0a500] animate-pulse">Loading...</span>
+                    <span className="inline-flex items-center rounded-full bg-[#f0a500]/10 px-2 py-0.5 text-[8px] font-bold text-gold animate-pulse">Loading...</span>
                   ) : (
                     <span className="inline-flex items-center rounded-full bg-red-400/10 px-2 py-0.5 text-[8px] font-bold text-red-400">No audio</span>
                   )}
                   {imageUrls[l.id] ? (
                     <span className="inline-flex items-center rounded-full bg-[#7ad9a1]/10 px-2 py-0.5 text-[8px] font-bold text-[#7ad9a1]">Image ✓</span>
                   ) : !dataReady ? (
-                    <span className="inline-flex items-center rounded-full bg-[#f0a500]/10 px-2 py-0.5 text-[8px] font-bold text-[#f0a500] animate-pulse">Loading...</span>
+                    <span className="inline-flex items-center rounded-full bg-[#f0a500]/10 px-2 py-0.5 text-[8px] font-bold text-gold animate-pulse">Loading...</span>
                   ) : (
                     <span className="inline-flex items-center rounded-full bg-red-400/10 px-2 py-0.5 text-[8px] font-bold text-red-400">No image</span>
                   )}
                 </div>
                 {status[l.id] && status[l.id] !== 'done' && (
-                  <div className="text-[9px] text-[#f0a500] mt-1">{status[l.id]}</div>
+                  <div className="text-[9px] text-gold mt-1">{status[l.id]}</div>
                 )}
               </div>
             </div>
@@ -3250,7 +3250,7 @@ function WisdomAudioPanel() {
               {/* ElevenLabs — pick voice + generate in one row */}
               <select value={voiceSelections[l.id]?.elVoice || (['hindu','sikh','jain','buddhist'].includes(l.tradition) ? 'muskaan' : 'george')}
                 onChange={e => setVoiceSelections(prev => ({ ...prev, [l.id]: { ...prev[l.id], elVoice: e.target.value } }))}
-                className="rounded-lg bg-[#0a0a0f] px-2 py-1.5 text-[10px] font-bold text-[#7ad9a1] outline-none ring-1 ring-[#7ad9a1]/20">
+                className="rounded-lg bg-bg-base px-2 py-1.5 text-[10px] font-bold text-[#7ad9a1] outline-none ring-1 ring-[#7ad9a1]/20">
                 <option value="george">George</option>
                 <option value="lily">Lily</option>
                 <option value="sarah">Sarah</option>
@@ -3320,7 +3320,7 @@ function WisdomAudioPanel() {
           </div>
         ))}
         {filtered.length === 0 && (
-          <div className="rounded-xl bg-[#1a1a28] px-4 py-8 text-center text-sm text-[#6e6a63] ring-1 ring-white/5">No stories match the current filters</div>
+          <div className="rounded-xl bg-bg-elevated px-4 py-8 text-center text-sm text-ink-dim ring-1 ring-white/5">No stories match the current filters</div>
         )}
       </div>
     </div>
@@ -3438,7 +3438,7 @@ function CuratorSubmissionsPanel() {
     setSaving(false);
   };
 
-  if (loading) return <div className="text-center py-12 text-[#6e6a63]">Loading submissions...</div>;
+  if (loading) return <div className="text-center py-12 text-ink-dim">Loading submissions...</div>;
 
   // Group by creator
   const creators = {};
@@ -3465,21 +3465,21 @@ function CuratorSubmissionsPanel() {
       {/* Stats */}
       <div className="grid grid-cols-4 gap-2">
         {[
-          { v: totalPending, l: 'Pending', c: 'text-[#f0a500]' },
+          { v: totalPending, l: 'Pending', c: 'text-gold' },
           { v: totalPublished, l: 'Published', c: 'text-[#7ad9a1]' },
           { v: totalSeries, l: 'Series', c: 'text-blue-400' },
           { v: creatorList.length, l: 'Creators', c: 'text-purple-400' },
         ].map(s => (
-          <div key={s.l} className="rounded-xl bg-[#1a1a28] p-3 ring-1 ring-white/5 text-center">
+          <div key={s.l} className="rounded-xl bg-bg-elevated p-3 ring-1 ring-white/5 text-center">
             <div className={`text-xl font-bold ${s.c}`}>{s.v}</div>
-            <div className="text-[9px] text-[#6e6a63]">{s.l}</div>
+            <div className="text-[9px] text-ink-dim">{s.l}</div>
           </div>
         ))}
       </div>
 
       {/* Creator rows — expandable */}
       {creatorList.length === 0 ? (
-        <div className="text-center py-12"><div className="text-4xl mb-3">✍️</div><p className="text-sm text-[#a8a39a]">No submissions yet</p></div>
+        <div className="text-center py-12"><div className="text-4xl mb-3">✍️</div><p className="text-sm text-ink-muted">No submissions yet</p></div>
       ) : creatorList.map((c) => {
         const isExp = expandedCreator === (c.email || c.name);
         const pCount = c.items.filter(i => i.status === 'pending' || i.status === 'revision_requested').length;
@@ -3488,23 +3488,23 @@ function CuratorSubmissionsPanel() {
         const stCount = c.items.filter(i => i.type === 'story').length;
 
         return (
-          <div key={c.email || c.name} className="rounded-xl bg-[#1a1a28] ring-1 ring-white/5 overflow-hidden">
+          <div key={c.email || c.name} className="rounded-xl bg-bg-elevated ring-1 ring-white/5 overflow-hidden">
             {/* Creator header */}
             <button onClick={() => setExpandedCreator(isExp ? null : (c.email || c.name))}
               className="w-full flex items-center gap-3 p-3 text-left transition hover:bg-white/3">
-              <div className="grid h-9 w-9 shrink-0 place-items-center rounded-full bg-[#f0a500]/20 text-[10px] font-bold text-[#f0a500]">
+              <div className="grid h-9 w-9 shrink-0 place-items-center rounded-full bg-[#f0a500]/20 text-[10px] font-bold text-gold">
                 {(c.name || '?').split(' ').map(w => w[0]).join('').toUpperCase().slice(0, 2)}
               </div>
               <div className="flex-1 min-w-0">
-                <p className="text-xs font-bold text-[#f5f0e8] truncate">{c.name}</p>
-                <p className="text-[9px] text-[#6e6a63] truncate">{c.email}</p>
+                <p className="text-xs font-bold text-ink truncate">{c.name}</p>
+                <p className="text-[9px] text-ink-dim truncate">{c.email}</p>
               </div>
               <div className="flex items-center gap-1.5 shrink-0 flex-wrap justify-end">
                 {serCount > 0 && <span className="rounded bg-purple-500/15 px-1.5 py-0.5 text-[8px] font-bold text-purple-400">{serCount} series</span>}
                 {stCount > 0 && <span className="rounded bg-amber-500/15 px-1.5 py-0.5 text-[8px] font-bold text-amber-400">{stCount} stories</span>}
                 {pCount > 0 && <span className="rounded bg-yellow-500/15 px-1.5 py-0.5 text-[8px] font-bold text-yellow-400">{pCount}</span>}
                 {pubCount > 0 && <span className="rounded bg-green-500/15 px-1.5 py-0.5 text-[8px] font-bold text-green-400">{pubCount} live</span>}
-                <span className={`text-[#6e6a63] transition ${isExp ? 'rotate-180' : ''}`}>▾</span>
+                <span className={`text-ink-dim transition ${isExp ? 'rotate-180' : ''}`}>▾</span>
               </div>
             </button>
 
@@ -3512,7 +3512,7 @@ function CuratorSubmissionsPanel() {
             {isExp && (
               <div className="border-t border-white/5">
                 {/* Table header */}
-                <div className="flex items-center gap-2 px-3 py-2 text-[8px] font-bold uppercase tracking-wider text-[#6e6a63] border-b border-white/3">
+                <div className="flex items-center gap-2 px-3 py-2 text-[8px] font-bold uppercase tracking-wider text-ink-dim border-b border-white/3">
                   <div className="w-14">Type</div>
                   <div className="flex-1">Title</div>
                   <div className="w-16 text-center">Status</div>
@@ -3534,13 +3534,13 @@ function CuratorSubmissionsPanel() {
                           </span>
                         </div>
                         <button onClick={() => setExpandedItem(isItemExp ? null : s.id)} className="flex-1 min-w-0 text-left">
-                          <p className="text-[11px] font-bold text-[#f5f0e8] truncate">{s.icon || ''} {s.title}</p>
-                          <p className="text-[9px] text-[#6e6a63]">{s.type === 'series' ? `${s.totalEpisodes || (s.episodes||[]).length} eps · ` : ''}{s.tradition}</p>
+                          <p className="text-[11px] font-bold text-ink truncate">{s.icon || ''} {s.title}</p>
+                          <p className="text-[9px] text-ink-dim">{s.type === 'series' ? `${s.totalEpisodes || (s.episodes||[]).length} eps · ` : ''}{s.tradition}</p>
                         </button>
                         <div className="w-16 text-center">{statusBadge(s.status)}</div>
                         <div className="w-24 flex gap-1 justify-end">
                           <button onClick={() => isEditing ? cancelEdit() : startEdit(s)}
-                            className="rounded px-1.5 py-0.5 text-[8px] font-bold bg-[#f0a500]/10 text-[#f0a500]">
+                            className="rounded px-1.5 py-0.5 text-[8px] font-bold bg-[#f0a500]/10 text-gold">
                             {isEditing ? '✕' : '✏️'}
                           </button>
                           {!isEditing && s.status !== 'published' && (
@@ -3566,12 +3566,12 @@ function CuratorSubmissionsPanel() {
                             <div className="space-y-2">
                               <textarea value={feedbackText} onChange={(e) => setFeedbackText(e.target.value)}
                                 placeholder="Feedback for creator..."
-                                className="w-full rounded bg-[#0f0f17] p-2 text-xs text-[#f5f0e8] ring-1 ring-white/10 h-16 resize-y" />
+                                className="w-full rounded bg-bg-base p-2 text-xs text-ink ring-1 ring-white/10 h-16 resize-y" />
                               <div className="flex gap-2">
                                 <button onClick={() => sendFeedback(s.id, s.type)}
                                   className="rounded bg-blue-500/10 px-2 py-1 text-[9px] font-bold text-blue-400">Send & Request Revision</button>
                                 <button onClick={() => { setFeedbackId(null); setFeedbackText(''); }}
-                                  className="text-[9px] text-[#6e6a63]">Cancel</button>
+                                  className="text-[9px] text-ink-dim">Cancel</button>
                               </div>
                             </div>
                           )}
@@ -3588,19 +3588,19 @@ function CuratorSubmissionsPanel() {
                             isEditing ? (
                               <div className="space-y-2">
                                 <input value={ed.title} onChange={(e) => setEditData(p => ({ ...p, title: e.target.value }))}
-                                  className="w-full rounded bg-[#0f0f17] px-2 py-1 text-xs font-bold text-[#f5f0e8] ring-1 ring-white/10" />
+                                  className="w-full rounded bg-bg-base px-2 py-1 text-xs font-bold text-ink ring-1 ring-white/10" />
                                 <textarea value={ed.body || ''} onChange={(e) => setEditData(p => ({ ...p, body: e.target.value }))}
-                                  className="w-full rounded bg-[#0f0f17] p-2 text-[10px] text-[#a8a39a] ring-1 ring-white/5 h-32 resize-y" />
+                                  className="w-full rounded bg-bg-base p-2 text-[10px] text-ink-muted ring-1 ring-white/5 h-32 resize-y" />
                                 <div className="flex items-center gap-2">
                                   {ed.coverImage && <img src={ed.coverImage} alt="" className="h-10 w-10 rounded object-cover" />}
                                   <button onClick={() => { setUploadIdx(-1); fileInputRef.current?.click(); }}
-                                    className="rounded bg-white/5 px-2 py-1 text-[9px] font-bold text-[#a8a39a]">📤 Image</button>
+                                    className="rounded bg-white/5 px-2 py-1 text-[9px] font-bold text-ink-muted">📤 Image</button>
                                   <button onClick={saveEdit} disabled={saving}
                                     className="rounded bg-[#f0a500] px-3 py-1 text-[9px] font-bold text-[#0a0a0f]">{saving ? '...' : '💾 Save'}</button>
                                 </div>
                               </div>
                             ) : (
-                              <div className="rounded bg-[#0f0f17] p-2 text-[10px] text-[#a8a39a] leading-relaxed max-h-24 overflow-y-auto">
+                              <div className="rounded bg-bg-base p-2 text-[10px] text-ink-muted leading-relaxed max-h-24 overflow-y-auto">
                                 {(s.body || '').slice(0, 400)}{(s.body || '').length > 400 ? '...' : ''}
                               </div>
                             )
@@ -3611,23 +3611,23 @@ function CuratorSubmissionsPanel() {
                             isEditing ? (
                               <div className="space-y-2">
                                 <input value={ed.title} onChange={(e) => setEditData(p => ({ ...p, title: e.target.value }))}
-                                  className="w-full rounded bg-[#0f0f17] px-2 py-1 text-xs font-bold text-[#f5f0e8] ring-1 ring-white/10" />
+                                  className="w-full rounded bg-bg-base px-2 py-1 text-xs font-bold text-ink ring-1 ring-white/10" />
                                 <textarea value={ed.description || ''} onChange={(e) => setEditData(p => ({ ...p, description: e.target.value }))}
-                                  className="w-full rounded bg-[#0f0f17] p-2 text-[10px] text-[#f5f0e8] ring-1 ring-white/10 h-10 resize-none" placeholder="Description" />
+                                  className="w-full rounded bg-bg-base p-2 text-[10px] text-ink ring-1 ring-white/10 h-10 resize-none" placeholder="Description" />
                                 {(ed.episodes || []).map((ep, i) => (
-                                  <div key={i} className="rounded bg-[#0f0f17] p-2 ring-1 ring-white/5 space-y-1">
+                                  <div key={i} className="rounded bg-bg-base p-2 ring-1 ring-white/5 space-y-1">
                                     <div className="flex items-center gap-2">
-                                      <span className="text-[9px] font-bold text-[#f0a500]">Ep {i+1}</span>
+                                      <span className="text-[9px] font-bold text-gold">Ep {i+1}</span>
                                       <input value={ep.title} onChange={(e) => setEditData(p => { const eps=[...p.episodes]; eps[i]={...eps[i],title:e.target.value}; return {...p,episodes:eps}; })}
-                                        className="flex-1 rounded bg-[#1a1a28] px-2 py-0.5 text-[10px] font-bold text-[#f5f0e8] ring-1 ring-white/10" />
+                                        className="flex-1 rounded bg-bg-elevated px-2 py-0.5 text-[10px] font-bold text-ink ring-1 ring-white/10" />
                                     </div>
                                     <textarea value={ep.body||''} onChange={(e) => setEditData(p => { const eps=[...p.episodes]; eps[i]={...eps[i],body:e.target.value}; return {...p,episodes:eps}; })}
-                                      className="w-full rounded bg-[#1a1a28] p-1.5 text-[9px] text-[#a8a39a] ring-1 ring-white/5 h-20 resize-y" />
+                                      className="w-full rounded bg-bg-elevated p-1.5 text-[9px] text-ink-muted ring-1 ring-white/5 h-20 resize-y" />
                                     <div className="flex items-center gap-2">
                                       {ep.coverImage && <img src={ep.coverImage} alt="" className="h-8 w-8 rounded object-cover" />}
                                       <button onClick={() => { setUploadIdx(i); fileInputRef.current?.click(); }}
-                                        className="rounded bg-white/5 px-1.5 py-0.5 text-[8px] font-bold text-[#a8a39a]">📤</button>
-                                      <span className="text-[8px] text-[#6e6a63]">{(ep.body||'').split(/\s+/).filter(Boolean).length}w</span>
+                                        className="rounded bg-white/5 px-1.5 py-0.5 text-[8px] font-bold text-ink-muted">📤</button>
+                                      <span className="text-[8px] text-ink-dim">{(ep.body||'').split(/\s+/).filter(Boolean).length}w</span>
                                     </div>
                                   </div>
                                 ))}
@@ -3639,9 +3639,9 @@ function CuratorSubmissionsPanel() {
                                 {(s.episodes || []).map((ep, i) => (
                                   <div key={i} className="flex items-center gap-2 text-[10px]">
                                     {ep.coverImage && <img src={ep.coverImage} alt="" className="h-6 w-6 rounded object-cover" />}
-                                    <span className="text-[#f0a500] font-bold">Ep {ep.episodeNumber || i+1}</span>
-                                    <span className="text-[#f5f0e8] truncate flex-1">{ep.title}</span>
-                                    <span className="text-[#6e6a63]">{ep.wordCount || (ep.body||'').split(/\s+/).length}w</span>
+                                    <span className="text-gold font-bold">Ep {ep.episodeNumber || i+1}</span>
+                                    <span className="text-ink truncate flex-1">{ep.title}</span>
+                                    <span className="text-ink-dim">{ep.wordCount || (ep.body||'').split(/\s+/).length}w</span>
                                   </div>
                                 ))}
                               </div>
@@ -3799,29 +3799,29 @@ function SeriesPanel() {
     <div className="space-y-5">
       {/* Stats */}
       <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
-        <div className="rounded-xl bg-[#1a1a28] p-4 ring-1 ring-white/5">
-          <div className="text-2xl font-bold text-[#f5f0e8]">{SERIES_DATA.length}</div>
-          <div className="text-[10px] font-bold uppercase tracking-wider text-[#6e6a63]">Series</div>
+        <div className="rounded-xl bg-bg-elevated p-4 ring-1 ring-white/5">
+          <div className="text-2xl font-bold text-ink">{SERIES_DATA.length}</div>
+          <div className="text-[10px] font-bold uppercase tracking-wider text-ink-dim">Series</div>
         </div>
-        <div className="rounded-xl bg-[#1a1a28] p-4 ring-1 ring-white/5">
-          <div className="text-2xl font-bold text-[#f5f0e8]">{allEpisodes.length}</div>
-          <div className="text-[10px] font-bold uppercase tracking-wider text-[#6e6a63]">Total Episodes</div>
+        <div className="rounded-xl bg-bg-elevated p-4 ring-1 ring-white/5">
+          <div className="text-2xl font-bold text-ink">{allEpisodes.length}</div>
+          <div className="text-[10px] font-bold uppercase tracking-wider text-ink-dim">Total Episodes</div>
         </div>
-        <div className="rounded-xl bg-[#1a1a28] p-4 ring-1 ring-white/5">
-          <div className={`text-2xl font-bold ${dataReady ? 'text-[#7ad9a1]' : 'text-[#f0a500] animate-pulse'}`}>{dataReady ? totalAudio : '...'}</div>
-          <div className="text-[10px] font-bold uppercase tracking-wider text-[#6e6a63]">Audio Ready</div>
+        <div className="rounded-xl bg-bg-elevated p-4 ring-1 ring-white/5">
+          <div className={`text-2xl font-bold ${dataReady ? 'text-[#7ad9a1]' : 'text-gold animate-pulse'}`}>{dataReady ? totalAudio : '...'}</div>
+          <div className="text-[10px] font-bold uppercase tracking-wider text-ink-dim">Audio Ready</div>
         </div>
-        <div className="rounded-xl bg-[#1a1a28] p-4 ring-1 ring-white/5">
-          <div className={`text-2xl font-bold ${dataReady ? 'text-[#539df5]' : 'text-[#f0a500] animate-pulse'}`}>{dataReady ? totalImages : '...'}</div>
-          <div className="text-[10px] font-bold uppercase tracking-wider text-[#6e6a63]">Images Ready</div>
+        <div className="rounded-xl bg-bg-elevated p-4 ring-1 ring-white/5">
+          <div className={`text-2xl font-bold ${dataReady ? 'text-[#539df5]' : 'text-gold animate-pulse'}`}>{dataReady ? totalImages : '...'}</div>
+          <div className="text-[10px] font-bold uppercase tracking-wider text-ink-dim">Images Ready</div>
         </div>
       </div>
 
       {/* Bulk generate ALL series */}
-      <div className="flex flex-wrap items-center gap-2 rounded-xl bg-[#1a1a28] p-4 ring-1 ring-white/5">
-        <span className="text-xs font-bold text-[#f5f0e8] mr-2">Bulk All Series:</span>
+      <div className="flex flex-wrap items-center gap-2 rounded-xl bg-bg-elevated p-4 ring-1 ring-white/5">
+        <span className="text-xs font-bold text-ink mr-2">Bulk All Series:</span>
         <select id="bulk-series-voice" defaultValue="george"
-          className="rounded-lg bg-[#0f0f17] px-2 py-1.5 text-[10px] font-bold text-[#7ad9a1] outline-none ring-1 ring-[#7ad9a1]/20">
+          className="rounded-lg bg-bg-base px-2 py-1.5 text-[10px] font-bold text-[#7ad9a1] outline-none ring-1 ring-[#7ad9a1]/20">
           {ELEVEN_VOICES.map(v => <option key={v.key} value={v.key}>{v.label}</option>)}
         </select>
         <button
@@ -3880,7 +3880,7 @@ function SeriesPanel() {
             setBulkProgress(`Done! ${missingAudio.length} audio + ${missingImages.length} images`);
           }}
           disabled={!!generating}
-          className="rounded-lg bg-[#f0a500]/10 px-4 py-1.5 text-[10px] font-bold text-[#f0a500] disabled:opacity-30"
+          className="rounded-lg bg-[#f0a500]/10 px-4 py-1.5 text-[10px] font-bold text-gold disabled:opacity-30"
         >
           🚀 Bulk ALL ({allEpisodes.filter(e => !urls[e.id] || !imageUrls[e.id]).length} missing)
         </button>
@@ -3915,19 +3915,19 @@ function SeriesPanel() {
         >
           🔄 Regen ALL Audio ({allEpisodes.length})
         </button>
-        {bulkProgress && <div className="w-full text-[10px] text-[#f0a500] mt-2">{bulkProgress}</div>}
+        {bulkProgress && <div className="w-full text-[10px] text-gold mt-2">{bulkProgress}</div>}
       </div>
 
       {/* Series list */}
       {SERIES_DATA.map((series) => (
-        <div key={series.id} className="rounded-xl bg-[#1a1a28] p-4 ring-1 ring-white/5">
+        <div key={series.id} className="rounded-xl bg-bg-elevated p-4 ring-1 ring-white/5">
           {/* Series header + per-series bulk */}
           <div className="flex items-center justify-between mb-3">
             <div className="flex items-center gap-3">
               <span className="text-2xl">{series.icon}</span>
               <div>
-                <h3 className="text-sm font-bold text-[#f5f0e8]">{series.title}</h3>
-                <p className="text-[10px] text-[#6e6a63]">{series.episodes.length} episodes · {series.ageRange} · Audio: {series.episodes.filter(e => urls[e.id]).length}/{series.episodes.length} · Images: {series.episodes.filter(e => imageUrls[e.id]).length}/{series.episodes.length}</p>
+                <h3 className="text-sm font-bold text-ink">{series.title}</h3>
+                <p className="text-[10px] text-ink-dim">{series.episodes.length} episodes · {series.ageRange} · Audio: {series.episodes.filter(e => urls[e.id]).length}/{series.episodes.length} · Images: {series.episodes.filter(e => imageUrls[e.id]).length}/{series.episodes.length}</p>
               </div>
             </div>
             <div className="flex gap-1.5 shrink-0">
@@ -3944,7 +3944,7 @@ function SeriesPanel() {
                   setBulkProgress(`${series.icon} Done!`);
                 }}
                 disabled={!!generating}
-                className="rounded-lg bg-[#f0a500]/10 px-2.5 py-1 text-[9px] font-bold text-[#f0a500] disabled:opacity-30"
+                className="rounded-lg bg-[#f0a500]/10 px-2.5 py-1 text-[9px] font-bold text-gold disabled:opacity-30"
                 title="Generate missing audio + images for this series"
               >
                 🚀 Missing
@@ -3973,33 +3973,33 @@ function SeriesPanel() {
           {/* Episodes */}
           <div className="space-y-2">
             {series.episodes.map((ep) => (
-              <div key={ep.id} className="rounded-lg bg-[#0f0f17] p-3">
+              <div key={ep.id} className="rounded-lg bg-bg-base p-3">
                 <div className="flex items-start gap-3">
-                  <div className="h-10 w-10 shrink-0 overflow-hidden rounded-lg bg-[#1a1a28]">
+                  <div className="h-10 w-10 shrink-0 overflow-hidden rounded-lg bg-bg-elevated">
                     {imageUrls[ep.id] ? <img src={imageUrls[ep.id]} alt="" className="h-full w-full object-cover" />
-                      : <div className="grid h-full w-full place-items-center text-sm font-bold text-[#6e6a63]">{ep.episodeNumber}</div>}
+                      : <div className="grid h-full w-full place-items-center text-sm font-bold text-ink-dim">{ep.episodeNumber}</div>}
                   </div>
                   <div className="min-w-0 flex-1">
-                    <div className="text-xs font-bold text-[#f5f0e8]">Ep {ep.episodeNumber}: {ep.title}</div>
-                    <div className="text-[10px] text-[#6e6a63] mt-0.5">{ep.subtitle}</div>
+                    <div className="text-xs font-bold text-ink">Ep {ep.episodeNumber}: {ep.title}</div>
+                    <div className="text-[10px] text-ink-dim mt-0.5">{ep.subtitle}</div>
                     <div className="flex items-center gap-2 mt-1">
                       {urls[ep.id] ? <span className="rounded-full bg-[#7ad9a1]/10 px-2 py-0.5 text-[8px] font-bold text-[#7ad9a1]">Audio ✓</span>
-                        : !dataReady ? <span className="rounded-full bg-[#f0a500]/10 px-2 py-0.5 text-[8px] font-bold text-[#f0a500] animate-pulse">Loading...</span>
+                        : !dataReady ? <span className="rounded-full bg-[#f0a500]/10 px-2 py-0.5 text-[8px] font-bold text-gold animate-pulse">Loading...</span>
                         : <span className="rounded-full bg-red-400/10 px-2 py-0.5 text-[8px] font-bold text-red-400">No audio</span>}
                       {imageUrls[ep.id] ? <span className="rounded-full bg-[#7ad9a1]/10 px-2 py-0.5 text-[8px] font-bold text-[#7ad9a1]">Image ✓</span>
-                        : !dataReady ? <span className="rounded-full bg-[#f0a500]/10 px-2 py-0.5 text-[8px] font-bold text-[#f0a500] animate-pulse">Loading...</span>
+                        : !dataReady ? <span className="rounded-full bg-[#f0a500]/10 px-2 py-0.5 text-[8px] font-bold text-gold animate-pulse">Loading...</span>
                         : <span className="rounded-full bg-red-400/10 px-2 py-0.5 text-[8px] font-bold text-red-400">No image</span>}
                     </div>
-                    {status[ep.id] && <div className="text-[9px] text-[#f0a500] mt-1">{status[ep.id]}</div>}
+                    {status[ep.id] && <div className="text-[9px] text-gold mt-1">{status[ep.id]}</div>}
                   </div>
                 </div>
                 {/* Inline edit — title + body */}
                 {editingEpisode === ep.id && (
-                  <div className="mt-2 space-y-2 rounded-lg bg-[#0f0f17] p-3 ring-1 ring-[#f0a500]/20">
+                  <div className="mt-2 space-y-2 rounded-lg bg-bg-base p-3 ring-1 ring-gold/20">
                     <input defaultValue={ep.title} id={`ep-edit-title-${ep.id}`}
-                      className="w-full rounded-lg bg-[#1a1a28] px-3 py-2 text-xs font-bold text-[#f5f0e8] outline-none ring-1 ring-white/10" placeholder="Title" />
+                      className="w-full rounded-lg bg-bg-elevated px-3 py-2 text-xs font-bold text-ink outline-none ring-1 ring-white/10" placeholder="Title" />
                     <textarea defaultValue={ep.body} id={`ep-edit-body-${ep.id}`} rows={10}
-                      className="w-full rounded-lg bg-[#1a1a28] px-3 py-2 text-[10px] text-[#a8a39a] leading-relaxed outline-none ring-1 ring-white/10 resize-y" />
+                      className="w-full rounded-lg bg-bg-elevated px-3 py-2 text-[10px] text-ink-muted leading-relaxed outline-none ring-1 ring-white/10 resize-y" />
                     <div className="flex gap-2">
                       <button onClick={async () => {
                         const newTitle = document.getElementById(`ep-edit-title-${ep.id}`).value;
@@ -4015,7 +4015,7 @@ function SeriesPanel() {
                       }} className="rounded-lg bg-[#7ad9a1]/10 px-4 py-1.5 text-[10px] font-bold text-[#7ad9a1]">
                         💾 Save & Queue Deploy
                       </button>
-                      <button onClick={() => setEditingEpisode(null)} className="rounded-lg bg-white/5 px-4 py-1.5 text-[10px] font-bold text-[#6e6a63]">
+                      <button onClick={() => setEditingEpisode(null)} className="rounded-lg bg-white/5 px-4 py-1.5 text-[10px] font-bold text-ink-dim">
                         Cancel
                       </button>
                     </div>
@@ -4026,7 +4026,7 @@ function SeriesPanel() {
                 {/* Actions */}
                 <div className="flex items-center gap-2 mt-2">
                   <select defaultValue="george" id={`voice-${ep.id}`}
-                    className="rounded-lg bg-[#1a1a28] px-2 py-1.5 text-[10px] font-bold text-[#7ad9a1] outline-none ring-1 ring-[#7ad9a1]/20">
+                    className="rounded-lg bg-bg-elevated px-2 py-1.5 text-[10px] font-bold text-[#7ad9a1] outline-none ring-1 ring-[#7ad9a1]/20">
                     {ELEVEN_VOICES.map(v => <option key={v.key} value={v.key}>{v.label}</option>)}
                   </select>
                   <button onClick={() => generateAudio(ep, document.getElementById(`voice-${ep.id}`)?.value || 'george')} disabled={!!generating}
@@ -4034,7 +4034,7 @@ function SeriesPanel() {
                     {generating === ep.id ? '...' : '⚡ 11Labs'}
                   </button>
                   <select defaultValue="nova" id={`oaivoice-${ep.id}`}
-                    className="rounded-lg bg-[#1a1a28] px-2 py-1.5 text-[10px] font-bold text-[#60a5fa] outline-none ring-1 ring-[#60a5fa]/20">
+                    className="rounded-lg bg-bg-elevated px-2 py-1.5 text-[10px] font-bold text-[#60a5fa] outline-none ring-1 ring-[#60a5fa]/20">
                     {OPENAI_VOICES.map(v => <option key={v} value={v}>{v}</option>)}
                   </select>
                   <button onClick={() => generateOpenAIAudio(ep, document.getElementById(`oaivoice-${ep.id}`)?.value || 'nova')} disabled={!!generating}
@@ -4046,7 +4046,7 @@ function SeriesPanel() {
                     {generating === ep.id + '_img' ? '...' : '🖼️ AI Image'}
                   </button>
                   <button onClick={() => setEditingEpisode(editingEpisode === ep.id ? null : ep.id)}
-                    className="rounded-lg bg-[#f0a500]/10 px-3 py-1.5 text-[10px] font-bold text-[#f0a500]">
+                    className="rounded-lg bg-[#f0a500]/10 px-3 py-1.5 text-[10px] font-bold text-gold">
                     {editingEpisode === ep.id ? '✕ Close' : '✏️ Edit Text'}
                   </button>
                   <label className="rounded-lg bg-[#e8b4ff]/10 px-3 py-1.5 text-[10px] font-bold text-[#e8b4ff] cursor-pointer hover:bg-[#e8b4ff]/20">
@@ -4243,41 +4243,41 @@ function CollectionsPanel() {
     <div className="space-y-5">
       {/* Stats */}
       <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
-        <div className="rounded-xl bg-[#1a1a28] p-4 ring-1 ring-white/5">
-          <div className="text-2xl font-bold text-[#f5f0e8]">{allStories.length}</div>
-          <div className="text-[10px] font-bold uppercase tracking-wider text-[#6e6a63]">Collection Stories</div>
+        <div className="rounded-xl bg-bg-elevated p-4 ring-1 ring-white/5">
+          <div className="text-2xl font-bold text-ink">{allStories.length}</div>
+          <div className="text-[10px] font-bold uppercase tracking-wider text-ink-dim">Collection Stories</div>
         </div>
-        <div className="rounded-xl bg-[#1a1a28] p-4 ring-1 ring-white/5">
+        <div className="rounded-xl bg-bg-elevated p-4 ring-1 ring-white/5">
           <div className="text-2xl font-bold text-[#7ad9a1]">{cached}</div>
-          <div className="text-[10px] font-bold uppercase tracking-wider text-[#6e6a63]">Audio Ready</div>
+          <div className="text-[10px] font-bold uppercase tracking-wider text-ink-dim">Audio Ready</div>
         </div>
-        <div className="rounded-xl bg-[#1a1a28] p-4 ring-1 ring-white/5">
+        <div className="rounded-xl bg-bg-elevated p-4 ring-1 ring-white/5">
           <div className="text-2xl font-bold text-[#539df5]">{imagesCached}</div>
-          <div className="text-[10px] font-bold uppercase tracking-wider text-[#6e6a63]">Images Ready</div>
+          <div className="text-[10px] font-bold uppercase tracking-wider text-ink-dim">Images Ready</div>
         </div>
-        <div className="rounded-xl bg-[#1a1a28] p-4 ring-1 ring-white/5">
-          <div className="text-2xl font-bold text-[#f0a500]">{allStories.length - Math.min(cached, imagesCached)}</div>
-          <div className="text-[10px] font-bold uppercase tracking-wider text-[#6e6a63]">Incomplete</div>
+        <div className="rounded-xl bg-bg-elevated p-4 ring-1 ring-white/5">
+          <div className="text-2xl font-bold text-gold">{allStories.length - Math.min(cached, imagesCached)}</div>
+          <div className="text-[10px] font-bold uppercase tracking-wider text-ink-dim">Incomplete</div>
         </div>
       </div>
 
       {/* Filter */}
-      <div className="flex items-center gap-3 rounded-xl bg-[#1a1a28] p-3 ring-1 ring-white/5">
+      <div className="flex items-center gap-3 rounded-xl bg-bg-elevated p-3 ring-1 ring-white/5">
         <select value={collectionFilter} onChange={e => setCollectionFilter(e.target.value)}
-          className="rounded-lg bg-[#0a0a0f] px-3 py-2 text-xs text-[#f5f0e8] outline-none ring-1 ring-white/10">
+          className="rounded-lg bg-bg-base px-3 py-2 text-xs text-ink outline-none ring-1 ring-white/10">
           <option value="all">All Collections</option>
           {COLLECTIONS_DATA.map(c => <option key={c.id} value={c.id}>{c.title}</option>)}
         </select>
         <input value={search} onChange={e => setSearch(e.target.value)} placeholder="Search..."
-          className="flex-1 rounded-lg bg-[#0a0a0f] px-3 py-2 text-xs text-[#f5f0e8] outline-none ring-1 ring-white/10" />
-        <span className="text-xs text-[#6e6a63]">{filtered.length} stories</span>
+          className="flex-1 rounded-lg bg-bg-base px-3 py-2 text-xs text-ink outline-none ring-1 ring-white/10" />
+        <span className="text-xs text-ink-dim">{filtered.length} stories</span>
       </div>
 
       {/* Bulk — Select + Voice + Generate */}
-      <div className="rounded-xl bg-[#1a1a28] p-4 ring-1 ring-[#7ad9a1]/20 space-y-3">
+      <div className="rounded-xl bg-bg-elevated p-4 ring-1 ring-[#7ad9a1]/20 space-y-3">
         <div className="flex items-center justify-between">
           <span className="text-xs font-bold text-[#7ad9a1]">⚡ ElevenLabs Bulk Generate</span>
-          <span className="text-[9px] text-[#6e6a63]">{selected.size > 0 ? `${selected.size} selected` : 'All without audio'}</span>
+          <span className="text-[9px] text-ink-dim">{selected.size > 0 ? `${selected.size} selected` : 'All without audio'}</span>
         </div>
 
         {/* Selection controls */}
@@ -4289,9 +4289,9 @@ function CollectionsPanel() {
 
         {/* Voice picker */}
         <div className="flex items-center gap-2">
-          <span className="text-[10px] text-[#6e6a63]">Voice:</span>
+          <span className="text-[10px] text-ink-dim">Voice:</span>
           <select value={bulkVoice} onChange={e => setBulkVoice(e.target.value)}
-            className="rounded-lg bg-[#0a0a0f] px-3 py-2 text-[10px] font-bold text-[#7ad9a1] outline-none ring-1 ring-white/10">
+            className="rounded-lg bg-bg-base px-3 py-2 text-[10px] font-bold text-[#7ad9a1] outline-none ring-1 ring-white/10">
             {ELEVEN_VOICES.map(v => <option key={v.key} value={v.key}>{v.label}</option>)}
           </select>
         </div>
@@ -4318,26 +4318,26 @@ function CollectionsPanel() {
       {/* Story list */}
       <div className="space-y-2">
         {filtered.map(s => (
-          <div key={s.id} className={`rounded-xl bg-[#1a1a28] p-3 ring-1 ${selected.has(s.id) ? 'ring-[#7ad9a1]/40' : 'ring-white/5'}`}>
+          <div key={s.id} className={`rounded-xl bg-bg-elevated p-3 ring-1 ${selected.has(s.id) ? 'ring-[#7ad9a1]/40' : 'ring-white/5'}`}>
             <div className="flex items-start gap-3">
               {/* Checkbox */}
               <button onClick={() => toggleSelect(s.id)}
                 className={`mt-1 grid h-5 w-5 shrink-0 place-items-center rounded border transition ${selected.has(s.id) ? 'border-[#7ad9a1] bg-[#7ad9a1] text-[#0a0a0f]' : 'border-white/20 text-transparent'}`}>
                 {selected.has(s.id) && <span className="text-[10px] font-bold">✓</span>}
               </button>
-              <div className="h-12 w-12 shrink-0 overflow-hidden rounded-lg bg-[#0a0a0f]">
+              <div className="h-12 w-12 shrink-0 overflow-hidden rounded-lg bg-bg-base">
                 {imageUrls[s.id] ? <img src={imageUrls[s.id]} alt="" className="h-full w-full object-cover" /> : <div className="grid h-full w-full place-items-center text-lg opacity-30">🖼️</div>}
               </div>
               <div className="min-w-0 flex-1">
-                <div className="text-xs font-bold text-[#f5f0e8]">{s.title}</div>
-                <div className="text-[10px] text-[#6e6a63] mt-0.5">{s.collectionTitle} · {s.tradition} · {s.durationMinutes}m</div>
+                <div className="text-xs font-bold text-ink">{s.title}</div>
+                <div className="text-[10px] text-ink-dim mt-0.5">{s.collectionTitle} · {s.tradition} · {s.durationMinutes}m</div>
                 <div className="flex items-center gap-2 mt-1.5 flex-wrap">
                   {urls[s.id] ? <span className="rounded-full bg-[#7ad9a1]/10 px-2 py-0.5 text-[8px] font-bold text-[#7ad9a1]">Audio ✓</span>
                     : <span className="rounded-full bg-red-400/10 px-2 py-0.5 text-[8px] font-bold text-red-400">No audio</span>}
                   {imageUrls[s.id] ? <span className="rounded-full bg-[#7ad9a1]/10 px-2 py-0.5 text-[8px] font-bold text-[#7ad9a1]">Image ✓</span>
                     : <span className="rounded-full bg-red-400/10 px-2 py-0.5 text-[8px] font-bold text-red-400">No image</span>}
                 </div>
-                {status[s.id] && <div className="text-[9px] text-[#f0a500] mt-1">{status[s.id]}</div>}
+                {status[s.id] && <div className="text-[9px] text-gold mt-1">{status[s.id]}</div>}
               </div>
             </div>
             {/* Audio preview */}
@@ -4468,15 +4468,15 @@ function ElevenLabsPanel({ filtered, urls, setUrls, generating, setGenerating, s
   const missingCount = filtered.filter(l => !urls[l.id]).length;
 
   return (
-    <div className="rounded-xl bg-[#1a1a28] p-4 ring-1 ring-[#7ad9a1]/20 space-y-3">
+    <div className="rounded-xl bg-bg-elevated p-4 ring-1 ring-[#7ad9a1]/20 space-y-3">
       <div className="flex items-center justify-between">
         <span className="text-xs font-bold text-[#7ad9a1]">⚡ ElevenLabs Premium Audio</span>
-        <span className="text-[9px] text-[#6e6a63]">{selected.size > 0 ? `${selected.size} selected` : `${missingCount} need audio`}</span>
+        <span className="text-[9px] text-ink-dim">{selected.size > 0 ? `${selected.size} selected` : `${missingCount} need audio`}</span>
       </div>
 
       {/* Quick select buttons */}
       <div className="flex flex-wrap gap-2 items-center">
-        <button onClick={selectIndian} className="rounded-lg bg-[#f0a500]/10 px-3 py-1.5 text-[10px] font-bold text-[#f0a500]">🇮🇳 Select Indian</button>
+        <button onClick={selectIndian} className="rounded-lg bg-[#f0a500]/10 px-3 py-1.5 text-[10px] font-bold text-gold">🇮🇳 Select Indian</button>
         <button onClick={selectMissing} className="rounded-lg bg-white/5 px-3 py-1.5 text-[10px] font-bold text-ink-muted ring-1 ring-white/10">Select Missing</button>
         <button onClick={selectAll} className="rounded-lg bg-white/5 px-3 py-1.5 text-[10px] font-bold text-ink-muted ring-1 ring-white/10">All ({filtered.length})</button>
         <button onClick={selectNone} className="rounded-lg bg-white/5 px-3 py-1.5 text-[10px] font-bold text-ink-muted ring-1 ring-white/10">None</button>
@@ -4496,9 +4496,9 @@ function ElevenLabsPanel({ filtered, urls, setUrls, generating, setGenerating, s
 
       {/* Voice picker */}
       <div className="flex flex-wrap gap-2 items-center">
-        <span className="text-[10px] text-[#6e6a63]">Voice:</span>
+        <span className="text-[10px] text-ink-dim">Voice:</span>
         <select value={bulkVoice} onChange={e => setBulkVoice(e.target.value)}
-          className="rounded-lg bg-[#0a0a0f] px-3 py-2 text-[10px] font-bold text-[#7ad9a1] outline-none ring-1 ring-white/10">
+          className="rounded-lg bg-bg-base px-3 py-2 text-[10px] font-bold text-[#7ad9a1] outline-none ring-1 ring-white/10">
           {ELEVEN_VOICES.map(v => <option key={v.key} value={v.key}>{v.label}</option>)}
         </select>
         <button onClick={() => previewVoice(bulkVoice)}
@@ -4545,8 +4545,8 @@ function VoiceFeedbackPanel() {
     })();
   }, []);
 
-  if (loading) return <div className="text-sm text-[#6e6a63]">Loading feedback...</div>;
-  if (feedback.length === 0) return <div className="rounded-2xl bg-[#1a1a28] p-6 text-center text-sm text-[#6e6a63]">No voice feedback yet. Users will rate after stories finish playing.</div>;
+  if (loading) return <div className="text-sm text-ink-dim">Loading feedback...</div>;
+  if (feedback.length === 0) return <div className="rounded-2xl bg-bg-elevated p-6 text-center text-sm text-ink-dim">No voice feedback yet. Users will rate after stories finish playing.</div>;
 
   const avg = (feedback.reduce((s, f) => s + (f.rating || 0), 0) / feedback.length).toFixed(1);
   const byVoice = {};
@@ -4559,28 +4559,28 @@ function VoiceFeedbackPanel() {
 
   return (
     <div className="space-y-4">
-      <div className="rounded-2xl bg-[#1a1a28] p-4">
-        <h3 className="text-sm font-bold text-[#f5f0e8]">Voice Quality Feedback</h3>
-        <p className="text-xs text-[#6e6a63]">{feedback.length} ratings · Avg: <span className="text-[#f0a500] font-bold">{avg}/5</span></p>
+      <div className="rounded-2xl bg-bg-elevated p-4">
+        <h3 className="text-sm font-bold text-ink">Voice Quality Feedback</h3>
+        <p className="text-xs text-ink-dim">{feedback.length} ratings · Avg: <span className="text-gold font-bold">{avg}/5</span></p>
         <div className="mt-3 flex flex-wrap gap-2">
           {Object.entries(byVoice).map(([voice, data]) => (
-            <div key={voice} className="rounded-xl bg-[#0a0a0f] px-3 py-2 ring-1 ring-white/5">
-              <div className="text-[10px] font-bold text-[#f5f0e8]">{voice}</div>
-              <div className="text-[9px] text-[#6e6a63]">{(data.total / data.count).toFixed(1)}/5 · {data.count} ratings</div>
+            <div key={voice} className="rounded-xl bg-bg-base px-3 py-2 ring-1 ring-white/5">
+              <div className="text-[10px] font-bold text-ink">{voice}</div>
+              <div className="text-[9px] text-ink-dim">{(data.total / data.count).toFixed(1)}/5 · {data.count} ratings</div>
             </div>
           ))}
         </div>
       </div>
       <div className="space-y-1.5">
         {feedback.slice(0, 50).map(f => (
-          <div key={f.id} className="flex items-center gap-3 rounded-xl bg-[#1a1a28] px-3 py-2">
+          <div key={f.id} className="flex items-center gap-3 rounded-xl bg-bg-elevated px-3 py-2">
             <div className="text-lg">{f.rating >= 4 ? '🤩' : f.rating >= 3 ? '🙂' : '😕'}</div>
             <div className="flex-1 min-w-0">
-              <div className="text-[10px] font-bold text-[#f5f0e8] truncate">{f.storyTitle}</div>
-              <div className="text-[9px] text-[#6e6a63]">{f.voice} · {f.tradition} · {f.language} · {f.country}</div>
+              <div className="text-[10px] font-bold text-ink truncate">{f.storyTitle}</div>
+              <div className="text-[9px] text-ink-dim">{f.voice} · {f.tradition} · {f.language} · {f.country}</div>
             </div>
-            <div className="text-sm font-bold text-[#f0a500]">{f.rating}/5</div>
-            <div className="text-[8px] text-[#6e6a63]">{new Date(f.createdAt).toLocaleDateString()}</div>
+            <div className="text-sm font-bold text-gold">{f.rating}/5</div>
+            <div className="text-[8px] text-ink-dim">{new Date(f.createdAt).toLocaleDateString()}</div>
           </div>
         ))}
       </div>
@@ -4716,15 +4716,15 @@ function ExpenseTracker() {
       {/* Summary cards */}
       <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
         <div className="rounded-2xl bg-white/5 p-4 ring-1 ring-white/5">
-          <div className="text-[10px] uppercase tracking-wider text-[#6e6a63]">Total Spent</div>
-          <div className="mt-1 text-2xl font-bold text-[#f0a500]">CA${totalAll.toLocaleString()}</div>
-          <div className="text-[10px] text-[#6e6a63]">{EXPENSE_DATA.length} months</div>
+          <div className="text-[10px] uppercase tracking-wider text-ink-dim">Total Spent</div>
+          <div className="mt-1 text-2xl font-bold text-gold">CA${totalAll.toLocaleString()}</div>
+          <div className="text-[10px] text-ink-dim">{EXPENSE_DATA.length} months</div>
         </div>
         {Object.entries(totalByCategory).sort((a, b) => b[1] - a[1]).map(([cat, amount]) => (
           <div key={cat} className="rounded-2xl bg-white/5 p-4 ring-1 ring-white/5">
-            <div className="text-[10px] uppercase tracking-wider text-[#6e6a63]">{cat}</div>
+            <div className="text-[10px] uppercase tracking-wider text-ink-dim">{cat}</div>
             <div className="mt-1 text-xl font-bold" style={{ color: CAT_COLORS[cat] || '#f5f0e8' }}>CA${amount.toLocaleString()}</div>
-            <div className="text-[10px] text-[#6e6a63]">{Math.round(amount / totalAll * 100)}% of total</div>
+            <div className="text-[10px] text-ink-dim">{Math.round(amount / totalAll * 100)}% of total</div>
           </div>
         ))}
       </div>
@@ -4735,8 +4735,8 @@ function ExpenseTracker() {
         return (
           <div key={month.month} className="rounded-2xl bg-white/5 ring-1 ring-white/5 overflow-hidden">
             <div className="flex items-center justify-between px-5 py-4 border-b border-white/5">
-              <h3 className="text-sm font-bold text-[#f5f0e8]">{month.month}</h3>
-              <span className="text-sm font-bold text-[#f0a500]">CA${monthTotal}</span>
+              <h3 className="text-sm font-bold text-ink">{month.month}</h3>
+              <span className="text-sm font-bold text-gold">CA${monthTotal}</span>
             </div>
             <div className="divide-y divide-white/5">
               {month.items.map((item, i) => {
@@ -4747,23 +4747,23 @@ function ExpenseTracker() {
                   <div className="flex items-center justify-between">
                     <div className="flex items-center gap-3">
                       <span className="inline-block h-2 w-2 rounded-full" style={{ background: CAT_COLORS[item.category] || '#666' }} />
-                      <span className="text-xs text-[#c8c3ba]">{item.name}</span>
+                      <span className="text-xs text-ink-muted">{item.name}</span>
                     </div>
                     <div className="flex items-center gap-2">
-                      <label className="cursor-pointer rounded-full bg-white/5 px-2 py-1 text-[9px] text-[#6e6a63] hover:text-[#f0a500] hover:bg-[#f0a500]/10 transition">
+                      <label className="cursor-pointer rounded-full bg-white/5 px-2 py-1 text-[9px] text-ink-dim hover:text-gold hover:bg-[#f0a500]/10 transition">
                         {uploading === key ? '...' : itemReceipts.length > 0 ? `🧾 ${itemReceipts.length}` : '+ Receipt'}
                         <input type="file" accept="image/*,.pdf" className="hidden" disabled={uploading === key}
                           onChange={(e) => { if (e.target.files?.[0]) uploadReceipt(e.target.files[0], key); e.target.value = ''; }} />
                       </label>
                       {item.spender && (
-                        <span className="rounded-full bg-white/8 px-2 py-0.5 text-[9px] text-[#c8c3ba]">
+                        <span className="rounded-full bg-white/8 px-2 py-0.5 text-[9px] text-ink-muted">
                           {item.spender}
                         </span>
                       )}
                       <span className="rounded-full px-2 py-0.5 text-[9px] font-bold uppercase" style={{ background: (CAT_COLORS[item.category] || '#666') + '22', color: CAT_COLORS[item.category] || '#666' }}>
                         {item.category}
                       </span>
-                      <span className="text-sm font-bold text-[#f5f0e8] w-16 text-right">CA${item.amount}</span>
+                      <span className="text-sm font-bold text-ink w-16 text-right">CA${item.amount}</span>
                     </div>
                   </div>
                   {itemReceipts.length > 0 && (
@@ -4775,7 +4775,7 @@ function ExpenseTracker() {
                               <img src={r.url} alt="" className="h-12 w-12 rounded-lg object-cover ring-1 ring-white/10" />
                             </a>
                           ) : (
-                            <a href={r.url} target="_blank" rel="noreferrer" className="flex h-12 w-12 items-center justify-center rounded-lg bg-[#1a1a28] ring-1 ring-white/10 text-lg">📄</a>
+                            <a href={r.url} target="_blank" rel="noreferrer" className="flex h-12 w-12 items-center justify-center rounded-lg bg-bg-elevated ring-1 ring-white/10 text-lg">📄</a>
                           )}
                           <button onClick={() => deleteReceipt(r)}
                             className="absolute -top-1 -right-1 hidden group-hover:grid h-4 w-4 place-items-center rounded-full bg-[#f3727f] text-[8px] text-white">✕</button>
@@ -4798,14 +4798,14 @@ function ExpenseTracker() {
       })}
 
       {/* Average monthly */}
-      <div className="rounded-2xl bg-[#f0a500]/10 ring-1 ring-[#f0a500]/20 px-5 py-4 text-center">
-        <div className="text-[10px] uppercase tracking-wider text-[#f0a500]">Average Monthly Burn</div>
-        <div className="mt-1 text-2xl font-bold text-[#f0a500]">CA${Math.round(totalAll / EXPENSE_DATA.length)}/mo</div>
+      <div className="rounded-2xl bg-[#f0a500]/10 ring-1 ring-gold/20 px-5 py-4 text-center">
+        <div className="text-[10px] uppercase tracking-wider text-gold">Average Monthly Burn</div>
+        <div className="mt-1 text-2xl font-bold text-gold">CA${Math.round(totalAll / EXPENSE_DATA.length)}/mo</div>
       </div>
 
       {/* Total receipts count */}
       {receipts.length > 0 && (
-        <div className="text-center text-[10px] text-[#6e6a63]">
+        <div className="text-center text-[10px] text-ink-dim">
           {receipts.length} receipt{receipts.length !== 1 ? 's' : ''} uploaded
         </div>
       )}
@@ -5009,7 +5009,7 @@ function TaskBoard({ team = [], adminEmails = [] }) {
       <div className="flex items-center gap-1 rounded-lg bg-white/5 p-1 w-fit ring-1 ring-white/10">
         {['day', 'week', 'month'].map(m => (
           <button key={m} onClick={() => setViewMode(m)}
-            className={`rounded-md px-4 py-1.5 text-xs font-bold transition ${viewMode === m ? 'bg-[#f0a500] text-[#0f0f17]' : 'text-[#6e6a63] hover:text-[#f5f0e8]'}`}>
+            className={`rounded-md px-4 py-1.5 text-xs font-bold transition ${viewMode === m ? 'bg-[#f0a500] text-[#0f0f17]' : 'text-ink-dim hover:text-ink'}`}>
             {m.charAt(0).toUpperCase() + m.slice(1)}
           </button>
         ))}
@@ -5018,74 +5018,74 @@ function TaskBoard({ team = [], adminEmails = [] }) {
       {/* Date nav + stats */}
       <div className="flex flex-wrap items-center justify-between gap-3">
         <div className="flex items-center gap-2">
-          <button onClick={() => shiftDate(-1)} className="rounded-lg bg-white/5 px-3 py-2 text-xs font-bold text-[#a8a39a] hover:text-[#f5f0e8]">&larr;</button>
+          <button onClick={() => shiftDate(-1)} className="rounded-lg bg-white/5 px-3 py-2 text-xs font-bold text-ink-muted hover:text-ink">&larr;</button>
           {viewMode === 'day' ? (
             <input type="date" value={selectedDate} onChange={e => setSelectedDate(e.target.value)}
-              className="rounded-lg bg-white/5 px-3 py-2 text-sm font-bold text-[#f5f0e8] border border-white/10 outline-none" />
+              className="rounded-lg bg-white/5 px-3 py-2 text-sm font-bold text-ink border border-white/10 outline-none" />
           ) : (
-            <span className="rounded-lg bg-white/5 px-3 py-2 text-sm font-bold text-[#f5f0e8] border border-white/10">
+            <span className="rounded-lg bg-white/5 px-3 py-2 text-sm font-bold text-ink border border-white/10">
               {viewMode === 'week'
                 ? `${new Date(getDateRange.start + 'T12:00:00').toLocaleDateString('en-US', { month: 'short', day: 'numeric' })} — ${new Date(getDateRange.end + 'T12:00:00').toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}`
                 : new Date(selectedDate + 'T12:00:00').toLocaleDateString('en-US', { month: 'long', year: 'numeric' })
               }
             </span>
           )}
-          <button onClick={() => shiftDate(1)} className="rounded-lg bg-white/5 px-3 py-2 text-xs font-bold text-[#a8a39a] hover:text-[#f5f0e8]">&rarr;</button>
-          <button onClick={() => { setSelectedDate(getLocalDate()); setViewMode('day'); }} className="rounded-lg bg-[#f0a500]/15 px-3 py-2 text-xs font-bold text-[#f0a500]">Today</button>
+          <button onClick={() => shiftDate(1)} className="rounded-lg bg-white/5 px-3 py-2 text-xs font-bold text-ink-muted hover:text-ink">&rarr;</button>
+          <button onClick={() => { setSelectedDate(getLocalDate()); setViewMode('day'); }} className="rounded-lg bg-[#f0a500]/15 px-3 py-2 text-xs font-bold text-gold">Today</button>
         </div>
         <div className="flex items-center gap-3 text-xs">
-          <span className="text-[#6e6a63]">{totalToday} tasks</span>
-          <span className="text-[#f0a500]">{inProgress} in progress</span>
+          <span className="text-ink-dim">{totalToday} tasks</span>
+          <span className="text-gold">{inProgress} in progress</span>
           <span className="text-[#48bb78]">{doneToday} done</span>
-          {totalToday > 0 && <span className="text-[#f5f0e8] font-bold">{Math.round(doneToday / totalToday * 100)}%</span>}
+          {totalToday > 0 && <span className="text-ink font-bold">{Math.round(doneToday / totalToday * 100)}%</span>}
         </div>
       </div>
 
       {/* Filters + actions */}
       <div className="flex flex-wrap gap-2">
         <select value={filterActivity} onChange={e => setFilterActivity(e.target.value)}
-          className="rounded-lg bg-white/5 px-3 py-2 text-xs text-[#f5f0e8] border border-white/10 outline-none">
+          className="rounded-lg bg-white/5 px-3 py-2 text-xs text-ink border border-white/10 outline-none">
           <option value="all">All Activities</option>
           {ACTIVITIES.map(a => <option key={a.key} value={a.key}>{a.icon} {a.label}</option>)}
         </select>
         <select value={filterAssignee} onChange={e => setFilterAssignee(e.target.value)}
-          className="rounded-lg bg-white/5 px-3 py-2 text-xs text-[#f5f0e8] border border-white/10 outline-none">
+          className="rounded-lg bg-white/5 px-3 py-2 text-xs text-ink border border-white/10 outline-none">
           <option value="all">All Team</option>
           {allAssignees.map(m => <option key={m.email} value={m.email}>{m.name}</option>)}
         </select>
         <div className="flex-1" />
         <button onClick={() => setShowAddForm(!showAddForm)} className="rounded-lg bg-[#f0a500] px-4 py-2 text-xs font-bold text-[#0f0f17]">+ Add Task</button>
-        <button onClick={generateEmailBrief} className="rounded-lg bg-white/5 px-4 py-2 text-xs font-bold text-[#f0a500] ring-1 ring-[#f0a500]/30">Morning Brief</button>
-        <button onClick={carryIncomplete} className="rounded-lg bg-white/5 px-3 py-2 text-xs text-[#a8a39a] ring-1 ring-white/10">Carry &rarr;</button>
+        <button onClick={generateEmailBrief} className="rounded-lg bg-white/5 px-4 py-2 text-xs font-bold text-gold ring-1 ring-gold/30">Morning Brief</button>
+        <button onClick={carryIncomplete} className="rounded-lg bg-white/5 px-3 py-2 text-xs text-ink-muted ring-1 ring-white/10">Carry &rarr;</button>
       </div>
 
       {/* Add task form */}
       {showAddForm && (
         <div className="rounded-2xl bg-white/5 p-5 ring-1 ring-white/10 space-y-3">
           <input value={newTask.title} onChange={e => setNewTask({ ...newTask, title: e.target.value })} placeholder="Task title..."
-            className="w-full rounded-lg bg-white/5 px-4 py-3 text-sm text-[#f5f0e8] border border-white/10 outline-none placeholder:text-[#4a4a5a]"
+            className="w-full rounded-lg bg-white/5 px-4 py-3 text-sm text-ink border border-white/10 outline-none placeholder:text-[#4a4a5a]"
             onKeyDown={e => { if (e.key === 'Enter') handleAddTask(); }} />
           <textarea value={newTask.description} onChange={e => setNewTask({ ...newTask, description: e.target.value })} placeholder="Description (optional)..."
-            className="w-full rounded-lg bg-white/5 px-4 py-2 text-xs text-[#c8c3ba] border border-white/10 outline-none resize-none h-16 placeholder:text-[#4a4a5a]" />
+            className="w-full rounded-lg bg-white/5 px-4 py-2 text-xs text-ink-muted border border-white/10 outline-none resize-none h-16 placeholder:text-[#4a4a5a]" />
           <div className="flex flex-wrap gap-2">
             <select value={newTask.activity} onChange={e => setNewTask({ ...newTask, activity: e.target.value })}
-              className="rounded-lg bg-white/5 px-3 py-2 text-xs text-[#f5f0e8] border border-white/10 outline-none">
+              className="rounded-lg bg-white/5 px-3 py-2 text-xs text-ink border border-white/10 outline-none">
               {ACTIVITIES.map(a => <option key={a.key} value={a.key}>{a.icon} {a.label}</option>)}
             </select>
             <select value={newTask.assignee} onChange={e => setNewTask({ ...newTask, assignee: e.target.value })}
-              className="rounded-lg bg-white/5 px-3 py-2 text-xs text-[#f5f0e8] border border-white/10 outline-none">
+              className="rounded-lg bg-white/5 px-3 py-2 text-xs text-ink border border-white/10 outline-none">
               <option value="">Assign to...</option>
               {allAssignees.map(m => <option key={m.email} value={m.email}>{m.name}</option>)}
             </select>
             <select value={newTask.priority} onChange={e => setNewTask({ ...newTask, priority: e.target.value })}
-              className="rounded-lg bg-white/5 px-3 py-2 text-xs text-[#f5f0e8] border border-white/10 outline-none">
+              className="rounded-lg bg-white/5 px-3 py-2 text-xs text-ink border border-white/10 outline-none">
               <option value="urgent">Urgent</option>
               <option value="high">High</option>
               <option value="normal">Normal</option>
               <option value="low">Low</option>
             </select>
             <button onClick={handleAddTask} className="rounded-lg bg-[#f0a500] px-6 py-2 text-xs font-bold text-[#0f0f17]">Add</button>
-            <button onClick={() => setShowAddForm(false)} className="rounded-lg bg-white/5 px-4 py-2 text-xs text-[#6e6a63]">Cancel</button>
+            <button onClick={() => setShowAddForm(false)} className="rounded-lg bg-white/5 px-4 py-2 text-xs text-ink-dim">Cancel</button>
           </div>
         </div>
       )}
@@ -5094,8 +5094,8 @@ function TaskBoard({ team = [], adminEmails = [] }) {
       {viewMode === 'day' && Object.keys(byAssignee).length === 0 && (
         <div className="rounded-2xl bg-white/5 p-10 text-center ring-1 ring-white/5">
           <p className="text-3xl mb-2">📋</p>
-          <p className="text-sm text-[#6e6a63]">No tasks for {selectedDate}</p>
-          <button onClick={() => setShowAddForm(true)} className="mt-3 rounded-lg bg-[#f0a500]/15 px-4 py-2 text-xs font-bold text-[#f0a500]">Add first task</button>
+          <p className="text-sm text-ink-dim">No tasks for {selectedDate}</p>
+          <button onClick={() => setShowAddForm(true)} className="mt-3 rounded-lg bg-[#f0a500]/15 px-4 py-2 text-xs font-bold text-gold">Add first task</button>
         </div>
       )}
 
@@ -5109,10 +5109,10 @@ function TaskBoard({ team = [], adminEmails = [] }) {
             return (
               <div key={date}>
                 <div className="flex items-center gap-3 mb-2">
-                  <span className={`text-xs font-bold ${isToday ? 'text-[#f0a500]' : 'text-[#6e6a63]'}`}>
+                  <span className={`text-xs font-bold ${isToday ? 'text-gold' : 'text-ink-dim'}`}>
                     {isToday ? 'Today' : dateLabel}
                   </span>
-                  <span className="text-[10px] text-[#6e6a63]">{date}</span>
+                  <span className="text-[10px] text-ink-dim">{date}</span>
                   <div className="flex-1 h-px bg-white/5" />
                   <span className="text-[10px] font-bold text-[#48bb78]">{dateDone}/{dateTasks.length}</span>
                   {dateTasks.length > 0 && (
@@ -5134,7 +5134,7 @@ function TaskBoard({ team = [], adminEmails = [] }) {
                     return (
                       <div key={`${date}-${assignee}`} className="rounded-xl bg-white/5 ring-1 ring-white/5 overflow-hidden mb-2 ml-4">
                         <div className="flex items-center justify-between px-4 py-2 border-b border-white/5">
-                          <span className="text-xs font-bold text-[#f5f0e8]">👤 {name}</span>
+                          <span className="text-xs font-bold text-ink">👤 {name}</span>
                           <span className="text-[9px] text-[#48bb78]">{memberTasks.filter(t => t.status === 'done').length}/{memberTasks.length}</span>
                         </div>
                         <div className="divide-y divide-white/5">
@@ -5150,7 +5150,7 @@ function TaskBoard({ team = [], adminEmails = [] }) {
                                   style={{ border: `2px solid ${sta?.color}`, background: task.status === 'done' ? '#48bb78' : 'transparent' }}>
                                   {task.status === 'done' && <span className="text-[8px] text-white">✓</span>}
                                 </button>
-                                <span className={`text-xs flex-1 ${task.status === 'done' ? 'line-through text-[#6e6a63]' : 'text-[#f5f0e8]'}`}>{task.title}</span>
+                                <span className={`text-xs flex-1 ${task.status === 'done' ? 'line-through text-ink-dim' : 'text-ink'}`}>{task.title}</span>
                                 <span className="text-[8px] px-1.5 py-0.5 rounded-full font-bold" style={{ background: (act?.color || '#666') + '22', color: act?.color || '#666' }}>{act?.icon}</span>
                                 {task.priority === 'urgent' && <span className="text-[8px] text-[#f3727f] font-bold">!</span>}
                               </div>
@@ -5177,8 +5177,8 @@ function TaskBoard({ team = [], adminEmails = [] }) {
             <div className="flex items-center justify-between px-5 py-3 border-b border-white/5">
               <div className="flex items-center gap-2">
                 <span className="text-sm">👤</span>
-                <span className="text-sm font-bold text-[#f5f0e8]">{name}</span>
-                <span className="text-[10px] text-[#6e6a63]">{assignee}</span>
+                <span className="text-sm font-bold text-ink">{name}</span>
+                <span className="text-[10px] text-ink-dim">{assignee}</span>
               </div>
               <span className="text-[10px] font-bold text-[#48bb78]">{memberDone}/{memberTasks.length} done</span>
             </div>
@@ -5192,36 +5192,36 @@ function TaskBoard({ team = [], adminEmails = [] }) {
                   return (
                     <div key={task.id} className="px-5 py-3 space-y-2 bg-[#f0a500]/5">
                       <input value={e.title} onChange={ev => setEditingTask({ ...e, title: ev.target.value })}
-                        className="w-full rounded-lg bg-white/5 px-3 py-2 text-sm text-[#f5f0e8] border border-[#f0a500]/30 outline-none" />
+                        className="w-full rounded-lg bg-white/5 px-3 py-2 text-sm text-ink border border-gold/30 outline-none" />
                       <textarea value={e.description || ''} onChange={ev => setEditingTask({ ...e, description: ev.target.value })}
-                        className="w-full rounded-lg bg-white/5 px-3 py-1.5 text-xs text-[#c8c3ba] border border-white/10 outline-none resize-none h-12" placeholder="Description..." />
+                        className="w-full rounded-lg bg-white/5 px-3 py-1.5 text-xs text-ink-muted border border-white/10 outline-none resize-none h-12" placeholder="Description..." />
                       <div className="flex flex-wrap gap-2">
                         <select value={e.activity} onChange={ev => setEditingTask({ ...e, activity: ev.target.value })}
-                          className="rounded-lg bg-white/5 px-2 py-1.5 text-xs text-[#f5f0e8] border border-white/10 outline-none">
+                          className="rounded-lg bg-white/5 px-2 py-1.5 text-xs text-ink border border-white/10 outline-none">
                           {ACTIVITIES.map(a => <option key={a.key} value={a.key}>{a.icon} {a.label}</option>)}
                         </select>
                         <select value={e.assignee} onChange={ev => setEditingTask({ ...e, assignee: ev.target.value })}
-                          className="rounded-lg bg-white/5 px-2 py-1.5 text-xs text-[#f5f0e8] border border-white/10 outline-none">
+                          className="rounded-lg bg-white/5 px-2 py-1.5 text-xs text-ink border border-white/10 outline-none">
                           <option value="">Unassigned</option>
                           {allAssignees.map(m => <option key={m.email} value={m.email}>{m.name}</option>)}
                         </select>
                         <select value={e.priority} onChange={ev => setEditingTask({ ...e, priority: ev.target.value })}
-                          className="rounded-lg bg-white/5 px-2 py-1.5 text-xs text-[#f5f0e8] border border-white/10 outline-none">
+                          className="rounded-lg bg-white/5 px-2 py-1.5 text-xs text-ink border border-white/10 outline-none">
                           <option value="urgent">Urgent</option>
                           <option value="high">High</option>
                           <option value="normal">Normal</option>
                           <option value="low">Low</option>
                         </select>
                         <select value={e.status} onChange={ev => setEditingTask({ ...e, status: ev.target.value })}
-                          className="rounded-lg bg-white/5 px-2 py-1.5 text-xs text-[#f5f0e8] border border-white/10 outline-none">
+                          className="rounded-lg bg-white/5 px-2 py-1.5 text-xs text-ink border border-white/10 outline-none">
                           {TASK_STATUS.map(s => <option key={s.key} value={s.key}>{s.label}</option>)}
                         </select>
                         <input type="date" value={e.dueDate || ''} onChange={ev => setEditingTask({ ...e, dueDate: ev.target.value })}
-                          className="rounded-lg bg-white/5 px-2 py-1.5 text-xs text-[#f5f0e8] border border-white/10 outline-none" />
+                          className="rounded-lg bg-white/5 px-2 py-1.5 text-xs text-ink border border-white/10 outline-none" />
                         <button onClick={async () => { await saveTask(e); setEditingTask(null); }}
                           className="rounded-lg bg-[#f0a500] px-4 py-1.5 text-xs font-bold text-[#0f0f17]">Save</button>
                         <button onClick={() => setEditingTask(null)}
-                          className="rounded-lg bg-white/5 px-3 py-1.5 text-xs text-[#6e6a63]">Cancel</button>
+                          className="rounded-lg bg-white/5 px-3 py-1.5 text-xs text-ink-dim">Cancel</button>
                       </div>
                     </div>
                   );
@@ -5239,11 +5239,11 @@ function TaskBoard({ team = [], adminEmails = [] }) {
                     </button>
                     <div className="flex-1 min-w-0 cursor-pointer" onClick={() => setEditingTask({ ...task })}>
                       <div className="flex items-center gap-2 flex-wrap">
-                        <span className={`text-sm font-bold ${task.status === 'done' ? 'line-through text-[#6e6a63]' : 'text-[#f5f0e8]'}`}>{task.title}</span>
+                        <span className={`text-sm font-bold ${task.status === 'done' ? 'line-through text-ink-dim' : 'text-ink'}`}>{task.title}</span>
                         {task.priority === 'urgent' && <span className="text-[9px] bg-[#f3727f]/20 text-[#f3727f] px-1.5 rounded-full font-bold">URGENT</span>}
-                        {task.priority === 'high' && <span className="text-[9px] bg-[#f0a500]/20 text-[#f0a500] px-1.5 rounded-full font-bold">HIGH</span>}
+                        {task.priority === 'high' && <span className="text-[9px] bg-[#f0a500]/20 text-gold px-1.5 rounded-full font-bold">HIGH</span>}
                       </div>
-                      {task.description && <p className="text-[11px] text-[#6e6a63] mt-0.5">{task.description}</p>}
+                      {task.description && <p className="text-[11px] text-ink-dim mt-0.5">{task.description}</p>}
                       <div className="flex items-center gap-2 mt-1">
                         <span className="text-[9px] px-2 py-0.5 rounded-full font-bold" style={{ background: (act?.color || '#666') + '22', color: act?.color || '#666' }}>
                           {act?.icon} {act?.label}
@@ -5254,8 +5254,8 @@ function TaskBoard({ team = [], adminEmails = [] }) {
                       </div>
                     </div>
                     <div className="flex gap-1 mt-1">
-                      <button onClick={() => setEditingTask({ ...task })} className="text-[10px] text-[#6e6a63] hover:text-[#f0a500]">✎</button>
-                      <button onClick={() => { if (confirm('Delete?')) deleteTask(task.id); }} className="text-[10px] text-[#6e6a63] hover:text-[#f3727f]">✕</button>
+                      <button onClick={() => setEditingTask({ ...task })} className="text-[10px] text-ink-dim hover:text-gold">✎</button>
+                      <button onClick={() => { if (confirm('Delete?')) deleteTask(task.id); }} className="text-[10px] text-ink-dim hover:text-[#f3727f]">✕</button>
                     </div>
                   </div>
                 );
@@ -5269,30 +5269,30 @@ function TaskBoard({ team = [], adminEmails = [] }) {
       {viewMode !== 'day' && (!tasksByDate || Object.keys(tasksByDate).length === 0) && (
         <div className="rounded-2xl bg-white/5 p-10 text-center ring-1 ring-white/5">
           <p className="text-3xl mb-2">📋</p>
-          <p className="text-sm text-[#6e6a63]">No tasks for this {viewMode}</p>
+          <p className="text-sm text-ink-dim">No tasks for this {viewMode}</p>
         </div>
       )}
 
       {/* Email preview modal */}
       {emailPreview && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 p-4" onClick={() => setEmailPreview(null)}>
-          <div className="max-w-2xl w-full max-h-[80vh] overflow-y-auto rounded-2xl bg-[#1a1a28] p-6 ring-1 ring-white/10" onClick={e => e.stopPropagation()}>
+          <div className="max-w-2xl w-full max-h-[80vh] overflow-y-auto rounded-2xl bg-bg-elevated p-6 ring-1 ring-white/10" onClick={e => e.stopPropagation()}>
             <div className="flex items-center justify-between mb-4">
-              <h3 className="text-lg font-bold text-[#f0a500]">Morning Brief — {selectedDate}</h3>
-              <button onClick={() => setEmailPreview(null)} className="text-[#6e6a63] hover:text-[#f5f0e8]">✕</button>
+              <h3 className="text-lg font-bold text-gold">Morning Brief — {selectedDate}</h3>
+              <button onClick={() => setEmailPreview(null)} className="text-ink-dim hover:text-ink">✕</button>
             </div>
-            {emailPreview.length === 0 && <p className="text-sm text-[#6e6a63]">No tasks assigned for today.</p>}
+            {emailPreview.length === 0 && <p className="text-sm text-ink-dim">No tasks assigned for today.</p>}
             {emailPreview.map((email, i) => (
               <div key={i} className="mb-4 rounded-xl bg-white/5 p-4 ring-1 ring-white/5">
                 <div className="flex items-center justify-between mb-2">
                   <div>
-                    <p className="text-sm font-bold text-[#f5f0e8]">{email.name}</p>
-                    <p className="text-[10px] text-[#6e6a63]">{email.to}</p>
+                    <p className="text-sm font-bold text-ink">{email.name}</p>
+                    <p className="text-[10px] text-ink-dim">{email.to}</p>
                   </div>
                   <button onClick={() => copyEmail(email)} className="rounded-lg bg-[#f0a500] px-3 py-1.5 text-[10px] font-bold text-[#0f0f17]">Copy</button>
                 </div>
-                <p className="text-[10px] font-bold text-[#f0a500] mb-1">{email.subject}</p>
-                <pre className="text-[11px] text-[#c8c3ba] whitespace-pre-wrap font-sans leading-relaxed">{email.body}</pre>
+                <p className="text-[10px] font-bold text-gold mb-1">{email.subject}</p>
+                <pre className="text-[11px] text-ink-muted whitespace-pre-wrap font-sans leading-relaxed">{email.body}</pre>
               </div>
             ))}
             <button onClick={async () => {
@@ -5308,7 +5308,7 @@ function TaskBoard({ team = [], adminEmails = [] }) {
               emailPreview.forEach(e => {
                 window.open(`mailto:${e.to}?subject=${encodeURIComponent(e.subject)}&body=${encodeURIComponent(e.body)}`);
               });
-            }} className="w-full rounded-lg bg-white/5 py-3 text-sm font-bold text-[#a8a39a] mt-2 ring-1 ring-white/10">
+            }} className="w-full rounded-lg bg-white/5 py-3 text-sm font-bold text-ink-muted mt-2 ring-1 ring-white/10">
               Open in Gmail Instead
             </button>
           </div>
@@ -5400,7 +5400,7 @@ function OutreachDatabase() {
     return true;
   });
 
-  if (loading) return <div className="text-center py-20 text-[#6e6a63]">Loading outreach database...</div>;
+  if (loading) return <div className="text-center py-20 text-ink-dim">Loading outreach database...</div>;
 
   return (
     <div className="space-y-6">
@@ -5411,9 +5411,9 @@ function OutreachDatabase() {
           ...OUTREACH_STATUS_OPTIONS.map(s => ({ key: s, label: OUTREACH_STATUS_LABELS[s], count: stats[s] || 0, color: OUTREACH_STATUS_BADGE[s] })),
         ].map(s => (
           <button key={s.key} onClick={() => { setFilter(s.key); setPage(0); }}
-            className={`rounded-2xl p-3 ring-1 text-center transition ${filter === s.key ? 'ring-[#f0a500] bg-[#f0a500]/10' : 'ring-white/5 bg-white/5'}`}>
+            className={`rounded-2xl p-3 ring-1 text-center transition ${filter === s.key ? 'ring-gold bg-[#f0a500]/10' : 'ring-white/5 bg-white/5'}`}>
             <div className="text-xl font-bold" style={{ color: s.color }}>{s.count}</div>
-            <div className="text-[10px] text-[#6e6a63] mt-1">{s.label}</div>
+            <div className="text-[10px] text-ink-dim mt-1">{s.label}</div>
           </button>
         ))}
       </div>
@@ -5429,8 +5429,8 @@ function OutreachDatabase() {
       <div className="flex gap-3">
         <input type="text" placeholder="Search by name, email, phone..."
           value={search} onChange={e => { setSearch(e.target.value); setPage(0); }}
-          className="flex-1 rounded-xl bg-white/5 px-4 py-3 text-sm text-[#f5f0e8] placeholder-[#6e6a63] ring-1 ring-white/10 focus:ring-[#f0a500] outline-none" />
-        <div className="text-xs text-[#6e6a63] self-center whitespace-nowrap">{filtered.length} leads</div>
+          className="flex-1 rounded-xl bg-white/5 px-4 py-3 text-sm text-ink placeholder-[#6e6a63] ring-1 ring-white/10 focus:ring-gold outline-none" />
+        <div className="text-xs text-ink-dim self-center whitespace-nowrap">{filtered.length} leads</div>
       </div>
 
       {/* Lead list */}
@@ -5441,15 +5441,15 @@ function OutreachDatabase() {
               <div className="flex items-center justify-between gap-3">
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center gap-2 flex-wrap">
-                    <span className="text-sm font-bold text-[#f5f0e8] truncate">{lead.firstName} {lead.lastName}</span>
+                    <span className="text-sm font-bold text-ink truncate">{lead.firstName} {lead.lastName}</span>
                     <span className="rounded-full px-2 py-0.5 text-[8px] font-bold uppercase" style={{ background: OUTREACH_STATUS_BADGE[lead.status] + '22', color: OUTREACH_STATUS_BADGE[lead.status] }}>
                       {OUTREACH_STATUS_LABELS[lead.status] || lead.status}
                     </span>
-                    <span className="rounded-full bg-white/5 px-2 py-0.5 text-[8px] text-[#6e6a63]">
+                    <span className="rounded-full bg-white/5 px-2 py-0.5 text-[8px] text-ink-dim">
                       {OUTREACH_SOURCE_LABELS[lead.source] || lead.source}
                     </span>
                   </div>
-                  <div className="flex items-center gap-4 mt-1 text-xs text-[#6e6a63]">
+                  <div className="flex items-center gap-4 mt-1 text-xs text-ink-dim">
                     <span>{lead.email}</span>
                     {lead.phone && <span>{lead.phone}</span>}
                     {lead.postalCode && <span>{lead.postalCode}</span>}
@@ -5457,17 +5457,17 @@ function OutreachDatabase() {
                 </div>
                 <div className="flex items-center gap-2 shrink-0">
                   <select value={lead.status} onChange={e => updateStatus(lead, e.target.value)}
-                    className="rounded-lg bg-white/5 px-2 py-1 text-[10px] text-[#c8c3ba] ring-1 ring-white/10 outline-none cursor-pointer">
+                    className="rounded-lg bg-white/5 px-2 py-1 text-[10px] text-ink-muted ring-1 ring-white/10 outline-none cursor-pointer">
                     {OUTREACH_STATUS_OPTIONS.map(s => <option key={s} value={s}>{OUTREACH_STATUS_LABELS[s]}</option>)}
                   </select>
                   {lead.status === 'new' && (
                     <button onClick={() => sendOutreach(lead)} disabled={sending === lead.id}
-                      className="rounded-lg bg-[#f0a500]/20 px-3 py-1 text-[10px] font-bold text-[#f0a500] hover:bg-[#f0a500]/30 transition disabled:opacity-50">
+                      className="rounded-lg bg-[#f0a500]/20 px-3 py-1 text-[10px] font-bold text-gold hover:bg-[#f0a500]/30 transition disabled:opacity-50">
                       {sending === lead.id ? 'Sending...' : 'Send Email'}
                     </button>
                   )}
                   {lead.outreachSentAt && (
-                    <span className="text-[9px] text-[#6e6a63]">
+                    <span className="text-[9px] text-ink-dim">
                       Sent {new Date(lead.outreachSentAt).toLocaleDateString()}
                     </span>
                   )}
@@ -5479,21 +5479,21 @@ function OutreachDatabase() {
         {filtered.length > PAGE_SIZE && (
           <div className="flex items-center justify-center gap-4 py-4">
             <button onClick={() => setPage(p => Math.max(0, p - 1))} disabled={page === 0}
-              className="rounded-lg bg-white/5 px-4 py-2 text-xs font-bold text-[#c8c3ba] ring-1 ring-white/10 disabled:opacity-30">
+              className="rounded-lg bg-white/5 px-4 py-2 text-xs font-bold text-ink-muted ring-1 ring-white/10 disabled:opacity-30">
               Previous
             </button>
-            <span className="text-xs text-[#6e6a63]">
+            <span className="text-xs text-ink-dim">
               Page {page + 1} of {Math.ceil(filtered.length / PAGE_SIZE)} ({filtered.length} leads)
             </span>
             <button onClick={() => setPage(p => Math.min(Math.ceil(filtered.length / PAGE_SIZE) - 1, p + 1))}
               disabled={(page + 1) * PAGE_SIZE >= filtered.length}
-              className="rounded-lg bg-white/5 px-4 py-2 text-xs font-bold text-[#c8c3ba] ring-1 ring-white/10 disabled:opacity-30">
+              className="rounded-lg bg-white/5 px-4 py-2 text-xs font-bold text-ink-muted ring-1 ring-white/10 disabled:opacity-30">
               Next
             </button>
           </div>
         )}
         {filtered.length === 0 && (
-          <div className="text-center text-[#6e6a63] py-12">No leads found</div>
+          <div className="text-center text-ink-dim py-12">No leads found</div>
         )}
       </div>
     </div>

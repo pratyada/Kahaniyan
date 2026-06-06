@@ -105,18 +105,18 @@ export default function ContributeEpisode() {
 
   // Loading
   if (loading) return (
-    <div className="min-h-screen bg-[#0f0f17] flex items-center justify-center">
-      <div className="text-[#6e6a63]">Loading invitation...</div>
+    <div className="min-h-screen bg-bg-base flex items-center justify-center">
+      <div className="text-ink-dim">Loading invitation...</div>
     </div>
   );
 
   // Error
   if (error) return (
-    <div className="min-h-screen bg-[#0f0f17] flex items-center justify-center px-6">
+    <div className="min-h-screen bg-bg-base flex items-center justify-center px-6">
       <div className="text-center">
         <div className="text-4xl mb-4">😔</div>
-        <h2 className="text-[#f5f0e8] text-lg font-bold mb-2">Oops</h2>
-        <p className="text-[#6e6a63] text-sm">{error}</p>
+        <h2 className="text-ink text-lg font-bold mb-2">Oops</h2>
+        <p className="text-ink-dim text-sm">{error}</p>
         <button onClick={() => navigate('/')} className="mt-6 rounded-full bg-[#f0a500] px-6 py-2 text-sm font-bold text-[#0f0f17]">
           Go Home
         </button>
@@ -126,15 +126,15 @@ export default function ContributeEpisode() {
 
   // Submitted success
   if (submitted) return (
-    <div className="min-h-screen bg-[#0f0f17] flex items-center justify-center px-6">
+    <div className="min-h-screen bg-bg-base flex items-center justify-center px-6">
       <div className="text-center max-w-md">
         <div className="text-5xl mb-4">🎉</div>
-        <h2 className="text-[#f5f0e8] text-xl font-bold mb-2">Episode Submitted!</h2>
-        <p className="text-[#6e6a63] text-sm mb-2">
-          Your episode <strong className="text-[#f5f0e8]">"{title}"</strong> has been submitted to
-          <strong className="text-[#f0a500]"> {invitation.seriesTitle}</strong>.
+        <h2 className="text-ink text-xl font-bold mb-2">Episode Submitted!</h2>
+        <p className="text-ink-dim text-sm mb-2">
+          Your episode <strong className="text-ink">"{title}"</strong> has been submitted to
+          <strong className="text-gold"> {invitation.seriesTitle}</strong>.
         </p>
-        <p className="text-[#6e6a63] text-sm mb-6">
+        <p className="text-ink-dim text-sm mb-6">
           {invitation.ownerName || 'The series owner'} will review it and you will be notified when it is published.
         </p>
         <button onClick={() => navigate('/')} className="rounded-full bg-[#f0a500] px-6 py-2 text-sm font-bold text-[#0f0f17]">
@@ -145,17 +145,17 @@ export default function ContributeEpisode() {
   );
 
   return (
-    <div className="min-h-screen bg-[#0f0f17] text-[#f5f0e8]">
+    <div className="min-h-screen bg-bg-base text-ink">
       <div className="mx-auto max-w-2xl px-6 py-12">
 
         {/* Header */}
         <div className="text-center mb-8">
           <span className="text-4xl">🌙</span>
-          <h1 className="text-[#f0a500] text-xl font-bold mt-3">Contribute an Episode</h1>
-          <p className="text-[#6e6a63] text-sm mt-1">
-            to <strong className="text-[#f5f0e8]">{invitation.seriesTitle}</strong>
+          <h1 className="text-gold text-xl font-bold mt-3">Contribute an Episode</h1>
+          <p className="text-ink-dim text-sm mt-1">
+            to <strong className="text-ink">{invitation.seriesTitle}</strong>
           </p>
-          <p className="text-[#6e6a63] text-xs mt-1">
+          <p className="text-ink-dim text-xs mt-1">
             Invited by {invitation.ownerName || invitation.ownerEmail}
           </p>
         </div>
@@ -163,12 +163,12 @@ export default function ContributeEpisode() {
         {/* Login prompt */}
         {!user ? (
           <div className="rounded-2xl bg-white/5 ring-1 ring-white/10 p-8 text-center">
-            <p className="text-[#c8c3ba] text-sm mb-4">Sign in with Google to submit your episode</p>
+            <p className="text-ink-muted text-sm mb-4">Sign in with Google to submit your episode</p>
             <button onClick={loginGoogle}
               className="rounded-full bg-[#f0a500] px-8 py-3 text-sm font-bold text-[#0f0f17]">
               Sign in with Google
             </button>
-            <p className="text-[#6e6a63] text-xs mt-3">
+            <p className="text-ink-dim text-xs mt-3">
               Use the email address: <strong>{invitation.contributorEmail}</strong>
             </p>
           </div>
@@ -180,40 +180,40 @@ export default function ContributeEpisode() {
                 <img src={user.photoURL} alt="" className="h-8 w-8 rounded-full" />
                 <div>
                   <div className="text-sm font-bold">{user.displayName}</div>
-                  <div className="text-[10px] text-[#6e6a63]">{user.email}</div>
+                  <div className="text-[10px] text-ink-dim">{user.email}</div>
                 </div>
               </div>
             </div>
 
             {/* Episode title */}
             <div>
-              <label className="block text-xs text-[#6e6a63] mb-2 uppercase tracking-wider">Episode Title</label>
+              <label className="block text-xs text-ink-dim mb-2 uppercase tracking-wider">Episode Title</label>
               <input type="text" value={title} onChange={e => setTitle(e.target.value)}
                 placeholder="e.g. The Little Firefly's Journey"
-                className="w-full rounded-xl bg-white/5 px-4 py-3 text-sm text-[#f5f0e8] placeholder-[#4a4a5a] ring-1 ring-white/10 focus:ring-[#f0a500] outline-none" />
+                className="w-full rounded-xl bg-white/5 px-4 py-3 text-sm text-ink placeholder-[#4a4a5a] ring-1 ring-white/10 focus:ring-gold outline-none" />
             </div>
 
             {/* Story body */}
             <div>
-              <label className="block text-xs text-[#6e6a63] mb-2 uppercase tracking-wider">
+              <label className="block text-xs text-ink-dim mb-2 uppercase tracking-wider">
                 Story Text <span className="text-[#4a4a5a]">({body.split(/\s+/).filter(Boolean).length} words)</span>
               </label>
               <textarea value={body} onChange={e => setBody(e.target.value)}
                 placeholder="Once upon a time, in a quiet village under the stars..."
                 rows={14}
-                className="w-full rounded-xl bg-white/5 px-4 py-3 text-sm text-[#f5f0e8] placeholder-[#4a4a5a] ring-1 ring-white/10 focus:ring-[#f0a500] outline-none resize-y leading-relaxed" />
+                className="w-full rounded-xl bg-white/5 px-4 py-3 text-sm text-ink placeholder-[#4a4a5a] ring-1 ring-white/10 focus:ring-gold outline-none resize-y leading-relaxed" />
             </div>
 
             {/* Cover image */}
             <div>
-              <label className="block text-xs text-[#6e6a63] mb-2 uppercase tracking-wider">Cover Image (optional)</label>
-              <label className="flex items-center justify-center rounded-xl bg-white/5 ring-1 ring-white/10 p-6 cursor-pointer hover:ring-[#f0a500] transition">
+              <label className="block text-xs text-ink-dim mb-2 uppercase tracking-wider">Cover Image (optional)</label>
+              <label className="flex items-center justify-center rounded-xl bg-white/5 ring-1 ring-white/10 p-6 cursor-pointer hover:ring-gold transition">
                 {imagePreview ? (
                   <img src={imagePreview} alt="Preview" className="max-h-48 rounded-lg object-cover" />
                 ) : (
                   <div className="text-center">
                     <div className="text-2xl mb-2">🖼️</div>
-                    <div className="text-xs text-[#6e6a63]">Click to upload an image</div>
+                    <div className="text-xs text-ink-dim">Click to upload an image</div>
                   </div>
                 )}
                 <input type="file" accept="image/*" className="hidden" onChange={handleImage} />
@@ -230,7 +230,7 @@ export default function ContributeEpisode() {
               {submitting ? 'Submitting...' : 'Submit Episode for Review'}
             </button>
 
-            <p className="text-[#6e6a63] text-xs text-center">
+            <p className="text-ink-dim text-xs text-center">
               Your episode will be reviewed by the series owner before publishing.
             </p>
           </div>

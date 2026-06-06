@@ -177,11 +177,11 @@ export default function Invest() {
   // Gate: show access request screen if not approved
   if (accessChecked && !accessGranted) {
     return (
-      <div className="bg-[#0a0a0f] text-[#f5f0e8] flex items-center justify-center" style={{ minHeight: '100vh' }}>
+      <div className="bg-bg-base text-ink flex items-center justify-center" style={{ minHeight: '100vh' }}>
         <div className="max-w-md px-6 text-center">
           <div className="mb-4 text-5xl">🔒</div>
-          <h1 className="font-display text-3xl font-bold text-[#f0a500]">Invite Only</h1>
-          <p className="mt-3 text-sm text-[#a8a39a]">
+          <h1 className="font-display text-3xl font-bold text-gold">Invite Only</h1>
+          <p className="mt-3 text-sm text-ink-muted">
             This investment page is available by invitation only. If you've been invited,
             please sign in with the email that was approved.
           </p>
@@ -199,13 +199,13 @@ export default function Invest() {
               Sign in to check access
             </button>
           ) : (
-            <div className="mt-6 rounded-2xl bg-[#1a1a28] p-4 text-sm text-[#a8a39a]">
-              Signed in as <strong className="text-[#f5f0e8]">{user.email}</strong>
+            <div className="mt-6 rounded-2xl bg-bg-elevated p-4 text-sm text-ink-muted">
+              Signed in as <strong className="text-ink">{user.email}</strong>
               <br />
-              <span className="text-[#6e6a63]">Contact the founders to request access.</span>
+              <span className="text-ink-dim">Contact the founders to request access.</span>
             </div>
           )}
-          <a href="/" className="mt-6 inline-block text-sm text-[#6e6a63] hover:text-[#f5f0e8]">
+          <a href="/" className="mt-6 inline-block text-sm text-ink-dim hover:text-ink">
             ← Back to app
           </a>
         </div>
@@ -215,8 +215,8 @@ export default function Invest() {
 
   if (!accessChecked) {
     return (
-      <div className="bg-[#0a0a0f] flex items-center justify-center" style={{ minHeight: '100vh' }}>
-        <div className="h-8 w-8 animate-spin rounded-full border-2 border-[#f0a500] border-t-transparent" />
+      <div className="bg-bg-base flex items-center justify-center" style={{ minHeight: '100vh' }}>
+        <div className="h-8 w-8 animate-spin rounded-full border-2 border-gold border-t-transparent" />
       </div>
     );
   }
@@ -321,7 +321,7 @@ export default function Invest() {
   ];
 
   return (
-    <div className="bg-[#0a0a0f] text-[#f5f0e8]" style={{ minHeight: '100vh', overflow: 'auto', WebkitOverflowScrolling: 'touch' }}>
+    <div className="bg-bg-base text-ink" style={{ minHeight: '100vh', overflow: 'auto', WebkitOverflowScrolling: 'touch' }}>
       {/* Force body scroll on mobile — override phone-shell lock */}
       <style>{`html, body, #root { height: auto !important; overflow: auto !important; overscroll-behavior: auto !important; }`}</style>
       {/* ─── HERO ─── */}
@@ -331,20 +331,20 @@ export default function Invest() {
         <div className="relative mx-auto max-w-5xl px-6 pt-4">
           <a
             href="/"
-            className="inline-flex items-center gap-1 rounded-full bg-white/5 px-4 py-2 text-xs font-bold text-[#a8a39a] ring-1 ring-white/10 transition hover:text-[#f5f0e8]"
+            className="inline-flex items-center gap-1 rounded-full bg-white/5 px-4 py-2 text-xs font-bold text-ink-muted ring-1 ring-white/10 transition hover:text-ink"
           >
             ← Back to app
           </a>
         </div>
         <div className="relative mx-auto max-w-5xl px-6 py-12 text-center">
           <motion.div initial={{ opacity: 0, y: -20 }} animate={{ opacity: 1, y: 0 }}>
-            <div className="mb-4 inline-flex items-center gap-2 rounded-full bg-[#f0a500]/15 px-4 py-1.5 text-xs font-bold uppercase tracking-wider text-[#f0a500] ring-1 ring-[#f0a500]/30">
+            <div className="mb-4 inline-flex items-center gap-2 rounded-full bg-[#f0a500]/15 px-4 py-1.5 text-xs font-bold uppercase tracking-wider text-gold ring-1 ring-gold/30">
               🌙 SAFE at $1M Cap · Friends & Family · Now Open
             </div>
             <h1 className="font-display text-5xl font-bold leading-tight md:text-6xl">
-              Invest in <span className="text-[#f0a500]">{APP_NAME}</span>
+              Invest in <span className="text-gold">{APP_NAME}</span>
             </h1>
-            <p className="mx-auto mt-4 max-w-2xl text-lg text-[#a8a39a]">
+            <p className="mx-auto mt-4 max-w-2xl text-lg text-ink-muted">
               Bedtime stories that grow with your child. Personalized, culturally rooted,
               beautifully narrated. We're building the future of how families connect at bedtime —
               and you can be part of it.
@@ -353,10 +353,10 @@ export default function Invest() {
             {/* Raised bar */}
             <div className="mx-auto mt-8 max-w-md">
               <div className="flex items-center justify-between text-sm">
-                <span className="font-bold text-[#f0a500]">CA${stats.totalRaised.toLocaleString()} raised</span>
-                <span className="text-[#6e6a63]">CA${ROUND_CONFIG.target.toLocaleString()} goal</span>
+                <span className="font-bold text-gold">CA${stats.totalRaised.toLocaleString()} raised</span>
+                <span className="text-ink-dim">CA${ROUND_CONFIG.target.toLocaleString()} goal</span>
               </div>
-              <div className="mt-2 h-3 overflow-hidden rounded-full bg-[#1a1a28]">
+              <div className="mt-2 h-3 overflow-hidden rounded-full bg-bg-elevated">
                 <motion.div
                   className="h-full rounded-full bg-gradient-to-r from-[#f0a500] to-[#ffb733]"
                   initial={{ width: 0 }}
@@ -364,7 +364,7 @@ export default function Invest() {
                   transition={{ duration: 1.5, ease: 'easeOut' }}
                 />
               </div>
-              <div className="mt-2 flex items-center justify-between text-xs text-[#6e6a63]">
+              <div className="mt-2 flex items-center justify-between text-xs text-ink-dim">
                 <span>{stats.contributorCount} backers</span>
                 <span>{stats.percentRaised.toFixed(1)}% funded</span>
               </div>
@@ -388,7 +388,7 @@ export default function Invest() {
               </button>
               <a
                 href="#join-team"
-                className="rounded-full bg-white/5 px-8 py-4 text-lg font-bold text-[#a8a39a] ring-1 ring-white/10 transition hover:text-[#f5f0e8]"
+                className="rounded-full bg-white/5 px-8 py-4 text-lg font-bold text-ink-muted ring-1 ring-white/10 transition hover:text-ink"
               >
                 See the potential
               </a>
@@ -398,14 +398,14 @@ export default function Invest() {
       </header>
 
       {/* ─── TABS ─── */}
-      <div className="sticky top-0 z-30 border-b border-white/5 bg-[#0a0a0f]/95 backdrop-blur-xl">
+      <div className="sticky top-0 z-30 border-b border-white/5 bg-bg-base/95 backdrop-blur-xl">
         <div className="mx-auto flex max-w-5xl gap-1 overflow-x-auto px-6 py-2">
           {TABS.map((t) => (
             <button
               key={t.key}
               onClick={() => setTab(t.key)}
               className={`flex shrink-0 items-center gap-2 rounded-xl px-4 py-2.5 text-sm font-bold transition ${
-                tab === t.key ? 'bg-[#f0a500] text-[#0a0a0f]' : 'text-[#a8a39a] hover:text-[#f5f0e8]'
+                tab === t.key ? 'bg-[#f0a500] text-[#0a0a0f]' : 'text-ink-muted hover:text-ink'
               }`}
             >
               <span>{t.icon}</span> {t.label}
@@ -420,18 +420,18 @@ export default function Invest() {
           <div className="space-y-8">
             {/* What is My Sleepy Tale */}
             <section className="grid gap-6 md:grid-cols-2">
-              <div className="rounded-2xl bg-[#1a1a28] p-6">
-                <h3 className="mb-3 font-display text-xl font-bold text-[#f0a500]">The problem</h3>
-                <p className="text-sm leading-relaxed text-[#a8a39a]">
+              <div className="rounded-2xl bg-bg-elevated p-6">
+                <h3 className="mb-3 font-display text-xl font-bold text-gold">The problem</h3>
+                <p className="text-sm leading-relaxed text-ink-muted">
                   Bedtime is broken. Parents are exhausted, screens are addictive, and generic
                   YouTube stories teach nothing about a child's own culture, values, or family.
                   The last 15 minutes of a child's day — the most neurologically receptive window —
                   are being wasted.
                 </p>
               </div>
-              <div className="rounded-2xl bg-[#1a1a28] p-6">
-                <h3 className="mb-3 font-display text-xl font-bold text-[#f0a500]">Our solution</h3>
-                <p className="text-sm leading-relaxed text-[#a8a39a]">
+              <div className="rounded-2xl bg-bg-elevated p-6">
+                <h3 className="mb-3 font-display text-xl font-bold text-gold">Our solution</h3>
+                <p className="text-sm leading-relaxed text-ink-muted">
                   {APP_NAME} generates personalized bedtime stories — with your child's name,
                   their family members, their pets, their cultural values, and even their current mood.
                   Narrated by warm voices that match your family's accent. One button. One story.
@@ -442,7 +442,7 @@ export default function Invest() {
 
             {/* Key metrics */}
             <section>
-              <h3 className="mb-4 text-xs font-bold uppercase tracking-wider text-[#6e6a63]">
+              <h3 className="mb-4 text-xs font-bold uppercase tracking-wider text-ink-dim">
                 Product metrics
               </h3>
               <div className="grid gap-3 sm:grid-cols-2 md:grid-cols-4">
@@ -455,20 +455,20 @@ export default function Invest() {
 
             {/* Founders */}
             <section>
-              <h3 className="mb-4 text-xs font-bold uppercase tracking-wider text-[#6e6a63]">
+              <h3 className="mb-4 text-xs font-bold uppercase tracking-wider text-ink-dim">
                 Founding team
               </h3>
               <div className="grid gap-4 md:grid-cols-2">
                 {FOUNDERS.map((f) => (
-                  <div key={f.name} className="flex items-start gap-4 rounded-2xl bg-[#1a1a28] p-6">
+                  <div key={f.name} className="flex items-start gap-4 rounded-2xl bg-bg-elevated p-6">
                     <div className="grid h-14 w-14 shrink-0 place-items-center rounded-full bg-[#f0a500]/15 text-3xl">
                       {f.emoji}
                     </div>
                     <div>
-                      <div className="font-display text-lg font-bold text-[#f5f0e8]">{f.name}</div>
-                      <div className="text-xs font-bold text-[#f0a500]">{f.role}</div>
-                      <p className="mt-2 text-sm text-[#a8a39a]">{f.description}</p>
-                      <div className="mt-2 text-xs text-[#6e6a63]">
+                      <div className="font-display text-lg font-bold text-ink">{f.name}</div>
+                      <div className="text-xs font-bold text-gold">{f.role}</div>
+                      <p className="mt-2 text-sm text-ink-muted">{f.description}</p>
+                      <div className="mt-2 text-xs text-ink-dim">
                         {f.equity}% equity
                       </div>
                     </div>
@@ -479,7 +479,7 @@ export default function Invest() {
 
             {/* Competitor landscape */}
             <section>
-              <h3 className="mb-4 text-xs font-bold uppercase tracking-wider text-[#6e6a63]">
+              <h3 className="mb-4 text-xs font-bold uppercase tracking-wider text-ink-dim">
                 Competitive landscape — why we win
               </h3>
               <div className="overflow-x-auto">
@@ -524,34 +524,34 @@ export default function Invest() {
 
             {/* Market size */}
             <section>
-              <h3 className="mb-4 text-xs font-bold uppercase tracking-wider text-[#6e6a63]">
+              <h3 className="mb-4 text-xs font-bold uppercase tracking-wider text-ink-dim">
                 Market opportunity
               </h3>
               <div className="grid gap-3 sm:grid-cols-3">
-                <div className="rounded-2xl bg-[#1a1a28] p-5 text-center">
-                  <div className="text-3xl font-bold text-[#f0a500]">$8.3B</div>
-                  <div className="mt-1 text-xs font-bold text-[#f5f0e8]">Kids Audio Market</div>
-                  <div className="mt-1 text-[10px] text-[#6e6a63]">By 2028 · 18% CAGR</div>
-                  <div className="mt-2 text-[9px] text-[#a8a39a]">Audiobooks, podcasts, sleep stories for children</div>
+                <div className="rounded-2xl bg-bg-elevated p-5 text-center">
+                  <div className="text-3xl font-bold text-gold">$8.3B</div>
+                  <div className="mt-1 text-xs font-bold text-ink">Kids Audio Market</div>
+                  <div className="mt-1 text-[10px] text-ink-dim">By 2028 · 18% CAGR</div>
+                  <div className="mt-2 text-[9px] text-ink-muted">Audiobooks, podcasts, sleep stories for children</div>
                 </div>
-                <div className="rounded-2xl bg-[#1a1a28] p-5 text-center">
-                  <div className="text-3xl font-bold text-[#f0a500]">$2.4B</div>
-                  <div className="mt-1 text-xs font-bold text-[#f5f0e8]">Sleep Apps Market</div>
-                  <div className="mt-1 text-[10px] text-[#6e6a63]">By 2027 · 12% CAGR</div>
-                  <div className="mt-2 text-[9px] text-[#a8a39a]">Calm, Headspace, Moshi — but none personalize for kids</div>
+                <div className="rounded-2xl bg-bg-elevated p-5 text-center">
+                  <div className="text-3xl font-bold text-gold">$2.4B</div>
+                  <div className="mt-1 text-xs font-bold text-ink">Sleep Apps Market</div>
+                  <div className="mt-1 text-[10px] text-ink-dim">By 2027 · 12% CAGR</div>
+                  <div className="mt-2 text-[9px] text-ink-muted">Calm, Headspace, Moshi — but none personalize for kids</div>
                 </div>
-                <div className="rounded-2xl bg-[#1a1a28] p-5 text-center">
-                  <div className="text-3xl font-bold text-[#f0a500]">42M</div>
-                  <div className="mt-1 text-xs font-bold text-[#f5f0e8]">Canadian Population</div>
-                  <div className="mt-1 text-[10px] text-[#6e6a63]">4.2M kids aged 0-9</div>
-                  <div className="mt-2 text-[9px] text-[#a8a39a]">200+ ethnicities · most multicultural market on earth</div>
+                <div className="rounded-2xl bg-bg-elevated p-5 text-center">
+                  <div className="text-3xl font-bold text-gold">42M</div>
+                  <div className="mt-1 text-xs font-bold text-ink">Canadian Population</div>
+                  <div className="mt-1 text-[10px] text-ink-dim">4.2M kids aged 0-9</div>
+                  <div className="mt-2 text-[9px] text-ink-muted">200+ ethnicities · most multicultural market on earth</div>
                 </div>
               </div>
             </section>
 
             {/* Short term targets */}
             <section>
-              <h3 className="mb-4 text-xs font-bold uppercase tracking-wider text-[#6e6a63]">
+              <h3 className="mb-4 text-xs font-bold uppercase tracking-wider text-ink-dim">
                 Short-term milestones (next 6 months)
               </h3>
               <div className="space-y-2">
@@ -563,17 +563,17 @@ export default function Invest() {
                   { month: 'Sep 2026', target: '2,000 users', milestone: 'GTA school partnerships', icon: '🏫', status: 'Planned' },
                   { month: 'Oct 2026', target: 'Seed round prep', milestone: 'Pitch deck + data for $500K raise', icon: '🚀', status: 'Planned' },
                 ].map((m, i) => (
-                  <div key={i} className="flex items-center gap-3 rounded-xl bg-[#1a1a28] p-3">
+                  <div key={i} className="flex items-center gap-3 rounded-xl bg-bg-elevated p-3">
                     <span className="text-xl">{m.icon}</span>
                     <div className="flex-1">
                       <div className="flex items-center gap-2">
-                        <span className="text-xs font-bold text-[#f5f0e8]">{m.month}</span>
-                        <span className="text-[9px] text-[#6e6a63]">·</span>
-                        <span className="text-[10px] font-bold text-[#f0a500]">{m.target}</span>
+                        <span className="text-xs font-bold text-ink">{m.month}</span>
+                        <span className="text-[9px] text-ink-dim">·</span>
+                        <span className="text-[10px] font-bold text-gold">{m.target}</span>
                       </div>
-                      <div className="text-[10px] text-[#a8a39a]">{m.milestone}</div>
+                      <div className="text-[10px] text-ink-muted">{m.milestone}</div>
                     </div>
-                    <span className={`rounded-full px-2 py-0.5 text-[8px] font-bold uppercase ${m.status === 'Next' ? 'bg-[#f0a500]/20 text-[#f0a500]' : 'bg-white/5 text-[#6e6a63]'}`}>{m.status}</span>
+                    <span className={`rounded-full px-2 py-0.5 text-[8px] font-bold uppercase ${m.status === 'Next' ? 'bg-[#f0a500]/20 text-gold' : 'bg-white/5 text-ink-dim'}`}>{m.status}</span>
                   </div>
                 ))}
               </div>
@@ -581,29 +581,29 @@ export default function Invest() {
 
             {/* Unit economics — admin only */}
             {isAdmin && (
-            <section className="rounded-2xl bg-[#1a1a28] p-6">
-              <h3 className="mb-4 text-xs font-bold uppercase tracking-wider text-[#6e6a63]">
+            <section className="rounded-2xl bg-bg-elevated p-6">
+              <h3 className="mb-4 text-xs font-bold uppercase tracking-wider text-ink-dim">
                 Unit economics (projected) <span className="text-[#f3727f]">· Admin only</span>
               </h3>
               <div className="grid gap-3 sm:grid-cols-4">
-                <div className="rounded-xl bg-[#0a0a0f] p-3 text-center">
-                  <div className="text-lg font-bold text-[#f0a500]">CA$9.99</div>
-                  <div className="text-[9px] text-[#6e6a63]">Monthly revenue / user</div>
+                <div className="rounded-xl bg-bg-base p-3 text-center">
+                  <div className="text-lg font-bold text-gold">CA$9.99</div>
+                  <div className="text-[9px] text-ink-dim">Monthly revenue / user</div>
                 </div>
-                <div className="rounded-xl bg-[#0a0a0f] p-3 text-center">
+                <div className="rounded-xl bg-bg-base p-3 text-center">
                   <div className="text-lg font-bold text-[#f3727f]">~CA$2.50</div>
-                  <div className="text-[9px] text-[#6e6a63]">Cost / user / month (APIs)</div>
+                  <div className="text-[9px] text-ink-dim">Cost / user / month (APIs)</div>
                 </div>
-                <div className="rounded-xl bg-[#0a0a0f] p-3 text-center">
+                <div className="rounded-xl bg-bg-base p-3 text-center">
                   <div className="text-lg font-bold text-[#7ad9a1]">~CA$7.49</div>
-                  <div className="text-[9px] text-[#6e6a63]">Gross margin / user</div>
+                  <div className="text-[9px] text-ink-dim">Gross margin / user</div>
                 </div>
-                <div className="rounded-xl bg-[#0a0a0f] p-3 text-center">
+                <div className="rounded-xl bg-bg-base p-3 text-center">
                   <div className="text-lg font-bold text-[#7ad9a1]">75%</div>
-                  <div className="text-[9px] text-[#6e6a63]">Gross margin</div>
+                  <div className="text-[9px] text-ink-dim">Gross margin</div>
                 </div>
               </div>
-              <p className="mt-3 text-[10px] text-[#6e6a63]">
+              <p className="mt-3 text-[10px] text-ink-dim">
                 At 1,000 paying users: CA$9,990/mo revenue · CA$2,500/mo cost · CA$7,490/mo margin.
                 Pre-written wisdom stories have zero API cost — pure margin.
               </p>
@@ -612,22 +612,22 @@ export default function Invest() {
 
             {/* Why CA$25K + How we'll spend it */}
             <section>
-              <h3 className="mb-4 text-xs font-bold uppercase tracking-wider text-[#6e6a63]">
+              <h3 className="mb-4 text-xs font-bold uppercase tracking-wider text-ink-dim">
                 Why CA$25K and where every dollar goes
               </h3>
 
               {/* The split */}
               <div className="mb-6 grid gap-4 md:grid-cols-2">
                 {/* Tech 40% */}
-                <div className="rounded-2xl bg-[#1a1a28] p-6">
+                <div className="rounded-2xl bg-bg-elevated p-6">
                   <div className="mb-3 flex items-center justify-between">
                     <div className="flex items-center gap-2">
                       <span className="text-2xl">⚙️</span>
-                      <span className="font-display text-lg font-bold text-[#f5f0e8]">Technology</span>
+                      <span className="font-display text-lg font-bold text-ink">Technology</span>
                     </div>
-                    <span className="rounded-full bg-[#f0a500]/15 px-3 py-1 text-sm font-bold text-[#f0a500]">40% · CA$10K</span>
+                    <span className="rounded-full bg-[#f0a500]/15 px-3 py-1 text-sm font-bold text-gold">40% · CA$10K</span>
                   </div>
-                  <div className="h-3 overflow-hidden rounded-full bg-[#0a0a0f]">
+                  <div className="h-3 overflow-hidden rounded-full bg-bg-base">
                     <div className="h-full rounded-full bg-gradient-to-r from-[#f0a500] to-[#ffb733]" style={{ width: '40%' }} />
                   </div>
                   <div className="mt-4 space-y-2">
@@ -639,26 +639,26 @@ export default function Invest() {
                       { item: 'App Store fees (Apple + Google)', amount: 'CA$500', icon: '📱' },
                       { item: 'Story generation engine', amount: 'CA$1,000', icon: '🧠' },
                     ].map((e, i) => (
-                      <div key={i} className="flex items-center justify-between rounded-lg bg-[#0a0a0f] px-3 py-2">
-                        <div className="flex items-center gap-2 text-xs text-[#a8a39a]">
+                      <div key={i} className="flex items-center justify-between rounded-lg bg-bg-base px-3 py-2">
+                        <div className="flex items-center gap-2 text-xs text-ink-muted">
                           <span>{e.icon}</span> {e.item}
                         </div>
-                        <span className="text-xs font-bold text-[#f5f0e8]">{e.amount}</span>
+                        <span className="text-xs font-bold text-ink">{e.amount}</span>
                       </div>
                     ))}
                   </div>
                 </div>
 
                 {/* Marketing 60% */}
-                <div className="rounded-2xl bg-[#1a1a28] p-6">
+                <div className="rounded-2xl bg-bg-elevated p-6">
                   <div className="mb-3 flex items-center justify-between">
                     <div className="flex items-center gap-2">
                       <span className="text-2xl">📣</span>
-                      <span className="font-display text-lg font-bold text-[#f5f0e8]">Marketing & Growth</span>
+                      <span className="font-display text-lg font-bold text-ink">Marketing & Growth</span>
                     </div>
                     <span className="rounded-full bg-[#7ad9a1]/15 px-3 py-1 text-sm font-bold text-[#7ad9a1]">60% · CA$15K</span>
                   </div>
-                  <div className="h-3 overflow-hidden rounded-full bg-[#0a0a0f]">
+                  <div className="h-3 overflow-hidden rounded-full bg-bg-base">
                     <div className="h-full rounded-full bg-gradient-to-r from-[#7ad9a1] to-[#4ecdc4]" style={{ width: '60%' }} />
                   </div>
                   <div className="mt-4 space-y-2">
@@ -670,11 +670,11 @@ export default function Invest() {
                       { item: 'Content creation & influencers', amount: 'CA$1,500', icon: '🎬' },
                       { item: 'Print materials & QR campaigns', amount: 'CA$500', icon: '📄' },
                     ].map((e, i) => (
-                      <div key={i} className="flex items-center justify-between rounded-lg bg-[#0a0a0f] px-3 py-2">
-                        <div className="flex items-center gap-2 text-xs text-[#a8a39a]">
+                      <div key={i} className="flex items-center justify-between rounded-lg bg-bg-base px-3 py-2">
+                        <div className="flex items-center gap-2 text-xs text-ink-muted">
                           <span>{e.icon}</span> {e.item}
                         </div>
-                        <span className="text-xs font-bold text-[#f5f0e8]">{e.amount}</span>
+                        <span className="text-xs font-bold text-ink">{e.amount}</span>
                       </div>
                     ))}
                   </div>
@@ -682,36 +682,36 @@ export default function Invest() {
               </div>
 
               {/* Market opportunity */}
-              <div className="rounded-2xl bg-[#1a1a28] p-6">
-                <h4 className="mb-4 text-xs font-bold uppercase tracking-wider text-[#6e6a63]">
+              <div className="rounded-2xl bg-bg-elevated p-6">
+                <h4 className="mb-4 text-xs font-bold uppercase tracking-wider text-ink-dim">
                   🇨🇦 Market opportunity — Canada first
                 </h4>
                 <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
-                  <div className="rounded-xl bg-[#0a0a0f] p-4 text-center">
-                    <div className="text-2xl font-bold text-[#f0a500]">☀️</div>
-                    <div className="mt-1 text-sm font-bold text-[#f5f0e8]">Summer 2026</div>
-                    <div className="mt-1 text-[10px] text-[#a8a39a]">Kids home from school. No routine. Parents desperate for bedtime help. Peak demand.</div>
+                  <div className="rounded-xl bg-bg-base p-4 text-center">
+                    <div className="text-2xl font-bold text-gold">☀️</div>
+                    <div className="mt-1 text-sm font-bold text-ink">Summer 2026</div>
+                    <div className="mt-1 text-[10px] text-ink-muted">Kids home from school. No routine. Parents desperate for bedtime help. Peak demand.</div>
                   </div>
-                  <div className="rounded-xl bg-[#0a0a0f] p-4 text-center">
-                    <div className="text-2xl font-bold text-[#f0a500]">🌍</div>
-                    <div className="mt-1 text-sm font-bold text-[#f5f0e8]">Toronto = the world</div>
-                    <div className="mt-1 text-[10px] text-[#a8a39a]">Most multicultural city on earth. 200+ ethnicities. Every family wants stories in their language and values.</div>
+                  <div className="rounded-xl bg-bg-base p-4 text-center">
+                    <div className="text-2xl font-bold text-gold">🌍</div>
+                    <div className="mt-1 text-sm font-bold text-ink">Toronto = the world</div>
+                    <div className="mt-1 text-[10px] text-ink-muted">Most multicultural city on earth. 200+ ethnicities. Every family wants stories in their language and values.</div>
                   </div>
-                  <div className="rounded-xl bg-[#0a0a0f] p-4 text-center">
-                    <div className="text-2xl font-bold text-[#f0a500]">🏙️</div>
-                    <div className="mt-1 text-sm font-bold text-[#f5f0e8]">Downtown first</div>
-                    <div className="mt-1 text-[10px] text-[#a8a39a]">Dense, tech-savvy parents. 50K families with kids 0–10. Schools, daycares, community centres.</div>
+                  <div className="rounded-xl bg-bg-base p-4 text-center">
+                    <div className="text-2xl font-bold text-gold">🏙️</div>
+                    <div className="mt-1 text-sm font-bold text-ink">Downtown first</div>
+                    <div className="mt-1 text-[10px] text-ink-muted">Dense, tech-savvy parents. 50K families with kids 0–10. Schools, daycares, community centres.</div>
                   </div>
-                  <div className="rounded-xl bg-[#0a0a0f] p-4 text-center">
-                    <div className="text-2xl font-bold text-[#f0a500]">🗺️</div>
-                    <div className="mt-1 text-sm font-bold text-[#f5f0e8]">Then GTA → Canada</div>
-                    <div className="mt-1 text-[10px] text-[#a8a39a]">2M+ families in GTA. South Asian, Arab, Jewish, East Asian, African communities. Then Vancouver, Calgary, Ottawa.</div>
+                  <div className="rounded-xl bg-bg-base p-4 text-center">
+                    <div className="text-2xl font-bold text-gold">🗺️</div>
+                    <div className="mt-1 text-sm font-bold text-ink">Then GTA → Canada</div>
+                    <div className="mt-1 text-[10px] text-ink-muted">2M+ families in GTA. South Asian, Arab, Jewish, East Asian, African communities. Then Vancouver, Calgary, Ottawa.</div>
                   </div>
                 </div>
 
                 {/* Growth roadmap */}
                 <div className="mt-5">
-                  <div className="text-[10px] font-bold uppercase tracking-wider text-[#6e6a63] mb-3">Growth timeline</div>
+                  <div className="text-[10px] font-bold uppercase tracking-wider text-ink-dim mb-3">Growth timeline</div>
                   <div className="space-y-2">
                     {[
                       { q: 'May–Jun 2026', goal: '500 users', focus: 'Toronto downtown · organic + F&F referrals', color: '#f0a500' },
@@ -720,9 +720,9 @@ export default function Invest() {
                       { q: 'Nov–Dec 2026', goal: '10,000 users', focus: 'Pan-Canada · holiday season · gift subscriptions', color: '#539df5' },
                     ].map((m, i) => (
                       <div key={i} className="flex items-center gap-3">
-                        <div className="w-28 shrink-0 text-right text-xs font-bold text-[#a8a39a]">{m.q}</div>
+                        <div className="w-28 shrink-0 text-right text-xs font-bold text-ink-muted">{m.q}</div>
                         <div className="relative flex-1">
-                          <div className="h-8 overflow-hidden rounded-lg bg-[#0a0a0f]">
+                          <div className="h-8 overflow-hidden rounded-lg bg-bg-base">
                             <motion.div
                               className="flex h-full items-center rounded-lg px-3"
                               style={{ background: m.color }}
@@ -734,7 +734,7 @@ export default function Invest() {
                             </motion.div>
                           </div>
                         </div>
-                        <div className="w-48 shrink-0 text-[10px] text-[#6e6a63]">{m.focus}</div>
+                        <div className="w-48 shrink-0 text-[10px] text-ink-dim">{m.focus}</div>
                       </div>
                     ))}
                   </div>
@@ -744,30 +744,30 @@ export default function Invest() {
 
             {/* How SAFE works */}
             <section>
-              <h3 className="mb-4 text-xs font-bold uppercase tracking-wider text-[#6e6a63]">
+              <h3 className="mb-4 text-xs font-bold uppercase tracking-wider text-ink-dim">
                 How SAFE works
               </h3>
               <div className="grid gap-3 md:grid-cols-3">
-                <div className="rounded-2xl bg-[#1a1a28] p-5">
+                <div className="rounded-2xl bg-bg-elevated p-5">
                   <div className="mb-2 text-2xl">1️⃣</div>
-                  <div className="text-sm font-bold text-[#f5f0e8]">You invest now</div>
-                  <p className="mt-1 text-xs text-[#a8a39a]">
+                  <div className="text-sm font-bold text-ink">You invest now</div>
+                  <p className="mt-1 text-xs text-ink-muted">
                     Min CA${ROUND_CONFIG.minInvestment}. Your money goes directly into building {APP_NAME}.
                     You receive a SAFE note — the standard instrument used by YC and every major startup.
                   </p>
                 </div>
-                <div className="rounded-2xl bg-[#1a1a28] p-5">
+                <div className="rounded-2xl bg-bg-elevated p-5">
                   <div className="mb-2 text-2xl">2️⃣</div>
-                  <div className="text-sm font-bold text-[#f5f0e8]">$1M valuation cap</div>
-                  <p className="mt-1 text-xs text-[#a8a39a]">
+                  <div className="text-sm font-bold text-ink">$1M valuation cap</div>
+                  <p className="mt-1 text-xs text-ink-muted">
                     Your SAFE converts to equity at the next priced round — but capped at a $1M valuation.
                     If {APP_NAME} is valued at $10M, you get equity as if it was worth $2M. 10x advantage.
                   </p>
                 </div>
-                <div className="rounded-2xl bg-[#1a1a28] p-5">
+                <div className="rounded-2xl bg-bg-elevated p-5">
                   <div className="mb-2 text-2xl">3️⃣</div>
-                  <div className="text-sm font-bold text-[#f5f0e8]">Early = best price</div>
-                  <p className="mt-1 text-xs text-[#a8a39a]">
+                  <div className="text-sm font-bold text-ink">Early = best price</div>
+                  <p className="mt-1 text-xs text-ink-muted">
                     Friends & Family get the lowest cap. The next round will be at a higher valuation.
                     Your CA${ROUND_CONFIG.minInvestment} today could be worth multiples at conversion.
                   </p>
@@ -777,20 +777,20 @@ export default function Invest() {
 
             {/* Roles */}
             <section>
-              <h3 className="mb-4 text-xs font-bold uppercase tracking-wider text-[#6e6a63]">
+              <h3 className="mb-4 text-xs font-bold uppercase tracking-wider text-ink-dim">
                 Choose your role
               </h3>
               <div className="space-y-2">
                 {ROLES.map((r) => (
-                  <div key={r.key} className="flex items-center justify-between rounded-2xl bg-[#1a1a28] p-4">
+                  <div key={r.key} className="flex items-center justify-between rounded-2xl bg-bg-elevated p-4">
                     <div className="flex items-center gap-3">
                       <span className="text-2xl">{r.emoji}</span>
                       <div>
-                        <div className="text-sm font-bold text-[#f5f0e8]">{r.label}</div>
-                        <div className="text-xs text-[#a8a39a]">{r.description}</div>
+                        <div className="text-sm font-bold text-ink">{r.label}</div>
+                        <div className="text-xs text-ink-muted">{r.description}</div>
                       </div>
                     </div>
-                    <div className="text-[10px] text-[#6e6a63]">Same SAFE terms</div>
+                    <div className="text-[10px] text-ink-dim">Same SAFE terms</div>
                   </div>
                 ))}
               </div>
@@ -802,8 +802,8 @@ export default function Invest() {
         {tab === 'cap-table' && (
           <div className="space-y-6">
             {/* Current ownership */}
-            <section className="rounded-2xl bg-[#1a1a28] p-6">
-              <h3 className="mb-4 text-xs font-bold uppercase tracking-wider text-[#6e6a63]">
+            <section className="rounded-2xl bg-bg-elevated p-6">
+              <h3 className="mb-4 text-xs font-bold uppercase tracking-wider text-ink-dim">
                 Ownership (pre-conversion)
               </h3>
               <div className="space-y-3">
@@ -828,8 +828,8 @@ export default function Invest() {
             </section>
 
             {/* SAFE details */}
-            <section className="rounded-2xl bg-[#1a1a28] p-6">
-              <h3 className="mb-4 text-xs font-bold uppercase tracking-wider text-[#6e6a63]">
+            <section className="rounded-2xl bg-bg-elevated p-6">
+              <h3 className="mb-4 text-xs font-bold uppercase tracking-wider text-ink-dim">
                 SAFE terms
               </h3>
               <div className="grid gap-3 sm:grid-cols-2 md:grid-cols-4">
@@ -841,30 +841,30 @@ export default function Invest() {
             </section>
 
             {/* SAFE explainer */}
-            <section className="rounded-2xl bg-[#f0a500]/5 p-6 ring-1 ring-[#f0a500]/20">
-              <h3 className="mb-3 text-sm font-bold text-[#f0a500]">What is a SAFE?</h3>
-              <p className="text-sm text-[#a8a39a] leading-relaxed">
-                A <strong className="text-[#f5f0e8]">SAFE (Simple Agreement for Future Equity)</strong> is
+            <section className="rounded-2xl bg-[#f0a500]/5 p-6 ring-1 ring-gold/20">
+              <h3 className="mb-3 text-sm font-bold text-gold">What is a SAFE?</h3>
+              <p className="text-sm text-ink-muted leading-relaxed">
+                A <strong className="text-ink">SAFE (Simple Agreement for Future Equity)</strong> is
                 the standard investment instrument used by Y Combinator and thousands of startups. It's not
                 a loan, not debt, and not immediate equity. It's a promise: when {APP_NAME} raises a priced
                 round (Series A), your investment converts to real equity — but capped at the $1M valuation,
                 no matter how high the actual valuation is at that time.
               </p>
               <div className="mt-4 grid gap-2 text-sm sm:grid-cols-3">
-                <div className="rounded-xl bg-[#0a0a0f] p-3">
-                  <div className="text-xs text-[#6e6a63]">You invest</div>
-                  <div className="font-bold text-[#f5f0e8]">CA$500</div>
+                <div className="rounded-xl bg-bg-base p-3">
+                  <div className="text-xs text-ink-dim">You invest</div>
+                  <div className="font-bold text-ink">CA$500</div>
                 </div>
-                <div className="rounded-xl bg-[#0a0a0f] p-3">
-                  <div className="text-xs text-[#6e6a63]">Implied ownership at $1M cap</div>
-                  <div className="font-bold text-[#f0a500]">{(500 / ROUND_CONFIG.valuationCap * 100).toFixed(3)}%</div>
+                <div className="rounded-xl bg-bg-base p-3">
+                  <div className="text-xs text-ink-dim">Implied ownership at $1M cap</div>
+                  <div className="font-bold text-gold">{(500 / ROUND_CONFIG.valuationCap * 100).toFixed(3)}%</div>
                 </div>
-                <div className="rounded-xl bg-[#0a0a0f] p-3">
-                  <div className="text-xs text-[#6e6a63]">If Series A at $10M</div>
+                <div className="rounded-xl bg-bg-base p-3">
+                  <div className="text-xs text-ink-dim">If Series A at $10M</div>
                   <div className="font-bold text-[#7ad9a1]">You get equity at $1M price (10x advantage)</div>
                 </div>
               </div>
-              <div className="mt-4 space-y-2 text-xs text-[#a8a39a]">
+              <div className="mt-4 space-y-2 text-xs text-ink-muted">
                 <div className="flex items-start gap-2"><span className="text-[#7ad9a1]">✓</span> No dilution until priced round</div>
                 <div className="flex items-start gap-2"><span className="text-[#7ad9a1]">✓</span> Cap protects you from overpaying</div>
                 <div className="flex items-start gap-2"><span className="text-[#7ad9a1]">✓</span> Standard YC SAFE template — no legal surprises</div>
@@ -873,25 +873,25 @@ export default function Invest() {
             </section>
 
             {/* Implied ownership table */}
-            <section className="rounded-2xl bg-[#1a1a28] p-6">
-              <h3 className="mb-4 text-xs font-bold uppercase tracking-wider text-[#6e6a63]">
+            <section className="rounded-2xl bg-bg-elevated p-6">
+              <h3 className="mb-4 text-xs font-bold uppercase tracking-wider text-ink-dim">
                 What your investment means
               </h3>
               <div className="overflow-x-auto">
                 <table className="w-full text-sm">
                   <thead>
-                    <tr className="border-b border-white/10 text-[10px] uppercase tracking-wider text-[#6e6a63]">
+                    <tr className="border-b border-white/10 text-[10px] uppercase tracking-wider text-ink-dim">
                       <th className="py-2 text-left">You invest</th>
                       <th className="py-2 text-right">Ownership at $1M cap</th>
                       <th className="py-2 text-right">If valued at $10M</th>
                       <th className="py-2 text-right">If valued at $50M</th>
                     </tr>
                   </thead>
-                  <tbody className="text-[#a8a39a]">
+                  <tbody className="text-ink-muted">
                     {[50, 100, 500, 1000, 5000, 10000].map((amt) => (
                       <tr key={amt} className="border-b border-white/5">
-                        <td className="py-2 font-bold text-[#f5f0e8]">CA${amt.toLocaleString()}</td>
-                        <td className="py-2 text-right text-[#f0a500]">{(amt / ROUND_CONFIG.valuationCap * 100).toFixed(4)}%</td>
+                        <td className="py-2 font-bold text-ink">CA${amt.toLocaleString()}</td>
+                        <td className="py-2 text-right text-gold">{(amt / ROUND_CONFIG.valuationCap * 100).toFixed(4)}%</td>
                         <td className="py-2 text-right text-[#7ad9a1]">CA${(amt * 10000000 / ROUND_CONFIG.valuationCap).toLocaleString()}</td>
                         <td className="py-2 text-right text-[#7ad9a1]">CA${(amt * 50000000 / ROUND_CONFIG.valuationCap).toLocaleString()}</td>
                       </tr>
@@ -899,7 +899,7 @@ export default function Invest() {
                   </tbody>
                 </table>
               </div>
-              <p className="mt-3 text-[10px] text-[#6e6a63]">
+              <p className="mt-3 text-[10px] text-ink-dim">
                 Values shown are illustrative. Actual returns depend on company performance, dilution at future rounds, and conversion terms.
               </p>
             </section>
@@ -910,10 +910,10 @@ export default function Invest() {
         {tab === 'contributors' && (
           <div className="space-y-4">
             {contributors.length === 0 ? (
-              <div className="rounded-2xl bg-[#1a1a28] p-12 text-center">
+              <div className="rounded-2xl bg-bg-elevated p-12 text-center">
                 <div className="mb-3 text-4xl">🌱</div>
-                <h3 className="font-display text-xl font-bold text-[#f5f0e8]">Be the first backer</h3>
-                <p className="mt-2 text-sm text-[#a8a39a]">
+                <h3 className="font-display text-xl font-bold text-ink">Be the first backer</h3>
+                <p className="mt-2 text-sm text-ink-muted">
                   No one has contributed yet. Early backers get the lowest valuation cap.
                 </p>
                 <button
@@ -931,10 +931,10 @@ export default function Invest() {
                 </button>
               </div>
             ) : (
-              <div className="overflow-x-auto rounded-2xl bg-[#1a1a28]">
+              <div className="overflow-x-auto rounded-2xl bg-bg-elevated">
                 <table className="w-full min-w-[600px] text-left text-sm">
                   <thead>
-                    <tr className="border-b border-white/10 text-[10px] font-bold uppercase tracking-wider text-[#6e6a63]">
+                    <tr className="border-b border-white/10 text-[10px] font-bold uppercase tracking-wider text-ink-dim">
                       <th className="px-4 py-3">#</th>
                       <th className="px-4 py-3">Backer</th>
                       <th className="px-4 py-3">Role</th>
@@ -947,7 +947,7 @@ export default function Invest() {
                   <tbody>
                     {contributors.map((c, i) => (
                       <tr key={c.id} className="border-b border-white/5">
-                        <td className="px-4 py-3 text-[#6e6a63]">{i + 1}</td>
+                        <td className="px-4 py-3 text-ink-dim">{i + 1}</td>
                         <td className="px-4 py-3">
                           <div className="flex items-center gap-2">
                             {c.photoURL ? (
@@ -955,17 +955,17 @@ export default function Invest() {
                             ) : (
                               <div className="grid h-7 w-7 place-items-center rounded-full bg-[#f0a500]/15 text-sm">👤</div>
                             )}
-                            <span className="font-bold text-[#f5f0e8]">{c.displayName || c.email?.split('@')[0]}</span>
+                            <span className="font-bold text-ink">{c.displayName || c.email?.split('@')[0]}</span>
                           </div>
                         </td>
-                        <td className="px-4 py-3 text-xs text-[#a8a39a]">{c.roleLabel}</td>
-                        <td className="px-4 py-3 text-right font-bold text-[#f5f0e8]">CA${c.amount?.toLocaleString()}</td>
-                        <td className="px-4 py-3 text-right font-bold text-[#f0a500]">
+                        <td className="px-4 py-3 text-xs text-ink-muted">{c.roleLabel}</td>
+                        <td className="px-4 py-3 text-right font-bold text-ink">CA${c.amount?.toLocaleString()}</td>
+                        <td className="px-4 py-3 text-right font-bold text-gold">
                           {((c.amount || 0) / ROUND_CONFIG.valuationCap * 100).toFixed(4)}%
                         </td>
                         <td className="px-4 py-3 text-center">
                           <span className={`rounded-full px-2 py-0.5 text-[9px] font-bold uppercase ${
-                            c.status === 'confirmed' ? 'bg-[#7ad9a1]/15 text-[#7ad9a1]' : 'bg-[#f0a500]/15 text-[#f0a500]'
+                            c.status === 'confirmed' ? 'bg-[#7ad9a1]/15 text-[#7ad9a1]' : 'bg-[#f0a500]/15 text-gold'
                           }`}>
                             {c.status || 'pledged'}
                           </span>
@@ -985,10 +985,10 @@ export default function Invest() {
 
             {/* ── Time invested by founders ── */}
             <section>
-              <h3 className="mb-2 text-xs font-bold uppercase tracking-wider text-[#6e6a63]">
+              <h3 className="mb-2 text-xs font-bold uppercase tracking-wider text-ink-dim">
                 Time invested by founders
               </h3>
-              <p className="mb-4 text-sm text-[#a8a39a]">
+              <p className="mb-4 text-sm text-ink-muted">
                 Every hour logged. Every phase documented. This is our sweat equity.
               </p>
               <div className="grid gap-6 md:grid-cols-2">
@@ -997,14 +997,14 @@ export default function Invest() {
                   const totalMoney = f.moneySpent.reduce((s, m) => s + m.amount, 0);
                   const maxHours = Math.max(...f.timeLog.map((t) => t.hours));
                   return (
-                    <div key={f.name} className="rounded-2xl bg-[#1a1a28] p-6">
+                    <div key={f.name} className="rounded-2xl bg-bg-elevated p-6">
                       <div className="mb-4 flex items-center gap-3">
                         <div className="grid h-12 w-12 place-items-center rounded-full bg-[#f0a500]/15 text-2xl">
                           {f.emoji}
                         </div>
                         <div>
-                          <div className="font-display text-lg font-bold text-[#f5f0e8]">{f.name}</div>
-                          <div className="text-xs text-[#a8a39a]">
+                          <div className="font-display text-lg font-bold text-ink">{f.name}</div>
+                          <div className="text-xs text-ink-muted">
                             {totalHours} hours · CA${totalMoney.toLocaleString()} spent
                           </div>
                         </div>
@@ -1015,10 +1015,10 @@ export default function Invest() {
                         {f.timeLog.map((t, i) => (
                           <div key={i}>
                             <div className="mb-0.5 flex items-center justify-between">
-                              <span className="text-[11px] text-[#a8a39a]">{t.phase}</span>
-                              <span className="text-[11px] font-bold text-[#f0a500]">{t.hours}h</span>
+                              <span className="text-[11px] text-ink-muted">{t.phase}</span>
+                              <span className="text-[11px] font-bold text-gold">{t.hours}h</span>
                             </div>
-                            <div className="h-2 overflow-hidden rounded-full bg-[#0a0a0f]">
+                            <div className="h-2 overflow-hidden rounded-full bg-bg-base">
                               <motion.div
                                 className="h-full rounded-full"
                                 style={{ background: `linear-gradient(90deg, #f0a500, #ffb733)` }}
@@ -1027,25 +1027,25 @@ export default function Invest() {
                                 transition={{ duration: 0.8, delay: i * 0.1 }}
                               />
                             </div>
-                            <div className="mt-0.5 text-[9px] text-[#6e6a63]">{t.period}</div>
+                            <div className="mt-0.5 text-[9px] text-ink-dim">{t.period}</div>
                           </div>
                         ))}
                       </div>
 
                       {/* Money spent */}
                       <div className="mt-4 border-t border-white/5 pt-4">
-                        <div className="mb-2 text-[10px] font-bold uppercase tracking-wider text-[#6e6a63]">
+                        <div className="mb-2 text-[10px] font-bold uppercase tracking-wider text-ink-dim">
                           Money spent
                         </div>
                         {f.moneySpent.map((m, i) => (
                           <div key={i} className="flex items-center justify-between py-1 text-xs">
-                            <span className="text-[#a8a39a]">{m.item}</span>
-                            <span className="font-bold text-[#f5f0e8]">CA${m.amount}</span>
+                            <span className="text-ink-muted">{m.item}</span>
+                            <span className="font-bold text-ink">CA${m.amount}</span>
                           </div>
                         ))}
                         <div className="mt-1 flex items-center justify-between border-t border-white/5 pt-1 text-xs">
-                          <span className="font-bold text-[#a8a39a]">Total</span>
-                          <span className="font-bold text-[#f0a500]">CA${totalMoney}</span>
+                          <span className="font-bold text-ink-muted">Total</span>
+                          <span className="font-bold text-gold">CA${totalMoney}</span>
                         </div>
                       </div>
                     </div>
@@ -1055,52 +1055,52 @@ export default function Invest() {
 
               {/* Combined stats */}
               <div className="mt-4 grid gap-3 sm:grid-cols-4">
-                <div className="rounded-xl bg-[#1a1a28] p-4 text-center">
-                  <div className="text-2xl font-bold text-[#f0a500]">
+                <div className="rounded-xl bg-bg-elevated p-4 text-center">
+                  <div className="text-2xl font-bold text-gold">
                     {FOUNDER_INVESTMENTS.reduce((s, f) => s + f.timeLog.reduce((h, t) => h + t.hours, 0), 0)}
                   </div>
-                  <div className="text-[10px] uppercase tracking-wider text-[#6e6a63]">Total hours</div>
+                  <div className="text-[10px] uppercase tracking-wider text-ink-dim">Total hours</div>
                 </div>
-                <div className="rounded-xl bg-[#1a1a28] p-4 text-center">
-                  <div className="text-2xl font-bold text-[#f0a500]">
+                <div className="rounded-xl bg-bg-elevated p-4 text-center">
+                  <div className="text-2xl font-bold text-gold">
                     CA${FOUNDER_INVESTMENTS.reduce((s, f) => s + f.moneySpent.reduce((m, x) => m + x.amount, 0), 0).toLocaleString()}
                   </div>
-                  <div className="text-[10px] uppercase tracking-wider text-[#6e6a63]">Total spent</div>
+                  <div className="text-[10px] uppercase tracking-wider text-ink-dim">Total spent</div>
                 </div>
-                <div className="rounded-xl bg-[#1a1a28] p-4 text-center">
-                  <div className="text-2xl font-bold text-[#f0a500]">
+                <div className="rounded-xl bg-bg-elevated p-4 text-center">
+                  <div className="text-2xl font-bold text-gold">
                     CA${(FOUNDER_INVESTMENTS.reduce((s, f) => s + f.timeLog.reduce((h, t) => h + t.hours, 0), 0) * 75).toLocaleString()}
                   </div>
-                  <div className="text-[10px] uppercase tracking-wider text-[#6e6a63]">Market value @ CA$75/hr</div>
+                  <div className="text-[10px] uppercase tracking-wider text-ink-dim">Market value @ CA$75/hr</div>
                 </div>
-                <div className="rounded-xl bg-[#1a1a28] p-4 text-center">
-                  <div className="text-2xl font-bold text-[#f0a500]">{GIT_STATS.daysActive}</div>
-                  <div className="text-[10px] uppercase tracking-wider text-[#6e6a63]">Days building</div>
+                <div className="rounded-xl bg-bg-elevated p-4 text-center">
+                  <div className="text-2xl font-bold text-gold">{GIT_STATS.daysActive}</div>
+                  <div className="text-[10px] uppercase tracking-wider text-ink-dim">Days building</div>
                 </div>
               </div>
             </section>
 
             {/* ── Git activity (build proof) ── */}
-            <section className="rounded-2xl bg-[#1a1a28] p-6">
-              <h3 className="mb-4 text-xs font-bold uppercase tracking-wider text-[#6e6a63]">
+            <section className="rounded-2xl bg-bg-elevated p-6">
+              <h3 className="mb-4 text-xs font-bold uppercase tracking-wider text-ink-dim">
                 Build activity (verified from git)
               </h3>
               <div className="grid gap-3 sm:grid-cols-2 md:grid-cols-4">
-                <div className="rounded-xl bg-[#0a0a0f] p-3 text-center">
+                <div className="rounded-xl bg-bg-base p-3 text-center">
                   <div className="text-xl font-bold text-[#7ad9a1]">{GIT_STATS.totalCommits}</div>
-                  <div className="text-[9px] uppercase tracking-wider text-[#6e6a63]">Commits</div>
+                  <div className="text-[9px] uppercase tracking-wider text-ink-dim">Commits</div>
                 </div>
-                <div className="rounded-xl bg-[#0a0a0f] p-3 text-center">
+                <div className="rounded-xl bg-bg-base p-3 text-center">
                   <div className="text-xl font-bold text-[#7ad9a1]">{GIT_STATS.totalFilesChanged}</div>
-                  <div className="text-[9px] uppercase tracking-wider text-[#6e6a63]">Files</div>
+                  <div className="text-[9px] uppercase tracking-wider text-ink-dim">Files</div>
                 </div>
-                <div className="rounded-xl bg-[#0a0a0f] p-3 text-center">
+                <div className="rounded-xl bg-bg-base p-3 text-center">
                   <div className="text-xl font-bold text-[#7ad9a1]">+{(GIT_STATS.linesAdded / 1000).toFixed(1)}K</div>
-                  <div className="text-[9px] uppercase tracking-wider text-[#6e6a63]">Lines added</div>
+                  <div className="text-[9px] uppercase tracking-wider text-ink-dim">Lines added</div>
                 </div>
-                <div className="rounded-xl bg-[#0a0a0f] p-3 text-center">
+                <div className="rounded-xl bg-bg-base p-3 text-center">
                   <div className="text-xl font-bold text-[#7ad9a1]">{GIT_STATS.versions.length}</div>
-                  <div className="text-[9px] uppercase tracking-wider text-[#6e6a63]">Releases</div>
+                  <div className="text-[9px] uppercase tracking-wider text-ink-dim">Releases</div>
                 </div>
               </div>
               <div className="mt-4 flex flex-wrap gap-2">
@@ -1110,13 +1110,13 @@ export default function Invest() {
                   </span>
                 ))}
               </div>
-              <p className="mt-3 text-xs text-[#6e6a63]">
+              <p className="mt-3 text-xs text-ink-dim">
                 First commit: {GIT_STATS.firstCommit} · Latest: {GIT_STATS.latestCommit} ·{' '}
                 <a
                   href="https://github.com/pratyada/Kahaniyan"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-[#f0a500] underline"
+                  className="text-gold underline"
                 >
                   View on GitHub →
                 </a>
@@ -1124,37 +1124,37 @@ export default function Invest() {
             </section>
 
             {/* ── Monthly expenses ── */}
-            <section className="rounded-2xl bg-[#1a1a28] p-6">
-              <h3 className="mb-4 text-xs font-bold uppercase tracking-wider text-[#6e6a63]">
+            <section className="rounded-2xl bg-bg-elevated p-6">
+              <h3 className="mb-4 text-xs font-bold uppercase tracking-wider text-ink-dim">
                 Recurring & one-time expenses
               </h3>
               <div className="space-y-2">
                 {EXPENSES.map((e, i) => (
-                  <div key={i} className="flex items-center justify-between rounded-xl bg-[#0a0a0f] px-4 py-3">
+                  <div key={i} className="flex items-center justify-between rounded-xl bg-bg-base px-4 py-3">
                     <div className="flex items-center gap-3">
                       <span className="text-xl">{e.icon}</span>
                       <div>
-                        <span className="text-sm text-[#f5f0e8]">{e.label}</span>
-                        <span className="ml-2 rounded-full bg-white/5 px-2 py-0.5 text-[9px] text-[#6e6a63]">
+                        <span className="text-sm text-ink">{e.label}</span>
+                        <span className="ml-2 rounded-full bg-white/5 px-2 py-0.5 text-[9px] text-ink-dim">
                           {e.type}
                         </span>
                       </div>
                     </div>
-                    <span className="text-sm font-bold text-[#f0a500]">
+                    <span className="text-sm font-bold text-gold">
                       {e.amount > 0 ? `CA$${e.amount}` : 'Free'}
                     </span>
                   </div>
                 ))}
                 <div className="mt-3 grid gap-3 sm:grid-cols-2">
-                  <div className="rounded-xl bg-[#f0a500]/10 px-4 py-3 ring-1 ring-[#f0a500]/20">
-                    <div className="text-xs text-[#6e6a63]">Monthly burn</div>
-                    <div className="text-lg font-bold text-[#f0a500]">
+                  <div className="rounded-xl bg-[#f0a500]/10 px-4 py-3 ring-1 ring-gold/20">
+                    <div className="text-xs text-ink-dim">Monthly burn</div>
+                    <div className="text-lg font-bold text-gold">
                       CA${EXPENSES.filter((e) => e.type === 'monthly').reduce((s, e) => s + e.amount, 0)}/mo
                     </div>
                   </div>
-                  <div className="rounded-xl bg-[#f0a500]/10 px-4 py-3 ring-1 ring-[#f0a500]/20">
-                    <div className="text-xs text-[#6e6a63]">Runway at current burn (if CA$50K raised)</div>
-                    <div className="text-lg font-bold text-[#f0a500]">
+                  <div className="rounded-xl bg-[#f0a500]/10 px-4 py-3 ring-1 ring-gold/20">
+                    <div className="text-xs text-ink-dim">Runway at current burn (if CA$50K raised)</div>
+                    <div className="text-lg font-bold text-gold">
                       {Math.floor(50000 / Math.max(1, EXPENSES.filter((e) => e.type === 'monthly').reduce((s, e) => s + e.amount, 0)))} months
                     </div>
                   </div>
@@ -1163,8 +1163,8 @@ export default function Invest() {
             </section>
 
             {/* ── Promises ── */}
-            <section className="rounded-2xl bg-[#1a1a28] p-6">
-              <h3 className="mb-4 text-xs font-bold uppercase tracking-wider text-[#6e6a63]">
+            <section className="rounded-2xl bg-bg-elevated p-6">
+              <h3 className="mb-4 text-xs font-bold uppercase tracking-wider text-ink-dim">
                 Our promises to backers
               </h3>
               <div className="grid gap-3 sm:grid-cols-2">
@@ -1176,23 +1176,23 @@ export default function Invest() {
                   { icon: '🗳️', title: 'Voting rights', text: 'Backers with 1%+ equity vote on major product decisions.' },
                   { icon: '💸', title: 'Fail-safe', text: 'If we shut down, remaining funds returned proportionally.' },
                 ].map((p, i) => (
-                  <div key={i} className="rounded-xl bg-[#0a0a0f] p-4">
+                  <div key={i} className="rounded-xl bg-bg-base p-4">
                     <div className="mb-1 flex items-center gap-2">
                       <span className="text-lg">{p.icon}</span>
-                      <span className="text-sm font-bold text-[#f5f0e8]">{p.title}</span>
+                      <span className="text-sm font-bold text-ink">{p.title}</span>
                     </div>
-                    <p className="text-xs text-[#a8a39a]">{p.text}</p>
+                    <p className="text-xs text-ink-muted">{p.text}</p>
                   </div>
                 ))}
               </div>
             </section>
 
             {/* ── Legal ── */}
-            <section className="rounded-2xl bg-[#1a1a28] p-6">
-              <h3 className="mb-4 text-xs font-bold uppercase tracking-wider text-[#6e6a63]">
+            <section className="rounded-2xl bg-bg-elevated p-6">
+              <h3 className="mb-4 text-xs font-bold uppercase tracking-wider text-ink-dim">
                 Legal structure (planned)
               </h3>
-              <p className="text-sm text-[#a8a39a]">
+              <p className="text-sm text-ink-muted">
                 {APP_NAME} will be incorporated as a Canadian corporation. Each SAFE note
                 represents a binding commitment to convert to equity (common shares) at the next
                 priced round, capped at a $1M valuation. A formal SAFE document (based on the
@@ -1211,16 +1211,16 @@ export default function Invest() {
           <motion.div
             initial={{ scale: 0.9, opacity: 0 }}
             animate={{ scale: 1, opacity: 1 }}
-            className="w-full max-w-lg rounded-3xl bg-[#1a1a28] p-6 shadow-[0_0_60px_rgba(240,165,0,0.15)]"
+            className="w-full max-w-lg rounded-3xl bg-bg-elevated p-6 shadow-[0_0_60px_rgba(240,165,0,0.15)]"
           >
             <div className="mb-4 flex items-center justify-between">
-              <h2 className="font-display text-xl font-bold text-[#f0a500]">Back {APP_NAME}</h2>
-              <button onClick={() => setShowForm(false)} className="text-[#6e6a63]">✕</button>
+              <h2 className="font-display text-xl font-bold text-gold">Back {APP_NAME}</h2>
+              <button onClick={() => setShowForm(false)} className="text-ink-dim">✕</button>
             </div>
 
             <div className="space-y-4">
               <div>
-                <label className="mb-1 block text-xs font-bold uppercase tracking-wider text-[#6e6a63]">
+                <label className="mb-1 block text-xs font-bold uppercase tracking-wider text-ink-dim">
                   Amount (CAD)
                 </label>
                 <input
@@ -1230,12 +1230,12 @@ export default function Invest() {
                   value={formData.amount}
                   onChange={(e) => setFormData({ ...formData, amount: e.target.value })}
                   placeholder={`Min CA$${ROUND_CONFIG.minInvestment}`}
-                  className="w-full rounded-xl bg-[#0a0a0f] px-4 py-3 text-lg font-bold text-[#f5f0e8] outline-none ring-1 ring-white/10 focus:ring-[#f0a500]"
+                  className="w-full rounded-xl bg-bg-base px-4 py-3 text-lg font-bold text-ink outline-none ring-1 ring-white/10 focus:ring-gold"
                 />
               </div>
 
               <div>
-                <label className="mb-1 block text-xs font-bold uppercase tracking-wider text-[#6e6a63]">
+                <label className="mb-1 block text-xs font-bold uppercase tracking-wider text-ink-dim">
                   Your role
                 </label>
                 <div className="space-y-2">
@@ -1245,32 +1245,32 @@ export default function Invest() {
                       onClick={() => setFormData({ ...formData, role: r.key })}
                       className={`flex w-full items-center justify-between rounded-xl p-3 text-left transition ${
                         formData.role === r.key
-                          ? 'bg-[#f0a500]/15 ring-1 ring-[#f0a500]'
-                          : 'bg-[#0a0a0f] ring-1 ring-white/5'
+                          ? 'bg-[#f0a500]/15 ring-1 ring-gold'
+                          : 'bg-bg-base ring-1 ring-white/5'
                       }`}
                     >
                       <div className="flex items-center gap-2">
                         <span>{r.emoji}</span>
                         <div>
-                          <div className="text-sm font-bold text-[#f5f0e8]">{r.label}</div>
-                          <div className="text-[10px] text-[#6e6a63]">{r.description}</div>
+                          <div className="text-sm font-bold text-ink">{r.label}</div>
+                          <div className="text-[10px] text-ink-dim">{r.description}</div>
                         </div>
                       </div>
-                      <span className="text-sm font-bold text-[#f0a500]">{r.multiplier}x</span>
+                      <span className="text-sm font-bold text-gold">{r.multiplier}x</span>
                     </button>
                   ))}
                 </div>
               </div>
 
               {formData.amount && Number(formData.amount) >= ROUND_CONFIG.minInvestment && (
-                <div className="rounded-xl bg-[#f0a500]/10 p-3 ring-1 ring-[#f0a500]/20">
+                <div className="rounded-xl bg-[#f0a500]/10 p-3 ring-1 ring-gold/20">
                   <div className="flex items-center justify-between text-sm">
-                    <span className="text-[#a8a39a]">Implied ownership at $1M cap</span>
-                    <span className="font-bold text-[#f0a500]">
+                    <span className="text-ink-muted">Implied ownership at $1M cap</span>
+                    <span className="font-bold text-gold">
                       {(Number(formData.amount) / ROUND_CONFIG.valuationCap * 100).toFixed(4)}%
                     </span>
                   </div>
-                  <div className="mt-1 flex items-center justify-between text-xs text-[#6e6a63]">
+                  <div className="mt-1 flex items-center justify-between text-xs text-ink-dim">
                     <span>Instrument</span>
                     <span>SAFE · $1M cap</span>
                   </div>
@@ -1278,7 +1278,7 @@ export default function Invest() {
               )}
 
               <div>
-                <label className="mb-1 block text-xs font-bold uppercase tracking-wider text-[#6e6a63]">
+                <label className="mb-1 block text-xs font-bold uppercase tracking-wider text-ink-dim">
                   LinkedIn profile (optional)
                 </label>
                 <input
@@ -1286,13 +1286,13 @@ export default function Invest() {
                   value={formData.linkedin}
                   onChange={(e) => setFormData({ ...formData, linkedin: e.target.value })}
                   placeholder="https://linkedin.com/in/yourname"
-                  className="w-full rounded-xl bg-[#0a0a0f] px-4 py-3 text-sm text-[#f5f0e8] outline-none ring-1 ring-white/10 focus:ring-[#f0a500]"
+                  className="w-full rounded-xl bg-bg-base px-4 py-3 text-sm text-ink outline-none ring-1 ring-white/10 focus:ring-gold"
                 />
-                <p className="mt-1 text-[10px] text-[#6e6a63]">Shown on your backer profile to inspire others</p>
+                <p className="mt-1 text-[10px] text-ink-dim">Shown on your backer profile to inspire others</p>
               </div>
 
               <div>
-                <label className="mb-1 block text-xs font-bold uppercase tracking-wider text-[#6e6a63]">
+                <label className="mb-1 block text-xs font-bold uppercase tracking-wider text-ink-dim">
                   Why you believe in this project (optional)
                 </label>
                 <textarea
@@ -1300,7 +1300,7 @@ export default function Invest() {
                   onChange={(e) => setFormData({ ...formData, message: e.target.value })}
                   placeholder="A few words about why you're backing My Sleepy Tale..."
                   rows={2}
-                  className="w-full rounded-xl bg-[#0a0a0f] px-4 py-3 text-sm text-[#f5f0e8] outline-none ring-1 ring-white/10 focus:ring-[#f0a500]"
+                  className="w-full rounded-xl bg-bg-base px-4 py-3 text-sm text-ink outline-none ring-1 ring-white/10 focus:ring-gold"
                 />
               </div>
 
@@ -1308,20 +1308,20 @@ export default function Invest() {
               <button
                 type="button"
                 onClick={() => setFormData({ ...formData, isPublic: !formData.isPublic })}
-                className="flex w-full items-center justify-between rounded-xl bg-[#0a0a0f] px-4 py-3 ring-1 ring-white/10"
+                className="flex w-full items-center justify-between rounded-xl bg-bg-base px-4 py-3 ring-1 ring-white/10"
               >
                 <div>
-                  <div className="text-sm font-bold text-[#f5f0e8]">
+                  <div className="text-sm font-bold text-ink">
                     {formData.isPublic ? '🌍 Public profile' : '🔒 Private contribution'}
                   </div>
-                  <div className="text-[10px] text-[#6e6a63]">
+                  <div className="text-[10px] text-ink-dim">
                     {formData.isPublic ? 'Your name, role, and amount visible to other backers' : 'Only founders can see your contribution'}
                   </div>
                 </div>
                 <span className={`relative inline-flex h-6 w-10 items-center rounded-full transition ${
                   formData.isPublic ? 'bg-[#f0a500]' : 'bg-[#2a2a38]'
                 }`}>
-                  <span className={`inline-block h-4 w-4 transform rounded-full bg-[#0a0a0f] transition ${
+                  <span className={`inline-block h-4 w-4 transform rounded-full bg-bg-base transition ${
                     formData.isPublic ? 'translate-x-5' : 'translate-x-1'
                   }`} />
                 </span>
@@ -1334,7 +1334,7 @@ export default function Invest() {
               >
                 {submitting ? 'Processing...' : `Pay CA$${formData.amount || '0'} via Stripe`}
               </button>
-              <p className="text-center text-[10px] text-[#6e6a63]">
+              <p className="text-center text-[10px] text-ink-dim">
                 Secure payment via Stripe. Your contribution is recorded immediately.
               </p>
             </div>
@@ -1349,16 +1349,16 @@ export default function Invest() {
           <motion.div
             initial={{ scale: 0.9, opacity: 0 }}
             animate={{ scale: 1, opacity: 1 }}
-            className="w-full max-w-md rounded-3xl bg-[#1a1a28] p-8 text-center"
+            className="w-full max-w-md rounded-3xl bg-bg-elevated p-8 text-center"
           >
             <div className="mb-4 text-5xl">🎉</div>
-            <h2 className="font-display text-2xl font-bold text-[#f0a500]">Pledge received!</h2>
-            <p className="mt-3 text-sm text-[#a8a39a]">
+            <h2 className="font-display text-2xl font-bold text-gold">Pledge received!</h2>
+            <p className="mt-3 text-sm text-ink-muted">
               Your SAFE note is <strong className="text-[#ffa42b]">pending approval</strong>. Once payment
               is verified by the founding team, your SAFE will be confirmed and your
               name will appear on the backers board.
             </p>
-            <div className="mt-4 rounded-xl bg-[#0a0a0f] p-3 text-xs text-[#6e6a63]">
+            <div className="mt-4 rounded-xl bg-bg-base p-3 text-xs text-ink-dim">
               Status: Pending → Payment verified → Admin approved → SAFE confirmed
             </div>
             <button
@@ -1373,10 +1373,10 @@ export default function Invest() {
 
       {/* Join the team CTA */}
       <div id="join-team" className="mx-auto max-w-5xl px-6 py-8">
-        <div className="rounded-2xl bg-gradient-to-r from-[#f0a500]/10 to-[#ffb733]/5 p-8 text-center ring-1 ring-[#f0a500]/20">
+        <div className="rounded-2xl bg-gradient-to-r from-[#f0a500]/10 to-[#ffb733]/5 p-8 text-center ring-1 ring-gold/20">
           <div className="mb-3 text-3xl">🚀</div>
-          <h3 className="font-display text-xl font-bold text-[#f0a500]">See the potential? Join actively.</h3>
-          <p className="mx-auto mt-2 max-w-md text-sm text-[#a8a39a]">
+          <h3 className="font-display text-xl font-bold text-gold">See the potential? Join actively.</h3>
+          <p className="mx-auto mt-2 max-w-md text-sm text-ink-muted">
             Money is one way to back us. Your time and skills are worth even more.
             Join as an active team member — build with us, grow with us, and share in the
             upside of something we're creating from scratch.
@@ -1387,7 +1387,7 @@ export default function Invest() {
           >
             Connect with us
           </a>
-          <p className="mt-3 text-xs text-[#6e6a63]">
+          <p className="mt-3 text-xs text-ink-dim">
             Roles: Engineering · Design · Content · Marketing · Growth · Community
           </p>
         </div>
@@ -1395,10 +1395,10 @@ export default function Invest() {
 
       {/* Footer */}
       <footer className="mt-4 border-t border-white/5 py-8 text-center">
-        <div className="text-sm text-[#6e6a63]">
+        <div className="text-sm text-ink-dim">
           {APP_NAME} · Friends & Family Round · v{APP_VERSION}
         </div>
-        <div className="mt-2 text-xs text-[#6e6a63]/60">
+        <div className="mt-2 text-xs text-ink-dim/60">
           Built with transparency. Every number on this page is real-time from our database.
         </div>
       </footer>
@@ -1410,12 +1410,12 @@ export default function Invest() {
 
 function MetricCard({ icon, label, value }) {
   return (
-    <div className="rounded-2xl bg-[#1a1a28] p-4">
+    <div className="rounded-2xl bg-bg-elevated p-4">
       <div className="flex items-center gap-2">
         <span className="text-xl">{icon}</span>
         <div>
-          <div className="text-xl font-bold text-[#f0a500]">{value}</div>
-          <div className="text-[10px] font-bold uppercase tracking-wider text-[#6e6a63]">{label}</div>
+          <div className="text-xl font-bold text-gold">{value}</div>
+          <div className="text-[10px] font-bold uppercase tracking-wider text-ink-dim">{label}</div>
         </div>
       </div>
     </div>
@@ -1427,12 +1427,12 @@ function CapRow({ label, tokens, total, color, unit }) {
   return (
     <div>
       <div className="mb-1 flex items-center justify-between text-sm">
-        <span className="text-[#f5f0e8]">{label}</span>
-        <span className="text-[#a8a39a]">
+        <span className="text-ink">{label}</span>
+        <span className="text-ink-muted">
           {unit ? `${tokens}${unit}` : `${pct.toFixed(1)}%`}
         </span>
       </div>
-      <div className="h-2 overflow-hidden rounded-full bg-[#0a0a0f]">
+      <div className="h-2 overflow-hidden rounded-full bg-bg-base">
         <div className="h-full rounded-full" style={{ width: `${pct}%`, background: color }} />
       </div>
     </div>
@@ -1441,9 +1441,9 @@ function CapRow({ label, tokens, total, color, unit }) {
 
 function DetailCard({ label, value }) {
   return (
-    <div className="rounded-xl bg-[#0a0a0f] p-3">
-      <div className="text-[10px] font-bold uppercase tracking-wider text-[#6e6a63]">{label}</div>
-      <div className="mt-1 text-lg font-bold text-[#f0a500]">{value}</div>
+    <div className="rounded-xl bg-bg-base p-3">
+      <div className="text-[10px] font-bold uppercase tracking-wider text-ink-dim">{label}</div>
+      <div className="mt-1 text-lg font-bold text-gold">{value}</div>
     </div>
   );
 }
