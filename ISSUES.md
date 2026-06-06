@@ -368,5 +368,95 @@
 
 ---
 
-*Last updated: 2026-05-27 (41 issues tracked)*
+---
+
+## June 2026 Issues
+
+### ISS-042: New stories show teddy bear images instead of story-specific art
+- **Status**: FIXED (2026-06-05)
+- **Severity**: High
+- **Root Cause**: Image generation reads from `imagePrompts.js` STORY_PROMPTS, NOT from story data `imagePrompt` field or `storyArt.js`. When 43 Sikh stories were added, prompts were added to `storyArt.js` and story data but NOT to `imagePrompts.js` — the actual source the generator uses.
+- **Fix**: Added all 40 Sikh story IDs to `STORY_PROMPTS` in `client/src/utils/imagePrompts.js`
+- **Prevention**: **MANDATORY checklist when adding new stories:**
+  1. Add to `client/src/utils/imagePrompts.js` → `STORY_PROMPTS` (image generation)
+  2. Add to `client/src/utils/storyArt.js` → `STORY_ART` (card UI gradients/icons)
+  3. Add `imagePrompt` field on story/episode data objects (fallback)
+- **Commit**: `1f4fe1f`
+
+### ISS-043: Stripe webhook accepted unverified events
+- **Status**: FIXED (2026-06-05)
+- **Severity**: Critical (Security)
+- **Root Cause**: Fallback to raw JSON parsing when signature or secret missing
+- **Fix**: Require valid signature on every event, no fallback
+- **Commit**: `36bec12`
+
+### ISS-044: bulk-tasks endpoint had no authentication
+- **Status**: FIXED (2026-06-05)
+- **Severity**: Critical (Security)
+- **Fix**: Added admin email + secret check
+- **Commit**: `a3dcc96`
+
+### ISS-045: Email HTML injection vulnerability
+- **Status**: FIXED (2026-06-05)
+- **Severity**: High (Security)
+- **Fix**: Shared `_emailSanitize.js` with escapeHtml + sanitizeEmail, imported in all 11 email endpoints
+- **Commit**: `a3dcc96`
+
+### ISS-046: Child names sent to Google Analytics
+- **Status**: FIXED (2026-06-05)
+- **Severity**: High (COPPA)
+- **Fix**: Removed child name from analytics events, now sends anonymized label
+- **Commit**: `a3dcc96`
+
+### ISS-047: Contributor invite tokens never expire
+- **Status**: FIXED (2026-06-05)
+- **Severity**: Medium
+- **Fix**: Added 30-day `expiresAt` field to invitation documents
+- **Commit**: `36bec12`
+
+### ISS-048: Personal email CC'd on all production emails
+- **Status**: FIXED (2026-06-05)
+- **Severity**: Medium
+- **Fix**: Removed `i@yprateek.com` CC from 5 email endpoints
+- **Commit**: `36bec12`
+
+### ISS-049: Share series "db not defined" error
+- **Status**: FIXED (2026-06-05)
+- **Severity**: Medium
+- **Fix**: Import `db` from firebase before using in share handler
+- **Commit**: `0580755`
+
+### ISS-050: Dual audio playing when cached + TTS both fire
+- **Status**: FIXED (2026-06-04)
+- **Severity**: Medium
+- **Fix**: Explicitly pause/clear cached audio element before TTS fallback
+- **Commit**: `c5a499e`
+
+### ISS-051: Player not showing episode images from personal series
+- **Status**: FIXED (2026-06-04)
+- **Severity**: Medium
+- **Fix**: Pass coverImage + gallery from SeriesDetail playEpisode to Player
+- **Commit**: `3875d05`
+
+### ISS-052: Gallery array dropped in Firestore series mapping
+- **Status**: FIXED (2026-06-04)
+- **Severity**: Medium
+- **Fix**: Added `gallery: ep.gallery || []` to firestoreSeries episode mapping
+- **Commit**: `82e3f9a`
+
+### ISS-053: CloudFront 404 for /contribute/:token SPA route
+- **Status**: FIXED (2026-06-04)
+- **Severity**: High
+- **Fix**: Added 404 → index.html custom error response in CloudFront distribution
+- **Commit**: N/A (CloudFront config change)
+
+### ISS-054: Evening email showing next day's tasks (UTC timezone)
+- **Status**: FIXED (2026-06-04)
+- **Severity**: Medium
+- **Fix**: `toLocaleDateString('en-CA', { timeZone: 'America/Toronto' })` in both morning + evening email
+- **Commit**: `c7890dc`
+
+---
+
+*Last updated: 2026-06-05 (54 issues tracked)*
 *Auto-maintained by Claude during development sessions*
