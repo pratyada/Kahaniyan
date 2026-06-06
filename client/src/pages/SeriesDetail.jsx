@@ -21,7 +21,7 @@ export default function SeriesDetail() {
   const { seriesId } = useParams();
   const navigate = useNavigate();
   const { load } = usePlayer();
-  const { user } = useAuth();
+  const { user, login } = useAuth();
   const { profile } = useFamilyProfile();
   const { getSeriesProgress, isEpisodeComplete } = useSeriesProgress();
   const [galleryImages, setGalleryImages] = useState({});
@@ -71,6 +71,7 @@ export default function SeriesDetail() {
   // Firestore fallback for creator/personal series
   const [firestoreSeries, setFirestoreSeries] = useState(null);
   const [fsLoading, setFsLoading] = useState(false);
+  const [needsLogin, setNeedsLogin] = useState(null); // { title, authorName } if login required
 
   const staticSeries = SERIES.find((s) => s.id === seriesId);
 
@@ -90,6 +91,7 @@ export default function SeriesDetail() {
           const isShared = (data.sharedWith || []).includes(userEmail);
           const isPublic = data.visibility !== 'personal';
           if (isOwner || isShared || isPublic) {
+            setNeedsLogin(null);
             // Map to series format the component expects
             setFirestoreSeries({
               id: snap.id,
@@ -119,6 +121,9 @@ export default function SeriesDetail() {
                 contributorName: ep.contributorName,
               })),
             });
+          } else if (data.visibility === 'personal' && !user) {
+            // Personal series but user not logged in — prompt login
+            setNeedsLogin({ title: data.title, authorName: data.authorName, icon: data.icon });
           }
         }
       } catch {}
@@ -500,6 +505,33 @@ export default function SeriesDetail() {
     return (
       <PageTransition className="page-scroll px-5 pt-10 safe-top">
         <div className="mt-20 text-center"><p className="text-ink-muted">Loading...</p></div>
+      </PageTransition>
+    );
+  }
+
+  if (!series && needsLogin) {
+    return (
+      <PageTransition className="page-scroll px-5 pt-10 safe-top">
+        <div className="mt-16 text-center max-w-md mx-auto px-6">
+          <span className="text-5xl">{needsLogin.icon || '🔒'}</span>
+          <h2 className="text-xl font-bold text-ink mt-4" style={{ fontFamily: 'Fraunces, serif' }}>
+            {needsLogin.title}
+          </h2>
+          <p className="text-sm text-ink-muted mt-3">
+            {needsLogin.authorName ? <><strong className="text-ink">{needsLogin.authorName}</strong> shared this series with you.</> : 'This is a private series.'}
+          </p>
+          <p className="text-sm text-ink-muted mt-2">
+            Sign in to listen to the episodes and contribute your own.
+          </p>
+          <button onClick={() => login()}
+            className="mt-6 rounded-full bg-gold px-8 py-3 text-sm font-bold text-bg-base shadow-glow transition active:scale-95">
+            Sign in with Google
+          </button>
+          <button onClick={() => navigate('/')}
+            className="mt-3 block mx-auto text-xs text-ink-dim hover:text-ink-muted transition">
+            Go Home
+          </button>
+        </div>
       </PageTransition>
     );
   }
