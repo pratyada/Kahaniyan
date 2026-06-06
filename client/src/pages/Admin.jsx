@@ -253,7 +253,10 @@ export default function Admin() {
 
                     // Merge user belief counts + story counts
                     const allKeys = new Set([...Object.keys(stats.beliefs), ...Object.keys(storyCounts)]);
+                    // Filter out invalid belief keys (e.g. 'secular', 'chinese' with 0 stories)
+                    const validKeys = RELIGIONS.map(r => r.key);
                     return [...allKeys]
+                      .filter(key => validKeys.includes(key) && ((storyCounts[key] || 0) > 0 || (stats.beliefs[key] || 0) > 0))
                       .sort((a, b) => (storyCounts[b] || 0) - (storyCounts[a] || 0))
                       .map(key => {
                         const r = RELIGIONS.find(x => x.key === key);
