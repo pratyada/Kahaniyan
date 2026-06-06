@@ -484,6 +484,27 @@ export default function Home() {
                   >
                     {t('common.next')}
                   </motion.button>
+                  <button
+                    onClick={async () => {
+                      // Skip onboarding — save minimal profile so they can browse
+                      const payload = { childName: 'little one', age: 6, language: 'English', gender: 'boy', country: 'CA', beliefs: [], tier: 'free', createdAt: Date.now(), skippedOnboarding: true };
+                      try {
+                        localStorage.setItem('mst:familyProfile', JSON.stringify(payload));
+                        localStorage.setItem('mst:profiles', JSON.stringify([payload]));
+                      } catch {}
+                      try {
+                        const { db, auth: fbAuth } = await import('../lib/firebase.js');
+                        if (db && fbAuth?.currentUser) {
+                          const { doc, setDoc } = await import('firebase/firestore');
+                          await setDoc(doc(db, 'users', fbAuth.currentUser.uid), { profiles: [payload] }, { merge: true });
+                        }
+                      } catch {}
+                      window.location.reload();
+                    }}
+                    className="mt-3 text-xs text-ink-dim hover:text-ink-muted transition"
+                  >
+                    Skip — I just want to listen
+                  </button>
                 </>
               )}
 
