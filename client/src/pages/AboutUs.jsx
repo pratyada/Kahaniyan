@@ -101,6 +101,7 @@ const FOOTER_LINKS = [
     links: [
       { label: 'Browse All Stories', to: '/' },
       { label: 'Hindu Stories', to: '/?culture=hindu' },
+      { label: 'Sikh Stories', to: '/?culture=sikh' },
       { label: 'Islamic Stories', to: '/?culture=muslim' },
       { label: 'Catholic Stories', to: '/?culture=catholic' },
       { label: 'Filipino Stories', to: '/?culture=filipino' },
