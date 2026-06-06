@@ -92,6 +92,7 @@ That night, {childName}, remember the little prince and the swan. There will be 
     title: 'Guru Nanak and the True Bargain',
     durationMinutes: 10,
     source: 'Sikh tradition · Sakhis of Guru Nanak Dev Ji',
+    imagePrompt: 'Cinematic nighttime scene of golden wheat grain spilling from a simple cloth pouch onto a wooden table, warm oil lamp light, Punjab village background, starry sky, NO TEXT',
     body: `When Guru Nanak Ji was a young boy, his father gave him twenty rupees — a great deal of money in those days. "Go to the city," his father said, "and make a true bargain. Buy something that will bring profit."
 
 Guru Nanak walked the long road to the city, holding the money carefully. On the way, he passed a group of holy people sitting under a tree. They had not eaten in many days. Their faces were thin. Their robes were torn. But their eyes were bright with kindness, and they did not ask anyone for anything.
@@ -153,6 +154,7 @@ That night, {childName}, remember Noah. When you have power over a creature smal
     title: 'Bhai Kanhaiya and the Cup of Water',
     durationMinutes: 10,
     source: 'Sikh tradition · time of Guru Gobind Singh Ji',
+    imagePrompt: 'Cinematic nighttime scene of a leather water pouch and a cup of water on a moonlit field, gentle golden glow, dewdrops on grass, peaceful night, NO TEXT',
     body: `Many hundreds of years ago, during a great battle, a Sikh named Bhai Kanhaiya walked across the battlefield carrying a leather pouch full of cool water. He went from one wounded soldier to the next, kneeling down, lifting their heads gently, and giving each one a drink.
 
 But Bhai Kanhaiya did something strange. He gave water to everyone — Sikh soldiers, and also enemy soldiers. He did not look at their uniforms. He did not ask which side they were on. He simply saw a thirsty person, and he gave them water.
@@ -1010,6 +1012,7 @@ That night, {childName}, imagine you have two pockets too. On days when you feel
     title: 'Guru Nanak and the Langar',
     durationMinutes: 8,
     source: 'Sikh tradition · The first Langar',
+    imagePrompt: 'Cinematic nighttime scene of a warm gurdwara langar hall with rows of steel plates on the floor, steam from food, oil lamps along the walls, community kitchen, NO TEXT',
     body: `When Guru Nanak was young, his father gave him twenty silver coins. "Go to the market," his father said, "and make a good bargain. Buy something valuable."
 
 Guru Nanak took the coins and walked to the market. But on the way, he met a group of holy men sitting under a tree. They had not eaten in days. Their ribs showed through their skin. Their eyes were hollow with hunger.

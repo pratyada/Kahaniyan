@@ -17,6 +17,7 @@ export const SIKH_SERIES = [
         subtitle: 'Guru Nanak Dev Ji teaches that we are all one.',
         tradition: 'sikh', theme: 'equality', durationMinutes: 3,
         source: 'The Ten Gurus — Lights of Wisdom · Episode 1',
+        imagePrompt: 'Cinematic nighttime scene of a glowing golden Ik Onkar symbol floating above a calm Punjabi river, soft moonlight, misty banks, no people, watercolor textures, NO TEXT',
         body: `A long, long time ago, in a little village called Talwandi, a baby boy was born under a sky full of stars. His name was Nanak, and even as a child, he saw the world differently from everyone else.
 
 While other children played in the dust, young Nanak would sit beneath a big neem tree and wonder. He would watch the birds — brown sparrows and bright parrots, big eagles and tiny wrens — and think: "They all share the same sky."
@@ -40,6 +41,7 @@ Waheguru. Goodnight.`,
         subtitle: 'Guru Angad Dev Ji gives children the gift of Gurmukhi.',
         tradition: 'sikh', theme: 'education', durationMinutes: 3,
         source: 'The Ten Gurus — Lights of Wisdom · Episode 2',
+        imagePrompt: 'Cinematic nighttime scene of Gurmukhi script letters glowing in soft gold light on an ancient scroll, a candle nearby, ink pot and reed pen, Punjab night sky through a window, NO TEXT',
         body: `After Guru Nanak Dev Ji, a new teacher carried the light forward. His name was Guru Angad Dev Ji, and he loved children more than almost anything in the world. But do you know what he loved even more? Letters.
 
 Not letters you post in a mailbox, {childName}. Letters you write — the shapes that become words, the words that become stories, the stories that become wisdom.
@@ -65,6 +67,7 @@ Sweet dreams and Waheguru.`,
         subtitle: 'Guru Amar Das Ji teaches that no one eats alone.',
         tradition: 'sikh', theme: 'equality', durationMinutes: 3,
         source: 'The Ten Gurus — Lights of Wisdom · Episode 3',
+        imagePrompt: 'Cinematic nighttime scene of a warm langar hall with rows of simple plates on the floor, golden lamplight, no people visible, steam rising from food, peaceful atmosphere, NO TEXT',
         body: `In those days, {childName}, people were divided. Some said: "We are important. We sit at the front." Others were told: "You are not important. You sit at the back." Some ate on golden plates. Others ate on the ground — or did not eat at all.
 
 Guru Amar Das Ji saw this, and his heart ached. He was the third Guru, a gentle man with wise, kind eyes and a voice as warm as fresh bread.
@@ -92,6 +95,7 @@ Waheguru. Sleep well.`,
         subtitle: 'Guru Ram Das Ji builds a city of love and devotion.',
         tradition: 'sikh', theme: 'devotion', durationMinutes: 3,
         source: 'The Ten Gurus — Lights of Wisdom · Episode 4',
+        imagePrompt: 'Cinematic nighttime scene of the Golden Temple (Harmandir Sahib) reflected in the sacred pool, deep blue sky full of stars, golden dome glowing warmly, no people, watercolor style, NO TEXT',
         body: `Guru Ram Das Ji was the fourth Guru, and he had a dream — not a sleeping dream, {childName}, but the kind of dream you carry in your heart, the kind that makes you want to build something beautiful for the whole world.
 
 His dream was a city. Not just any city — a city built on love, where anyone could come, where the water was clear and the prayers were sweet and every person felt at home.
@@ -117,6 +121,7 @@ Waheguru. Goodnight, dear one.`,
         subtitle: 'Guru Arjan Dev Ji gathers the words of wisdom into one sacred book.',
         tradition: 'sikh', theme: 'sacrifice', durationMinutes: 3,
         source: 'The Ten Gurus — Lights of Wisdom · Episode 5',
+        imagePrompt: 'Cinematic nighttime scene of the Guru Granth Sahib on a decorated palki (throne) with marigold flowers, soft golden candlelight, silk cloths, serene atmosphere, NO TEXT',
         body: `Guru Arjan Dev Ji was the fifth Guru, and he had a worry that kept him awake at night. It was not a worry about himself — it was a worry about words.
 
 You see, {childName}, the beautiful prayers and poems of the Gurus — all those gentle words about kindness, equality, and love — were scattered everywhere. Some were written on palm leaves. Some were memorised by old singers. Some were whispered from grandmother to grandchild. But what if they were lost? What if the wind blew the palm leaves away? What if the singers forgot?
@@ -152,6 +157,7 @@ Waheguru. Sleep peacefully.`,
         subtitle: 'Guru Hargobind Ji wears two swords — one for the spirit, one for justice.',
         tradition: 'sikh', theme: 'courage', durationMinutes: 3,
         source: 'The Ten Gurus — Warriors of Peace · Episode 1',
+        imagePrompt: 'Cinematic nighttime scene of two ornate swords (miri-piri) crossed on a velvet cloth, Khanda symbol glowing softly behind them, candlelight, NO TEXT',
         body: `When Guru Hargobind Ji became the sixth Guru, he was still very young. But his eyes held a steady flame, and his heart held a truth that the world needed to hear.
 
 On the day of his ceremony, something unexpected happened. Instead of wearing just one sword, as was the custom, Guru Hargobind Ji asked for two.
@@ -179,6 +185,7 @@ Waheguru. Goodnight.`,
         subtitle: 'Guru Har Rai Ji tends to a garden that heals the sick.',
         tradition: 'sikh', theme: 'compassion', durationMinutes: 3,
         source: 'The Ten Gurus — Warriors of Peace · Episode 2',
+        imagePrompt: 'Cinematic nighttime scene of a moonlit herb garden with colorful medicinal plants, a mortar and pestle, dewdrops catching starlight, peaceful Punjab landscape, NO TEXT',
         body: `Guru Har Rai Ji, the seventh Guru, had the gentlest hands in all of Punjab. While other leaders rode horses and carried swords, Guru Har Rai Ji walked softly through meadows, knelt beside wildflowers, and listened to the songs of birds as if they were prayers.
 
 He loved all living things — every bee, every butterfly, every leaf trembling in the wind. Even as a child, he had been careful never to step on a flower or disturb a sleeping animal.
@@ -206,6 +213,7 @@ Waheguru. Sleep softly.`,
         subtitle: 'Guru Har Krishan Ji — the youngest Guru — serves with a brave heart.',
         tradition: 'sikh', theme: 'service', durationMinutes: 3,
         source: 'The Ten Gurus — Warriors of Peace · Episode 3',
+        imagePrompt: 'Cinematic nighttime scene of a small glowing lamp surrounded by healing herbs and a bowl of water, soft golden light radiating outward, misty atmosphere, NO TEXT',
         body: `{childName}, did you know that one of the Sikh Gurus was just a little boy? Guru Har Krishan Ji became the eighth Guru when he was only five years old. Five! Maybe the same age as you, or close to it.
 
 Some people shook their heads. "How can a child be a Guru?" they asked. "What can a little boy teach us?"
@@ -239,6 +247,7 @@ Waheguru. Goodnight, brave one.`,
         subtitle: 'Guru Tegh Bahadur Ji stands up for everyone\'s right to pray.',
         tradition: 'sikh', theme: 'sacrifice', durationMinutes: 3,
         source: 'The Ten Gurus — Warriors of Peace · Episode 4',
+        imagePrompt: 'Cinematic nighttime scene of a golden shield with the Khanda symbol standing upright in moonlight, protecting different prayer symbols (cross, crescent, om) behind it, NO TEXT',
         body: `Guru Tegh Bahadur Ji, the ninth Guru, was a man of deep, quiet strength. He did not shout. He did not boast. He sat in stillness and prayer, and when he opened his eyes, they were filled with the kind of calm that makes storms feel small.
 
 But one day, {childName}, a group of frightened people came to him. They were not Sikhs — they were Hindu scholars from faraway Kashmir, and they were trembling with fear.
@@ -270,6 +279,7 @@ Waheguru. Sleep in peace.`,
         subtitle: 'Guru Gobind Singh Ji founds the Khalsa — a family of the brave and equal.',
         tradition: 'sikh', theme: 'courage', durationMinutes: 3,
         source: 'The Ten Gurus — Warriors of Peace · Episode 5',
+        imagePrompt: 'Cinematic nighttime scene of five kesri (saffron) flags (Nishan Sahib) standing tall on a hilltop at dawn, golden light breaking through clouds, Punjab landscape, NO TEXT',
         body: `The year was 1699, and thousands of Sikhs had gathered at Anandpur Sahib for the festival of Vaisakhi. The air smelled of spring flowers and fresh food. Children ran between the tents. Music played. Everyone was happy.
 
 Then Guru Gobind Singh Ji, the tenth and final Guru, stepped onto the stage. He was tall, with bright eyes and a blue robe that caught the wind like a flag. In his hand, he held a shining sword.
@@ -313,6 +323,7 @@ Waheguru. Goodnight, little lion.`,
         subtitle: 'In the Gurdwara kitchen, no one ever goes hungry.',
         tradition: 'sikh', theme: 'generosity', durationMinutes: 3,
         source: 'Stories from the Gurdwara · Episode 1',
+        imagePrompt: 'Cinematic nighttime scene of large copper pots of food in a gurdwara kitchen, warm steam, golden light from oil lamps, chapati on a tawa, community kitchen atmosphere, NO TEXT',
         body: `Inside every Gurdwara, {childName}, there is a kitchen. But it is not an ordinary kitchen. It is called the Langar, and it is one of the most wonderful places in the whole world.
 
 The Langar is where food is made — big pots of steaming dal, soft warm rotis puffing up on the griddle, sweet rice pudding with cardamom and raisins — and all of it, every last spoonful, is free. Free for everyone. Always.
@@ -338,6 +349,7 @@ Waheguru. Sweet dreams.`,
         subtitle: 'A warm, sweet blessing shared equally with every person.',
         tradition: 'sikh', theme: 'sharing', durationMinutes: 3,
         source: 'Stories from the Gurdwara · Episode 2',
+        imagePrompt: 'Cinematic nighttime scene of a brass bowl filled with golden karah prasad (sweet), a small wooden spoon, marigold petals scattered around, warm candlelight, NO TEXT',
         body: `At the end of every prayer in the Gurdwara, {childName}, something sweet happens. Not just sweet in feeling — sweet in taste, too.
 
 A big bowl is carried forward, filled with something golden and warm. It is called Karah Prasad — a blessed offering made from just four simple things: flour, sugar, butter, and water. Mixed together, cooked slowly with love and prayer, it becomes the most wonderful treat you have ever tasted.
@@ -369,6 +381,7 @@ Waheguru. Goodnight.`,
         subtitle: 'Sacred music fills the Gurdwara with peace and devotion.',
         tradition: 'sikh', theme: 'peace', durationMinutes: 3,
         source: 'Stories from the Gurdwara · Episode 3',
+        imagePrompt: 'Cinematic nighttime scene of harmonium and tabla instruments in a gurdwara, soft golden light, Guru Granth Sahib draped in silk in the background, peaceful, NO TEXT',
         body: `If you walk past a Gurdwara in the early morning, {childName}, before the world is fully awake, you will hear something beautiful. It floats through the doors and windows like a soft golden ribbon — the sound of Kirtan.
 
 Kirtan is sacred music. It is the singing of hymns from the Guru Granth Sahib, the holy book of the Sikhs. But it is not just singing, {childName}. It is something deeper. When you hear Kirtan, your heart slows down. Your breathing becomes gentle. Your worries, one by one, float away like clouds drifting across a summer sky.
@@ -398,6 +411,7 @@ Waheguru. Sleep in peace.`,
         subtitle: 'The quiet joy of serving others, expecting nothing in return.',
         tradition: 'sikh', theme: 'service', durationMinutes: 3,
         source: 'Stories from the Gurdwara · Episode 4',
+        imagePrompt: 'Cinematic nighttime scene of clean shoes arranged neatly outside a gurdwara entrance, a small broom leaning against the wall, moonlight on marble floor, NO TEXT',
         body: `In the Sikh tradition, {childName}, there is a beautiful word: Seva. It means selfless service — helping others without being asked, without wanting anything in return, without needing a thank you or a gold star.
 
 At the Gurdwara, seva is everywhere. You can see it in the uncle who arrives at four in the morning to sweep the floor before anyone else wakes up. You can see it in the auntie who polishes shoes — not her own shoes, but the shoes of every person who left them at the door. You can see it in the teenager who fills water glasses, walking up and down the rows during Langar, making sure no one is thirsty.
@@ -429,6 +443,7 @@ Waheguru. Goodnight.`,
         subtitle: 'Five brave hearts step forward and change history forever.',
         tradition: 'sikh', theme: 'courage', durationMinutes: 3,
         source: 'Stories from the Gurdwara · Episode 5',
+        imagePrompt: 'Cinematic nighttime scene of five kesri turbans arranged in a circle on the ground, a steel bowl of amrit (sacred water) with a khanda in the center, starlight, NO TEXT',
         body: `Every year, {childName}, during the festival of Vaisakhi, Sikhs around the world remember one of the most amazing moments in history — the day five ordinary people did something extraordinary.
 
 It happened on a spring morning in 1699 at Anandpur Sahib. Thousands of people had gathered. The air was buzzing with excitement. Guru Gobind Singh Ji, the tenth Guru, stood before the crowd. He was dressed in royal blue, his eyes shining with purpose.
@@ -470,6 +485,7 @@ Waheguru. Goodnight, beloved one.`,
         subtitle: 'A brave man brings water to the wounded — on every side.',
         tradition: 'sikh', theme: 'compassion', durationMinutes: 3,
         source: 'Brave Hearts of Punjab · Episode 1',
+        imagePrompt: 'Cinematic nighttime scene of a leather water pouch (mushak) resting on a moonlit battlefield, water droplets glistening, peaceful contrast to the setting, NO TEXT',
         body: `{childName}, tonight I want to tell you about a man with a water pot and a heart bigger than the whole sky. His name was Bhai Kanhaiya.
 
 It was a time of great conflict. Armies clashed on dusty fields. Swords rang against shields. Smoke filled the air. When the fighting was over, wounded soldiers lay scattered on the ground — some from one side, some from the other. They were all thirsty. They were all in pain.
@@ -499,6 +515,7 @@ Waheguru. Sleep in kindness.`,
         subtitle: 'A brave woman leads forty soldiers back to courage.',
         tradition: 'sikh', theme: 'bravery', durationMinutes: 3,
         source: 'Brave Hearts of Punjab · Episode 2',
+        imagePrompt: 'Cinematic nighttime scene of a horse standing proud on a Punjab hilltop at dusk, a spear planted in the ground, kesri flag waving, no person visible, NO TEXT',
         body: `{childName}, this is the story of Mai Bhago — a woman whose courage was so fierce and so bright that it turned the tide of history.
 
 It was a dark time. Guru Gobind Singh Ji and his Sikhs were surrounded. The enemy was powerful, and the situation seemed impossible. Forty Sikh soldiers — brave men who had pledged to stand by the Guru — lost hope. They wrote a letter saying they were leaving. They said they were no longer the Guru's Sikhs. And they walked away.
@@ -528,6 +545,7 @@ Waheguru. Goodnight, brave heart.`,
         subtitle: 'A warrior who fought for the poor and made the land fair for all.',
         tradition: 'sikh', theme: 'justice', durationMinutes: 3,
         source: 'Brave Hearts of Punjab · Episode 3',
+        imagePrompt: 'Cinematic nighttime scene of a simple throne with scales of justice on it, Punjab fortress in the background, moonlight, wheat fields surrounding, NO TEXT',
         body: `{childName}, tonight we travel back in time to meet Banda Singh Bahadur — a man who went from being a quiet hermit in the mountains to becoming one of the bravest leaders Punjab had ever seen.
 
 Before he was a warrior, Banda Singh lived alone in the forest. He spent his days in prayer and silence, listening to the birds and the wind. He wanted nothing from the world.
@@ -557,6 +575,7 @@ Waheguru. Goodnight.`,
         subtitle: 'A devoted scholar protects the words of the Gurus at any cost.',
         tradition: 'sikh', theme: 'devotion', durationMinutes: 3,
         source: 'Brave Hearts of Punjab · Episode 4',
+        imagePrompt: 'Cinematic nighttime scene of ancient manuscripts and scrolls spread on a desk, a quill pen, oil lamp, Gurmukhi text visible on pages, library atmosphere, NO TEXT',
         body: `{childName}, some heroes carry swords. Some heroes carry books. Tonight, we meet a hero who carried both in his heart — Bhai Mani Singh.
 
 Bhai Mani Singh was a scholar — a man who loved words the way a gardener loves flowers. He had spent his whole life studying the teachings of the Gurus, copying sacred texts by hand, letter by careful letter. His handwriting was so beautiful that people said it looked like golden thread woven across the page.
@@ -588,6 +607,7 @@ Waheguru. Goodnight, keeper of stories.`,
         subtitle: 'A courageous general who protected his people with bravery and honour.',
         tradition: 'sikh', theme: 'courage', durationMinutes: 3,
         source: 'Brave Hearts of Punjab · Episode 5',
+        imagePrompt: 'Cinematic nighttime scene of a majestic fortress gate in the Khyber Pass, lion statues flanking the entrance, moonlit mountains, Punjab flag, NO TEXT',
         body: `{childName}, have you ever heard of someone so brave that even lions were a little afraid of him? That is the story of Hari Singh Nalwa — the Lion of Punjab.
 
 Hari Singh Nalwa was born in a small town, but from the very beginning, there was something extraordinary about him. As a young boy, he was strong, quick, and fearless. When other children ran from thunderstorms, Hari Singh stood in the rain and laughed.
@@ -627,6 +647,7 @@ Waheguru. Goodnight, little lion.`,
         subtitle: 'A little one learns to love their patka and feel proud.',
         tradition: 'sikh', theme: 'identity', durationMinutes: 3,
         source: 'Little Sikh, Big Heart · Episode 1',
+        imagePrompt: 'Cinematic nighttime scene of a small colorful patka (head covering) folded neatly on a child\'s bedside table, a comb (kangha) beside it, warm lamplight, cozy bedroom, NO TEXT',
         body: `Good evening, {childName}. Come close and get cozy, because tonight is a special story — a story about something you might see every day, sitting right on top of someone's head. A patka!
 
 There was once a little boy named Arjun who had the most beautiful hair — long, dark, and soft, like a flowing river. Every morning, his mama would gently comb his hair, gather it into a neat little bun on top of his head, and then tie a bright, colourful patka around it. Sometimes the patka was blue like the sky. Sometimes it was orange like a sunset. Sometimes it was red with little stars on it.
@@ -662,6 +683,7 @@ Waheguru. Goodnight.`,
         subtitle: 'A bedtime prayer fills the room with warmth and gratitude.',
         tradition: 'sikh', theme: 'gratitude', durationMinutes: 3,
         source: 'Little Sikh, Big Heart · Episode 2',
+        imagePrompt: 'Cinematic nighttime scene of a small kara (steel bracelet) resting on a prayer cushion beside a bed, moonlight through curtains, stars visible, peaceful, NO TEXT',
         body: `The sky outside was turning a deep, sleepy purple. The stars were beginning to peek out, one by one, like tiny candles being lit across the ceiling of the world.
 
 Little Priya had brushed her teeth, put on her favourite pajamas — the ones with little moons on them — and climbed into bed. Her stuffed lion, Simran, was tucked under her arm. The blanket was pulled up to her chin. But something was missing.
@@ -695,6 +717,7 @@ Waheguru. Sweet, sweet dreams.`,
         subtitle: 'A child visits the Gurdwara for the very first time.',
         tradition: 'sikh', theme: 'belonging', durationMinutes: 3,
         source: 'Little Sikh, Big Heart · Episode 3',
+        imagePrompt: 'Cinematic nighttime scene of a gurdwara exterior with golden domes glowing against a starry sky, small shoes arranged at the entrance, warm welcoming light from inside, NO TEXT',
         body: `{childName}, have you ever been somewhere for the very first time and felt both excited and a little nervous? That is exactly how little Kiran felt on the morning of her first visit to the Gurdwara.
 
 "Time to go!" said her mama, wrapping a soft dupatta over her head. Kiran looked at herself in the mirror. She was wearing her favourite yellow suit — the one with tiny flowers embroidered on the sleeves.
@@ -734,6 +757,7 @@ Waheguru. Goodnight.`,
         subtitle: 'A little one learns that sharing food means sharing love.',
         tradition: 'sikh', theme: 'generosity', durationMinutes: 3,
         source: 'Little Sikh, Big Heart · Episode 4',
+        imagePrompt: 'Cinematic nighttime scene of a child\'s small hands (shown from above, no face) placing a roti on a shared plate, warm kitchen light, simple Punjabi meal, NO TEXT',
         body: `Little Sahib loved food. He loved the way parathas puffed up on the pan. He loved the smell of his nani's rajma cooking on the stove. He loved biting into a warm samosa and feeling the spiced potatoes inside. Yum!
 
 But there was one thing Sahib did not love. Sharing.
@@ -777,6 +801,7 @@ Waheguru. Goodnight, generous one.`,
         subtitle: 'No matter who you are, you belong — because Waheguru loves us all the same.',
         tradition: 'sikh', theme: 'equality', durationMinutes: 3,
         source: 'Little Sikh, Big Heart · Episode 5',
+        imagePrompt: 'Cinematic nighttime scene of a long row of simple plates and glasses set up for langar, all identical, all equal, warm golden light from oil lamps along the row, NO TEXT',
         body: `{childName}, come close. This is the last story in our little series, and it is about something very important — something that Guru Nanak Dev Ji taught the world a long, long time ago, and it is still true today.
 
 Everyone is equal.
