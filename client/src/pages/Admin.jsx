@@ -2245,7 +2245,7 @@ function StoryLab({ showSettingsTabs }) {
   };
 
   const STUDIO_TABS = [
-    { key: 'wisdom-audio', label: `Wisdom Stories (${ALL_LESSONS_DATA.length})`, icon: '📖' },
+    { key: 'wisdom-audio', label: 'Wisdom Stories', icon: '📖' },
     { key: 'collections', label: 'Collections (48)', icon: '🎬' },
     { key: 'series', label: `Series (${ALL_SERIES_DATA.length})`, icon: '📺' },
   ];
