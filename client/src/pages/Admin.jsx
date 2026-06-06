@@ -2246,8 +2246,9 @@ function StoryLab({ showSettingsTabs }) {
 
   const STUDIO_TABS = [
     { key: 'wisdom-audio', label: 'Wisdom Stories', icon: '📖' },
-    { key: 'collections', label: 'Collections (48)', icon: '🎬' },
-    { key: 'series', label: `Series (${ALL_SERIES_DATA.length})`, icon: '📺' },
+    { key: 'collections', label: 'Collections', icon: '🎬' },
+    { key: 'series', label: 'Series', icon: '📺' },
+    { key: 'user-stories', label: 'User Stories', icon: '✍️' },
   ];
 
   const SETTINGS_TABS = [
@@ -2698,10 +2699,35 @@ function StoryLab({ showSettingsTabs }) {
         </div>
       )}
 
+      {/* ══════ GRAND TOTAL STATS ══════ */}
+      <div className="grid grid-cols-2 sm:grid-cols-5 gap-3 mb-4">
+        <div className="rounded-xl bg-bg-elevated p-3 text-center ring-1 ring-white/5">
+          <div className="text-xl font-bold text-gold">{ALL_LESSONS_DATA.length + ALL_SERIES_DATA.reduce((s, x) => s + x.episodes.length, 0) + 48}</div>
+          <div className="text-[8px] font-bold uppercase tracking-wider text-ink-dim">Total Content</div>
+        </div>
+        <div className="rounded-xl bg-bg-elevated p-3 text-center ring-1 ring-white/5">
+          <div className="text-xl font-bold text-ink">{ALL_LESSONS_DATA.length}</div>
+          <div className="text-[8px] font-bold uppercase tracking-wider text-ink-dim">Wisdom Stories</div>
+        </div>
+        <div className="rounded-xl bg-bg-elevated p-3 text-center ring-1 ring-white/5">
+          <div className="text-xl font-bold text-ink">{ALL_SERIES_DATA.length}</div>
+          <div className="text-[8px] font-bold uppercase tracking-wider text-ink-dim">Series</div>
+        </div>
+        <div className="rounded-xl bg-bg-elevated p-3 text-center ring-1 ring-white/5">
+          <div className="text-xl font-bold text-ink">{ALL_SERIES_DATA.reduce((s, x) => s + x.episodes.length, 0)}</div>
+          <div className="text-[8px] font-bold uppercase tracking-wider text-ink-dim">Episodes</div>
+        </div>
+        <div className="rounded-xl bg-bg-elevated p-3 text-center ring-1 ring-white/5">
+          <div className="text-xl font-bold text-ink">48</div>
+          <div className="text-[8px] font-bold uppercase tracking-wider text-ink-dim">Collections</div>
+        </div>
+      </div>
+
       {/* ══════ WISDOM AUDIO ══════ */}
       {subTab === 'wisdom-audio' && <WisdomAudioPanel />}
       {subTab === 'collections' && <CollectionsPanel />}
       {subTab === 'series' && <SeriesPanel />}
+      {subTab === 'user-stories' && <UserStoriesPanel />}
 
       {/* ══════ VOICE FEEDBACK ══════ */}
       {subTab === 'voice-feedback' && <VoiceFeedbackPanel />}
@@ -4126,6 +4152,111 @@ function SeriesPanel() {
           </div>
         </div>
       ))}
+    </div>
+  );
+}
+
+function UserStoriesPanel() {
+  const [stories, setStories] = useState([]);
+  const [series, setSeries] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [filter, setFilter] = useState('all'); // all, stories, series
+
+  useEffect(() => {
+    (async () => {
+      try {
+        const { db: fireDb } = await import('../lib/firebase.js');
+        if (!fireDb) return;
+        const { collection, getDocs } = await import('firebase/firestore');
+
+        const [storySnap, seriesSnap] = await Promise.all([
+          getDocs(collection(fireDb, 'creatorStories')),
+          getDocs(collection(fireDb, 'creatorSeries')),
+        ]);
+
+        const s = [];
+        storySnap.forEach(d => s.push({ id: d.id, ...d.data(), _type: 'story' }));
+        setStories(s.sort((a, b) => new Date(b.submittedAt || 0) - new Date(a.submittedAt || 0)));
+
+        const sr = [];
+        seriesSnap.forEach(d => sr.push({ id: d.id, ...d.data(), _type: 'series' }));
+        setSeries(sr.sort((a, b) => new Date(b.submittedAt || 0) - new Date(a.submittedAt || 0)));
+      } catch (e) { console.error('UserStoriesPanel error:', e); }
+      setLoading(false);
+    })();
+  }, []);
+
+  if (loading) return <div className="text-center py-12 text-ink-dim">Loading user content...</div>;
+
+  const allItems = filter === 'stories' ? stories : filter === 'series' ? series : [...stories, ...series].sort((a, b) => new Date(b.submittedAt || 0) - new Date(a.submittedAt || 0));
+
+  const statusColor = (s) => s === 'approved' || s === 'published' ? 'text-[#7ad9a1] bg-[#7ad9a1]/10' : s === 'pending' ? 'text-gold bg-gold/10' : s === 'rejected' ? 'text-negative bg-negative/10' : 'text-ink-dim bg-white/5';
+
+  return (
+    <div className="space-y-4">
+      {/* Stats */}
+      <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+        <div className="rounded-xl bg-bg-elevated p-4 ring-1 ring-white/5">
+          <div className="text-2xl font-bold text-ink">{stories.length}</div>
+          <div className="text-[10px] font-bold uppercase tracking-wider text-ink-dim">User Stories</div>
+        </div>
+        <div className="rounded-xl bg-bg-elevated p-4 ring-1 ring-white/5">
+          <div className="text-2xl font-bold text-ink">{series.length}</div>
+          <div className="text-[10px] font-bold uppercase tracking-wider text-ink-dim">User Series</div>
+        </div>
+        <div className="rounded-xl bg-bg-elevated p-4 ring-1 ring-white/5">
+          <div className="text-2xl font-bold text-[#7ad9a1]">{[...stories, ...series].filter(s => s.status === 'approved' || s.status === 'published').length}</div>
+          <div className="text-[10px] font-bold uppercase tracking-wider text-ink-dim">Published</div>
+        </div>
+        <div className="rounded-xl bg-bg-elevated p-4 ring-1 ring-white/5">
+          <div className="text-2xl font-bold text-gold">{[...stories, ...series].filter(s => s.status === 'pending').length}</div>
+          <div className="text-[10px] font-bold uppercase tracking-wider text-ink-dim">Pending Review</div>
+        </div>
+      </div>
+
+      {/* Filter */}
+      <div className="flex gap-2">
+        {['all', 'stories', 'series'].map(f => (
+          <button key={f} onClick={() => setFilter(f)}
+            className={`rounded-lg px-4 py-2 text-xs font-bold capitalize transition ${filter === f ? 'bg-gold text-bg-base' : 'bg-white/5 text-ink-muted ring-1 ring-white/10'}`}>
+            {f} ({f === 'all' ? stories.length + series.length : f === 'stories' ? stories.length : series.length})
+          </button>
+        ))}
+      </div>
+
+      {/* List */}
+      <div className="space-y-2">
+        {allItems.map(item => (
+          <div key={item.id} className="rounded-xl bg-bg-elevated p-4 ring-1 ring-white/5">
+            <div className="flex items-start justify-between gap-3">
+              <div className="min-w-0 flex-1">
+                <div className="flex items-center gap-2 flex-wrap">
+                  {item._type === 'series' && <span className="text-sm">{item.icon || '📚'}</span>}
+                  <h3 className="text-sm font-bold text-ink truncate">{item.title}</h3>
+                  <span className={`rounded-full px-2 py-0.5 text-[8px] font-bold uppercase ${statusColor(item.status)}`}>
+                    {item.status || 'unknown'}
+                  </span>
+                  <span className="rounded-full bg-white/5 px-2 py-0.5 text-[8px] text-ink-dim">
+                    {item._type === 'series' ? `Series · ${item.totalEpisodes || item.episodes?.length || 0} eps` : 'Story'}
+                  </span>
+                  {item.visibility === 'personal' && (
+                    <span className="rounded-full bg-info/10 px-2 py-0.5 text-[8px] font-bold text-info">PERSONAL</span>
+                  )}
+                </div>
+                <div className="flex items-center gap-3 mt-1 text-[10px] text-ink-dim">
+                  <span>by {item.authorName || item.authorEmail || 'Unknown'}</span>
+                  {item.tradition && <span>{item.tradition}</span>}
+                  {item.submittedAt && <span>{new Date(item.submittedAt).toLocaleDateString()}</span>}
+                  {item.sharedWith?.length > 0 && <span>Shared with {item.sharedWith.length}</span>}
+                </div>
+              </div>
+            </div>
+          </div>
+        ))}
+        {allItems.length === 0 && (
+          <div className="text-center py-12 text-ink-dim">No user-generated content yet</div>
+        )}
+      </div>
     </div>
   );
 }
