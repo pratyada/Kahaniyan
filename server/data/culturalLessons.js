@@ -1144,10 +1144,369 @@ And in that moment, you feel it — a deep, quiet peace. The kind of peace that 
 
 That night, {childName}, even if you are far from Amritsar, the Golden Temple shines for you. Its light reaches everywhere — into every home, every heart, every child who closes their eyes and believes in something beautiful. Goodnight, little light. The stars are watching over you too.`
   },
+  // ─── INDIGENOUS CANADIAN ──────────────────────────────────
+  {
+    id: 'indigenous_eagle_feather',
+    tradition: 'indigenous',
+    theme: 'respect',
+    title: 'The Eagle Feather',
+    durationMinutes: 5,
+    source: 'Inspired by the values of Canada\'s First Peoples',
+    body: `One autumn afternoon, when the maple leaves were burning red and orange, {childName} sat beside an elder on a fallen log near the edge of a wide, quiet lake.
+
+The elder reached into a soft cloth pouch and brought out a single feather. It was long and beautiful — brown and white, with edges that looked like they had been painted by the wind itself.
+
+"This is an eagle feather," the elder said, holding it gently, as if it were made of something very precious. "Do you know what it means?"
+
+{childName} shook their head.
+
+"Many people think a feather like this is about honour. And it is. But it is about something even deeper. It is about responsibility."
+
+The elder turned the feather slowly in the light. "The eagle flies higher than any other bird. It sees everything — the rivers, the forests, the mountains, the people below. Because it sees so much, it carries a great responsibility. It must watch over the land. It must be truthful about what it sees."
+
+The elder placed the feather gently into {childName}'s small hands. "When someone gives you a feather, they are not saying you are special. They are saying they trust you. They are saying: we believe you will do what is right, even when no one is watching."
+
+{childName} held the feather carefully, feeling the soft barbs against their fingers. It was lighter than a whisper, but it felt like it held the weight of something enormous.
+
+"Carry it gently," the elder said. "The way you carry this feather is the way you should carry your promises — with care, with respect, and with both hands."
+
+That night, {childName} placed the feather beside their pillow and fell asleep feeling the quiet, steady weight of trust.
+
+Inspired by the values of Canada's First Peoples.`,
+  },
+  {
+    id: 'indigenous_two_eyed_seeing',
+    tradition: 'indigenous',
+    theme: 'wisdom',
+    title: 'Two-Eyed Seeing',
+    durationMinutes: 5,
+    source: 'Inspired by the values of Canada\'s First Peoples',
+    body: `{childName}'s grandmother had the kindest eyes in the whole world. One was brown like the bark of a cedar tree, and the other was brown like the bark of a cedar tree too — but somehow, when she looked at you, each eye seemed to see something different.
+
+One evening, as they sat together watching the sun set over a lake, {childName} asked, "Grandmother, how do you always know the right thing to say?"
+
+Grandmother smiled. "I will tell you a secret, little one. I use two-eyed seeing."
+
+"Two-eyed seeing?" {childName} asked. "Does not everyone see with two eyes?"
+
+"With their eyes, yes," Grandmother said. "But not with their hearts. Two-eyed seeing means looking at the world with one eye through the old knowledge — the things the land has taught our people for thousands of years. The medicine of plants. The wisdom of the seasons. The way the animals move before a storm."
+
+She pointed at the sky, where geese were flying south in a perfect V.
+
+"And with the other eye," she continued, "you look through new knowledge — the things books and teachers and scientists have discovered. Both eyes see something true. But when you use both together, you see the whole picture."
+
+{childName} closed one eye, then the other. The world looked flat and narrow with only one eye open. But with both eyes open, everything had depth and colour and shape.
+
+"Never let anyone tell you that one way of seeing is better than the other," Grandmother said softly. "The wisest people are the ones who can hold both — the old and the new — and let them work together like two hands braiding sweetgrass."
+
+That night, {childName} looked at the stars with both eyes open wide, seeing more than ever before.
+
+Inspired by the values of Canada's First Peoples.`,
+  },
+  {
+    id: 'indigenous_medicine_wheel',
+    tradition: 'indigenous',
+    theme: 'gratitude',
+    title: 'The Medicine Wheel',
+    durationMinutes: 5,
+    source: 'Inspired by the values of Canada\'s First Peoples',
+    body: `On a grassy hilltop where the wind blew soft and steady, an elder drew a circle in the earth with a stick. Inside the circle, they drew a cross, dividing it into four equal parts.
+
+"This," said the elder, "is the medicine wheel. It has been here for longer than anyone can remember. It teaches us about the four directions, and each direction carries a gift."
+
+{childName} sat cross-legged in the grass and listened.
+
+The elder pointed to the right side of the circle. "The East is where the sun rises. It is the place of new beginnings — new mornings, new ideas, new babies coming into the world. When you wake up each day, you are standing in the East."
+
+The elder moved their hand to the bottom. "The South is the place of growth. It is summertime. It is where you learn and play and stretch toward the sky, the way young plants reach for the sun."
+
+Then to the left. "The West is where the sun goes to rest. It is the place of reflection — looking back at your day, thinking about what you did well and what you could do better. It is autumn, when the leaves let go."
+
+And finally, to the top. "The North is the place of wisdom. It is winter — quiet, still, and deep. It is the direction of the elders, who have walked all the other directions and now carry the knowledge of the whole circle inside them."
+
+{childName} looked at the four parts of the wheel. East, South, West, North. Beginning, growth, reflection, wisdom.
+
+"You will walk this wheel many times in your life," the elder said. "Every day is a small circle. Every year is a bigger one. And your whole life — from the moment you are born to the moment you return to the earth — is the biggest circle of all."
+
+That night, {childName} fell asleep grateful for every direction, every season, every turn of the great wheel.
+
+Inspired by the values of Canada's First Peoples.`,
+  },
+  {
+    id: 'indigenous_river_knows',
+    tradition: 'indigenous',
+    theme: 'trust',
+    title: 'The River Knows the Way',
+    durationMinutes: 5,
+    source: 'Inspired by the values of Canada\'s First Peoples',
+    body: `One afternoon, {childName} wandered a little too far from camp while picking wild blueberries. The trees all looked the same. The trail had disappeared under a carpet of moss and ferns. The sky was grey, so there was no sun to follow.
+
+{childName} felt a flutter of worry in their chest. Which way was home?
+
+Then {childName} remembered something an elder had once said: "If you are ever lost in the forest, find the water. The river always knows the way."
+
+{childName} stood very still and listened. Beneath the sound of the wind and the birds, there was something else — a soft, steady murmur. Water.
+
+{childName} followed the sound, stepping carefully over roots and stones, until the trees opened up and a small stream appeared, winding over smooth pebbles. The water was clear and cold and unhurried.
+
+{childName} knelt down and watched it flow. The stream did not worry about where it was going. It did not try to rush. It simply followed the land — around rocks, under fallen logs, through meadows — always moving, always finding the way.
+
+{childName} followed the stream. It joined a bigger creek. The creek joined a small river. And the river led to the lake — and there, on the far shore, was the camp. Smoke rising from the fire. Familiar voices calling.
+
+{childName} arrived just as the first stars appeared. The elder was waiting, calm and unsurprised.
+
+"You followed the water," the elder said. It was not a question.
+
+{childName} nodded.
+
+"The land takes care of us," the elder said, "when we take care of the land. Trust it. Listen to it. It will always lead you home."
+
+That night, {childName} fell asleep to the faraway sound of the river, still flowing, still knowing the way.
+
+Inspired by the values of Canada's First Peoples.`,
+  },
+  {
+    id: 'indigenous_fire_keeper',
+    tradition: 'indigenous',
+    theme: 'service',
+    title: 'The Fire Keeper',
+    durationMinutes: 5,
+    source: 'Inspired by the values of Canada\'s First Peoples',
+    body: `Every night, someone in the community stayed awake to tend the fire. They called this person the Fire Keeper.
+
+The Fire Keeper did not sleep while the others slept. They sat beside the flames, feeding small sticks and dry bark to keep the fire alive through the cold, dark hours. They watched the sparks rise toward the stars. They listened for sounds in the forest — the call of an owl, the rustle of a porcupine, the whisper of wind through the pines.
+
+One night, it was {childName}'s turn.
+
+"I am too tired," {childName} said to the elder.
+
+The elder knelt beside the fire and said, "The fire does not burn for you alone. It keeps the whole community warm. The babies need it. The grandmothers need it. The dogs sleeping by the tent need it. When you tend the fire, you are not just feeding wood to flames. You are taking care of everyone."
+
+{childName} sat down on the soft earth beside the fire. The elder placed a small bundle of dry cedar bark in {childName}'s hands.
+
+"Add one piece at a time," the elder said. "Not too much. Not too fast. A fire that is fed with patience burns the longest."
+
+{childName} placed a piece of bark on the coals. It glowed, then caught, then burned with a soft golden light. Another piece. And another.
+
+The hours passed. The stars wheeled slowly overhead. The northern lights appeared, green and shimmering, as if the sky itself was saying thank you.
+
+{childName}'s eyes grew heavy, but the fire stayed bright. And when the first pale light of dawn appeared on the horizon, the elder returned and placed a warm hand on {childName}'s shoulder.
+
+"You kept the fire alive," the elder said. "The whole community slept safely because of you."
+
+That night — the next night — {childName} slept deeply, knowing what it felt like to serve.
+
+Inspired by the values of Canada's First Peoples.`,
+  },
+  {
+    id: 'indigenous_cedar_sage_sweetgrass',
+    tradition: 'indigenous',
+    theme: 'kindness',
+    title: 'Cedar, Sage, Sweetgrass',
+    durationMinutes: 5,
+    source: 'Inspired by the values of Canada\'s First Peoples',
+    body: `In a meadow where three different plants grew side by side, an elder knelt with {childName} and said, "Let me introduce you to three of the oldest teachers in the world."
+
+The elder picked a small branch of cedar — dark green, fragrant, and strong. "Cedar teaches strength. Its wood holds up lodges in the worst storms. Its roots grip the earth and do not let go. When life is hard, be like cedar. Stand firm."
+
+{childName} held the cedar branch and breathed in its sharp, clean scent. It smelled like the forest after rain.
+
+Then the elder picked a sprig of sage — silvery green, soft, and dusty. "Sage teaches cleansing. When our thoughts become tangled and heavy, sage reminds us to let go. To breathe. To clear away what no longer helps us, so that fresh thoughts can grow."
+
+{childName} rubbed the sage between their fingers. It felt like velvet and smelled like something ancient and wise.
+
+Last, the elder reached down and lifted a long, thin braid of sweetgrass — golden brown, twisted together in three strands. "Sweetgrass teaches kindness. Do you smell it?"
+
+{childName} leaned close. The sweetgrass smelled sweet and warm, like honey and summer fields and the hair of someone who loves you.
+
+"Sweetgrass smells the way kindness feels," the elder said. "It draws good things toward you. When you braid it, you braid together mind, body, and spirit. Three strands, one braid. Three lessons, one heart."
+
+{childName} held all three — the cedar, the sage, and the sweetgrass — in their small hands. Strength. Cleansing. Kindness.
+
+"Carry these with you," the elder said. "Not always in your hands, but always in your heart."
+
+That night, {childName} fell asleep with the scent of sweetgrass still on their fingers, dreaming of meadows and strength and gentle, golden kindness.
+
+Inspired by the values of Canada's First Peoples.`,
+  },
+  {
+    id: 'indigenous_moose_mouse',
+    tradition: 'indigenous',
+    theme: 'equality',
+    title: 'The Moose and the Mouse',
+    durationMinutes: 5,
+    source: 'Inspired by the values of Canada\'s First Peoples',
+    body: `In the great northern forest, the moose was the biggest animal. It stood taller than two grown people, with antlers as wide as a canoe. When it walked, the ground trembled. When it drank from the lake, it drank in great gulps that made ripples all the way to the far shore.
+
+And the mouse was the smallest. It was no bigger than {childName}'s thumb, with tiny black eyes and whiskers as thin as threads of silk. It lived under a log, in a hole so small that even the rain could barely find it.
+
+One winter night, a terrible blizzard came. The wind howled. The snow fell in thick, blinding curtains. Even the moose, with its great strong legs, could not find shelter.
+
+The moose stumbled through the drifts, its breath freezing in clouds, its huge body shaking with cold. It was lost.
+
+Then, from beneath a log, came a tiny, tiny sound. "Psst. Over here."
+
+The moose looked down. The mouse was waving from the entrance to its burrow.
+
+"Follow the stream," the mouse said. "Twenty steps east. There is a stand of thick spruce. The snow cannot get through the branches. You will be safe there."
+
+The moose followed the mouse's directions. And there it was — a grove of spruce trees so thick and sheltering that the blizzard could not touch them. The moose sank to its knees and rested, safe and warm.
+
+In the morning, the moose found the mouse's log and bent its great head down. "Thank you, small one. You saved my life."
+
+The mouse looked up. "The forest takes care of all of us — big and small. My eyes are closer to the ground. I see things you cannot. And your legs are longer than the tallest drift. You can go where I cannot. We need each other."
+
+That night, {childName}, remember the moose and the mouse. No one is too big to need help. No one is too small to give it.
+
+Inspired by the values of Canada's First Peoples.`,
+  },
+  {
+    id: 'indigenous_snow_silence',
+    tradition: 'indigenous',
+    theme: 'patience',
+    title: 'Snow Teaches Silence',
+    durationMinutes: 5,
+    source: 'Inspired by the values of Canada\'s First Peoples',
+    body: `One morning, {childName} woke up and the whole world had changed. Overnight, the first snow had fallen — thick, white, and perfectly still. Every branch, every rock, every footpath was covered in a soft, clean blanket.
+
+{childName} stepped outside. The air was cold and smelled like pine and ice and something new. But what {childName} noticed most was the silence.
+
+The forest was never truly quiet — there were always birds, or wind, or the creek tumbling over stones. But this morning, the snow had hushed everything. It was as if the whole world had taken a deep breath and was holding it.
+
+{childName} took one step. The snow crunched softly under one foot. Then another step. Crunch. It was the only sound in the world.
+
+An elder appeared at the edge of the clearing, walking so quietly that {childName} did not hear them until they were close.
+
+"Listen," the elder whispered.
+
+{childName} stood still and listened. At first, there was nothing. Then, slowly, sounds began to appear — tiny sounds that {childName} had never noticed before. A chickadee shifting on a branch. A snowflake landing. The creak of a tree adjusting to the cold. The sound of their own breathing.
+
+"The snow teaches us silence," the elder said. "And silence is not empty. Silence is full of things you can only hear when you stop talking, stop rushing, stop filling the air with noise."
+
+{childName} stood very still for a long time, listening to the snow listen to the world.
+
+"Silence," the elder said, "is the oldest kind of listening. And listening is the beginning of all wisdom."
+
+That night, {childName} lay in bed and let the silence come. Not the scary kind of silence, but the soft kind — the kind that feels like fresh snow falling gently over everything, covering the busy day in peace.
+
+Inspired by the values of Canada's First Peoples.`,
+  },
+  {
+    id: 'indigenous_northern_lights',
+    tradition: 'indigenous',
+    theme: 'wonder',
+    title: 'The Northern Lights Dance',
+    durationMinutes: 5,
+    source: 'Inspired by the values of Canada\'s First Peoples',
+    body: `On the coldest, clearest night of the year, when the stars were sharp as diamonds and the air stung {childName}'s cheeks, something wonderful happened in the sky.
+
+It started as a faint glow on the northern horizon — pale green, like light shining through a leaf. Then it grew. It spread across the sky in great rippling curtains of colour — green, then purple, then white, then a colour that was somewhere between pink and gold that had no name.
+
+{childName} stood in the snow, head tilted all the way back, mouth open in wonder.
+
+"What are they?" {childName} whispered.
+
+An elder wrapped a warm blanket around {childName}'s shoulders and looked up too. "The people have many stories about the lights. Some say they are the spirits of those who have passed on, dancing together in the sky. Some say they are the breath of the great animals — the caribou and the bear and the whale — rising up to play among the stars."
+
+The lights shimmered and swirled, as if they could hear the elder speaking and were dancing a little harder.
+
+"And some say," the elder continued, voice soft and full of wonder, "that the lights are a celebration. That the sky dances when something beautiful happens on earth — when a baby is born, when a kindness is shown, when someone forgives."
+
+{childName} watched the lights weave and shimmer and pulse. They moved like music made visible — like a song the sky was singing to the earth.
+
+"What are they celebrating tonight?" {childName} asked.
+
+The elder looked down at {childName} and smiled. "You, little one. They are celebrating you."
+
+{childName} laughed — a small, bright sound in the cold night air. And somewhere above, the lights shimmered a little brighter, as if they heard.
+
+That night, {childName} fell asleep still seeing the colours behind closed eyes — green and purple and gold — a sky full of joy.
+
+Inspired by the values of Canada's First Peoples.`,
+  },
+  {
+    id: 'indigenous_every_rock',
+    tradition: 'indigenous',
+    theme: 'respect-for-land',
+    title: 'Every Rock Has a Story',
+    durationMinutes: 5,
+    source: 'Inspired by the values of Canada\'s First Peoples',
+    body: `By the shore of a great lake, where the water was so clear you could see the pebbles at the bottom, {childName} picked up a small, smooth stone. It was grey and flat and warm from the sun.
+
+"Put it back," the elder said gently.
+
+{childName} looked up, surprised. "It is just a rock."
+
+The elder sat down on the sand and patted the ground beside them. {childName} sat too, still holding the stone.
+
+"That rock," the elder said, "has been here for longer than you can imagine. Longer than the trees. Longer than this lake. Longer than the oldest story anyone has ever told. It was here when the glaciers carved these valleys. It was here when the first people walked this shore."
+
+{childName} turned the stone over in their hands. It did not look special. But suddenly, it felt different — heavier, somehow. Older.
+
+"The land remembers everything," the elder said. "Every footstep. Every season. Every prayer that was spoken near this water. The rocks hold those memories. The trees hold them in their rings. The soil holds them in its layers."
+
+A loon called from the middle of the lake. Its voice echoed off the cliffs on the far shore.
+
+"When we say the land is sacred," the elder continued, "we do not mean it belongs to us. We mean we belong to it. We are part of this place, the way a wave is part of the ocean. When we take care of the land, we take care of ourselves. When we harm the land, we harm our own future."
+
+{childName} looked at the stone one more time. Then, very carefully, placed it back on the shore, exactly where it had been.
+
+The elder nodded. "Now you understand."
+
+The lake sparkled. The stone sat in its place, holding all its stories close. And {childName} walked back to camp with empty hands and a heart full of something that felt like reverence.
+
+That night, {childName} fell asleep knowing that the land was not just dirt and rocks and water. It was a living, breathing, remembering thing — and it deserved to be loved.
+
+Inspired by the values of Canada's First Peoples.`,
+  },
+  // ── Christian Bedtime Stories ──
+  { id: 'christian_shepherd_blanket', tradition: 'christian', theme: 'sharing', title: 'The Shepherd Boy\'s Blanket', durationMinutes: 3, source: 'Christian Tradition', body: 'Story available in client bundle.' },
+  { id: 'christian_fisherman_net', tradition: 'christian', theme: 'kindness', title: 'The Fisherman\'s Net', durationMinutes: 3, source: 'Christian Tradition', body: 'Story available in client bundle.' },
+  { id: 'christian_sparrow_watches', tradition: 'christian', theme: 'courage', title: 'The Sparrow God Watches', durationMinutes: 3, source: 'Christian Tradition', body: 'Story available in client bundle.' },
+  { id: 'christian_star_led_way', tradition: 'christian', theme: 'courage', title: 'The Star That Led the Way', durationMinutes: 3, source: 'Christian Tradition', body: 'Story available in client bundle.' },
+  { id: 'christian_well_living_water', tradition: 'christian', theme: 'sharing', title: 'The Well of Living Water', durationMinutes: 3, source: 'Christian Tradition', body: 'Story available in client bundle.' },
+  { id: 'christian_fig_tree_chance', tradition: 'christian', theme: 'patience', title: 'The Fig Tree\'s Second Chance', durationMinutes: 3, source: 'Christian Tradition', body: 'Story available in client bundle.' },
+  { id: 'christian_mustard_seed_garden', tradition: 'christian', theme: 'courage', title: 'The Mustard Seed Garden', durationMinutes: 3, source: 'Christian Tradition', body: 'Story available in client bundle.' },
+  { id: 'christian_widow_coins', tradition: 'christian', theme: 'sharing', title: 'The Widow\'s Two Coins', durationMinutes: 3, source: 'Christian Tradition', body: 'Story available in client bundle.' },
+  { id: 'christian_bridges_not_walls', tradition: 'christian', theme: 'forgiveness', title: 'Building Bridges, Not Walls', durationMinutes: 3, source: 'Christian Tradition', body: 'Story available in client bundle.' },
+  { id: 'christian_light_on_hill', tradition: 'christian', theme: 'kindness', title: 'The Light on the Hill', durationMinutes: 3, source: 'Christian Tradition', body: 'Story available in client bundle.' },
+  // ── Buddhist Bedtime Stories ──
+  { id: 'buddhist_tiger_strawberry', tradition: 'buddhist', theme: 'wisdom', title: 'The Tiger and the Strawberry', durationMinutes: 3, source: 'Buddhist Tradition', body: 'Story available in client bundle.' },
+  { id: 'buddhist_empty_cup', tradition: 'buddhist', theme: 'wisdom', title: 'The Empty Cup', durationMinutes: 3, source: 'Buddhist Tradition', body: 'Story available in client bundle.' },
+  { id: 'buddhist_siddhartha_garden', tradition: 'buddhist', theme: 'patience', title: 'Siddhartha\'s Garden', durationMinutes: 3, source: 'Buddhist Tradition', body: 'Story available in client bundle.' },
+  { id: 'buddhist_monk_scorpion', tradition: 'buddhist', theme: 'kindness', title: 'The Monk and the Scorpion', durationMinutes: 3, source: 'Buddhist Tradition', body: 'Story available in client bundle.' },
+  { id: 'buddhist_mountain_moved', tradition: 'buddhist', theme: 'patience', title: 'The Mountain That Moved Slowly', durationMinutes: 3, source: 'Buddhist Tradition', body: 'Story available in client bundle.' },
+  { id: 'buddhist_two_hands', tradition: 'buddhist', theme: 'sharing', title: 'Two Hands Clapping', durationMinutes: 3, source: 'Buddhist Tradition', body: 'Story available in client bundle.' },
+  { id: 'buddhist_river_found_sea', tradition: 'buddhist', theme: 'courage', title: 'The River That Found the Sea', durationMinutes: 3, source: 'Buddhist Tradition', body: 'Story available in client bundle.' },
+  { id: 'buddhist_breathing_ocean', tradition: 'buddhist', theme: 'patience', title: 'Breathing Like the Ocean', durationMinutes: 3, source: 'Buddhist Tradition', body: 'Story available in client bundle.' },
+  { id: 'buddhist_farmer_good_luck', tradition: 'buddhist', theme: 'wisdom', title: 'The Farmer\'s Good Luck', durationMinutes: 3, source: 'Buddhist Tradition', body: 'Story available in client bundle.' },
+  { id: 'buddhist_footprints_snow', tradition: 'buddhist', theme: 'kindness', title: 'Footprints in the Snow', durationMinutes: 3, source: 'Buddhist Tradition', body: 'Story available in client bundle.' },
+  // ── Jain Bedtime Stories ──
+  { id: 'jain_prince_never_hurt_fly', tradition: 'jain', theme: 'compassion', title: 'The Prince Who Never Hurt a Fly', durationMinutes: 3, source: 'Jain Tradition', body: 'Story available in client bundle.' },
+  { id: 'jain_spider_web', tradition: 'jain', theme: 'respect', title: 'The Spider\'s Beautiful Web', durationMinutes: 3, source: 'Jain Tradition', body: 'Story available in client bundle.' },
+  { id: 'jain_merchant_gave_everything', tradition: 'jain', theme: 'wisdom', title: 'The Merchant Who Gave Everything', durationMinutes: 3, source: 'Jain Tradition', body: 'Story available in client bundle.' },
+  { id: 'jain_bird_carried_water', tradition: 'jain', theme: 'courage', title: 'The Bird That Carried Water', durationMinutes: 3, source: 'Jain Tradition', body: 'Story available in client bundle.' },
+  { id: 'jain_walking_barefoot', tradition: 'jain', theme: 'kindness', title: 'Walking Barefoot', durationMinutes: 3, source: 'Jain Tradition', body: 'Story available in client bundle.' },
+  { id: 'jain_diamond_dewdrop', tradition: 'jain', theme: 'wisdom', title: 'The Diamond and the Dewdrop', durationMinutes: 3, source: 'Jain Tradition', body: 'Story available in client bundle.' },
+  { id: 'jain_peacock_dance', tradition: 'jain', theme: 'gratitude', title: 'The Peacock\'s Dance', durationMinutes: 3, source: 'Jain Tradition', body: 'Story available in client bundle.' },
+  { id: 'jain_farmer_fed_ants', tradition: 'jain', theme: 'compassion', title: 'The Farmer Who Fed the Ants', durationMinutes: 3, source: 'Jain Tradition', body: 'Story available in client bundle.' },
+  { id: 'jain_temple_sunrise', tradition: 'jain', theme: 'gratitude', title: 'The Jain Temple at Sunrise', durationMinutes: 3, source: 'Jain Tradition', body: 'Story available in client bundle.' },
+  { id: 'jain_child_counted_stars', tradition: 'jain', theme: 'wisdom', title: 'The Child Who Counted Stars', durationMinutes: 3, source: 'Jain Tradition', body: 'Story available in client bundle.' },
+  // ── Jewish Bedtime Stories ──
+  { id: 'jewish_wise_child_chelm', tradition: 'jewish', theme: 'wisdom', title: 'The Wise Child of Chelm', durationMinutes: 3, source: 'Jewish Tradition', body: 'Story available in client bundle.' },
+  { id: 'jewish_golem_heart', tradition: 'jewish', theme: 'kindness', title: 'The Golem\'s Heart', durationMinutes: 3, source: 'Jewish Tradition', body: 'Story available in client bundle.' },
+  { id: 'jewish_ruth_naomi', tradition: 'jewish', theme: 'kindness', title: 'Ruth and Naomi\'s Promise', durationMinutes: 3, source: 'Jewish Tradition', body: 'Story available in client bundle.' },
+  { id: 'jewish_apple_tree_road', tradition: 'jewish', theme: 'patience', title: 'The Apple Tree at the End of the Road', durationMinutes: 3, source: 'Jewish Tradition', body: 'Story available in client bundle.' },
+  { id: 'jewish_dreidel_spun', tradition: 'jewish', theme: 'courage', title: 'The Dreidel That Spun All Night', durationMinutes: 3, source: 'Jewish Tradition', body: 'Story available in client bundle.' },
+  { id: 'jewish_elijah_chair', tradition: 'jewish', theme: 'kindness', title: 'Elijah\'s Empty Chair', durationMinutes: 3, source: 'Jewish Tradition', body: 'Story available in client bundle.' },
+  { id: 'jewish_box_beautiful_words', tradition: 'jewish', theme: 'kindness', title: 'The Box of Beautiful Words', durationMinutes: 3, source: 'Jewish Tradition', body: 'Story available in client bundle.' },
+  { id: 'jewish_shabbat_candles', tradition: 'jewish', theme: 'gratitude', title: 'The Shabbat Candles', durationMinutes: 3, source: 'Jewish Tradition', body: 'Story available in client bundle.' },
+  { id: 'jewish_vineyard_kindness', tradition: 'jewish', theme: 'kindness', title: 'The Vineyard of Kindness', durationMinutes: 3, source: 'Jewish Tradition', body: 'Story available in client bundle.' },
+  { id: 'jewish_hanukkah_flame', tradition: 'jewish', theme: 'courage', title: 'Hanukkah\'s Smallest Flame', durationMinutes: 3, source: 'Jewish Tradition', body: 'Story available in client bundle.' },
 ];
 
 // Helpers
-export const TRADITIONS = ['hindu', 'muslim', 'christian', 'sikh', 'buddhist', 'jain', 'jewish'];
+export const TRADITIONS = ['hindu', 'muslim', 'christian', 'sikh', 'buddhist', 'jain', 'jewish', 'indigenous'];
 
 export const THEMES = [
   { key: 'compassion-animals', label: 'Compassion', icon: '🦋' },

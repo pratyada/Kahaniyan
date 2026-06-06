@@ -4773,6 +4773,1678 @@ That night, {childName}, even if you are far from Amritsar, the Golden Temple sh
   },
 );
 
+// ─── INDIGENOUS CANADIAN ──────────────────────────────────
+CULTURAL_LESSONS.push(
+  {
+    id: 'indigenous_eagle_feather',
+    tradition: 'indigenous',
+    theme: 'respect',
+    title: 'The Eagle Feather',
+    durationMinutes: 5,
+    source: 'Inspired by the values of Canada\'s First Peoples',
+    body: `One autumn afternoon, when the maple leaves were burning red and orange, {childName} sat beside an elder on a fallen log near the edge of a wide, quiet lake.
+
+The elder reached into a soft cloth pouch and brought out a single feather. It was long and beautiful — brown and white, with edges that looked like they had been painted by the wind itself.
+
+"This is an eagle feather," the elder said, holding it gently, as if it were made of something very precious. "Do you know what it means?"
+
+{childName} shook their head.
+
+"Many people think a feather like this is about honour. And it is. But it is about something even deeper. It is about responsibility."
+
+The elder turned the feather slowly in the light. "The eagle flies higher than any other bird. It sees everything — the rivers, the forests, the mountains, the people below. Because it sees so much, it carries a great responsibility. It must watch over the land. It must be truthful about what it sees."
+
+The elder placed the feather gently into {childName}'s small hands. "When someone gives you a feather, they are not saying you are special. They are saying they trust you. They are saying: we believe you will do what is right, even when no one is watching."
+
+{childName} held the feather carefully, feeling the soft barbs against their fingers. It was lighter than a whisper, but it felt like it held the weight of something enormous.
+
+"Carry it gently," the elder said. "The way you carry this feather is the way you should carry your promises — with care, with respect, and with both hands."
+
+That night, {childName} placed the feather beside their pillow and fell asleep feeling the quiet, steady weight of trust.
+
+Inspired by the values of Canada's First Peoples.`,
+  },
+  {
+    id: 'indigenous_two_eyed_seeing',
+    tradition: 'indigenous',
+    theme: 'wisdom',
+    title: 'Two-Eyed Seeing',
+    durationMinutes: 5,
+    source: 'Inspired by the values of Canada\'s First Peoples',
+    body: `{childName}'s grandmother had the kindest eyes in the whole world. One was brown like the bark of a cedar tree, and the other was brown like the bark of a cedar tree too — but somehow, when she looked at you, each eye seemed to see something different.
+
+One evening, as they sat together watching the sun set over a lake, {childName} asked, "Grandmother, how do you always know the right thing to say?"
+
+Grandmother smiled. "I will tell you a secret, little one. I use two-eyed seeing."
+
+"Two-eyed seeing?" {childName} asked. "Does not everyone see with two eyes?"
+
+"With their eyes, yes," Grandmother said. "But not with their hearts. Two-eyed seeing means looking at the world with one eye through the old knowledge — the things the land has taught our people for thousands of years. The medicine of plants. The wisdom of the seasons. The way the animals move before a storm."
+
+She pointed at the sky, where geese were flying south in a perfect V.
+
+"And with the other eye," she continued, "you look through new knowledge — the things books and teachers and scientists have discovered. Both eyes see something true. But when you use both together, you see the whole picture."
+
+{childName} closed one eye, then the other. The world looked flat and narrow with only one eye open. But with both eyes open, everything had depth and colour and shape.
+
+"Never let anyone tell you that one way of seeing is better than the other," Grandmother said softly. "The wisest people are the ones who can hold both — the old and the new — and let them work together like two hands braiding sweetgrass."
+
+That night, {childName} looked at the stars with both eyes open wide, seeing more than ever before.
+
+Inspired by the values of Canada's First Peoples.`,
+  },
+  {
+    id: 'indigenous_medicine_wheel',
+    tradition: 'indigenous',
+    theme: 'gratitude',
+    title: 'The Medicine Wheel',
+    durationMinutes: 5,
+    source: 'Inspired by the values of Canada\'s First Peoples',
+    body: `On a grassy hilltop where the wind blew soft and steady, an elder drew a circle in the earth with a stick. Inside the circle, they drew a cross, dividing it into four equal parts.
+
+"This," said the elder, "is the medicine wheel. It has been here for longer than anyone can remember. It teaches us about the four directions, and each direction carries a gift."
+
+{childName} sat cross-legged in the grass and listened.
+
+The elder pointed to the right side of the circle. "The East is where the sun rises. It is the place of new beginnings — new mornings, new ideas, new babies coming into the world. When you wake up each day, you are standing in the East."
+
+The elder moved their hand to the bottom. "The South is the place of growth. It is summertime. It is where you learn and play and stretch toward the sky, the way young plants reach for the sun."
+
+Then to the left. "The West is where the sun goes to rest. It is the place of reflection — looking back at your day, thinking about what you did well and what you could do better. It is autumn, when the leaves let go."
+
+And finally, to the top. "The North is the place of wisdom. It is winter — quiet, still, and deep. It is the direction of the elders, who have walked all the other directions and now carry the knowledge of the whole circle inside them."
+
+{childName} looked at the four parts of the wheel. East, South, West, North. Beginning, growth, reflection, wisdom.
+
+"You will walk this wheel many times in your life," the elder said. "Every day is a small circle. Every year is a bigger one. And your whole life — from the moment you are born to the moment you return to the earth — is the biggest circle of all."
+
+That night, {childName} fell asleep grateful for every direction, every season, every turn of the great wheel.
+
+Inspired by the values of Canada's First Peoples.`,
+  },
+  {
+    id: 'indigenous_river_knows',
+    tradition: 'indigenous',
+    theme: 'trust',
+    title: 'The River Knows the Way',
+    durationMinutes: 5,
+    source: 'Inspired by the values of Canada\'s First Peoples',
+    body: `One afternoon, {childName} wandered a little too far from camp while picking wild blueberries. The trees all looked the same. The trail had disappeared under a carpet of moss and ferns. The sky was grey, so there was no sun to follow.
+
+{childName} felt a flutter of worry in their chest. Which way was home?
+
+Then {childName} remembered something an elder had once said: "If you are ever lost in the forest, find the water. The river always knows the way."
+
+{childName} stood very still and listened. Beneath the sound of the wind and the birds, there was something else — a soft, steady murmur. Water.
+
+{childName} followed the sound, stepping carefully over roots and stones, until the trees opened up and a small stream appeared, winding over smooth pebbles. The water was clear and cold and unhurried.
+
+{childName} knelt down and watched it flow. The stream did not worry about where it was going. It did not try to rush. It simply followed the land — around rocks, under fallen logs, through meadows — always moving, always finding the way.
+
+{childName} followed the stream. It joined a bigger creek. The creek joined a small river. And the river led to the lake — and there, on the far shore, was the camp. Smoke rising from the fire. Familiar voices calling.
+
+{childName} arrived just as the first stars appeared. The elder was waiting, calm and unsurprised.
+
+"You followed the water," the elder said. It was not a question.
+
+{childName} nodded.
+
+"The land takes care of us," the elder said, "when we take care of the land. Trust it. Listen to it. It will always lead you home."
+
+That night, {childName} fell asleep to the faraway sound of the river, still flowing, still knowing the way.
+
+Inspired by the values of Canada's First Peoples.`,
+  },
+  {
+    id: 'indigenous_fire_keeper',
+    tradition: 'indigenous',
+    theme: 'service',
+    title: 'The Fire Keeper',
+    durationMinutes: 5,
+    source: 'Inspired by the values of Canada\'s First Peoples',
+    body: `Every night, someone in the community stayed awake to tend the fire. They called this person the Fire Keeper.
+
+The Fire Keeper did not sleep while the others slept. They sat beside the flames, feeding small sticks and dry bark to keep the fire alive through the cold, dark hours. They watched the sparks rise toward the stars. They listened for sounds in the forest — the call of an owl, the rustle of a porcupine, the whisper of wind through the pines.
+
+One night, it was {childName}'s turn.
+
+"I am too tired," {childName} said to the elder.
+
+The elder knelt beside the fire and said, "The fire does not burn for you alone. It keeps the whole community warm. The babies need it. The grandmothers need it. The dogs sleeping by the tent need it. When you tend the fire, you are not just feeding wood to flames. You are taking care of everyone."
+
+{childName} sat down on the soft earth beside the fire. The elder placed a small bundle of dry cedar bark in {childName}'s hands.
+
+"Add one piece at a time," the elder said. "Not too much. Not too fast. A fire that is fed with patience burns the longest."
+
+{childName} placed a piece of bark on the coals. It glowed, then caught, then burned with a soft golden light. Another piece. And another.
+
+The hours passed. The stars wheeled slowly overhead. The northern lights appeared, green and shimmering, as if the sky itself was saying thank you.
+
+{childName}'s eyes grew heavy, but the fire stayed bright. And when the first pale light of dawn appeared on the horizon, the elder returned and placed a warm hand on {childName}'s shoulder.
+
+"You kept the fire alive," the elder said. "The whole community slept safely because of you."
+
+That night — the next night — {childName} slept deeply, knowing what it felt like to serve.
+
+Inspired by the values of Canada's First Peoples.`,
+  },
+  {
+    id: 'indigenous_cedar_sage_sweetgrass',
+    tradition: 'indigenous',
+    theme: 'kindness',
+    title: 'Cedar, Sage, Sweetgrass',
+    durationMinutes: 5,
+    source: 'Inspired by the values of Canada\'s First Peoples',
+    body: `In a meadow where three different plants grew side by side, an elder knelt with {childName} and said, "Let me introduce you to three of the oldest teachers in the world."
+
+The elder picked a small branch of cedar — dark green, fragrant, and strong. "Cedar teaches strength. Its wood holds up lodges in the worst storms. Its roots grip the earth and do not let go. When life is hard, be like cedar. Stand firm."
+
+{childName} held the cedar branch and breathed in its sharp, clean scent. It smelled like the forest after rain.
+
+Then the elder picked a sprig of sage — silvery green, soft, and dusty. "Sage teaches cleansing. When our thoughts become tangled and heavy, sage reminds us to let go. To breathe. To clear away what no longer helps us, so that fresh thoughts can grow."
+
+{childName} rubbed the sage between their fingers. It felt like velvet and smelled like something ancient and wise.
+
+Last, the elder reached down and lifted a long, thin braid of sweetgrass — golden brown, twisted together in three strands. "Sweetgrass teaches kindness. Do you smell it?"
+
+{childName} leaned close. The sweetgrass smelled sweet and warm, like honey and summer fields and the hair of someone who loves you.
+
+"Sweetgrass smells the way kindness feels," the elder said. "It draws good things toward you. When you braid it, you braid together mind, body, and spirit. Three strands, one braid. Three lessons, one heart."
+
+{childName} held all three — the cedar, the sage, and the sweetgrass — in their small hands. Strength. Cleansing. Kindness.
+
+"Carry these with you," the elder said. "Not always in your hands, but always in your heart."
+
+That night, {childName} fell asleep with the scent of sweetgrass still on their fingers, dreaming of meadows and strength and gentle, golden kindness.
+
+Inspired by the values of Canada's First Peoples.`,
+  },
+  {
+    id: 'indigenous_moose_mouse',
+    tradition: 'indigenous',
+    theme: 'equality',
+    title: 'The Moose and the Mouse',
+    durationMinutes: 5,
+    source: 'Inspired by the values of Canada\'s First Peoples',
+    body: `In the great northern forest, the moose was the biggest animal. It stood taller than two grown people, with antlers as wide as a canoe. When it walked, the ground trembled. When it drank from the lake, it drank in great gulps that made ripples all the way to the far shore.
+
+And the mouse was the smallest. It was no bigger than {childName}'s thumb, with tiny black eyes and whiskers as thin as threads of silk. It lived under a log, in a hole so small that even the rain could barely find it.
+
+One winter night, a terrible blizzard came. The wind howled. The snow fell in thick, blinding curtains. Even the moose, with its great strong legs, could not find shelter.
+
+The moose stumbled through the drifts, its breath freezing in clouds, its huge body shaking with cold. It was lost.
+
+Then, from beneath a log, came a tiny, tiny sound. "Psst. Over here."
+
+The moose looked down. The mouse was waving from the entrance to its burrow.
+
+"Follow the stream," the mouse said. "Twenty steps east. There is a stand of thick spruce. The snow cannot get through the branches. You will be safe there."
+
+The moose followed the mouse's directions. And there it was — a grove of spruce trees so thick and sheltering that the blizzard could not touch them. The moose sank to its knees and rested, safe and warm.
+
+In the morning, the moose found the mouse's log and bent its great head down. "Thank you, small one. You saved my life."
+
+The mouse looked up. "The forest takes care of all of us — big and small. My eyes are closer to the ground. I see things you cannot. And your legs are longer than the tallest drift. You can go where I cannot. We need each other."
+
+That night, {childName}, remember the moose and the mouse. No one is too big to need help. No one is too small to give it.
+
+Inspired by the values of Canada's First Peoples.`,
+  },
+  {
+    id: 'indigenous_snow_silence',
+    tradition: 'indigenous',
+    theme: 'patience',
+    title: 'Snow Teaches Silence',
+    durationMinutes: 5,
+    source: 'Inspired by the values of Canada\'s First Peoples',
+    body: `One morning, {childName} woke up and the whole world had changed. Overnight, the first snow had fallen — thick, white, and perfectly still. Every branch, every rock, every footpath was covered in a soft, clean blanket.
+
+{childName} stepped outside. The air was cold and smelled like pine and ice and something new. But what {childName} noticed most was the silence.
+
+The forest was never truly quiet — there were always birds, or wind, or the creek tumbling over stones. But this morning, the snow had hushed everything. It was as if the whole world had taken a deep breath and was holding it.
+
+{childName} took one step. The snow crunched softly under one foot. Then another step. Crunch. It was the only sound in the world.
+
+An elder appeared at the edge of the clearing, walking so quietly that {childName} did not hear them until they were close.
+
+"Listen," the elder whispered.
+
+{childName} stood still and listened. At first, there was nothing. Then, slowly, sounds began to appear — tiny sounds that {childName} had never noticed before. A chickadee shifting on a branch. A snowflake landing. The creak of a tree adjusting to the cold. The sound of their own breathing.
+
+"The snow teaches us silence," the elder said. "And silence is not empty. Silence is full of things you can only hear when you stop talking, stop rushing, stop filling the air with noise."
+
+{childName} stood very still for a long time, listening to the snow listen to the world.
+
+"Silence," the elder said, "is the oldest kind of listening. And listening is the beginning of all wisdom."
+
+That night, {childName} lay in bed and let the silence come. Not the scary kind of silence, but the soft kind — the kind that feels like fresh snow falling gently over everything, covering the busy day in peace.
+
+Inspired by the values of Canada's First Peoples.`,
+  },
+  {
+    id: 'indigenous_northern_lights',
+    tradition: 'indigenous',
+    theme: 'wonder',
+    title: 'The Northern Lights Dance',
+    durationMinutes: 5,
+    source: 'Inspired by the values of Canada\'s First Peoples',
+    body: `On the coldest, clearest night of the year, when the stars were sharp as diamonds and the air stung {childName}'s cheeks, something wonderful happened in the sky.
+
+It started as a faint glow on the northern horizon — pale green, like light shining through a leaf. Then it grew. It spread across the sky in great rippling curtains of colour — green, then purple, then white, then a colour that was somewhere between pink and gold that had no name.
+
+{childName} stood in the snow, head tilted all the way back, mouth open in wonder.
+
+"What are they?" {childName} whispered.
+
+An elder wrapped a warm blanket around {childName}'s shoulders and looked up too. "The people have many stories about the lights. Some say they are the spirits of those who have passed on, dancing together in the sky. Some say they are the breath of the great animals — the caribou and the bear and the whale — rising up to play among the stars."
+
+The lights shimmered and swirled, as if they could hear the elder speaking and were dancing a little harder.
+
+"And some say," the elder continued, voice soft and full of wonder, "that the lights are a celebration. That the sky dances when something beautiful happens on earth — when a baby is born, when a kindness is shown, when someone forgives."
+
+{childName} watched the lights weave and shimmer and pulse. They moved like music made visible — like a song the sky was singing to the earth.
+
+"What are they celebrating tonight?" {childName} asked.
+
+The elder looked down at {childName} and smiled. "You, little one. They are celebrating you."
+
+{childName} laughed — a small, bright sound in the cold night air. And somewhere above, the lights shimmered a little brighter, as if they heard.
+
+That night, {childName} fell asleep still seeing the colours behind closed eyes — green and purple and gold — a sky full of joy.
+
+Inspired by the values of Canada's First Peoples.`,
+  },
+  {
+    id: 'indigenous_every_rock',
+    tradition: 'indigenous',
+    theme: 'respect-for-land',
+    title: 'Every Rock Has a Story',
+    durationMinutes: 5,
+    source: 'Inspired by the values of Canada\'s First Peoples',
+    body: `By the shore of a great lake, where the water was so clear you could see the pebbles at the bottom, {childName} picked up a small, smooth stone. It was grey and flat and warm from the sun.
+
+"Put it back," the elder said gently.
+
+{childName} looked up, surprised. "It is just a rock."
+
+The elder sat down on the sand and patted the ground beside them. {childName} sat too, still holding the stone.
+
+"That rock," the elder said, "has been here for longer than you can imagine. Longer than the trees. Longer than this lake. Longer than the oldest story anyone has ever told. It was here when the glaciers carved these valleys. It was here when the first people walked this shore."
+
+{childName} turned the stone over in their hands. It did not look special. But suddenly, it felt different — heavier, somehow. Older.
+
+"The land remembers everything," the elder said. "Every footstep. Every season. Every prayer that was spoken near this water. The rocks hold those memories. The trees hold them in their rings. The soil holds them in its layers."
+
+A loon called from the middle of the lake. Its voice echoed off the cliffs on the far shore.
+
+"When we say the land is sacred," the elder continued, "we do not mean it belongs to us. We mean we belong to it. We are part of this place, the way a wave is part of the ocean. When we take care of the land, we take care of ourselves. When we harm the land, we harm our own future."
+
+{childName} looked at the stone one more time. Then, very carefully, placed it back on the shore, exactly where it had been.
+
+The elder nodded. "Now you understand."
+
+The lake sparkled. The stone sat in its place, holding all its stories close. And {childName} walked back to camp with empty hands and a heart full of something that felt like reverence.
+
+That night, {childName} fell asleep knowing that the land was not just dirt and rocks and water. It was a living, breathing, remembering thing — and it deserved to be loved.
+
+Inspired by the values of Canada's First Peoples.`,
+  },
+);
+
+// ── Christian Bedtime Stories ──────────────────────────────────────────
+CULTURAL_LESSONS.push(
+  {
+    id: 'christian_shepherd_blanket',
+    tradition: 'christian',
+    theme: 'sharing',
+    title: 'The Shepherd Boy\'s Blanket',
+    subtitle: 'A boy shares his only blanket on the coldest night of the year',
+    durationMinutes: 3,
+    source: 'Christian Tradition',
+    imagePrompt: 'Cinematic scene of a shepherd boy wrapping his woolen blanket around a shivering lamb on a snowy hillside at night, warm starlight, gentle snowflakes, cozy and kind, NO TEXT',
+    body: `On the coldest night of the year, a shepherd boy named Eli sat on a hillside watching over his flock. The wind bit his cheeks and the stars shivered in the dark sky. Eli pulled his only blanket tight around his shoulders.
+
+Then he heard it — a tiny, trembling sound. A newborn lamb, smaller than a loaf of bread, was shaking in the frosty grass. Its mother was nowhere to be found.
+
+Eli looked at his blanket. It was the only warm thing he had. If he gave it away, he would be cold all night.
+
+But the lamb was so small. So cold. So alone.
+
+Eli did not think about it for long. He unwrapped his blanket, knelt down, and tucked it gently around the tiny lamb. "There you go, little one," he whispered. "You need this more than I do."
+
+The lamb stopped trembling. It nestled into the warmth and closed its eyes.
+
+Eli sat in the cold, hugging his knees. But something strange happened. Even without his blanket, he felt warm — warm from the inside, like a small fire had been lit in his chest.
+
+By morning, the lamb's mother had found her baby. The lamb was strong and healthy, bouncing on its tiny legs. And Eli — Eli had never felt so rich.
+
+Jesus once said, "Whatever you do for the smallest among you, you do for me." It means that every act of kindness — especially the ones that cost you something — is a gift to the whole world.
+
+Tonight, {childName}, remember Eli and his blanket. Sometimes the warmest thing you can do is give your warmth to someone who needs it more. Goodnight, warm heart.`
+  },
+  {
+    id: 'christian_fisherman_net',
+    tradition: 'christian',
+    theme: 'kindness',
+    title: 'The Fisherman\'s Net',
+    subtitle: 'A fisherman learns that his net is big enough for everyone',
+    durationMinutes: 3,
+    source: 'Christian Tradition',
+    imagePrompt: 'Cinematic scene of a fisherman on a wooden boat casting a wide golden net across calm blue water at sunrise, other boats in background, welcoming and inclusive, Mediterranean Sea, NO TEXT',
+    body: `By the edge of a great blue lake, a fisherman named Peter spent every morning casting his net. He was strong and skilled, and his net was the finest on the water — wide, strong, with knots tied tight.
+
+But Peter had a rule: he only fished with the people he knew. His friends. His family. No one else was allowed on his boat.
+
+One morning, a stranger appeared on the shore. He was thin and tired and had no boat of his own. "May I fish with you?" the stranger asked.
+
+"No," said Peter. "My boat is full. My net is mine."
+
+The stranger sat on the shore and watched Peter fish alone. Peter caught very little that day. His net came up half empty, again and again.
+
+The next morning, the stranger was there again. And the morning after that.
+
+On the fourth day, Peter sighed and said, "Fine. Get in."
+
+The stranger climbed aboard with a grateful smile. Together, they cast the net — and it came up overflowing. More fish than Peter had ever caught alone. The net was so full it nearly tore.
+
+"How?" Peter gasped.
+
+The stranger smiled. "Your net was always big enough. You just were not casting it wide enough."
+
+Peter understood. He had been keeping his world small — only letting in the people he already knew. But when he opened his boat to someone new, everything changed.
+
+From that day on, Peter's boat was open to anyone who needed it. And his net — his beautiful, wide, strong net — never came up empty again.
+
+Jesus taught that love is a net that should be cast wide. It does not pick and choose. It gathers everyone.
+
+Tonight, {childName}, remember Peter's net. There is always room for one more. Goodnight, open heart.`
+  },
+  {
+    id: 'christian_sparrow_watches',
+    tradition: 'christian',
+    theme: 'courage',
+    title: 'The Sparrow God Watches',
+    subtitle: 'A tiny sparrow learns that it is never truly alone',
+    durationMinutes: 3,
+    source: 'Christian Tradition',
+    imagePrompt: 'Cinematic scene of a small brown sparrow perched on a twig in the rain, a ray of golden sunlight breaking through storm clouds and illuminating the bird, warm and hopeful, NO TEXT',
+    body: `In a tree beside a busy road, a small brown sparrow named Pip lived all by herself. She was not colourful like the parrots. She was not strong like the eagles. She was not musical like the nightingales. She was just a plain brown sparrow.
+
+"Nobody notices me," Pip thought. "I am too small. Too ordinary."
+
+One stormy night, the wind shook her tree so hard that Pip was thrown from her branch. She tumbled through the rain, her tiny wings soaked, and landed on the cold, wet ground.
+
+"Help!" she chirped. But the storm was loud, and no one heard.
+
+Pip shivered. She tucked her head under her wing and felt more alone than she had ever felt.
+
+But then — a warmth. Not from the rain or the wind. From somewhere deeper. From somewhere that felt like being held.
+
+The storm passed. The sky cleared. And in the soft, pink light of dawn, a sunbeam fell on Pip — exactly on her, like a gentle golden finger pointing down and saying, "There you are."
+
+Pip fluffed her feathers and flew back to her tree. She was still small. Still brown. Still ordinary. But something had changed inside her. She knew, deep in her tiny heart, that she was seen. She was watched over. She was loved.
+
+Jesus once said, "Not one sparrow falls to the ground without your Father knowing. And you are worth more than many sparrows."
+
+It means that the same love that watches over the smallest, plainest bird in the world is watching over you, {childName}. Right now. Right here. Even on the stormiest night.
+
+Tonight, remember little Pip. You are never too small to be loved. You are never too ordinary to be noticed. The sky knows your name. Goodnight, precious sparrow.`
+  },
+  {
+    id: 'christian_star_led_way',
+    tradition: 'christian',
+    theme: 'courage',
+    title: 'The Star That Led the Way',
+    subtitle: 'Three travellers follow a single bright star through the darkest desert',
+    durationMinutes: 3,
+    source: 'Christian Tradition',
+    imagePrompt: 'Cinematic scene of three travellers on camels following a brilliant star across a vast desert at night, the star casting golden light on sand dunes, majestic and hopeful, NO TEXT',
+    body: `A long, long time ago, three wise travellers looked up at the night sky and saw something new — a star brighter than any they had ever seen. It did not twinkle like the others. It glowed, steady and warm, like a lantern hung just for them.
+
+"What does it mean?" asked the first traveller.
+
+"It means something wonderful has happened," said the second. "Something the world has been waiting for."
+
+"Then we must follow it," said the third.
+
+And so they did. They packed their camels with food and water and precious gifts, and they set out across the desert. The journey was long. The days were hot. The nights were cold. The sand stretched endlessly in every direction.
+
+Sometimes, clouds covered the sky and they could not see the star. "Are we lost?" they asked each other. But they kept walking. They trusted the star would return.
+
+And it always did. Night after night, the star appeared — steady, warm, patient — leading them forward.
+
+After many weeks, the star stopped. It hung low in the sky, glowing above a small, simple stable in a tiny town called Bethlehem. Inside, a baby lay sleeping in a manger, wrapped in soft cloth, with his mother watching over him.
+
+The travellers knelt down. They had crossed deserts, climbed mountains, and followed a light they did not fully understand. But now, kneeling in the quiet stable, they understood. The star had led them to love.
+
+{childName}, sometimes life feels like a long journey through the dark. But there is always a star — a hope, a dream, a quiet voice inside you — that says, "Keep going. Something beautiful is ahead."
+
+Tonight, close your eyes and picture your star. It is shining for you. Follow it. Goodnight, brave traveller.`
+  },
+  {
+    id: 'christian_well_living_water',
+    tradition: 'christian',
+    theme: 'sharing',
+    title: 'The Well of Living Water',
+    subtitle: 'A well that never runs dry teaches a village about generosity',
+    durationMinutes: 3,
+    source: 'Christian Tradition',
+    imagePrompt: 'Cinematic scene of a stone well in a village square with sparkling clear water overflowing gently, children drinking from cupped hands, warm golden light, lush greenery, NO TEXT',
+    body: `In a dry land where rain rarely fell, there was a village with one well. The well was old, made of smooth grey stones, and it sat in the middle of the village square. Every family came to it for water.
+
+But the people were afraid. "What if the well runs dry?" they worried. So they made a rule: each family could take only one bucket per day. No more.
+
+A young girl named Sarah thought this was strange. "The well has plenty of water," she said. "Why are we afraid?"
+
+"Because generosity is risky," her father said. "If we give too much, there might not be enough."
+
+One day, a group of travellers came to the village — dusty, tired, with cracked lips and empty flasks. They asked for water.
+
+"We cannot spare any," said the village elder. "We must save what we have."
+
+Sarah looked at the travellers. She looked at the well. And she made a choice.
+
+She lowered her bucket, pulled up cool, clear water, and handed it to the travellers. They drank deeply, gratefully, and their tired faces softened into smiles.
+
+The villagers gasped. "The well will run dry!"
+
+But it did not. The next morning, the water level was the same. The day after that, the same. The well kept giving and giving and giving.
+
+"You see?" Sarah said. "The well does not run out because it is not the well that decides. Generosity has its own spring. The more you give, the more flows in."
+
+Jesus once told a woman at a well about "living water" — a kindness so deep it never runs dry. When you give from the heart, you are tapping into that well.
+
+Tonight, {childName}, remember Sarah's well. Your kindness is like living water — it flows and flows, and it never, ever runs out. Goodnight, generous soul.`
+  },
+  {
+    id: 'christian_fig_tree_chance',
+    tradition: 'christian',
+    theme: 'patience',
+    title: 'The Fig Tree\'s Second Chance',
+    subtitle: 'A barren fig tree is given one more year to bloom',
+    durationMinutes: 3,
+    source: 'Christian Tradition',
+    imagePrompt: 'Cinematic scene of a single fig tree with one small green leaf sprouting on a bare branch, a gardener kneeling beside it with soil and water, warm hopeful light, Mediterranean garden, NO TEXT',
+    body: `In a garden on a sunny hillside, there stood a fig tree. It had strong roots and wide branches, but for three years, it had not grown a single fig. Not one.
+
+The owner of the garden shook his head. "This tree is taking up space. It does not give any fruit. I should cut it down and plant something else."
+
+The gardener — a quiet, patient man with soil-stained hands — knelt beside the tree and said, "Please. Give it one more year. I will dig around its roots. I will feed the soil. I will water it every day. And if it still does not bloom, then you can cut it down."
+
+The owner agreed, reluctantly.
+
+The gardener got to work. He loosened the hard earth. He mixed in rich compost. He carried water every morning and every evening, even when the sun was so hot it made the stones shimmer.
+
+Months passed. The tree did not change. The owner walked by and shook his head.
+
+But the gardener kept going. He talked to the tree. He sang to it. He believed in it.
+
+And one morning, on the very last day of the year, the gardener saw something that made his heart leap. A tiny green bud, right at the tip of the highest branch. Then another. Then another. The fig tree was waking up.
+
+By summer, the tree was covered in figs — purple and sweet and bursting with juice. It was the most fruitful tree in the garden.
+
+Jesus told this story to teach something important, {childName}: everyone deserves a second chance. Growth takes time. Some of us bloom early, and some of us bloom late. But with patience, care, and love — everyone blooms.
+
+Tonight, remember the fig tree. If you feel like nothing is happening, keep growing. Your season is coming. Goodnight, patient heart.`
+  },
+  {
+    id: 'christian_mustard_seed_garden',
+    tradition: 'christian',
+    theme: 'courage',
+    title: 'The Mustard Seed Garden',
+    subtitle: 'A tiny seed planted in faith grows into a garden that welcomes the world',
+    durationMinutes: 3,
+    source: 'Christian Tradition',
+    imagePrompt: 'Cinematic scene of an enormous mustard tree in full bloom with golden flowers, birds and butterflies everywhere, children playing in its shade, warm afternoon light, magical and abundant, NO TEXT',
+    body: `In a village where nothing grew, a little girl found a seed on the road. It was so tiny she almost missed it — no bigger than a grain of sand, sitting in a crack in the dusty earth.
+
+"What is this?" she asked her grandfather.
+
+He looked closely and smiled. "That is a mustard seed. The smallest seed in the world."
+
+"Can I plant it?"
+
+"You can try. But do not expect much. This soil is hard and dry."
+
+The girl planted the seed anyway. She watered it with a cup from the kitchen. She shielded it from the wind with her hands. She talked to it before bed every night. "Grow," she whispered. "I believe in you."
+
+Weeks passed. A tiny sprout appeared. Then a stem. Then leaves. The stem grew thicker. The leaves grew wider. The plant grew taller and taller until it was no longer a plant at all. It was a tree.
+
+The mustard tree grew so tall that its branches touched the sky. Birds came from far away to build nests in it. Butterflies danced around its yellow flowers. Children played in its cool, green shade.
+
+"How did this happen?" asked the villagers, staring at the enormous tree that had once been the smallest seed.
+
+The girl smiled. "I just believed in something small."
+
+Jesus told his friends about the mustard seed to teach them this: you do not need to start big. You do not need to be big. You just need to start. A tiny act of faith, a small act of kindness, a single moment of courage — these are the seeds that grow into the most beautiful things in the world.
+
+Tonight, {childName}, you are that mustard seed. Small, yes. But mighty. And already growing into something the whole world will be grateful for. Goodnight, little seed.`
+  },
+  {
+    id: 'christian_widow_coins',
+    tradition: 'christian',
+    theme: 'sharing',
+    title: 'The Widow\'s Two Coins',
+    subtitle: 'A poor woman gives everything she has — and it means more than all the riches in the world',
+    durationMinutes: 3,
+    source: 'Christian Tradition',
+    imagePrompt: 'Cinematic scene of an elderly woman with kind eyes placing two tiny copper coins into a stone offering box, rich people in background with heavy bags, warm temple light, humble devotion, NO TEXT',
+    body: `In the great temple in Jerusalem, people came every day to give their offerings. Rich merchants dropped heavy bags of gold coins onto the table with a satisfying clink. Important people gave piles of silver, making sure everyone could see how generous they were.
+
+But in the corner, moving quietly so no one would notice, was a poor widow — an old woman with no husband, no family, and no money. She wore a simple dress and carried nothing but two tiny copper coins in her hand.
+
+She walked to the offering box, looked around to make sure no one was watching, and slipped her two coins inside. They made almost no sound at all.
+
+But someone was watching. Jesus was sitting nearby with his friends. He had seen the rich people give their gold. He had seen the important people give their silver. And he had seen the widow give her two tiny coins.
+
+"Do you see that woman?" Jesus said to his friends. "She gave more than all of them."
+
+His friends were confused. "But she only gave two coins! The others gave bags of gold!"
+
+"The rich gave what they could spare," Jesus said gently. "They still have plenty left. But this woman gave everything she had. Every last coin. She held nothing back."
+
+The widow had already walked away, not knowing that anyone had noticed. She did not give to be praised. She gave because giving was what her heart told her to do.
+
+{childName}, the lesson is simple but powerful: it is not about how much you give. It is about how much love you put into it. A small gift given with your whole heart is worth more than a mountain of gold given without thinking.
+
+Tonight, remember the widow's two coins. The biggest hearts are not always the richest ones. Goodnight, generous heart.`
+  },
+  {
+    id: 'christian_bridges_not_walls',
+    tradition: 'christian',
+    theme: 'forgiveness',
+    title: 'Building Bridges, Not Walls',
+    subtitle: 'Two neighbours who stopped speaking discover what a bridge can do',
+    durationMinutes: 3,
+    source: 'Christian Tradition',
+    imagePrompt: 'Cinematic scene of a small wooden bridge built across a stream between two cottages, two neighbours meeting in the middle with warm smiles, sunset light, wildflowers, reconciliation, NO TEXT',
+    body: `Two neighbours lived on opposite sides of a little stream. For years, they had been the best of friends. They shared meals, told stories, and helped each other when times were hard.
+
+But one day, they had an argument. It was about something small — so small that neither of them could quite remember what it was later. But at the time, it felt enormous.
+
+The first neighbour built a tall wooden fence around his garden. "I do not want to see his face," he muttered.
+
+The second neighbour planted thick, thorny bushes along the stream. "I do not want to hear his voice," she said.
+
+Months passed. The stream still flowed between their homes, but the two neighbours never spoke. They never waved. They never smiled at each other.
+
+One morning, a wandering carpenter came to the village. The first neighbour hired him and said, "See that stream? I want you to build a wall — the tallest wall you can — so I never have to look at her house again."
+
+The carpenter nodded and got to work. The neighbour left for the day.
+
+When the neighbour came home that evening, he did not find a wall. He found a bridge — a beautiful wooden bridge stretching across the stream, wide enough for two people to walk side by side.
+
+And standing on the other side, with tears in her eyes, was his neighbour. She had already crossed halfway.
+
+"I was going to build a wall," the man whispered.
+
+"I know," said the carpenter. "But bridges are better."
+
+The two neighbours met in the middle. They hugged. They laughed. They forgave.
+
+Jesus taught that forgiveness is the strongest bridge in the world. It does not pretend the hurt did not happen. It simply says, "Our friendship matters more."
+
+Tonight, {childName}, if there is a stream between you and someone you love, build a bridge. Walk halfway. The other person is probably already waiting. Goodnight, bridge-builder.`
+  },
+  {
+    id: 'christian_light_on_hill',
+    tradition: 'christian',
+    theme: 'kindness',
+    title: 'The Light on the Hill',
+    subtitle: 'A child discovers that being a good example is the brightest light of all',
+    durationMinutes: 3,
+    source: 'Christian Tradition',
+    imagePrompt: 'Cinematic scene of a small cottage with a warm golden light in the window on top of a gentle hill, dark evening sky, village below seeing the light, guiding and comforting, NO TEXT',
+    body: `On top of a gentle green hill, there stood a small cottage with a single window. Every evening, the family inside lit a candle and placed it on the windowsill.
+
+From the village below, the light was the first thing people saw when the sky turned dark. It was small — just one candle — but it glowed steadily, warmly, like a tiny golden heart beating in the night.
+
+A child in the village asked her mother, "Why do they put a candle in the window every night?"
+
+"So that anyone who is lost can find their way," her mother said. "That little light says, 'You are not alone. There is warmth here. Come this way.'"
+
+The child thought about this for a long time. "Can I be a light too?" she asked.
+
+Her mother smiled. "You already are, my love. Every time you are kind to someone, you are a light. Every time you help someone who is struggling, you shine. Every time you tell the truth, even when it is hard, your light gets brighter."
+
+The child liked this idea. The next day, she helped her brother tie his shoes. She shared her lunch with a friend who had forgotten hers. She picked up a dropped book for her teacher and smiled at a new student who looked nervous.
+
+None of these things were big. None of them made the news. But that evening, as the child walked past the hill and looked up at the candle in the window, she felt something warm in her chest. Her own little light, glowing.
+
+Jesus once said, "You are the light of the world. Let your light shine before others." He meant that goodness is not something you hide. It is something you share — openly, gently, every single day.
+
+Tonight, {childName}, remember: you are a light on a hill. The world can see you. And your glow makes the darkness a little less dark. Goodnight, shining one.`
+  },
+);
+
+// ── Buddhist Bedtime Stories ──────────────────────────────────────────
+CULTURAL_LESSONS.push(
+  {
+    id: 'buddhist_tiger_strawberry',
+    tradition: 'buddhist',
+    theme: 'wisdom',
+    title: 'The Tiger and the Strawberry',
+    subtitle: 'A man learns to taste sweetness even in the most difficult moment',
+    durationMinutes: 3,
+    source: 'Buddhist Tradition',
+    imagePrompt: 'Cinematic scene of a single red strawberry glowing on a vine growing from a cliff face, soft golden light, clouds below, a hand reaching toward it, present moment beauty, NO TEXT',
+    body: `Once, a man was walking through the forest when he heard a growl behind him. A tiger! He ran as fast as he could until he reached the edge of a cliff. Below was a deep, deep valley. Behind was the tiger.
+
+He spotted a vine hanging over the edge and climbed down. He hung there, safe from the tiger above, looking at the valley far below. Then he noticed — two mice, one white and one black, were slowly nibbling at the vine above him.
+
+The man looked up. Tiger. He looked down. Valley. He looked at the mice chewing through his only lifeline.
+
+And then he noticed something else. Right beside him, growing from a crack in the cliff, was a single wild strawberry — red, ripe, and perfect.
+
+The man reached out, picked the strawberry, and put it in his mouth.
+
+"How sweet," he whispered.
+
+{childName}, this story from the Buddhist tradition is about something very important: the present moment. The man could have spent his last moments worrying about the tiger or the valley or the mice. But instead, he noticed the strawberry. He tasted it. He was fully alive, right there, right then.
+
+We spend so much time worrying about tomorrow or feeling sad about yesterday that we forget about right now. And right now is where the strawberries are.
+
+Tonight, close your eyes and think about one sweet thing from today. Maybe it was a hug. Maybe it was a laugh. Maybe it was the way the sunlight fell on your pillow. Whatever it was — that was your strawberry.
+
+Life is full of strawberries, {childName}. You just have to notice them. Goodnight, present one.`
+  },
+  {
+    id: 'buddhist_empty_cup',
+    tradition: 'buddhist',
+    theme: 'wisdom',
+    title: 'The Empty Cup',
+    subtitle: 'A scholar discovers you can only learn when your cup is empty',
+    durationMinutes: 3,
+    source: 'Buddhist Tradition',
+    imagePrompt: 'Cinematic scene of tea overflowing from a small ceramic cup onto a wooden table, a wise monk pouring and smiling gently, a surprised scholar watching, warm candlelit room, NO TEXT',
+    body: `A long time ago, a very important scholar travelled across mountains and rivers to visit a wise monk. The scholar knew a great many things. He had read a thousand books. He had studied with the finest teachers. He believed there was nothing left to learn.
+
+When he arrived at the monk's simple hut, the monk welcomed him and offered tea. They sat on cushions, and the monk began to pour.
+
+The scholar started talking immediately. "I have studied philosophy for thirty years," he said. "I have read every important text. I understand the nature of the universe."
+
+The monk kept pouring.
+
+"I have debated the greatest thinkers of our time," the scholar continued. "My knowledge is vast."
+
+The monk kept pouring. The tea reached the rim of the cup. And kept rising.
+
+"I have mastered logic, history, and — " The scholar suddenly looked down. Tea was overflowing, running over the table, dripping onto the floor. "Stop! The cup is full! You cannot pour any more!"
+
+The monk set down the teapot and smiled. "You are like this cup. You are so full of what you already know that there is no room for anything new. If you want to learn, you must first empty your cup."
+
+The scholar was quiet for a very long time. For the first time in thirty years, he had nothing to say. And in that silence, he began — truly began — to learn.
+
+The Buddha taught that wisdom starts not with knowing, but with admitting how much we do not know.
+
+Tonight, {childName}, try emptying your cup. Let go of being right. Let go of having all the answers. Make room for wonder, for surprise, for new ideas. The emptier your cup, the more you can hold. Goodnight, curious one.`
+  },
+  {
+    id: 'buddhist_siddhartha_garden',
+    tradition: 'buddhist',
+    theme: 'patience',
+    title: 'Siddhartha\'s Garden',
+    subtitle: 'A prince discovers that the quietest place is the most alive',
+    durationMinutes: 3,
+    source: 'Buddhist Tradition',
+    imagePrompt: 'Cinematic scene of a young prince sitting peacefully in a lush palace garden surrounded by lotus ponds, deer, and songbirds, golden afternoon light filtering through ancient trees, NO TEXT',
+    body: `When the Buddha was still a young prince named Siddhartha, he lived in a great palace surrounded by high walls. Inside those walls was the most beautiful garden in the world.
+
+There were ponds filled with pink and white lotus flowers. There were mango trees heavy with fruit. There were birds — blue jays, golden orioles, tiny finches — singing from every branch.
+
+But Prince Siddhartha did not run through the garden like other children. He did not chase the birds or throw stones in the pond. Instead, he did something that puzzled everyone.
+
+He sat.
+
+He sat under his favourite tree — a great spreading rose apple — and he closed his eyes. He breathed in the scent of jasmine. He listened to the water trickling over the stones. He felt the grass beneath him and the breeze on his skin.
+
+"Why do you just sit there?" asked his cousin. "There is so much to do! So many games to play!"
+
+Siddhartha opened his eyes and smiled. "I am doing something. I am listening to the garden."
+
+"Gardens do not talk," his cousin laughed.
+
+"They do," said Siddhartha. "The water says, 'Flow gently.' The tree says, 'Stand tall and give shade.' The lotus says, 'Beauty grows from stillness.' You just have to be quiet enough to hear."
+
+His cousin sat down beside him, a little confused. But after a few minutes of silence, she heard it too — the soft hum of the garden, alive and peaceful, whispering its ancient wisdom.
+
+{childName}, the world is full of noise. But underneath the noise, there is always a quiet garden — a place of peace inside you. You can visit it anytime by simply closing your eyes, breathing deeply, and listening.
+
+Tonight, find your garden. Sit in it. Breathe. The flowers are blooming, and they are blooming just for you. Goodnight, peaceful gardener.`
+  },
+  {
+    id: 'buddhist_monk_scorpion',
+    tradition: 'buddhist',
+    theme: 'kindness',
+    title: 'The Monk and the Scorpion',
+    subtitle: 'A monk keeps helping a scorpion even though it stings him every time',
+    durationMinutes: 3,
+    source: 'Buddhist Tradition',
+    imagePrompt: 'Cinematic scene of a peaceful monk in orange robes gently lifting a small scorpion from a river with a leaf, golden sunset light on calm water, bamboo forest, compassion, NO TEXT',
+    body: `By a quiet river, a monk in orange robes was meditating when he noticed a scorpion struggling in the water. Its tiny legs kicked uselessly against the current. It was drowning.
+
+The monk reached in and gently lifted the scorpion out. As soon as his fingers touched it — sting! The scorpion stung him. The monk flinched but carefully placed the scorpion on the bank.
+
+A moment later, the scorpion fell back into the water. The monk reached in again. Sting! He placed it on the bank once more.
+
+Again it fell. Again he reached. Again it stung.
+
+A young boy watching from the bridge called out, "Why do you keep helping it? It stings you every time!"
+
+The monk smiled, cradling his swollen hand. "Because it is the scorpion's nature to sting. And it is my nature to help. Why should I give up my nature just because the scorpion will not give up its?"
+
+The boy thought about this for a long time.
+
+The monk found a large leaf, scooped the scorpion onto it without touching it, and set it safely on dry land. The scorpion scurried away into the grass without looking back.
+
+"Did it even say thank you?" the boy asked.
+
+"Kindness does not need a thank-you," the monk said. "Kindness is its own reward. The moment you help someone, your heart grows. That growth is the gift."
+
+{childName}, some people will not say thank you. Some people will not be kind back. But that does not change who you are. Your nature is gentle. Your nature is kind. And no one can sting that out of you.
+
+Tonight, remember the monk. Be kind not because others deserve it, but because kindness is who you are. Goodnight, kind soul.`
+  },
+  {
+    id: 'buddhist_mountain_moved',
+    tradition: 'buddhist',
+    theme: 'patience',
+    title: 'The Mountain That Moved Slowly',
+    subtitle: 'A mountain teaches a river that patience moves everything',
+    durationMinutes: 3,
+    source: 'Buddhist Tradition',
+    imagePrompt: 'Cinematic scene of a vast misty mountain with a thin stream of water flowing gently down its face carving a valley over time, dawn light, ancient and patient, NO TEXT',
+    body: `High above the clouds, where the air was thin and the snow never melted, there stood a great mountain. It had been there since the beginning of time — tall, steady, and infinitely patient.
+
+At the foot of the mountain, a young river rushed and tumbled over rocks. "Move!" the river shouted at the mountain. "You are in my way! I need to reach the sea!"
+
+The mountain said nothing. It simply stood.
+
+The river pushed harder. It splashed and roared and threw itself against the stone. But the mountain did not budge. Not an inch.
+
+"It is no use," the river sighed. "You are too big. Too strong. I will never get past you."
+
+The mountain finally spoke, in a voice as deep as the earth. "You are right that I am big. But you are wrong about one thing. You will get past me. You just need patience."
+
+"Patience?" the river scoffed. "I have been pushing for days!"
+
+"I have been standing for millions of years," the mountain said gently. "And in that time, rivers just like you have carved valleys through mountains just like me. Not by pushing hard, but by flowing gently, day after day, year after year."
+
+The river stopped pushing. It began to flow — gently, steadily, finding the soft places in the stone. And over time — a long, beautiful time — the river carved a path right through the mountain.
+
+The mountain did not mind. It knew that change is not about force. It is about persistence. About showing up, every single day, and doing your small part.
+
+The Buddha taught that patience is the greatest strength. Not the patience of doing nothing, but the patience of doing something gentle, over and over, until the whole world changes.
+
+Tonight, {childName}, be the river. Be gentle. Be steady. And know that even mountains move — if you are patient enough. Goodnight, patient river.`
+  },
+  {
+    id: 'buddhist_two_hands',
+    tradition: 'buddhist',
+    theme: 'sharing',
+    title: 'Two Hands Clapping',
+    subtitle: 'A child learns that nothing in the world works alone',
+    durationMinutes: 3,
+    source: 'Buddhist Tradition',
+    imagePrompt: 'Cinematic scene of two small hands coming together in a clap, golden ripples of light spreading outward, peaceful temple background, warm afternoon light, connection and harmony, NO TEXT',
+    body: `A young student came to her teacher and asked, "What is the sound of one hand clapping?"
+
+The teacher smiled. "Try it."
+
+The student held up one hand and waved it through the air. No sound came. She tried harder, swinging her hand fast. Still nothing.
+
+"I cannot make a sound with one hand," she said.
+
+"Exactly," said the teacher. "Now clap with both hands."
+
+The student brought her hands together — clap! A clear, bright sound filled the room.
+
+"You see?" the teacher said. "One hand alone is silent. But two hands together make music. This is how the whole world works."
+
+The student looked confused. "What do you mean?"
+
+"A flower cannot bloom without the sun and the rain. A bird cannot fly without the wind beneath its wings. A song cannot be heard without someone to listen. Nothing in this world exists alone. Everything needs something else."
+
+The student thought about this. She thought about her breakfast — the rice that needed soil, water, sun, and a farmer's hands. She thought about her warm coat — the wool from sheep, the thread spun by a weaver, the buttons sewn by careful fingers.
+
+"Even me?" she asked.
+
+"Especially you," the teacher said warmly. "You are not a single hand waving in the air. You are part of a great clap — connected to your family, your friends, your world. You need them, and they need you."
+
+The student smiled and brought her hands together one more time. Clap! This time, the sound felt different. It felt like belonging.
+
+{childName}, tonight, bring your hands together gently. Feel that soft clap. That is the sound of connection — the sound of knowing that you are never alone, never separate, always part of something beautiful and big.
+
+Goodnight, connected one.`
+  },
+  {
+    id: 'buddhist_river_found_sea',
+    tradition: 'buddhist',
+    theme: 'courage',
+    title: 'The River That Found the Sea',
+    subtitle: 'A small stream keeps flowing until it finds where it belongs',
+    durationMinutes: 3,
+    source: 'Buddhist Tradition',
+    imagePrompt: 'Cinematic scene of a narrow mountain stream widening as it flows through valleys toward a vast golden ocean at sunset, journey and arrival, warm light on water, NO TEXT',
+    body: `High on a snowy mountain, a tiny stream was born. It was no bigger than a ribbon, trickling over pebbles and between ferns. It had no name yet. It did not even know what it was.
+
+"Where am I going?" the stream wondered.
+
+"Downhill," said the rocks. "That is where water goes."
+
+So the stream flowed downhill. It tumbled over waterfalls and wound through meadows. It grew wider, then narrower, then wider again. Sometimes it got stuck behind fallen trees and had to find another way around. Sometimes it disappeared underground and came up again miles away.
+
+"Am I lost?" the stream asked a fish one day.
+
+"You are a river now," the fish said. "Rivers are never lost. They are just finding their way."
+
+The river kept flowing. Through forests and fields, past villages and under bridges. Children dipped their toes in it. Birds drank from its banks. Flowers grew along its edges.
+
+And then, one golden evening, the river heard something it had never heard before — a deep, gentle roar, like the breathing of something enormous and kind. The river rounded one last bend and saw it.
+
+The sea.
+
+Vast, blue, sparkling, stretching all the way to the horizon. The river flowed into it and felt — not smaller, but bigger. Not lost, but found. It had been heading here all along.
+
+The Buddha taught that life is like a river. We do not always know where we are going. The path twists and turns. Sometimes we feel stuck. But if we keep flowing, keep moving, keep trusting — we always arrive where we are meant to be.
+
+Tonight, {childName}, you are a river. You are flowing toward something beautiful. You do not have to know what it is yet. Just keep going. The sea is waiting. Goodnight, little river.`
+  },
+  {
+    id: 'buddhist_breathing_ocean',
+    tradition: 'buddhist',
+    theme: 'patience',
+    title: 'Breathing Like the Ocean',
+    subtitle: 'A child learns that her breath is as calm and powerful as the sea',
+    durationMinutes: 3,
+    source: 'Buddhist Tradition',
+    imagePrompt: 'Cinematic scene of a child sitting cross-legged on a peaceful beach at sunset, gentle waves rolling in and out in rhythm, golden and lavender sky, serenity and calm, NO TEXT',
+    body: `One evening, a child sat on the beach and watched the ocean. The waves came in slowly — shhhh — and went out gently — ahhh. In and out. In and out. Over and over, steady and calm, as they had done since the very beginning of the world.
+
+"The ocean is breathing," the child whispered.
+
+A kind monk sitting nearby heard this and smiled. "You are right. The ocean breathes, just like you. In and out. In and out. Would you like to try breathing like the ocean?"
+
+The child nodded.
+
+"Close your eyes," the monk said gently. "Now, breathe in slowly through your nose — like the wave coming in. One, two, three, four."
+
+The child breathed in. Slowly. Deeply.
+
+"Now breathe out through your mouth — like the wave going back. One, two, three, four, five."
+
+The child breathed out. Long and slow, like the ocean sighing.
+
+"Again. In like the wave. Out like the wave."
+
+The child breathed. In and out. In and out. And something magical happened. The worries that had been buzzing in her head like bees began to float away. The tight feeling in her chest loosened. Her shoulders dropped. Her hands unclenched.
+
+She felt like the ocean — vast, calm, and steady.
+
+"You carry the ocean inside you," the monk said softly. "Your breath is the wave. Every time you feel worried or scared or sad, you can find the ocean again. Just breathe."
+
+{childName}, right now, try it. Breathe in slowly — one, two, three, four. Now breathe out even more slowly — one, two, three, four, five. Feel the wave. Feel the calm. You are the ocean. You are the breath. You are peace itself.
+
+Tonight, let your breathing carry you to sleep like gentle waves carrying a little boat across a moonlit sea. Goodnight, peaceful ocean.`
+  },
+  {
+    id: 'buddhist_farmer_good_luck',
+    tradition: 'buddhist',
+    theme: 'wisdom',
+    title: 'The Farmer\'s Good Luck',
+    subtitle: 'A farmer learns that you never know if something is good luck or bad luck',
+    durationMinutes: 3,
+    source: 'Buddhist Tradition',
+    imagePrompt: 'Cinematic scene of a farmer standing calmly beside a beautiful wild horse in a green field, villagers looking on in amazement, soft golden light, peaceful acceptance, NO TEXT',
+    body: `Once there was a farmer who owned a single horse. One day, the horse ran away. The villagers came to him and said, "What bad luck!"
+
+The farmer shrugged and said, "Maybe."
+
+The next week, the horse came back — and brought three wild horses with it. Now the farmer had four horses. The villagers said, "What good luck!"
+
+The farmer shrugged. "Maybe."
+
+His son tried to ride one of the wild horses and fell off, hurting his leg. "What bad luck!" the villagers said.
+
+"Maybe," said the farmer.
+
+The very next day, the king's soldiers came to the village to take all the young men to fight in a war far away. But the farmer's son could not go because of his hurt leg. He stayed safe at home.
+
+"What good luck!" the villagers cried.
+
+"Maybe," said the farmer, with a gentle smile.
+
+{childName}, this story teaches something the Buddha understood deeply: we never know what is truly good luck or bad luck. What seems terrible today might lead to something wonderful tomorrow. What feels perfect now might change in ways we cannot predict.
+
+The farmer was not cold or uncaring. He was wise. He knew that life is like a river — it twists and turns, and you cannot see around the next bend. So instead of celebrating too wildly or worrying too deeply, he simply said, "Maybe," and kept living with a peaceful heart.
+
+Tonight, if something went wrong today, whisper, "Maybe." If something went right, whisper, "Maybe." And either way, know that everything is unfolding exactly as it should. The river knows where it is going, even when you do not.
+
+Goodnight, wise one.`
+  },
+  {
+    id: 'buddhist_footprints_snow',
+    tradition: 'buddhist',
+    theme: 'kindness',
+    title: 'Footprints in the Snow',
+    subtitle: 'A monk teaches a child to walk through the world with awareness and care',
+    durationMinutes: 3,
+    source: 'Buddhist Tradition',
+    imagePrompt: 'Cinematic scene of gentle footprints in fresh white snow leading toward a peaceful mountain monastery at sunrise, soft pink and gold light, serene winter landscape, mindful walking, NO TEXT',
+    body: `One winter morning, after fresh snow had covered the ground like a soft white blanket, a monk invited a child to take a walk.
+
+"But I will mess up the snow," the child said. "It is so perfect."
+
+"We always leave footprints," the monk said gently. "The question is: what kind of footprints will you leave?"
+
+They stepped outside. The snow crunched softly under their feet. The world was white and quiet and still.
+
+"Walk slowly," the monk said. "Feel each step. Feel the snow press down under your foot. Feel your weight shift from one leg to the other. Feel the cold air on your cheeks."
+
+The child walked slowly. For the first time, she noticed how walking felt — really felt. The gentle press, the quiet crunch, the rhythm of left, right, left, right.
+
+"Now look behind you," the monk said.
+
+The child turned around. Her footprints stretched behind her — neat, steady, one after another, leading from the door to where she stood now.
+
+"Those footprints are like your actions," the monk said. "Every step you take in life leaves a mark. A kind word leaves a kind footprint. A gentle action leaves a gentle footprint. Even a smile leaves a footprint in someone's heart."
+
+"What about mean footprints?" the child asked.
+
+"Those leave marks too. Deep, heavy ones that are hard to smooth over. That is why we walk mindfully — carefully, gently, knowing that every step matters."
+
+They walked on in peaceful silence, leaving two sets of gentle prints in the snow.
+
+{childName}, tonight, think about the footprints you left today. Were they gentle? Were they kind? Tomorrow, you get fresh snow. A brand new start. Walk softly. Walk with care. And leave footprints that make the world a little more beautiful.
+
+Goodnight, mindful walker.`
+  },
+);
+
+// ── Jain Bedtime Stories ──────────────────────────────────────────────
+CULTURAL_LESSONS.push(
+  {
+    id: 'jain_prince_never_hurt_fly',
+    tradition: 'jain',
+    theme: 'compassion',
+    title: 'The Prince Who Never Hurt a Fly',
+    subtitle: 'Young Mahavir shows compassion even to the tiniest insect',
+    durationMinutes: 3,
+    source: 'Jain Tradition',
+    imagePrompt: 'Cinematic scene of a young prince gently cupping a small fly in his hands and releasing it through a palace window, golden light, ornate Indian palace interior, tenderness, NO TEXT',
+    body: `Long ago, in a palace made of white marble and gold, there lived a prince named Vardhamana. He was strong, clever, and brave — but what made him different from every other prince in the land was something much quieter.
+
+He would not hurt a fly. Literally.
+
+When a fly buzzed around his food, the servants would reach for a swatter. "No," Vardhamana would say. He would cup his hands gently around the fly, walk to the window, and let it go.
+
+"It is just a fly," his father the king would say, puzzled. "It does not matter."
+
+"It matters to the fly," Vardhamana replied softly.
+
+When ants walked across the palace floor, the servants wanted to sweep them away. But Vardhamana would kneel down and gently guide them toward the garden, one by one, using a leaf as a tiny bridge.
+
+When a spider spun a web across his bedroom door, he did not tear it down. He walked through the other door instead.
+
+"You are too kind," his friends said. "The world is full of creatures. You cannot protect them all."
+
+"I can protect the ones in front of me," Vardhamana said. "And that is enough."
+
+As he grew up, Vardhamana became known as Mahavir — the great brave one. But his bravery was not the kind that fights battles. His bravery was the kind that chooses gentleness, even when the world says it does not matter.
+
+The Jain tradition teaches that every living being — from the mightiest elephant to the tiniest fly — has a soul, a spark of life that deserves respect.
+
+Tonight, {childName}, think of the smallest creature you saw today. A bug on the sidewalk. A spider on the wall. A bee on a flower. It has a life. It has a purpose. And noticing it — really seeing it — is the first step toward a gentle heart. Goodnight, compassionate soul.`
+  },
+  {
+    id: 'jain_spider_web',
+    tradition: 'jain',
+    theme: 'respect',
+    title: 'The Spider\'s Beautiful Web',
+    subtitle: 'A child learns to see art in the smallest creation',
+    durationMinutes: 3,
+    source: 'Jain Tradition',
+    imagePrompt: 'Cinematic scene of a perfect spider web glistening with morning dew in golden sunrise light, a child looking at it in wonder, garden setting, delicate and beautiful, NO TEXT',
+    body: `One morning, a child named Diya was running through the garden when she nearly walked into a spider's web. She stopped just in time, her face inches from the delicate silk.
+
+"Careful!" said her grandmother from the porch. "You almost destroyed something beautiful."
+
+Diya looked more closely. The web was stretched between two branches of the jasmine bush. It was made of hundreds of thin, silver threads, woven in a perfect spiral. Each thread was dotted with tiny dewdrops that caught the sunrise and sparkled like diamonds.
+
+"It is beautiful," Diya whispered. "How long did it take to build?"
+
+"All night," said Grandmother. "The spider worked in the dark, spinning thread from her own body, measuring each distance with her eight careful legs. She did not rush. She did not make mistakes. She built something perfect, from nothing but herself."
+
+Diya looked at the spider — a small, brown creature sitting at the edge of the web, patient and still. "She is so small," Diya said. "But she made something so big."
+
+"Yes," said Grandmother. "And that is why we do not destroy what others have built — even if it seems small to us. That web is her home. Her food. Her art. It is her whole world, spun with patience and love."
+
+Diya stepped carefully around the web and walked through the garden more slowly than before. She noticed the worm tunnels in the soil. She noticed the beetle paths along the fence. She noticed the tiny bee apartments inside the hollyhock flowers.
+
+The world was full of small builders, creating beautiful things that most people walked right past without seeing.
+
+In the Jain tradition, every creation — no matter how small — deserves respect. Because everything alive is building something, and building takes courage.
+
+Tonight, {childName}, remember the spider's web. Look for small beauty tomorrow. It is everywhere, if you slow down enough to see it. Goodnight, gentle observer.`
+  },
+  {
+    id: 'jain_merchant_gave_everything',
+    tradition: 'jain',
+    theme: 'wisdom',
+    title: 'The Merchant Who Gave Everything',
+    subtitle: 'A wealthy man discovers that true richness comes from letting go',
+    durationMinutes: 3,
+    source: 'Jain Tradition',
+    imagePrompt: 'Cinematic scene of a merchant in fine robes placing his ornate turban and jewelry at the feet of a simple monk under a tree, golden sunset, transformation from wealth to peace, NO TEXT',
+    body: `There was once a merchant named Anand who had everything. Gold coins filled his chests. Silk robes filled his closets. His house was the biggest in the city, with marble floors and painted ceilings.
+
+But every night, Anand lay in his enormous bed and felt something was missing. He could not name it. He just felt — empty.
+
+One day, he met a Jain monk walking barefoot on the road. The monk owned nothing — no shoes, no bag, not even a comb. Yet the monk's face was calm, and his eyes sparkled with a peace that Anand had never felt.
+
+"How can you be happy?" Anand asked. "You have nothing."
+
+The monk smiled. "I have everything I need. The sky is my roof. The earth is my bed. My heart is light because I carry nothing heavy."
+
+Anand looked at his own heavy gold rings, his stiff silk turban, his jingling bag of coins. "But these are worth a fortune," he said.
+
+"Are they?" the monk asked gently. "Or are they weights?"
+
+That night, Anand could not sleep. He thought about the monk's words. And in the morning, he made a decision. He gave his gold to the poor. He gave his silks to the cold. He gave his house to families who had none.
+
+And then he walked out of the city with nothing but his two feet and his beating heart.
+
+He felt lighter than he had ever felt. The sun was warmer. The breeze was fresher. The flowers smelled sweeter. For the first time in his life, Anand was truly rich — rich in peace, rich in freedom, rich in joy.
+
+The Jain tradition teaches that the more we hold on to, the heavier we become. And the more we let go of, the higher we fly.
+
+Tonight, {childName}, you do not need to give away everything. But think about one thing you could share. One toy, one kind word, one moment of your time. Letting go is not losing. It is finding what truly matters. Goodnight, light heart.`
+  },
+  {
+    id: 'jain_bird_carried_water',
+    tradition: 'jain',
+    theme: 'courage',
+    title: 'The Bird That Carried Water',
+    subtitle: 'A tiny bird tries to put out a forest fire one drop at a time',
+    durationMinutes: 3,
+    source: 'Jain Tradition',
+    imagePrompt: 'Cinematic scene of a tiny bird flying with a single drop of water in its beak toward a distant forest fire, determination and courage, golden and orange light, hopeful, NO TEXT',
+    body: `A great forest was on fire. The flames rose high, turning the sky orange and filling the air with smoke. Animals ran in every direction — deer leaping, rabbits racing, elephants trumpeting in fear.
+
+But one tiny bird did not run. A small sparrow flew to the river, dipped her beak in the water, and flew back to the fire. She opened her beak and let one single drop of water fall onto the flames.
+
+Then she flew back to the river. Dipped her beak. Flew back. One more drop.
+
+Back and forth. Back and forth. Drop by tiny drop.
+
+The other animals watched in disbelief. "What are you doing?" shouted the elephant. "One drop of water cannot put out this fire! You are wasting your time!"
+
+The sparrow did not stop. She flew to the river again, dipped her beak, and carried another drop.
+
+"Why?" the elephant asked, truly puzzled.
+
+The sparrow landed on a branch, looked at the elephant, and said, "Because this is my forest too. And I would rather do something small than do nothing at all."
+
+The elephant was quiet. Then, slowly, he walked to the river, filled his great trunk with water, and sprayed it on the fire. The deer began stamping out embers. The rabbits dug trenches. Even the fish splashed water onto the riverbank.
+
+Together — inspired by one tiny bird with one tiny drop — they saved the forest.
+
+The Jain tradition teaches that no effort is wasted, no matter how small. One drop of kindness. One small act of courage. One gentle word. They may seem like nothing. But they inspire others. And together, they change the world.
+
+Tonight, {childName}, remember the sparrow. You do not have to be big to make a difference. You just have to begin. Goodnight, brave little bird.`
+  },
+  {
+    id: 'jain_walking_barefoot',
+    tradition: 'jain',
+    theme: 'kindness',
+    title: 'Walking Barefoot',
+    subtitle: 'A child takes off her shoes and discovers a whole new world beneath her feet',
+    durationMinutes: 3,
+    source: 'Jain Tradition',
+    imagePrompt: 'Cinematic scene of bare feet walking gently on soft green grass with wildflowers, golden morning light, close-up perspective showing tiny insects and dewdrops, mindful and gentle, NO TEXT',
+    body: `One summer morning, Grandmother said, "Take off your shoes today, Nisha. Walk barefoot."
+
+Nisha laughed. "Why? I will step on something sharp!"
+
+"Maybe," Grandmother said. "But you will also feel something soft."
+
+Nisha took off her shoes and stepped onto the grass. At first, it tickled. Then it felt cool and damp and wonderful, like the earth was saying hello.
+
+She walked slowly across the garden. She felt the warm stones of the path. She felt the cool mud between her toes. She felt the tiny bumps of acorns and the smooth surface of fallen leaves.
+
+"When you walk barefoot," Grandmother said, walking beside her, "you feel the earth. And when you feel the earth, you remember that you are part of it."
+
+Nisha noticed things she had never noticed before. A line of ants crossing the path — she stepped over them. A tiny seedling pushing up through the soil — she stepped around it. A worm, pink and slow, making its way home — she waited for it to pass.
+
+"Shoes separate us from the ground," Grandmother said. "They make us forget that the earth is alive under our feet, full of small beings going about their small lives."
+
+Nisha walked the whole garden barefoot that morning. By the time she came back inside, her feet were dirty and her heart was full. She had felt the earth. She had been gentle. She had remembered.
+
+Jain monks walk barefoot for this very reason — to feel the earth, to be mindful of every step, to remember that the ground beneath us is not empty. It is home to millions of tiny lives.
+
+Tonight, {childName}, imagine the grass under your bare feet. Cool, soft, alive. Walk gently tomorrow, whether you are wearing shoes or not. The earth will notice. And it will be grateful. Goodnight, gentle walker.`
+  },
+  {
+    id: 'jain_diamond_dewdrop',
+    tradition: 'jain',
+    theme: 'wisdom',
+    title: 'The Diamond and the Dewdrop',
+    subtitle: 'A child learns that the simplest things shine the brightest',
+    durationMinutes: 3,
+    source: 'Jain Tradition',
+    imagePrompt: 'Cinematic scene of a single dewdrop on a blade of grass catching rainbow light beside a dull diamond on a velvet cloth, morning garden, simplicity and beauty, NO TEXT',
+    body: `A king once held a competition. He placed a magnificent diamond on a velvet cushion in the palace courtyard and said, "Who can show me something more beautiful than this diamond?"
+
+People came from everywhere. They brought rubies, emeralds, golden crowns, and painted vases. Each one placed their treasure beside the diamond. But nothing outshone it. The diamond sparkled and glittered in the sunlight, dazzling everyone who looked at it.
+
+Then a small child walked forward. In her palm, she held a single blade of grass with one dewdrop trembling at its tip.
+
+The crowd laughed. "A dewdrop? Against a diamond?"
+
+The child held the grass up to the light. The dewdrop caught the sun and burst into a tiny rainbow — red, orange, yellow, green, blue, and violet — dancing inside a single drop of water no bigger than a baby's tear.
+
+The king leaned closer. The dewdrop shimmered and shifted, showing the reflection of the sky, the clouds, and even the king's own amazed face, all inside one perfect drop.
+
+"The diamond is hard and cold," the child said. "It never changes. But the dewdrop holds the whole world inside it — the sky, the light, the colours. And by afternoon, it will be gone. That is what makes it precious."
+
+The king was silent for a long time. Then he placed his crown on the child's head and said, "You have taught me something I have spent my whole life forgetting: the simplest things are often the most beautiful."
+
+Jain philosophy teaches that simplicity is the greatest treasure. You do not need gold or diamonds to be rich. A kind word, a gentle touch, a moment of stillness — these are the real jewels of life.
+
+Tonight, {childName}, think of your dewdrop. What simple, beautiful thing made you smile today? Hold it in your heart. It is more precious than diamonds. Goodnight, simple soul.`
+  },
+  {
+    id: 'jain_peacock_dance',
+    tradition: 'jain',
+    theme: 'gratitude',
+    title: 'The Peacock\'s Dance',
+    subtitle: 'A peacock dances in the rain and teaches a child about joy without possessions',
+    durationMinutes: 3,
+    source: 'Jain Tradition',
+    imagePrompt: 'Cinematic scene of a peacock with its tail fully fanned dancing in gentle monsoon rain, iridescent blue and green feathers, golden light through rain clouds, pure joy, NO TEXT',
+    body: `When the first monsoon rains came, all the animals ran for cover. The rabbits hid in their burrows. The cows stood under trees. The dogs curled up on porches.
+
+But the peacock did something different. He walked right into the rain, spread his magnificent tail — a fan of blue, green, and gold — and began to dance.
+
+A child watched from the window. "Why is the peacock dancing? It is raining! He should come inside!"
+
+Grandmother smiled. "The peacock dances because the rain makes him happy. He does not need a roof or a toy or a treat to feel joy. The rain is enough."
+
+The peacock stepped and twirled, his feathers shimmering with raindrops. He bobbed his head. He strutted and spun. He looked like the happiest creature in the world.
+
+"But he does not own anything," the child said. "No house, no clothes, no treasure."
+
+"And yet look at him," Grandmother said. "He has feathers made of rainbows. He has a sky full of water. He has the whole earth as his dance floor. He is richer than any king."
+
+The child thought about this. She had toys, books, and a warm bed. But the peacock had something she sometimes forgot she had: the ability to feel joy from simple things.
+
+The rain. The wind. The smell of wet earth. The sound of thunder rumbling far away like a big, gentle drum.
+
+The child opened the window and held out her hand. The rain touched her palm — cool, fresh, alive.
+
+In the Jain tradition, true happiness does not come from what you own. It comes from what you notice. From what you feel. From dancing in the rain because the rain is beautiful, and you are alive.
+
+Tonight, {childName}, find your rain. Find your dance. You do not need anything more than what you already have. Goodnight, joyful dancer.`
+  },
+  {
+    id: 'jain_farmer_fed_ants',
+    tradition: 'jain',
+    theme: 'compassion',
+    title: 'The Farmer Who Fed the Ants',
+    subtitle: 'A farmer saves a portion of every harvest for the smallest creatures',
+    durationMinutes: 3,
+    source: 'Jain Tradition',
+    imagePrompt: 'Cinematic scene of a farmer gently placing grains of rice on the ground near an anthill at sunset, golden light, Indian farmland, gentle and caring, tiny ants approaching, NO TEXT',
+    body: `In a village surrounded by green fields, there lived a farmer named Gopal. Every harvest, after the wheat was cut and the rice was gathered, Gopal did something that puzzled his neighbours.
+
+He took a small portion of grain — a handful, no more — and walked to the edge of his field where a great anthill stood. He knelt down and spread the grain gently on the ground.
+
+"Why do you waste good food on ants?" his neighbour asked.
+
+"It is not wasted," Gopal said. "It is shared."
+
+"But ants are so small. They do not need your help."
+
+Gopal smiled. "That is what makes it more important. The big animals can find food easily. The strong can take care of themselves. But the smallest creatures — the ones nobody thinks about — they need someone to remember them."
+
+Every harvest, without fail, Gopal left his offering. And over the years, something beautiful happened. The ants kept the soil healthy by digging tunnels that let water and air reach the roots. Gopal's fields grew richer, greener, and more abundant than anyone else's.
+
+"How is your harvest always the best?" the neighbours asked.
+
+Gopal looked at the anthill and smiled. "I have tiny partners. I feed them, and they feed my soil. We take care of each other."
+
+In the Jain tradition, caring for the smallest creatures is not weakness — it is wisdom. Every living being plays a part in the great web of life. When you care for the smallest, you strengthen the whole.
+
+Tonight, {childName}, think of the ants. Think of the worms, the beetles, the bees. They may be small, but they are doing big, important work. And they deserve a handful of kindness too. Goodnight, caring farmer.`
+  },
+  {
+    id: 'jain_temple_sunrise',
+    tradition: 'jain',
+    theme: 'gratitude',
+    title: 'The Jain Temple at Sunrise',
+    subtitle: 'A child visits a temple at dawn and discovers the beauty of a new day',
+    durationMinutes: 3,
+    source: 'Jain Tradition',
+    imagePrompt: 'Cinematic scene of a beautiful white marble Jain temple with ornate carvings glowing in soft pink and gold sunrise light, a child standing at the entrance in wonder, peaceful morning mist, NO TEXT',
+    body: `Before the sun rose, before the birds sang, before the village woke up, Grandmother gently shook {childName} awake.
+
+"Come," she whispered. "I want to show you something."
+
+They walked through the quiet streets in the cool, blue darkness. The stars were still out. The air smelled of jasmine and damp earth. Their footsteps were the only sound.
+
+They reached a white marble temple at the edge of the village. Its carved pillars and domes glowed faintly in the pre-dawn light, like a palace made of moonlight.
+
+"We are the first ones here," Grandmother said. She removed her shoes, and {childName} did the same. The marble floor was cool and smooth under their bare feet.
+
+Inside, the temple was quiet. Oil lamps flickered softly, casting golden patterns on the walls. The air smelled of sandalwood and flowers. In the centre stood a beautiful statue of Mahavir, seated in meditation, peaceful and still.
+
+Grandmother closed her eyes and whispered a prayer of thanks. {childName} did not know the words, so just stood quietly, feeling the peace wrap around like a soft blanket.
+
+Then it happened. Through the open doorway, the first ray of sunrise entered the temple. It touched the marble floor, climbed up the carved pillars, and landed gently on Mahavir's face. The whole temple filled with warm, golden light.
+
+"This is why I brought you here," Grandmother said, her eyes shining. "Every sunrise is a gift. A brand new day. A fresh start. And the first thing we should do with any gift is say thank you."
+
+{childName} looked at the golden light filling the temple and felt something warm and grateful bloom in the chest — like a flower opening to the sun.
+
+In the Jain tradition, gratitude is the first prayer of the day. Before you ask for anything, you say thank you for what you already have.
+
+Tonight, {childName}, as you close your eyes, whisper a thank-you for today. Tomorrow, there will be a new sunrise waiting. Goodnight, grateful soul.`
+  },
+  {
+    id: 'jain_child_counted_stars',
+    tradition: 'jain',
+    theme: 'wisdom',
+    title: 'The Child Who Counted Stars',
+    subtitle: 'A child lies on the grass and discovers that the universe is full of wonder',
+    durationMinutes: 3,
+    source: 'Jain Tradition',
+    imagePrompt: 'Cinematic scene of a child lying on soft grass looking up at a vast starry sky, arms spread wide in wonder, gentle golden light from a nearby window, peaceful night, awe and humility, NO TEXT',
+    body: `One clear night, when the sky was so dark it was almost purple, a child named Priti lay down on the soft grass in the garden and looked up.
+
+Stars. Hundreds of them. Thousands. More than she could count.
+
+"One, two, three, four, five..." she began.
+
+"Thirteen, fourteen, fifteen..."
+
+"Forty-two, forty-three..."
+
+She counted and counted until the numbers got so big they tangled up in her head. "How many are there?" she called to her father.
+
+"More than anyone can count," he said, sitting down beside her. "Some say billions. Some say more."
+
+"Billions?" Priti's eyes were wide. "That is more than all the grains of sand on the beach."
+
+"Yes," her father said. "And each star is a sun. And some of those suns have their own planets. And some of those planets might have their own gardens, where some other child is lying on the grass, looking up, and counting."
+
+Priti felt something strange and wonderful — a feeling of being very, very small. But not in a sad way. In a way that felt like being part of something enormous and beautiful and endless.
+
+"If the universe is so big," she whispered, "does my life even matter?"
+
+Her father was quiet for a moment. Then he said, "In the Jain tradition, we believe that every soul — every tiny spark of life — is as old as the stars. You are not small, Priti. You are ancient. You are precious. And even the universe, with all its billions of stars, would not be complete without you."
+
+Priti smiled and looked back up at the sky. She stopped counting. She just looked. And in that looking, she felt connected — to the stars, to the earth, to everything alive.
+
+Tonight, {childName}, you are lying under the same stars. They are shining for you. And you — you are shining right back. Goodnight, little star.`
+  },
+);
+
+// ── Jewish Bedtime Stories ──────────────────────────────────────────
+CULTURAL_LESSONS.push(
+  {
+    id: 'jewish_wise_child_chelm',
+    tradition: 'jewish',
+    theme: 'wisdom',
+    title: 'The Wise Child of Chelm',
+    subtitle: 'In a silly village, a child asks the smartest question of all',
+    durationMinutes: 3,
+    source: 'Jewish Tradition',
+    imagePrompt: 'Cinematic scene of a small child standing in a comical village square surrounded by confused adults scratching their heads, one lantern glowing, Eastern European shtetl, warm and humorous, NO TEXT',
+    body: `In the village of Chelm, everyone was a little bit silly. The mayor thought the moon was a giant cheese. The baker measured flour with a teaspoon. The librarian organized books by colour instead of title.
+
+But there was one person in Chelm who was different — a child named Rivka. Rivka asked questions that made the adults stop and think.
+
+One day, the villagers were arguing about how to catch the moonlight. "We will put buckets on the rooftops!" said the mayor. "When the moon shines, the buckets will fill up with light, and we will pour it out on cloudy nights!"
+
+Everyone agreed this was a brilliant plan. They placed buckets on every roof. The next morning, they ran outside to check.
+
+The buckets were empty.
+
+"The moonlight leaked out!" cried the baker.
+
+"We need bigger buckets!" shouted the librarian.
+
+Rivka tugged on the mayor's sleeve. "Excuse me," she said. "But you cannot catch moonlight in a bucket. Moonlight is not something you hold. It is something you enjoy while it is there."
+
+The villagers stared at her.
+
+"Instead of trying to save the moonlight," Rivka continued, "why not just go outside on moonlit nights and enjoy it together? Tell stories. Sing songs. Dance."
+
+The mayor scratched his head. The baker rubbed his chin. The librarian adjusted her glasses.
+
+"That..." said the mayor slowly, "is the smartest thing anyone in Chelm has ever said."
+
+From that night on, every time the moon was full, the whole village gathered outside. They told stories. They sang. They danced under the silver light. And they never tried to catch it in a bucket again.
+
+In the Jewish tradition, the Chelm stories teach us that wisdom does not always come from the biggest or the oldest. Sometimes the wisest person in the room is the smallest.
+
+Tonight, {childName}, never be afraid to ask your questions. Even the simplest ones might be the smartest. Goodnight, wise one.`
+  },
+  {
+    id: 'jewish_golem_heart',
+    tradition: 'jewish',
+    theme: 'kindness',
+    title: 'The Golem\'s Heart',
+    subtitle: 'A giant made of clay learns that strength means protecting others',
+    durationMinutes: 3,
+    source: 'Jewish Tradition',
+    imagePrompt: 'Cinematic scene of a gentle clay giant kneeling to pick up a fallen flower and place it back in soil, moonlit Prague streets, cobblestones, warm lantern light, tender strength, NO TEXT',
+    body: `In the old city of Prague, where the cobblestones were worn smooth by centuries of footsteps, a wise rabbi named Rabbi Loew made something extraordinary. From the clay of the riverbank, he shaped a giant — taller than a door, wider than a cart, with hands as big as dinner plates.
+
+He breathed life into the clay, and the giant opened its eyes. It was the Golem.
+
+The Golem was strong. He could carry ten bags of grain. He could move boulders. He could lift a fallen tree with one hand. The villagers were amazed — and a little bit afraid.
+
+"What if it hurts someone?" they whispered.
+
+But the Golem never hurt anyone. Rabbi Loew had given it something more important than strength. He had given it a heart — a clay heart, yes, but a heart that understood one thing perfectly: strength is for protecting, never for harming.
+
+The Golem carried water for the elderly woman who could not reach the well. It held an umbrella over children walking to school in the rain. It stood guard at the village gate, not to frighten strangers, but to welcome them.
+
+One night, a little girl could not sleep. She was afraid of the thunder rumbling outside her window. She crept to the door and found the Golem sitting on the doorstep.
+
+"Are you afraid of thunder?" she asked.
+
+The Golem shook its great clay head slowly. No.
+
+"Then can you sit with me until I fall asleep?"
+
+The Golem nodded. It followed her inside, sat beside her bed — taking up most of the room — and placed one enormous hand gently on the floor beside her pillow.
+
+The girl fell asleep to the sound of the Golem's slow, steady breathing — like wind through a canyon, gentle and deep.
+
+{childName}, the Golem teaches us that true strength is not about being the biggest or the strongest. It is about using whatever strength you have to be kind. To protect. To comfort.
+
+Tonight, you are strong too. Stronger than you know. Use that strength gently. Goodnight, gentle giant.`
+  },
+  {
+    id: 'jewish_ruth_naomi',
+    tradition: 'jewish',
+    theme: 'kindness',
+    title: 'Ruth and Naomi\'s Promise',
+    subtitle: 'A daughter-in-law stays loyal to her mother-in-law through the hardest times',
+    durationMinutes: 3,
+    source: 'Jewish Tradition',
+    imagePrompt: 'Cinematic scene of two women walking together on a dusty road toward a distant village at sunset, one young and one elderly, supporting each other, warm golden light, loyalty and love, NO TEXT',
+    body: `Naomi was old and sad. She had lost her husband and her two sons, and she was far from home. She decided to walk back to her homeland, a place called Bethlehem, where she had grown up.
+
+"Go home to your own families," she told her two daughters-in-law. "I have nothing left to give you."
+
+One daughter-in-law kissed Naomi goodbye and left. But the other — a young woman named Ruth — would not go.
+
+"Where you go, I will go," Ruth said. "Where you live, I will live. Your people will be my people. I will not leave you."
+
+Naomi's eyes filled with tears. "But Ruth, the road is long and hard. I am old. I am poor. You could find an easier life somewhere else."
+
+Ruth took Naomi's hand and smiled. "An easier life, maybe. But not a better one. You are my family, Naomi. And family does not leave when things get hard."
+
+And so they walked together — the old woman and the young woman — down the dusty road toward Bethlehem. It was a long journey. Their feet hurt. The sun was hot. They had little food and less money.
+
+But they had each other. And that was enough.
+
+When they arrived in Bethlehem, Ruth worked in the fields, gathering leftover grain to feed them both. She never complained. She never gave up. And slowly, their life grew sweeter. Ruth's kindness caught the attention of a good man named Boaz, and eventually, they married. Naomi had a family again.
+
+Ruth's promise is one of the most beautiful in all of history: loyalty that does not waver, love that does not count the cost, friendship that walks the hard road without turning back.
+
+Tonight, {childName}, think of someone you love. Would you walk the dusty road for them? Would you stay when things got hard? That is real love. And it is the strongest thing in the world. Goodnight, loyal heart.`
+  },
+  {
+    id: 'jewish_apple_tree_road',
+    tradition: 'jewish',
+    theme: 'patience',
+    title: 'The Apple Tree at the End of the Road',
+    subtitle: 'A boy plants a tree he may never sit under — and learns what hope really means',
+    durationMinutes: 3,
+    source: 'Jewish Tradition',
+    imagePrompt: 'Cinematic scene of a small boy planting a tiny apple sapling at the end of a long road, golden sunset ahead, hope and future, rolling green hills, warm and hopeful, NO TEXT',
+    body: `An old man was planting an apple tree by the side of the road. A young boy stopped to watch.
+
+"Why are you planting a tree?" the boy asked. "It will take twenty years to grow apples. You will be very old by then."
+
+The old man smiled and kept digging. "When I was your age, I ate apples from a tree that my grandfather planted. He never tasted those apples himself. He planted the tree for me."
+
+The boy thought about this. "So you are planting this tree for someone you have never met?"
+
+"Yes," said the old man. "For a child who will walk down this road in twenty years and be thirsty. For a traveller who will need shade. For a bird who will need a branch."
+
+The boy picked up a small shovel and began to help.
+
+Together, they planted the sapling — a thin, fragile little thing with two tiny leaves. They watered it. They packed the soil gently around its roots. They stood back and looked at it.
+
+"It does not look like much," the boy said.
+
+"Not yet," said the old man. "But one day, it will be the tallest tree on this road. And someone will sit in its shade and bite into a sweet, crisp apple and never know that you and I planted it on this very afternoon."
+
+"And that is okay?" the boy asked.
+
+"That is the best part," the old man said. "Doing good without needing to be thanked. Planting something you may never harvest. That is what hope looks like."
+
+In the Jewish tradition, there is a teaching: "You are not required to finish the work, but neither are you free to abandon it." It means that even if you cannot see the end, you should begin.
+
+Tonight, {childName}, think about your apple tree. What good thing can you start that someone else will finish? What seed can you plant that will grow long after you? That is your gift to the future. Goodnight, hopeful planter.`
+  },
+  {
+    id: 'jewish_dreidel_spun',
+    tradition: 'jewish',
+    theme: 'courage',
+    title: 'The Dreidel That Spun All Night',
+    subtitle: 'A small spinning top reminds a child that hope keeps turning even in the dark',
+    durationMinutes: 3,
+    source: 'Jewish Tradition',
+    imagePrompt: 'Cinematic scene of a wooden dreidel spinning on a table surrounded by soft Hanukkah candlelight, warm golden glow, gentle bokeh, cozy winter evening, hope and wonder, NO TEXT',
+    body: `On the longest, darkest night of winter, a child sat by the window and watched the snow fall. The house was cold. The candles were almost gone. And the child felt a little bit scared of the dark.
+
+"Here," said Grandfather, placing something in the child's hand. It was a small wooden dreidel — a spinning top with four sides, each painted with a Hebrew letter.
+
+"What do the letters mean?" the child asked.
+
+"They stand for 'A great miracle happened there,'" Grandfather said. "They remind us that even in the darkest times, miracles happen."
+
+The child spun the dreidel on the table. It whirled and danced, catching the candlelight, throwing tiny sparkles across the walls. Round and round and round.
+
+"How long will it spin?" the child asked.
+
+"As long as it needs to," said Grandfather. "That is what hope does. It spins. Even when everything around it is dark and cold and still, hope keeps turning."
+
+The dreidel slowed down, wobbled, and fell. The child picked it up and spun it again. And again. And again.
+
+Each time, it spun — catching light, making sparkles, turning darkness into something beautiful, even if only for a moment.
+
+"The story of Hanukkah is about a small jar of oil that should have lasted only one night," Grandfather said. "But it burned for eight nights. Not because it had more oil. But because hope made it burn longer."
+
+The child smiled. The candle was small. The room was dark. But the dreidel was spinning, and somehow, that was enough.
+
+{childName}, tonight, you are the dreidel. When the world feels dark, you keep spinning. You keep hoping. You keep turning. And every time you do, you throw a little light into the darkness.
+
+Goodnight, spinning light. Keep turning.`
+  },
+  {
+    id: 'jewish_elijah_chair',
+    tradition: 'jewish',
+    theme: 'kindness',
+    title: 'Elijah\'s Empty Chair',
+    subtitle: 'A family always sets an extra place at the table — for a stranger who might need it',
+    durationMinutes: 3,
+    source: 'Jewish Tradition',
+    imagePrompt: 'Cinematic scene of a Passover table with an empty chair and a full place setting with wine cup, warm candlelight, family gathered around, welcoming atmosphere, the door slightly open, NO TEXT',
+    body: `Every year, at the Passover table, Grandmother set one extra place. An empty chair. A full plate. A cup of wine, filled to the brim.
+
+"Who is that for?" {childName} asked the first time.
+
+"For Elijah," Grandmother said. "The prophet who travels the world in disguise, visiting families to see if they welcome strangers."
+
+"But Elijah is not coming. The chair is always empty."
+
+Grandmother smiled. "The chair is never empty, my love. It is full of something you cannot see — it is full of welcome."
+
+Every year, the family sang songs, told stories, and ate the special Passover meal. And every year, {childName} looked at the empty chair and wondered.
+
+One year, there was a knock at the door during dinner. A traveller — cold, wet, and hungry — stood on the doorstep.
+
+"Come in," Grandmother said, without a moment's hesitation. "There is a place for you at our table."
+
+The traveller sat in Elijah's chair. He ate the warm food. He drank the sweet wine. He listened to the stories and laughed at the jokes. By the end of the evening, he was not a stranger anymore. He was a friend.
+
+After he left, {childName} looked at Grandmother. "Was that Elijah?"
+
+Grandmother winked. "Maybe. Or maybe Elijah is not one person. Maybe Elijah is every stranger who needs a warm meal and a kind word. And the empty chair — it is our promise that we will always have room."
+
+In the Jewish tradition, hospitality is one of the highest values. It means opening your door, your table, and your heart to someone who needs it — without asking questions, without expecting anything in return.
+
+Tonight, {childName}, think about your empty chair. Who might need a place at your table tomorrow? A new friend? A lonely classmate? Someone you have not spoken to in a while? There is always room. Goodnight, welcoming heart.`
+  },
+  {
+    id: 'jewish_box_beautiful_words',
+    tradition: 'jewish',
+    theme: 'kindness',
+    title: 'The Box of Beautiful Words',
+    subtitle: 'A girl fills a wooden box with kind words — and discovers they never run out',
+    durationMinutes: 3,
+    source: 'Jewish Tradition',
+    imagePrompt: 'Cinematic scene of a small wooden box overflowing with tiny folded papers, each glowing softly with golden light, child hands reaching for one, cozy bedroom, warm lamplight, NO TEXT',
+    body: `On her seventh birthday, Grandmother gave Leah a small wooden box. It was plain and simple, with a tiny brass clasp.
+
+"What do I put in it?" Leah asked.
+
+"Beautiful words," Grandmother said.
+
+"Words? But you cannot put words in a box."
+
+Grandmother handed Leah a stack of small papers and a pencil. "Every time someone says something kind to you, write it down. Every time you hear a beautiful sentence in a book or a song, write it down. Fill your box with words that make your heart warm."
+
+Leah was not sure this was a very exciting present. But she tried.
+
+That afternoon, her mother said, "I am so proud of you, Leah." Leah wrote it down and put it in the box.
+
+At school, her teacher said, "You have a wonderful imagination." Into the box it went.
+
+Her best friend wrote her a note: "You are my favourite person to sit next to." Into the box.
+
+Weeks passed. Months. The box grew heavier. Leah could shake it and hear the papers rustling inside like leaves.
+
+One day, Leah felt sad. She could not remember why. She just felt heavy and grey, like a rainy afternoon with no puddles to jump in.
+
+She opened the box. She read the papers, one by one. "I am so proud of you." "You have a wonderful imagination." "You are my favourite person." "Your smile makes me happy." "You are kind and brave and good."
+
+By the time she finished reading, the sadness had melted. Not all of it — but enough. The words had wrapped around her heart like a warm scarf.
+
+In the Jewish tradition, words have power. The right words can heal. They can comfort. They can lift someone up when they feel like they are falling.
+
+Tonight, {childName}, think of one beautiful thing someone said to you. Write it down — in your mind, on a paper, or in your heart. Start your own box. It will never run out. Goodnight, collector of beautiful words.`
+  },
+  {
+    id: 'jewish_shabbat_candles',
+    tradition: 'jewish',
+    theme: 'gratitude',
+    title: 'The Shabbat Candles',
+    subtitle: 'A child learns that the simplest ritual can bring the deepest peace',
+    durationMinutes: 3,
+    source: 'Jewish Tradition',
+    imagePrompt: 'Cinematic scene of two white Shabbat candles glowing warmly on a table with challah bread and wine, a woman covering her eyes in blessing, warm family atmosphere, golden light, NO TEXT',
+    body: `Every Friday evening, just before the sun set, Mama stopped everything. She put down her phone. She turned off the computer. She took off her busy face and put on her peaceful one.
+
+"It is time," she said.
+
+{childName} knew what that meant. It was time for Shabbat — the day of rest.
+
+Mama placed two white candles on the table. She struck a match and lit them, one by one. The flames danced, small and golden, filling the room with a gentle glow.
+
+Then Mama covered her eyes with her hands and whispered a blessing. {childName} watched the candlelight flicker through Mama's fingers.
+
+When Mama opened her eyes, she was smiling. "Shabbat shalom," she said. "Peace."
+
+"Why do we light candles every Friday?" {childName} asked.
+
+"Because for six days we work and run and worry," Mama said. "But on the seventh day, we stop. We rest. We remember what matters — our family, our food, our home, our love."
+
+The family sat together. They ate challah — warm, golden, braided bread that tasted like clouds. They drank grape juice that sparkled in the candlelight. They talked about the best part of their week. They laughed. They hugged.
+
+No screens. No rushing. No worries. Just warmth, food, and each other.
+
+"Shabbat is not about doing," Mama said. "It is about being. Being here. Being together. Being grateful."
+
+{childName} looked at the two small candles, glowing steadily in the quiet room. Outside, the world was still moving — cars, lights, noise. But inside this room, time had slowed down. Everything was soft and golden and peaceful.
+
+In the Jewish tradition, Shabbat is a gift — twenty-four hours of peace in a busy world. It teaches us that rest is not lazy. Rest is sacred.
+
+Tonight, {childName}, rest. You have done enough today. Tomorrow will wait. Right now, just be. Shabbat shalom. Goodnight, rested soul.`
+  },
+  {
+    id: 'jewish_vineyard_kindness',
+    tradition: 'jewish',
+    theme: 'kindness',
+    title: 'The Vineyard of Kindness',
+    subtitle: 'A vineyard owner learns that the sweetest grapes are the ones you share',
+    durationMinutes: 3,
+    source: 'Jewish Tradition',
+    imagePrompt: 'Cinematic scene of a vineyard owner offering ripe purple grapes from the vine to passing travellers, golden afternoon light, lush grapevines, rolling hills, generosity and warmth, NO TEXT',
+    body: `On a hillside where the sun shone warm and the soil was rich, a man named Eli grew the most beautiful grapes in the land. They were fat and purple and sweet, and people came from far away to buy them.
+
+But Eli had a rule from the Torah — the ancient book of wisdom. The rule said: when you harvest your vineyard, do not pick every last grape. Leave the ones at the edges for the poor, the travellers, and the strangers.
+
+Some vineyard owners ignored this rule. "Why should I leave my grapes for people I do not know?" they grumbled. They picked every cluster, every berry, every last grape.
+
+But Eli left the edges untouched. Every harvest, the poor came and picked what they needed. Travellers stopped and ate. Children from the village came with their baskets and filled them to the brim.
+
+"You are losing money," his neighbour said. "Those grapes could be sold."
+
+"I am not losing anything," Eli said. "I am growing kindness."
+
+And it was true. The people who ate Eli's grapes remembered his generosity. They told others. They brought him gifts — bread, honey, flowers. The village children helped him during planting season. Travellers spread his name far and wide.
+
+Eli's vineyard became famous — not just for its grapes, but for its heart. People said, "Eli's grapes taste sweeter because they are grown with love."
+
+In the Jewish tradition, leaving the edges of your harvest is called pe'ah. It is a beautiful teaching: do not take everything for yourself. Always leave something for others. Always leave room for kindness.
+
+Tonight, {childName}, think about your vineyard — whatever that means for you. Your toys, your time, your smiles. Leave the edges for someone who might need them. The sweetest fruit is always the fruit you share. Goodnight, generous grower.`
+  },
+  {
+    id: 'jewish_hanukkah_flame',
+    tradition: 'jewish',
+    theme: 'courage',
+    title: 'Hanukkah\'s Smallest Flame',
+    subtitle: 'One tiny candle proves that a single light can change everything',
+    durationMinutes: 3,
+    source: 'Jewish Tradition',
+    imagePrompt: 'Cinematic scene of a single candle lit on a beautiful menorah by a window at night, its flame reflected in the glass, snow falling outside, warm golden glow against deep blue darkness, NO TEXT',
+    body: `On the first night of Hanukkah, the family gathered around the menorah — a beautiful candle holder with nine branches. Eight candles stood in a row, waiting. One special candle, the shamash, stood taller in the centre.
+
+"Why do we start with just one?" {childName} asked.
+
+"Because that is how light works," said Father, striking a match. "It always starts with one."
+
+He lit the shamash and used it to light the first candle. Just one tiny flame, flickering in the dark window. Outside, the night was cold and deep and endless. Inside, one small candle glowed.
+
+"It does not look like much," {childName} said.
+
+"Not yet," Father said. "But watch what happens."
+
+The next night, they lit two candles. The night after, three. Then four, five, six, seven. And on the last night, all eight candles blazed — plus the shamash — and the window was filled with golden, dancing light.
+
+"Do you see?" Father said. "It started with one flame. But that one flame was not afraid. It did not look at the darkness and say, 'I am too small.' It just burned. And then another flame joined. And another. Until the darkness had no room left."
+
+{childName} looked at the menorah. Nine flames. Each one small. But together, they were a bonfire of hope.
+
+"The story of Hanukkah is about a tiny jar of oil that should not have lasted," Father said. "But it did. Because hope does not do math. Hope just burns."
+
+Long ago, when the temple in Jerusalem was reclaimed, there was only enough oil for one night. But it burned for eight. Not because of science. Because of faith.
+
+{childName}, you are a candle. Small, yes. But your flame is real. And one flame — just one — is enough to push back the darkness. You do not need to light the whole world. You just need to light your corner of it.
+
+Tonight, close your eyes and picture your flame burning bright. Happy Hanukkah, little light. Goodnight.`
+  },
+);
+
 export const lessonsByTheme = (theme) => CULTURAL_LESSONS.filter((l) => l.theme === theme);
 export const lessonsByTradition = (tradition) =>
   CULTURAL_LESSONS.filter((l) => l.tradition === tradition);

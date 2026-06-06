@@ -303,6 +303,99 @@ const STORY_ART = {
   slbh_ep3_first_gurdwara: { gradient: 'linear-gradient(135deg, #f0a500 0%, #fbbf24 40%, #fef3c7 100%)', icon: '🏛️', accent: '#f0a500', prompt: 'A gurdwara exterior with golden domes against a starry sky, small shoes at entrance, warm welcoming light from inside, no text' },
   slbh_ep4_sharing_plate: { gradient: 'linear-gradient(135deg, #78350f 0%, #b45309 40%, #fbbf24 100%)', icon: '🫓', accent: '#fbbf24', prompt: 'A child small hands placing roti on a shared plate, warm kitchen light, simple Punjabi meal, overhead view, no text' },
   slbh_ep5_everyone_equal: { gradient: 'linear-gradient(135deg, #f0a500 0%, #fbbf24 40%, #fef3c7 100%)', icon: '🤝', accent: '#f0a500', prompt: 'A long row of identical simple plates and glasses for langar, warm golden light from oil lamps along the row, no text' },
+  // ─── Indigenous Canadian — Turtle Island series ───
+  ti_ep1_grandmother_moon: { gradient: 'linear-gradient(135deg, #1a472a 0%, #2d5a3f 40%, #c0c0c0 100%)', icon: '🌙', accent: '#e2e8f0', prompt: 'A luminous full moon reflected in a still Canadian lake, cedar trees, campfire on shore, northern stars, soft silver light, no text' },
+  ti_ep2_bear_sharing: { gradient: 'linear-gradient(135deg, #1a472a 0%, #3b2c1a 40%, #c0392b 100%)', icon: '🐻', accent: '#c0392b', prompt: 'A gentle brown bear beside a berry bush in a Canadian forest, birds and fox nearby, warm light through spruce trees, no text' },
+  ti_ep3_turtle_wisdom: { gradient: 'linear-gradient(135deg, #1a472a 0%, #2d5a3f 40%, #6ee7b7 100%)', icon: '🐢', accent: '#6ee7b7', prompt: 'A painted turtle on a rock beside a lake with water lilies, dragonflies, morning mist, Canadian wilderness, no text' },
+  ti_ep4_salmon_journey: { gradient: 'linear-gradient(135deg, #1a472a 0%, #8B4513 40%, #c0c0c0 100%)', icon: '🐟', accent: '#c0c0c0', prompt: 'Silver salmon leaping upstream through rushing water, autumn maple leaves, rocky Canadian riverbank, golden light, no text' },
+  ti_ep5_drum_stars: { gradient: 'linear-gradient(135deg, #1a472a 0%, #2d2d5e 40%, #6ee7b7 100%)', icon: '🥁', accent: '#6ee7b7', prompt: 'A hand drum near a campfire under northern lights, green and purple aurora, sparks rising, Canadian wilderness, no text' },
+  // ─── Indigenous Canadian — standalone stories ───
+  indigenous_eagle_feather: { gradient: 'linear-gradient(135deg, #1a472a 0%, #8B4513 40%, #fbbf24 100%)', icon: '🪶', accent: '#fbbf24', prompt: 'A single eagle feather on soft cloth beside a quiet Canadian lake, autumn maple leaves, golden afternoon light, no text' },
+  indigenous_two_eyed_seeing: { gradient: 'linear-gradient(135deg, #1a472a 0%, #2d5a3f 40%, #a78bfa 100%)', icon: '👁️', accent: '#a78bfa', prompt: 'Eyes reflected in a still lake at twilight, one reflecting cedar forest, the other starlit sky, Canadian landscape, no text' },
+  indigenous_medicine_wheel: { gradient: 'linear-gradient(135deg, #fbbf24 0%, #c0392b 30%, #1a472a 60%, #e2e8f0 100%)', icon: '☀️', accent: '#fbbf24', prompt: 'A medicine wheel on a grassy hilltop with four colours, Canadian prairie under a vast sky, soft golden light, no text' },
+  indigenous_river_knows: { gradient: 'linear-gradient(135deg, #1a472a 0%, #0891b2 40%, #a5f3fc 100%)', icon: '🏞️', accent: '#0891b2', prompt: 'A clear stream winding through mossy Canadian forest, smooth pebbles, ferns and birch trees, misty light, no text' },
+  indigenous_fire_keeper: { gradient: 'linear-gradient(135deg, #1a472a 0%, #9a3412 40%, #fdba74 100%)', icon: '🔥', accent: '#fdba74', prompt: 'A campfire burning steadily in a forest clearing at night, sparks rising, northern lights, Canadian wilderness, no text' },
+  indigenous_cedar_sage_sweetgrass: { gradient: 'linear-gradient(135deg, #1a472a 0%, #2d5a3f 40%, #fcd34d 100%)', icon: '🌿', accent: '#6ee7b7', prompt: 'Cedar branch, sage, and sweetgrass braid on a woven cloth, meadow background, Canadian wildflowers, gentle light, no text' },
+  indigenous_moose_mouse: { gradient: 'linear-gradient(135deg, #1a472a 0%, #3b2c1a 40%, #e2e8f0 100%)', icon: '🫎', accent: '#e2e8f0', prompt: 'A majestic moose beside a tiny mouse on a log in a snowy Canadian boreal forest, spruce trees, blue winter light, no text' },
+  indigenous_snow_silence: { gradient: 'linear-gradient(135deg, #e2e8f0 0%, #94a3b8 40%, #1a472a 100%)', icon: '❄️', accent: '#e2e8f0', prompt: 'Fresh snow covering a Canadian forest at dawn, branches laden with white, small footprints, perfect silence, pink light, no text' },
+  indigenous_northern_lights: { gradient: 'linear-gradient(135deg, #1a1a3e 0%, #1a472a 40%, #6ee7b7 100%)', icon: '✨', accent: '#6ee7b7', prompt: 'Northern lights in green purple and gold over snowy Canadian landscape, a silhouette looking up in wonder, magical, no text' },
+  indigenous_every_rock: { gradient: 'linear-gradient(135deg, #1a472a 0%, #475569 40%, #8B4513 100%)', icon: '🪨', accent: '#94a3b8', prompt: 'A smooth grey stone on the shore of a clear Canadian lake, distant cliffs, pine trees, a loon, warm sunset light, no text' },
+
+  // ─── Parables for Little Hearts (Christian Series) ───
+  plh_ep1_good_friend: { gradient: 'linear-gradient(135deg, #1d4ed8 0%, #3b82f6 40%, #bfdbfe 100%)', icon: '🤝', accent: '#3b82f6', prompt: 'A kind traveler helping a fallen stranger on a dusty road, donkey nearby, olive tree hills, sunset' },
+  plh_ep2_lost_coin: { gradient: 'linear-gradient(135deg, #78350f 0%, #b45309 40%, #fbbf24 100%)', icon: '🪙', accent: '#fbbf24', prompt: 'A woman searching a cottage floor by lamplight for a lost coin, warm golden glow' },
+  plh_ep3_tiny_seed: { gradient: 'linear-gradient(135deg, #14532d 0%, #166534 40%, #86efac 100%)', icon: '🌱', accent: '#4ade80', prompt: 'A tiny seed in a palm growing into a great tree with birds, warm golden light' },
+  plh_ep4_house_on_rock: { gradient: 'linear-gradient(135deg, #1e293b 0%, #475569 40%, #60a5fa 100%)', icon: '🏠', accent: '#60a5fa', prompt: 'Two houses on a hillside, one on rock standing firm in rain, warm watercolor' },
+  plh_ep5_generous_farmer: { gradient: 'linear-gradient(135deg, #92400e 0%, #d97706 40%, #fef3c7 100%)', icon: '🌾', accent: '#f59e0b', prompt: 'A farmer sharing harvest baskets with villagers, golden sunset, rolling green fields' },
+
+  // ─── Peaceful Paws — Buddhist Stories (Series) ───
+  ppb_ep1_monkey_still: { gradient: 'linear-gradient(135deg, #14532d 0%, #166534 40%, #86efac 100%)', icon: '🐒', accent: '#4ade80', prompt: 'A monkey meditating peacefully on a mossy rock by a forest pond, bamboo, lotus flowers' },
+  ppb_ep2_elephant_kindness: { gradient: 'linear-gradient(135deg, #1e293b 0%, #475569 40%, #cbd5e1 100%)', icon: '🐘', accent: '#94a3b8', prompt: 'A gentle elephant bowing to a small bird on a lotus flower, misty forest, golden sunset' },
+  ppb_ep3_lotus_mud: { gradient: 'linear-gradient(135deg, #831843 0%, #db2777 40%, #fbcfe8 100%)', icon: '🪷', accent: '#ec4899', prompt: 'A pink lotus rising from muddy water into golden sunlight, dewdrops on petals, transformation' },
+  ppb_ep4_turtle_slow: { gradient: 'linear-gradient(135deg, #064e3b 0%, #059669 40%, #6ee7b7 100%)', icon: '🐢', accent: '#34d399', prompt: 'A turtle walking peacefully on a forest path with wildflowers, golden afternoon light' },
+  ppb_ep5_deer_meadow: { gradient: 'linear-gradient(135deg, #92400e 0%, #d97706 40%, #fde68a 100%)', icon: '🦌', accent: '#fbbf24', prompt: 'Deer, rabbits, and birds sharing a golden meadow, misty forest, harmony, golden hour' },
+
+  // ─── Gentle Footsteps — Jain Stories (Series) ───
+  gfj_ep1_butterflies: { gradient: 'linear-gradient(135deg, #4338ca 0%, #6366f1 40%, #c7d2fe 100%)', icon: '🦋', accent: '#818cf8', prompt: 'A boy counting butterflies in a flower meadow, gentle golden light, wonder' },
+  gfj_ep2_walking_softly: { gradient: 'linear-gradient(135deg, #14532d 0%, #166534 40%, #86efac 100%)', icon: '👣', accent: '#4ade80', prompt: 'A barefoot girl walking gently on a forest path, dappled sunlight, moss and ferns' },
+  gfj_ep3_anthill_prince: { gradient: 'linear-gradient(135deg, #78350f 0%, #92400e 40%, #f0a500 100%)', icon: '🐜', accent: '#f0a500', prompt: 'A young prince protecting an anthill in a forest, palace background, golden light' },
+  gfj_ep4_sharing_no_score: { gradient: 'linear-gradient(135deg, #92400e 0%, #d97706 40%, #fef3c7 100%)', icon: '🥭', accent: '#f59e0b', prompt: 'Two children sharing food under a mango tree, warm afternoon, Indian village' },
+  gfj_ep5_firefly_light: { gradient: 'linear-gradient(135deg, #1e1b4b 0%, #312e81 40%, #fbbf24 100%)', icon: '✨', accent: '#fbbf24', prompt: 'A glowing firefly in a dark forest, other fireflies appearing, magical golden light' },
+
+  // ─── Wise Nights — Jewish Stories (Series) ───
+  wnj_ep1_jar_honey: { gradient: 'linear-gradient(135deg, #78350f 0%, #b45309 40%, #fbbf24 100%)', icon: '🍯', accent: '#fbbf24', prompt: 'A rabbi pouring honey onto a book page, candlelight, warm study, books on shelves' },
+  wnj_ep2_broken_vase: { gradient: 'linear-gradient(135deg, #1e40af 0%, #3b82f6 40%, #fbbf24 100%)', icon: '🏺', accent: '#fbbf24', prompt: 'A vase repaired with golden seams on a windowsill, sunset light, warm and glowing' },
+  wnj_ep3_miriam_song: { gradient: 'linear-gradient(135deg, #be123c 0%, #f43f5e 40%, #fda4af 100%)', icon: '🎵', accent: '#fb7185', prompt: 'A woman dancing by the seashore at sunrise with a tambourine, golden and rosy light' },
+  wnj_ep4_challah_village: { gradient: 'linear-gradient(135deg, #78350f 0%, #b45309 40%, #fef3c7 100%)', icon: '🍞', accent: '#f59e0b', prompt: 'Golden challah bread on a table, villagers sharing, warm candlelight, Shabbat evening' },
+  wnj_ep5_stars_jerusalem: { gradient: 'linear-gradient(135deg, #1e1b4b 0%, #312e81 40%, #60a5fa 100%)', icon: '⭐', accent: '#60a5fa', prompt: 'A child on a rooftop in Jerusalem looking at a starry sky, golden city walls, lantern light' },
+
+  // ─── Christian standalone stories ───
+  christian_shepherd_blanket: { gradient: 'linear-gradient(135deg, #1e293b 0%, #475569 40%, #fef3c7 100%)', icon: '🐑', accent: '#fbbf24', prompt: 'A shepherd boy wrapping a blanket around a lamb on a snowy hillside, starlight' },
+  christian_fisherman_net: { gradient: 'linear-gradient(135deg, #1e3a5f 0%, #2d4a6f 40%, #60a5fa 100%)', icon: '🐟', accent: '#60a5fa', prompt: 'A fisherman casting a wide golden net on calm blue water at sunrise' },
+  christian_sparrow_watches: { gradient: 'linear-gradient(135deg, #78350f 0%, #92400e 40%, #fbbf24 100%)', icon: '🐦', accent: '#fbbf24', prompt: 'A sparrow perched in rain with a sunbeam breaking through clouds, warm and hopeful' },
+  christian_star_led_way: { gradient: 'linear-gradient(135deg, #1e1b4b 0%, #312e81 40%, #fbbf24 100%)', icon: '⭐', accent: '#fbbf24', prompt: 'Three travellers on camels following a brilliant star across a desert at night' },
+  christian_well_living_water: { gradient: 'linear-gradient(135deg, #0e7490 0%, #06b6d4 40%, #a5f3fc 100%)', icon: '💧', accent: '#22d3ee', prompt: 'A stone well with clear water overflowing gently, children drinking, golden light' },
+  christian_fig_tree_chance: { gradient: 'linear-gradient(135deg, #14532d 0%, #166534 40%, #86efac 100%)', icon: '🌿', accent: '#4ade80', prompt: 'A fig tree with one small green leaf sprouting, a gardener kneeling beside it, hopeful light' },
+  christian_mustard_seed_garden: { gradient: 'linear-gradient(135deg, #92400e 0%, #d97706 40%, #fef3c7 100%)', icon: '🌳', accent: '#f59e0b', prompt: 'An enormous mustard tree in golden bloom, birds and butterflies, children in shade' },
+  christian_widow_coins: { gradient: 'linear-gradient(135deg, #78350f 0%, #b45309 40%, #fbbf24 100%)', icon: '🪙', accent: '#fbbf24', prompt: 'An elderly woman placing two copper coins in an offering box, warm temple light' },
+  christian_bridges_not_walls: { gradient: 'linear-gradient(135deg, #92400e 0%, #d97706 40%, #fde68a 100%)', icon: '🌉', accent: '#f59e0b', prompt: 'A wooden bridge across a stream between two cottages, neighbours meeting, sunset' },
+  christian_light_on_hill: { gradient: 'linear-gradient(135deg, #1e1b4b 0%, #312e81 40%, #fbbf24 100%)', icon: '🕯️', accent: '#fbbf24', prompt: 'A cottage with golden candlelight in the window on a green hill, dark evening sky' },
+
+  // ─── Buddhist standalone stories ───
+  buddhist_tiger_strawberry: { gradient: 'linear-gradient(135deg, #991b1b 0%, #ef4444 40%, #fca5a5 100%)', icon: '🍓', accent: '#ef4444', prompt: 'A red strawberry on a cliff vine, golden light, clouds below, present moment beauty' },
+  buddhist_empty_cup: { gradient: 'linear-gradient(135deg, #78350f 0%, #b45309 40%, #fbbf24 100%)', icon: '🍵', accent: '#fbbf24', prompt: 'Tea overflowing a cup, monk pouring, scholar watching, warm candlelit room' },
+  buddhist_siddhartha_garden: { gradient: 'linear-gradient(135deg, #14532d 0%, #166534 40%, #fbbf24 100%)', icon: '🌸', accent: '#4ade80', prompt: 'A prince meditating in a lush garden, lotus ponds, deer, golden afternoon light' },
+  buddhist_monk_scorpion: { gradient: 'linear-gradient(135deg, #b91c1c 0%, #ef4444 40%, #fecaca 100%)', icon: '🦂', accent: '#ef4444', prompt: 'A monk lifting a scorpion from a river with a leaf, golden sunset, bamboo forest' },
+  buddhist_mountain_moved: { gradient: 'linear-gradient(135deg, #1e293b 0%, #475569 40%, #cbd5e1 100%)', icon: '⛰️', accent: '#94a3b8', prompt: 'A misty mountain with water flowing down, carving a valley, dawn light, patient' },
+  buddhist_two_hands: { gradient: 'linear-gradient(135deg, #92400e 0%, #d97706 40%, #fef3c7 100%)', icon: '🤲', accent: '#f59e0b', prompt: 'Two hands clapping with golden light ripples, temple background, connection' },
+  buddhist_river_found_sea: { gradient: 'linear-gradient(135deg, #1e3a5f 0%, #0284c7 40%, #7dd3fc 100%)', icon: '🌊', accent: '#0ea5e9', prompt: 'A mountain stream widening toward a golden ocean at sunset, journey and arrival' },
+  buddhist_breathing_ocean: { gradient: 'linear-gradient(135deg, #1e1b4b 0%, #312e81 40%, #c4b5fd 100%)', icon: '🌅', accent: '#8b5cf6', prompt: 'A child meditating on a beach at sunset, gentle waves, golden and lavender sky' },
+  buddhist_farmer_good_luck: { gradient: 'linear-gradient(135deg, #14532d 0%, #166534 40%, #86efac 100%)', icon: '🐴', accent: '#4ade80', prompt: 'A farmer beside a wild horse in a green field, amazed villagers, golden light' },
+  buddhist_footprints_snow: { gradient: 'linear-gradient(135deg, #e2e8f0 0%, #94a3b8 40%, #1e293b 100%)', icon: '👣', accent: '#e2e8f0', prompt: 'Footprints in fresh snow leading to a mountain monastery, pink sunrise, serene winter' },
+
+  // ─── Jain standalone stories ───
+  jain_prince_never_hurt_fly: { gradient: 'linear-gradient(135deg, #4338ca 0%, #6366f1 40%, #c7d2fe 100%)', icon: '🪰', accent: '#818cf8', prompt: 'A prince releasing a fly through a palace window, golden light, ornate Indian interior' },
+  jain_spider_web: { gradient: 'linear-gradient(135deg, #1a1a3e 0%, #2d2d5e 40%, #c4b5fd 100%)', icon: '🕸️', accent: '#a78bfa', prompt: 'A spider web with morning dew in golden sunrise, child watching in wonder, garden' },
+  jain_merchant_gave_everything: { gradient: 'linear-gradient(135deg, #78350f 0%, #b45309 40%, #fbbf24 100%)', icon: '🧘', accent: '#fbbf24', prompt: 'A merchant placing jewels at a monk feet under a tree, golden sunset, peace' },
+  jain_bird_carried_water: { gradient: 'linear-gradient(135deg, #9a3412 0%, #f97316 40%, #fed7aa 100%)', icon: '🐦', accent: '#fb923c', prompt: 'A tiny bird flying with a water drop toward a forest fire, courage, golden orange light' },
+  jain_walking_barefoot: { gradient: 'linear-gradient(135deg, #14532d 0%, #166534 40%, #86efac 100%)', icon: '🦶', accent: '#4ade80', prompt: 'Bare feet on soft green grass with wildflowers, golden light, dewdrops, mindful' },
+  jain_diamond_dewdrop: { gradient: 'linear-gradient(135deg, #4c1d95 0%, #7c3aed 40%, #ddd6fe 100%)', icon: '💎', accent: '#8b5cf6', prompt: 'A dewdrop catching rainbow light beside a diamond, morning garden, simplicity' },
+  jain_peacock_dance: { gradient: 'linear-gradient(135deg, #0e7490 0%, #06b6d4 40%, #a5f3fc 100%)', icon: '🦚', accent: '#22d3ee', prompt: 'A peacock dancing in monsoon rain, iridescent feathers, golden light through clouds' },
+  jain_farmer_fed_ants: { gradient: 'linear-gradient(135deg, #78350f 0%, #92400e 40%, #f0a500 100%)', icon: '🐜', accent: '#f0a500', prompt: 'A farmer placing grains near an anthill at sunset, Indian farmland, gentle caring' },
+  jain_temple_sunrise: { gradient: 'linear-gradient(135deg, #e2e8f0 0%, #f0abfc 40%, #fbbf24 100%)', icon: '🛕', accent: '#fbbf24', prompt: 'A white marble Jain temple glowing in pink and gold sunrise, child at entrance, mist' },
+  jain_child_counted_stars: { gradient: 'linear-gradient(135deg, #1e1b4b 0%, #312e81 40%, #fbbf24 100%)', icon: '🌟', accent: '#fbbf24', prompt: 'A child on grass looking at a vast starry sky, wonder, golden window light nearby' },
+
+  // ─── Jewish standalone stories ───
+  jewish_wise_child_chelm: { gradient: 'linear-gradient(135deg, #78350f 0%, #b45309 40%, #fbbf24 100%)', icon: '🏘️', accent: '#fbbf24', prompt: 'A child in a village square, confused adults, lantern glowing, Eastern European shtetl' },
+  jewish_golem_heart: { gradient: 'linear-gradient(135deg, #78350f 0%, #92400e 40%, #94a3b8 100%)', icon: '🗿', accent: '#94a3b8', prompt: 'A gentle clay giant kneeling to pick up a flower, moonlit Prague, cobblestones, lanterns' },
+  jewish_ruth_naomi: { gradient: 'linear-gradient(135deg, #92400e 0%, #d97706 40%, #fef3c7 100%)', icon: '🤝', accent: '#f59e0b', prompt: 'Two women walking together on a road at sunset, young and elderly, warm golden light' },
+  jewish_apple_tree_road: { gradient: 'linear-gradient(135deg, #14532d 0%, #166534 40%, #ef4444 100%)', icon: '🍎', accent: '#ef4444', prompt: 'A boy planting an apple sapling at a road end, golden sunset, green hills, hope' },
+  jewish_dreidel_spun: { gradient: 'linear-gradient(135deg, #1e40af 0%, #3b82f6 40%, #fbbf24 100%)', icon: '🪩', accent: '#fbbf24', prompt: 'A dreidel spinning on a table, Hanukkah candlelight, warm golden glow, cozy winter' },
+  jewish_elijah_chair: { gradient: 'linear-gradient(135deg, #78350f 0%, #b45309 40%, #fbbf24 100%)', icon: '🪑', accent: '#fbbf24', prompt: 'A Passover table with empty chair and place setting, candlelight, family, door open' },
+  jewish_box_beautiful_words: { gradient: 'linear-gradient(135deg, #78350f 0%, #92400e 40%, #f0a500 100%)', icon: '📦', accent: '#f0a500', prompt: 'A wooden box with glowing folded papers, child hands reaching, warm lamplight, cozy' },
+  jewish_shabbat_candles: { gradient: 'linear-gradient(135deg, #92400e 0%, #d97706 40%, #fef3c7 100%)', icon: '🕯️', accent: '#f59e0b', prompt: 'Two Shabbat candles with challah and wine, woman blessing, warm family atmosphere' },
+  jewish_vineyard_kindness: { gradient: 'linear-gradient(135deg, #4c1d95 0%, #7c3aed 40%, #c4b5fd 100%)', icon: '🍇', accent: '#8b5cf6', prompt: 'A vineyard owner offering grapes to travellers, golden light, rolling hills, generous' },
+  jewish_hanukkah_flame: { gradient: 'linear-gradient(135deg, #1e40af 0%, #3b82f6 40%, #fbbf24 100%)', icon: '🕎', accent: '#fbbf24', prompt: 'A menorah with one candle lit by a window, snow outside, warm glow, deep blue night' },
 };
 
 // Tradition-level art (for tradition badges/headers)
@@ -334,6 +427,10 @@ const TRADITION_ART = {
   jewish: {
     gradient: 'linear-gradient(135deg, #1e40af 0%, #60a5fa 100%)',
     color: '#60a5fa',
+  },
+  indigenous: {
+    gradient: 'linear-gradient(135deg, #1a472a 0%, #2d5a3f 50%, #8B4513 100%)',
+    color: '#2d5a3f',
   },
 };
 

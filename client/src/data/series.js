@@ -2,9 +2,11 @@
 // Each episode is standalone (complete arc) but same characters across the series.
 
 import { SIKH_SERIES } from './sikhSeries.js';
+import { BELIEF_SERIES } from './beliefSeries.js';
 
 export const SERIES = [
   ...SIKH_SERIES,
+  ...BELIEF_SERIES,
   {
     id: 'fire-truck-academy',
     title: 'Fire Truck Academy',

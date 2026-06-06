@@ -636,6 +636,101 @@ dc_nz_ep5_facts: 'Fun illustration of a kiwi bird next to a kiwi fruit (same nam
   joseph_brothers: 'A colorful coat draped over a rock in an ancient desert, caravan in the distance, Egyptian pyramids on horizon, journey and forgiveness',
   lost_sheep: 'A shepherd carrying a small lamb on his shoulders walking through a moonlit valley, flock in background, stars above, gentle rescue',
 
+  // ─── Indigenous Canadian — Turtle Island series ───
+  ti_ep1_grandmother_moon: 'A luminous full moon reflected in a perfectly still Canadian lake, cedar and pine trees silhouetted against the night sky, a campfire glowing on the shore, northern stars, soft silver light, dreamy watercolor, no text',
+  ti_ep2_bear_sharing: 'A gentle brown bear sitting beside a bush of ripe red berries in a Canadian forest, small birds and a fox nearby waiting patiently, soft warm light filtering through spruce trees, peaceful coexistence, no text',
+  ti_ep3_turtle_wisdom: 'A painted turtle resting on a warm flat rock beside a lake covered in water lilies, dragonflies hovering, soft morning mist rising from the water, Canadian wilderness, peaceful and ancient, no text',
+  ti_ep4_salmon_journey: 'Silver salmon leaping upstream through rushing white water in an autumn Canadian river, red and gold maple leaves falling, rocky riverbank, dramatic golden light, perseverance, no text',
+  ti_ep5_drum_stars: 'A hand drum made of stretched hide resting near a campfire under a sky filled with northern lights, green and purple aurora, sparks rising toward the stars, Canadian wilderness, heartbeat rhythm, no text',
+
+  // ─── Indigenous Canadian — standalone stories ───
+  indigenous_eagle_feather: 'A single magnificent eagle feather resting on a soft cloth beside a quiet lake, autumn maple leaves in red and orange, Canadian wilderness, warm golden afternoon light, reverence and respect, no text',
+  indigenous_two_eyed_seeing: 'A pair of gentle eyes reflected in a still lake at twilight, one eye reflecting ancient cedar forest and the other reflecting starlit sky, Canadian landscape, wisdom and balance, dreamy watercolor, no text',
+  indigenous_medicine_wheel: 'A medicine wheel drawn on a grassy hilltop with four coloured sections — yellow, red, black, white — four directions, Canadian prairie under a vast sky, soft golden light, sacred geometry, no text',
+  indigenous_river_knows: 'A clear stream winding through a mossy Canadian forest, smooth pebbles visible through crystal water, ferns and birch trees, soft misty light, the river leading toward a distant lake, trust and guidance, no text',
+  indigenous_fire_keeper: 'A small campfire burning steadily in a forest clearing at night, sparks rising toward stars, northern lights in the background, firewood stacked neatly nearby, Canadian wilderness, warmth and service, no text',
+  indigenous_cedar_sage_sweetgrass: 'Three sacred plants arranged on a woven cloth — a cedar branch, silvery sage, and a golden sweetgrass braid — soft warm light, meadow background, Canadian wildflowers, gentle and reverent, no text',
+  indigenous_moose_mouse: 'A majestic moose standing in deep snow beside a tiny mouse on a log in a Canadian boreal forest, thick spruce trees, soft blue winter light, unlikely friendship, peaceful coexistence, no text',
+  indigenous_snow_silence: 'Fresh untouched snow covering a Canadian forest at dawn, every branch laden with white, a single set of small footprints leading into the trees, perfect silence, soft pink morning light, no text',
+  indigenous_northern_lights: 'Spectacular northern lights dancing across a dark Canadian sky in ribbons of green purple and gold, snow-covered landscape below, a silhouetted figure looking up in wonder, magical and awe-inspiring, no text',
+  indigenous_every_rock: 'A smooth grey stone resting on the shore of a crystal-clear Canadian lake, pebbles visible through the water, distant cliffs and pine trees, a loon on the lake, warm sunset light, ancient and sacred, no text',
+
+  // ─── Parables for Little Hearts (Christian Series) ───
+  plh_ep1_good_friend: 'A kind traveler kneeling on a dusty road to help a fallen stranger, a gentle donkey waiting nearby, warm sunset over olive tree hills, soft watercolor, compassion to strangers',
+  plh_ep2_lost_coin: 'A woman holding a small oil lamp searching a cozy stone cottage floor on hands and knees, warm golden glow, scattered coins gleaming, ancient Middle Eastern home',
+  plh_ep3_tiny_seed: 'A tiny golden seed in a child open palm magically growing into an enormous spreading tree with birds nesting in its branches, warm golden light, wonder and faith',
+  plh_ep4_house_on_rock: 'Two small houses on a hillside, one on solid rock standing firm in storm, one on sand tilting in rain, dramatic but gentle sky, warm watercolor tones',
+  plh_ep5_generous_farmer: 'A kind farmer sharing golden wheat and fruits from overflowing baskets with grateful villagers, warm harvest sunset, rolling green fields, abundance and joy',
+
+  // ─── Peaceful Paws — Buddhist Stories (Series) ───
+  ppb_ep1_monkey_still: 'A small brown monkey sitting peacefully with closed eyes on a mossy rock beside a calm forest pond, golden light filtering through bamboo, lotus flowers floating',
+  ppb_ep2_elephant_kindness: 'A gentle grey elephant bowing her great head toward a small bird perched on a pink lotus flower, golden sunset light in a misty forest clearing, tender and peaceful',
+  ppb_ep3_lotus_mud: 'A single glowing pink lotus flower rising from dark muddy water into golden sunlight, dewdrops on petals, calm pond with lily pads, beautiful transformation',
+  ppb_ep4_turtle_slow: 'A small green turtle walking peacefully along a forest path surrounded by wildflowers, golden afternoon light, other animals watching from the sides, serene and gentle',
+  ppb_ep5_deer_meadow: 'Deer, rabbits, and birds peacefully sharing a golden sunlit meadow with wildflowers, misty forest in background, harmony and community, warm golden hour light',
+
+  // ─── Gentle Footsteps — Jain Stories (Series) ───
+  gfj_ep1_butterflies: 'A young boy sitting in a flower meadow carefully counting colourful butterflies on his fingers, gentle golden light, wildflowers everywhere, peaceful wonder',
+  gfj_ep2_walking_softly: 'A barefoot girl walking carefully on a forest path, looking down at tiny creatures with tenderness, soft dappled sunlight, lush green forest floor with moss and ferns',
+  gfj_ep3_anthill_prince: 'A young prince standing protectively in front of a large anthill in a forest, palace visible in background, golden light, butterflies and small creatures nearby',
+  gfj_ep4_sharing_no_score: 'Two children sitting under a mango tree sharing food from their lunchboxes, warm afternoon light, Indian village background, friendship and generosity',
+  gfj_ep5_firefly_light: 'A single glowing firefly illuminating a dark forest path, tiny warm golden light against deep blue darkness, other fireflies appearing one by one, magical and hopeful',
+
+  // ─── Wise Nights — Jewish Stories (Series) ───
+  wnj_ep1_jar_honey: 'A warm study with a kind rabbi pouring golden honey onto the page of an open book, candlelight, leather-bound books on shelves, cozy and reverent atmosphere',
+  wnj_ep2_broken_vase: 'A beautiful ceramic vase repaired with golden seams glowing warmly on a windowsill, sunset light pouring through, a child looking at it in wonder, cozy room',
+  wnj_ep3_miriam_song: 'A young woman dancing joyfully by the seashore at sunrise with a tambourine, waves gently behind her, golden and rosy light, celebration and freedom',
+  wnj_ep4_challah_village: 'A golden braided challah bread on a wooden table surrounded by happy villagers sharing pieces, warm candlelight, Friday evening Shabbat atmosphere, community and love',
+  wnj_ep5_stars_jerusalem: 'A child lying on a rooftop in ancient Jerusalem looking up at a sky full of brilliant stars, golden city walls below, warm lantern light, wonder and peace',
+
+  // ─── Christian standalone stories ───
+  christian_shepherd_blanket: 'A shepherd boy wrapping his woolen blanket around a shivering newborn lamb on a snowy hillside at night, warm starlight, gentle snowflakes, cozy and kind',
+  christian_fisherman_net: 'A fisherman on a wooden boat casting a wide golden net across calm blue water at sunrise, other boats in background, welcoming and inclusive, Mediterranean setting',
+  christian_sparrow_watches: 'A small brown sparrow perched on a twig in the rain, a ray of golden sunlight breaking through storm clouds and illuminating the bird, warm and hopeful',
+  christian_star_led_way: 'Three travellers on camels following a brilliant star across a vast desert at night, the star casting golden light on sand dunes, majestic and hopeful',
+  christian_well_living_water: 'A stone well in a village square with sparkling clear water overflowing gently, children drinking from cupped hands, warm golden light, lush greenery',
+  christian_fig_tree_chance: 'A single fig tree with one small green leaf sprouting on a bare branch, a gardener kneeling beside it with soil and water, warm hopeful light, Mediterranean garden',
+  christian_mustard_seed_garden: 'An enormous mustard tree in full golden bloom, birds and butterflies everywhere, children playing in its shade, warm afternoon light, magical and abundant',
+  christian_widow_coins: 'An elderly woman with kind eyes placing two tiny copper coins into a stone offering box, rich people in background with heavy bags, warm temple light, humble devotion',
+  christian_bridges_not_walls: 'A small wooden bridge built across a stream between two cottages, two neighbours meeting in the middle with warm smiles, sunset light, wildflowers, reconciliation',
+  christian_light_on_hill: 'A small cottage with a warm golden light in the window on top of a gentle hill, dark evening sky, village below seeing the light, guiding and comforting',
+
+  // ─── Buddhist standalone stories ───
+  buddhist_tiger_strawberry: 'A single red strawberry glowing on a vine growing from a cliff face, soft golden light, clouds below, a hand reaching toward it, present moment beauty',
+  buddhist_empty_cup: 'Tea overflowing from a small ceramic cup onto a wooden table, a wise monk pouring and smiling gently, a surprised scholar watching, warm candlelit room',
+  buddhist_siddhartha_garden: 'A young prince sitting peacefully in a lush palace garden surrounded by lotus ponds, deer, and songbirds, golden afternoon light filtering through ancient trees',
+  buddhist_monk_scorpion: 'A peaceful monk in orange robes gently lifting a small scorpion from a river with a leaf, golden sunset light on calm water, bamboo forest, compassion',
+  buddhist_mountain_moved: 'A vast misty mountain with a thin stream of water flowing gently down its face carving a valley, dawn light breaking through clouds, ancient and patient',
+  buddhist_two_hands: 'Two small hands coming together in a clap, golden ripples of light spreading outward, peaceful temple background, warm afternoon light, connection and harmony',
+  buddhist_river_found_sea: 'A narrow mountain stream widening as it flows through green valleys toward a vast golden ocean at sunset, journey of discovery, warm light reflecting on water',
+  buddhist_breathing_ocean: 'A child sitting cross-legged on a peaceful beach at sunset, gentle waves rolling in and out in rhythm, golden and lavender sky, serenity and calm',
+  buddhist_farmer_good_luck: 'A farmer standing calmly beside a beautiful wild horse in a green field, villagers looking on in amazement, soft golden light, peaceful acceptance',
+  buddhist_footprints_snow: 'Gentle footprints in fresh white snow leading toward a peaceful mountain monastery at sunrise, soft pink and gold light, serene winter landscape, mindful walking',
+
+  // ─── Jain standalone stories ───
+  jain_prince_never_hurt_fly: 'A young prince gently cupping a small fly in his hands and releasing it through a palace window into golden light, ornate Indian palace interior, tenderness',
+  jain_spider_web: 'A perfect spider web glistening with morning dew in golden sunrise light, a child looking at it in wonder, garden setting with jasmine, delicate and beautiful',
+  jain_merchant_gave_everything: 'A merchant in fine robes placing his ornate turban and jewelry at the feet of a simple smiling monk under a spreading tree, golden sunset, peace',
+  jain_bird_carried_water: 'A tiny bird flying with a single drop of water in its beak toward a distant forest fire, determination and courage, golden and orange light, hopeful',
+  jain_walking_barefoot: 'Bare feet walking gently on soft green grass with wildflowers, golden morning light, close-up showing tiny insects and dewdrops nearby, mindful and gentle',
+  jain_diamond_dewdrop: 'A single dewdrop on a blade of grass catching rainbow light beside a dull diamond on velvet, morning garden, simplicity outshining riches',
+  jain_peacock_dance: 'A peacock with its tail fully fanned dancing joyfully in gentle monsoon rain, iridescent blue and green feathers shimmering with raindrops, golden light through clouds',
+  jain_farmer_fed_ants: 'A farmer gently placing grains of rice on the ground near an anthill at golden sunset, Indian farmland, gentle and caring, tiny ants approaching the grain',
+  jain_temple_sunrise: 'A beautiful white marble Jain temple with ornate carvings glowing in soft pink and gold sunrise light, a child standing at the entrance in wonder, morning mist',
+  jain_child_counted_stars: 'A child lying on soft grass looking up at a vast starry sky, arms spread wide in wonder, gentle golden light from a nearby window, peaceful night, awe',
+
+  // ─── Jewish standalone stories ───
+  jewish_wise_child_chelm: 'A small child standing in a comical village square surrounded by confused adults scratching their heads, one lantern glowing, Eastern European shtetl, warm and humorous',
+  jewish_golem_heart: 'A gentle clay giant kneeling to pick up a fallen flower and place it back in soil, moonlit Prague streets, cobblestones, warm lantern light, tender strength',
+  jewish_ruth_naomi: 'Two women walking together on a dusty road toward a distant village at sunset, one young and one elderly, supporting each other, warm golden light, loyalty',
+  jewish_apple_tree_road: 'A small boy planting a tiny apple sapling at the end of a long road, golden sunset ahead, hope and future, rolling green hills, warm and hopeful',
+  jewish_dreidel_spun: 'A wooden dreidel spinning on a table surrounded by soft Hanukkah candlelight, warm golden glow, gentle bokeh, cozy winter evening, hope and wonder',
+  jewish_elijah_chair: 'A Passover table with an empty chair and a full place setting with wine cup, warm candlelight, family gathered around, welcoming atmosphere, door slightly open',
+  jewish_box_beautiful_words: 'A small wooden box overflowing with tiny folded papers, each glowing softly with golden light, child hands reaching for one, cozy bedroom, warm lamplight',
+  jewish_shabbat_candles: 'Two white Shabbat candles glowing warmly on a table with challah bread and wine, a woman covering her eyes in blessing, warm family atmosphere, golden light',
+  jewish_vineyard_kindness: 'A vineyard owner offering ripe purple grapes from the vine to passing travellers, golden afternoon light, lush grapevines on rolling hills, generosity and warmth',
+  jewish_hanukkah_flame: 'A single candle lit on a beautiful menorah by a window at night, its flame reflected in the glass, snow falling outside, warm golden glow against deep blue darkness',
+
 };
 
 

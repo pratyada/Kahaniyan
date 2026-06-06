@@ -59,6 +59,7 @@ export const BELIEFS = [
   { key: 'buddhist', label: 'Buddhism', icon: '☸️' },
   { key: 'jain', label: 'Jainism', icon: '🪷' },
   { key: 'jewish', label: 'Judaism', icon: '✡️' },
+  { key: 'indigenous', label: 'Indigenous (Canada)', icon: '🐢' },
   { key: 'universal', label: 'No specific belief', icon: '🌍' },
 ];
 // Legacy alias — keep for backward compatibility
