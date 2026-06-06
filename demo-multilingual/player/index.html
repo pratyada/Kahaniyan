@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>The Lion and the Mouse — My Sleepy Tale</title>
+  <link rel="stylesheet" href="style.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Naskh+Arabic&display=swap" rel="stylesheet" />
+</head>
+<body>
+  <div class="container" id="app">
+    <div class="loading" id="loading">
+      <div class="spinner"></div>
+      <p>Loading story...</p>
+    </div>
+  </div>
+
+  <script>
+    const CONFIG_URL = '../config.json';
+    let config = null;
+    let currentLang = null;
+    let audio = null;
+    let isPlaying = false;
+
+    async function init() {
+      try {
+        const res = await fetch(CONFIG_URL);
+        if (!res.ok) throw new Error('Could not load config.json. Run generate.mjs first.');
+        config = await res.json();
+        render();
+      } catch (err) {
+        document.getElementById('app').innerHTML =
+          `<div class="error"><p>${err.message}</p></div>`;
+      }
+    }
+
+    function render() {
+      const app = document.getElementById('app');
+      const defaultLang = config.languages.find(l => l.code === 'en') || config.languages[0];
+      currentLang = defaultLang;
+
+      const options = config.languages
+        .filter(l => l.audioFile && l.text)
+        .map(l => `<option value="${l.code}">${l.displayName}</option>`)
+        .join('');
+
+      app.innerHTML = `
+        <div class="header">
+          <h1>${config.title}</h1>
+          <p class="subtitle">A Bedtime Story in ${config.languages.filter(l => l.audioFile).length} Languages</p>
+        </div>
+
+        <div class="language-selector">
+          <label for="lang-select">Language</label>
+          <select id="lang-select">${options}</select>
+        </div>
+
+        <div class="player-controls">
+          <div class="lang-badge" id="lang-badge">${defaultLang.displayName}</div>
+          <br />
+          <button class="play-btn" id="play-btn" aria-label="Play">&#9654;</button>
+          <div class="progress-container">
+            <div class="progress-bar" id="progress-bar">
+              <div class="progress-fill" id="progress-fill"></div>
+            </div>
+            <span class="time-display" id="time-display">0:00 / 0:00</span>
+          </div>
+        </div>
+
+        <div class="story-panel">
+          <div class="story-text" id="story-text">${defaultLang.text || ''}</div>
+        </div>
+
+        <div class="branding">
+          Powered by <a href="https://mysleepytale.com" target="_blank">My Sleepy Tale</a>
+        </div>
+      `;
+
+      // Set up audio
+      loadLanguage(defaultLang);
+
+      // Event listeners
+      document.getElementById('lang-select').addEventListener('change', (e) => {
+        const lang = config.languages.find(l => l.code === e.target.value);
+        if (lang) loadLanguage(lang);
+      });
+
+      document.getElementById('play-btn').addEventListener('click', togglePlay);
+
+      document.getElementById('progress-bar').addEventListener('click', (e) => {
+        if (!audio || !audio.duration) return;
+        const rect = e.currentTarget.getBoundingClientRect();
+        const pct = (e.clientX - rect.left) / rect.width;
+        audio.currentTime = pct * audio.duration;
+      });
+    }
+
+    function loadLanguage(lang) {
+      currentLang = lang;
+
+      // Update text
+      const storyEl = document.getElementById('story-text');
+      storyEl.textContent = lang.text || 'No translation available.';
+      storyEl.className = 'story-text' + (lang.rtl ? ' rtl' : '');
+
+      // Update badge
+      document.getElementById('lang-badge').textContent = lang.displayName;
+
+      // Reset audio
+      if (audio) {
+        audio.pause();
+        audio.removeEventListener('timeupdate', onTimeUpdate);
+        audio.removeEventListener('ended', onEnded);
+      }
+
+      isPlaying = false;
+      updatePlayButton();
+      document.getElementById('progress-fill').style.width = '0%';
+      document.getElementById('time-display').textContent = '0:00 / 0:00';
+
+      if (lang.audioFile) {
+        audio = new Audio('../' + lang.audioFile);
+        audio.addEventListener('timeupdate', onTimeUpdate);
+        audio.addEventListener('ended', onEnded);
+        audio.addEventListener('loadedmetadata', () => {
+          document.getElementById('time-display').textContent =
+            `0:00 / ${formatTime(audio.duration)}`;
+        });
+      } else {
+        audio = null;
+      }
+    }
+
+    function togglePlay() {
+      if (!audio) return;
+      if (isPlaying) {
+        audio.pause();
+      } else {
+        audio.play();
+      }
+      isPlaying = !isPlaying;
+      updatePlayButton();
+    }
+
+    function updatePlayButton() {
+      const btn = document.getElementById('play-btn');
+      btn.innerHTML = isPlaying ? '&#10074;&#10074;' : '&#9654;';
+      btn.setAttribute('aria-label', isPlaying ? 'Pause' : 'Play');
+    }
+
+    function onTimeUpdate() {
+      if (!audio || !audio.duration) return;
+      const pct = (audio.currentTime / audio.duration) * 100;
+      document.getElementById('progress-fill').style.width = pct + '%';
+      document.getElementById('time-display').textContent =
+        `${formatTime(audio.currentTime)} / ${formatTime(audio.duration)}`;
+    }
+
+    function onEnded() {
+      isPlaying = false;
+      updatePlayButton();
+    }
+
+    function formatTime(seconds) {
+      const m = Math.floor(seconds / 60);
+      const s = Math.floor(seconds % 60);
+      return `${m}:${s.toString().padStart(2, '0')}`;
+    }
+
+    init();
+  </script>
+</body>
+</html>

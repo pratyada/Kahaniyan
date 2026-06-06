@@ -1,0 +1,17 @@
+{
+  "title": "The Lion and the Mouse",
+  "storyId": "lion_mouse",
+  "baseLanguage": "en",
+  "baseText": "Once upon a time, in a warm golden meadow where the tall grass swayed like gentle waves, a great lion lay sleeping beneath an old oak tree. His breathing was slow and peaceful, like the soft rhythm of the wind.\n\nA tiny mouse named Mila was scurrying home through the meadow when she accidentally ran right across the lion's big, soft paw. The lion opened one sleepy eye and gently wrapped his paw around the little mouse.\n\n\"Oh please, dear Lion,\" whispered Mila, her voice as small as a raindrop. \"I did not mean to wake you. If you let me go, I promise I will help you one day.\"\n\nThe lion smiled warmly. \"You are so tiny, little one. How could you ever help me?\" But his heart was kind, and he gently opened his paw and let Mila scurry away into the soft grass.\n\nMany quiet nights passed. Then one evening, the lion became tangled in a rope left near the edge of the meadow. He tried and tried, but he could not free himself. He let out a soft, sad sound that drifted across the moonlit field.\n\nMila heard him. She hurried through the silver grass and began to nibble at the rope with her tiny teeth. Nibble, nibble, nibble, she worked patiently through the night, until at last the rope fell away and the lion was free.\n\n\"Thank you, dear Mila,\" the lion said softly, his eyes full of gratitude. \"You were right. Even the smallest friend can make the biggest difference.\"\n\nMila climbed onto the lion's warm paw, and together they watched the stars twinkle above the meadow. The crickets sang a lullaby, the breeze carried the scent of wildflowers, and the whole world felt safe and still.\n\nSo close your eyes now, {childName}. Remember that kindness always comes back to you, just like the gentle wind returns each evening. You are brave, you are loved, and tomorrow will be another beautiful day.\n\nGoodnight, little one. Sweet dreams.",
+  "languages": [
+    { "code": "en", "displayName": "English", "voiceId": "pNInz6obpgDQGcFmaJgB", "rtl": false },
+    { "code": "fr", "displayName": "French", "voiceId": "EXAVITQu4vr4xnSDxMaL", "rtl": false },
+    { "code": "hi", "displayName": "Hindi", "voiceId": "onwK4e9ZLuTAKqWW03F9", "rtl": false },
+    { "code": "ar", "displayName": "Arabic", "voiceId": "TX3LPaxmHKxFdv7VOQHJ", "rtl": true },
+    { "code": "es", "displayName": "Spanish", "voiceId": "pFZP5JQG7iQjIQuC4Bku", "rtl": false },
+    { "code": "zh", "displayName": "Chinese (Mandarin)", "voiceId": "Xb7hH8MSUJpSbSDYk0k2", "rtl": false },
+    { "code": "pl", "displayName": "Polish", "voiceId": "XrExE9yKIg1WjnnlVkGX", "rtl": false },
+    { "code": "hu", "displayName": "Hungarian", "voiceId": "bIHbv24MWmeRgasZH58o", "rtl": false },
+    { "code": "ta", "displayName": "Tamil", "voiceId": "nPczCjzI2devNBz1zQrb", "rtl": false }
+  ]
+}
