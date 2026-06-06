@@ -47,7 +47,7 @@ export const COUNTRIES = [
   { key: 'OTHER', label: 'Somewhere else', flag: '🌍' },
 ];
 
-export const RELIGIONS = [
+export const BELIEFS = [
   { key: 'hispanic', label: 'Hispanic / Latino', icon: '🌺' },
   { key: 'catholic', label: 'Catholic', icon: '⛪' },
   { key: 'filipino', label: 'Filipino', icon: '🇵🇭' },
@@ -61,6 +61,8 @@ export const RELIGIONS = [
   { key: 'jewish', label: 'Judaism', icon: '✡️' },
   { key: 'universal', label: 'No specific belief', icon: '🌍' },
 ];
+// Legacy alias — keep for backward compatibility
+export const RELIGIONS = BELIEFS;
 
 // Family member relationships used in voice studio
 export const FAMILY_RELATIONS = [
