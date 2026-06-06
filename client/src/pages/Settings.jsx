@@ -349,6 +349,7 @@ export default function Settings() {
           <Tile icon={<Gift size={18} />} title={t('settings.giftStoryPack')} sub="CA$9.99/mo" onClick={() => setGiftOpen(true)} />
           <Tile icon={<Map size={18} />} title={t('settings.roadmap')} sub={t('settings.buildStatus')} onClick={() => navigate('/roadmap')} />
           <Tile icon="🪨" title={t('settings.kidSlept')} sub={t('settings.stonedAge')} onClick={() => window.location.href = 'https://stonedage.mysleepytale.com'} />
+          <Tile icon="🌙" title="About Us" sub="Our story, mission & pricing" onClick={() => navigate('/aboutus')} />
           {isAdmin && (<>
             <Tile icon="📋" title="My Tasks" sub="Daily tasks" onClick={() => navigate('/my-tasks')} />
             <Tile icon="🔑" title={t('settings.admin')} sub={t('settings.dashboard')} onClick={() => navigate('/admin')} />
