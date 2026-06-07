@@ -424,6 +424,48 @@ export default function AboutUs() {
           </motion.div>
         </section>
 
+        {/* ═══ TECH STACK ═══ */}
+        <section className="px-6 py-20 border-t border-white/5">
+          <motion.div {...fadeUp} className="max-w-4xl mx-auto">
+            <div className="text-center mb-12">
+              <span className="inline-block bg-info/10 text-info text-[10px] font-bold uppercase tracking-widest px-4 py-1.5 rounded-full ring-1 ring-info/20 mb-4">Built With</span>
+              <h2 className="text-3xl lg:text-4xl font-bold text-ink" style={{ fontFamily: 'Fraunces, serif' }}>
+                Our Technology
+              </h2>
+              <p className="text-sm text-ink-muted mt-3 max-w-lg mx-auto">Transparent about how we build. Every piece chosen for speed, safety, and your family's experience.</p>
+            </div>
+
+            <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
+              {[
+                { icon: '⚛️', name: 'React', role: 'Frontend UI' },
+                { icon: '☁️', name: 'AWS', role: 'S3 + CloudFront + Lambda' },
+                { icon: '🔥', name: 'Firebase', role: 'Auth, Database, Storage' },
+                { icon: '🤖', name: 'OpenAI', role: 'Story Generation + Images' },
+                { icon: '🎙️', name: 'ElevenLabs', role: 'Multilingual Voice AI' },
+                { icon: '🧠', name: 'Claude AI', role: 'Translation + Content' },
+                { icon: '💳', name: 'Stripe', role: 'Payments + Subscriptions' },
+                { icon: '📧', name: 'AWS SES', role: 'Email Notifications' },
+                { icon: '🌍', name: '9 Languages', role: 'EN, FR, HI, AR, ES, ZH, PL, HU, TA' },
+                { icon: '🔒', name: 'Security', role: 'HSTS, CSP, Email Throttling' },
+                { icon: '📊', name: 'Analytics', role: 'Privacy-first (no child PII)' },
+                { icon: '🇨🇦', name: 'Made in Toronto', role: 'By parents, for parents' },
+              ].map(tech => (
+                <div key={tech.name} className="rounded-xl bg-white/[.03] ring-1 ring-white/8 p-4 text-center hover:ring-gold/20 transition">
+                  <div className="text-2xl mb-2">{tech.icon}</div>
+                  <div className="text-sm font-bold text-ink">{tech.name}</div>
+                  <div className="text-[10px] text-ink-dim mt-1">{tech.role}</div>
+                </div>
+              ))}
+            </div>
+
+            <div className="mt-8 text-center">
+              <a href="/blog/technology-stack" className="text-sm text-gold font-bold hover:underline">
+                Read the full technical deep-dive →
+              </a>
+            </div>
+          </motion.div>
+        </section>
+
         {/* ═══ FOOTER ═══ */}
         <footer className="border-t border-white/5 px-6 pt-12 pb-32">
           <div className="max-w-4xl mx-auto grid grid-cols-2 sm:grid-cols-4 gap-8 mb-10">
