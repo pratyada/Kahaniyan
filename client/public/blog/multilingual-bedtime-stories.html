@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en-CA">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>One Story, Nine Languages — How We Built Multilingual Bedtime Stories | My Sleepy Tale</title>
+  <meta name="description" content="The Lion and the Mouse in English, French, Hindi, Arabic, Spanish, Chinese, Polish, Hungarian, and Tamil. How My Sleepy Tale brings bedtime stories to families in their own language with culture-specific illustrations.">
+  <link rel="canonical" href="https://mysleepytale.com/blog/multilingual-bedtime-stories">
+  <meta property="og:title" content="One Story, Nine Languages — Multilingual Bedtime Stories">
+  <meta property="og:description" content="The Lion and the Mouse told in 9 languages with cultural illustrations. English, French, Hindi, Arabic, Spanish, Chinese, Polish, Hungarian, Tamil.">
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://mysleepytale.com/blog/multilingual-bedtime-stories">
+  <meta property="og:image" content="https://mysleepytale.com/og/multilingual-story.jpg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:locale" content="en_CA">
+  <meta property="og:site_name" content="My Sleepy Tale">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="One Story, Nine Languages">
+  <meta name="twitter:description" content="The Lion and the Mouse in 9 languages with cultural illustrations.">
+  <meta name="twitter:image" content="https://mysleepytale.com/og/multilingual-story.jpg">
+  <link rel="icon" href="/favicon.svg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,700&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+  <script type="application/ld+json">
+  [
+    {"@context":"https://schema.org","@type":"Article","headline":"One Story, Nine Languages — How We Built Multilingual Bedtime Stories","image":"https://mysleepytale.com/og/multilingual-story.jpg","datePublished":"2026-06-06","dateModified":"2026-06-06","author":{"@type":"Person","name":"Prateek Yadav","url":"https://mysleepytale.com/creator/iampratyada"},"publisher":{"@type":"Organization","name":"My Sleepy Tale","url":"https://mysleepytale.com","@id":"https://mysleepytale.com/#organization","logo":{"@type":"ImageObject","url":"https://mysleepytale.com/icon-180.png","width":180,"height":180}},"description":"How My Sleepy Tale brings bedtime stories to families in 9 languages with culture-specific illustrations.","mainEntityOfPage":{"@type":"WebPage","@id":"https://mysleepytale.com/blog/multilingual-bedtime-stories"}},
+    {"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://mysleepytale.com"},{"@type":"ListItem","position":2,"name":"Blog","item":"https://mysleepytale.com/blog/"},{"@type":"ListItem","position":3,"name":"One Story, Nine Languages","item":"https://mysleepytale.com/blog/multilingual-bedtime-stories"}]}
+  ]
+  </script>
+  <style>
+    .topbar{position:sticky;top:0;z-index:40;background:rgba(10,10,15,.92);backdrop-filter:blur(16px);border-bottom:1px solid rgba(255,255,255,.05)}
+    .topbar-inner{max-width:800px;margin:0 auto;padding:.75rem 1.5rem;display:flex;align-items:center;justify-content:space-between}
+    .topbar .back{display:flex;align-items:center;gap:.4rem;font-size:.85rem;font-weight:600;color:#a8a39a;transition:color .2s}
+    .topbar .back:hover{color:#f0a500}
+    .topbar .back svg{width:18px;height:18px}
+    .topbar .brand{font-family:Fraunces,Georgia,serif;font-size:.95rem;font-weight:700;color:#f5f0e8;display:flex;align-items:center;gap:.4rem}
+    .bottom-nav{position:fixed;bottom:0;left:0;right:0;z-index:40;background:rgba(10,10,15,.95);backdrop-filter:blur(16px);border-top:1px solid rgba(255,255,255,.05);padding-bottom:env(safe-area-inset-bottom)}
+    .bottom-nav ul{display:flex;max-width:500px;margin:0 auto;padding:.5rem .5rem 0;list-style:none}
+    .bottom-nav li{flex:1;text-align:center}
+    .bottom-nav a{display:flex;flex-direction:column;align-items:center;gap:.2rem;padding:.5rem 0;color:#6e6a63;font-size:.6rem;font-weight:700;text-transform:uppercase;letter-spacing:.12em;transition:color .2s;text-decoration:none}
+    .bottom-nav a:hover,.bottom-nav a.on{color:#f0a500}
+    .bottom-nav svg{width:22px;height:22px;stroke-width:1.8}
+    .related{margin-top:3rem;padding-top:2rem;border-top:1px solid rgba(255,255,255,.06)}.related h3{font-family:Fraunces,Georgia,serif;font-size:1.1rem;color:#f5f0e8;margin-bottom:1rem}.related-grid{display:grid;grid-template-columns:1fr;gap:.8rem}@media(min-width:520px){.related-grid{grid-template-columns:1fr 1fr}}.related-card{display:flex;gap:.8rem;padding:1rem;border-radius:1rem;background:rgba(255,255,255,.025);border:1px solid rgba(255,255,255,.06);transition:all .2s}.related-card:hover{border-color:rgba(240,165,0,.2);transform:translateY(-1px)}.related-card .rc-text{min-width:0}.related-card h4{font-size:.82rem;font-weight:700;color:#f5f0e8;line-height:1.3;margin-bottom:.2rem}.related-card span{font-size:.7rem;color:#6e6a63}
+    *{margin:0;padding:0;box-sizing:border-box}
+    body{font-family:'DM Sans',system-ui,sans-serif;background:#0a0a0f;color:#f5f0e8;line-height:1.9}
+    a{color:#f0a500;text-decoration:none}
+    .c{max-width:760px;margin:0 auto;padding:2rem 1.5rem}
+    .hero{text-align:center;padding:3rem 0;border-bottom:1px solid rgba(255,255,255,.06);margin-bottom:3rem}
+    .hero .ey{display:inline-block;background:rgba(240,165,0,.08);border:1px solid rgba(240,165,0,.2);border-radius:2rem;padding:.3rem 1rem;font-size:.7rem;font-weight:700;color:#f0a500;letter-spacing:.08em;text-transform:uppercase;margin-bottom:1.2rem}
+    .hero h1{font-family:Fraunces,Georgia,serif;font-size:2.4rem;font-weight:700;line-height:1.15;margin-bottom:1rem}
+    .hero h1 em{color:#f0a500;font-style:normal}
+    .hero .sub{color:#a8a39a;font-size:1rem;max-width:560px;margin:0 auto}
+    h2{font-family:Fraunces,Georgia,serif;font-size:1.5rem;font-weight:700;color:#f5f0e8;margin:3.5rem 0 .8rem}
+    h2 em{color:#f0a500;font-style:normal}
+    h3{font-size:1.05rem;font-weight:700;margin-bottom:.3rem}
+    p{font-size:.92rem;color:#a8a39a;margin-bottom:1.1rem}
+    strong{color:#f5f0e8}
+    .ex{background:rgba(240,165,0,.04);border-left:4px solid #f0a500;border-radius:0 1rem 1rem 0;padding:1.2rem 1.4rem;margin:1.2rem 0}
+    .ex h4{color:#f0a500;font-size:.85rem;margin-bottom:.4rem}
+    .ex p{font-size:.83rem;color:#a8a39a;margin:0}
+    .lang-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:.8rem;margin:1.5rem 0}
+    @media(max-width:500px){.lang-grid{grid-template-columns:1fr 1fr}}
+    .lang-card{text-align:center;padding:1.2rem .8rem;border-radius:1rem;background:rgba(255,255,255,.02);border:1px solid rgba(255,255,255,.06);transition:all .2s}
+    .lang-card:hover{border-color:rgba(240,165,0,.3)}
+    .lang-card .flag{font-size:2rem;margin-bottom:.3rem}
+    .lang-card .name{font-size:.8rem;font-weight:700;color:#f5f0e8}
+    .lang-card .culture{font-size:.65rem;color:#6e6a63;margin-top:.2rem}
+    .cta{background:linear-gradient(135deg,rgba(240,165,0,.15),rgba(240,165,0,.03));border:2px solid rgba(240,165,0,.3);border-radius:1.5rem;padding:3rem 2rem;text-align:center;margin:3rem 0}
+    .cta h2{margin-top:0;color:#f5f0e8;font-size:1.7rem}
+    .cta p{color:#a8a39a;font-size:.95rem;margin-bottom:1.2rem;max-width:480px;margin-left:auto;margin-right:auto}
+    .cta .btn{display:inline-block;background:#f0a500;color:#0a0a0f;font-weight:700;padding:.9rem 2.5rem;border-radius:2rem;font-size:1.05rem}
+    .cta .sm{margin-top:.8rem;font-size:.72rem;color:#6e6a63}
+    footer{text-align:center;padding:2rem 0;color:rgba(245,240,232,.25);font-size:.78rem;border-top:1px solid rgba(255,255,255,.05);margin-top:3rem}
+  </style>
+</head>
+<body>
+
+  <div class="topbar"><div class="topbar-inner">
+    <a href="/blog" class="back"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M15 18l-6-6 6-6"/></svg>Blog</a>
+    <a href="/" class="brand">🌙 My Sleepy Tale</a>
+  </div></div>
+
+<div class="c">
+
+  <div class="hero">
+    <div class="ey">Multilingual · June 2026</div>
+    <h1>One Story,<br><em>Nine Languages</em></h1>
+    <p class="sub">The same bedtime story — told in English, French, Hindi, Arabic, Spanish, Chinese, Polish, Hungarian, and Tamil. Each language with its own cultural illustration.</p>
+  </div>
+
+  <h2>The <em>Story</em></h2>
+  <p><strong>"The Lion and the Mouse"</strong> — a gentle tale about kindness, courage, and how even the smallest friend can make the biggest difference. Written for bedtime, narrated with warm voices, and translated with cultural care.</p>
+
+  <div class="ex">
+    <h4>Try it now</h4>
+    <p>Listen to the story in any of 9 languages. Switch the language dropdown and watch the illustration change to match the culture — an Indian village for Hindi, an Arabian oasis for Arabic, a French lavender field for French.</p>
+  </div>
+
+  <div class="cta" style="margin:2rem 0">
+    <h2 style="font-size:1.3rem">Listen to <em>The Lion and the Mouse</em></h2>
+    <p>Pick a language. Hit play. Watch the text highlight as the narrator speaks.</p>
+    <a href="/demo/multilingual/" class="btn">Listen in 9 Languages →</a>
+  </div>
+
+  <h2>Nine <em>Languages</em>, Nine <em>Cultures</em></h2>
+  <p>Each language comes with its own illustration — the lion and the mouse sleeping under a starry sky, but the landscape reflects the culture of that language.</p>
+
+  <div class="lang-grid">
+    <div class="lang-card"><div class="flag">🇬🇧</div><div class="name">English</div><div class="culture">Oak tree, English countryside</div></div>
+    <div class="lang-card"><div class="flag">🇫🇷</div><div class="name">French</div><div class="culture">Lavender fields, Provence</div></div>
+    <div class="lang-card"><div class="flag">🇮🇳</div><div class="name">Hindi</div><div class="culture">Banyan tree, Indian village, diya</div></div>
+    <div class="lang-card"><div class="flag">🇸🇦</div><div class="name">Arabic</div><div class="culture">Desert oasis, crescent moon</div></div>
+    <div class="lang-card"><div class="flag">🇪🇸</div><div class="name">Spanish</div><div class="culture">Mexican village, papel picado</div></div>
+    <div class="lang-card"><div class="flag">🇨🇳</div><div class="name">Chinese</div><div class="culture">Cherry blossom, pagoda</div></div>
+    <div class="lang-card"><div class="flag">🇵🇱</div><div class="name">Polish</div><div class="culture">Snowy birch forest, church</div></div>
+    <div class="lang-card"><div class="flag">🇭🇺</div><div class="name">Hungarian</div><div class="culture">Danube, Parliament building</div></div>
+    <div class="lang-card"><div class="flag">🇮🇳</div><div class="name">Tamil</div><div class="culture">Coconut palm, temple, jasmine</div></div>
+  </div>
+
+  <h2>How It <em>Works</em></h2>
+  <p>Each story goes through a two-step process:</p>
+  <ol style="color:#c8c3ba;margin:1rem 0 1.5rem 1.5rem">
+    <li style="margin-bottom:.8rem"><strong>Translation</strong> — The English story is translated by AI (Claude) with specific instructions to preserve the gentle bedtime tone, keep paragraph breaks, and respect cultural nuance.</li>
+    <li style="margin-bottom:.8rem"><strong>Narration</strong> — Each translation is narrated by a native-sounding AI voice (ElevenLabs multilingual v2) with calm, warm pacing designed for bedtime listening.</li>
+    <li style="margin-bottom:.8rem"><strong>Illustration</strong> — A unique image is generated for each language, placing the lion and mouse in a culturally relevant landscape — from the Rajasthani desert to the Hungarian Danube.</li>
+  </ol>
+
+  <h2>Why <em>Multilingual</em> Matters</h2>
+  <p>For families raising children in a second language, bedtime stories are one of the most powerful tools for language exposure. A child in Toronto whose parents speak Hindi at home can hear a story in Hindi — with the same characters and plot they already know in English.</p>
+  <p>For families learning a new language, the familiar story provides context that makes comprehension easier. The text highlights as the narrator speaks, turning listening into reading practice.</p>
+  <p>And for families who simply want their child to hear the beauty of another language — Arabic script flowing right to left, the melody of Tamil, the rhythm of Polish — this is a window into the world from the comfort of their bed.</p>
+
+  <div class="ex">
+    <h4>A note on Arabic</h4>
+    <p>When you switch to Arabic, the text automatically displays right-to-left (RTL). The illustration shows an Arabian desert oasis with palm trees and a crescent moon. Every detail is intentional.</p>
+  </div>
+
+  <h2>What's <em>Next</em></h2>
+  <p>This is our first multilingual story. We plan to bring this capability to all 564 stories on the platform — so every child can hear bedtime stories in their family's language, with illustrations that feel like home.</p>
+
+  <div class="cta">
+    <h2>Listen <em>Tonight</em></h2>
+    <p>The Lion and the Mouse. Nine languages. Nine cultures. One beautiful bedtime.</p>
+    <a href="/demo/multilingual/" class="btn">Play the Story →</a>
+    <p class="sm">Free. No signup needed. Just pick a language and press play.</p>
+  </div>
+
+  <div class="related">
+    <h3>Keep Reading</h3>
+    <div class="related-grid">
+      <a href="/blog/belief-stories-for-kids" class="related-card"><div class="rc-text"><h4>Why We Tell Stories from Every Belief</h4><span>11 traditions, one platform</span></div></a>
+      <a href="/blog/why-bedtime-stories-matter" class="related-card"><div class="rc-text"><h4>Why Bedtime Stories Matter More Than You Think</h4><span>The science behind bedtime</span></div></a>
+      <a href="/sikh-bedtime-stories" class="related-card"><div class="rc-text"><h4>Sikh Bedtime Stories for Kids</h4><span>43 stories, 5 series</span></div></a>
+      <a href="/hindu-bedtime-stories" class="related-card"><div class="rc-text"><h4>Hindu Bedtime Stories for Kids</h4><span>Krishna, Hanuman & more</span></div></a>
+    </div>
+  </div>
+
+  <footer>🌙 My Sleepy Tale — bedtime stories that feel like home</footer>
+
+</div>
+
+  <nav class="bottom-nav"><ul>
+    <li><a href="/"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg>Home</a></li>
+    <li><a href="/creation"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M20.24 12.24a6 6 0 00-8.49-8.49L5 10.5V19h8.5z"/><line x1="16" y1="8" x2="2" y2="22"/><line x1="17.5" y1="15" x2="9" y2="15"/></svg>Creation</a></li>
+    <li><a href="/radio"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M4.9 19.1C1 15.2 1 8.8 4.9 4.9"/><path d="M7.8 16.2a5.5 5.5 0 010-8.4"/><path d="M16.2 7.8a5.5 5.5 0 010 8.4"/><path d="M19.1 4.9C23 8.8 23 15.1 19.1 19"/><circle cx="12" cy="12" r="1"/></svg>Radio</a></li>
+    <li><a href="/blog" class="on"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M2 3h6a4 4 0 014 4v14a3 3 0 00-3-3H2z"/><path d="M22 3h-6a4 4 0 00-4 4v14a3 3 0 013-3h7z"/></svg>Blog</a></li>
+    <li><a href="/settings"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>Me</a></li>
+  </ul></nav>
+
+</body>
+</html>
