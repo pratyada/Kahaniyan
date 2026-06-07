@@ -197,11 +197,11 @@ export const STORY_PROMPTS = {
   ml_ep5_orchestra: 'An orchestra of illustrated instruments playing together in a children\'s hospital ward, a girl in a hospital bed smiling for the first time in days, warm golden sound waves visible in the air, IV stands and rainbow murals on walls, music as medicine, tender scene',
 
   // ══════ SERIES — WATER & SWIM ══════
-  ws_ep1_splash: 'A small girl in a swimsuit standing at the edge of an enormous blue swimming pool, toes curled over the tiles, one toe tentatively dipping into the water, a kind swim coach sitting on the pool edge nearby with feet dangling in, warm community centre light, first step',
-  ws_ep2_float: 'A girl floating on her back in a swimming pool with eyes closed and arms spread, the water holding her like a gentle hand, ceiling lights looking like blurry stars from underwater perspective, a peaceful expression replacing fear, warm aqua light, trust and surrender',
-  ws_ep3_deep: 'A girl treading water in the dark deep end of a swimming pool, looking down into blue emptiness where the floor disappears, the red-and-white rope divider behind her, a coach swimming beside her, the moment of realizing she doesn\'t need the ground, blue-lit courage',
-  ws_ep4_fish: 'A girl swimming in a sun-dappled green lake surrounded by a school of golden sunfish, their scales flashing in filtered sunlight, pine trees reflected in the water, a natural lakeshore with pebbles visible below, swimming with nature, magical and real',
-  ws_ep5_lifeguard: 'An older girl sitting on the pool edge with feet in the water next to a scared new girl in a pink swimsuit with curled toes, the older girl offering her hand with a knowing smile, the pool stretching behind them, passing on courage, warm community centre glow',
+  ws_ep1_splash: 'A pair of small bare feet at the edge of an enormous sparkling blue swimming pool, toes curled over the tiles, one toe creating tiny ripples in the water, warm community centre light streaming through windows, brave first moment',
+  ws_ep2_float: 'A calm swimming pool surface from above showing a small peaceful silhouette floating with arms spread like a starfish, ceiling lights reflecting like blurry stars on the water surface, warm aqua light, trust and surrender',
+  ws_ep3_deep: 'The deep end of a swimming pool viewed from underwater, blue gradient from light turquoise to deep navy, the red-and-white rope divider visible, light filtering from above, bubbles rising, a moment of courage in the depths',
+  ws_ep4_fish: 'A sun-dappled green lake with a school of golden sunfish swimming among underwater plants, their scales flashing in filtered sunlight, pine trees reflected on the surface above, pebbles visible on the lakebed, magical and natural',
+  ws_ep5_lifeguard: 'Two pairs of feet dangling in a swimming pool from the edge, one pair small and hesitant, one pair confident and relaxed, warm community centre light, ripples in the turquoise water, a moment of friendship and encouragement',
 
   // ══════ SERIES — MATHS ADVENTURES ══════
   ma_ep1_garden: 'A boy standing amazed inside a magical garden where flowers grow in numbered rows — one giant sunflower, two red roses, three purple tulips — a cheerful ladybird with five spots on a leaf nearby, a green gate behind him, warm golden light, numbers everywhere in nature',
