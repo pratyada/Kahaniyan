@@ -121,6 +121,15 @@
     let audio = null;
     let isPlaying = false;
     let paragraphs = [];
+    let userScrolled = false;
+    let scrollTimeout = null;
+
+    // Detect manual scroll — pause auto-scroll for 5 seconds
+    window.addEventListener('scroll', () => {
+      userScrolled = true;
+      clearTimeout(scrollTimeout);
+      scrollTimeout = setTimeout(() => { userScrolled = false; }, 5000);
+    }, { passive: true });
 
     async function init() {
       try {
@@ -230,8 +239,8 @@
         paragraphs.forEach((p, i) => {
           p.classList.toggle('active', i === paraIdx);
         });
-        // Scroll active paragraph into view
-        if (paragraphs[paraIdx]) {
+        // Auto-scroll only if user hasn't manually scrolled away
+        if (paragraphs[paraIdx] && !userScrolled) {
           paragraphs[paraIdx].scrollIntoView({ behavior: 'smooth', block: 'center' });
         }
       }
