@@ -3,109 +3,167 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>The Lion and the Mouse — My Sleepy Tale</title>
-  <link rel="stylesheet" href="style.css" />
+  <title>The Lion and the Mouse — A Bedtime Story in 9 Languages | My Sleepy Tale</title>
+  <meta name="description" content="Listen to The Lion and the Mouse in 9 languages — English, French, Hindi, Arabic, Spanish, Chinese, Polish, Hungarian, Tamil. A bedtime story by My Sleepy Tale.">
+  <link rel="icon" href="/favicon.svg">
   <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link href="https://fonts.googleapis.com/css2?family=Noto+Naskh+Arabic&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,700&family=DM+Sans:wght@400;500;700&family=Noto+Naskh+Arabic&display=swap" rel="stylesheet" />
+  <style>
+    *{margin:0;padding:0;box-sizing:border-box}
+    body{font-family:'DM Sans',system-ui,sans-serif;background:#0a0a0f;color:#f5f0e8;min-height:100vh}
+    .hero{position:relative;width:100%;height:340px;overflow:hidden}
+    .hero img{width:100%;height:100%;object-fit:cover;transition:opacity .6s ease}
+    .hero-overlay{position:absolute;inset:0;background:linear-gradient(to top,#0a0a0f 0%,rgba(10,10,15,.3) 50%,rgba(10,10,15,.6) 100%)}
+    .hero-content{position:absolute;bottom:24px;left:24px;right:24px;z-index:2}
+    .hero-content h1{font-family:Fraunces,Georgia,serif;font-size:clamp(1.5rem,4vw,2.2rem);font-weight:700;color:#f5f0e8;margin-bottom:4px}
+    .hero-content .sub{font-size:.85rem;color:#a8a39a}
+    .container{max-width:700px;margin:0 auto;padding:0 20px 100px}
+    .lang-bar{display:flex;align-items:center;gap:12px;padding:16px 0;border-bottom:1px solid rgba(255,255,255,.06);margin-bottom:20px}
+    .lang-bar label{font-size:.75rem;color:#6e6a63;font-weight:700;text-transform:uppercase;letter-spacing:.1em}
+    .lang-bar select{flex:1;background:#141420;color:#f5f0e8;border:1px solid rgba(255,255,255,.1);border-radius:12px;padding:10px 16px;font-size:.9rem;font-weight:600;outline:none;cursor:pointer}
+    .lang-bar select:focus{border-color:#f0a500}
+    .player{background:#141420;border-radius:20px;padding:20px;margin-bottom:24px;border:1px solid rgba(255,255,255,.06)}
+    .player-top{display:flex;align-items:center;gap:16px;margin-bottom:16px}
+    .play-btn{width:56px;height:56px;border-radius:50%;background:#f0a500;border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:20px;color:#0a0a0f;transition:transform .15s,box-shadow .2s;flex-shrink:0}
+    .play-btn:hover{transform:scale(1.06);box-shadow:0 0 24px rgba(240,165,0,.3)}
+    .play-btn:active{transform:scale(.97)}
+    .player-info{flex:1;min-width:0}
+    .player-info .title{font-family:Fraunces,Georgia,serif;font-size:1rem;font-weight:700;color:#f5f0e8}
+    .player-info .lang-badge{font-size:.7rem;color:#f0a500;font-weight:700;margin-top:2px}
+    .progress-wrap{width:100%}
+    .progress-bar{width:100%;height:6px;background:rgba(255,255,255,.08);border-radius:3px;cursor:pointer;position:relative}
+    .progress-fill{height:100%;background:#f0a500;border-radius:3px;width:0%;transition:width .1s linear}
+    .time{display:flex;justify-content:space-between;font-size:.7rem;color:#6e6a63;margin-top:4px}
+    .story{line-height:2;font-size:1rem;color:#a8a39a}
+    .story p{margin-bottom:1.2rem;padding:8px 12px;border-radius:8px;transition:background .3s,color .3s}
+    .story p.active{background:rgba(240,165,0,.08);color:#f5f0e8}
+    .story.rtl{direction:rtl;text-align:right;font-family:'Noto Naskh Arabic',serif}
+    .brand{text-align:center;padding:32px 0;font-size:.75rem;color:#6e6a63}
+    .brand a{color:#f0a500;font-weight:700}
+    .loading{text-align:center;padding:60px 0;color:#6e6a63}
+    .spinner{width:32px;height:32px;border:3px solid rgba(240,165,0,.2);border-top-color:#f0a500;border-radius:50%;animation:spin .8s linear infinite;margin:0 auto 12px}
+    @keyframes spin{to{transform:rotate(360deg)}}
+    @media(max-width:600px){.hero{height:240px}.container{padding:0 16px 80px}}
+  </style>
 </head>
 <body>
-  <div class="container" id="app">
-    <div class="loading" id="loading">
-      <div class="spinner"></div>
-      <p>Loading story...</p>
+
+  <!-- Hero image — swaps with language -->
+  <div class="hero" id="hero">
+    <img id="hero-img" src="" alt="The Lion and the Mouse" />
+    <div class="hero-overlay"></div>
+    <div class="hero-content">
+      <h1 id="hero-title">The Lion and the Mouse</h1>
+      <p class="sub" id="hero-sub">A Bedtime Story in 9 Languages</p>
     </div>
+  </div>
+
+  <div class="container">
+    <!-- Language selector -->
+    <div class="lang-bar">
+      <label for="lang-select">Language</label>
+      <select id="lang-select"></select>
+    </div>
+
+    <!-- Player -->
+    <div class="player">
+      <div class="player-top">
+        <button class="play-btn" id="play-btn" aria-label="Play">&#9654;</button>
+        <div class="player-info">
+          <div class="title" id="player-title">The Lion and the Mouse</div>
+          <div class="lang-badge" id="lang-badge">English</div>
+        </div>
+      </div>
+      <div class="progress-wrap">
+        <div class="progress-bar" id="progress-bar">
+          <div class="progress-fill" id="progress-fill"></div>
+        </div>
+        <div class="time">
+          <span id="time-current">0:00</span>
+          <span id="time-total">0:00</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Story text with paragraph highlighting -->
+    <div class="story" id="story"></div>
+
+    <div class="brand">
+      🌙 Powered by <a href="https://mysleepytale.com">My Sleepy Tale</a><br>
+      <span style="font-size:.65rem;color:#4a4a5a;margin-top:4px;display:inline-block">Bedtime stories that teach roots &amp; values</span>
+    </div>
+  </div>
+
+  <div class="loading" id="loading">
+    <div class="spinner"></div>
+    <p>Loading story...</p>
   </div>
 
   <script>
     const CONFIG_URL = '../config.json';
+    const IMAGE_BASE = '../images/';
     let config = null;
     let currentLang = null;
     let audio = null;
     let isPlaying = false;
+    let paragraphs = [];
 
     async function init() {
       try {
         const res = await fetch(CONFIG_URL);
-        if (!res.ok) throw new Error('Could not load config.json. Run generate.mjs first.');
+        if (!res.ok) throw new Error('Could not load config');
         config = await res.json();
-        render();
+        document.getElementById('loading').style.display = 'none';
+        setupUI();
       } catch (err) {
-        document.getElementById('app').innerHTML =
-          `<div class="error"><p>${err.message}</p></div>`;
+        document.getElementById('loading').innerHTML = `<p style="color:#f3727f">${err.message}</p>`;
       }
     }
 
-    function render() {
-      const app = document.getElementById('app');
-      const defaultLang = config.languages.find(l => l.code === 'en') || config.languages[0];
-      currentLang = defaultLang;
-
-      const options = config.languages
+    function setupUI() {
+      const select = document.getElementById('lang-select');
+      config.languages
         .filter(l => l.audioFile && l.text)
-        .map(l => `<option value="${l.code}">${l.displayName}</option>`)
-        .join('');
+        .forEach(l => {
+          const opt = document.createElement('option');
+          opt.value = l.code;
+          opt.textContent = l.displayName;
+          select.appendChild(opt);
+        });
 
-      app.innerHTML = `
-        <div class="header">
-          <h1>${config.title}</h1>
-          <p class="subtitle">A Bedtime Story in ${config.languages.filter(l => l.audioFile).length} Languages</p>
-        </div>
-
-        <div class="language-selector">
-          <label for="lang-select">Language</label>
-          <select id="lang-select">${options}</select>
-        </div>
-
-        <div class="player-controls">
-          <div class="lang-badge" id="lang-badge">${defaultLang.displayName}</div>
-          <br />
-          <button class="play-btn" id="play-btn" aria-label="Play">&#9654;</button>
-          <div class="progress-container">
-            <div class="progress-bar" id="progress-bar">
-              <div class="progress-fill" id="progress-fill"></div>
-            </div>
-            <span class="time-display" id="time-display">0:00 / 0:00</span>
-          </div>
-        </div>
-
-        <div class="story-panel">
-          <div class="story-text" id="story-text">${defaultLang.text || ''}</div>
-        </div>
-
-        <div class="branding">
-          Powered by <a href="https://mysleepytale.com" target="_blank">My Sleepy Tale</a>
-        </div>
-      `;
-
-      // Set up audio
-      loadLanguage(defaultLang);
-
-      // Event listeners
-      document.getElementById('lang-select').addEventListener('change', (e) => {
+      select.addEventListener('change', e => {
         const lang = config.languages.find(l => l.code === e.target.value);
         if (lang) loadLanguage(lang);
       });
 
       document.getElementById('play-btn').addEventListener('click', togglePlay);
-
-      document.getElementById('progress-bar').addEventListener('click', (e) => {
+      document.getElementById('progress-bar').addEventListener('click', e => {
         if (!audio || !audio.duration) return;
         const rect = e.currentTarget.getBoundingClientRect();
-        const pct = (e.clientX - rect.left) / rect.width;
-        audio.currentTime = pct * audio.duration;
+        audio.currentTime = ((e.clientX - rect.left) / rect.width) * audio.duration;
       });
+
+      // Load default
+      const defaultLang = config.languages.find(l => l.code === 'en') || config.languages[0];
+      loadLanguage(defaultLang);
     }
 
     function loadLanguage(lang) {
       currentLang = lang;
 
-      // Update text
-      const storyEl = document.getElementById('story-text');
-      storyEl.textContent = lang.text || 'No translation available.';
-      storyEl.className = 'story-text' + (lang.rtl ? ' rtl' : '');
+      // Update hero image
+      document.getElementById('hero-img').src = `${IMAGE_BASE}lion_${lang.code}.jpg`;
 
       // Update badge
       document.getElementById('lang-badge').textContent = lang.displayName;
+
+      // Render paragraphs
+      const storyEl = document.getElementById('story');
+      storyEl.className = 'story' + (lang.rtl ? ' rtl' : '');
+      const text = lang.text || '';
+      const paras = text.split('\n').filter(p => p.trim());
+      storyEl.innerHTML = paras.map((p, i) => `<p data-idx="${i}">${p}</p>`).join('');
+      paragraphs = storyEl.querySelectorAll('p');
 
       // Reset audio
       if (audio) {
@@ -113,19 +171,18 @@
         audio.removeEventListener('timeupdate', onTimeUpdate);
         audio.removeEventListener('ended', onEnded);
       }
-
       isPlaying = false;
       updatePlayButton();
       document.getElementById('progress-fill').style.width = '0%';
-      document.getElementById('time-display').textContent = '0:00 / 0:00';
+      document.getElementById('time-current').textContent = '0:00';
+      document.getElementById('time-total').textContent = '0:00';
 
       if (lang.audioFile) {
         audio = new Audio('../' + lang.audioFile);
         audio.addEventListener('timeupdate', onTimeUpdate);
         audio.addEventListener('ended', onEnded);
         audio.addEventListener('loadedmetadata', () => {
-          document.getElementById('time-display').textContent =
-            `0:00 / ${formatTime(audio.duration)}`;
+          document.getElementById('time-total').textContent = fmt(audio.duration);
         });
       } else {
         audio = null;
@@ -134,11 +191,7 @@
 
     function togglePlay() {
       if (!audio) return;
-      if (isPlaying) {
-        audio.pause();
-      } else {
-        audio.play();
-      }
+      if (isPlaying) { audio.pause(); } else { audio.play(); }
       isPlaying = !isPlaying;
       updatePlayButton();
     }
@@ -146,26 +199,40 @@
     function updatePlayButton() {
       const btn = document.getElementById('play-btn');
       btn.innerHTML = isPlaying ? '&#10074;&#10074;' : '&#9654;';
-      btn.setAttribute('aria-label', isPlaying ? 'Pause' : 'Play');
     }
 
     function onTimeUpdate() {
       if (!audio || !audio.duration) return;
       const pct = (audio.currentTime / audio.duration) * 100;
       document.getElementById('progress-fill').style.width = pct + '%';
-      document.getElementById('time-display').textContent =
-        `${formatTime(audio.currentTime)} / ${formatTime(audio.duration)}`;
+      document.getElementById('time-current').textContent = fmt(audio.currentTime);
+
+      // Highlight current paragraph based on audio progress
+      if (paragraphs.length > 0) {
+        const paraIdx = Math.min(
+          Math.floor((audio.currentTime / audio.duration) * paragraphs.length),
+          paragraphs.length - 1
+        );
+        paragraphs.forEach((p, i) => {
+          p.classList.toggle('active', i === paraIdx);
+        });
+        // Scroll active paragraph into view
+        if (paragraphs[paraIdx]) {
+          paragraphs[paraIdx].scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+      }
     }
 
     function onEnded() {
       isPlaying = false;
       updatePlayButton();
+      paragraphs.forEach(p => p.classList.remove('active'));
     }
 
-    function formatTime(seconds) {
-      const m = Math.floor(seconds / 60);
-      const s = Math.floor(seconds % 60);
-      return `${m}:${s.toString().padStart(2, '0')}`;
+    function fmt(s) {
+      const m = Math.floor(s / 60);
+      const sec = Math.floor(s % 60);
+      return `${m}:${sec.toString().padStart(2, '0')}`;
     }
 
     init();
