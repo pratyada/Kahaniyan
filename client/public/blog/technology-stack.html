@@ -164,24 +164,11 @@
     <li style="margin-bottom:.8rem"><strong>Caching</strong> — Audio is cached in IndexedDB locally + Firebase Storage globally. Second plays are instant.</li>
   </ol>
 
-  <h2>How We Keep <em>Costs Down</em></h2>
-  <p>Running an AI-powered platform for free users requires careful cost management:</p>
+  <h2>How We Keep It <em>Efficient</em></h2>
   <div class="ex">
-    <h4>Cost strategy</h4>
-    <p><strong>Pre-generate, don't live-generate.</strong> We generate audio and images once per story, cache them globally. 1 million users playing the same story = 1 API call, not 1 million. Personalized audio (with the child's name) is a Pro feature that generates on-demand and caches per child.</p>
+    <h4>Smart caching</h4>
+    <p><strong>Pre-generate, don't live-generate.</strong> We generate audio and images once per story, cache them globally. A million users playing the same story uses the same cached file — not a million API calls. Personalized audio (with the child's name) is a Pro feature that generates on-demand and caches per child.</p>
   </div>
-
-  <table>
-    <thead><tr><th>Service</th><th>Cost</th><th>What it does</th></tr></thead>
-    <tbody>
-      <tr><td>AWS (S3 + CloudFront + Lambda)</td><td>~CA$50/mo</td><td>Hosting, CDN, API</td></tr>
-      <tr><td>OpenAI (GPT + TTS + Images)</td><td>~CA$100/mo</td><td>Story gen, narration, cover art</td></tr>
-      <tr><td>ElevenLabs</td><td>~CA$22/mo</td><td>Multilingual voices</td></tr>
-      <tr><td>Firebase</td><td>Free tier</td><td>Auth, Firestore, Storage</td></tr>
-      <tr><td>Stripe</td><td>2.9% + 30¢/txn</td><td>Payment processing</td></tr>
-      <tr><td>Google Workspace</td><td>~CA$30/mo</td><td>Email, Drive</td></tr>
-    </tbody>
-  </table>
 
   <h2><em>Security</em> & Privacy</h2>
   <p>We take your family's data seriously. Here is what we do:</p>
