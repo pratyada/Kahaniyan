@@ -119,6 +119,15 @@
         if(ok)vis++;
       });
       document.getElementById('count').textContent=vis+' article'+(vis!==1?'s':'');
+      // Hide section headers when no cards visible in that section
+      document.querySelectorAll('.section-title').forEach(h=>{
+        const grid=h.nextElementSibling;
+        if(grid&&grid.classList.contains('grid')){
+          const hasVisible=[...grid.querySelectorAll('[data-post]')].some(c=>c.style.display!=='none');
+          h.style.display=hasVisible?'':'none';
+          grid.style.display=hasVisible?'':'none';
+        }
+      });
     }
     function setCat(btn){
       document.querySelectorAll('.cat').forEach(b=>b.classList.remove('on'));
