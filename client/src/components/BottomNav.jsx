@@ -46,12 +46,22 @@ export default function BottomNav() {
         <ul className="mx-auto flex max-w-2xl items-center justify-around px-2 pt-2">
           {tabs.map((t) => (
             <li key={t.to} className="flex-1">
-              <MobileTab tab={t} isSubdomain={isSubdomain} />
+              {t.key === 'settings' && user ? (
+                <NavLink to="/settings" className={({ isActive }) =>
+                  `flex flex-col items-center gap-0.5 py-1.5 transition ${isActive ? 'text-gold' : 'text-ink-dim'}`
+                }>
+                  {user.photoURL ? (
+                    <img src={user.photoURL} alt="" referrerPolicy="no-referrer" className="h-6 w-6 rounded-full ring-1 ring-white/10" />
+                  ) : (
+                    <div className="grid h-6 w-6 place-items-center rounded-full bg-gold text-[9px] font-bold text-bg-base">{initials}</div>
+                  )}
+                  <span className="text-[8px] font-bold uppercase tracking-[0.1em] truncate max-w-[80px]">{user.email?.split('@')[0] || 'Me'}</span>
+                </NavLink>
+              ) : (
+                <MobileTab tab={t} isSubdomain={isSubdomain} />
+              )}
             </li>
           ))}
-          <li className="flex-1">
-            <MobileMoreTab user={user} initials={initials} isSubdomain={isSubdomain} />
-          </li>
         </ul>
       </nav>
 
@@ -89,57 +99,7 @@ export default function BottomNav() {
           <SidebarTab key={t.to} tab={t} isSubdomain={isSubdomain} collapsed={collapsed} />
         ))}
 
-        <div className="my-2 border-t border-white/5" />
-
-        {/* Spacer */}
         <div className="flex-1" />
-
-        {/* User info at bottom — clickable to settings */}
-        {isSubdomain ? (
-          <a
-            href={`${MAIN_ORIGIN}/settings`}
-            className={`rounded-xl bg-bg-surface ring-1 ring-white/5 transition hover:ring-gold/20 ${
-              collapsed ? 'p-2 flex justify-center' : 'p-3'
-            }`}
-          >
-            <div className={`flex items-center ${collapsed ? '' : 'gap-2'}`}>
-              <User size={collapsed ? 20 : 24} strokeWidth={1.8} className="text-ink-muted shrink-0" />
-              {!collapsed && <span className="text-xs font-bold text-ink">Settings</span>}
-            </div>
-          </a>
-        ) : (
-          <NavLink
-            to="/settings"
-            className={({ isActive }) =>
-              `rounded-xl ring-1 transition ${
-                collapsed ? 'p-2 flex justify-center' : 'p-3'
-              } ${isActive ? 'bg-gold/10 ring-gold/20' : 'bg-bg-surface ring-white/5 hover:ring-gold/20'}`
-            }
-          >
-            {user ? (
-              <div className={`flex items-center ${collapsed ? '' : 'gap-2'}`}>
-                {user.photoURL ? (
-                  <img src={user.photoURL} alt="" className={`${collapsed ? 'h-7 w-7' : 'h-8 w-8'} rounded-full object-cover shrink-0`} referrerPolicy="no-referrer" />
-                ) : (
-                  <span className={`grid ${collapsed ? 'h-7 w-7 text-[10px]' : 'h-8 w-8 text-xs'} place-items-center rounded-full bg-gold font-bold text-bg-base shrink-0`}>
-                    {initials}
-                  </span>
-                )}
-                {!collapsed && (
-                  <div className="min-w-0 flex-1">
-                    <p className="truncate text-xs font-bold text-ink">{user.displayName || 'User'}</p>
-                    <p className="truncate text-[10px] text-ink-muted">{user.email}</p>
-                  </div>
-                )}
-              </div>
-            ) : (
-              <div className={`flex items-center ${collapsed ? '' : 'gap-2'}`}>
-                <User size={collapsed ? 20 : 24} strokeWidth={1.8} className="text-ink-muted shrink-0" />
-                {!collapsed && <span className="text-xs font-bold text-ink">Settings</span>}
-              </div>
-            )}
-          </NavLink>
-        )}
       </nav>
     </>
   );
