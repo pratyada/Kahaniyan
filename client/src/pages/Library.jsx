@@ -484,11 +484,11 @@ export default function Library() {
           }`}>
           <Feather size={14} /> {t('creation.create')}
         </button>
-        <button onClick={() => setTab('listen')}
+        <button onClick={() => { if (!user) { navigate('/settings'); return; } setTab('listen'); }}
           className={`flex flex-1 items-center justify-center gap-1.5 rounded-xl py-2.5 text-xs font-bold transition ${
             tab === 'listen' ? 'bg-gold text-bg-base' : 'text-ink-muted'
           }`}>
-          <Headphones size={14} /> {t('creation.myCreations')}
+          <Headphones size={14} /> {user ? t('creation.myCreations') : 'Community'}
         </button>
       </div>
 
