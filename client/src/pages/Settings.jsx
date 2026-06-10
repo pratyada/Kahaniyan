@@ -346,9 +346,10 @@ export default function Settings() {
         <div className="grid grid-cols-2 gap-2">
           <Tile icon="✍️" title={t('settings.becomeCreator')} sub={t('settings.writeAndEarn')} onClick={() => navigate('/creation')} />
           <Tile icon="✨" title={t('settings.guides')} sub={`5 ${t('common.reads')}`} onClick={() => navigate('/guides')} />
+          <Tile icon="📻" title="Radio" sub="Sleep sounds & ambient" onClick={() => navigate('/radio')} />
+          <Tile icon="📖" title="Blog" sub="Guides, stories & updates" onClick={() => navigate('/blog')} />
           <Tile icon={<Gift size={18} />} title={t('settings.giftStoryPack')} sub="CA$9.99/mo" onClick={() => setGiftOpen(true)} />
           <Tile icon={<Map size={18} />} title={t('settings.roadmap')} sub={t('settings.buildStatus')} onClick={() => navigate('/roadmap')} />
-          <Tile icon="🪨" title={t('settings.kidSlept')} sub={t('settings.stonedAge')} onClick={() => window.location.href = 'https://stonedage.mysleepytale.com'} />
           <Tile icon="🌙" title="About Us" sub="Our story, mission & pricing" onClick={() => navigate('/aboutus')} />
           {isAdmin && (<>
             <Tile icon="📋" title="My Tasks" sub="Daily tasks" onClick={() => navigate('/my-tasks')} />
