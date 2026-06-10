@@ -94,12 +94,17 @@ export default function BottomNav() {
           )}
         </button>
 
-        {/* Nav items */}
-        {tabs.map((t) => (
+        {/* Nav items — Settings goes to bottom */}
+        {tabs.filter(t => t.key !== 'settings').map((t) => (
           <SidebarTab key={t.to} tab={t} isSubdomain={isSubdomain} collapsed={collapsed} />
         ))}
 
         <div className="flex-1" />
+
+        {/* Settings at bottom */}
+        {tabs.filter(t => t.key === 'settings').map((t) => (
+          <SidebarTab key={t.to} tab={t} isSubdomain={isSubdomain} collapsed={collapsed} />
+        ))}
       </nav>
     </>
   );
