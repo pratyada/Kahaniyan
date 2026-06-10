@@ -25,6 +25,10 @@ aws s3 cp client/dist/index.html s3://mysleepytale-app/index.html \
 aws s3 sync client/dist/blog/ s3://mysleepytale-app/blog/ \
   --cache-control "public, max-age=3600" --content-type "text/html" --quiet
 
+# Upload blog index as /blog (no trailing slash) so both /blog and /blog/ work
+aws s3 cp client/dist/blog/index.html s3://mysleepytale-app/blog \
+  --cache-control "no-cache, no-store, must-revalidate" --content-type "text/html" --quiet
+
 # Upload root-level landing pages (SEO)
 for f in client/dist/*.html; do
   [ "$(basename $f)" = "index.html" ] && continue
