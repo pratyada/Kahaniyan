@@ -9,6 +9,8 @@ import { Moon, Search, Feather, Radio, BookOpen, User, Sparkles } from 'lucide-r
 const TAB_KEYS = [
   { to: '/', key: 'home', Icon: Moon },
   { to: '/creation', key: 'creation', Icon: Feather, labelOverride: 'Create' },
+  { to: '/radio', key: 'radio', Icon: Radio },
+  { to: '/blog', key: 'blog', Icon: BookOpen },
   { to: '/settings', key: 'settings', Icon: User, labelOverride: 'Me' },
 ];
 
