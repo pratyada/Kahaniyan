@@ -101,10 +101,32 @@ export default function BottomNav() {
 
         <div className="flex-1" />
 
-        {/* Settings at bottom */}
-        {tabs.filter(t => t.key === 'settings').map((t) => (
-          <SidebarTab key={t.to} tab={t} isSubdomain={isSubdomain} collapsed={collapsed} />
-        ))}
+        {/* Settings at bottom — show user avatar when logged in */}
+        {user ? (
+          <NavLink to="/settings" className={({ isActive }) =>
+            `rounded-xl ring-1 transition ${collapsed ? 'p-2 flex justify-center' : 'p-3'} ${isActive ? 'bg-gold/10 ring-gold/20' : 'bg-bg-surface ring-white/5 hover:ring-gold/20'}`
+          }>
+            <div className={`flex items-center ${collapsed ? '' : 'gap-2'}`}>
+              {user.photoURL ? (
+                <img src={user.photoURL} alt="" className={`${collapsed ? 'h-7 w-7' : 'h-8 w-8'} rounded-full object-cover shrink-0`} referrerPolicy="no-referrer" />
+              ) : (
+                <span className={`grid ${collapsed ? 'h-7 w-7 text-[10px]' : 'h-8 w-8 text-xs'} place-items-center rounded-full bg-gold font-bold text-bg-base shrink-0`}>
+                  {initials}
+                </span>
+              )}
+              {!collapsed && (
+                <div className="min-w-0 flex-1">
+                  <p className="truncate text-xs font-bold text-ink">{user.displayName || 'User'}</p>
+                  <p className="truncate text-[10px] text-ink-muted">{user.email}</p>
+                </div>
+              )}
+            </div>
+          </NavLink>
+        ) : (
+          tabs.filter(t => t.key === 'settings').map((t) => (
+            <SidebarTab key={t.to} tab={t} isSubdomain={isSubdomain} collapsed={collapsed} />
+          ))
+        )}
       </nav>
     </>
   );
