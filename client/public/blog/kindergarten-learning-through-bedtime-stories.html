@@ -190,6 +190,42 @@
       ]
     }
     </script>
+<script>
+(function(){
+  var t = localStorage.getItem('mst:theme');
+  if (t === 'day') document.documentElement.setAttribute('data-blog-theme', 'day');
+})();
+</script>
+<style>
+[data-blog-theme="day"] body { background: #FDF8F0 !important; color: #1A1040 !important; }
+[data-blog-theme="day"] .topbar { background: rgba(253,248,240,.95) !important; border-bottom-color: rgba(0,0,0,.06) !important; }
+[data-blog-theme="day"] .topbar .back { color: #5E4880 !important; }
+[data-blog-theme="day"] .topbar .back:hover { color: #6B4FA8 !important; }
+[data-blog-theme="day"] .topbar .brand { color: #1A1040 !important; }
+[data-blog-theme="day"] .c { color: #1A1040 !important; }
+[data-blog-theme="day"] h1, [data-blog-theme="day"] h2, [data-blog-theme="day"] h3, [data-blog-theme="day"] strong { color: #1A1040 !important; }
+[data-blog-theme="day"] h1 em, [data-blog-theme="day"] h2 em { color: #6B4FA8 !important; }
+[data-blog-theme="day"] p, [data-blog-theme="day"] li, [data-blog-theme="day"] td { color: #5E4880 !important; }
+[data-blog-theme="day"] .hero .sub, [data-blog-theme="day"] .hero .ey { color: #6B4FA8 !important; border-color: rgba(107,79,168,.2) !important; background: rgba(107,79,168,.08) !important; }
+[data-blog-theme="day"] a { color: #6B4FA8 !important; }
+[data-blog-theme="day"] .fb, [data-blog-theme="day"] .cm, [data-blog-theme="day"] .sg-card, [data-blog-theme="day"] .tc { background: #fff !important; border-color: rgba(0,0,0,.08) !important; }
+[data-blog-theme="day"] .ex { background: rgba(107,79,168,.05) !important; border-left-color: #6B4FA8 !important; }
+[data-blog-theme="day"] .ex h4 { color: #6B4FA8 !important; }
+[data-blog-theme="day"] .cta { background: linear-gradient(135deg,rgba(107,79,168,.1),rgba(107,79,168,.03)) !important; border-color: rgba(107,79,168,.2) !important; }
+[data-blog-theme="day"] .cta .btn { background: #6B4FA8 !important; color: #fff !important; }
+[data-blog-theme="day"] .related-card { background: #fff !important; border-color: rgba(0,0,0,.06) !important; }
+[data-blog-theme="day"] .related-card h4 { color: #1A1040 !important; }
+[data-blog-theme="day"] .bottom-nav { background: rgba(253,248,240,.95) !important; border-top-color: rgba(0,0,0,.06) !important; }
+[data-blog-theme="day"] .bottom-nav a { color: #9A8BB0 !important; }
+[data-blog-theme="day"] .bottom-nav a.on { color: #6B4FA8 !important; }
+[data-blog-theme="day"] th { color: #6B4FA8 !important; border-bottom-color: rgba(0,0,0,.1) !important; }
+[data-blog-theme="day"] tr:hover td { background: rgba(107,79,168,.03) !important; }
+[data-blog-theme="day"] table { border-color: rgba(0,0,0,.06) !important; }
+[data-blog-theme="day"] td { border-bottom-color: rgba(0,0,0,.04) !important; }
+[data-blog-theme="day"] footer { color: rgba(26,16,64,.4) !important; border-top-color: rgba(0,0,0,.06) !important; }
+[data-blog-theme="day"] .lang-card, [data-blog-theme="day"] .belief-card { background: #fff !important; border-color: rgba(0,0,0,.06) !important; }
+[data-blog-theme="day"] .belief-card .name, [data-blog-theme="day"] .lang-card .name { color: #1A1040 !important; }
+</style>
 </head>
 <body>
 
