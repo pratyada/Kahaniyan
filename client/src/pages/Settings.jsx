@@ -98,10 +98,10 @@ export default function Settings() {
             </svg>
             {t('onboarding.continueWithGoogle')}
           </button>
-          <div className="mt-10 w-full space-y-2">
+          <div className="mt-10 w-full grid grid-cols-2 gap-3">
             <Tile icon="📖" title="Blog" sub="Stories, guides & updates" onClick={() => navigate('/blog')} />
-            <Tile icon="📻" title="Radio" sub="Sleep sounds & ambient" onClick={() => navigate('/radio')} />
             <Tile icon="✨" title="Guides" sub="Learn how it works" onClick={() => navigate('/guides')} />
+            <Tile icon="📻" title="Radio" sub="Sleep sounds & ambient" onClick={() => navigate('/radio')} />
             <Tile icon="🌙" title="About Us" sub="Our story & mission" onClick={() => navigate('/aboutus')} />
           </div>
         </div>
