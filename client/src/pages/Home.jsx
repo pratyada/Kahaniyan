@@ -46,6 +46,7 @@ export default function Home() {
   if (cultureFilter) return <CulturePage />;
 
   const [viewMode, setViewMode] = useState(searchParams.get('view') === 'series' ? 'series' : 'episodes');
+  const [searchQuery, setSearchQuery] = useState('');
   const [activeTheme, setActiveTheme] = useState('compassion-animals');
   const [visibleCollections, setVisibleCollections] = useState(8);
 
@@ -277,11 +278,47 @@ export default function Home() {
         </div>
       </div>
 
+      {/* Search bar */}
+      <div className="mb-4">
+        <input
+          type="text"
+          value={searchQuery}
+          onChange={e => setSearchQuery(e.target.value)}
+          placeholder="Search stories, series, traditions..."
+          className="w-full rounded-xl bg-bg-surface px-4 py-3 text-sm text-ink placeholder-ink-dim ring-1 ring-white/8 outline-none focus:ring-gold/50 transition"
+        />
+      </div>
+
       {/* Morning recap */}
-      <MorningRecapShelf />
+      {!searchQuery && <MorningRecapShelf />}
+
+      {/* ═══ SEARCH RESULTS ═══ */}
+      {searchQuery.trim().length >= 2 && (() => {
+        const q = searchQuery.toLowerCase();
+        const matchedStories = allLessons.filter(l =>
+          l.title?.toLowerCase().includes(q) ||
+          l.tradition?.toLowerCase().includes(q) ||
+          l.theme?.toLowerCase().includes(q) ||
+          l.source?.toLowerCase().includes(q)
+        ).slice(0, 20);
+        return (
+          <div className="mb-6">
+            <p className="text-xs text-ink-dim mb-3">{matchedStories.length} result{matchedStories.length !== 1 ? 's' : ''} for "{searchQuery}"</p>
+            {matchedStories.length > 0 ? (
+              <ShelfRow>
+                {matchedStories.map(lesson => (
+                  <StoryTile key={lesson.id} lesson={lesson} imageUrl={wisdomImageUrls[lesson.id]} onPlay={handlePlay} />
+                ))}
+              </ShelfRow>
+            ) : (
+              <p className="text-sm text-ink-muted text-center py-8">No stories found. Try a different keyword.</p>
+            )}
+          </div>
+        );
+      })()}
 
       {/* ═══ EPISODES VIEW ═══ */}
-      {viewMode === 'episodes' && (() => {
+      {!searchQuery && viewMode === 'episodes' && (() => {
         const shownIds = new Set();
         const dedupe = (stories) => stories.filter(s => { if (shownIds.has(s.id)) return false; shownIds.add(s.id); return true; });
         const featuredDeduped = dedupe(featuredStories);
@@ -307,12 +344,12 @@ export default function Home() {
       })()}
 
       {/* ═══ SERIES VIEW — Netflix-style category shelves ═══ */}
-      {viewMode === 'series' && (
+      {!searchQuery && viewMode === 'series' && (
         <CategoryShelves wisdomImageUrls={wisdomImageUrls} cultureFilter={cultureFilter} />
       )}
 
       {/* ═══ SHARED WITH ME VIEW ═══ */}
-      {viewMode === 'shared' && (
+      {!searchQuery && viewMode === 'shared' && (
         <div className="space-y-6 mb-8">
           {sharedLoading ? (
             <p className="text-ink-muted text-sm px-5">Loading...</p>
@@ -377,7 +414,7 @@ export default function Home() {
         </div>
       )}
 
-      {viewMode === 'episodes' && (<>
+      {!searchQuery && viewMode === 'episodes' && (<>
       {/* Wisdom stories by belief (or culture filter) — shown first when filtered */}
       {traditionShelves.length > 0 && traditionShelves.map((shelf) => (
         <ShelfSection key={shelf.id} title={shelf.title}>
