@@ -99,7 +99,7 @@ export default function Settings() {
             {t('onboarding.continueWithGoogle')}
           </button>
           <div className="mt-10 w-full grid grid-cols-2 gap-3">
-            <Tile icon="📖" title="Blog" sub="Stories, guides & updates" onClick={() => navigate('/blog')} />
+            <Tile icon="📖" title="Blog" sub="Stories, guides & updates" onClick={() => window.location.href = '/blog/'} />
             <Tile icon="✨" title="Guides" sub="Learn how it works" onClick={() => navigate('/guides')} />
             <Tile icon="📻" title="Radio" sub="Sleep sounds & ambient" onClick={() => navigate('/radio')} />
             <Tile icon="🌙" title="About Us" sub="Our story & mission" onClick={() => navigate('/aboutus')} />
@@ -349,7 +349,7 @@ export default function Settings() {
           <Tile icon="✍️" title={t('settings.becomeCreator')} sub={t('settings.writeAndEarn')} onClick={() => navigate('/creation')} />
           <Tile icon="✨" title={t('settings.guides')} sub={`5 ${t('common.reads')}`} onClick={() => navigate('/guides')} />
           <Tile icon="📻" title="Radio" sub="Sleep sounds & ambient" onClick={() => navigate('/radio')} />
-          <Tile icon="📖" title="Blog" sub="Guides, stories & updates" onClick={() => navigate('/blog')} />
+          <Tile icon="📖" title="Blog" sub="Guides, stories & updates" onClick={() => window.location.href = '/blog/'} />
           <Tile icon={<Gift size={18} />} title={t('settings.giftStoryPack')} sub="CA$9.99/mo" onClick={() => setGiftOpen(true)} />
           <Tile icon={<Map size={18} />} title={t('settings.roadmap')} sub={t('settings.buildStatus')} onClick={() => navigate('/roadmap')} />
           <Tile icon="🌙" title="About Us" sub="Our story, mission & pricing" onClick={() => navigate('/aboutus')} />
