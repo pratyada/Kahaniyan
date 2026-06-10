@@ -9,7 +9,7 @@ import { Moon, Search, Feather, Radio, BookOpen, User, Sparkles } from 'lucide-r
 const TAB_KEYS = [
   { to: '/', key: 'home', Icon: Moon },
   { to: '/creation', key: 'creation', Icon: Feather, labelOverride: 'Create' },
-  { to: '/settings', key: 'settings', Icon: User, labelOverride: 'Me' },
+  { to: '/settings', key: 'settings', Icon: User, labelOverride: 'Settings' },
 ];
 
 const MAIN_ORIGIN = 'https://mysleepytale.com';
