@@ -721,14 +721,14 @@ function PlayerInner() {
                   {waitTimeout ? (
                     <>
                       <div className="text-4xl mb-2">😔</div>
-                      <h1 className="text-xl font-bold text-gold" style={{ fontFamily: 'Fraunces, serif' }}>Story took too long</h1>
+                      <h1 className="text-xl font-bold text-gold" style={{ fontFamily: 'Lora, serif' }}>Story took too long</h1>
                       <p className="mt-1 text-xs text-ink-muted">The server might be busy.</p>
                       <button onClick={() => navigate(-1)} className="btn-primary mt-4 px-6 py-2 text-sm">Go Back</button>
                     </>
                   ) : (
                     <>
                       <div className="mb-3 inline-block h-10 w-10 animate-spin rounded-full border-2 border-gold/30 border-t-gold" />
-                      <h1 className="text-xl font-bold text-gold" style={{ fontFamily: 'Fraunces, serif' }}>Creating your story...</h1>
+                      <h1 className="text-xl font-bold text-gold" style={{ fontFamily: 'Lora, serif' }}>Creating your story...</h1>
                       <p className="mt-1 text-xs text-ink-muted">
                         Writing a bedtime story for {profile?.childName || 'you'}. ~20 seconds.
                       </p>
@@ -741,7 +741,7 @@ function PlayerInner() {
                 </>
               ) : (
                 <>
-                  <h1 className="text-xl font-bold text-ink" style={{ fontFamily: 'Fraunces, serif' }}>
+                  <h1 className="text-xl font-bold text-ink" style={{ fontFamily: 'Lora, serif' }}>
                     {current?.title || 'Bedtime Story'}
                   </h1>
                   <p className="mt-1 text-xs text-ink-muted" style={{ fontFamily: 'Nunito, sans-serif' }}>
@@ -1003,7 +1003,7 @@ function PlayerInner() {
               className="w-full max-w-sm rounded-3xl bg-bg-elevated p-5 text-center shadow-lift ring-1 ring-white/10"
             >
               <div className="text-3xl mb-2">🎉</div>
-              <h3 className="text-lg font-bold text-ink" style={{ fontFamily: 'Fraunces, serif' }}>Episode Complete!</h3>
+              <h3 className="text-lg font-bold text-ink" style={{ fontFamily: 'Lora, serif' }}>Episode Complete!</h3>
 
               {/* Share this episode */}
               <p className="mt-3 mb-2 text-[11px] text-ink-muted">Share this episode</p>
@@ -1107,7 +1107,7 @@ function PlayerInner() {
               className="w-full max-w-sm rounded-3xl bg-bg-elevated p-6 text-center shadow-lift ring-1 ring-white/10"
             >
               <div className="text-4xl mb-3">🌙</div>
-              <h3 className="text-xl font-bold text-ink" style={{ fontFamily: 'Fraunces, serif' }}>
+              <h3 className="text-xl font-bold text-ink" style={{ fontFamily: 'Lora, serif' }}>
                 Loved it?
               </h3>
               <p className="mt-3 text-sm text-ink-muted leading-relaxed">

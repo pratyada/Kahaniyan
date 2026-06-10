@@ -79,7 +79,7 @@ export default function BottomNav() {
                 <Sparkles size={18} className="text-gold" />
               </div>
               <div className="min-w-0">
-                <p className="text-sm font-bold text-ink truncate" style={{ fontFamily: 'Fraunces, serif' }}>{t('app.name')}</p>
+                <p className="text-sm font-bold text-ink truncate" style={{ fontFamily: 'Lora, serif' }}>{t('app.name')}</p>
                 <p className="text-[10px] text-ink-muted truncate">{t('app.tagline')}</p>
               </div>
             </div>

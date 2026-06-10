@@ -59,7 +59,7 @@ export default function MilestoneCelebration() {
             className="flex flex-col items-center text-center px-8"
           >
             <span className="text-7xl mb-4">{msg.emoji}</span>
-            <h2 className="text-2xl font-bold text-gold" style={{ fontFamily: 'Fraunces, serif' }}>
+            <h2 className="text-2xl font-bold text-gold" style={{ fontFamily: 'Lora, serif' }}>
               {msg.title}
             </h2>
             <p className="mt-2 text-sm text-ink-muted">{msg.sub}</p>

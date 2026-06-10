@@ -160,7 +160,7 @@ export default function CuratorPage() {
             </div>
           )}
           <div className="flex-1">
-            <h1 className="text-xl font-bold text-ink" style={{ fontFamily: 'Fraunces, serif' }}>
+            <h1 className="text-xl font-bold text-ink" style={{ fontFamily: 'Lora, serif' }}>
               {creatorName}
             </h1>
             <p className="text-xs text-gold/70">Story Creator</p>
@@ -204,7 +204,7 @@ export default function CuratorPage() {
 
       {/* All creations — compact square cards, 2 per row */}
       <div className="px-5 mb-6">
-        <h2 className="text-sm font-bold text-ink mb-3" style={{ fontFamily: 'Fraunces, serif' }}>Creations</h2>
+        <h2 className="text-sm font-bold text-ink mb-3" style={{ fontFamily: 'Lora, serif' }}>Creations</h2>
         <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
           {/* Series */}
           {allSeries.map((ser) => {
@@ -234,7 +234,7 @@ export default function CuratorPage() {
                 </div>
 
                 <div className="absolute bottom-0 left-0 right-0 p-2.5">
-                  <h4 className="text-xs font-bold text-white leading-tight" style={{ fontFamily: 'Fraunces, serif' }}>
+                  <h4 className="text-xs font-bold text-white leading-tight" style={{ fontFamily: 'Lora, serif' }}>
                     {ser.icon} {ser.title}
                   </h4>
                   <p className="text-[9px] text-white/50 mt-0.5 line-clamp-1">{ser.description}</p>
@@ -264,7 +264,7 @@ export default function CuratorPage() {
 
               <div className="absolute bottom-0 left-0 right-0 p-2.5">
                 <p className="text-[8px] font-bold uppercase tracking-wider text-gold/70">{story.tradition}</p>
-                <h4 className="text-xs font-bold text-white leading-tight" style={{ fontFamily: 'Fraunces, serif' }}>
+                <h4 className="text-xs font-bold text-white leading-tight" style={{ fontFamily: 'Lora, serif' }}>
                   {story.title}
                 </h4>
               </div>

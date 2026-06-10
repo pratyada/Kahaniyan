@@ -47,7 +47,7 @@ export default function RecapCard({ story, moral, reflection, onDismiss }) {
       <p className="text-[10px] font-bold uppercase tracking-[0.15em] text-gold/60 mb-2">
         Last night you learned
       </p>
-      <h4 className="text-sm font-bold text-ink mb-2" style={{ fontFamily: 'Fraunces, serif' }}>
+      <h4 className="text-sm font-bold text-ink mb-2" style={{ fontFamily: 'Lora, serif' }}>
         {story.storyTitle || story.title}
       </h4>
       <p className="text-[11px] text-ink-muted leading-relaxed line-clamp-3 mb-3">

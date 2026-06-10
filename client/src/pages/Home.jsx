@@ -203,7 +203,7 @@ export default function Home() {
               ← Back to Home
             </button>
             <div className="mb-4">
-              <h2 className="text-xl font-bold text-ink" style={{ fontFamily: 'Fraunces, serif' }}>{focusCol.title}</h2>
+              <h2 className="text-xl font-bold text-ink" style={{ fontFamily: 'Lora, serif' }}>{focusCol.title}</h2>
               <p className="mt-1 text-xs text-ink-muted">{focusCol.subtitle} · {focusCol.stories.length} {t('home.stories')}</p>
             </div>
             <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
@@ -224,7 +224,7 @@ export default function Home() {
         <p className="text-xs font-semibold uppercase tracking-[0.25em] text-ink-muted" style={{ fontFamily: 'Nunito, sans-serif' }}>
           {greeting}
         </p>
-        <h1 className="mt-1 text-2xl lg:text-3xl font-bold text-ink" style={{ fontFamily: 'Fraunces, serif' }}>
+        <h1 className="mt-1 text-2xl lg:text-3xl font-bold text-ink" style={{ fontFamily: 'Lora, serif' }}>
           A story for <span className="text-gold">{user ? (profile?.childName || 'your child') : 'your child'}</span>
         </h1>
       </motion.header>
@@ -359,7 +359,7 @@ export default function Home() {
                         {/* Bottom content */}
                         <div className="relative z-10 p-3">
                           <p className="text-[11px] font-bold text-white leading-snug line-clamp-2"
-                            style={{ fontFamily: 'Fraunces, serif', textShadow: '0 1px 4px rgba(0,0,0,0.5)' }}>
+                            style={{ fontFamily: 'Lora, serif', textShadow: '0 1px 4px rgba(0,0,0,0.5)' }}>
                             {ep.title}
                           </p>
                           <p className="text-[9px] text-white/50 mt-1">
@@ -392,7 +392,7 @@ export default function Home() {
       {/* Browse by Value — hidden when culture filter active */}
       {!cultureFilter && (
       <section className="mb-6">
-        <h3 className="mb-3 text-sm font-bold text-ink" style={{ fontFamily: 'Fraunces, serif' }}>
+        <h3 className="mb-3 text-sm font-bold text-ink" style={{ fontFamily: 'Lora, serif' }}>
           Browse by Value
         </h3>
         <div className="-mx-5 flex gap-2 overflow-x-auto px-5 pb-3 scrollbar-hide">
@@ -465,7 +465,7 @@ export default function Home() {
               {obStep === 0 && (
                 <>
                   <div className="text-3xl mb-3">👶</div>
-                  <h3 className="text-lg font-bold text-ink" style={{ fontFamily: 'Fraunces, serif' }}>
+                  <h3 className="text-lg font-bold text-ink" style={{ fontFamily: 'Lora, serif' }}>
                     {t('onboarding.childName')}
                   </h3>
                   <p className="mt-1 text-xs text-ink-muted">Every story will use this name</p>
@@ -511,7 +511,7 @@ export default function Home() {
               {obStep === 1 && (
                 <>
                   <div className="text-3xl mb-3">🎂</div>
-                  <h3 className="text-lg font-bold text-ink" style={{ fontFamily: 'Fraunces, serif' }}>
+                  <h3 className="text-lg font-bold text-ink" style={{ fontFamily: 'Lora, serif' }}>
                     {t('onboarding.childAge')}
                   </h3>
                   <div className="mt-4 flex justify-center gap-2 flex-wrap">
@@ -543,7 +543,7 @@ export default function Home() {
               {obStep === 2 && (
                 <>
                   <div className="text-3xl mb-3">🌍</div>
-                  <h3 className="text-lg font-bold text-ink" style={{ fontFamily: 'Fraunces, serif' }}>
+                  <h3 className="text-lg font-bold text-ink" style={{ fontFamily: 'Lora, serif' }}>
                     {t('onboarding.selectLanguage')}
                   </h3>
                   <div className="mt-4 grid grid-cols-2 gap-2">

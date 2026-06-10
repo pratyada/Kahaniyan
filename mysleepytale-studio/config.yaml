@@ -13,13 +13,14 @@ brand:
 
 image:
   # Gemini model tier: flash (cheap) or pro (better text)
-  model: "gemini-2.0-flash-exp"
+  model: "gemini-2.5-flash-image"
   width: 1080
   height: 1920
   style_preamble: >
     Cinematic, calm, nighttime, soft warm low light, muted desaturated palette,
-    dreamy, gentle, no people's faces, no text, vertical 9:16 composition,
-    children's storybook aesthetic, watercolor textures, Pixar-meets-Ghibli warmth.
+    dreamy, gentle, no people's faces, ABSOLUTELY NO TEXT OR WORDS OR LETTERS ON THE IMAGE,
+    vertical 9:16 composition, children's storybook aesthetic, watercolor textures,
+    Pixar-meets-Ghibli warmth. The image must contain zero text, zero titles, zero captions.
 
 voice:
   model: "gpt-4o-mini-tts"
@@ -49,6 +50,17 @@ cover:
   sizes:
     - [1080, 1350]  # 4:5 Instagram
     - [1080, 1080]  # 1:1 Square
+
+thumbnails:
+  enabled: true
+  count: 4
+  ranker: heuristic        # heuristic | vlm | both
+  extra_art_variants: 0    # extra Nano Banana renders per day (0 = reuse existing image only)
+
+placement:
+  mode: auto               # auto | fixed
+  detect_subject: false    # optional face/subject avoidance
+  legibility_threshold: 0.35
 
 caption:
   disclosure: "🎧 AI narration"

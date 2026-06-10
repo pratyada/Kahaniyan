@@ -116,7 +116,7 @@ export default function Creator() {
       <PageTransition className="page-scroll px-5 pt-10 safe-top">
         <div className="mt-20 text-center">
           <div className="text-5xl mb-4">✍️</div>
-          <h1 className="text-xl font-bold text-ink" style={{ fontFamily: 'Fraunces, serif' }}>Sign in to become a Creator</h1>
+          <h1 className="text-xl font-bold text-ink" style={{ fontFamily: 'Lora, serif' }}>Sign in to become a Creator</h1>
           <p className="mt-2 text-sm text-ink-muted">Share stories from your tradition and earn credits.</p>
           <button onClick={() => navigate('/login')} className="mt-6 rounded-2xl bg-gold px-6 py-3 text-sm font-bold text-bg-base">
             Sign In
@@ -142,7 +142,7 @@ export default function Creator() {
 
       <header className="mb-5">
         <button onClick={() => navigate(-1)} className="mb-3 text-[11px] font-bold uppercase tracking-wider text-ink-muted">← Back</button>
-        <h1 className="text-2xl font-bold text-ink" style={{ fontFamily: 'Fraunces, serif' }}>
+        <h1 className="text-2xl font-bold text-ink" style={{ fontFamily: 'Lora, serif' }}>
           Story <span className="text-gold">Creator</span>
         </h1>
         <p className="mt-1 text-xs text-ink-muted">Write stories. Earn credits. Preserve your tradition.</p>

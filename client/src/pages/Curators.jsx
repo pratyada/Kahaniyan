@@ -135,7 +135,7 @@ export default function Curators() {
     <PageTransition className="page-scroll px-5 pt-10 safe-top">
       <header className="mb-6">
         <button onClick={() => navigate('/')} className="mb-3 text-[11px] font-bold uppercase tracking-wider text-ink-muted">← Home</button>
-        <h1 className="text-2xl font-bold text-ink" style={{ fontFamily: 'Fraunces, serif' }}>
+        <h1 className="text-2xl font-bold text-ink" style={{ fontFamily: 'Lora, serif' }}>
           Our <span className="text-gold">Creators</span>
         </h1>
         <p className="mt-1 text-xs text-ink-muted">The storytellers behind My Sleepy Tale</p>
@@ -237,7 +237,7 @@ export default function Curators() {
                 ) : (
                   <div className="mx-auto grid h-16 w-16 place-items-center rounded-full bg-gold/15 text-lg font-bold text-gold ring-2 ring-gold/20 mb-3">{initials(c.name)}</div>
                 )}
-                <h3 className="text-sm font-bold text-ink" style={{ fontFamily: 'Fraunces, serif' }}>{c.name}</h3>
+                <h3 className="text-sm font-bold text-ink" style={{ fontFamily: 'Lora, serif' }}>{c.name}</h3>
                 <div className="flex items-center justify-center gap-2 mt-1.5">
                   {c.seriesCount > 0 && <span className="rounded-full bg-purple-500/10 px-2 py-0.5 text-[9px] font-bold text-purple-400">{c.seriesCount} series</span>}
                   {c.storyCount > 0 && <span className="rounded-full bg-amber-500/10 px-2 py-0.5 text-[9px] font-bold text-amber-400">{c.storyCount} stories</span>}

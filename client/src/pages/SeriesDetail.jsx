@@ -514,7 +514,7 @@ export default function SeriesDetail() {
       <PageTransition className="page-scroll px-5 pt-10 safe-top">
         <div className="mt-16 text-center max-w-md mx-auto px-6">
           <span className="text-5xl">{needsLogin.icon || '🔒'}</span>
-          <h2 className="text-xl font-bold text-ink mt-4" style={{ fontFamily: 'Fraunces, serif' }}>
+          <h2 className="text-xl font-bold text-ink mt-4" style={{ fontFamily: 'Lora, serif' }}>
             {needsLogin.title}
           </h2>
           <p className="text-sm text-ink-muted mt-3">
@@ -648,7 +648,7 @@ export default function SeriesDetail() {
             <span className="text-3xl">{series.icon}</span>
             <div>
               <p className="text-[9px] font-bold uppercase tracking-[0.2em] text-gold/70">{t('home.series')} · {series.totalEpisodes} {t('home.episodes')}</p>
-              <h1 className="text-2xl font-bold text-white" style={{ fontFamily: 'Fraunces, serif' }}>
+              <h1 className="text-2xl font-bold text-white" style={{ fontFamily: 'Lora, serif' }}>
                 {series.title}
               </h1>
             </div>
@@ -833,7 +833,7 @@ export default function SeriesDetail() {
               {/* Bottom content */}
               <div className="absolute bottom-0 left-0 right-0 p-3">
                 <p className="text-xs font-bold text-white leading-snug"
-                  style={{ fontFamily: 'Fraunces, serif', textShadow: '0 1px 4px rgba(0,0,0,0.5)' }}>
+                  style={{ fontFamily: 'Lora, serif', textShadow: '0 1px 4px rgba(0,0,0,0.5)' }}>
                   {ep.title}
                 </p>
                 <p className="text-[9px] text-white/50 mt-0.5 line-clamp-1">{ep.subtitle}</p>
@@ -985,7 +985,7 @@ export default function SeriesDetail() {
                 <div className="absolute top-2 left-2 rounded-full bg-gold/20 px-2 py-0.5 text-[8px] font-bold text-gold">PENDING</div>
                 <div className="absolute top-2 right-2 rounded-full bg-black/50 px-2 py-0.5 text-[8px] text-white/60">by {sub.contributorName}</div>
                 <div className="absolute bottom-0 left-0 right-0 p-3">
-                  <p className="text-xs font-bold text-white leading-snug" style={{ fontFamily: 'Fraunces, serif' }}>
+                  <p className="text-xs font-bold text-white leading-snug" style={{ fontFamily: 'Lora, serif' }}>
                     {sub.episodeTitle}
                   </p>
                   <p className="text-[9px] text-white/50 mt-0.5">{sub.wordCount} words · {new Date(sub.submittedAt).toLocaleDateString()}</p>
@@ -1109,7 +1109,7 @@ export default function SeriesDetail() {
       {completedCount === series.totalEpisodes && (
         <div className="px-5 mt-6 mb-4 text-center">
           <div className="text-4xl mb-2">🎉</div>
-          <p className="text-sm font-bold text-gold" style={{ fontFamily: 'Fraunces, serif' }}>
+          <p className="text-sm font-bold text-gold" style={{ fontFamily: 'Lora, serif' }}>
             Series Complete!
           </p>
           <p className="text-[11px] text-ink-muted mt-1">

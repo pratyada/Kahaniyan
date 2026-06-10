@@ -42,7 +42,7 @@ export default function LibraryTile({ story, wisdomImageUrls = {}, onPlay, onSha
         <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent p-3 pt-8">
           <p
             className="line-clamp-2 text-sm font-bold leading-snug text-white"
-            style={{ fontFamily: 'Fraunces, serif', textShadow: '0 1px 3px rgba(0,0,0,0.5)' }}
+            style={{ fontFamily: 'Lora, serif', textShadow: '0 1px 3px rgba(0,0,0,0.5)' }}
           >
             {story.title || 'Untitled Story'}
           </p>

@@ -57,7 +57,7 @@ export default function StoryTile({ lesson, imageUrl, onPlay }) {
         )}
         {/* Title */}
         <p className="line-clamp-2 text-xs font-bold leading-snug text-white"
-          style={{ fontFamily: 'Fraunces, serif', textShadow: '0 1px 4px rgba(0,0,0,0.5)' }}>
+          style={{ fontFamily: 'Lora, serif', textShadow: '0 1px 4px rgba(0,0,0,0.5)' }}>
           {lesson.title}
         </p>
         {/* Plays + Rating + Duration */}

@@ -194,7 +194,7 @@ export default function MyTasks() {
           <span className="text-[10px] text-ink-dim">{user.email}</span>
         </div>
 
-        <h1 className="text-2xl font-bold text-ink mb-1" style={{ fontFamily: 'Fraunces, serif' }}>
+        <h1 className="text-2xl font-bold text-ink mb-1" style={{ fontFamily: 'Lora, serif' }}>
           My Tasks
         </h1>
         {/* View mode toggle */}

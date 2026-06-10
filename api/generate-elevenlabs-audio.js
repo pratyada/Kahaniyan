@@ -32,8 +32,8 @@ export default async function handler(req, res) {
 
   const voiceConfig = VOICES[voice] || VOICES.george;
 
-  // Split long text into chunks and generate in parallel to stay under 30s
-  const MAX_CHUNK = 3000; // chars per chunk — ElevenLabs handles ~3000 chars in ~12s
+  // Split long text into small chunks and generate ALL in parallel to stay under 30s
+  const MAX_CHUNK = 2000; // chars per chunk — small enough for ~8s each
   const fullText = text.slice(0, 10000);
 
   const generateChunk = async (chunk) => {
@@ -49,20 +49,23 @@ export default async function handler(req, res) {
   try {
     let audioBuffer;
     if (fullText.length <= MAX_CHUNK) {
-      // Short text — single request
       audioBuffer = await generateChunk(fullText);
     } else {
-      // Long text — split at paragraph boundaries, generate in parallel
-      const midpoint = Math.floor(fullText.length / 2);
-      let splitAt = fullText.lastIndexOf('\n\n', midpoint);
-      if (splitAt < fullText.length * 0.3) splitAt = fullText.lastIndexOf('. ', midpoint) + 1;
-      if (splitAt < fullText.length * 0.3) splitAt = midpoint;
+      // Split at paragraph boundaries into chunks of ~2000 chars
+      const chunks = [];
+      let remaining = fullText;
+      while (remaining.length > MAX_CHUNK) {
+        let splitAt = remaining.lastIndexOf('\n\n', MAX_CHUNK);
+        if (splitAt < MAX_CHUNK * 0.4) splitAt = remaining.lastIndexOf('. ', MAX_CHUNK) + 1;
+        if (splitAt < MAX_CHUNK * 0.4) splitAt = MAX_CHUNK;
+        chunks.push(remaining.slice(0, splitAt).trim());
+        remaining = remaining.slice(splitAt).trim();
+      }
+      if (remaining.length > 0) chunks.push(remaining);
 
-      const chunk1 = fullText.slice(0, splitAt).trim();
-      const chunk2 = fullText.slice(splitAt).trim();
-
-      const [buf1, buf2] = await Promise.all([generateChunk(chunk1), generateChunk(chunk2)]);
-      audioBuffer = Buffer.concat([buf1, buf2]);
+      // Generate ALL chunks in parallel — each ~8s, all finish in ~8-12s
+      const buffers = await Promise.all(chunks.map(c => generateChunk(c)));
+      audioBuffer = Buffer.concat(buffers);
     }
 
     res.setHeader('Content-Type', 'audio/mpeg');

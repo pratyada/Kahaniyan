@@ -14,7 +14,7 @@ export default function ReflectionStep({ question, onAnswer }) {
   if (question.type === 'emoji') {
     return (
       <div>
-        <p className="mb-5 text-center text-sm font-bold text-ink" style={{ fontFamily: 'Fraunces, serif' }}>
+        <p className="mb-5 text-center text-sm font-bold text-ink" style={{ fontFamily: 'Lora, serif' }}>
           {question.prompt}
         </p>
         <div className="flex items-center justify-center gap-3">
@@ -41,7 +41,7 @@ export default function ReflectionStep({ question, onAnswer }) {
   if (question.type === 'choice') {
     return (
       <div>
-        <p className="mb-5 text-center text-sm font-bold text-ink" style={{ fontFamily: 'Fraunces, serif' }}>
+        <p className="mb-5 text-center text-sm font-bold text-ink" style={{ fontFamily: 'Lora, serif' }}>
           {question.prompt}
         </p>
         <div className="flex flex-col gap-2">
@@ -68,7 +68,7 @@ export default function ReflectionStep({ question, onAnswer }) {
   const [text, setText] = useState('');
   return (
     <div>
-      <p className="mb-4 text-center text-sm font-bold text-ink" style={{ fontFamily: 'Fraunces, serif' }}>
+      <p className="mb-4 text-center text-sm font-bold text-ink" style={{ fontFamily: 'Lora, serif' }}>
         {question.prompt}
       </p>
       <textarea

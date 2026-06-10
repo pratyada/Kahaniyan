@@ -9,61 +9,76 @@
    ─────────────────────────────────────────────── */
 :root,
 [data-theme='night'] {
-  /* Surfaces */
-  --bg-base: #0a0a0f;
-  --bg-surface: #141420;
-  --bg-elevated: #1c1c2a;
-  --bg-card: #22222f;
+  /* Surfaces — Midnight Navy palette */
+  --bg-base: #0D1B2A;
+  --bg-surface: #1E2D3D;
+  --bg-elevated: #0F1E30;
+  --bg-card: #1E2D3D;
 
-  /* Text */
-  --ink: #f5f0e8;
-  --ink-muted: #a8a39a;
-  --ink-dim: #6e6a63;
+  /* Text — Parchment palette */
+  --ink: #F7F1E8;
+  --ink-muted: #B8AAC8;
+  --ink-dim: #7A6B8A;
 
-  /* Brand */
+  /* Brand — Warm Gold on dark (best contrast at night) */
   --gold: #f0a500;
   --gold-bright: #ffb733;
   --gold-dim: #b87f00;
-  --plum: #3a2a4a;
+  --plum: #1A1040;
+
+  /* Accent — Lantern Amber (warmth, sparingly) */
+  --amber: #E8A66B;
+  --amber-bright: #F0BE8A;
+  --amber-dim: #C4853A;
+
+  /* Community tints */
+  --teal: #2D8C73;
+  --festival-red: #C4453A;
+  --sky-blue: #4A7EB5;
 
   /* Semantic */
   --negative: #f3727f;
   --warning: #ffa42b;
-  --info: #539df5;
+  --info: #4A7EB5;
 
-  /* Shadows */
-  --shadow-lift: 0 8px 24px rgba(0, 0, 0, 0.5);
-  --shadow-card: 0 8px 8px rgba(0, 0, 0, 0.3);
+  /* Shadows — Gold glow on dark */
+  --shadow-lift: 0 8px 24px rgba(13, 27, 42, 0.6);
+  --shadow-card: 0 8px 8px rgba(13, 27, 42, 0.4);
   --shadow-glow: 0 0 32px rgba(240, 165, 0, 0.25);
 
   /* Backdrop on phone-shell bg image */
-  --shell-overlay: linear-gradient(180deg, rgba(10, 10, 15, 0.55) 0%, rgba(10, 10, 15, 0.85) 60%, rgba(10, 10, 15, 0.95) 100%);
+  --shell-overlay: linear-gradient(180deg, rgba(13, 27, 42, 0.55) 0%, rgba(13, 27, 42, 0.85) 60%, rgba(13, 27, 42, 0.95) 100%);
 
-  /* Type */
-  --font-display: 'Playfair Display', Georgia, serif;
+  /* Type — Lora for display, DM Sans for UI, Caveat for accent */
+  --font-display: 'Lora', Georgia, serif;
   --font-ui: 'DM Sans', system-ui, -apple-system, sans-serif;
   --font-story: 'Lora', Georgia, serif;
+  --font-accent: 'Caveat', cursive;
 }
 
 [data-theme='day'] {
-  --bg-base: #fff8ec;
-  --bg-surface: #ffffff;
-  --bg-elevated: #fffdf7;
-  --bg-card: #fff3d6;
+  --bg-base: #FDF8F0;
+  --bg-surface: #FFFFFF;
+  --bg-elevated: #F7F1E8;
+  --bg-card: #FFF5E8;
 
-  --ink: #2a1f15;
-  --ink-muted: #6b5e4f;
-  --ink-dim: #a89984;
+  --ink: #1A1040;
+  --ink-muted: #5E4880;
+  --ink-dim: #9A8BB0;
 
-  --gold: #d68a00;
-  --gold-bright: #f0a500;
-  --gold-dim: #a36900;
+  --gold: #6B4FA8;
+  --gold-bright: #7B5FC0;
+  --gold-dim: #4E3A80;
 
-  --shadow-lift: 0 16px 40px rgba(106, 84, 33, 0.18);
-  --shadow-card: 0 6px 18px rgba(106, 84, 33, 0.12);
-  --shadow-glow: 0 0 28px rgba(214, 138, 0, 0.35);
+  --amber: #C4853A;
+  --amber-bright: #E8A66B;
+  --amber-dim: #A06B2A;
 
-  --shell-overlay: linear-gradient(180deg, rgba(255, 248, 236, 0.85) 0%, rgba(255, 248, 236, 0.95) 60%, rgba(255, 248, 236, 0.98) 100%);
+  --shadow-lift: 0 16px 40px rgba(26, 16, 64, 0.12);
+  --shadow-card: 0 6px 18px rgba(26, 16, 64, 0.08);
+  --shadow-glow: 0 0 28px rgba(107, 79, 168, 0.25);
+
+  --shell-overlay: linear-gradient(180deg, rgba(253, 248, 240, 0.85) 0%, rgba(253, 248, 240, 0.95) 60%, rgba(253, 248, 240, 0.98) 100%);
 }
 
 /* ───── Reset / base ───── */

@@ -114,7 +114,7 @@ export default function CulturePage() {
 
         <div className="text-center mb-2">
           <span className="text-5xl mb-3 block">{meta.icon}</span>
-          <h1 className="text-2xl font-bold text-ink" style={{ fontFamily: 'Fraunces, serif' }}>
+          <h1 className="text-2xl font-bold text-ink" style={{ fontFamily: 'Lora, serif' }}>
             {meta.label} Stories
           </h1>
           <p className="mt-1 text-xs text-ink-muted">

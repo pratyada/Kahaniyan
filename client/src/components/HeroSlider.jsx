@@ -127,7 +127,7 @@ export default function HeroSlider({ stories, wisdomImageUrls, onPlay, onInfo })
 
             {/* Title */}
             <h2 className="text-xl lg:text-2xl font-bold text-white leading-tight mb-1.5"
-              style={{ fontFamily: 'Fraunces, serif', textShadow: '0 2px 8px rgba(0,0,0,0.5)' }}>
+              style={{ fontFamily: 'Lora, serif', textShadow: '0 2px 8px rgba(0,0,0,0.5)' }}>
               {story.title}
             </h2>
 

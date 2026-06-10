@@ -126,7 +126,7 @@ export default function ShareCardSheet({ open, onClose, story }) {
 
         {/* Bottom content */}
         <div className="absolute bottom-0 left-0 right-0 p-5">
-          <h3 className="text-lg font-bold text-white leading-snug mb-2" style={{ fontFamily: 'Fraunces, serif', textShadow: '0 2px 8px rgba(0,0,0,0.8)' }}>
+          <h3 className="text-lg font-bold text-white leading-snug mb-2" style={{ fontFamily: 'Lora, serif', textShadow: '0 2px 8px rgba(0,0,0,0.8)' }}>
             {story?.title}
           </h3>
           {shortMoral && (
@@ -144,7 +144,7 @@ export default function ShareCardSheet({ open, onClose, story }) {
       </motion.div>
 
       {/* Motivating header */}
-      <p className="mb-1 text-center text-sm font-bold text-ink" style={{ fontFamily: 'Fraunces, serif' }}>
+      <p className="mb-1 text-center text-sm font-bold text-ink" style={{ fontFamily: 'Lora, serif' }}>
         Share tonight's story
       </p>
       <p className="mb-4 text-center text-[11px] text-ink-muted">

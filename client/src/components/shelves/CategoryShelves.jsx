@@ -125,7 +125,7 @@ export default function CategoryShelves({ wisdomImageUrls, cultureFilter }) {
                   {/* Collection icon */}
                   <div className="absolute inset-0 flex flex-col items-center justify-center p-3 text-center">
                     <span className="text-5xl mb-3">{col.icon}</span>
-                    <p className="text-sm font-bold text-ink leading-tight" style={{ fontFamily: 'Fraunces, serif' }}>
+                    <p className="text-sm font-bold text-ink leading-tight" style={{ fontFamily: 'Lora, serif' }}>
                       {col.title.replace(/^[^\s]+\s/, '')}
                     </p>
                     <p className="text-[10px] text-ink-muted mt-1.5">{col.stories.length} stories</p>

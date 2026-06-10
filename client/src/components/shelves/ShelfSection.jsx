@@ -7,7 +7,7 @@ export default function ShelfSection({ title, subtitle, onSeeAll, children }) {
         <div>
           <h3
             className="text-sm font-bold text-ink"
-            style={{ fontFamily: 'Fraunces, serif' }}
+            style={{ fontFamily: 'Lora, serif' }}
           >
             {title}
           </h3>

@@ -43,7 +43,7 @@ export default function StoryTileWide({ story, imageUrl, progress, onPlay }) {
       <div className="relative z-10 p-3 pt-0">
         <p
           className="line-clamp-1 text-xs font-bold text-white"
-          style={{ fontFamily: 'Fraunces, serif' }}
+          style={{ fontFamily: 'Lora, serif' }}
         >
           {story.title}
         </p>

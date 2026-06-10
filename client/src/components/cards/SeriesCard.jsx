@@ -91,7 +91,7 @@ export default function SeriesCard({ series, coverImage, onClick }) {
         <div className={`absolute bottom-0 left-0 right-0 p-3 ${comingSoon ? 'z-20' : ''}`}>
           <p className="text-[9px] font-bold uppercase tracking-[0.15em] text-gold/70 mb-0.5">Series</p>
           <h3 className="text-sm font-bold text-white leading-tight mb-1.5"
-            style={{ fontFamily: 'Fraunces, serif' }}>
+            style={{ fontFamily: 'Lora, serif' }}>
             {series.title}
           </h3>
           <p className="text-[10px] text-white/50 line-clamp-1 mb-1">{series.description}</p>

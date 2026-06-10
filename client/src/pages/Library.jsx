@@ -468,7 +468,7 @@ export default function Library() {
 
       {/* Header */}
       <header className="mb-5">
-        <h1 className="text-2xl font-bold text-ink" style={{ fontFamily: 'Fraunces, serif' }}>
+        <h1 className="text-2xl font-bold text-ink" style={{ fontFamily: 'Lora, serif' }}>
           <span className="text-gold">Create</span>
         </h1>
         <p className="mt-1 text-xs text-ink-muted">
@@ -497,7 +497,7 @@ export default function Library() {
         <>
           {/* ── AI Story Generator (inline) ── */}
           <div className="mb-6 rounded-2xl p-4 ring-1 ring-gold/20" style={{ background: 'linear-gradient(135deg, rgba(240,165,0,0.08) 0%, rgba(240,165,0,0.02) 100%)' }}>
-            <h2 className="text-base font-bold text-gold mb-3" style={{ fontFamily: 'Fraunces, serif' }}>
+            <h2 className="text-base font-bold text-gold mb-3" style={{ fontFamily: 'Lora, serif' }}>
               🌙 Tonight's Story for {profile?.childName || 'your child'}
             </h2>
 
@@ -583,7 +583,7 @@ export default function Library() {
           {isAdmin && (
             <>
               <div className="mb-4 rounded-2xl bg-gradient-to-br from-white/5 to-white/2 p-4 ring-1 ring-white/5">
-                <h3 className="text-sm font-bold text-ink mb-1" style={{ fontFamily: 'Fraunces, serif' }}>Write for the Community</h3>
+                <h3 className="text-sm font-bold text-ink mb-1" style={{ fontFamily: 'Lora, serif' }}>Write for the Community</h3>
                 <p className="text-[10px] text-ink-muted">Submit stories for thousands of kids to hear</p>
               </div>
 
@@ -770,7 +770,7 @@ export default function Library() {
           {/* AI-Generated Stories — visible to everyone (stored locally) */}
           {generatedStories.length > 0 && (
             <div className="mb-6">
-              <h3 className="text-sm font-bold text-ink mb-1" style={{ fontFamily: 'Fraunces, serif' }}>
+              <h3 className="text-sm font-bold text-ink mb-1" style={{ fontFamily: 'Lora, serif' }}>
                 🌙 Tonight's Stories
               </h3>
               <p className="text-[10px] text-ink-dim mb-3">AI-generated bedtime stories for your child — share with family & friends via link</p>
@@ -823,7 +823,7 @@ export default function Library() {
             generatedStories.length === 0 && (
               <div className="mt-12 text-center">
                 <div className="text-5xl mb-4">🔒</div>
-                <p className="text-lg font-bold text-ink" style={{ fontFamily: 'Fraunces, serif' }}>Sign in to see your creations</p>
+                <p className="text-lg font-bold text-ink" style={{ fontFamily: 'Lora, serif' }}>Sign in to see your creations</p>
                 <p className="mt-2 text-sm text-ink-muted">Your submitted stories will appear here.</p>
                 <button onClick={() => navigate('/login')} className="mt-4 rounded-2xl bg-gold px-6 py-3 text-sm font-bold text-bg-base">
                   Sign In
@@ -837,7 +837,7 @@ export default function Library() {
               {mySeries.filter(s => s.visibility === 'personal').length > 0 && (
                 <div className="mb-4">
                   <div className="mb-2">
-                    <h3 className="text-sm font-bold text-ink mb-1" style={{ fontFamily: 'Fraunces, serif' }}>
+                    <h3 className="text-sm font-bold text-ink mb-1" style={{ fontFamily: 'Lora, serif' }}>
                       🔒 My Personal Series
                     </h3>
                     <p className="text-[10px] text-ink-dim">Private — only visible to you and people you share with</p>
@@ -919,7 +919,7 @@ export default function Library() {
 
               {(SERIES.some(s => s.createdBy === user?.email) || myStories.length > 0 || mySeries.filter(s => s.visibility !== 'personal').length > 0) && (
                 <div className="mb-2">
-                  <h3 className="text-sm font-bold text-ink mb-1" style={{ fontFamily: 'Fraunces, serif' }}>
+                  <h3 className="text-sm font-bold text-ink mb-1" style={{ fontFamily: 'Lora, serif' }}>
                     📚 Published for Community
                   </h3>
                   <p className="text-[10px] text-ink-dim">Stories & series you wrote — available to all listeners worldwide</p>

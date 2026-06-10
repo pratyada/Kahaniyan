@@ -1,0 +1,901 @@
+
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,500;0,600;1,400;1,500&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&family=Caveat:wght@400;500&display=swap');
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  .sg-root {
+    font-family: 'DM Sans', sans-serif;
+    color: var(--color-text-primary);
+    max-width: 100%;
+    padding: 0 0 3rem;
+  }
+
+  .sg-hero {
+    background: #0D1B2A;
+    border-radius: var(--border-radius-lg);
+    padding: 3rem 2.5rem 2.5rem;
+    margin-bottom: 2.5rem;
+    position: relative;
+    overflow: hidden;
+  }
+  .sg-hero::before {
+    content: '';
+    position: absolute;
+    top: -60px; right: -80px;
+    width: 320px; height: 320px;
+    border-radius: 50%;
+    background: #5B3FA0;
+    opacity: 0.18;
+  }
+  .sg-hero::after {
+    content: '';
+    position: absolute;
+    bottom: -80px; left: 60px;
+    width: 220px; height: 220px;
+    border-radius: 50%;
+    background: #E8A66B;
+    opacity: 0.13;
+  }
+  .sg-hero-eyebrow {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: #A89BC2;
+    margin-bottom: 0.75rem;
+  }
+  .sg-hero-title {
+    font-family: 'Lora', serif;
+    font-size: 38px;
+    font-weight: 600;
+    color: #F7F1E8;
+    line-height: 1.15;
+    margin-bottom: 0.5rem;
+  }
+  .sg-hero-title span {
+    color: #E8A66B;
+  }
+  .sg-hero-sub {
+    font-size: 15px;
+    color: #B8AAC8;
+    font-weight: 300;
+    margin-top: 0.75rem;
+  }
+  .sg-hero-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 1.5rem;
+  }
+  .sg-tag {
+    font-size: 12px;
+    padding: 4px 12px;
+    border-radius: 20px;
+    border: 0.5px solid;
+  }
+  .sg-tag-purple { border-color: #7B5FC0; color: #C4AEED; background: rgba(123,95,192,0.12); }
+  .sg-tag-amber { border-color: #C4853A; color: #E8A66B; background: rgba(196,133,58,0.12); }
+  .sg-tag-teal { border-color: #2D8C73; color: #6ECAB5; background: rgba(45,140,115,0.12); }
+
+  .sg-section {
+    margin-bottom: 2.5rem;
+  }
+  .sg-section-label {
+    font-size: 10px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--color-text-tertiary);
+    margin-bottom: 1rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 0.5px solid var(--color-border-tertiary);
+  }
+  .sg-section-title {
+    font-family: 'Lora', serif;
+    font-size: 20px;
+    font-weight: 500;
+    color: var(--color-text-primary);
+    margin-bottom: 1.25rem;
+  }
+
+  .sg-grid-2 { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1rem; }
+  .sg-grid-3 { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 1rem; }
+  .sg-grid-4 { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 0.75rem; }
+
+  .sg-card {
+    background: var(--color-background-primary);
+    border: 0.5px solid var(--color-border-tertiary);
+    border-radius: var(--border-radius-lg);
+    padding: 1.25rem;
+  }
+
+  .palette-swatch {
+    height: 64px;
+    border-radius: 8px 8px 0 0;
+    margin: -1.25rem -1.25rem 1rem;
+  }
+  .swatch-label {
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--color-text-primary);
+    margin-bottom: 2px;
+  }
+  .swatch-hex {
+    font-size: 11px;
+    color: var(--color-text-tertiary);
+    font-family: 'DM Sans', monospace;
+  }
+  .swatch-role {
+    font-size: 11px;
+    color: var(--color-text-secondary);
+    margin-top: 4px;
+  }
+
+  .font-demo {
+    margin-bottom: 1.25rem;
+    padding-bottom: 1.25rem;
+    border-bottom: 0.5px solid var(--color-border-tertiary);
+  }
+  .font-demo:last-child { border-bottom: none; margin-bottom: 0; padding-bottom: 0; }
+  .font-demo-label { font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--color-text-tertiary); margin-bottom: 6px; }
+
+  .type-scale-row {
+    display: flex;
+    align-items: baseline;
+    gap: 1rem;
+    padding: 0.75rem 0;
+    border-bottom: 0.5px solid var(--color-border-tertiary);
+  }
+  .type-scale-row:last-child { border-bottom: none; }
+  .type-scale-meta { width: 100px; flex-shrink: 0; font-size: 11px; color: var(--color-text-tertiary); line-height: 1.4; }
+  .type-scale-sample { flex: 1; }
+
+  .tone-card {
+    background: var(--color-background-secondary);
+    border-radius: var(--border-radius-md);
+    padding: 1rem 1.25rem;
+    margin-bottom: 0.75rem;
+  }
+  .tone-card-header {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 6px;
+  }
+  .tone-dot {
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+  .tone-card-title { font-size: 13px; font-weight: 500; }
+  .tone-card-body { font-size: 13px; color: var(--color-text-secondary); line-height: 1.6; }
+  .tone-example {
+    margin-top: 8px;
+    padding: 8px 12px;
+    background: var(--color-background-primary);
+    border-radius: var(--border-radius-md);
+    border-left: 2px solid;
+    font-size: 12px;
+    font-style: italic;
+    color: var(--color-text-secondary);
+  }
+
+  .voice-card {
+    background: var(--color-background-primary);
+    border: 0.5px solid var(--color-border-tertiary);
+    border-radius: var(--border-radius-lg);
+    padding: 1.25rem;
+    margin-bottom: 0.75rem;
+  }
+  .voice-title { font-size: 14px; font-weight: 500; margin-bottom: 6px; }
+  .voice-spec { font-size: 12px; color: var(--color-text-secondary); line-height: 1.8; }
+  .voice-spec span { font-weight: 500; color: var(--color-text-primary); }
+
+  .motion-row {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 0.75rem 0;
+    border-bottom: 0.5px solid var(--color-border-tertiary);
+  }
+  .motion-row:last-child { border-bottom: none; }
+  .motion-icon { font-size: 20px; width: 32px; color: #7B5FC0; flex-shrink: 0; }
+  .motion-content { flex: 1; }
+  .motion-title { font-size: 13px; font-weight: 500; margin-bottom: 2px; }
+  .motion-desc { font-size: 12px; color: var(--color-text-secondary); }
+  .motion-spec { font-size: 11px; font-family: monospace; color: #7B5FC0; background: rgba(123,95,192,0.08); padding: 2px 6px; border-radius: 4px; margin-top: 3px; display: inline-block; }
+
+  .do-dont-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; }
+  .do-card {
+    background: rgba(45,140,115,0.06);
+    border: 0.5px solid rgba(45,140,115,0.3);
+    border-radius: var(--border-radius-md);
+    padding: 0.875rem;
+  }
+  .dont-card {
+    background: rgba(196,59,38,0.05);
+    border: 0.5px solid rgba(196,59,38,0.2);
+    border-radius: var(--border-radius-md);
+    padding: 0.875rem;
+  }
+  .do-label { font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; color: #1D9E75; margin-bottom: 6px; font-weight: 500; }
+  .dont-label { font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; color: #C43B26; margin-bottom: 6px; font-weight: 500; }
+  .dd-text { font-size: 12px; color: var(--color-text-secondary); line-height: 1.6; }
+
+  .mockup-wrap {
+    background: #0D1B2A;
+    border-radius: var(--border-radius-lg);
+    padding: 2rem;
+    margin-top: 1.5rem;
+  }
+  .mockup-phone {
+    background: #0F1E30;
+    border-radius: 24px;
+    overflow: hidden;
+    max-width: 320px;
+    margin: 0 auto;
+    border: 1.5px solid rgba(255,255,255,0.08);
+  }
+  .mockup-statusbar {
+    background: #0D1B2A;
+    padding: 10px 20px 6px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .mockup-status-text { font-size: 11px; color: rgba(255,255,255,0.5); }
+  .mockup-hero-area {
+    background: linear-gradient(160deg, #1A2D45 0%, #0D1B2A 100%);
+    padding: 1.25rem 1.25rem 0;
+    position: relative;
+  }
+  .mockup-moon {
+    position: absolute;
+    top: 16px; right: 20px;
+    width: 44px; height: 44px;
+    background: #E8A66B;
+    border-radius: 50%;
+    opacity: 0.9;
+  }
+  .mockup-moon::after {
+    content: '';
+    position: absolute;
+    top: -4px; right: -6px;
+    width: 38px; height: 38px;
+    background: #1A2D45;
+    border-radius: 50%;
+  }
+  .mockup-greeting { font-size: 12px; color: #A89BC2; margin-bottom: 4px; font-family: 'DM Sans', sans-serif; }
+  .mockup-app-title {
+    font-family: 'Lora', serif;
+    font-size: 22px;
+    color: #F7F1E8;
+    font-weight: 600;
+    line-height: 1.2;
+    margin-bottom: 4px;
+  }
+  .mockup-app-title span { color: #E8A66B; }
+  .mockup-tagline { font-size: 11px; color: #7A6B8A; margin-bottom: 1.25rem; }
+  .mockup-stars {
+    display: flex;
+    gap: 3px;
+    margin-bottom: 1.25rem;
+  }
+  .mockup-star { width: 8px; height: 8px; background: #E8A66B; border-radius: 50%; opacity: 0.6; }
+  .mockup-star.bright { opacity: 1; }
+  .mockup-content { padding: 1.25rem; }
+  .mockup-section-label {
+    font-size: 10px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: #7A6B8A;
+    margin-bottom: 0.75rem;
+    font-family: 'DM Sans', sans-serif;
+  }
+  .mockup-story-card {
+    background: rgba(255,255,255,0.04);
+    border: 0.5px solid rgba(255,255,255,0.08);
+    border-radius: 12px;
+    padding: 0.875rem 1rem;
+    margin-bottom: 0.625rem;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+  }
+  .mockup-story-icon {
+    width: 36px; height: 36px;
+    border-radius: 8px;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px;
+  }
+  .mockup-story-icon.eid { background: rgba(232,166,107,0.15); }
+  .mockup-story-icon.forest { background: rgba(45,140,115,0.15); }
+  .mockup-story-icon.diwali { background: rgba(123,95,192,0.15); }
+  .mockup-story-title { font-size: 13px; font-weight: 500; color: #F0EAE0; font-family: 'DM Sans', sans-serif; }
+  .mockup-story-sub { font-size: 11px; color: #7A6B8A; margin-top: 1px; }
+  .mockup-story-badge {
+    margin-left: auto;
+    font-size: 10px;
+    padding: 3px 7px;
+    border-radius: 10px;
+    flex-shrink: 0;
+  }
+  .badge-new { background: rgba(232,166,107,0.15); color: #E8A66B; border: 0.5px solid rgba(232,166,107,0.3); }
+  .badge-series { background: rgba(45,140,115,0.12); color: #6ECAB5; border: 0.5px solid rgba(45,140,115,0.25); }
+  .mockup-filter-row {
+    display: flex;
+    gap: 6px;
+    margin-bottom: 1rem;
+    flex-wrap: wrap;
+  }
+  .mockup-filter-chip {
+    font-size: 11px;
+    padding: 4px 10px;
+    border-radius: 20px;
+    border: 0.5px solid rgba(255,255,255,0.1);
+    color: #7A6B8A;
+    cursor: pointer;
+  }
+  .mockup-filter-chip.active {
+    background: rgba(123,95,192,0.2);
+    border-color: rgba(123,95,192,0.4);
+    color: #C4AEED;
+  }
+  .mockup-nav {
+    background: #0A1520;
+    border-top: 0.5px solid rgba(255,255,255,0.06);
+    padding: 10px 0 14px;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+  }
+  .mockup-nav-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 3px;
+  }
+  .mockup-nav-icon { font-size: 18px; color: #7A6B8A; }
+  .mockup-nav-icon.active { color: #7B5FC0; }
+  .mockup-nav-label { font-size: 9px; color: #7A6B8A; }
+  .mockup-nav-label.active { color: #7B5FC0; }
+
+  .illustration-note {
+    font-size: 12px;
+    color: var(--color-text-tertiary);
+    text-align: center;
+    margin-top: 0.75rem;
+    font-style: italic;
+  }
+
+  .accent-bar {
+    height: 3px;
+    border-radius: 2px;
+    margin-bottom: 1.25rem;
+  }
+
+  .spacer { height: 0.5px; background: var(--color-border-tertiary); margin: 2rem 0; }
+</style>
+
+<div class="sg-root">
+  <h2 class="sr-only">MySleepyTale Brand Design Styleguide — complete visual identity, typography, color, tone of voice, audio specs, and sample UI mockup</h2>
+
+  <div class="sg-hero">
+    <p class="sg-hero-eyebrow">Design Styleguide · v1.0 · 2026</p>
+    <h1 class="sg-hero-title">My<span>Sleepy</span>Tale</h1>
+    <p style="font-family:'Lora',serif; font-size:15px; color:#B8AAC8; font-style:italic; margin-top:4px;">Where every family's story belongs.</p>
+    <p class="sg-hero-sub">Brand identity · Visual design · Typography · Tone of voice · Audio direction</p>
+    <div class="sg-hero-tags">
+      <span class="sg-tag sg-tag-purple">Belief-inclusive</span>
+      <span class="sg-tag sg-tag-amber">Bedtime-first</span>
+      <span class="sg-tag sg-tag-teal">Family-trusted</span>
+    </div>
+  </div>
+
+  <div class="sg-section">
+    <p class="sg-section-label">Brand Foundation</p>
+    <h2 class="sg-section-title">Brand Essence</h2>
+    <div class="sg-grid-3">
+      <div class="sg-card">
+        <p style="font-size:10px; letter-spacing:0.1em; text-transform:uppercase; color:var(--color-text-tertiary); margin-bottom:8px;">Mission</p>
+        <p style="font-family:'Lora',serif; font-size:15px; font-weight:500; line-height:1.5; color:var(--color-text-primary);">Stories that feel like home — wherever home is.</p>
+        <p style="font-size:12px; color:var(--color-text-secondary); margin-top:8px; line-height:1.6;">Every family deserves bedtime stories that reflect their values, culture, and faith — made with that community, never imposed from outside it.</p>
+      </div>
+      <div class="sg-card">
+        <p style="font-size:10px; letter-spacing:0.1em; text-transform:uppercase; color:var(--color-text-tertiary); margin-bottom:8px;">Positioning</p>
+        <p style="font-family:'Lora',serif; font-size:15px; font-weight:500; line-height:1.5; color:var(--color-text-primary);">The only bedtime app that earns a family's trust.</p>
+        <p style="font-size:12px; color:var(--color-text-secondary); margin-top:8px; line-height:1.6;">Not another AI story generator. A platform where belief communities own their narratives.</p>
+      </div>
+      <div class="sg-card">
+        <p style="font-size:10px; letter-spacing:0.1em; text-transform:uppercase; color:var(--color-text-tertiary); margin-bottom:8px;">Personality</p>
+        <div style="display:flex; flex-direction:column; gap:6px; margin-top:4px;">
+          <div style="display:flex; align-items:center; gap:8px;">
+            <div style="width:6px;height:6px;border-radius:50%;background:#E8A66B;flex-shrink:0;"></div>
+            <span style="font-size:12px; color:var(--color-text-secondary);">Warm, not saccharine</span>
+          </div>
+          <div style="display:flex; align-items:center; gap:8px;">
+            <div style="width:6px;height:6px;border-radius:50%;background:#7B5FC0;flex-shrink:0;"></div>
+            <span style="font-size:12px; color:var(--color-text-secondary);">Grounded, not preachy</span>
+          </div>
+          <div style="display:flex; align-items:center; gap:8px;">
+            <div style="width:6px;height:6px;border-radius:50%;background:#2D8C73;flex-shrink:0;"></div>
+            <span style="font-size:12px; color:var(--color-text-secondary);">Inclusive, not generic</span>
+          </div>
+          <div style="display:flex; align-items:center; gap:8px;">
+            <div style="width:6px;height:6px;border-radius:50%;background:#C4853A;flex-shrink:0;"></div>
+            <span style="font-size:12px; color:var(--color-text-secondary);">Calm, not boring</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="spacer"></div>
+
+  <div class="sg-section">
+    <p class="sg-section-label">Color System</p>
+    <h2 class="sg-section-title">Palette</h2>
+    <p style="font-size:13px; color:var(--color-text-secondary); margin-bottom:1.25rem; line-height:1.6;">The palette is inspired by the night sky over diverse cities — the deep indigo of a clear evening, the amber of lamplit windows, the teal of a mosque dome, the soft violet of twilight. It's warm without being infantile, and premium without being cold.</p>
+
+    <p style="font-size:11px; font-weight:500; text-transform:uppercase; letter-spacing:0.1em; color:var(--color-text-tertiary); margin-bottom:0.75rem;">Primary Palette</p>
+    <div class="sg-grid-4" style="margin-bottom:1.25rem;">
+      <div class="sg-card" style="padding-top:0;">
+        <div class="palette-swatch" style="background:#0D1B2A;"></div>
+        <div class="swatch-label">Midnight</div>
+        <div class="swatch-hex">#0D1B2A</div>
+        <div class="swatch-role">Primary bg, hero sections</div>
+      </div>
+      <div class="sg-card" style="padding-top:0;">
+        <div class="palette-swatch" style="background:#7B5FC0;"></div>
+        <div class="swatch-label">Dream Violet</div>
+        <div class="swatch-hex">#7B5FC0</div>
+        <div class="swatch-role">Primary brand, CTAs, interactive</div>
+      </div>
+      <div class="sg-card" style="padding-top:0;">
+        <div class="palette-swatch" style="background:#E8A66B;"></div>
+        <div class="swatch-label">Lantern Amber</div>
+        <div class="swatch-hex">#E8A66B</div>
+        <div class="swatch-role">Accent, highlights, warmth</div>
+      </div>
+      <div class="sg-card" style="padding-top:0;">
+        <div class="palette-swatch" style="background:#F7F1E8;"></div>
+        <div class="swatch-label">Parchment</div>
+        <div class="swatch-hex">#F7F1E8</div>
+        <div class="swatch-role">Light bg, text on dark</div>
+      </div>
+    </div>
+
+    <p style="font-size:11px; font-weight:500; text-transform:uppercase; letter-spacing:0.1em; color:var(--color-text-tertiary); margin-bottom:0.75rem;">Secondary & Community Tints</p>
+    <div class="sg-grid-4" style="margin-bottom:0.5rem;">
+      <div class="sg-card" style="padding-top:0;">
+        <div class="palette-swatch" style="background:#2D8C73;"></div>
+        <div class="swatch-label">Dome Teal</div>
+        <div class="swatch-hex">#2D8C73</div>
+        <div class="swatch-role">Nature, Islam tint</div>
+      </div>
+      <div class="sg-card" style="padding-top:0;">
+        <div class="palette-swatch" style="background:#C4453A;"></div>
+        <div class="swatch-label">Festival Red</div>
+        <div class="swatch-hex">#C4453A</div>
+        <div class="swatch-role">Hindu, Diwali series</div>
+      </div>
+      <div class="sg-card" style="padding-top:0;">
+        <div class="palette-swatch" style="background:#4A7EB5;"></div>
+        <div class="swatch-label">Starlight Blue</div>
+        <div class="swatch-hex">#4A7EB5</div>
+        <div class="swatch-role">Info states, sky motif</div>
+      </div>
+      <div class="sg-card" style="padding-top:0;">
+        <div class="palette-swatch" style="background:#1E2D3D;"></div>
+        <div class="swatch-label">Deep Navy</div>
+        <div class="swatch-hex">#1E2D3D</div>
+        <div class="swatch-role">Cards on dark bg</div>
+      </div>
+    </div>
+
+    <div class="sg-card" style="margin-top:1rem;">
+      <p style="font-size:12px; font-weight:500; margin-bottom:8px;">Usage rules</p>
+      <div style="font-size:12px; color:var(--color-text-secondary); line-height:1.9;">
+        <span style="color:#E8A66B;">●</span> Never use more than 2 accent colors on one screen &nbsp;·&nbsp;
+        <span style="color:#7B5FC0;">●</span> Dream Violet is the only interactive element color &nbsp;·&nbsp;
+        <span style="color:#2D8C73;">●</span> Community tints are for series theming only, not global UI
+      </div>
+    </div>
+  </div>
+
+  <div class="spacer"></div>
+
+  <div class="sg-section">
+    <p class="sg-section-label">Typography System</p>
+    <h2 class="sg-section-title">Fonts & Hierarchy</h2>
+
+    <div class="sg-grid-3" style="margin-bottom:1.5rem;">
+      <div class="sg-card">
+        <div class="font-demo">
+          <div class="font-demo-label">Display · Lora (Serif)</div>
+          <p style="font-family:'Lora',serif; font-size:28px; line-height:1.2; color:var(--color-text-primary);">Once upon a bedtime…</p>
+        </div>
+        <div class="font-demo">
+          <div class="font-demo-label">Italic use</div>
+          <p style="font-family:'Lora',serif; font-size:16px; font-style:italic; color:var(--color-text-secondary);">"for families of every faith"</p>
+        </div>
+        <p style="font-size:11px; color:var(--color-text-tertiary); line-height:1.6;">Used for: headlines, story titles, hero taglines, emotional moments. Weight 500–600 only.</p>
+      </div>
+      <div class="sg-card">
+        <div class="font-demo">
+          <div class="font-demo-label">Body · DM Sans</div>
+          <p style="font-family:'DM Sans',sans-serif; font-size:15px; line-height:1.7; color:var(--color-text-primary);">Clear, clean, never cold. DM Sans carries the informational layer — UI labels, descriptions, settings — without competing with Lora's warmth.</p>
+        </div>
+        <p style="font-size:11px; color:var(--color-text-tertiary);">Used for: body copy, UI labels, navigation, micro-copy, CTAs. Weight 300 / 400 / 500.</p>
+      </div>
+      <div class="sg-card">
+        <div class="font-demo">
+          <div class="font-demo-label">Accent · Caveat (Handwritten)</div>
+          <p style="font-family:'Caveat',cursive; font-size:22px; color:#7B5FC0; line-height:1.3;">New tonight ✦</p>
+          <p style="font-family:'Caveat',cursive; font-size:18px; color:#E8A66B;">Ep. 3 of 10</p>
+        </div>
+        <p style="font-size:11px; color:var(--color-text-tertiary);">Sparingly: episode badges, handwritten-feel callouts, delight moments only. Never for UI copy.</p>
+      </div>
+    </div>
+
+    <div class="sg-card">
+      <p style="font-size:12px; font-weight:500; margin-bottom:1rem;">Type Scale</p>
+      <div class="type-scale-row">
+        <div class="type-scale-meta">Display<br>Lora 600<br>36–40px</div>
+        <div class="type-scale-sample" style="font-family:'Lora',serif; font-size:32px; font-weight:600; line-height:1.1; color:var(--color-text-primary);">MySleepyTale</div>
+      </div>
+      <div class="type-scale-row">
+        <div class="type-scale-meta">H1<br>Lora 500<br>24–28px</div>
+        <div class="type-scale-sample" style="font-family:'Lora',serif; font-size:24px; font-weight:500; color:var(--color-text-primary);">Tonight's Stories</div>
+      </div>
+      <div class="type-scale-row">
+        <div class="type-scale-meta">H2<br>DM Sans 500<br>18–20px</div>
+        <div class="type-scale-sample" style="font-family:'DM Sans',sans-serif; font-size:18px; font-weight:500; color:var(--color-text-primary);">The Sleepy Forest Series</div>
+      </div>
+      <div class="type-scale-row">
+        <div class="type-scale-meta">H3<br>DM Sans 500<br>15px</div>
+        <div class="type-scale-sample" style="font-family:'DM Sans',sans-serif; font-size:15px; font-weight:500; color:var(--color-text-primary);">Episode 3 — The Moon's Secret</div>
+      </div>
+      <div class="type-scale-row">
+        <div class="type-scale-meta">Body<br>DM Sans 400<br>14–15px</div>
+        <div class="type-scale-sample" style="font-family:'DM Sans',sans-serif; font-size:14px; color:var(--color-text-secondary); line-height:1.7;">A calm, age-appropriate story for families who value honesty and kindness.</div>
+      </div>
+      <div class="type-scale-row">
+        <div class="type-scale-meta">Label<br>DM Sans 500<br>11px / tracked</div>
+        <div class="type-scale-sample" style="font-family:'DM Sans',sans-serif; font-size:11px; font-weight:500; letter-spacing:0.12em; text-transform:uppercase; color:var(--color-text-tertiary);">For ages 3–6 · 8 min</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="spacer"></div>
+
+  <div class="sg-section">
+    <p class="sg-section-label">Voice & Tone</p>
+    <h2 class="sg-section-title">Brand Voice</h2>
+
+    <div class="tone-card">
+      <div class="tone-card-header">
+        <div class="tone-dot" style="background:#E8A66B;"></div>
+        <span class="tone-card-title">Warm & Direct</span>
+        <span style="font-size:11px; color:var(--color-text-tertiary); margin-left:auto;">All channels</span>
+      </div>
+      <div class="tone-card-body">Short sentences. Say the real thing. No corporate language, no hollow filler. Warmth earns trust — it doesn't need to be performed.</div>
+      <div class="tone-example" style="border-left-color:#E8A66B;">
+        "Stories your kids will ask for every night." — not — "Delivering premium AI-powered narrative experiences for discerning families."
+      </div>
+    </div>
+
+    <div class="tone-card">
+      <div class="tone-card-header">
+        <div class="tone-dot" style="background:#7B5FC0;"></div>
+        <span class="tone-card-title">Respectful Authority on Faith & Culture</span>
+        <span style="font-size:11px; color:var(--color-text-tertiary); margin-left:auto;">Community content</span>
+      </div>
+      <div class="tone-card-body">Communities lead. We never approximate faith from outside. Language is accurate, never appropriating. When in doubt, defer to the community ambassador's voice.</div>
+      <div class="tone-example" style="border-left-color:#7B5FC0;">
+        "Reviewed by our Muslim community ambassador" — not — "Islamic-inspired content for diverse families."
+      </div>
+    </div>
+
+    <div class="tone-card">
+      <div class="tone-card-header">
+        <div class="tone-dot" style="background:#2D8C73;"></div>
+        <span class="tone-card-title">Calm at Bedtime</span>
+        <span style="font-size:11px; color:var(--color-text-tertiary); margin-left:auto;">In-app copy</span>
+      </div>
+      <div class="tone-card-body">The app voice slows down after 7pm. In-app micro-copy is quieter, gentler. No urgency. No notifications phrased as demands. The UI knows it's bedtime.</div>
+      <div class="tone-example" style="border-left-color:#2D8C73;">
+        "Sleep timer is on. Goodnight. 🌙" — not — "Don't forget to rate tonight's story!"
+      </div>
+    </div>
+
+    <div class="tone-card">
+      <div class="tone-card-header">
+        <div class="tone-dot" style="background:#4A7EB5;"></div>
+        <span class="tone-card-title">Real Parent Voice</span>
+        <span style="font-size:11px; color:var(--color-text-tertiary); margin-left:auto;">Social / outreach</span>
+      </div>
+      <div class="tone-card-body">Deepti's channel voice — genuine, first-person, lived experience. "My daughter asked for it again" lands harder than any product claim. Lean on it without over-directing it.</div>
+      <div class="tone-example" style="border-left-color:#4A7EB5;">
+        "She actually asked me to play it again at 10pm 😂 — it was the Eid one." — authentic, not scripted.
+      </div>
+    </div>
+
+    <div class="sg-grid-2" style="margin-top:1rem;">
+      <div>
+        <p style="font-size:12px; font-weight:500; margin-bottom:0.75rem; color:var(--color-text-secondary);">Words we use</p>
+        <div style="display:flex; flex-wrap:wrap; gap:6px;">
+          <span style="font-size:12px; padding:4px 10px; background:rgba(45,140,115,0.08); border:0.5px solid rgba(45,140,115,0.2); border-radius:20px; color:var(--color-text-secondary);">calming</span>
+          <span style="font-size:12px; padding:4px 10px; background:rgba(45,140,115,0.08); border:0.5px solid rgba(45,140,115,0.2); border-radius:20px; color:var(--color-text-secondary);">trusted</span>
+          <span style="font-size:12px; padding:4px 10px; background:rgba(45,140,115,0.08); border:0.5px solid rgba(45,140,115,0.2); border-radius:20px; color:var(--color-text-secondary);">tonight</span>
+          <span style="font-size:12px; padding:4px 10px; background:rgba(45,140,115,0.08); border:0.5px solid rgba(45,140,115,0.2); border-radius:20px; color:var(--color-text-secondary);">family</span>
+          <span style="font-size:12px; padding:4px 10px; background:rgba(45,140,115,0.08); border:0.5px solid rgba(45,140,115,0.2); border-radius:20px; color:var(--color-text-secondary);">community-reviewed</span>
+          <span style="font-size:12px; padding:4px 10px; background:rgba(45,140,115,0.08); border:0.5px solid rgba(45,140,115,0.2); border-radius:20px; color:var(--color-text-secondary);">bedtime ritual</span>
+          <span style="font-size:12px; padding:4px 10px; background:rgba(45,140,115,0.08); border:0.5px solid rgba(45,140,115,0.2); border-radius:20px; color:var(--color-text-secondary);">real stories</span>
+        </div>
+      </div>
+      <div>
+        <p style="font-size:12px; font-weight:500; margin-bottom:0.75rem; color:var(--color-text-secondary);">Words we avoid</p>
+        <div style="display:flex; flex-wrap:wrap; gap:6px;">
+          <span style="font-size:12px; padding:4px 10px; background:rgba(196,69,58,0.06); border:0.5px solid rgba(196,69,58,0.2); border-radius:20px; color:var(--color-text-secondary);">AI-powered</span>
+          <span style="font-size:12px; padding:4px 10px; background:rgba(196,69,58,0.06); border:0.5px solid rgba(196,69,58,0.2); border-radius:20px; color:var(--color-text-secondary);">diverse</span>
+          <span style="font-size:12px; padding:4px 10px; background:rgba(196,69,58,0.06); border:0.5px solid rgba(196,69,58,0.2); border-radius:20px; color:var(--color-text-secondary);">premium</span>
+          <span style="font-size:12px; padding:4px 10px; background:rgba(196,69,58,0.06); border:0.5px solid rgba(196,69,58,0.2); border-radius:20px; color:var(--color-text-secondary);">curated</span>
+          <span style="font-size:12px; padding:4px 10px; background:rgba(196,69,58,0.06); border:0.5px solid rgba(196,69,58,0.2); border-radius:20px; color:var(--color-text-secondary);">innovative</span>
+          <span style="font-size:12px; padding:4px 10px; background:rgba(196,69,58,0.06); border:0.5px solid rgba(196,69,58,0.2); border-radius:20px; color:var(--color-text-secondary);">inspired by</span>
+          <span style="font-size:12px; padding:4px 10px; background:rgba(196,69,58,0.06); border:0.5px solid rgba(196,69,58,0.2); border-radius:20px; color:var(--color-text-secondary);">magic</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="spacer"></div>
+
+  <div class="sg-section">
+    <p class="sg-section-label">Audio Direction</p>
+    <h2 class="sg-section-title">Narration & Sound Design</h2>
+
+    <div class="sg-grid-2" style="margin-bottom:1rem;">
+      <div>
+        <div class="voice-card">
+          <p style="font-size:10px; letter-spacing:0.1em; text-transform:uppercase; color:#7B5FC0; margin-bottom:8px;">Primary Narrator Voice</p>
+          <p class="voice-title">The Trusted Aunt / Uncle</p>
+          <div class="voice-spec">
+            <span>Warmth:</span> High — like someone who knows your child's name<br>
+            <span>Pace:</span> 110–130 wpm (slightly slower than conversation)<br>
+            <span>Pitch:</span> Mid-low. Never high or performative<br>
+            <span>Accent:</span> Neutral North American, clearly articulated<br>
+            <span>Gender:</span> One male, one female option per series<br>
+            <span>Age feel:</span> 30s–40s, parent or older sibling energy
+          </div>
+        </div>
+        <div class="voice-card">
+          <p style="font-size:10px; letter-spacing:0.1em; text-transform:uppercase; color:#2D8C73; margin-bottom:8px;">Community Narrators</p>
+          <p class="voice-title">Native Authenticity Rule</p>
+          <div class="voice-spec">
+            For belief-specific series, narrators are <span>native community members</span> — fluent in cultural cadence, festival pronunciation, and tone. The Eid series narrator should be someone who celebrates Eid. This is non-negotiable.<br><br>
+            <span>Bilingual series (Latino):</span> Spanish-dominant delivery with English phrasing natural, not translated-feeling.
+          </div>
+        </div>
+      </div>
+      <div>
+        <div class="voice-card">
+          <p style="font-size:10px; letter-spacing:0.1em; text-transform:uppercase; color:#E8A66B; margin-bottom:8px;">Sound Design — Ambient Layer</p>
+          <p class="voice-title">Bedtime Soundscape</p>
+          <div class="voice-spec">
+            <span>Base layer:</span> Soft brown noise or gentle rain, -18 to -22 dBFS<br>
+            <span>Mid layer:</span> Story-specific ambience (forest: crickets + leaves; desert: distant wind; home: fireplace crackle) at -24 dBFS<br>
+            <span>Accent layer:</span> Sparse musical motifs — solo piano or oud — triggered at scene changes, 2–4 second phrases only<br><br>
+            <span>Rule:</span> Audio must never compete with narration. If in doubt, lower it.
+          </div>
+        </div>
+        <div class="voice-card">
+          <p style="font-size:10px; letter-spacing:0.1em; text-transform:uppercase; color:#4A7EB5; margin-bottom:8px;">Narration Delivery Rules</p>
+          <div class="voice-spec">
+            <span>Breathing:</span> Audible soft breaths are allowed — they signal presence<br>
+            <span>Pauses:</span> 0.5–1s pause after each scene transition<br>
+            <span>Sentence endings:</span> Drop slightly in pitch — signals safety, not urgency<br>
+            <span>Character voices:</span> Subtle shifts only. No exaggerated cartoon voices.<br>
+            <span>Sleep mode:</span> After ch. 2, pace slows 10–15%, volume fades gently<br>
+            <span>End phrase:</span> Every story ends with "Goodnight, [child's name]." narrated softly.
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="sg-card">
+      <p style="font-size:12px; font-weight:500; margin-bottom:1rem;">Musical Identity</p>
+      <div class="sg-grid-3">
+        <div>
+          <p style="font-size:11px; text-transform:uppercase; letter-spacing:0.1em; color:var(--color-text-tertiary); margin-bottom:6px;">Instrument palette</p>
+          <p style="font-size:13px; color:var(--color-text-secondary); line-height:1.7;">Solo piano, classical oud/sitar (for cultural series), soft marimba, bowed string (cello). No synth pads. No percussion.</p>
+        </div>
+        <div>
+          <p style="font-size:11px; text-transform:uppercase; letter-spacing:0.1em; color:var(--color-text-tertiary); margin-bottom:6px;">Tempo & key</p>
+          <p style="font-size:13px; color:var(--color-text-secondary); line-height:1.7;">48–72 BPM. Major keys for joyful episodes, natural minor for reflective ones. Avoid minor 2nds — they signal tension, not rest.</p>
+        </div>
+        <div>
+          <p style="font-size:11px; text-transform:uppercase; letter-spacing:0.1em; color:var(--color-text-tertiary); margin-bottom:6px;">UI sounds</p>
+          <p style="font-size:13px; color:var(--color-text-secondary); line-height:1.7;">Single soft chime (C5, 80ms decay) for story start. No error sounds. Tap interactions: haptic only, no audio. Sleep timer end: fade to silence over 10s.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="spacer"></div>
+
+  <div class="sg-section">
+    <p class="sg-section-label">Motion & Interaction</p>
+    <h2 class="sg-section-title">Animation Principles</h2>
+    <div class="sg-card">
+      <div class="motion-row">
+        <div class="motion-icon"><i class="ti ti-moon" aria-hidden="true"></i></div>
+        <div class="motion-content">
+          <div class="motion-title">Slow everything down by 20% in Sleep Mode</div>
+          <div class="motion-desc">All transitions extend, taps respond sluggishly-on-purpose. The UI reinforces the ritual of winding down.</div>
+          <span class="motion-spec">duration × 1.2, easing: ease-in-out</span>
+        </div>
+      </div>
+      <div class="motion-row">
+        <div class="motion-icon"><i class="ti ti-stars" aria-hidden="true"></i></div>
+        <div class="motion-content">
+          <div class="motion-title">Story card entrance — float up</div>
+          <div class="motion-desc">Cards drift upward softly on load, staggered by 80ms per card. Like pages turning in a book left on the bed.</div>
+          <span class="motion-spec">translateY(12px → 0), opacity 0→1, 400ms, stagger 80ms</span>
+        </div>
+      </div>
+      <div class="motion-row">
+        <div class="motion-icon"><i class="ti ti-book" aria-hidden="true"></i></div>
+        <div class="motion-content">
+          <div class="motion-title">Story open — slow fade, not slide</div>
+          <div class="motion-desc">Opening a story is not navigation — it's entering a world. Fade in (no directional slide) over 500ms.</div>
+          <span class="motion-spec">opacity 0→1, 500ms, ease-in-out. No translateX.</span>
+        </div>
+      </div>
+      <div class="motion-row">
+        <div class="motion-icon"><i class="ti ti-sparkles" aria-hidden="true"></i></div>
+        <div class="motion-content">
+          <div class="motion-title">Ambient star particles on hero</div>
+          <div class="motion-desc">3–5 floating dot particles on the dark hero section — slow, random drift. Barely noticeable, but felt. Respect prefers-reduced-motion.</div>
+          <span class="motion-spec">CSS: @keyframes float, 8–14s duration, random offset</span>
+        </div>
+      </div>
+      <div class="motion-row">
+        <div class="motion-icon"><i class="ti ti-ban" aria-hidden="true"></i></div>
+        <div class="motion-content">
+          <div class="motion-title">No bounce, no spring, no playful easing</div>
+          <div class="motion-desc">This is bedtime, not a toy. Bouncy animations signal play — the opposite of wind-down. All easing: ease-in-out or cubic-bezier(0.4,0,0.2,1).</div>
+          <span class="motion-spec">Never: spring(), bounce, elastic</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="spacer"></div>
+
+  <div class="sg-section">
+    <p class="sg-section-label">Do / Don't</p>
+    <h2 class="sg-section-title">Key Design Rules</h2>
+    <div class="do-dont-grid">
+      <div class="do-card">
+        <div class="do-label">✓ Do</div>
+        <div class="dd-text">Use Lora for any headline that carries emotional weight</div>
+      </div>
+      <div class="dont-card">
+        <div class="dont-label">✗ Don't</div>
+        <div class="dd-text">Use DM Sans for hero headlines — it reads corporate</div>
+      </div>
+      <div class="do-card">
+        <div class="do-label">✓ Do</div>
+        <div class="dd-text">Dark backgrounds for immersive story screens (mirrors bedtime)</div>
+      </div>
+      <div class="dont-card">
+        <div class="dont-label">✗ Don't</div>
+        <div class="dd-text">Use pure white (#FFFFFF) for in-app reading — too harsh at night</div>
+      </div>
+      <div class="do-card">
+        <div class="do-label">✓ Do</div>
+        <div class="dd-text">Name community content by who made it: "Our Sikh community series"</div>
+      </div>
+      <div class="dont-card">
+        <div class="dont-label">✗ Don't</div>
+        <div class="dd-text">Say "inspired by" or "celebrates" — vague language reads as appropriation</div>
+      </div>
+      <div class="do-card">
+        <div class="do-label">✓ Do</div>
+        <div class="dd-text">Let amber (#E8A66B) be a true accent — used sparingly for warmth moments</div>
+      </div>
+      <div class="dont-card">
+        <div class="dont-label">✗ Don't</div>
+        <div class="dd-text">Use amber for all CTAs — violet (#7B5FC0) is the interactive color</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="spacer"></div>
+
+  <div class="sg-section">
+    <p class="sg-section-label">Redesigned UI Sample</p>
+    <h2 class="sg-section-title">App Home Screen — Redesigned</h2>
+    <p style="font-size:13px; color:var(--color-text-secondary); margin-bottom:1.25rem; line-height:1.6;">Applying the styleguide to the main app screen. Night-sky base, serif headlines, amber warmth accents, community filter chips, and calm ambient star dots.</p>
+
+    <div class="mockup-wrap">
+      <div class="mockup-phone">
+        <div class="mockup-statusbar">
+          <span class="mockup-status-text">9:41 PM</span>
+          <span class="mockup-status-text">● ● ● ▐▌</span>
+        </div>
+        <div class="mockup-hero-area">
+          <div class="mockup-moon"></div>
+          <div class="mockup-stars">
+            <div class="mockup-star bright"></div>
+            <div class="mockup-star"></div>
+            <div class="mockup-star bright"></div>
+            <div class="mockup-star"></div>
+            <div class="mockup-star bright"></div>
+          </div>
+          <p class="mockup-greeting">Good evening, Aisha 🌙</p>
+          <p class="mockup-app-title">My<span>Sleepy</span>Tale</p>
+          <p class="mockup-tagline">Tonight's stories are ready</p>
+        </div>
+        <div class="mockup-content">
+          <p class="mockup-section-label">Browse by community</p>
+          <div class="mockup-filter-row">
+            <span class="mockup-filter-chip active">All</span>
+            <span class="mockup-filter-chip">Islamic ☪</span>
+            <span class="mockup-filter-chip">Hindu 🪔</span>
+            <span class="mockup-filter-chip">Sikh ☬</span>
+          </div>
+          <p class="mockup-section-label">Tonight's picks</p>
+          <div class="mockup-story-card">
+            <div class="mockup-story-icon eid" style="color:#E8A66B;">☪</div>
+            <div>
+              <div class="mockup-story-title">The Night of Ramadan</div>
+              <div class="mockup-story-sub">Islamic series · Ep 4 · 9 min</div>
+            </div>
+            <span class="mockup-story-badge badge-new">New</span>
+          </div>
+          <div class="mockup-story-card">
+            <div class="mockup-story-icon forest" style="color:#6ECAB5;">🌿</div>
+            <div>
+              <div class="mockup-story-title">The Sleepy Forest</div>
+              <div class="mockup-story-sub">Adventure series · Ep 7 · 7 min</div>
+            </div>
+            <span class="mockup-story-badge badge-series">Ep 7</span>
+          </div>
+          <div class="mockup-story-card">
+            <div class="mockup-story-icon diwali" style="color:#C4AEED;">🪔</div>
+            <div>
+              <div class="mockup-story-title">Diya and the Stars</div>
+              <div class="mockup-story-sub">Diwali series · Ep 2 · 8 min</div>
+            </div>
+            <span class="mockup-story-badge badge-series">Ep 2</span>
+          </div>
+        </div>
+        <div class="mockup-nav">
+          <div class="mockup-nav-item">
+            <i class="ti ti-home mockup-nav-icon active" aria-hidden="true"></i>
+            <span class="mockup-nav-label active">Home</span>
+          </div>
+          <div class="mockup-nav-item">
+            <i class="ti ti-books mockup-nav-icon" aria-hidden="true"></i>
+            <span class="mockup-nav-label">Library</span>
+          </div>
+          <div class="mockup-nav-item">
+            <i class="ti ti-heart mockup-nav-icon" aria-hidden="true"></i>
+            <span class="mockup-nav-label">Saved</span>
+          </div>
+          <div class="mockup-nav-item">
+            <i class="ti ti-user mockup-nav-icon" aria-hidden="true"></i>
+            <span class="mockup-nav-label">Profile</span>
+          </div>
+        </div>
+      </div>
+      <p class="illustration-note">Redesigned home screen applying brand palette, typography hierarchy, and community filters</p>
+    </div>
+  </div>
+
+</div>

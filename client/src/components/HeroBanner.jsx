@@ -64,7 +64,7 @@ export default function HeroBanner({ story, imageUrl, onPlay }) {
         </p>
         <h2
           className="mt-1 text-center text-lg font-bold text-white"
-          style={{ fontFamily: 'Fraunces, serif', textShadow: '0 1px 6px rgba(0,0,0,0.4)' }}
+          style={{ fontFamily: 'Lora, serif', textShadow: '0 1px 6px rgba(0,0,0,0.4)' }}
         >
           {story.title}
         </h2>

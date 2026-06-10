@@ -160,7 +160,7 @@ export default function AboutUs() {
           <div className="absolute inset-0 bg-gradient-to-b from-[#f0a500]/10 via-transparent to-transparent pointer-events-none" />
           <motion.div {...fadeUp} className="relative max-w-2xl mx-auto">
             <span className="text-5xl">🌙</span>
-            <h1 className="mt-4 text-4xl lg:text-5xl font-bold text-ink leading-tight" style={{ fontFamily: 'Fraunces, serif' }}>
+            <h1 className="mt-4 text-4xl lg:text-5xl font-bold text-ink leading-tight" style={{ fontFamily: 'Lora, serif' }}>
               Bedtime Stories That<br />
               <span className="text-gold">Teach Roots & Values</span>
             </h1>
@@ -197,7 +197,7 @@ export default function AboutUs() {
         {/* ═══ WHAT WE DO ═══ */}
         <section className="px-6 pb-20">
           <motion.div {...fadeUp} className="text-center mb-12">
-            <h2 className="text-2xl font-bold text-ink" style={{ fontFamily: 'Fraunces, serif' }}>
+            <h2 className="text-2xl font-bold text-ink" style={{ fontFamily: 'Lora, serif' }}>
               Why Parents <span className="text-gold">Love</span> My Sleepy Tale
             </h2>
             <p className="text-sm text-ink-muted mt-2 max-w-md mx-auto">
@@ -219,7 +219,7 @@ export default function AboutUs() {
         {/* ═══ STORY CATEGORIES ═══ */}
         <section className="px-6 pb-20">
           <motion.div {...fadeUp} className="text-center mb-10">
-            <h2 className="text-2xl font-bold text-ink" style={{ fontFamily: 'Fraunces, serif' }}>
+            <h2 className="text-2xl font-bold text-ink" style={{ fontFamily: 'Lora, serif' }}>
               Stories Your Family Will <span className="text-gold">Love</span>
             </h2>
           </motion.div>
@@ -239,7 +239,7 @@ export default function AboutUs() {
         {/* ═══ HOW IT WORKS ═══ */}
         <section className="px-6 pb-20">
           <motion.div {...fadeUp} className="text-center mb-10">
-            <h2 className="text-2xl font-bold text-ink" style={{ fontFamily: 'Fraunces, serif' }}>
+            <h2 className="text-2xl font-bold text-ink" style={{ fontFamily: 'Lora, serif' }}>
               How It <span className="text-gold">Works</span>
             </h2>
           </motion.div>
@@ -262,7 +262,7 @@ export default function AboutUs() {
         {/* ═══ TESTIMONIALS ═══ */}
         <section className="px-6 pb-20">
           <motion.div {...fadeUp} className="text-center mb-10">
-            <h2 className="text-2xl font-bold text-ink" style={{ fontFamily: 'Fraunces, serif' }}>
+            <h2 className="text-2xl font-bold text-ink" style={{ fontFamily: 'Lora, serif' }}>
               What Parents <span className="text-gold">Say</span>
             </h2>
           </motion.div>
@@ -290,7 +290,7 @@ export default function AboutUs() {
           <motion.div {...fadeUp}
             className="max-w-2xl mx-auto rounded-3xl bg-gradient-to-br from-gold/15 via-gold/5 to-transparent ring-1 ring-gold/20 p-10 text-center">
             <span className="text-4xl">🌙</span>
-            <h2 className="text-2xl font-bold text-ink mt-4" style={{ fontFamily: 'Fraunces, serif' }}>
+            <h2 className="text-2xl font-bold text-ink mt-4" style={{ fontFamily: 'Lora, serif' }}>
               Start Your Child's Journey Tonight
             </h2>
             <p className="text-sm text-ink-muted mt-3 max-w-md mx-auto">
@@ -309,7 +309,7 @@ export default function AboutUs() {
           <motion.div {...fadeUp} className="max-w-5xl mx-auto">
             <div className="text-center mb-12">
               <span className="inline-block bg-gold/10 text-gold text-[10px] font-bold uppercase tracking-widest px-4 py-1.5 rounded-full ring-1 ring-gold/20 mb-4">Pricing</span>
-              <h2 className="text-3xl lg:text-4xl font-bold text-ink" style={{ fontFamily: 'Fraunces, serif' }}>
+              <h2 className="text-3xl lg:text-4xl font-bold text-ink" style={{ fontFamily: 'Lora, serif' }}>
                 Simple, Fair Pricing
               </h2>
               <p className="text-sm text-ink-muted mt-3 max-w-lg mx-auto">Start free. Upgrade when your family wants more. Cancel anytime.</p>
@@ -321,7 +321,7 @@ export default function AboutUs() {
               <div className="rounded-2xl bg-white/[.03] ring-1 ring-white/10 p-6 flex flex-col">
                 <div className="mb-4">
                   <h3 className="text-lg font-bold text-ink">Free</h3>
-                  <p className="text-3xl font-bold text-ink mt-2" style={{ fontFamily: 'Fraunces, serif' }}>CA$0</p>
+                  <p className="text-3xl font-bold text-ink mt-2" style={{ fontFamily: 'Lora, serif' }}>CA$0</p>
                   <p className="text-xs text-ink-muted mt-1">forever</p>
                 </div>
                 <ul className="space-y-3 flex-1 mb-6">
@@ -353,7 +353,7 @@ export default function AboutUs() {
                 <div className="mb-4">
                   <h3 className="text-lg font-bold text-gold">Pro</h3>
                   <div className="flex items-baseline gap-2 mt-2">
-                    <p className="text-3xl font-bold text-gold" style={{ fontFamily: 'Fraunces, serif' }}>CA$9</p>
+                    <p className="text-3xl font-bold text-gold" style={{ fontFamily: 'Lora, serif' }}>CA$9</p>
                     <span className="text-sm text-ink-dim line-through">CA$29</span>
                     <span className="text-[10px] text-green-400 font-bold">/month</span>
                   </div>
@@ -388,7 +388,7 @@ export default function AboutUs() {
                 <div className="mb-4">
                   <h3 className="text-lg font-bold text-purple-400">Family</h3>
                   <div className="flex items-baseline gap-2 mt-2">
-                    <p className="text-3xl font-bold text-purple-400" style={{ fontFamily: 'Fraunces, serif' }}>CA$59</p>
+                    <p className="text-3xl font-bold text-purple-400" style={{ fontFamily: 'Lora, serif' }}>CA$59</p>
                     <span className="text-sm text-ink-dim line-through">CA$199</span>
                     <span className="text-[10px] text-green-400 font-bold">/month</span>
                   </div>
@@ -429,7 +429,7 @@ export default function AboutUs() {
           <motion.div {...fadeUp} className="max-w-4xl mx-auto">
             <div className="text-center mb-12">
               <span className="inline-block bg-info/10 text-info text-[10px] font-bold uppercase tracking-widest px-4 py-1.5 rounded-full ring-1 ring-info/20 mb-4">Built With</span>
-              <h2 className="text-3xl lg:text-4xl font-bold text-ink" style={{ fontFamily: 'Fraunces, serif' }}>
+              <h2 className="text-3xl lg:text-4xl font-bold text-ink" style={{ fontFamily: 'Lora, serif' }}>
                 Our Technology
               </h2>
               <p className="text-sm text-ink-muted mt-3 max-w-lg mx-auto">Transparent about how we build. Every piece chosen for speed, safety, and your family's experience.</p>

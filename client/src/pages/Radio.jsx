@@ -166,7 +166,7 @@ export default function Radio() {
                       {loading ? t('radio.connecting') : playing ? t('player.nowPlaying') : t('radio.paused')}
                     </span>
                   </div>
-                  <h2 className="mt-1 text-lg font-bold text-ink" style={{ fontFamily: 'Fraunces, serif' }}>
+                  <h2 className="mt-1 text-lg font-bold text-ink" style={{ fontFamily: 'Lora, serif' }}>
                     {activeStation.name}
                   </h2>
                   <p className="text-xs text-ink-muted">{activeStation.flag} {activeStation.country} · {activeStation.tagline}</p>
@@ -267,7 +267,7 @@ export default function Radio() {
                     <span className="text-sm">{s.flag}</span>
                     <span className="text-[10px] font-bold uppercase tracking-[0.12em] text-ink-dim">{s.country}</span>
                   </div>
-                  <h3 className="mt-0.5 text-sm font-bold text-ink" style={{ fontFamily: 'Fraunces, serif' }}>
+                  <h3 className="mt-0.5 text-sm font-bold text-ink" style={{ fontFamily: 'Lora, serif' }}>
                     {s.name}
                   </h3>
                   <p className="mt-0.5 line-clamp-1 text-[11px] text-ink-muted">{s.tagline}</p>

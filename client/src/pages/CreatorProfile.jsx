@@ -131,7 +131,7 @@ export default function CreatorProfile() {
             {initials(creator.name)}
           </div>
           <div>
-            <h1 className="text-xl font-bold text-ink" style={{ fontFamily: 'Fraunces, serif' }}>
+            <h1 className="text-xl font-bold text-ink" style={{ fontFamily: 'Lora, serif' }}>
               {creator.name}
             </h1>
             <p className="text-xs text-ink-muted">Story Creator</p>
@@ -164,7 +164,7 @@ export default function CreatorProfile() {
       {/* Series */}
       {series.length > 0 && (
         <div className="px-5 mb-6">
-          <h2 className="text-sm font-bold text-ink mb-3" style={{ fontFamily: 'Fraunces, serif' }}>Series</h2>
+          <h2 className="text-sm font-bold text-ink mb-3" style={{ fontFamily: 'Lora, serif' }}>Series</h2>
           <div className="space-y-3">
             {series.map((ser) => (
               <div key={ser.id} className="rounded-2xl bg-bg-surface p-4 ring-1 ring-white/8">
@@ -208,7 +208,7 @@ export default function CreatorProfile() {
       {/* Stories */}
       {stories.length > 0 && (
         <div className="px-5 mb-6">
-          <h2 className="text-sm font-bold text-ink mb-3" style={{ fontFamily: 'Fraunces, serif' }}>Stories</h2>
+          <h2 className="text-sm font-bold text-ink mb-3" style={{ fontFamily: 'Lora, serif' }}>Stories</h2>
           <div className="grid grid-cols-2 gap-3">
             {stories.map((story) => (
               <motion.button
@@ -231,7 +231,7 @@ export default function CreatorProfile() {
 
                 <div className="absolute bottom-0 left-0 right-0 p-3">
                   <p className="text-[8px] font-bold uppercase tracking-wider text-gold/70">{story.tradition}</p>
-                  <h4 className="text-xs font-bold text-white leading-tight" style={{ fontFamily: 'Fraunces, serif' }}>
+                  <h4 className="text-xs font-bold text-white leading-tight" style={{ fontFamily: 'Lora, serif' }}>
                     {story.title}
                   </h4>
                 </div>
