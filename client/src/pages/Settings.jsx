@@ -98,9 +98,10 @@ export default function Settings() {
             </svg>
             {t('onboarding.continueWithGoogle')}
           </button>
-          <div className="mt-10 w-full space-y-3">
-          <Tile icon="🪨" title={t('settings.kidSlept')} sub={t('settings.stonedAge')} onClick={() => window.location.href = 'https://stonedage.mysleepytale.com'} />
-            <Tile icon="✨" title={t('settings.guides')} sub="Learn how it works" onClick={() => navigate('/guides')} />
+          <div className="mt-10 w-full grid grid-cols-2 gap-2">
+            <Tile icon="📻" title="Radio" sub="Sleep sounds & ambient" onClick={() => navigate('/radio')} />
+            <Tile icon="📖" title="Blog" sub="Guides & updates" onClick={() => navigate('/blog')} />
+            <Tile icon="🌙" title="About Us" sub="Our story & mission" onClick={() => navigate('/aboutus')} />
           </div>
         </div>
         <VersionFooter />
