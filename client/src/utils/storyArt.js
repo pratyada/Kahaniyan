@@ -3,6 +3,28 @@
 // No external stock images — only our own generated art.
 
 const STORY_ART = {
+  // FIFA World Cup 2026
+  fifa26_ep1_history: { gradient: 'linear-gradient(135deg, #1a472a 0%, #006837 40%, #ffd700 100%)', icon: '⚽', accent: '#ffd700', prompt: 'Vintage 1930 stadium transforming into modern 2026 arena, World Cup trophy glowing, 48 nation flags, diverse fans united, soccer energy, team spirit, warm golden light, childrens book illustration' },
+  fifa26_ep2_host_cities: { gradient: 'linear-gradient(135deg, #c41e3a 0%, #002868 40%, #006847 100%)', icon: '🏟️', accent: '#c41e3a', prompt: 'Toronto CN Tower, New York, Vancouver, Mexico City connected by golden soccer ball trail, 48 flags flying, diverse families celebrating in stadiums, three nations united, warm sunset, childrens book style' },
+  fifa26_ep3_beautiful_game: { gradient: 'linear-gradient(135deg, #006837 0%, #2d8a4e 40%, #ffffff 100%)', icon: '⚽', accent: '#2d8a4e', prompt: 'Joyful kids of many ethnicities playing soccer together on green pitch, teammates hugging after goal, fans waving flags from every continent, fair play and friendship, stadium lights, dreamy bedtime illustration' },
+  fifa26_ep4_legends: { gradient: 'linear-gradient(135deg, #1a1a2e 0%, #ffd700 50%, #006837 100%)', icon: '🏆', accent: '#ffd700', prompt: 'Legendary footballer silhouettes from different eras standing united, golden auras, World Cup trophy shining, diverse national flags forming rainbow arc, fans cheering together, courage and dreams, childrens illustration' },
+  fifa26_ep5_your_dream: { gradient: 'linear-gradient(135deg, #1e3a5f 0%, #ffd700 40%, #c41e3a 100%)', icon: '🌟', accent: '#ffd700', prompt: 'Child sleeping in bed, dream bubble showing them scoring World Cup winning goal, teammates from many countries group-hugging, golden confetti, 80000 fans united, jersey with heart symbol, magical bedtime glow' },
+
+  // Dallas FIFA
+  fifa26_dallas_ep1_history: { gradient: 'linear-gradient(135deg, #003594 0%, #c41e3a 40%, #ffd700 100%)', icon: '⚽', accent: '#ffd700', prompt: 'Vintage 1930 stadium transforming into AT&T Stadium Arlington Texas, World Cup trophy, 48 nation flags, Texas star, warm golden light, childrens book illustration' },
+  fifa26_dallas_ep2_city: { gradient: 'linear-gradient(135deg, #003594 0%, #c41e3a 40%, #ffffff 100%)', icon: '🏟️', accent: '#003594', prompt: 'AT&T Stadium Arlington with Texas star above, Fair Park Big Tex statue, Trinity River, diverse families in Dallas, Mexican and American flags, warm Texas sunset, childrens book illustration' },
+  fifa26_dallas_ep3_game: { gradient: 'linear-gradient(135deg, #006837 0%, #2d8a4e 40%, #003594 100%)', icon: '⚽', accent: '#2d8a4e', prompt: 'Kids from many ethnicities playing soccer on green pitch inside AT&T Stadium, Texas star on the field, teammates hugging, fans waving flags, dreamy bedtime illustration' },
+  fifa26_dallas_ep4_legends: { gradient: 'linear-gradient(135deg, #1a1a2e 0%, #ffd700 50%, #003594 100%)', icon: '🏆', accent: '#ffd700', prompt: 'Legendary footballer silhouettes including Clint Dempsey with Texas star, Pelé, Messi, Marta, golden auras, AT&T Stadium in background, inspirational childrens illustration' },
+  fifa26_dallas_ep5_dream: { gradient: 'linear-gradient(135deg, #003594 0%, #ffd700 40%, #c41e3a 100%)', icon: '🌟', accent: '#ffd700', prompt: 'Child sleeping in bed with dream bubble showing them scoring World Cup goal at AT&T Stadium with roof open, Texas stars above, golden confetti, warm magical bedtime glow' },
+
+  fifa26_ep6_draw: { gradient: 'linear-gradient(135deg, #c41e3a 0%, #002868 40%, #ffd700 100%)', icon: '🤝', accent: '#c41e3a', prompt: 'Canadian maple leaf flag and Bosnian blue triangle flag waving together, two kids shaking hands in Toronto stadium, CN Tower background, draw match, sportsmanship, warm childrens book illustration' },
+
+  multilingual_lion_mouse: {
+    gradient: 'linear-gradient(135deg, #b45309 0%, #f59e0b 40%, #fde68a 100%)',
+    icon: '🦁', accent: '#f59e0b',
+    image: '/og/multilingual-story.jpg',
+    prompt: 'A majestic lion and a tiny mouse facing each other on a golden savanna, nine different cultural flags waving in the background, warm sunset, childrens book illustration style',
+  },
   krishna_squirrel: {
     gradient: 'linear-gradient(135deg, #1a472a 0%, #2d5a3f 40%, #f0a500 100%)',
     icon: '🐿️', accent: '#4ade80',

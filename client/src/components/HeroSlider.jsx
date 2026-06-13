@@ -73,7 +73,7 @@ export default function HeroSlider({ stories, wisdomImageUrls, onPlay, onInfo })
 
   return (
     <section
-      className="relative mb-6 -mx-5 overflow-hidden"
+      className="relative mb-6 overflow-hidden rounded-2xl"
       onMouseEnter={() => setPaused(true)}
       onMouseLeave={() => setPaused(false)}
     >

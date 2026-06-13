@@ -106,7 +106,10 @@ export default async function handler(req, res) {
   }
 
   const maxChars = 4096;
-  const trimmedText = text.slice(0, maxChars);
+  let trimmedText = text.slice(0, maxChars);
+
+  // Note: Translation is handled by /api/translate endpoint separately.
+  // TTS just speaks whatever text it receives — no double translation.
 
   const { voice, model } = pickVoice(narrator, country, beliefs);
 

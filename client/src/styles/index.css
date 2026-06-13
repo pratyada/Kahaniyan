@@ -81,6 +81,19 @@
   --shell-overlay: linear-gradient(180deg, rgba(253, 248, 240, 0.85) 0%, rgba(253, 248, 240, 0.95) 60%, rgba(253, 248, 240, 0.98) 100%);
 }
 
+/* Day-theme overrides for white-alpha utilities (invisible on light backgrounds) */
+[data-theme='day'] [class*="ring-white"] { --tw-ring-color: rgb(0 0 0 / 0.1) !important; }
+[data-theme='day'] [class*="bg-white/"] { background-color: rgb(0 0 0 / 0.04) !important; }
+[data-theme='day'] [class*="border-white"] { border-color: rgb(0 0 0 / 0.1) !important; }
+
+/* Hide dark-mode effects in day theme */
+[data-theme='day'] .aurora,
+[data-theme='day'] .starfield { display: none; }
+[data-theme='day'] .phone-shell {
+  background-image: none;
+  background-color: var(--bg-base);
+}
+
 /* ───── Reset / base ───── */
 * {
   -webkit-tap-highlight-color: transparent;

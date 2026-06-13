@@ -9,6 +9,9 @@ import { RELIGIONS, COUNTRIES, VALUES, DURATIONS, LANGUAGES } from '../utils/con
 import { CULTURAL_LESSONS as ALL_LESSONS_DATA } from '../data/culturalLessons.js';
 import { SERIES as ALL_SERIES_DATA } from '../data/series.js';
 import { APP_NAME, APP_VERSION } from '../utils/version.js';
+import { lazy, Suspense } from 'react';
+const CuratorsPage = lazy(() => import('./Curators.jsx'));
+const TeamObjectivesPage = lazy(() => import('./TeamObjectives.jsx'));
 import { GA_MEASUREMENT_ID, db } from '../lib/firebase.js';
 import { doc, setDoc, collection, getDocs, query, orderBy, limit, startAfter, where, updateDoc, getCountFromServer } from 'firebase/firestore';
 
@@ -142,7 +145,7 @@ export default function Admin() {
     { key: 'overview', label: 'Dashboard', icon: '📊' },
     { key: 'userstories', label: 'User Stories', icon: '🌙' },
     { key: 'storylab', label: 'Story Studio', icon: '🧪' },
-    { key: 'feedback', label: 'Creators', icon: '✍️' },
+    { key: 'objectives', label: 'Team Objectives', icon: '🎯' },
     { key: 'tasks', label: 'Tasks', icon: '📋' },
     { key: 'expenses', label: 'Expenses', icon: '💰' },
     { key: 'outreach', label: 'Outreach', icon: '📧' },
@@ -710,8 +713,12 @@ export default function Admin() {
           </div>
         )}
 
-        {/* ═══ FEEDBACK ═══ */}
-        {tab === 'feedback' && <CuratorSubmissionsPanel />}
+        {/* ═══ TEAM OBJECTIVES ═══ */}
+        {tab === 'objectives' && (
+          <Suspense fallback={<div className="text-center py-10 text-ink-dim">Loading objectives...</div>}>
+            <TeamObjectivesPage />
+          </Suspense>
+        )}
 
         {/* ═══ SETTINGS ═══ */}
         {tab === 'users' && (
@@ -2249,6 +2256,7 @@ function StoryLab({ showSettingsTabs }) {
     { key: 'collections', label: 'Collections', icon: '🎬' },
     { key: 'series', label: 'Series', icon: '📺' },
     { key: 'user-content', label: 'User Content', icon: '✍️' },
+    { key: 'creators', label: 'Creators', icon: '👥' },
   ];
 
   const SETTINGS_TABS = [
@@ -2728,6 +2736,11 @@ function StoryLab({ showSettingsTabs }) {
       {subTab === 'collections' && <CollectionsPanel />}
       {subTab === 'series' && <SeriesPanel />}
       {subTab === 'user-content' && <UserStoriesPanel />}
+      {subTab === 'creators' && (
+        <Suspense fallback={<div className="text-center py-10 text-ink-dim">Loading creators...</div>}>
+          <CuratorsPage />
+        </Suspense>
+      )}
 
       {/* ══════ VOICE FEEDBACK ══════ */}
       {subTab === 'voice-feedback' && <VoiceFeedbackPanel />}
@@ -3726,6 +3739,7 @@ function SeriesPanel() {
   const [bulkProgress, setBulkProgress] = useState('');
   const bulkAbort = useRef(false);
   const [dataReady, setDataReady] = useState(false);
+  const [seriesSearch, setSeriesSearch] = useState('');
 
   const ELEVEN_VOICES = [
     { key: 'george', label: 'George' }, { key: 'lily', label: 'Lily' },
@@ -3973,8 +3987,17 @@ function SeriesPanel() {
         {bulkProgress && <div className="w-full text-[10px] text-gold mt-2">{bulkProgress}</div>}
       </div>
 
+      {/* Search */}
+      <input type="text" placeholder="Search series or episodes..." value={seriesSearch} onChange={e => setSeriesSearch(e.target.value)}
+        className="w-full rounded-xl bg-bg-surface px-4 py-3 text-sm text-ink placeholder-ink-dim ring-1 ring-white/5 outline-none focus:ring-gold" />
+
       {/* Series list */}
-      {SERIES_DATA.map((series) => (
+      {SERIES_DATA.filter(s => {
+        if (!seriesSearch) return true;
+        const q = seriesSearch.toLowerCase();
+        return s.title.toLowerCase().includes(q) || s.id.toLowerCase().includes(q) ||
+          s.episodes.some(ep => ep.title.toLowerCase().includes(q) || ep.id.toLowerCase().includes(q));
+      }).map((series) => (
         <div key={series.id} className="rounded-xl bg-bg-elevated p-4 ring-1 ring-white/5">
           {/* Series header + per-series bulk */}
           <div className="flex items-center justify-between mb-3">
@@ -5484,7 +5507,7 @@ function TaskBoard({ team = [], adminEmails = [] }) {
 
 const OUTREACH_STATUS_OPTIONS = ['new', 'contacted', 'responded', 'signed_up', 'paid', 'not_interested'];
 const OUTREACH_STATUS_LABELS = { new: 'New', contacted: 'Contacted', responded: 'Responded', signed_up: 'Signed Up', paid: 'Paid', not_interested: 'Not Interested' };
-const OUTREACH_STATUS_BADGE = { new: '#6e6a63', contacted: '#4299e1', responded: '#f0a500', signed_up: '#48bb78', paid: '#9f7aea', not_interested: '#f3727f' };
+const OUTREACH_STATUS_BADGE = { new: '#5a5550', contacted: '#2b6cb0', responded: '#b8860b', signed_up: '#2f855a', paid: '#6b46c1', not_interested: '#e53e3e' };
 const OUTREACH_SOURCE_LABELS = { sheet1: 'Sheet 1', meta_leads: 'Meta Leads', google_registration: 'Google Reg' };
 
 function OutreachDatabase() {
@@ -5567,19 +5590,19 @@ function OutreachDatabase() {
       {/* Stats cards */}
       <div className="grid grid-cols-3 sm:grid-cols-7 gap-3">
         {[
-          { key: 'all', label: 'Total', count: stats.total, color: '#f5f0e8' },
+          { key: 'all', label: 'Total', count: stats.total, color: '#1a1040' },
           ...OUTREACH_STATUS_OPTIONS.map(s => ({ key: s, label: OUTREACH_STATUS_LABELS[s], count: stats[s] || 0, color: OUTREACH_STATUS_BADGE[s] })),
         ].map(s => (
           <button key={s.key} onClick={() => { setFilter(s.key); setPage(0); }}
-            className={`rounded-2xl p-3 ring-1 text-center transition ${filter === s.key ? 'ring-gold bg-[#f0a500]/10' : 'ring-white/5 bg-white/5'}`}>
+            className={`rounded-2xl p-3 ring-1 text-center transition ${filter === s.key ? 'ring-gold bg-gold/10' : 'ring-black/10 bg-black/5 dark:ring-white/5 dark:bg-white/5'}`}>
             <div className="text-xl font-bold" style={{ color: s.color }}>{s.count}</div>
-            <div className="text-[10px] text-ink-dim mt-1">{s.label}</div>
+            <div className="text-[10px] text-ink-base mt-1">{s.label}</div>
           </button>
         ))}
       </div>
 
       {/* Funnel bar */}
-      <div className="flex gap-1 h-3 rounded-full overflow-hidden bg-white/5">
+      <div className="flex gap-1 h-3 rounded-full overflow-hidden bg-black/10 dark:bg-white/5">
         {OUTREACH_STATUS_OPTIONS.filter(s => stats[s] > 0).map(s => (
           <div key={s} className="rounded-full" style={{ flex: stats[s], background: OUTREACH_STATUS_BADGE[s], opacity: 0.8 }} title={`${OUTREACH_STATUS_LABELS[s]}: ${stats[s]}`} />
         ))}
@@ -5589,27 +5612,27 @@ function OutreachDatabase() {
       <div className="flex gap-3">
         <input type="text" placeholder="Search by name, email, phone..."
           value={search} onChange={e => { setSearch(e.target.value); setPage(0); }}
-          className="flex-1 rounded-xl bg-white/5 px-4 py-3 text-sm text-ink placeholder-[#6e6a63] ring-1 ring-white/10 focus:ring-gold outline-none" />
-        <div className="text-xs text-ink-dim self-center whitespace-nowrap">{filtered.length} leads</div>
+          className="flex-1 rounded-xl bg-bg-surface px-4 py-3 text-sm text-ink-base placeholder-ink-dim ring-1 ring-black/10 dark:ring-white/10 focus:ring-gold outline-none" />
+        <div className="text-xs text-ink-base self-center whitespace-nowrap">{filtered.length} leads</div>
       </div>
 
       {/* Lead list */}
       <div className="space-y-2">
         {filtered.slice(page * PAGE_SIZE, (page + 1) * PAGE_SIZE).map(lead => (
-          <div key={lead.id} className="rounded-2xl bg-white/5 ring-1 ring-white/5 overflow-hidden">
+          <div key={lead.id} className="rounded-2xl bg-bg-surface ring-1 ring-black/10 dark:ring-white/5 overflow-hidden">
             <div className="px-5 py-3">
               <div className="flex items-center justify-between gap-3">
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center gap-2 flex-wrap">
-                    <span className="text-sm font-bold text-ink truncate">{lead.firstName} {lead.lastName}</span>
+                    <span className="text-sm font-bold text-ink-base truncate">{lead.firstName} {lead.lastName}</span>
                     <span className="rounded-full px-2 py-0.5 text-[8px] font-bold uppercase" style={{ background: OUTREACH_STATUS_BADGE[lead.status] + '22', color: OUTREACH_STATUS_BADGE[lead.status] }}>
                       {OUTREACH_STATUS_LABELS[lead.status] || lead.status}
                     </span>
-                    <span className="rounded-full bg-white/5 px-2 py-0.5 text-[8px] text-ink-dim">
+                    <span className="rounded-full bg-black/5 dark:bg-white/5 px-2 py-0.5 text-[8px] text-ink-base">
                       {OUTREACH_SOURCE_LABELS[lead.source] || lead.source}
                     </span>
                   </div>
-                  <div className="flex items-center gap-4 mt-1 text-xs text-ink-dim">
+                  <div className="flex items-center gap-4 mt-1 text-xs text-ink-base">
                     <span>{lead.email}</span>
                     {lead.phone && <span>{lead.phone}</span>}
                     {lead.postalCode && <span>{lead.postalCode}</span>}
@@ -5617,7 +5640,7 @@ function OutreachDatabase() {
                 </div>
                 <div className="flex items-center gap-2 shrink-0">
                   <select value={lead.status} onChange={e => updateStatus(lead, e.target.value)}
-                    className="rounded-lg bg-white/5 px-2 py-1 text-[10px] text-ink-muted ring-1 ring-white/10 outline-none cursor-pointer">
+                    className="rounded-lg bg-bg-surface px-2 py-1 text-[10px] text-ink-base ring-1 ring-black/10 dark:ring-white/10 outline-none cursor-pointer">
                     {OUTREACH_STATUS_OPTIONS.map(s => <option key={s} value={s}>{OUTREACH_STATUS_LABELS[s]}</option>)}
                   </select>
                   {lead.status === 'new' && (

@@ -98,7 +98,19 @@ export default function Settings() {
             </svg>
             {t('onboarding.continueWithGoogle')}
           </button>
-          <div className="mt-10 w-full grid grid-cols-2 gap-3">
+          {/* Theme toggle */}
+          <button
+            onClick={toggleTheme}
+            className="mt-8 flex items-center gap-3 rounded-2xl bg-bg-surface px-5 py-3 ring-1 ring-black/10 dark:ring-white/10 w-full max-w-xs transition active:scale-[0.98]"
+          >
+            <span className="text-2xl">{theme === 'day' ? '☀️' : '🌙'}</span>
+            <div className="text-left">
+              <div className="text-sm font-bold text-ink-base">{theme === 'day' ? 'Day Mode' : 'Night Mode'}</div>
+              <div className="text-[11px] text-ink-muted">Tap to switch</div>
+            </div>
+          </button>
+
+          <div className="mt-6 w-full grid grid-cols-2 gap-3">
             <Tile icon="📖" title="Blog" sub="Stories, guides & updates" onClick={() => window.location.href = '/blog/'} />
             <Tile icon="✨" title="Guides" sub="Learn how it works" onClick={() => navigate('/guides')} />
             <Tile icon="📻" title="Radio" sub="Sleep sounds & ambient" onClick={() => navigate('/radio')} />
@@ -306,7 +318,7 @@ export default function Settings() {
         </div>
       </SectionCard>
 
-      <SectionCard title={t('settings.language')}>
+      <SectionCard title="App Language">
         <div className="flex gap-2">
           {[{ code: 'en', label: 'English', flag: '🇬🇧' }, { code: 'fr', label: 'Français', flag: '🇫🇷' }, { code: 'es', label: 'Español', flag: '🇪🇸' }].map(lang => (
             <button

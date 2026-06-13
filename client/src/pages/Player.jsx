@@ -9,6 +9,7 @@ import { storage, db, auth } from '../lib/firebase.js';
 
 import { getCachedAudio, setCachedAudio, pruneAudioCache } from '../utils/audioCache.js';
 import StoryLoading from '../components/StoryLoading.jsx';
+import { useTheme } from '../hooks/useTheme.jsx';
 
 // Upload audio blob to Firebase Storage and save URL back to story
 async function cacheAudioToStorage(storyId, blob) {
@@ -259,6 +260,8 @@ function PlayerInner() {
   const { t } = useTranslation();
   const SERIES = useLocalizedSeries();
   const navigate = useNavigate();
+  const { theme } = useTheme();
+  const isDay = theme === 'day';
   const { current, clear, isPlaying, setIsPlaying, reloadLast, load, setAudio, audioRef: globalAudioRef } = usePlayer();
   const { profile } = useFamilyProfile();
   const narrator = useNarrator();
@@ -270,6 +273,14 @@ function PlayerInner() {
   const [showText, setShowText] = useState(true);
   const [done, setDone] = useState(false);
   const [ttsReady, setTtsReady] = useState(false);
+  // Language override — persist across re-mounts using sessionStorage
+  const [langOverride, setLangOverride] = useState(() => {
+    try { return sessionStorage.getItem('mst:player-lang') || null; } catch { return null; }
+  });
+  const [translatedText, setTranslatedText] = useState(null);
+  const [translating, setTranslating] = useState(false);
+  // Track which language the current audio is playing in
+  const audioLangRef = useRef(null);
   const startedRef = useRef(false);
   const [wisdomImageUrls, setWisdomImageUrls] = useState({});
   const [wisdomAudioUrls, setWisdomAudioUrls] = useState({});
@@ -325,6 +336,10 @@ function PlayerInner() {
       console.log('[My Sleepy Tale:Player] Reconnecting to existing audio');
       narrator.reconnect(existingAudio);
       setTtsReady(true);
+      // Restore language state — don't regenerate
+      if (audioLangRef.current && audioLangRef.current !== 'English') {
+        setLangOverride(audioLangRef.current);
+      }
       return;
     }
 
@@ -332,7 +347,10 @@ function PlayerInner() {
     // Kill any orphaned audio elements before starting fresh
     document.querySelectorAll('audio').forEach(a => { try { a.pause(); a.src = ''; } catch {} });
 
-    const lang = current.language || profile?.language || 'English';
+    // For multilingual/FIFA stories, always default to English (not profile language)
+    const storyId = current.id || '';
+    const isMultiLangStory = storyId.includes('multilingual') || storyId.includes('fifa26');
+    const lang = langOverride || (isMultiLangStory ? 'English' : (current.language || profile?.language || 'English'));
     const narratorName = current.voice || 'AI Narrator';
     const chars = profile?.characters || [];
     const matchedChar = chars.find((c) => c.name === narratorName || c.relation === narratorName.toLowerCase());
@@ -356,14 +374,17 @@ function PlayerInner() {
         }
 
         // Priority 1: Check IndexedDB for locally cached blob (instant)
-        const localBlob = (!audio && current.id) ? await getCachedAudio(current.id) : null;
+        // For multilingual/FIFA stories, use language-specific cache key
+        const cacheKey = isMultiLangStory ? `${current.id}_lang_${lang}` : current.id;
+        const skipCache = false;
+        const localBlob = (!audio && cacheKey && !skipCache) ? await getCachedAudio(cacheKey) : null;
         if (localBlob) {
           console.log('[My Sleepy Tale:Player] Playing from local cache (instant)');
           const url = URL.createObjectURL(localBlob);
           audio = narrator.loadCached(url);
         }
-        // Priority 2: Firebase Storage cached URL
-        else if (current.audioUrl) {
+        // Priority 2: Firebase Storage cached URL (skip for non-English multilingual — Firebase only has English)
+        else if (current.audioUrl && !(isMultiLangStory && lang !== 'English')) {
           console.log('[My Sleepy Tale:Player] Playing cached audio from Firebase');
           audio = narrator.loadCached(current.audioUrl);
           // Wait briefly to see if audio actually loads, fallback to TTS if not
@@ -383,23 +404,52 @@ function PlayerInner() {
 
         // Priority 3: Generate via TTS API (fallback if cached audio failed or no pre-gen)
         if (!audio && current.text) {
+          // For multilingual/FIFA stories, always use "little one" instead of child's name
+          let ttsText = current.text;
+          if (isMultiLangStory) {
+            const childName = profile?.childName;
+            if (childName && childName !== 'little one') {
+              ttsText = ttsText.replace(new RegExp(childName, 'g'), 'little one');
+            }
+          }
+
+          // For non-English: translate first, then send translated text to TTS
+          if (isMultiLangStory && lang !== 'English') {
+            try {
+              const translateRes = await fetch('/api/translate', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ text: ttsText, language: lang }),
+              });
+              if (translateRes.ok) {
+                const { translated } = await translateRes.json();
+                if (translated) ttsText = translated;
+              }
+            } catch (e) {
+              console.warn('[Player] Translation failed, using English for TTS:', e.message);
+            }
+          }
+
           audio = await narrator.generate({
-            text: current.text,
+            text: ttsText,
             narrator: narratorName,
-            language: lang,
+            language: 'English', // TTS just speaks — translation already done above
             customVoiceId,
             country: profile?.country || 'OTHER',
             beliefs: profile?.beliefs || [],
           });
+          audioLangRef.current = lang;
 
           // Cache locally + to Firebase Storage (fire and forget)
           if (audio && current.id) {
             const blob = narrator.getBlob();
             if (blob) {
-              setCachedAudio(current.id, blob);
+              setCachedAudio(cacheKey, blob);
               pruneAudioCache(20);
             }
-            cacheAudioToStorage(current.id, blob).then(() => {
+            // Only upload to Firebase Storage for default language (not translated versions)
+            const shouldUploadToStorage = !isMultiLangStory || lang === 'English';
+            (shouldUploadToStorage ? cacheAudioToStorage(current.id, blob) : Promise.resolve()).then(() => {
               try {
                 const raw = localStorage.getItem('mst:lastStory');
                 if (raw) {
@@ -442,9 +492,41 @@ function PlayerInner() {
     };
 
     startPlayback();
-    return () => {};
+    return () => {
+      // Clear language override when leaving this story
+      if (!isMultiLangStory) {
+        try { sessionStorage.removeItem('mst:player-lang'); } catch {}
+      }
+    };
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [current]);
+  }, [current, langOverride]);
+
+  // Translate story text when language changes
+  useEffect(() => {
+    if (!langOverride || langOverride === 'English' || !current?.text) {
+      setTranslatedText(null);
+      return;
+    }
+    let cancelled = false;
+    setTranslating(true);
+    (async () => {
+      try {
+        const res = await fetch('/api/translate', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ text: current.text, language: langOverride }),
+        });
+        if (!cancelled && res.ok) {
+          const data = await res.json();
+          if (data.translated) setTranslatedText(data.translated);
+        }
+      } catch (e) {
+        console.warn('Translation failed:', e.message);
+      }
+      if (!cancelled) setTranslating(false);
+    })();
+    return () => { cancelled = true; };
+  }, [langOverride, current?.id]);
 
   const progress = narrator.progress;
 
@@ -502,7 +584,10 @@ function PlayerInner() {
 
   useEffect(() => {
     if (!current || !ttsReady) return;
-    const ended = progress >= 1 && !narrator.playing && !narrator.loading;
+    // Only mark done when audio has truly ended (not just paused near end)
+    const audioElement = globalAudioRef?.current;
+    const audioActuallyEnded = audioElement ? audioElement.ended : false;
+    const ended = progress >= 0.99 && !narrator.playing && !narrator.loading && audioActuallyEnded;
     if (ended && !done) {
       setDone(true);
       setIsPlaying(false);
@@ -662,8 +747,8 @@ function PlayerInner() {
       <div className="starfield" />
       {bgImage && (
         <>
-          <img src={bgImage} alt="" className="absolute inset-0 h-full w-full object-cover" style={{ filter: 'blur(40px) saturate(1.4) brightness(0.35)', transform: 'scale(1.2)' }} onError={(e) => { e.target.style.display = 'none'; }} />
-          <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-black/60 to-black/80" />
+          <img src={bgImage} alt="" className="absolute inset-0 h-full w-full object-cover" style={{ filter: isDay ? 'blur(40px) saturate(1.2) brightness(1.1)' : 'blur(40px) saturate(1.4) brightness(0.35)', transform: 'scale(1.2)' }} onError={(e) => { e.target.style.display = 'none'; }} />
+          <div className={`absolute inset-0 ${isDay ? 'bg-gradient-to-b from-white/60 via-white/70 to-white/85' : 'bg-gradient-to-b from-black/40 via-black/60 to-black/80'}`} />
         </>
       )}
 
@@ -680,7 +765,8 @@ function PlayerInner() {
           >
             <div
               className="absolute inset-0 flex flex-col items-center justify-center overflow-hidden"
-              style={{ backgroundColor: 'rgba(10,10,15,0.70)', backdropFilter: 'blur(12px)' }}
+              data-theme="night"
+              style={{ backgroundColor: 'rgba(10,10,15,0.90)', backdropFilter: 'blur(12px)' }}
             >
               <StoryLoading />
             </div>
@@ -741,12 +827,49 @@ function PlayerInner() {
                 </>
               ) : (
                 <>
-                  <h1 className="text-xl font-bold text-ink" style={{ fontFamily: 'Lora, serif' }}>
+                  <h1 className="text-lg sm:text-xl font-bold text-ink" style={{ fontFamily: 'Lora, serif' }}>
                     {current?.title || 'Bedtime Story'}
                   </h1>
                   <p className="mt-1 text-xs text-ink-muted" style={{ fontFamily: 'Nunito, sans-serif' }}>
                     For {profile?.childName}{current?.text ? ` · ${Math.max(1, Math.round(current.text.split(/\s+/).length / 150))} min` : ''}
                   </p>
+              {/* Language selector — for multilingual stories and FIFA series */}
+              {(() => {
+                const storyId = current?.id || '';
+                const isMultilingual = storyId === 'multilingual_lion_mouse' || storyId === 'lesson_multilingual_lion_mouse';
+                const isFifa = storyId.includes('fifa26') || storyId.includes('lesson_fifa26');
+                if (!isMultilingual && !isFifa) return null;
+
+                const languages = isMultilingual
+                  ? [['English','🇬🇧'],['French','🇫🇷'],['Hindi','🇮🇳'],['Arabic','🇸🇦'],['Spanish','🇪🇸'],['Chinese','🇨🇳'],['Polish','🇵🇱'],['Hungarian','🇭🇺'],['Tamil','🇮🇳']]
+                  : [['English','🇬🇧'],['Spanish','🇪🇸'],['French','🇫🇷'],['Hindi','🇮🇳']];
+
+                return (
+                  <div className="mt-2 flex items-center gap-2">
+                    <span className="text-[10px] text-ink-muted">🌍 Language:</span>
+                    <select
+                      value={langOverride || 'English'}
+                      onChange={(e) => {
+                        const newLang = e.target.value;
+                        // Don't regenerate if same language as current audio
+                        if (newLang === audioLangRef.current) { setLangOverride(newLang); return; }
+                        narrator.stop();
+                        document.querySelectorAll('audio').forEach(a => { try { a.pause(); a.src = ''; } catch {} });
+                        setTtsReady(false);
+                        setIsPlaying(false);
+                        startedRef.current = false;
+                        setLangOverride(newLang);
+                        try { sessionStorage.setItem('mst:player-lang', newLang); } catch {}
+                      }}
+                      className="rounded-lg bg-white/10 px-2 py-1 text-[11px] font-bold text-gold ring-1 ring-white/10 outline-none cursor-pointer"
+                    >
+                      {languages.map(([lang, flag]) => (
+                        <option key={lang} value={lang}>{flag} {lang}</option>
+                      ))}
+                    </select>
+                  </div>
+                );
+              })()}
               {current?.cast?.length > 0 && (
                 <p className="mt-0.5 text-[10px] text-gold/70">{current.cast.join(' · ')}</p>
               )}
@@ -778,7 +901,33 @@ function PlayerInner() {
               extraImages={current?.gallery || []}
             />
 
-            {current?.text && <HighlightedText text={current.text} progress={progress} />}
+            {current?.text && langOverride && langOverride !== 'English' ? (
+              translating ? (
+                <div className={`mt-4 rounded-2xl p-6 text-center ${isDay ? 'bg-white/60 ring-1 ring-black/10' : 'bg-black/30 ring-1 ring-white/5'}`}>
+                  <p className="text-2xl mb-2">🌍</p>
+                  <p className="text-sm font-bold text-ink">Translating to {langOverride}...</p>
+                  <div className="mt-3 flex justify-center gap-1.5">
+                    {[0,1,2].map(i => <div key={i} className="h-1.5 w-1.5 rounded-full bg-gold animate-bounce" style={{ animationDelay: `${i*0.2}s` }} />)}
+                  </div>
+                </div>
+              ) : translatedText ? (
+                <HighlightedText text={translatedText} progress={progress} isDay={isDay} />
+              ) : (
+                <div className={`mt-4 rounded-2xl p-6 text-center ${isDay ? 'bg-white/60 ring-1 ring-black/10' : 'bg-black/30 ring-1 ring-white/5'}`}>
+                  <p className="text-2xl mb-2">🌍</p>
+                  <p className="text-sm font-bold text-ink">Listening in {langOverride}</p>
+                  <p className="text-xs text-ink-muted mt-1">Close your eyes and enjoy the story.</p>
+                </div>
+              )
+            ) : current?.text && (() => {
+              const stId = current.id || '';
+              const isML = stId.includes('multilingual') || stId.includes('fifa26');
+              const childName = profile?.childName;
+              const displayText = (isML && childName && childName !== 'little one')
+                ? current.text.replace(new RegExp(childName, 'g'), 'little one')
+                : current.text;
+              return <HighlightedText text={displayText} progress={progress} isDay={isDay} />;
+            })()}
 
             {/* Spacer */}
             <div className="flex-1" />
@@ -788,7 +937,7 @@ function PlayerInner() {
               <motion.div
                 initial={{ opacity: 0, y: 5 }}
                 animate={{ opacity: 1, y: 0 }}
-                className="mt-6 mb-4 flex items-center justify-center gap-2 rounded-xl bg-gold/10 px-4 py-2.5 ring-1 ring-gold/20"
+                className={`mt-6 mb-4 flex items-center justify-center gap-2 rounded-xl px-4 py-2.5 ring-1 ${isDay ? 'bg-gold/15 ring-gold/30' : 'bg-gold/10 ring-gold/20'}`}
               >
                 <span className="inline-block h-3 w-3 animate-spin rounded-full border-2 border-gold border-t-transparent" />
                 <span className="text-[11px] font-bold text-gold">Preparing voice… read the story while you wait</span>
@@ -1168,7 +1317,7 @@ function PlayerInner() {
   );
 }
 
-function HighlightedText({ text, progress }) {
+function HighlightedText({ text, progress, isDay }) {
   const containerRef = useRef(null);
   const activeRef = useRef(null);
 
@@ -1204,7 +1353,7 @@ function HighlightedText({ text, progress }) {
   }, [activeLine]);
 
   return (
-    <div ref={containerRef} className="mt-4 max-h-[45vh] overflow-y-auto rounded-2xl bg-black/30 p-4 font-story text-[15px] leading-[1.9] ring-1 ring-white/5">
+    <div ref={containerRef} className={`mt-4 max-h-[40vh] overflow-y-auto rounded-2xl p-3 sm:p-4 font-story text-[13px] sm:text-[15px] leading-[1.7] sm:leading-[1.9] ring-1 ${isDay ? 'bg-white/60 ring-black/10' : 'bg-black/30 ring-white/5'}`}>
       {lines.map((line, i) => {
         const isPast = i < activeLine;
         const isActive = i === activeLine;

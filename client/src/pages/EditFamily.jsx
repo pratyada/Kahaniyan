@@ -251,21 +251,28 @@ export default function EditFamily() {
           </div>
         </Field>
 
-        <Field label="Language">
+        <Field label="Story Language">
           <div className="grid grid-cols-2 gap-2">
-            {LANGUAGES.map((l) => (
-              <button
-                key={l.key}
-                onClick={() => setDraft({ ...draft, language: l.key })}
-                className={`rounded-2xl px-3 py-3 text-left transition ${
-                  draft.language === l.key
-                    ? 'bg-gold text-bg-base shadow-glow'
-                    : 'bg-bg-surface text-ink ring-1 ring-white/5'
-                }`}
-              >
-                <div className="font-display text-lg">{l.label}</div>
-              </button>
-            ))}
+            {LANGUAGES.map((l) => {
+              const available = l.key === 'English';
+              return (
+                <button
+                  key={l.key}
+                  onClick={() => available && setDraft({ ...draft, language: l.key })}
+                  disabled={!available}
+                  className={`rounded-2xl px-3 py-3 text-left transition ${
+                    draft.language === l.key
+                      ? 'bg-gold text-bg-base shadow-glow'
+                      : available
+                        ? 'bg-bg-surface text-ink ring-1 ring-white/5'
+                        : 'bg-bg-surface text-ink-dim ring-1 ring-white/5 opacity-40 cursor-not-allowed'
+                  }`}
+                >
+                  <div className="font-display text-lg">{l.label}</div>
+                  {!available && <div className="text-[9px] mt-0.5 opacity-60">Coming soon</div>}
+                </button>
+              );
+            })}
           </div>
         </Field>
 

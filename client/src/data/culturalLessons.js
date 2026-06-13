@@ -4,6 +4,29 @@
 
 export const CULTURAL_LESSONS = [
   {
+    id: 'multilingual_lion_mouse',
+    tradition: 'universal',
+    theme: 'compassion-animals',
+    title: 'The Lion and the Mouse — 9 Languages',
+    durationMinutes: 5,
+    source: 'Multilingual Collection · English, French, Hindi, Arabic, Spanish, Chinese, Polish, Hungarian, Tamil',
+    body: `Deep in the golden savanna, a mighty lion lay sleeping under a baobab tree. His mane spread out like a crown, and his breath made the grass ripple like water.
+
+A tiny mouse, no bigger than a walnut, scurried across his paw. The lion woke with a ROAR, trapping the mouse under his enormous paw.
+
+"Please," squeaked the mouse. "Let me go. One day, I will help you."
+
+The lion laughed — a deep rumble that shook the ground. "You? Help ME? You are the smallest creature in the savanna." But something in the mouse's eyes made him pause. He lifted his paw. "Go, little one."
+
+Weeks later, the lion got tangled in a hunter's net. He roared and thrashed, but the ropes only tightened. He was stuck.
+
+Then he heard a tiny sound — nibble, nibble, nibble. The mouse had come. With her sharp little teeth, she chewed through the ropes, one by one, until the net fell away and the lion was free.
+
+The lion looked down at the tiny mouse. "You were right," he whispered. "The smallest friend can make the biggest difference."
+
+That night, {childName}, remember the mouse. You do not have to be big to be brave. You do not have to be loud to be strong. Sometimes the quietest, smallest act of kindness is the one that saves the day.`,
+  },
+  {
     id: 'krishna_squirrel',
     tradition: 'hindu',
     theme: 'compassion-animals',

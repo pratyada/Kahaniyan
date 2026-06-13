@@ -24,7 +24,9 @@ import { usePlayer } from '../hooks/usePlayer.jsx';
 import { useAuth } from '../hooks/useAuth.jsx';
 import { useWisdomData } from '../hooks/useWisdomData.js';
 import { THEMES } from '../data/culturalLessons.js';
-import { useLocalizedCollections } from '../hooks/useLocalizedData.js';
+import { useLocalizedCollections, useLocalizedSeries } from '../hooks/useLocalizedData.js';
+import { useSearch } from '../hooks/useSearch.js';
+import SeriesCard from '../components/cards/SeriesCard.jsx';
 import { playLesson, recommendedValueFor } from '../utils/storyHelpers.js';
 import { buildTraditionShelves, buildAgeShelf } from '../utils/shelfBuilder.js';
 import { fillTokens } from '../utils/storyHelpers.js';
@@ -39,14 +41,36 @@ export default function Home() {
   const { user } = useAuth();
   const { wisdomAudioUrls, wisdomImageUrls, allLessons, loading: dataLoading } = useWisdomData();
   const COLLECTIONS = useLocalizedCollections();
+  const SERIES = useLocalizedSeries();
   const [searchParams] = useSearchParams();
   const cultureFilter = searchParams.get('culture'); // e.g. ?culture=muslim
+  const beliefs = profile?.beliefs || [];
 
   // Culture filter → dedicated page
   if (cultureFilter) return <CulturePage />;
 
   const [viewMode, setViewMode] = useState(searchParams.get('view') === 'series' ? 'series' : 'episodes');
-  const [searchQuery, setSearchQuery] = useState('');
+
+  // FIFA banner — show once per session
+  const [showFifaBanner, setShowFifaBanner] = useState(() => {
+    try { return !sessionStorage.getItem('mst:fifa-banner-dismissed'); } catch { return true; }
+  });
+  useEffect(() => {
+    if (!showFifaBanner) return;
+    const timer = setTimeout(() => {
+      setShowFifaBanner(false);
+      try { sessionStorage.setItem('mst:fifa-banner-dismissed', '1'); } catch {}
+    }, 5000);
+    return () => clearTimeout(timer);
+  }, [showFifaBanner]);
+  const dismissFifaBanner = () => {
+    setShowFifaBanner(false);
+    try { sessionStorage.setItem('mst:fifa-banner-dismissed', '1'); } catch {}
+  };
+
+  const { query: searchQuery, setQuery: setSearchQuery, results: searchResults } = useSearch({
+    allLessons, series: SERIES, collections: COLLECTIONS, beliefs,
+  });
   const [activeTheme, setActiveTheme] = useState('compassion-animals');
   const [visibleCollections, setVisibleCollections] = useState(8);
 
@@ -95,7 +119,6 @@ export default function Home() {
     return () => window.removeEventListener('scroll', handleScroll);
   }, [visibleCollections, collectionId]);
 
-  const beliefs = profile?.beliefs || [];
   const age = profile?.age || 6;
 
   // Filter: URL culture param overrides profile beliefs
@@ -114,14 +137,23 @@ export default function Home() {
 
   // Featured stories for hero slider
   const featuredStories = useMemo(() => {
+    const pinIds = ['fifa26_ep1_history', 'multilingual_lion_mouse'];
     let pool = allLessons.filter(filterByBelief);
     if (pool.length < 5) pool = allLessons.filter(l => l.tradition === 'universal');
     const day = Math.floor(Date.now() / 86400000);
-    return pool
+    const shuffled = pool
+      .filter(l => !pinIds.includes(l.id))
       .map((l, i) => ({ l, sort: ((i * 2654435761 + day * 3) >>> 0) % 10000 }))
       .sort((a, b) => a.sort - b.sort)
       .map((x) => x.l)
-      .slice(0, 5);
+      .slice(0, 3);
+    // Pin FIFA first, multilingual second, then 3 rotating
+    // FIFA episodes are in SERIES data, not allLessons — find them there
+    const allSeriesEps = SERIES.flatMap(s => s.episodes.map(ep => ({ ...ep, seriesId: s.id, seriesTitle: s.title })));
+    const pinned = pinIds.map(id =>
+      allLessons.find(l => l.id === id) || allSeriesEps.find(ep => ep.id === id)
+    ).filter(Boolean);
+    return [...pinned, ...shuffled];
   }, [allLessons, beliefs]);
 
   // Tonight's picks
@@ -184,6 +216,57 @@ export default function Home() {
 
   return (
     <PageTransition className="relative page-scroll px-5 pt-10 safe-top">
+      {/* FIFA World Cup Banner */}
+      <AnimatePresence>
+        {showFifaBanner && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.3 }}
+            className="fixed inset-0 z-[100] flex items-center justify-center bg-black/70 backdrop-blur-sm px-4"
+            onClick={dismissFifaBanner}
+          >
+            <motion.div
+              initial={{ scale: 0.9, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              exit={{ scale: 0.9, opacity: 0 }}
+              transition={{ duration: 0.3 }}
+              className="relative w-full max-w-lg lg:max-w-3xl rounded-2xl overflow-hidden shadow-2xl"
+              onClick={e => e.stopPropagation()}
+            >
+              <img src="/og/fifa-banner.jpg" alt="FIFA World Cup 2026 — Toronto Kids Bedtime Stories" className="w-full h-auto" />
+              <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/90 via-black/60 to-transparent p-4 sm:p-6 pt-10 sm:pt-16">
+                <div className="flex items-center gap-3">
+                  <button
+                    onClick={() => { dismissFifaBanner(); navigate('/series/fifa-world-cup-2026'); }}
+                    className="flex-1 flex items-center justify-center gap-2 rounded-xl bg-gold px-4 sm:px-6 py-2.5 sm:py-3 text-xs sm:text-sm font-bold text-bg-base shadow-glow transition active:scale-95"
+                  >
+                    <Play size={16} fill="currentColor" />
+                    Listen Now
+                  </button>
+                  <button
+                    onClick={dismissFifaBanner}
+                    className="rounded-xl bg-white/15 px-3 sm:px-5 py-2.5 sm:py-3 text-xs sm:text-sm font-bold text-white/80 backdrop-blur-sm transition active:scale-95"
+                  >
+                    Skip
+                  </button>
+                </div>
+              </div>
+              {/* Auto-dismiss countdown bar */}
+              <div className="absolute top-0 left-0 right-0 h-1 bg-white/10">
+                <motion.div
+                  initial={{ width: '100%' }}
+                  animate={{ width: '0%' }}
+                  transition={{ duration: 5, ease: 'linear' }}
+                  className="h-full bg-gold"
+                />
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
       <SEOHead
         title="Bedtime Stories for Kids — Personalized & Cultural"
         description="The #1 bedtime story app for multicultural families in Toronto."
@@ -294,24 +377,57 @@ export default function Home() {
 
       {/* ═══ SEARCH RESULTS ═══ */}
       {searchQuery.trim().length >= 2 && (() => {
-        const q = searchQuery.toLowerCase();
-        const matchedStories = allLessons.filter(l =>
-          l.title?.toLowerCase().includes(q) ||
-          l.tradition?.toLowerCase().includes(q) ||
-          l.theme?.toLowerCase().includes(q) ||
-          l.source?.toLowerCase().includes(q)
-        ).slice(0, 20);
+        const { stories, series: matchedSeries, episodes, total } = searchResults;
         return (
           <div className="mb-6">
-            <p className="text-xs text-ink-dim mb-3">{matchedStories.length} result{matchedStories.length !== 1 ? 's' : ''} for "{searchQuery}"</p>
-            {matchedStories.length > 0 ? (
-              <ShelfRow>
-                {matchedStories.map(lesson => (
-                  <StoryTile key={lesson.id} lesson={lesson} imageUrl={wisdomImageUrls[lesson.id]} onPlay={handlePlay} />
-                ))}
-              </ShelfRow>
-            ) : (
-              <p className="text-sm text-ink-muted text-center py-8">No stories found. Try a different keyword.</p>
+            <p className="text-xs text-ink-dim mb-3">
+              {total === 0 ? 'No results' : `${total} result${total !== 1 ? 's' : ''}`} for "{searchQuery}"
+            </p>
+
+            {/* Series matches */}
+            {matchedSeries.length > 0 && (
+              <ShelfSection title={`Series (${matchedSeries.length})`}>
+                <ShelfRow>
+                  {matchedSeries.map(s => (
+                    <SeriesCard key={s.id} series={s} onClick={() => navigate(`/series/${s.id}`)} />
+                  ))}
+                </ShelfRow>
+              </ShelfSection>
+            )}
+
+            {/* Story matches */}
+            {stories.length > 0 && (
+              <ShelfSection title={`Stories (${stories.length})`}>
+                <ShelfRow>
+                  {stories.map(lesson => (
+                    <StoryTile key={lesson.id} lesson={lesson} imageUrl={wisdomImageUrls[lesson.id]} onPlay={handlePlay} />
+                  ))}
+                </ShelfRow>
+              </ShelfSection>
+            )}
+
+            {/* Episode matches */}
+            {episodes.length > 0 && (
+              <ShelfSection title={`Episodes (${episodes.length})`}>
+                <ShelfRow>
+                  {episodes.map(ep => (
+                    <div key={ep.id} className="shrink-0">
+                      <StoryTile lesson={ep} imageUrl={wisdomImageUrls?.[ep.id]} onPlay={handlePlay} />
+                      <p className="text-[10px] text-ink-muted mt-1 w-40 truncate text-center">
+                        {ep.seriesIcon} {ep.seriesTitle}
+                      </p>
+                    </div>
+                  ))}
+                </ShelfRow>
+              </ShelfSection>
+            )}
+
+            {total === 0 && (
+              <div className="text-center py-8">
+                <p className="text-4xl mb-3">🌙</p>
+                <p className="text-sm text-ink-base font-bold">No stories found</p>
+                <p className="text-xs text-ink-muted mt-1">Try a different keyword</p>
+              </div>
             )}
           </div>
         );
@@ -338,7 +454,25 @@ export default function Home() {
             </ShelfSection>
           )}
 
-          {/* 2. Trending */}
+          {/* 2. FIFA World Cup Series — Toronto + Dallas */}
+          {(() => {
+            const fifaSeries = [
+              SERIES.find(s => s.id === 'fifa-world-cup-2026'),
+              SERIES.find(s => s.id === 'fifa-world-cup-2026-dallas'),
+            ].filter(Boolean);
+            if (fifaSeries.length === 0) return null;
+            return fifaSeries.map(series => (
+              <ShelfSection key={series.id} title={series.title} onSeeAll={() => navigate(`/series/${series.id}`)}>
+                <ShelfRow>
+                  {series.episodes.map(ep => (
+                    <StoryTile key={ep.id} lesson={ep} imageUrl={wisdomImageUrls[ep.id]} onPlay={handlePlay} />
+                  ))}
+                </ShelfRow>
+              </ShelfSection>
+            ));
+          })()}
+
+          {/* 3. Trending */}
           <TrendingShelf allLessons={allLessons} wisdomImageUrls={wisdomImageUrls} onPlay={handlePlay} shownIds={shownIds} />
         </>);
       })()}

@@ -648,13 +648,13 @@ export default function SeriesDetail() {
             <span className="text-3xl">{series.icon}</span>
             <div>
               <p className="text-[9px] font-bold uppercase tracking-[0.2em] text-gold/70">{t('home.series')} · {series.totalEpisodes} {t('home.episodes')}</p>
-              <h1 className="text-2xl font-bold text-white" style={{ fontFamily: 'Lora, serif' }}>
+              <h1 className="text-2xl font-bold text-ink" style={{ fontFamily: 'Lora, serif' }}>
                 {series.title}
               </h1>
             </div>
           </div>
 
-          <p className="text-xs text-white/60 leading-relaxed mb-3">{series.description}</p>
+          <p className="text-xs text-ink-muted leading-relaxed mb-3">{series.description}</p>
 
           {/* Creator badge */}
           {series.creatorName && (

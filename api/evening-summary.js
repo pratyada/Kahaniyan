@@ -45,7 +45,7 @@ async function getTeam() {
 }
 
 function getAdminEmails() {
-  return ['prateekyadav2010@gmail.com', 'sahil.faraz@gmail.com'];
+  return ['prateekyadav2010@gmail.com', 'sahil.faraz@gmail.com', 'rakshajoshi476@gmail.com'];
 }
 
 function buildTextBody(allTasks, today) {
