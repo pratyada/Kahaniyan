@@ -41,10 +41,61 @@ export default function Home() {
   const { user } = useAuth();
   const { wisdomAudioUrls, wisdomImageUrls, allLessons, loading: dataLoading } = useWisdomData();
   const COLLECTIONS = useLocalizedCollections();
-  const SERIES = useLocalizedSeries();
+  const SERIES_BUILTIN = useLocalizedSeries();
+  const [firestoreSeries, setFirestoreSeries] = useState([]);
+  const [firestoreStories, setFirestoreStories] = useState([]);
   const [searchParams] = useSearchParams();
   const cultureFilter = searchParams.get('culture'); // e.g. ?culture=muslim
   const beliefs = profile?.beliefs || [];
+
+  // Load published user-created series from Firestore
+  useEffect(() => {
+    (async () => {
+      try {
+        const { db } = await import('../lib/firebase.js');
+        if (!db) return;
+        const { collection, getDocs } = await import('firebase/firestore');
+        const [serSnap, storySnap] = await Promise.all([
+          getDocs(collection(db, 'creatorSeries')),
+          getDocs(collection(db, 'creatorStories')),
+        ]);
+        // Exclude Prat's bulk-imported content from community section
+        const isBuiltIn = (data) => {
+          const email = (data.authorEmail || '').toLowerCase();
+          const name = (data.authorName || '').toLowerCase();
+          return email === 'prateekyadav2010@gmail.com' || (name === 'prateek yadav' && !email);
+        };
+        const publishedSeries = [];
+        serSnap.forEach(d => {
+          const data = d.data();
+          if (data.status === 'published' && data.episodes?.length > 0) {
+            publishedSeries.push({ id: d.id, ...data, totalEpisodes: data.episodes.length, _isBuiltIn: isBuiltIn(data) });
+          }
+        });
+        setFirestoreSeries(publishedSeries);
+        const publishedStories = [];
+        storySnap.forEach(d => {
+          const data = d.data();
+          if (data.status === 'published' && data.body && !isBuiltIn(data)) {
+            publishedStories.push({ id: d.id, ...data, durationMinutes: Math.max(1, Math.round((data.body || '').split(/\s+/).length / 150)) });
+          }
+        });
+        setFirestoreStories(publishedStories);
+      } catch {}
+    })();
+  }, []);
+
+  // Merge built-in + Firestore series (deduped)
+  const SERIES = useMemo(() => {
+    const builtInIds = new Set(SERIES_BUILTIN.map(s => s.id));
+    return [...SERIES_BUILTIN, ...firestoreSeries.filter(s => !builtInIds.has(s.id))];
+  }, [SERIES_BUILTIN, firestoreSeries]);
+
+  // Merge built-in lessons + Firestore user stories for search
+  const allLessonsWithFirestore = useMemo(() => {
+    const builtInIds = new Set(allLessons.map(l => l.id));
+    return [...allLessons, ...firestoreStories.filter(s => !builtInIds.has(s.id))];
+  }, [allLessons, firestoreStories]);
 
   // Culture filter → dedicated page
   if (cultureFilter) return <CulturePage />;
@@ -69,7 +120,7 @@ export default function Home() {
   };
 
   const { query: searchQuery, setQuery: setSearchQuery, results: searchResults } = useSearch({
-    allLessons, series: SERIES, collections: COLLECTIONS, beliefs,
+    allLessons: allLessonsWithFirestore, series: SERIES, collections: COLLECTIONS, beliefs,
   });
   const [activeTheme, setActiveTheme] = useState('compassion-animals');
   const [visibleCollections, setVisibleCollections] = useState(8);
@@ -235,23 +286,21 @@ export default function Home() {
               className="relative w-full max-w-lg lg:max-w-3xl rounded-2xl overflow-hidden shadow-2xl"
               onClick={e => e.stopPropagation()}
             >
-              <img src="/og/fifa-banner.jpg" alt="FIFA World Cup 2026 — Toronto Kids Bedtime Stories" className="w-full h-auto" />
-              <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/90 via-black/60 to-transparent p-4 sm:p-6 pt-10 sm:pt-16">
-                <div className="flex items-center gap-3">
-                  <button
-                    onClick={() => { dismissFifaBanner(); navigate('/series/fifa-world-cup-2026'); }}
-                    className="flex-1 flex items-center justify-center gap-2 rounded-xl bg-gold px-4 sm:px-6 py-2.5 sm:py-3 text-xs sm:text-sm font-bold text-bg-base shadow-glow transition active:scale-95"
-                  >
-                    <Play size={16} fill="currentColor" />
-                    Listen Now
-                  </button>
-                  <button
-                    onClick={dismissFifaBanner}
-                    className="rounded-xl bg-white/15 px-3 sm:px-5 py-2.5 sm:py-3 text-xs sm:text-sm font-bold text-white/80 backdrop-blur-sm transition active:scale-95"
-                  >
-                    Skip
-                  </button>
-                </div>
+              <img src="/og/toronto-vs-dallas.jpg" alt="Toronto vs Dallas — FIFA World Cup 2026 Kids Audiobooks" className="w-full h-auto" />
+              <div className="absolute bottom-0 left-0 right-0 p-3 sm:p-5 flex items-center gap-3">
+                <button
+                  onClick={() => { dismissFifaBanner(); navigate('/series/fifa-world-cup-2026'); }}
+                  className="flex-1 flex items-center justify-center gap-2 rounded-xl bg-gold px-4 sm:px-6 py-2.5 sm:py-3 text-xs sm:text-sm font-bold text-bg-base shadow-glow transition active:scale-95"
+                >
+                  <Play size={16} fill="currentColor" />
+                  Listen
+                </button>
+                <button
+                  onClick={dismissFifaBanner}
+                  className="rounded-xl bg-white/20 px-3 sm:px-5 py-2.5 sm:py-3 text-xs sm:text-sm font-bold text-white/90 backdrop-blur-sm transition active:scale-95"
+                >
+                  Skip
+                </button>
               </div>
               {/* Auto-dismiss countdown bar */}
               <div className="absolute top-0 left-0 right-0 h-1 bg-white/10">
@@ -606,11 +655,100 @@ export default function Home() {
       <SeriesShelf cultureFilter={cultureFilter} />
       </>)}
 
-      {/* Our Creators — always at bottom */}
-      <CuratorShelf />
+      {/* Community Creations — user-created stories & series */}
+      {(() => {
+        const communitySeries = firestoreSeries.filter(s => !s._isBuiltIn);
+        const communityStories = firestoreStories;
+        if (communitySeries.length === 0 && communityStories.length === 0) return null;
+        return (
+        <ShelfSection title="✍️ Community Creations" subtitle="Stories & series by our creators" onSeeAll={() => navigate('/creators')}>
+          <ShelfRow>
+            {communitySeries.map(ser => (
+              <StoryTile key={ser.id} lesson={{ ...ser, title: `${ser.icon || '📚'} ${ser.title}`, source: `${ser.totalEpisodes} episodes · by ${ser.authorName || 'Creator'}` }} imageUrl={ser.episodes?.[0]?.coverImage} onPlay={() => navigate(`/series/${ser.id}`)} />
+            ))}
+            {communityStories.map(story => (
+              <StoryTile key={story.id} lesson={story} imageUrl={story.coverImage} onPlay={() => {
+                load({ id: story.id, title: story.title, text: story.body || '', tradition: story.tradition, source: story.source || '', language: 'English', voice: 'AI Narrator', isWisdom: true, createdAt: story.submittedAt || new Date().toISOString() });
+                navigate('/player');
+              }} />
+            ))}
+          </ShelfRow>
+        </ShelfSection>
+        );
+      })()}
 
       {/* Create Story FAB — goes to Creation tab */}
       <CreateFAB onClick={() => navigate('/creation')} />
+
+      {/* SEO Footer — internal links for crawlers */}
+      {!searchQuery && viewMode === 'episodes' && (
+        <nav className="mt-10 mb-4 border-t border-white/5 pt-6 px-2" aria-label="Explore More">
+          <p className="text-[10px] font-bold text-ink-dim mb-3" style={{ fontFamily: 'Lora, serif' }}>Explore More</p>
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-x-6 gap-y-4">
+            <div>
+              <p className="text-[9px] font-semibold text-ink-dim mb-1">Bedtime Stories</p>
+              <div className="flex flex-col gap-0.5">
+                <a href="/blog/why-bedtime-stories-matter" className="text-[9px] text-ink-dim hover:text-ink-muted">Why Bedtime Stories Matter</a>
+                <a href="/blog/screen-free-bedtime-routines" className="text-[9px] text-ink-dim hover:text-ink-muted">Screen-Free Bedtime Routines</a>
+                <a href="/blog/why-family-stories-matter" className="text-[9px] text-ink-dim hover:text-ink-muted">Why Family Stories Matter</a>
+                <a href="/blog/become-a-creator" className="text-[9px] text-ink-dim hover:text-ink-muted">Become a Creator</a>
+              </div>
+            </div>
+            <div>
+              <p className="text-[9px] font-semibold text-ink-dim mb-1">World Cup 2026</p>
+              <div className="flex flex-col gap-0.5">
+                <a href="/blog/fifa-world-cup-kids-audiobook" className="text-[9px] text-ink-dim hover:text-ink-muted">FIFA World Cup Kids Audiobook</a>
+                <a href="/blog/fifa-world-cup-dallas-kids-audiobook" className="text-[9px] text-ink-dim hover:text-ink-muted">FIFA Dallas Kids Audiobook</a>
+                <a href="/fifa-world-cup-kids.html" className="text-[9px] text-ink-dim hover:text-ink-muted">World Cup Kids Stories</a>
+                <a href="/fifa-world-cup-dallas-kids.html" className="text-[9px] text-ink-dim hover:text-ink-muted">World Cup Dallas Stories</a>
+              </div>
+            </div>
+            <div>
+              <p className="text-[9px] font-semibold text-ink-dim mb-1">Cultural Stories</p>
+              <div className="flex flex-col gap-0.5">
+                <a href="/blog/indian-bedtime-stories" className="text-[9px] text-ink-dim hover:text-ink-muted">Indian Bedtime Stories</a>
+                <a href="/blog/islamic-stories-for-kids" className="text-[9px] text-ink-dim hover:text-ink-muted">Islamic Stories for Kids</a>
+                <a href="/blog/hispanic-bedtime-stories-for-kids" className="text-[9px] text-ink-dim hover:text-ink-muted">Hispanic Bedtime Stories</a>
+                <a href="/blog/belief-stories-for-kids" className="text-[9px] text-ink-dim hover:text-ink-muted">Belief Stories for Kids</a>
+              </div>
+            </div>
+            <div>
+              <p className="text-[9px] font-semibold text-ink-dim mb-1">Child Psychology</p>
+              <div className="flex flex-col gap-0.5">
+                <a href="/blog/why-kids-love-who-would-win" className="text-[9px] text-ink-dim hover:text-ink-muted">Why Kids Love Who Would Win</a>
+                <a href="/blog/why-kids-love-cars-buses" className="text-[9px] text-ink-dim hover:text-ink-muted">Why Kids Love Cars & Buses</a>
+                <a href="/blog/why-kids-love-planets" className="text-[9px] text-ink-dim hover:text-ink-muted">Why Kids Love Planets</a>
+                <a href="/blog/why-kids-love-sports-stories" className="text-[9px] text-ink-dim hover:text-ink-muted">Why Kids Love Sports Stories</a>
+                <a href="/blog/why-kids-need-superhero-stories" className="text-[9px] text-ink-dim hover:text-ink-muted">Why Kids Need Superhero Stories</a>
+                <a href="/blog/why-kids-love-countries" className="text-[9px] text-ink-dim hover:text-ink-muted">Why Kids Love Countries</a>
+              </div>
+            </div>
+            <div>
+              <p className="text-[9px] font-semibold text-ink-dim mb-1">Landing Pages</p>
+              <div className="flex flex-col gap-0.5">
+                <a href="/bedtime-stories-for-kids" className="text-[9px] text-ink-dim hover:text-ink-muted">Bedtime Stories for Kids</a>
+                <a href="/bedtime-story-app" className="text-[9px] text-ink-dim hover:text-ink-muted">Bedtime Story App</a>
+                <a href="/hindu-bedtime-stories" className="text-[9px] text-ink-dim hover:text-ink-muted">Hindu Bedtime Stories</a>
+                <a href="/islamic-stories-for-kids" className="text-[9px] text-ink-dim hover:text-ink-muted">Islamic Stories for Kids</a>
+                <a href="/catholic-bedtime-stories" className="text-[9px] text-ink-dim hover:text-ink-muted">Catholic Bedtime Stories</a>
+                <a href="/hispanic-bedtime-stories" className="text-[9px] text-ink-dim hover:text-ink-muted">Hispanic Bedtime Stories</a>
+                <a href="/sikh-bedtime-stories" className="text-[9px] text-ink-dim hover:text-ink-muted">Sikh Bedtime Stories</a>
+              </div>
+            </div>
+            <div>
+              <p className="text-[9px] font-semibold text-ink-dim mb-1">Series & More</p>
+              <div className="flex flex-col gap-0.5">
+                <a href="/blog/best-bedtime-story-app-2026" className="text-[9px] text-ink-dim hover:text-ink-muted">Best Bedtime Story App 2026</a>
+                <a href="/blog/best-bedtime-story-app-toronto" className="text-[9px] text-ink-dim hover:text-ink-muted">Best App Toronto</a>
+                <a href="/blog/multilingual-bedtime-stories" className="text-[9px] text-ink-dim hover:text-ink-muted">Multilingual Bedtime Stories</a>
+                <a href="/blog/technology-stack" className="text-[9px] text-ink-dim hover:text-ink-muted">Technology Stack</a>
+                <a href="/demo/multilingual/" className="text-[9px] text-ink-dim hover:text-ink-muted">Multilingual Demo</a>
+                <a href="/blog/" className="text-[9px] text-ink-dim hover:text-ink-muted">All Blog Posts</a>
+              </div>
+            </div>
+          </div>
+        </nav>
+      )}
 
       {/* Bottom padding */}
       <div className="h-40" />

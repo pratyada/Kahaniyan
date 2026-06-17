@@ -17,6 +17,9 @@ const STORY_ART = {
   fifa26_dallas_ep4_legends: { gradient: 'linear-gradient(135deg, #1a1a2e 0%, #ffd700 50%, #003594 100%)', icon: '🏆', accent: '#ffd700', prompt: 'Legendary footballer silhouettes including Clint Dempsey with Texas star, Pelé, Messi, Marta, golden auras, AT&T Stadium in background, inspirational childrens illustration' },
   fifa26_dallas_ep5_dream: { gradient: 'linear-gradient(135deg, #003594 0%, #ffd700 40%, #c41e3a 100%)', icon: '🌟', accent: '#ffd700', prompt: 'Child sleeping in bed with dream bubble showing them scoring World Cup goal at AT&T Stadium with roof open, Texas stars above, golden confetti, warm magical bedtime glow' },
 
+  fifa26_ep7_vozinha: { gradient: 'linear-gradient(135deg, #003893 0%, #cf2027 40%, #ffd700 100%)', icon: '🧤', accent: '#ffd700', prompt: 'Vozinha in golden goalkeeper kit making an incredible diving save, Cape Verde islands in background, kids looking up at him like a hero, warm golden light, childrens book illustration' },
+  fifa26_dallas_ep6_vozinha: { gradient: 'linear-gradient(135deg, #003893 0%, #cf2027 40%, #ffd700 100%)', icon: '🧤', accent: '#ffd700', prompt: 'Vozinha in golden goalkeeper kit making diving save at AT&T Stadium, Cape Verde flag, Texas stars above, kids in stands cheering, warm heroic light, childrens book illustration' },
+
   fifa26_ep6_draw: { gradient: 'linear-gradient(135deg, #c41e3a 0%, #002868 40%, #ffd700 100%)', icon: '🤝', accent: '#c41e3a', prompt: 'Canadian maple leaf flag and Bosnian blue triangle flag waving together, two kids shaking hands in Toronto stadium, CN Tower background, draw match, sportsmanship, warm childrens book illustration' },
 
   multilingual_lion_mouse: {

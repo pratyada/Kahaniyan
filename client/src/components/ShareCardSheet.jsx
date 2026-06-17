@@ -61,13 +61,31 @@ export default function ShareCardSheet({ open, onClose, story }) {
 
   const handleCopyLink = async () => {
     setBusy('copy');
+    // Build URL synchronously — clipboard API needs immediate user gesture on iOS
+    const storyId = story?.id || '';
+    const url = `https://mysleepytale.com/api/share?id=${storyId}`;
     try {
-      const url = await getStoryShareUrl(story, profile);
       await navigator.clipboard.writeText(url);
       showToast('Link copied!');
       trackStoryCardShared(story?.id);
+      // Save to Firestore in background (non-blocking)
+      getStoryShareUrl(story, profile).catch(() => {});
     } catch {
-      showToast('Could not copy');
+      // Fallback for older browsers / iOS restrictions
+      try {
+        const ta = document.createElement('textarea');
+        ta.value = url;
+        ta.style.position = 'fixed';
+        ta.style.opacity = '0';
+        document.body.appendChild(ta);
+        ta.select();
+        document.execCommand('copy');
+        document.body.removeChild(ta);
+        showToast('Link copied!');
+        trackStoryCardShared(story?.id);
+      } catch {
+        showToast('Could not copy');
+      }
     }
     setBusy(null);
   };

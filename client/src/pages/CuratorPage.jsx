@@ -7,10 +7,12 @@ import { motion } from 'framer-motion';
 import { Play, ArrowLeft, Heart } from 'lucide-react';
 import PageTransition from '../components/PageTransition.jsx';
 import { SERIES } from '../data/series.js';
+import { usePlayer } from '../hooks/usePlayer.jsx';
 
 export default function CuratorPage() {
   const { slug } = useParams();
   const navigate = useNavigate();
+  const { load } = usePlayer();
   const [firestoreSeries, setFirestoreSeries] = useState([]);
   const [firestoreStories, setFirestoreStories] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -29,70 +31,67 @@ export default function CuratorPage() {
   const creatorName = builtInSeries[0]?.creatorName || slug?.replace(/-/g, ' ').replace(/\b\w/g, c => c.toUpperCase()) || 'Creator';
   const [resolvedEmail, setResolvedEmail] = useState(builtInSeries[0]?.createdBy || '');
 
-  // Load creator profile photo + Firestore content
+  // Load creator profile photo + Firestore content — ALL IN PARALLEL
   useEffect(() => {
     (async () => {
       try {
-        const { db } = await import('../lib/firebase.js');
+        const { db, auth: fbAuth } = await import('../lib/firebase.js');
         if (!db) { setLoading(false); return; }
-        const { collection, query, where, getDocs } = await import('firebase/firestore');
+        const { collection, query, where, getDocs, doc: fdoc, getDoc: fget } = await import('firebase/firestore');
+        const myEmail = fbAuth?.currentUser?.email?.toLowerCase();
+        const myUid = fbAuth?.currentUser?.uid;
 
-        // If we have email from series.js, use it. Otherwise search Firestore by author name.
+        // Step 1: Username lookup + content queries by slug — ALL PARALLEL
+        const [usernameSnap, serBySlug, storyBySlug, likeSnap] = await Promise.all([
+          fget(fdoc(db, 'usernames', slug)),
+          getDocs(query(collection(db, 'creatorSeries'), where('authorUsername', '==', slug))).catch(() => ({ forEach: () => {} })),
+          getDocs(query(collection(db, 'creatorStories'), where('authorUsername', '==', slug))).catch(() => ({ forEach: () => {} })),
+          fget(fdoc(db, 'creatorLikes', slug)).catch(() => null),
+        ]);
+
+        // Process username
         let email = builtInSeries[0]?.createdBy || '';
         let uid = '';
-
-        // Try username lookup first (from usernames collection)
-        const { doc: fdoc, getDoc: fget } = await import('firebase/firestore');
-        const usernameSnap = await fget(fdoc(db, 'usernames', slug));
         if (usernameSnap.exists()) {
           email = usernameSnap.data().email || '';
           uid = usernameSnap.data().uid || '';
         }
-
-        // Fallback: search by name match
-        if (!email && !uid) {
-          const storyAll = await getDocs(collection(db, 'creatorStories'));
-          const nameToMatch = creatorName.toLowerCase();
-          storyAll.forEach(d => {
-            const data = d.data();
-            if ((data.authorName || '').toLowerCase() === nameToMatch) {
-              if (data.authorEmail) email = data.authorEmail;
-              if (data.authorUid) uid = data.authorUid;
-            }
-          });
-        }
-
         if (email) setResolvedEmail(email);
 
-        // Fetch photo from users doc
-        if (uid) {
-          const userSnap = await fget(fdoc(db, 'users', uid));
-          if (userSnap.exists() && userSnap.data().photoURL) setPhotoURL(userSnap.data().photoURL);
-        } else if (email) {
-          const usersSnap = await getDocs(query(collection(db, 'users'), where('email', '==', email)));
-          usersSnap.forEach(d => { if (d.data().photoURL) setPhotoURL(d.data().photoURL); });
-        }
-
-        // Fetch published content by authorUid OR authorEmail
-        const queryField = uid ? 'authorUid' : 'authorEmail';
-        const queryValue = uid || email;
-        if (queryValue) {
-          const [serSnap, storySnap] = await Promise.all([
-            getDocs(query(collection(db, 'creatorSeries'), where(queryField, '==', queryValue))),
-            getDocs(query(collection(db, 'creatorStories'), where(queryField, '==', queryValue))),
-          ]);
-          const se = []; serSnap.forEach(d => { const data = d.data(); if (data.status === 'published') se.push({ id: d.id, ...data }); });
-          const sl = []; storySnap.forEach(d => { const data = d.data(); if (data.status === 'published') sl.push({ id: d.id, ...data }); });
-          setFirestoreSeries(se);
-          setFirestoreStories(sl);
-        }
-        // Load likes
-        const likeSnap = await fget(fdoc(db, 'creatorLikes', slug));
-        if (likeSnap.exists()) {
+        // Process likes (already fetched)
+        if (likeSnap?.exists()) {
           setLikes(likeSnap.data().count || 0);
-          const myUid = (await import('../lib/firebase.js')).auth?.currentUser?.uid;
           if (myUid && (likeSnap.data().likedBy || []).includes(myUid)) setLiked(true);
         }
+
+        // Collect content from slug queries
+        const seriesMap = {};
+        const storyMap = {};
+        serBySlug.forEach(d => { seriesMap[d.id] = { id: d.id, ...d.data() }; });
+        storyBySlug.forEach(d => { storyMap[d.id] = { id: d.id, ...d.data() }; });
+
+        // Step 2: If we have uid/email, fetch by those too + photo — ALL PARALLEL
+        const step2 = [];
+        if (uid) {
+          step2.push(fget(fdoc(db, 'users', uid)).then(s => { if (s.exists() && s.data().photoURL) setPhotoURL(s.data().photoURL); }).catch(() => {}));
+          step2.push(getDocs(query(collection(db, 'creatorSeries'), where('authorUid', '==', uid))).then(s => s.forEach(d => { seriesMap[d.id] = { id: d.id, ...d.data() }; })).catch(() => {}));
+          step2.push(getDocs(query(collection(db, 'creatorStories'), where('authorUid', '==', uid))).then(s => s.forEach(d => { storyMap[d.id] = { id: d.id, ...d.data() }; })).catch(() => {}));
+        }
+        if (email) {
+          step2.push(getDocs(query(collection(db, 'creatorSeries'), where('authorEmail', '==', email))).then(s => s.forEach(d => { seriesMap[d.id] = { id: d.id, ...d.data() }; })).catch(() => {}));
+          step2.push(getDocs(query(collection(db, 'creatorStories'), where('authorEmail', '==', email))).then(s => s.forEach(d => { storyMap[d.id] = { id: d.id, ...d.data() }; })).catch(() => {}));
+          if (!uid) step2.push(getDocs(query(collection(db, 'users'), where('email', '==', email))).then(s => s.forEach(d => { if (d.data().photoURL) setPhotoURL(d.data().photoURL); })).catch(() => {}));
+        }
+        if (step2.length > 0) await Promise.all(step2);
+
+        // Process results
+        const isOwnProfile = myEmail && (myEmail === (email || '').toLowerCase());
+        const isSharedWith = (item) => myEmail && (item.sharedWith || []).some(e => e.toLowerCase() === myEmail);
+        const statusOrder = { published: 0, approved: 1, pending: 2, personal: 3 };
+        const se = Object.values(seriesMap).map(s => ({ ...s, _canClick: s.status === 'published' || isOwnProfile || isSharedWith(s) })).sort((a, b) => (statusOrder[a.status] || 9) - (statusOrder[b.status] || 9));
+        const sl = Object.values(storyMap).map(s => ({ ...s, _canClick: s.status === 'published' || isOwnProfile || isSharedWith(s) })).sort((a, b) => (statusOrder[a.status] || 9) - (statusOrder[b.status] || 9));
+        setFirestoreSeries(se);
+        setFirestoreStories(sl);
       } catch (e) { console.warn('[CreatorPage]', e.message); }
       setLoading(false);
     })();
@@ -147,9 +146,14 @@ export default function CuratorPage() {
     <PageTransition className="page-scroll safe-top">
       {/* Hero */}
       <div className="px-5 pt-10 pb-6">
-        <button onClick={() => navigate(-1)} className="mb-4 flex items-center gap-1 text-[11px] font-bold uppercase tracking-wider text-white/60 hover:text-white">
-          <ArrowLeft size={14} /> Back
-        </button>
+        <div className="mb-4 flex items-center justify-between">
+          <button onClick={() => navigate(-1)} className="flex items-center gap-1 text-[11px] font-bold uppercase tracking-wider text-ink-muted hover:text-ink">
+            <ArrowLeft size={14} /> Back
+          </button>
+          <button onClick={() => navigate('/creators')} className="text-[11px] font-bold text-gold hover:text-gold-bright">
+            All Creators →
+          </button>
+        </div>
 
         <div className="flex items-center gap-4 mb-5">
           {photoURL ? (
@@ -200,6 +204,13 @@ export default function CuratorPage() {
             <div className="text-[9px] text-ink-muted">Stories</div>
           </div>
         </div>
+
+        {/* Status legend */}
+        <div className="flex gap-2 mt-3">
+          <span className="text-[9px] text-ink-dim flex items-center gap-1"><span className="h-2 w-2 rounded-full bg-green-400"></span> Published</span>
+          <span className="text-[9px] text-ink-dim flex items-center gap-1"><span className="h-2 w-2 rounded-full bg-gold"></span> Pending Review</span>
+          <span className="text-[9px] text-ink-dim flex items-center gap-1"><span className="h-2 w-2 rounded-full bg-blue-400"></span> Personal</span>
+        </div>
       </div>
 
       {/* All creations — compact square cards, 2 per row */}
@@ -210,12 +221,17 @@ export default function CuratorPage() {
           {allSeries.map((ser) => {
             const cover = getSeriesCover(ser);
             const isBuiltIn = !!ser.episodes?.[0]?.body;
+            const isPublished = ser.status === 'published' || isBuiltIn;
+            const isPersonal = ser.visibility === 'personal' || ser.status === 'personal';
+            const isPending = ser.status === 'pending' || ser.status === 'approved';
+            const statusColor = isPublished ? '#48bb78' : isPersonal ? '#4299e1' : '#f0a500';
+            const statusLabel = isPublished ? 'Published' : isPersonal ? 'Personal' : 'Pending';
             return (
               <motion.button
                 key={ser.id}
                 whileTap={{ scale: 0.97 }}
-                onClick={() => isBuiltIn ? navigate(`/series/${ser.id}`) : null}
-                className="relative overflow-hidden rounded-2xl text-left ring-1 ring-white/8"
+                onClick={() => (isBuiltIn || ser._canClick) ? navigate(`/series/${ser.id}`) : null}
+                className={`relative overflow-hidden rounded-2xl text-left ring-1 ring-white/8 ${!isPublished ? 'opacity-40 grayscale-[30%]' : ''} ${!ser._canClick && !isBuiltIn ? 'cursor-not-allowed' : ''}`}
                 style={{ aspectRatio: '2/3', minHeight: 200 }}
               >
                 {cover ? (
@@ -225,8 +241,9 @@ export default function CuratorPage() {
                 )}
                 <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-black/5" />
 
-                <div className="absolute top-2 left-2 rounded-full bg-black/50 px-2 py-0.5 backdrop-blur-sm">
-                  <span className="text-[8px] font-bold text-white/80">📺 {ser.totalEpisodes || ser.episodes?.length || 0} eps</span>
+                <div className="absolute top-2 left-2 flex items-center gap-1">
+                  <span className="rounded-full bg-black/50 px-2 py-0.5 backdrop-blur-sm text-[8px] font-bold text-white/80">📺 {ser.totalEpisodes || ser.episodes?.length || 0} eps</span>
+                  {!isBuiltIn && <span className="rounded-full px-2 py-0.5 backdrop-blur-sm text-[7px] font-bold" style={{ background: statusColor + '33', color: statusColor }}>{statusLabel}</span>}
                 </div>
 
                 <div className="absolute right-2 top-2 grid h-7 w-7 place-items-center rounded-full bg-gold/20 text-gold backdrop-blur-sm">
@@ -244,11 +261,32 @@ export default function CuratorPage() {
           })}
 
           {/* Stories */}
-          {firestoreStories.map((story) => (
+          {firestoreStories.map((story) => {
+            const isPublished = story.status === 'published';
+            const isPersonal = story.visibility === 'personal' || story.status === 'personal';
+            const statusColor = isPublished ? '#48bb78' : isPersonal ? '#4299e1' : '#f0a500';
+            const statusLabel = isPublished ? 'Published' : isPersonal ? 'Personal' : 'Pending';
+            return (
             <motion.button
               key={story.id}
               whileTap={{ scale: 0.97 }}
-              className="relative overflow-hidden rounded-2xl text-left ring-1 ring-white/8"
+              onClick={() => {
+                if (!story._canClick) return;
+                // Load story into player
+                load({
+                  id: story.id,
+                  title: story.title,
+                  text: story.body || '',
+                  tradition: story.tradition,
+                  source: story.source || '',
+                  language: 'English',
+                  voice: 'AI Narrator',
+                  isWisdom: true,
+                  createdAt: story.submittedAt || new Date().toISOString(),
+                });
+                navigate('/player');
+              }}
+              className={`relative overflow-hidden rounded-2xl text-left ring-1 ring-white/8 ${!isPublished ? 'opacity-40 grayscale-[30%] cursor-not-allowed' : 'cursor-pointer'}`}
               style={{ aspectRatio: '2/3', minHeight: 200 }}
             >
               {(story.coverImage || getStoryImage(story.id)) ? (
@@ -257,6 +295,10 @@ export default function CuratorPage() {
                 <div className="absolute inset-0 bg-gradient-to-br from-amber-900 to-orange-900" />
               )}
               <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-black/5" />
+
+              <div className="absolute top-2 left-2">
+                <span className="rounded-full px-2 py-0.5 backdrop-blur-sm text-[7px] font-bold" style={{ background: statusColor + '33', color: statusColor }}>{statusLabel}</span>
+              </div>
 
               <div className="absolute right-2 top-2 grid h-7 w-7 place-items-center rounded-full bg-gold/20 text-gold backdrop-blur-sm">
                 <Play size={10} fill="currentColor" />
@@ -269,7 +311,8 @@ export default function CuratorPage() {
                 </h4>
               </div>
             </motion.button>
-          ))}
+            );
+          })}
         </div>
       </div>
 

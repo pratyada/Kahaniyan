@@ -162,9 +162,10 @@ export function AdminProvider({ children }) {
     }
   }, []);
 
+  // Load team for ALL logged-in users (not just admins) so isCreator works
   useEffect(() => {
-    if (isAdmin) loadTeam();
-  }, [isAdmin, loadTeam]);
+    if (user) loadTeam();
+  }, [user, loadTeam]);
 
   const addTeamMember = useCallback(async (email, role) => {
     if (!db || !email.trim()) return;
@@ -232,12 +233,18 @@ export function AdminProvider({ children }) {
     return team.some((t) => t.email === user.email && t.role === 'investor' && t.status === 'active');
   })();
 
+  // Check if current user is a content creator (can write stories for community)
+  const isCreator = (() => {
+    if (!user || !user.email) return false;
+    return team.some((t) => t.email === user.email && (t.role === 'content' || t.role === 'creator') && t.status === 'active');
+  })();
+
   // Admin or active tester = unlimited access
   const isUnlimited = isAdmin || isTester || isInvestor;
 
   return createElement(
     AdminCtx.Provider,
-    { value: { isAdmin, isTester, isInvestor, isUnlimited, loading: loading, allUsers, stats, adminEmails, loadUsers, addAdmin, removeAdmin, setUserStatus, setUserTier, team, addTeamMember, updateTeamMember, removeTeamMember } },
+    { value: { isAdmin, isTester, isInvestor, isCreator, isUnlimited, loading: loading, allUsers, stats, adminEmails, loadUsers, addAdmin, removeAdmin, setUserStatus, setUserTier, team, addTeamMember, updateTeamMember, removeTeamMember } },
     children
   );
 }

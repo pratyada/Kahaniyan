@@ -2256,6 +2256,7 @@ function StoryLab({ showSettingsTabs }) {
     { key: 'collections', label: 'Collections', icon: '🎬' },
     { key: 'series', label: 'Series', icon: '📺' },
     { key: 'user-content', label: 'User Content', icon: '✍️' },
+    { key: 'review', label: 'Review & Publish', icon: '📋' },
     { key: 'creators', label: 'Creators', icon: '👥' },
   ];
 
@@ -2736,6 +2737,7 @@ function StoryLab({ showSettingsTabs }) {
       {subTab === 'collections' && <CollectionsPanel />}
       {subTab === 'series' && <SeriesPanel />}
       {subTab === 'user-content' && <UserStoriesPanel />}
+      {subTab === 'review' && <CuratorSubmissionsPanel />}
       {subTab === 'creators' && (
         <Suspense fallback={<div className="text-center py-10 text-ink-dim">Loading creators...</div>}>
           <CuratorsPage />
@@ -4184,6 +4186,8 @@ function UserStoriesPanel() {
   const [series, setSeries] = useState([]);
   const [loading, setLoading] = useState(true);
   const [filter, setFilter] = useState('all'); // all, stories, series
+  const [expandedId, setExpandedId] = useState(null);
+  const [updating, setUpdating] = useState(null);
 
   useEffect(() => {
     (async () => {
@@ -4209,11 +4213,25 @@ function UserStoriesPanel() {
     })();
   }, []);
 
+  const updateItemStatus = async (item, newStatus) => {
+    setUpdating(item.id);
+    try {
+      const { db: fireDb } = await import('../lib/firebase.js');
+      const { doc: fdoc, updateDoc } = await import('firebase/firestore');
+      const col = item._type === 'series' ? 'creatorSeries' : 'creatorStories';
+      await updateDoc(fdoc(fireDb, col, item.id), { status: newStatus, reviewedAt: new Date().toISOString() });
+      // Update local state
+      const updateFn = (prev) => prev.map(s => s.id === item.id ? { ...s, status: newStatus } : s);
+      if (item._type === 'series') setSeries(updateFn); else setStories(updateFn);
+    } catch (e) { alert('Update failed: ' + e.message); }
+    setUpdating(null);
+  };
+
   if (loading) return <div className="text-center py-12 text-ink-dim">Loading user content...</div>;
 
   const allItems = filter === 'stories' ? stories : filter === 'series' ? series : [...stories, ...series].sort((a, b) => new Date(b.submittedAt || 0) - new Date(a.submittedAt || 0));
 
-  const statusColor = (s) => s === 'approved' || s === 'published' ? 'text-[#7ad9a1] bg-[#7ad9a1]/10' : s === 'pending' ? 'text-gold bg-gold/10' : s === 'rejected' ? 'text-negative bg-negative/10' : 'text-ink-dim bg-white/5';
+  const statusColor = (s) => s === 'approved' || s === 'published' ? 'text-[#7ad9a1] bg-[#7ad9a1]/10' : s === 'pending' ? 'text-gold bg-gold/10' : s === 'rejected' ? 'text-negative bg-negative/10' : s === 'revision_requested' ? 'text-amber-400 bg-amber-400/10' : 'text-ink-dim bg-white/5';
 
   return (
     <div className="space-y-4">
@@ -4250,30 +4268,110 @@ function UserStoriesPanel() {
       {/* List */}
       <div className="space-y-2">
         {allItems.map(item => (
-          <div key={item.id} className="rounded-xl bg-bg-elevated p-4 ring-1 ring-white/5">
-            <div className="flex items-start justify-between gap-3">
-              <div className="min-w-0 flex-1">
-                <div className="flex items-center gap-2 flex-wrap">
-                  {item._type === 'series' && <span className="text-sm">{item.icon || '📚'}</span>}
-                  <h3 className="text-sm font-bold text-ink truncate">{item.title}</h3>
-                  <span className={`rounded-full px-2 py-0.5 text-[8px] font-bold uppercase ${statusColor(item.status)}`}>
-                    {item.status || 'unknown'}
-                  </span>
-                  <span className="rounded-full bg-white/5 px-2 py-0.5 text-[8px] text-ink-dim">
-                    {item._type === 'series' ? `Series · ${item.totalEpisodes || item.episodes?.length || 0} eps` : 'Story'}
-                  </span>
-                  {item.visibility === 'personal' && (
-                    <span className="rounded-full bg-info/10 px-2 py-0.5 text-[8px] font-bold text-info">PERSONAL</span>
+          <div key={item.id} className="rounded-xl bg-bg-elevated ring-1 ring-white/5 overflow-hidden">
+            {/* Header — clickable to expand */}
+            <button onClick={() => setExpandedId(expandedId === item.id ? null : item.id)}
+              className="w-full p-4 text-left transition active:scale-[0.99]">
+              <div className="flex items-start justify-between gap-3">
+                <div className="min-w-0 flex-1">
+                  <div className="flex items-center gap-2 flex-wrap">
+                    {item._type === 'series' && <span className="text-sm">{item.icon || '📚'}</span>}
+                    <h3 className="text-sm font-bold text-ink truncate">{item.title}</h3>
+                    <span className={`rounded-full px-2 py-0.5 text-[8px] font-bold uppercase ${statusColor(item.status)}`}>
+                      {item.status || 'unknown'}
+                    </span>
+                    <span className="rounded-full bg-white/5 px-2 py-0.5 text-[8px] text-ink-dim">
+                      {item._type === 'series' ? `Series · ${item.totalEpisodes || item.episodes?.length || 0} eps` : 'Story'}
+                    </span>
+                    {item.visibility === 'personal' && (
+                      <span className="rounded-full bg-info/10 px-2 py-0.5 text-[8px] font-bold text-info">PERSONAL</span>
+                    )}
+                  </div>
+                  <div className="flex items-center gap-3 mt-1 text-[10px] text-ink-dim">
+                    <span>by {item.authorName || item.authorEmail || 'Unknown'}</span>
+                    {item.tradition && <span>{item.tradition}</span>}
+                    {item.submittedAt && <span>{new Date(item.submittedAt).toLocaleDateString()}</span>}
+                    {item.sharedWith?.length > 0 && <span>Shared with {item.sharedWith.length}</span>}
+                  </div>
+                </div>
+                <span className="text-ink-dim text-xs shrink-0">{expandedId === item.id ? '▲' : '▼'}</span>
+              </div>
+            </button>
+
+            {/* Expanded content */}
+            {expandedId === item.id && (
+              <div className="px-4 pb-4 space-y-3 border-t border-white/5 pt-3">
+                {/* Story body */}
+                {item.body && (
+                  <div className="rounded-lg bg-bg-base p-3 max-h-60 overflow-y-auto">
+                    <p className="text-[11px] text-ink-muted whitespace-pre-wrap leading-relaxed">{item.body.slice(0, 2000)}{item.body.length > 2000 ? '...' : ''}</p>
+                  </div>
+                )}
+
+                {/* Series episodes */}
+                {item._type === 'series' && item.episodes?.length > 0 && (
+                  <div className="space-y-2">
+                    <p className="text-[10px] font-bold uppercase tracking-wider text-ink-muted">Episodes ({item.episodes.length})</p>
+                    {item.episodes.map((ep, i) => (
+                      <div key={i} className="rounded-lg bg-bg-base p-3">
+                        <div className="text-xs font-bold text-ink">Ep {ep.episodeNumber || i+1}: {ep.title}</div>
+                        {ep.subtitle && <p className="text-[10px] text-ink-dim mt-0.5">{ep.subtitle}</p>}
+                        {ep.body && <p className="text-[10px] text-ink-muted mt-2 whitespace-pre-wrap leading-relaxed max-h-32 overflow-y-auto">{ep.body.slice(0, 500)}{ep.body.length > 500 ? '...' : ''}</p>}
+                      </div>
+                    ))}
+                  </div>
+                )}
+
+                {/* Description for series */}
+                {item._type === 'series' && item.description && !item.body && (
+                  <div className="rounded-lg bg-bg-base p-3">
+                    <p className="text-[11px] text-ink-muted">{item.description}</p>
+                  </div>
+                )}
+
+                {/* Meta */}
+                <div className="flex flex-wrap gap-2 text-[9px] text-ink-dim">
+                  {item.tradition && <span className="bg-white/5 px-2 py-0.5 rounded-full">{item.tradition}</span>}
+                  {item.theme && <span className="bg-white/5 px-2 py-0.5 rounded-full">{item.theme}</span>}
+                  {item.ageRange && <span className="bg-white/5 px-2 py-0.5 rounded-full">Ages {item.ageRange}</span>}
+                  {item.source && <span className="bg-white/5 px-2 py-0.5 rounded-full">{item.source}</span>}
+                </div>
+
+                {/* Action buttons */}
+                <div className="flex flex-wrap gap-2 pt-2">
+                  {item.status !== 'published' && (
+                    <button onClick={() => updateItemStatus(item, 'published')} disabled={updating === item.id}
+                      className="rounded-lg bg-[#7ad9a1]/20 px-4 py-2 text-[11px] font-bold text-[#7ad9a1] transition active:scale-95 disabled:opacity-50">
+                      {updating === item.id ? '...' : '✓ Publish'}
+                    </button>
+                  )}
+                  {item.status !== 'approved' && item.status !== 'published' && (
+                    <button onClick={() => updateItemStatus(item, 'approved')} disabled={updating === item.id}
+                      className="rounded-lg bg-gold/20 px-4 py-2 text-[11px] font-bold text-gold transition active:scale-95 disabled:opacity-50">
+                      {updating === item.id ? '...' : '👍 Approve'}
+                    </button>
+                  )}
+                  {item.status !== 'revision_requested' && item.status !== 'published' && (
+                    <button onClick={() => updateItemStatus(item, 'revision_requested')} disabled={updating === item.id}
+                      className="rounded-lg bg-amber-400/20 px-4 py-2 text-[11px] font-bold text-amber-400 transition active:scale-95 disabled:opacity-50">
+                      ✏️ Request Edits
+                    </button>
+                  )}
+                  {item.status !== 'rejected' && item.status !== 'published' && (
+                    <button onClick={() => { if (confirm('Reject this content?')) updateItemStatus(item, 'rejected'); }} disabled={updating === item.id}
+                      className="rounded-lg bg-negative/20 px-4 py-2 text-[11px] font-bold text-negative transition active:scale-95 disabled:opacity-50">
+                      ✕ Reject
+                    </button>
+                  )}
+                  {item.status === 'published' && (
+                    <button onClick={() => { if (confirm('Unpublish this content?')) updateItemStatus(item, 'pending'); }} disabled={updating === item.id}
+                      className="rounded-lg bg-white/5 px-4 py-2 text-[11px] font-bold text-ink-muted transition active:scale-95 disabled:opacity-50">
+                      Unpublish
+                    </button>
                   )}
                 </div>
-                <div className="flex items-center gap-3 mt-1 text-[10px] text-ink-dim">
-                  <span>by {item.authorName || item.authorEmail || 'Unknown'}</span>
-                  {item.tradition && <span>{item.tradition}</span>}
-                  {item.submittedAt && <span>{new Date(item.submittedAt).toLocaleDateString()}</span>}
-                  {item.sharedWith?.length > 0 && <span>Shared with {item.sharedWith.length}</span>}
-                </div>
               </div>
-            </div>
+            )}
           </div>
         ))}
         {allItems.length === 0 && (

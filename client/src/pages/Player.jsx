@@ -350,7 +350,16 @@ function PlayerInner() {
     // For multilingual/FIFA stories, always default to English (not profile language)
     const storyId = current.id || '';
     const isMultiLangStory = storyId.includes('multilingual') || storyId.includes('fifa26');
-    const lang = langOverride || (isMultiLangStory ? 'English' : (current.language || profile?.language || 'English'));
+
+    // Clear language override when switching to a non-multilingual story
+    if (!isMultiLangStory && langOverride) {
+      setLangOverride(null);
+      setTranslatedText(null);
+      try { sessionStorage.removeItem('mst:player-lang'); } catch {}
+      audioLangRef.current = null;
+    }
+
+    const lang = (isMultiLangStory ? langOverride : null) || (isMultiLangStory ? 'English' : (current.language || profile?.language || 'English'));
     const narratorName = current.voice || 'AI Narrator';
     const chars = profile?.characters || [];
     const matchedChar = chars.find((c) => c.name === narratorName || c.relation === narratorName.toLowerCase());

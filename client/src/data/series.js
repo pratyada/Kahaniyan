@@ -7181,7 +7181,7 @@ Prophet Muhammad, peace be upon him, said, "Tie your camel, then trust in Allah.
     gradient: 'linear-gradient(135deg, #1a472a 0%, #006837 40%, #ffd700 100%)',
     description: 'The greatest show on Earth comes to YOUR backyard — Toronto, Vancouver, New York, Mexico City! Learn about countries, champions, and the beautiful game through bedtime stories in English, Spanish, French & Hindi. New episodes as matches happen!',
     ageRange: '3-10',
-    totalEpisodes: 6,
+    totalEpisodes: 7,
     episodes: [
       {
         id: 'fifa26_ep1_history', episodeNumber: 1, title: 'How the World Cup Began',
@@ -7337,6 +7337,61 @@ Tomorrow is a new match. A new chance. Rest now. Dream of goals and saves and ro
 
 Goodnight, little champion. Toronto is proud tonight. And so are you.`,
       },
+      {
+        id: 'fifa26_ep7_vozinha', episodeNumber: 7, title: 'Vozinha and the 27 Flying Soccer Balls',
+        subtitle: 'A 40-year-old goalkeeper from a tiny island who became a World Cup hero.',
+        tradition: 'universal', theme: 'courage', durationMinutes: 4,
+        source: 'FIFA World Cup 2026 · Episode 7 — The Hero Who Wouldn\'t Give Up',
+        body: `Little one, tonight I am going to tell you about a hero. Not a hero from a big, famous country with millions of fans. A hero from a tiny group of islands in the Atlantic Ocean called Cape Verde.
+
+Cape Verde is so small that most people have never heard of it. It has no big stadiums. No rich football clubs. No players who appear on cereal boxes. Just half a million people, warm winds, and a dream that would not die.
+
+And on those islands, there was a goalkeeper named Vozinha.
+
+Vozinha was not young. He was not famous. He was forty years old — an age when most footballers have long since hung up their boots, kissed their jerseys goodbye, and started coaching children instead of playing against them.
+
+But Vozinha had not retired. He had not given up. Every morning, he woke before the sun, stretched his aging muscles, and dived across the training pitch — left, right, left, right — catching balls that flew at him like angry birds.
+
+"You are too old," people said.
+
+"Your body will break," coaches warned.
+
+"Stronger teams will crush you," the newspapers predicted.
+
+Vozinha said nothing. He just kept diving.
+
+And then came the World Cup.
+
+Cape Verde — tiny, unknown, impossible Cape Verde — qualified. Nobody expected them to. Nobody gave them a chance. Their first match was against one of the biggest teams in the tournament. A team with superstars. A team with history. A team that expected to win easily.
+
+The match began. The big team attacked. Shot after shot. Cross after cross. The ball flew at Vozinha's goal like a storm of leather and fury.
+
+And Vozinha saved them. Every. Single. One.
+
+He dived left and pushed a bullet shot around the post. He leaped right and tipped a header over the bar. He stood tall and caught a free kick that was heading for the top corner. He fell to his knees and blocked a shot with his chest.
+
+Twenty-seven times the ball came at his goal. Twenty-seven times Vozinha said no.
+
+The crowd — even the fans of the other team — started to cheer for him. Because courage is a language everyone understands. And Vozinha was speaking it louder than anyone had spoken it in a long, long time.
+
+When the final whistle blew, the score did not matter. What mattered was this: a forty-year-old man from a tiny island had stood in front of the whole world and refused to fall.
+
+His teammates rushed to him. They lifted him on their shoulders. The captain was crying. The coach was crying. Back home in Cape Verde, an entire nation was crying — not because they were sad, but because one man had shown them that small does not mean weak, and old does not mean finished.
+
+That night, little one, remember Vozinha.
+
+Remember that heroes do not always come from big places.
+
+Remember that age does not decide your limits — courage does.
+
+Remember that sometimes the bravest thing in the world is to keep diving when everyone says you should stop.
+
+And remember that somewhere tonight, on a tiny island in the Atlantic, a forty-year-old goalkeeper is still waking up before the sun, still stretching his muscles, still diving left, right, left, right — because he knows something that the whole world learned today:
+
+Dreams do not have an expiry date.
+
+Goodnight, little one. Keep diving. Keep dreaming. The world is watching, and it is cheering for you.`,
+      },
     ],
   },
 
@@ -7350,7 +7405,7 @@ Goodnight, little champion. Toronto is proud tonight. And so are you.`,
     gradient: 'linear-gradient(135deg, #003594 0%, #c41e3a 40%, #ffd700 100%)',
     description: 'The World Cup comes to Texas! AT&T Stadium, Fair Park, the Trinity River — Dallas is ready. Learn about countries, champions, and the beautiful game through bedtime stories in English, Spanish, French & Hindi. New episodes as matches happen!',
     ageRange: '3-10',
-    totalEpisodes: 5,
+    totalEpisodes: 6,
     episodes: [
       {
         id: 'fifa26_dallas_ep1_history', episodeNumber: 1, title: 'How the World Cup Began',
@@ -7468,6 +7523,61 @@ The captain lifts the trophy. Gold confetti rains down from the open roof, mixin
 That night, little one, remember — every World Cup champion was once a child with a dream. Some of them are playing RIGHT NOW, in a stadium near you. And four years from now, or eight, or twelve — maybe, just maybe, the child dreaming tonight will be the one lifting the trophy under the Texas stars.
 
 Dream big tonight, little one. AT&T Stadium is YOUR cathedral. The world is your pitch. Goodnight, future champion. The beautiful game is waiting for you. And Dallas is ready.`,
+      },
+      {
+        id: 'fifa26_dallas_ep6_vozinha', episodeNumber: 6, title: 'Vozinha and the 27 Flying Soccer Balls',
+        subtitle: 'A 40-year-old goalkeeper from a tiny island who became a World Cup hero.',
+        tradition: 'universal', theme: 'courage', durationMinutes: 4,
+        source: 'FIFA World Cup 2026 Dallas · Episode 6 — The Hero Who Wouldn\'t Give Up',
+        body: `Little one, tonight I am going to tell you about a hero. Not a hero from a big, famous country with millions of fans. A hero from a tiny group of islands in the Atlantic Ocean called Cape Verde.
+
+Cape Verde is so small that most people have never heard of it. It has no big stadiums. No rich football clubs. No players who appear on cereal boxes. Just half a million people, warm winds, and a dream that would not die.
+
+And on those islands, there was a goalkeeper named Vozinha.
+
+Vozinha was not young. He was not famous. He was forty years old — an age when most footballers have long since hung up their boots, kissed their jerseys goodbye, and started coaching children instead of playing against them.
+
+But Vozinha had not retired. He had not given up. Every morning, he woke before the sun, stretched his aging muscles, and dived across the training pitch — left, right, left, right — catching balls that flew at him like angry birds.
+
+"You are too old," people said.
+
+"Your body will break," coaches warned.
+
+"Stronger teams will crush you," the newspapers predicted.
+
+Vozinha said nothing. He just kept diving.
+
+And then came the World Cup.
+
+Cape Verde — tiny, unknown, impossible Cape Verde — qualified. Nobody expected them to. Nobody gave them a chance. Their first match was against one of the biggest teams in the tournament. A team with superstars. A team with history. A team that expected to win easily.
+
+The match began. The big team attacked. Shot after shot. Cross after cross. The ball flew at Vozinha's goal like a storm of leather and fury.
+
+And Vozinha saved them. Every. Single. One.
+
+He dived left and pushed a bullet shot around the post. He leaped right and tipped a header over the bar. He stood tall and caught a free kick that was heading for the top corner. He fell to his knees and blocked a shot with his chest.
+
+Twenty-seven times the ball came at his goal. Twenty-seven times Vozinha said no.
+
+The crowd at AT&T Stadium — even the fans of the other team — started to cheer for him. Because courage is a language everyone understands. And Vozinha was speaking it louder than anyone had spoken it in a long, long time.
+
+When the final whistle blew, the score did not matter. What mattered was this: a forty-year-old man from a tiny island had stood in front of eighty thousand people in Texas and refused to fall.
+
+His teammates rushed to him. They lifted him on their shoulders. The captain was crying. The coach was crying. Back home in Cape Verde, an entire nation was crying — not because they were sad, but because one man had shown them that small does not mean weak, and old does not mean finished.
+
+That night, little one, remember Vozinha.
+
+Remember that heroes do not always come from big places.
+
+Remember that age does not decide your limits — courage does.
+
+Remember that sometimes the bravest thing in the world is to keep diving when everyone says you should stop.
+
+And remember that somewhere tonight, on a tiny island in the Atlantic, a forty-year-old goalkeeper is still waking up before the sun, still stretching his muscles, still diving left, right, left, right — because he knows something that the whole world learned today:
+
+Dreams do not have an expiry date.
+
+Goodnight, little one. Keep diving. Keep dreaming. Dallas saw a hero tonight. And so did you.`,
       },
     ],
   },

@@ -83,17 +83,14 @@ export default function Curators() {
         setCreators(final);
         // Cache for instant display on next visit
         try { localStorage.setItem('mst:cache:creators', JSON.stringify(final)); } catch {}
-        // Photos — fetch in background after showing creators
+        // Photos — fetch in parallel after showing creators
         const { doc: fdoc, getDoc: fget } = await import('firebase/firestore');
         const photoUpdates = {};
-        for (const c of final) {
-          if (c.photoURL) continue;
+        const photoPromises = final.filter(c => !c.photoURL && c.uid && !c.uid.includes('@')).map(async (c) => {
           try {
-            if (c.uid && !c.uid.includes('@')) {
-              const snap = await fget(fdoc(db, 'users', c.uid));
-              if (snap.exists()) {
-                if (snap.data().photoURL) photoUpdates[c.slug] = { photoURL: snap.data().photoURL, slug: snap.data().username || c.slug };
-              }
+            const snap = await fget(fdoc(db, 'users', c.uid));
+            if (snap.exists() && snap.data().photoURL) {
+              photoUpdates[c.slug] = { photoURL: snap.data().photoURL, slug: snap.data().username || c.slug };
             } else {
               const lookupEmail = c.email || (c.uid?.includes('@') ? c.uid : null);
               if (lookupEmail) {
@@ -104,7 +101,8 @@ export default function Curators() {
               }
             }
           } catch {}
-        }
+        });
+        await Promise.all(photoPromises);
         if (Object.keys(photoUpdates).length > 0) {
           setCreators(prev => {
             const updated = prev.map(c => photoUpdates[c.slug] ? { ...c, ...photoUpdates[c.slug] } : c);

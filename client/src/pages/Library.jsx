@@ -48,7 +48,7 @@ export default function Library() {
   const { generate, loading: genLoading } = useStoryGenerator();
   const { load, clear } = usePlayer();
   const radio = useRadio();
-  const { isUnlimited, isAdmin } = useAdmin();
+  const { isUnlimited, isAdmin, isCreator } = useAdmin();
 
   const [tab, setTab] = useState('create');
   const [toast, setToast] = useState(null);
@@ -377,7 +377,8 @@ export default function Library() {
         : [];
 
       const authorName = user.displayName || user.email?.split('@')[0] || 'Anonymous';
-      const seriesRef = await addDoc(collection(db, 'creatorSeries'), {
+      const editingId = window.__editingSeriesId;
+      const seriesData = {
         title: seriesTitle.trim(),
         description: seriesDesc.trim(),
         icon: seriesIcon,
@@ -389,13 +390,28 @@ export default function Library() {
         authorName,
         authorEmail: user.email || '',
         authorUsername: (await import('../utils/usernameHelper.js').then(m => m.getOrCreateUsername())) || '',
-        status: seriesVisibility === 'personal' ? 'approved' : 'pending',
         visibility: seriesVisibility,
         sharedWith: sharedEmails,
-        submittedAt: new Date().toISOString(),
         type: 'series',
-      });
-      showToast(seriesVisibility === 'personal' ? 'Personal series created!' : 'Series submitted! We\'ll review within 48 hours.');
+      };
+
+      let seriesRef;
+      if (editingId) {
+        // Editing existing series — update and resubmit to pending
+        const { doc: fdoc, setDoc: fset } = await import('firebase/firestore');
+        seriesData.status = seriesVisibility === 'personal' ? 'approved' : 'pending';
+        seriesData.editedAt = new Date().toISOString();
+        await fset(fdoc(db, 'creatorSeries', editingId), seriesData, { merge: true });
+        seriesRef = { id: editingId };
+        window.__editingSeriesId = null;
+        showToast(seriesVisibility === 'personal' ? 'Series updated!' : 'Series updated and resubmitted for review.');
+      } else {
+        // New series
+        seriesData.status = seriesVisibility === 'personal' ? 'approved' : 'pending';
+        seriesData.submittedAt = new Date().toISOString();
+        seriesRef = await addDoc(collection(db, 'creatorSeries'), seriesData);
+        showToast(seriesVisibility === 'personal' ? 'Personal series created!' : 'Series submitted! We\'ll review within 48 hours.');
+      }
       // Notify creator via email
       try { await fetch('/api/story-created-notify', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ type: 'series', title: seriesTitle.trim(), authorEmail: user.email, authorName, storyId: seriesRef.id }) }); } catch {}
       // Notify shared users via email
@@ -579,8 +595,8 @@ export default function Library() {
             {!user && <p className="mt-2 text-center text-[10px] text-ink-dim">Free account required to generate stories</p>}
           </div>
 
-          {/* ── Creator Submissions — admin only ── */}
-          {isAdmin && (
+          {/* ── Creator Submissions — open to all signed-in users ── */}
+          {user && (
             <>
               <div className="mb-4 rounded-2xl bg-gradient-to-br from-white/5 to-white/2 p-4 ring-1 ring-white/5">
                 <h3 className="text-sm font-bold text-ink mb-1" style={{ fontFamily: 'Lora, serif' }}>Write for the Community</h3>
@@ -616,7 +632,11 @@ export default function Library() {
       {/* ═══ CREATE STORY FORM ═══ */}
       {tab === 'create' && createMode === 'story' && (
         <div className="space-y-4">
-          <button onClick={() => setCreateMode(null)} className="text-[11px] font-bold text-ink-muted">← Back to options</button>
+          <button onClick={() => {
+            const hasContent = title.trim() || body.trim();
+            if (hasContent && !confirm('Discard your changes?')) return;
+            setCreateMode(null);
+          }} className="text-[11px] font-bold text-ink-muted">← Back to options</button>
           <h3 className="text-sm font-bold text-ink">New Story</h3>
 
           <input value={title} onChange={(e) => setTitle(e.target.value)}
@@ -660,8 +680,13 @@ export default function Library() {
       {/* ═══ CREATE SERIES FORM ═══ */}
       {tab === 'create' && createMode === 'series' && (
         <div className="space-y-4">
-          <button onClick={() => setCreateMode(null)} className="text-[11px] font-bold text-ink-muted">← Back to options</button>
-          <h3 className="text-sm font-bold text-ink">New Series</h3>
+          <button onClick={() => {
+            const hasContent = seriesTitle.trim() || episodes.some(ep => ep.title.trim() || ep.body.trim());
+            if (hasContent && !confirm('Discard your changes?')) return;
+            setCreateMode(null);
+            window.__editingSeriesId = null;
+          }} className="text-[11px] font-bold text-ink-muted">← Back to options</button>
+          <h3 className="text-sm font-bold text-ink">{window.__editingSeriesId ? 'Edit Series' : 'New Series'}</h3>
 
           <div className="flex gap-3">
             <input value={seriesIcon} onChange={(e) => setSeriesIcon(e.target.value)}
@@ -986,6 +1011,30 @@ export default function Library() {
                     <button onClick={() => handleDelete(s.id, 'creatorSeries')}
                       className="mt-2 text-[10px] text-red-400/60 hover:text-red-400">
                       {t('common.delete')}
+                    </button>
+                  )}
+                  {/* Edit button — for published/approved series, resubmits to pending */}
+                  {(s.status === 'published' || s.status === 'approved' || s.status === 'revision_requested') && (
+                    <button onClick={async () => {
+                      setSeriesTitle(s.title);
+                      setSeriesDesc(s.description || '');
+                      setSeriesIcon(s.icon || '📚');
+                      setSeriesAge(s.ageRange || '3-8');
+                      setSeriesTradition(s.tradition || 'universal');
+                      setEpisodes((s.episodes || []).map((ep, i) => ({
+                        episodeNumber: ep.episodeNumber || i + 1,
+                        title: ep.title || '',
+                        subtitle: ep.subtitle || '',
+                        body: ep.body || '',
+                      })));
+                      setSeriesVisibility(s.visibility || 'public');
+                      setCreateMode('series');
+                      setTab('create');
+                      // Store the series ID so we update instead of creating new
+                      window.__editingSeriesId = s.id;
+                    }}
+                      className="mt-2 ml-2 text-[10px] font-bold text-gold bg-gold/10 px-3 py-1 rounded-full transition active:scale-95">
+                      ✏️ Edit Series
                     </button>
                   )}
 

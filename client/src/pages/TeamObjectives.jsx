@@ -385,6 +385,38 @@ const PILOTS = [
     emailTemplate: '',
     followUp: 'Day 1: Post in 5 Reddit subs (spread across day, different accounts look spammy) → Day 2-3: Post in 10 FB groups (2-3 per day, different variants) → Day 4: Forward in 5 WhatsApp groups → Day 5: Post in forums (BabyCenter, UrbanMoms) → Week 2: Engage with ALL comments/replies — this is where conversions happen → Week 3: Repost with new angles (FIFA update, new stories added) → Ongoing: 3 community posts per week, rotate variants',
   },
+  {
+    id: 'seo-indexing', icon: '🔍', title: 'Pilot 15: SEO & Google Indexing (URGENT)',
+    objective: '50 pages discovered but NOT indexed by Google. Fix by building backlinks + social signals so Google trusts our domain enough to crawl.',
+    targets: [
+      // ── IMMEDIATE: Request Indexing (Admin) ──
+      { name: 'Google Search Console — Request Indexing', area: 'Admin Task', actions: ['Go to search.google.com/search-console', 'URL Inspection → paste each blog URL → Request Indexing', 'Do top 15 most important pages first', 'Repeat daily for new pages'] },
+      { name: 'Bing Webmaster Tools — Submit URLs', area: 'Admin Task', actions: ['Go to bing.com/webmasters', 'Submit sitemap: mysleepytale.com/sitemap.xml', 'Submit individual URLs for priority crawling'] },
+
+      // ── BACKLINKS: Share blog links everywhere ──
+      { name: 'Share FIFA blog on social media', area: 'Everyone', actions: ['Post mysleepytale.com/blog/fifa-world-cup-kids-audiobook on personal FB, IG, Twitter/X, LinkedIn', 'Each share = a signal to Google that the URL is real and valuable', 'Ask 5 friends to share too'] },
+      { name: 'Share bedtime stories blog', area: 'Everyone', actions: ['Post mysleepytale.com/blog/why-bedtime-stories-matter on parenting FB groups', 'Post mysleepytale.com/blog/screen-free-bedtime-routines on mommy blogs'] },
+      { name: 'Share Indian stories blog in desi groups', area: 'Everyone', actions: ['Post mysleepytale.com/blog/indian-bedtime-stories in South Asian FB groups, WhatsApp groups', 'Post mysleepytale.com/blog/islamic-stories-for-kids in Muslim parent groups'] },
+      { name: 'LinkedIn articles with blog links', area: 'Deepti/Sahil/Prat', actions: ['Write LinkedIn post, link to blog', 'Every LinkedIn post with a link = a backlink signal to Google', 'Deepti: link to FIFA blog + screen-free blog', 'Sahil: link to technology-stack blog'] },
+      { name: 'Medium cross-posts', area: 'Content Team', actions: ['Publish on Medium with canonical link to mysleepytale.com/blog/*', 'Medium articles pass link juice back to your site', 'Start with: why-bedtime-stories-matter, screen-free-bedtime-routines, fifa-world-cup-kids-audiobook'] },
+
+      // ── SOCIAL SIGNALS: Every share counts ──
+      { name: 'Twitter/X — Share 5 blog links daily', area: 'Everyone', actions: ['Tweet each blog link with a quote from the article', '#BedtimeStories #TorontoKids #FIFA2026 #ScreenFree', 'Google crawls Twitter — every tweet is a discovery signal'] },
+      { name: 'Pinterest — Pin blog images', area: 'Marketing', actions: ['Create Pinterest account: My Sleepy Tale', 'Pin each blog hero image with link to blog URL', 'Pinterest pins get indexed by Google separately — double benefit'] },
+      { name: 'Quora — Answer questions with blog links', area: 'Content Team', actions: ['Search Quora for: bedtime stories kids, screen time kids, FIFA kids', 'Answer questions, naturally link to relevant blog', 'Quora answers rank in Google — drives traffic + signals'] },
+
+      // ── DIRECTORY LISTINGS (backlinks) ──
+      { name: 'Submit to web directories', area: 'Marketing', actions: ['Submit mysleepytale.com to: DMOZ alternatives, Jasmine Directory, Best of the Web', 'Each directory listing = 1 backlink', 'Focus on education, kids, parenting categories'] },
+      { name: 'Google Business Profile', area: 'Admin', actions: ['Create Google Business Profile for My Sleepy Tale', 'Category: Educational Software, Children Education', 'This signals to Google that you are a real business'] },
+
+      // ── TECHNICAL: Help Google crawl faster ──
+      { name: 'Internal linking from home page', area: 'Dev', actions: ['Add blog links in the home page footer', 'Link from About Us page to blogs', 'Every internal link helps Google discover pages'] },
+      { name: 'Add blog links to email signatures', area: 'Everyone', actions: ['Add "Read our blog: mysleepytale.com/blog" to email signatures', 'Every email sent = potential click = Google Analytics signal'] },
+    ],
+    postTemplate: '',
+    emailTemplate: '',
+    followUp: 'Day 1: Request indexing for top 15 pages in GSC → Day 2: Share 10 blog links on social media (personal accounts) → Day 3: Post 3 blogs on Medium with canonical → Week 1: Submit to 5 directories → Week 2: Answer 10 Quora questions with links → Week 3: Check GSC — pages should start moving to "Indexed" → Ongoing: Every new blog posted → immediately share on 3 platforms + request indexing in GSC',
+  },
 ];
 
 const FB_VARIANTS = [
@@ -474,7 +506,7 @@ export default function TeamObjectives() {
 
         {/* 7 Pilots */}
         <div>
-          <h2 className="text-sm font-bold text-ink mb-3" style={{ fontFamily: 'Lora, serif' }}>14 Outreach Pilots</h2>
+          <h2 className="text-sm font-bold text-ink mb-3" style={{ fontFamily: 'Lora, serif' }}>15 Outreach Pilots</h2>
           <div className="space-y-2">
             {PILOTS.map(pilot => (
               <div key={pilot.id} className="rounded-2xl bg-bg-surface ring-1 ring-white/5 overflow-hidden">
