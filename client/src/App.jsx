@@ -19,7 +19,6 @@ import Admin from './pages/Admin.jsx';
 import RecordVoice from './pages/RecordVoice.jsx';
 import Invest from './pages/Invest.jsx';
 import StonedAge from './pages/StonedAge.jsx';
-import Blog from './pages/Blog.jsx';
 import Creator from './pages/Creator.jsx';
 import CreatorProfile from './pages/CreatorProfile.jsx';
 import CuratorPage from './pages/CuratorPage.jsx';
@@ -165,7 +164,6 @@ function Shell() {
             <Route path="/creatives" element={<Creatives />} />
             <Route path="/studio" element={<Studio />} />
             <Route path="/radio" element={<Radio />} />
-            <Route path="/blog" element={<Blog />} />
             <Route path="/lessons" element={<CulturalLessons />} />
             <Route path="/voices" element={<VoiceStudio />} />
             <Route path="/characters" element={<Characters />} />

@@ -127,6 +127,16 @@ try {
   else console.log('  unique IDs: ' + allIds.length + ' IDs, no duplicates');
 } catch(e) { errors.push('Duplicate ID check failed: ' + e.message); }
 
+// Check blog index is up-to-date
+try {
+  const blogDir = require('path').join('client', 'public', 'blog');
+  const blogFiles = require('fs').readdirSync(blogDir).filter(f => f.endsWith('.html') && f !== 'index.html').length;
+  const indexContent = require('fs').readFileSync(require('path').join(blogDir, 'index.html'), 'utf8');
+  const indexPosts = (indexContent.match(/data-post/g) || []).length;
+  if (blogFiles > indexPosts) errors.push('Blog index has ' + indexPosts + ' entries but found ' + blogFiles + ' blog files — run: node scripts/generate-blog-index.js');
+  else console.log('  blog index: ' + blogFiles + ' posts, index up-to-date');
+} catch(e) { errors.push('Blog index check failed: ' + e.message); }
+
 // Report
 if (errors.length > 0) {
   console.error('');
