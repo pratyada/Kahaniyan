@@ -7338,7 +7338,7 @@ Tomorrow is a new match. A new chance. Rest now. Dream of goals and saves and ro
 Goodnight, little champion. Toronto is proud tonight. And so are you.`,
       },
       {
-        id: 'fifa26_ep7_vozinha', episodeNumber: 7, title: 'Vozinha and the 27 Flying Soccer Balls',
+        id: 'fifa26_ep7_vozinha', episodeNumber: 7, title: 'Vozinha and the 7 Impossible Saves',
         subtitle: 'A 40-year-old goalkeeper from a tiny island who became a World Cup hero.',
         tradition: 'universal', theme: 'courage', durationMinutes: 4,
         source: 'FIFA World Cup 2026 · Episode 7 — The Hero Who Wouldn\'t Give Up',
@@ -7370,7 +7370,7 @@ And Vozinha saved them. Every. Single. One.
 
 He dived left and pushed a bullet shot around the post. He leaped right and tipped a header over the bar. He stood tall and caught a free kick that was heading for the top corner. He fell to his knees and blocked a shot with his chest.
 
-Twenty-seven times the ball came at his goal. Twenty-seven times Vozinha said no.
+Twenty-seven times the ball came flying at his goal. Seven of those shots were heading straight in — and seven times Vozinha said no.
 
 The crowd — even the fans of the other team — started to cheer for him. Because courage is a language everyone understands. And Vozinha was speaking it louder than anyone had spoken it in a long, long time.
 
@@ -7525,7 +7525,7 @@ That night, little one, remember — every World Cup champion was once a child w
 Dream big tonight, little one. AT&T Stadium is YOUR cathedral. The world is your pitch. Goodnight, future champion. The beautiful game is waiting for you. And Dallas is ready.`,
       },
       {
-        id: 'fifa26_dallas_ep6_vozinha', episodeNumber: 6, title: 'Vozinha and the 27 Flying Soccer Balls',
+        id: 'fifa26_dallas_ep6_vozinha', episodeNumber: 6, title: 'Vozinha and the 7 Impossible Saves',
         subtitle: 'A 40-year-old goalkeeper from a tiny island who became a World Cup hero.',
         tradition: 'universal', theme: 'courage', durationMinutes: 4,
         source: 'FIFA World Cup 2026 Dallas · Episode 6 — The Hero Who Wouldn\'t Give Up',
@@ -7557,7 +7557,7 @@ And Vozinha saved them. Every. Single. One.
 
 He dived left and pushed a bullet shot around the post. He leaped right and tipped a header over the bar. He stood tall and caught a free kick that was heading for the top corner. He fell to his knees and blocked a shot with his chest.
 
-Twenty-seven times the ball came at his goal. Twenty-seven times Vozinha said no.
+Twenty-seven times the ball came flying at his goal. Seven of those shots were heading straight in — and seven times Vozinha said no.
 
 The crowd at AT&T Stadium — even the fans of the other team — started to cheer for him. Because courage is a language everyone understands. And Vozinha was speaking it louder than anyone had spoken it in a long, long time.
 

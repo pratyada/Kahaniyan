@@ -7,7 +7,7 @@ import { motion } from 'framer-motion';
 import PageTransition from '../components/PageTransition.jsx';
 
 const SEO = {
-  title: 'About Us — My Sleepy Tale | Bedtime Stories That Teach Roots & Values',
+  title: 'About Us — My Sleepy Tale | Audio Stories That Educate, Inspire & Connect Kids to Culture',
   description: 'My Sleepy Tale is a free bedtime story web space for multicultural families. 150+ stories from 11 cultural traditions — Hindu, Islamic, Catholic, Filipino, Hispanic & more. Personalized with your child\'s name, narrated with warm voices. Built in Toronto for families everywhere.',
   ogImage: 'https://storage.googleapis.com/qissaa-61a78.firebasestorage.app/og/aboutus.png',
   url: 'https://mysleepytale.com/aboutus',
@@ -161,11 +161,11 @@ export default function AboutUs() {
           <motion.div {...fadeUp} className="relative max-w-2xl mx-auto">
             <span className="text-5xl">🌙</span>
             <h1 className="mt-4 text-4xl lg:text-5xl font-bold text-ink leading-tight" style={{ fontFamily: 'Lora, serif' }}>
-              Bedtime Stories That<br />
-              <span className="text-gold">Teach Roots & Values</span>
+              Where Kids Learn, Create<br />
+              <span className="text-gold">& Dream Through Audio</span>
             </h1>
             <p className="mt-5 text-base text-ink-muted leading-relaxed max-w-lg mx-auto">
-              A bedtime story web space for families who want their children to learn about their culture, grow with strong values, and fall asleep to beautiful stories.
+              An audio-first ed-tech platform where children explore their culture, learn strong values, and create their own stories about the world around them. From the World Cup to their first school day — because the best memories start in childhood.
             </p>
             <div className="mt-8 flex flex-col sm:flex-row gap-3 justify-center">
               <button onClick={() => navigate('/')}

@@ -10,7 +10,7 @@ Vozinha the goalkeeper in a shimmering golden kit, making an incredible flying s
 **Text overlay sequence:**
 - 0-3s: "He was 40 years old"
 - 3-6s: "From an island nobody heard of"
-- 6-9s: "27 saves. One match."
+- 6-9s: "7 saves. Every shot denied."
 - 9-12s: "The hero who wouldn't give up"
 - 12-15s: "Listen tonight — mysleepytale.com"
 
