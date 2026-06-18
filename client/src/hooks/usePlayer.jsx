@@ -35,6 +35,8 @@ export function PlayerProvider({ children }) {
       } catch {}
       audioRef.current = null;
     }
+    // Stop radio if playing (single audio policy)
+    window.dispatchEvent(new Event('mst:stop-radio'));
     setCurrent(story);
     saveStory(story);
     setIsPlaying(true);
@@ -58,6 +60,21 @@ export function PlayerProvider({ children }) {
 
   // Register/unregister the active audio element
   const setAudio = useCallback((el) => { audioRef.current = el; }, []);
+
+  // Listen for stop-story events from radio
+  useEffect(() => {
+    const handler = () => {
+      if (audioRef.current) {
+        try { audioRef.current.pause(); audioRef.current.src = ''; } catch {}
+        audioRef.current = null;
+      }
+      try { window.speechSynthesis?.cancel(); } catch {}
+      setCurrent(null);
+      setIsPlaying(false);
+    };
+    window.addEventListener('mst:stop-story', handler);
+    return () => window.removeEventListener('mst:stop-story', handler);
+  }, []);
 
   // Expose method to reload last story if current is lost
   const reloadLast = useCallback(() => {

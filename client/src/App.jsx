@@ -29,6 +29,7 @@ import SearchPage from './pages/Search.jsx';
 import AboutUs from './pages/AboutUs.jsx';
 import Creatives from './pages/Creatives.jsx';
 import Studio from './pages/Studio.jsx';
+import ContentPipeline from './pages/ContentPipeline.jsx';
 import ContributeEpisode from './pages/ContributeEpisode.jsx';
 import MultilingualDemo from './pages/MultilingualDemo.jsx';
 import BottomNav from './components/BottomNav.jsx';
@@ -180,6 +181,7 @@ function Shell() {
             <Route path="/creator/:slug" element={<CuratorPage />} />
             <Route path="/my-tasks" element={<MyTasks />} />
             <Route path="/admin" element={<Admin />} />
+            <Route path="/content-pipeline" element={<ContentPipeline />} />
             <Route path="*" element={<Navigate to="/" replace />} />
           </Routes>
         </AnimatePresence>

@@ -42,8 +42,25 @@ export function RadioProvider({ children }) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  // Listen for stop-radio events from story player
+  useEffect(() => {
+    const handler = () => {
+      if (audioRef.current) {
+        audioRef.current.pause();
+        audioRef.current.src = '';
+      }
+      setStationId(null);
+      setPlaying(false);
+      setLoading(false);
+    };
+    window.addEventListener('mst:stop-radio', handler);
+    return () => window.removeEventListener('mst:stop-radio', handler);
+  }, []);
+
   const play = useCallback((station) => {
     if (!audioRef.current) return;
+    // Stop story player if playing (single audio policy)
+    window.dispatchEvent(new Event('mst:stop-story'));
     setError(null);
     setLoading(true);
     setStationId(station.id);

@@ -6,7 +6,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import PageTransition from '../components/PageTransition.jsx';
 import RadioGlobe from '../components/RadioGlobe.jsx';
 import SoundBars from '../components/SoundBars.jsx';
-import { RADIO_STATIONS } from '../data/radioStations.js';
+import { RADIO_STATIONS, RADIO_SECTIONS } from '../data/radioStations.js';
 import { useRadio } from '../hooks/useRadio.jsx';
 import { useAuth } from '../hooks/useAuth.jsx';
 import { db } from '../lib/firebase.js';
@@ -129,7 +129,7 @@ export default function Radio() {
           Global <span className="text-gold">Stations</span>
         </h1>
         <p className="mt-2 text-sm text-ink-muted">
-          10 handpicked streams from around the world. Spin the globe or pick a country.
+          20 handpicked streams from around the world. Kids-friendly music, lullabies, and chill vibes.
         </p>
       </header>
 
@@ -233,9 +233,18 @@ export default function Radio() {
         <div className="pointer-events-none absolute right-0 top-0 bottom-0 w-8 bg-gradient-to-l from-bg-base to-transparent" />
       </div>
 
-      {/* Station grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
-        {filtered.map((s, i) => {
+      {/* Station grid — grouped by section */}
+      {RADIO_SECTIONS.map((sec) => {
+        const sectionStations = filtered.filter((s) => s.section === sec.id);
+        if (sectionStations.length === 0) return null;
+        return (
+          <div key={sec.id} className="mb-6">
+            <div className="mb-3">
+              <h2 className="text-base font-bold text-ink" style={{ fontFamily: 'Lora, serif' }}>{sec.label}</h2>
+              <p className="text-[11px] text-ink-muted">{sec.description}</p>
+            </div>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
+        {sectionStations.map((s, i) => {
           const isActive = stationId === s.id;
           const isPlaying = isActive && playing;
           const isLoading = isActive && loading;
@@ -316,7 +325,10 @@ export default function Radio() {
             </motion.article>
           );
         })}
-      </div>
+            </div>
+          </div>
+        );
+      })}
 
       {/* Error */}
       <AnimatePresence>

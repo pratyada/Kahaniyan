@@ -378,6 +378,13 @@ export default function Home() {
       {/* Streak + Badges */}
       <StreakBadge />
 
+      {/* Product Hunt Launch */}
+      <div className="mb-4 flex justify-center">
+        <a href="https://www.producthunt.com/products/my-sleepy-tale-personalized-audio-book?embed=true&utm_source=badge-featured&utm_medium=badge&utm_campaign=badge-my-sleepy-tale-personalized-audio-book" target="_blank" rel="noopener noreferrer">
+          <img alt="My Sleepy Tale on Product Hunt" width="250" height="54" src={`https://api.producthunt.com/widgets/embed-image/v1/featured.svg?post_id=1174662&theme=${document.documentElement.dataset.theme === 'day' ? 'light' : 'dark'}&t=1781731481591`} />
+        </a>
+      </div>
+
       {/* Episodes / Series toggle */}
       <div className="mb-5 flex items-center justify-center">
         <div className="flex rounded-full bg-bg-surface p-1 ring-1 ring-white/5">

@@ -1,12 +1,184 @@
 // ─────────────────────────────────────────────────────────────
-// Bedtime radio stations — 10 global stations with coordinates.
+// Radio stations — Kids-Friendly + General sections.
 //
 // Each station has a lat/lng for the globe marker, a country,
 // and a flag emoji. Streams are direct HTTP audio (icecast /
 // shoutcast / zeno) so an HTML5 <audio> element plays them.
 // ─────────────────────────────────────────────────────────────
 
+export const RADIO_SECTIONS = [
+  { id: 'kids', label: '🧒 Kids-Friendly', description: 'Music for little ears — lullabies, pop covers, world beats, and gentle melodies.' },
+  { id: 'general', label: '🎧 General', description: 'Ambient, jazz, nature, and chill — for parents and bedtime wind-down.' },
+];
+
 export const RADIO_STATIONS = [
+  // ═══════════════════════════════════════════════════════════
+  // KIDS-FRIENDLY — gentle, educational, multilingual
+  // ═══════════════════════════════════════════════════════════
+  {
+    id: 'top-hits-lullaby',
+    name: 'Top Hits Lullaby',
+    tagline: 'Pop Hits as Lullabies',
+    description:
+      'Your favorite pop songs reimagined as gentle music box and piano covers. Kids drift off to songs they almost recognize.',
+    stream: 'https://ice1.somafm.com/covers-128-mp3',
+    fallback: 'https://ice2.somafm.com/covers-128-mp3',
+    accent: '#f3727f',
+    icon: '🎵',
+    bestFor: '"I know this song!"',
+    country: 'UK',
+    flag: '🇬🇧',
+    location: [51.51, -0.13],
+    section: 'kids',
+  },
+  {
+    id: 'bossa-baby',
+    name: 'Bossa Baby',
+    tagline: 'Brazilian Lullabies',
+    description:
+      'Silky bossa nova, gentle samba, and laid-back Brazilian rhythms. Teaches kids syncopation while they sleep.',
+    stream: 'https://ice1.somafm.com/bossa-128-mp3',
+    fallback: 'https://ice2.somafm.com/bossa-128-mp3',
+    accent: '#4ade80',
+    icon: '🇧🇷',
+    bestFor: 'rhythm & Portuguese',
+    country: 'Brazil',
+    flag: '🇧🇷',
+    location: [-22.91, -43.17],
+    section: 'kids',
+  },
+  {
+    id: 'raag-nidra',
+    name: 'Raag Nidra',
+    tagline: 'Indian Ambient · Goa',
+    description:
+      'Indian classical meets ambient electronica. Sitar, tabla, and dreamy pads — a hypnotic drift into sleep rooted in Indian tradition.',
+    stream: 'https://ice1.somafm.com/suburbsofgoa-128-mp3',
+    fallback: 'https://ice2.somafm.com/suburbsofgoa-128-mp3',
+    accent: '#f0a500',
+    icon: '🪕',
+    bestFor: 'Indian roots & deep sleep',
+    country: 'India',
+    flag: '🇮🇳',
+    location: [28.61, 77.21],
+    section: 'kids',
+  },
+  {
+    id: 'celtic-dreams',
+    name: 'Celtic Dreams',
+    tagline: 'Celtic Harps & World Fusion',
+    description:
+      'Celtic harps, Middle Eastern strings, and gentle world fusion — ancient lullabies from Ireland, Scotland, and beyond.',
+    stream: 'https://ice1.somafm.com/thistle-128-mp3',
+    fallback: 'https://ice2.somafm.com/thistle-128-mp3',
+    accent: '#fbbf24',
+    icon: '🍀',
+    bestFor: 'world music discovery',
+    country: 'Ireland',
+    flag: '🇮🇪',
+    location: [53.35, -6.26],
+    section: 'kids',
+  },
+  {
+    id: 'folk-tales',
+    name: 'Folk Tales Radio',
+    tagline: 'Indie Folk & Acoustic',
+    description:
+      'Gentle indie folk and acoustic storytelling music. Like a campfire singalong at bedtime — warm, cozy, human.',
+    stream: 'https://ice1.somafm.com/folkfwd-128-mp3',
+    fallback: 'https://ice2.somafm.com/folkfwd-128-mp3',
+    accent: '#c47f17',
+    icon: '🪵',
+    bestFor: 'campfire calm',
+    country: 'USA',
+    flag: '🇺🇸',
+    location: [40.71, -74.01],
+    section: 'kids',
+  },
+  {
+    id: 'space-station',
+    name: 'Space Station',
+    tagline: 'Space Music for Kids',
+    description:
+      'Spaced-out ambient and gentle electronica. Like floating through the solar system — perfect for kids who love planets and rockets.',
+    stream: 'https://ice1.somafm.com/spacestation-128-mp3',
+    fallback: 'https://ice2.somafm.com/spacestation-128-mp3',
+    accent: '#9cb3ff',
+    icon: '🚀',
+    bestFor: 'little astronauts',
+    country: 'USA',
+    flag: '🇺🇸',
+    location: [28.57, -80.65],
+    section: 'kids',
+  },
+  {
+    id: 'mission-control',
+    name: 'Mission Control',
+    tagline: 'NASA · Space Explorers',
+    description:
+      'Ambient music mixed with real NASA mission audio. "Houston, we have liftoff" — kids learn about space exploration while drifting off.',
+    stream: 'https://ice1.somafm.com/missioncontrol-128-mp3',
+    fallback: 'https://ice2.somafm.com/missioncontrol-128-mp3',
+    accent: '#60a5fa',
+    icon: '🛸',
+    bestFor: 'space + science nerds',
+    country: 'USA',
+    flag: '🇺🇸',
+    location: [29.55, -95.09],
+    section: 'kids',
+  },
+  {
+    id: 'retro-pop',
+    name: 'Retro Pop',
+    tagline: 'Electropop & Indie Dance',
+    description:
+      'Sparkly electropop and indie dance — upbeat enough for morning energy, gentle enough for daytime play. Clean lyrics.',
+    stream: 'https://ice1.somafm.com/poptron-128-mp3',
+    fallback: 'https://ice2.somafm.com/poptron-128-mp3',
+    accent: '#f472b6',
+    icon: '🪩',
+    bestFor: 'morning dance party',
+    country: 'Canada',
+    flag: '🇨🇦',
+    location: [43.65, -79.38],
+    section: 'kids',
+  },
+  {
+    id: 'reggae-island',
+    name: 'Reggae Island',
+    tagline: 'Reggae · Ska · Rocksteady',
+    description:
+      'Classic reggae, ska, and rocksteady — Bob Marley\'s "Three Little Birds" energy. Teaches kids about Caribbean music and positive vibes.',
+    stream: 'https://ice1.somafm.com/reggae-128-mp3',
+    fallback: 'https://ice2.somafm.com/reggae-128-mp3',
+    accent: '#22c55e',
+    icon: '🏝️',
+    bestFor: 'Caribbean vibes',
+    country: 'Jamaica',
+    flag: '🇯🇲',
+    location: [18.11, -77.30],
+    section: 'kids',
+  },
+  {
+    id: 'vintage-soul',
+    name: 'Vintage Soul',
+    tagline: '60s/70s Soul Classics',
+    description:
+      'Warm vintage soul from the golden age — Motown, Stax, and sweet harmony. Music your grandparents danced to, gentle enough for bedtime.',
+    stream: 'https://ice1.somafm.com/7soul-128-mp3',
+    fallback: 'https://ice2.somafm.com/7soul-128-mp3',
+    accent: '#f59e0b',
+    icon: '🎤',
+    bestFor: 'warm & timeless',
+    country: 'USA',
+    flag: '🇺🇸',
+    location: [42.33, -83.05],
+    section: 'kids',
+  },
+
+  // ═══════════════════════════════════════════════════════════
+  // GENERAL — ambient, jazz, nature, parents wind-down
+  // ═══════════════════════════════════════════════════════════
   {
     id: 'drone-zone',
     name: 'Drone Zone',
@@ -20,22 +192,8 @@ export const RADIO_STATIONS = [
     bestFor: 'first hour of sleep',
     country: 'USA',
     flag: '🇺🇸',
-    location: [37.77, -122.42], // San Francisco
-  },
-  {
-    id: 'raag-nidra',
-    name: 'Raag Nidra',
-    tagline: 'Indian Ambient · Goa',
-    description:
-      'Suburbs of Goa — Indian classical meets ambient electronica. Sitar, tabla, and dreamy pads for a hypnotic bedtime drift.',
-    stream: 'https://ice1.somafm.com/suburbsofgoa-128-mp3',
-    fallback: 'https://ice2.somafm.com/suburbsofgoa-128-mp3',
-    accent: '#f0a500',
-    icon: '🪕',
-    bestFor: 'deep sleep',
-    country: 'India',
-    flag: '🇮🇳',
-    location: [28.61, 77.21], // Delhi
+    location: [37.77, -122.42],
+    section: 'general',
   },
   {
     id: 'deep-space',
@@ -50,22 +208,24 @@ export const RADIO_STATIONS = [
     bestFor: 'deep background',
     country: 'USA',
     flag: '🇺🇸',
-    location: [34.05, -118.24], // Los Angeles
+    location: [34.05, -118.24],
+    section: 'general',
   },
   {
-    id: 'heavy-lullaby',
-    name: 'Heavy Lullaby',
-    tagline: 'Metal Lullabies · Kids',
+    id: 'groove-salad',
+    name: 'Groove Salad',
+    tagline: 'Downtempo · Chill',
     description:
-      'Metallica, AC/DC, and Iron Maiden — but played as gentle music box lullabies. Your kid sleeps to Enter Sandman and doesn\'t even know it.',
-    stream: 'https://ice1.somafm.com/covers-128-mp3',
-    fallback: 'https://ice2.somafm.com/covers-128-mp3',
-    accent: '#f3727f',
-    icon: '🤘',
-    bestFor: 'cool parents',
-    country: 'UK',
-    flag: '🇬🇧',
-    location: [51.51, -0.13], // London
+      'A nicely chilled plate of ambient/downtempo beats and grooves. The most popular SomaFM channel — 20+ years of chill.',
+    stream: 'https://ice1.somafm.com/groovesalad-128-mp3',
+    fallback: 'https://ice2.somafm.com/groovesalad-128-mp3',
+    accent: '#86efac',
+    icon: '🥗',
+    bestFor: 'chill vibes',
+    country: 'USA',
+    flag: '🇺🇸',
+    location: [37.77, -122.42],
+    section: 'general',
   },
   {
     id: 'workout',
@@ -80,7 +240,8 @@ export const RADIO_STATIONS = [
     bestFor: 'morning energy',
     country: 'Australia',
     flag: '🇦🇺',
-    location: [-33.87, 151.21], // Sydney
+    location: [-33.87, 151.21],
+    section: 'general',
   },
   {
     id: 'meditation-528',
@@ -95,7 +256,8 @@ export const RADIO_STATIONS = [
     bestFor: 'meditation & healing',
     country: 'Japan',
     flag: '🇯🇵',
-    location: [35.68, 139.65], // Tokyo
+    location: [35.68, 139.65],
+    section: 'general',
   },
   {
     id: 'jazz-lounge',
@@ -110,14 +272,15 @@ export const RADIO_STATIONS = [
     bestFor: 'late night chill',
     country: 'France',
     flag: '🇫🇷',
-    location: [48.86, 2.35], // Paris
+    location: [48.86, 2.35],
+    section: 'general',
   },
   {
     id: 'nature-sounds',
     name: 'Rainforest',
     tagline: 'Nature · White Noise',
     description:
-      'Tropical rain, distant thunder, and birdsong from the Amazon — nature\'s own lullaby running 24/7.',
+      "Tropical rain, distant thunder, and birdsong from the Amazon — nature's own lullaby running 24/7.",
     stream: 'https://ice1.somafm.com/fluid-128-mp3',
     fallback: 'https://ice2.somafm.com/fluid-128-mp3',
     accent: '#4ade80',
@@ -125,29 +288,15 @@ export const RADIO_STATIONS = [
     bestFor: 'calming background',
     country: 'Brazil',
     flag: '🇧🇷',
-    location: [-15.79, -47.88], // Brasilia
-  },
-  {
-    id: 'arabic-oud',
-    name: 'Oud Dreams',
-    tagline: 'World · Celtic Ambient',
-    description:
-      'Celtic harps, Middle Eastern strings, and gentle world fusion — a dreamy blanket of sound from ancient traditions.',
-    stream: 'https://ice1.somafm.com/thistle-128-mp3',
-    fallback: 'https://ice2.somafm.com/thistle-128-mp3',
-    accent: '#fbbf24',
-    icon: '🎵',
-    bestFor: 'bedtime calm',
-    country: 'UAE',
-    flag: '🇦🇪',
-    location: [25.20, 55.27], // Dubai
+    location: [-15.79, -47.88],
+    section: 'general',
   },
   {
     id: 'piano-dreams',
     name: 'Piano Dreams',
     tagline: 'Vocals · Ambient',
     description:
-      'Gentle female vocals floating over lush ambient pads — Elizabeth Fraser, Julee Cruise, and ethereal dream pop for the softest landing into sleep.',
+      'Gentle female vocals floating over lush ambient pads — ethereal dream pop for the softest landing into sleep.',
     stream: 'https://ice1.somafm.com/lush-128-mp3',
     fallback: 'https://ice2.somafm.com/lush-128-mp3',
     accent: '#e8b4ff',
@@ -155,6 +304,39 @@ export const RADIO_STATIONS = [
     bestFor: 'gentle sleep',
     country: 'Canada',
     flag: '🇨🇦',
-    location: [43.65, -79.38], // Toronto
+    location: [43.65, -79.38],
+    section: 'general',
+  },
+  {
+    id: 'beat-blender',
+    name: 'Beat Blender',
+    tagline: 'Deep House · Downtempo',
+    description:
+      'A late night blend of deep-house and downtempo chill. For parents who want their own vibe after bedtime.',
+    stream: 'https://ice1.somafm.com/beatblender-128-mp3',
+    fallback: 'https://ice2.somafm.com/beatblender-128-mp3',
+    accent: '#818cf8',
+    icon: '🎧',
+    bestFor: 'parent wind-down',
+    country: 'USA',
+    flag: '🇺🇸',
+    location: [37.77, -122.42],
+    section: 'general',
+  },
+  {
+    id: 'synthwave-80s',
+    name: 'Synthwave 80s',
+    tagline: '80s Synth · New Wave',
+    description:
+      'Early 80s UK synthpop and new wave — Depeche Mode, OMD, New Order. Nostalgic for parents, fresh for kids.',
+    stream: 'https://ice1.somafm.com/u80s-128-mp3',
+    fallback: 'https://ice2.somafm.com/u80s-128-mp3',
+    accent: '#f472b6',
+    icon: '📼',
+    bestFor: 'retro nostalgia',
+    country: 'UK',
+    flag: '🇬🇧',
+    location: [51.51, -0.13],
+    section: 'general',
   },
 ];

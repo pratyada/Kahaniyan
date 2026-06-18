@@ -177,6 +177,11 @@ export default function AboutUs() {
                 Search Stories
               </button>
             </div>
+            <div className="mt-5 flex justify-center">
+              <a href="https://www.producthunt.com/products/my-sleepy-tale-personalized-audio-book?embed=true&utm_source=badge-featured&utm_medium=badge&utm_campaign=badge-my-sleepy-tale-personalized-audio-book" target="_blank" rel="noopener noreferrer">
+                <img alt="My Sleepy Tale on Product Hunt" width="250" height="54" src={`https://api.producthunt.com/widgets/embed-image/v1/featured.svg?post_id=1174662&theme=${document.documentElement.dataset.theme === 'day' ? 'light' : 'dark'}&t=1781731481591`} />
+              </a>
+            </div>
             <p className="mt-4 text-xs text-ink-muted">Free to use. No credit card. No downloads.</p>
           </motion.div>
         </section>
