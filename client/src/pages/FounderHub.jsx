@@ -22,13 +22,13 @@ const PIPELINES = [
     accent: '#9f7aea',
   },
   {
-    id: 'reddit-agents',
+    id: 'marketing-agents',
     title: 'Marketing Agents',
     icon: '🤖',
-    description: 'Reddit monitoring + AI comment drafting + Slack approval flow.',
+    description: 'Multi-channel outreach — Reddit, X, Instagram, Medium, TikTok, and more.',
     status: 'active',
     accent: '#f0a500',
-    link: null, // renders inline below
+    link: null,
   },
   {
     id: 'content-pipeline',
@@ -48,6 +48,50 @@ const PIPELINES = [
     accent: '#60a5fa',
   },
 ];
+
+const MARKETING_CHANNELS = [
+  { id: 'reddit', label: 'Reddit', icon: '🟠', status: 'active', description: 'Monitor subreddits, AI-draft comments, approve & post. 10 subreddits × 10 keywords.', automation: '80% automated', features: ['Keyword monitoring', 'AI comment drafting (3 styles)', 'Slack approval flow', 'Auto-post after approval', 'Karma tracking'] },
+  { id: 'x-twitter', label: 'X / Twitter', icon: '🐦', status: 'coming-soon', description: 'Schedule tweets, reply to relevant threads, track engagement. Thread writer agent.', automation: '70% automated', features: ['Trending topic scanner', 'AI tweet/thread writer', 'Scheduled posting', 'Engagement tracker', 'Hashtag optimizer'] },
+  { id: 'instagram', label: 'Instagram', icon: '📸', status: 'coming-soon', description: 'Reels scheduling, caption writer, hashtag research, story templates.', automation: '60% automated', features: ['Reel scheduler', 'AI caption writer', 'Hashtag researcher', 'Story template generator', 'Engagement pod'] },
+  { id: 'medium', label: 'Medium', icon: '📝', status: 'coming-soon', description: 'Auto-repurpose blog posts into Medium articles with backlinks.', automation: '90% automated', features: ['Blog-to-Medium converter', 'Backlink injector', 'Tag optimizer', 'Publication submitter', 'Clap tracker'] },
+  { id: 'tiktok', label: 'TikTok', icon: '🎵', status: 'coming-soon', description: 'Video script generator, trending sound matcher, caption optimizer.', automation: '50% automated', features: ['Script generator from stories', 'Trending sound matcher', 'Caption optimizer', 'Posting scheduler', 'View tracker'] },
+  { id: 'linkedin', label: 'LinkedIn', icon: '💼', status: 'coming-soon', description: 'Founder thought leadership posts, company updates, network engagement.', automation: '70% automated', features: ['AI post writer', 'Carousel generator', 'Comment engagement', 'Connection outreach', 'Analytics'] },
+  { id: 'product-hunt', label: 'Product Hunt', icon: '🚀', status: 'coming-soon', description: 'Launch day automation, comment monitoring, maker responses.', automation: '40% automated', features: ['Launch day dashboard', 'Comment responder', 'Upvote tracker', 'Maker comment drafter', 'Post-launch follow-up'] },
+  { id: 'quora', label: 'Quora', icon: '❓', status: 'coming-soon', description: 'Find relevant questions, draft expert answers with backlinks.', automation: '80% automated', features: ['Question finder', 'AI answer drafter', 'Backlink placer', 'Upvote tracker', 'Topic follower'] },
+  { id: 'email-outreach', label: 'Email Outreach', icon: '📧', status: 'coming-soon', description: 'Blogger outreach, partnership emails, press pitches.', automation: '70% automated', features: ['Contact finder', 'AI pitch writer', 'Follow-up scheduler', 'Open/reply tracker', 'Template library'] },
+  { id: 'directories', label: 'Directories', icon: '📋', status: 'coming-soon', description: 'Auto-submit to startup directories, track listings.', automation: '90% automated', features: ['30+ directory list', 'Auto-fill submitter', 'Status tracker', 'Backlink verifier', 'Renewal reminders'] },
+];
+
+function ChannelPlaceholder({ channel }) {
+  if (!channel) return null;
+  return (
+    <div className="rounded-2xl bg-bg-surface ring-1 ring-white/5 p-6">
+      <div className="flex items-center gap-3 mb-4">
+        <span className="text-3xl">{channel.icon}</span>
+        <div>
+          <h3 className="text-sm font-bold text-ink">{channel.label} Agent</h3>
+          <p className="text-[10px] text-ink-dim">{channel.automation}</p>
+        </div>
+      </div>
+      <p className="text-xs text-ink-muted mb-4">{channel.description}</p>
+      <div className="mb-4">
+        <p className="text-[10px] font-bold uppercase tracking-wider text-ink-dim mb-2">Planned Features</p>
+        <div className="space-y-1.5">
+          {channel.features.map((f, i) => (
+            <div key={i} className="flex items-center gap-2">
+              <span className="w-1.5 h-1.5 rounded-full bg-gold/30" />
+              <span className="text-[11px] text-ink-muted">{f}</span>
+            </div>
+          ))}
+        </div>
+      </div>
+      <div className="rounded-xl bg-gold/5 ring-1 ring-gold/20 p-3 text-center">
+        <p className="text-[11px] text-gold font-bold">🔜 Coming Soon</p>
+        <p className="text-[10px] text-ink-dim mt-0.5">This channel agent is in the roadmap. Reddit is live now.</p>
+      </div>
+    </div>
+  );
+}
 
 const STATUS_BADGE = {
   'active': { bg: 'bg-emerald-500/10', text: 'text-emerald-400', label: '● Active' },
@@ -200,6 +244,7 @@ export default function FounderHub() {
   const navigate = useNavigate();
   const { user } = useAuth();
   const [activeSection, setActiveSection] = useState(null);
+  const [marketingChannel, setMarketingChannel] = useState('reddit');
   const [redditLeads, setRedditLeads] = useState([]);
   const [loading, setLoading] = useState(false);
   const [scanning, setScanning] = useState(false);
@@ -346,9 +391,9 @@ export default function FounderHub() {
         })}
       </div>
 
-      {/* Reddit Agents Section */}
+      {/* Marketing Agents Section */}
       <AnimatePresence>
-        {activeSection === 'reddit-agents' && (
+        {activeSection === 'marketing-agents' && (
           <motion.div
             initial={{ opacity: 0, height: 0 }}
             animate={{ opacity: 1, height: 'auto' }}
@@ -356,62 +401,79 @@ export default function FounderHub() {
             className="overflow-hidden"
           >
             <div className="mb-8">
-              <div className="flex items-center justify-between mb-4">
-                <h2 className="text-base font-bold text-ink" style={{ fontFamily: 'Lora, serif' }}>
-                  🤖 Reddit Marketing Agents
-                </h2>
-                <button
-                  onClick={handleScan}
-                  disabled={scanning}
-                  className="rounded-full bg-gold px-4 py-2 text-xs font-bold text-bg-base shadow-glow transition hover:brightness-110 active:scale-95 disabled:opacity-40"
-                >
-                  {scanning ? '⏳ Scanning...' : '📡 Scan Reddit Now'}
-                </button>
-              </div>
+              <h2 className="text-base font-bold text-ink mb-4" style={{ fontFamily: 'Lora, serif' }}>
+                🤖 Marketing & Outreach Agents
+              </h2>
 
-              {/* Stats */}
-              <RedditStats leads={redditLeads} />
-
-              {/* Keyword config */}
-              <div className="rounded-xl bg-bg-surface ring-1 ring-white/5 p-3 mb-4">
-                <p className="text-[10px] font-bold uppercase tracking-wider text-ink-dim mb-1">Tracking Keywords</p>
-                <div className="flex flex-wrap gap-1.5">
-                  {['bedtime story', 'parenting app', 'personalized stories', 'kids reading', 'screen time kids', 'toddler bedtime', 'multicultural kids', 'audio stories'].map(kw => (
-                    <span key={kw} className="text-[10px] bg-gold/10 text-gold px-2 py-0.5 rounded-full font-medium">{kw}</span>
-                  ))}
-                </div>
-              </div>
-
-              {/* Subreddits */}
-              <div className="rounded-xl bg-bg-surface ring-1 ring-white/5 p-3 mb-4">
-                <p className="text-[10px] font-bold uppercase tracking-wider text-ink-dim mb-1">Monitoring Subreddits</p>
-                <div className="flex flex-wrap gap-1.5">
-                  {['Parenting', 'daddit', 'Mommit', 'toddlers', 'SideProject', 'startups', 'edtech', 'InternetIsBeautiful', 'worldcup', 'ProductHunt'].map(sr => (
-                    <span key={sr} className="text-[10px] bg-purple-500/10 text-purple-400 px-2 py-0.5 rounded-full font-medium">r/{sr}</span>
-                  ))}
-                </div>
-              </div>
-
-              {/* Leads */}
-              <div className="space-y-3">
-                {loading && <p className="text-sm text-ink-muted text-center py-8">Loading leads...</p>}
-                {!loading && redditLeads.length === 0 && (
-                  <div className="text-center py-12 rounded-2xl bg-bg-surface ring-1 ring-white/5">
-                    <p className="text-3xl mb-2">📡</p>
-                    <p className="text-sm text-ink-muted">No leads yet. Hit "Scan Reddit Now" to find opportunities.</p>
-                    <p className="text-[10px] text-ink-dim mt-1">Set up Reddit API credentials to enable scanning.</p>
-                  </div>
-                )}
-                {redditLeads.filter(l => l.status !== 'rejected').map(lead => (
-                  <RedditLeadCard
-                    key={lead.id}
-                    lead={lead}
-                    onDraft={handleDraft}
-                    onApprove={handleApprove}
-                    onReject={handleReject}
-                  />
+              {/* Channel tabs */}
+              <div className="flex gap-2 overflow-x-auto pb-2 mb-4 scrollbar-hide">
+                {MARKETING_CHANNELS.map(ch => (
+                  <button
+                    key={ch.id}
+                    onClick={() => setMarketingChannel(ch.id)}
+                    className={`shrink-0 flex items-center gap-1.5 rounded-full px-3.5 py-2 text-xs font-bold transition active:scale-95 ${
+                      marketingChannel === ch.id
+                        ? 'bg-gold text-bg-base shadow-glow'
+                        : ch.status === 'active' ? 'bg-white/5 text-ink-muted ring-1 ring-white/10 hover:ring-gold/20' : 'bg-white/3 text-ink-dim ring-1 ring-white/5 opacity-50'
+                    }`}
+                  >
+                    {ch.icon} {ch.label}
+                    {ch.status === 'coming-soon' && <span className="text-[8px] opacity-60">soon</span>}
+                  </button>
                 ))}
               </div>
+
+              {/* Reddit Channel */}
+              {marketingChannel === 'reddit' && (
+                <div>
+                  <div className="flex items-center justify-between mb-4">
+                    <p className="text-sm text-ink-muted">Find parenting posts → AI drafts comments → you approve → post</p>
+                    <button
+                      onClick={handleScan}
+                      disabled={scanning}
+                      className="rounded-full bg-gold px-4 py-2 text-xs font-bold text-bg-base shadow-glow transition hover:brightness-110 active:scale-95 disabled:opacity-40"
+                    >
+                      {scanning ? '⏳ Scanning...' : '📡 Scan Reddit'}
+                    </button>
+                  </div>
+                  <RedditStats leads={redditLeads} />
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-3 mb-4">
+                    <div className="rounded-xl bg-bg-surface ring-1 ring-white/5 p-3">
+                      <p className="text-[10px] font-bold uppercase tracking-wider text-ink-dim mb-1">Keywords</p>
+                      <div className="flex flex-wrap gap-1.5">
+                        {['bedtime story', 'parenting app', 'personalized stories', 'kids reading', 'screen time kids', 'toddler bedtime', 'multicultural kids', 'audio stories'].map(kw => (
+                          <span key={kw} className="text-[10px] bg-gold/10 text-gold px-2 py-0.5 rounded-full font-medium">{kw}</span>
+                        ))}
+                      </div>
+                    </div>
+                    <div className="rounded-xl bg-bg-surface ring-1 ring-white/5 p-3">
+                      <p className="text-[10px] font-bold uppercase tracking-wider text-ink-dim mb-1">Subreddits</p>
+                      <div className="flex flex-wrap gap-1.5">
+                        {['Parenting', 'daddit', 'Mommit', 'toddlers', 'SideProject', 'startups', 'edtech', 'InternetIsBeautiful'].map(sr => (
+                          <span key={sr} className="text-[10px] bg-purple-500/10 text-purple-400 px-2 py-0.5 rounded-full font-medium">r/{sr}</span>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
+                  <div className="space-y-3">
+                    {loading && <p className="text-sm text-ink-muted text-center py-8">Loading leads...</p>}
+                    {!loading && redditLeads.length === 0 && (
+                      <div className="text-center py-12 rounded-2xl bg-bg-surface ring-1 ring-white/5">
+                        <p className="text-3xl mb-2">📡</p>
+                        <p className="text-sm text-ink-muted">No leads yet. Hit "Scan Reddit" to find opportunities.</p>
+                      </div>
+                    )}
+                    {redditLeads.filter(l => l.status !== 'rejected').map(lead => (
+                      <RedditLeadCard key={lead.id} lead={lead} onDraft={handleDraft} onApprove={handleApprove} onReject={handleReject} />
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              {/* Other channels — coming soon placeholder */}
+              {marketingChannel !== 'reddit' && (
+                <ChannelPlaceholder channel={MARKETING_CHANNELS.find(c => c.id === marketingChannel)} />
+              )}
             </div>
           </motion.div>
         )}

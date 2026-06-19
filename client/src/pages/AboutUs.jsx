@@ -9,7 +9,7 @@ import PageTransition from '../components/PageTransition.jsx';
 const SEO = {
   title: 'About Us — My Sleepy Tale | Audio Stories That Educate, Inspire & Connect Kids to Culture',
   description: 'My Sleepy Tale is a free bedtime story web space for multicultural families. 150+ stories from 11 cultural traditions — Hindu, Islamic, Catholic, Filipino, Hispanic & more. Personalized with your child\'s name, narrated with warm voices. Built in Toronto for families everywhere.',
-  ogImage: 'https://storage.googleapis.com/qissaa-61a78.firebasestorage.app/og/aboutus.png',
+  ogImage: 'https://mysleepytale.com/media/og/aboutus.png',
   url: 'https://mysleepytale.com/aboutus',
 };
 

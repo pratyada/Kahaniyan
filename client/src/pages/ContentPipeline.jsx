@@ -11,6 +11,8 @@ import { usePipelineRun } from '../hooks/usePipelineRun.js';
 import { useAuth } from '../hooks/useAuth.jsx';
 import { useAdmin } from '../hooks/useAdmin.jsx';
 
+const FOUNDER_EMAIL = 'prateekyadav2010@gmail.com';
+
 const API = import.meta.env.VITE_API_URL || '';
 
 export default function ContentPipeline() {
@@ -49,10 +51,10 @@ export default function ContentPipeline() {
 
   useEffect(() => { loadRuns(); }, [loadRuns]);
 
-  // Redirect if not admin
+  // Redirect if not founder
   useEffect(() => {
-    if (!adminLoading && !isAdmin) navigate('/');
-  }, [isAdmin, adminLoading, navigate]);
+    if (user && user.email?.toLowerCase() !== FOUNDER_EMAIL && !isAdmin) navigate('/');
+  }, [user, isAdmin, navigate]);
 
   // Start a new pipeline run
   const handleStart = async ({ workflowId, input }) => {
@@ -111,7 +113,7 @@ export default function ContentPipeline() {
       {/* Header */}
       <header className="mb-6">
         <div className="flex items-center gap-2 mb-1">
-          <button onClick={() => navigate('/admin')} className="text-xs text-gold font-bold">← Admin</button>
+          <button onClick={() => navigate('/founder-hub')} className="text-xs text-gold font-bold">← Founder Hub</button>
         </div>
         <p className="ui-label">Content Pipeline</p>
         <h1 className="display-title mt-1 text-ink">
