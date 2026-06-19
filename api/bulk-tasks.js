@@ -16,7 +16,7 @@ async function getAdmin() {
   return admin;
 }
 
-const ADMIN_EMAILS = ['prateekyadav2010@gmail.com', 'sahil.faraz@gmail.com', 'deepti.ramaul@gmail.com', 'rakshajoshi476@gmail.com'];
+const ADMIN_EMAILS = ['prateekyadav2010@gmail.com', 'sahil.faraz@gmail.com', 'deepti.ramaul@gmail.com', 'rakshajoshi476@gmail.com', 'vasudha.0512@gmail.com'];
 
 export default async function handler(req, res) {
   if (req.method !== 'POST') return res.status(405).json({ error: 'POST only' });

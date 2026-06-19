@@ -5114,6 +5114,41 @@ const TASK_STATUS = [
   { key: 'blocked', label: 'Blocked', color: '#f3727f' },
 ];
 
+function TaskDescription({ text }) {
+  const [expanded, setExpanded] = useState(false);
+  const isLong = text.length > 150;
+
+  const renderLine = (line, i) => {
+    const parts = line.split(/(https?:\/\/[^\s]+)/g).map((p, j) =>
+      p.match(/^https?:\/\//) ? <a key={j} href={p} target="_blank" rel="noopener noreferrer" className="text-gold underline break-all">{p}</a> : p
+    );
+    const trimmed = line.trim();
+    if (trimmed.startsWith('•') || trimmed.startsWith('-') || trimmed.startsWith('–'))
+      return <div key={i} className="pl-3">{parts}</div>;
+    if (/^\d+[\.\)]/.test(trimmed))
+      return <div key={i} className="pl-2 font-medium text-ink-dim/80">{parts}</div>;
+    if (trimmed === '') return <div key={i} className="h-1" />;
+    if (trimmed === trimmed.toUpperCase() && trimmed.length > 3 && /[A-Z]/.test(trimmed))
+      return <div key={i} className="font-bold text-ink-dim/70 mt-1.5 mb-0.5 text-[10px] uppercase tracking-wider">{parts}</div>;
+    return <div key={i}>{parts}</div>;
+  };
+
+  return (
+    <div className="mt-0.5">
+      {expanded ? (
+        <div className="text-[11px] text-ink-dim leading-relaxed">{text.split('\n').map(renderLine)}</div>
+      ) : (
+        <p className="text-[11px] text-ink-dim line-clamp-2">{text.slice(0, 200)}{isLong ? '...' : ''}</p>
+      )}
+      {isLong && (
+        <button onClick={e => { e.stopPropagation(); setExpanded(!expanded); }} className="text-[10px] font-bold text-gold mt-0.5 hover:underline">
+          {expanded ? '▲ Less' : '▼ Show full description'}
+        </button>
+      )}
+    </div>
+  );
+}
+
 function TaskBoard({ team = [], adminEmails = [] }) {
   // Combine admins + team into one assignee list (deduplicated)
   const allAssignees = useMemo(() => {
@@ -5475,7 +5510,7 @@ function TaskBoard({ team = [], adminEmails = [] }) {
                       <input value={e.title} onChange={ev => setEditingTask({ ...e, title: ev.target.value })}
                         className="w-full rounded-lg bg-white/5 px-3 py-2 text-sm text-ink border border-gold/30 outline-none" />
                       <textarea value={e.description || ''} onChange={ev => setEditingTask({ ...e, description: ev.target.value })}
-                        className="w-full rounded-lg bg-white/5 px-3 py-1.5 text-xs text-ink-muted border border-white/10 outline-none resize-none h-12" placeholder="Description..." />
+                        className="w-full rounded-lg bg-white/5 px-3 py-2.5 text-xs text-ink font-mono border border-gold/30 outline-none resize-y min-h-[200px] max-h-[600px] whitespace-pre-wrap leading-relaxed" placeholder="Description..." />
                       <div className="flex flex-wrap gap-2">
                         <select value={e.activity} onChange={ev => setEditingTask({ ...e, activity: ev.target.value })}
                           className="rounded-lg bg-white/5 px-2 py-1.5 text-xs text-ink border border-white/10 outline-none">
@@ -5524,7 +5559,7 @@ function TaskBoard({ team = [], adminEmails = [] }) {
                         {task.priority === 'urgent' && <span className="text-[9px] bg-[#f3727f]/20 text-[#f3727f] px-1.5 rounded-full font-bold">URGENT</span>}
                         {task.priority === 'high' && <span className="text-[9px] bg-[#f0a500]/20 text-gold px-1.5 rounded-full font-bold">HIGH</span>}
                       </div>
-                      {task.description && <p className="text-[11px] text-ink-dim mt-0.5">{task.description}</p>}
+                      {task.description && <TaskDescription text={task.description} />}
                       <div className="flex items-center gap-2 mt-1">
                         <span className="text-[9px] px-2 py-0.5 rounded-full font-bold" style={{ background: (act?.color || '#666') + '22', color: act?.color || '#666' }}>
                           {act?.icon} {act?.label}

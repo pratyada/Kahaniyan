@@ -10,6 +10,90 @@ import { db } from '../lib/firebase.js';
 import { collection, getDocs, doc, setDoc } from 'firebase/firestore';
 import PageTransition from '../components/PageTransition.jsx';
 
+function ExpandableDescription({ text, taskId, onSave }) {
+  const [expanded, setExpanded] = useState(false);
+  const [editing, setEditing] = useState(false);
+  const [editText, setEditText] = useState(text);
+  const isLong = text.length > 120;
+
+  const renderText = (t) => t.split(/(https?:\/\/[^\s]+)/g).map((part, i) =>
+    part.match(/^https?:\/\//) ? (
+      <a key={i} href={part} target="_blank" rel="noopener noreferrer" className="text-gold underline break-all">{part}</a>
+    ) : part
+  );
+
+  // Format description: lines starting with • or - or numbers get indentation
+  const formatDescription = (t) => {
+    return t.split('\n').map((line, i) => {
+      const trimmed = line.trim();
+      if (trimmed.startsWith('•') || trimmed.startsWith('-') || trimmed.startsWith('–')) {
+        return <div key={i} className="pl-3">{renderText(line)}</div>;
+      }
+      if (/^\d+[\.\)]/.test(trimmed)) {
+        return <div key={i} className="pl-2 font-medium text-ink/80">{renderText(line)}</div>;
+      }
+      if (trimmed === '') {
+        return <div key={i} className="h-1.5" />;
+      }
+      if (trimmed === trimmed.toUpperCase() && trimmed.length > 3 && trimmed.endsWith(':')) {
+        return <div key={i} className="font-bold text-ink/70 mt-1.5 mb-0.5 text-[10px] uppercase tracking-wider">{renderText(line)}</div>;
+      }
+      return <div key={i}>{renderText(line)}</div>;
+    });
+  };
+
+  if (editing) {
+    return (
+      <div className="mt-1.5">
+        <textarea
+          value={editText}
+          onChange={(e) => setEditText(e.target.value)}
+          className="w-full rounded-xl bg-bg-base px-3 py-2.5 text-[11px] text-ink ring-1 ring-gold/30 outline-none resize-y min-h-[200px] max-h-[500px] whitespace-pre-wrap leading-relaxed font-mono"
+          autoFocus
+        />
+        <div className="flex gap-2 mt-2">
+          <button
+            onClick={() => { onSave?.(taskId, editText); setEditing(false); }}
+            className="text-[10px] font-bold text-bg-base bg-gold px-3 py-1.5 rounded-full"
+          >
+            ✓ Save
+          </button>
+          <button
+            onClick={() => { setEditText(text); setEditing(false); }}
+            className="text-[10px] font-bold text-ink-muted bg-white/5 px-3 py-1.5 rounded-full"
+          >
+            Cancel
+          </button>
+        </div>
+      </div>
+    );
+  }
+
+  return (
+    <div className="mt-1">
+      <div className={`text-[11px] text-ink-muted leading-relaxed ${!expanded && isLong ? 'line-clamp-3' : ''}`}>
+        {expanded ? formatDescription(text) : renderText(text.slice(0, 200) + (isLong ? '...' : ''))}
+      </div>
+      <div className="flex gap-3 mt-1">
+        {isLong && (
+          <button
+            onClick={(e) => { e.stopPropagation(); setExpanded(!expanded); }}
+            className="text-[10px] font-bold text-gold hover:underline"
+          >
+            {expanded ? '▲ Less' : '▼ More'}
+          </button>
+        )}
+        <button
+          onClick={(e) => { e.stopPropagation(); setExpanded(true); setEditing(true); }}
+          className="text-[10px] font-bold text-ink-dim hover:text-gold"
+        >
+          ✏️ Edit
+        </button>
+      </div>
+    </div>
+  );
+}
+
 const ACTIVITIES = {
   content: { label: 'Content', icon: '📝', color: '#9f7aea' },
   marketing: { label: 'Marketing', icon: '📣', color: '#f0a500' },
@@ -254,7 +338,7 @@ export default function MyTasks() {
                 autoFocus />
               <textarea value={newTask.description} onChange={e => setNewTask({ ...newTask, description: e.target.value })}
                 placeholder="Details (optional)"
-                className="w-full rounded-lg bg-white/5 px-4 py-2 text-xs text-ink-muted ring-1 ring-white/10 outline-none resize-none h-14 placeholder:text-ink-muted" />
+                className="w-full rounded-lg bg-white/5 px-4 py-2 text-xs text-ink-muted ring-1 ring-white/10 outline-none resize-y min-h-[56px] max-h-[300px] placeholder:text-ink-muted" />
               <div className="flex flex-wrap gap-2">
                 <select value={newTask.activity} onChange={e => setNewTask({ ...newTask, activity: e.target.value })}
                   className="rounded-lg bg-white/5 px-3 py-2 text-xs text-ink ring-1 ring-white/10 outline-none">
@@ -378,7 +462,21 @@ export default function MyTasks() {
                         {task.title}
                       </p>
                       {task.description && (
-                        <p className="text-[11px] text-ink-muted mt-1">{task.description}</p>
+                        <ExpandableDescription text={task.description} taskId={task.id} onSave={async (id, newDesc) => {
+                          const updated = { ...task, description: newDesc, updatedAt: new Date().toISOString() };
+                          setTasks(prev => prev.map(t => t.id === id ? updated : t));
+                          if (db) await setDoc(doc(db, 'dailyTasks', id), updated, { merge: true });
+                        }} />
+                      )}
+                      {task.links && task.links.length > 0 && (
+                        <div className="flex gap-2 mt-1.5 flex-wrap">
+                          {task.links.map((link, i) => (
+                            <a key={i} href={link.url} target="_blank" rel="noopener noreferrer"
+                              className="text-[10px] font-bold text-gold bg-gold/10 px-2.5 py-1 rounded-full hover:bg-gold/20 transition">
+                              🔗 {link.label}
+                            </a>
+                          ))}
+                        </div>
                       )}
                       <div className="flex items-center gap-2 mt-2 flex-wrap">
                         <span className="text-[10px] px-2 py-0.5 rounded-full font-bold"
