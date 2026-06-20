@@ -141,8 +141,8 @@ Return JSON: {"coverPrompt":"...","scenePrompts":["prompt1","prompt2","prompt3"]
 // ─── Agent: Image Generator ───────────────────────────────────────
 
 async function imageGen({ input }) {
-  const storyData = input._from_['story-writer'] || {};
-  const promptData = input._from_['image-prompt-gen'] || {};
+  const storyData = input['_from_story-writer'] || {};
+  const promptData = input['_from_image-prompt-gen'] || {};
 
   const coverPrompt = promptData.coverPrompt ||
     `Children's bedtime storybook illustration for "${storyData.title || input.topic}", soft watercolor style, warm dreamy colors`;
@@ -151,24 +151,28 @@ async function imageGen({ input }) {
 
   const coverBase64 = await callOpenAIImage(stylePrefix + coverPrompt);
 
-  // Upload to Firebase Storage
+  // Upload to S3
   let coverImageUrl = null;
   try {
-    const admin = (await import('../_firebase.js')).getFirebaseAdmin;
-    const fb = await admin();
-    if (fb && coverBase64) {
-      const bucket = fb.storage().bucket(process.env.FIREBASE_STORAGE_BUCKET || 'qissaa-61a78.firebasestorage.app');
-      const filename = `pipeline-images/${Date.now()}_cover.png`;
-      const file = bucket.file(filename);
-      await file.save(Buffer.from(coverBase64, 'base64'), { contentType: 'image/png', public: true });
-      coverImageUrl = `https://storage.googleapis.com/${bucket.name}/${filename}`;
+    if (coverBase64) {
+      const { S3Client, PutObjectCommand } = await import('@aws-sdk/client-s3');
+      const s3 = new S3Client({ region: 'us-east-1' });
+      const filename = `media/pipeline/${Date.now()}_cover.png`;
+      await s3.send(new PutObjectCommand({
+        Bucket: 'mysleepytale-app',
+        Key: filename,
+        Body: Buffer.from(coverBase64, 'base64'),
+        ContentType: 'image/png',
+        CacheControl: 'public, max-age=604800',
+      }));
+      coverImageUrl = `https://mysleepytale.com/${filename}`;
     }
   } catch (e) {
-    coverImageUrl = `data:image/png;base64,${coverBase64?.slice(0, 100)}...`; // fallback
+    coverImageUrl = null;
   }
 
   return {
-    output: { coverImageUrl, coverBase64: coverBase64 ? '[base64_stored]' : null },
+    output: { coverImageUrl, coverBase64: coverBase64 ? '[stored]' : null },
     provider: 'openai',
     tokens: { input: 0, output: 0 },
     costEstimate: 0.04, // ~$0.04 per gpt-image-1 generation
@@ -178,8 +182,8 @@ async function imageGen({ input }) {
 // ─── Agent: Blog HTML Generator ───────────────────────────────────
 
 async function blogHtmlGen({ input }) {
-  const storyData = input._from_['story-writer'] || {};
-  const imageData = input._from_['image-gen'] || {};
+  const storyData = input['_from_story-writer'] || {};
+  const imageData = input['_from_image-gen'] || {};
 
   const system = `You generate SEO-optimized blog post HTML for My Sleepy Tale, a bedtime story platform.
 The HTML must include:
@@ -233,8 +237,8 @@ Slug suggestion: derive from the title (lowercase, hyphens, no special chars)`;
 // ─── Agent: Blog Image Generator ──────────────────────────────────
 
 async function blogImageGen({ input }) {
-  const storyData = input._from_['story-writer'] || {};
-  const promptData = input._from_['image-prompt-gen'] || {};
+  const storyData = input['_from_story-writer'] || {};
+  const promptData = input['_from_image-prompt-gen'] || {};
 
   const ogPrompt = promptData.ogImagePrompt ||
     `Wide landscape illustration for "${storyData.title || input.topic}", atmospheric, room for text overlay on left, bedtime story style`;
@@ -245,14 +249,18 @@ async function blogImageGen({ input }) {
 
   let ogImageUrl = null;
   try {
-    const admin = (await import('../_firebase.js')).getFirebaseAdmin;
-    const fb = await admin();
-    if (fb && ogBase64) {
-      const bucket = fb.storage().bucket(process.env.FIREBASE_STORAGE_BUCKET || 'qissaa-61a78.firebasestorage.app');
-      const filename = `pipeline-images/${Date.now()}_og.png`;
-      const file = bucket.file(filename);
-      await file.save(Buffer.from(ogBase64, 'base64'), { contentType: 'image/png', public: true });
-      ogImageUrl = `https://storage.googleapis.com/${bucket.name}/${filename}`;
+    if (ogBase64) {
+      const { S3Client, PutObjectCommand } = await import('@aws-sdk/client-s3');
+      const s3 = new S3Client({ region: 'us-east-1' });
+      const filename = `media/pipeline/${Date.now()}_og.png`;
+      await s3.send(new PutObjectCommand({
+        Bucket: 'mysleepytale-app',
+        Key: filename,
+        Body: Buffer.from(ogBase64, 'base64'),
+        ContentType: 'image/png',
+        CacheControl: 'public, max-age=604800',
+      }));
+      ogImageUrl = `https://mysleepytale.com/${filename}`;
     }
   } catch {}
 

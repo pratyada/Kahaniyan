@@ -52,7 +52,7 @@ const PIPELINES = [
 const MARKETING_CHANNELS = [
   { id: 'reddit', label: 'Reddit', icon: '🟠', status: 'active', description: 'Monitor subreddits, AI-draft comments, approve & post. 10 subreddits × 10 keywords.', automation: '80% automated', features: ['Keyword monitoring', 'AI comment drafting (3 styles)', 'Slack approval flow', 'Auto-post after approval', 'Karma tracking'] },
   { id: 'x-twitter', label: 'X / Twitter', icon: '🐦', status: 'coming-soon', description: 'Schedule tweets, reply to relevant threads, track engagement. Thread writer agent.', automation: '70% automated', features: ['Trending topic scanner', 'AI tweet/thread writer', 'Scheduled posting', 'Engagement tracker', 'Hashtag optimizer'] },
-  { id: 'instagram', label: 'Instagram', icon: '📸', status: 'coming-soon', description: 'Reels scheduling, caption writer, hashtag research, story templates.', automation: '60% automated', features: ['Reel scheduler', 'AI caption writer', 'Hashtag researcher', 'Story template generator', 'Engagement pod'] },
+  { id: 'instagram', label: 'Instagram', icon: '📸', status: 'active', description: 'Generate post images + captions + hashtags from any topic or link.', automation: '90% automated', features: ['AI image generator', 'Caption writer', 'Hashtag optimizer', 'Multi-format (square, portrait, story)', 'Brand-consistent Soul ID'] },
   { id: 'medium', label: 'Medium', icon: '📝', status: 'coming-soon', description: 'Auto-repurpose blog posts into Medium articles with backlinks.', automation: '90% automated', features: ['Blog-to-Medium converter', 'Backlink injector', 'Tag optimizer', 'Publication submitter', 'Clap tracker'] },
   { id: 'tiktok', label: 'TikTok', icon: '🎵', status: 'coming-soon', description: 'Video script generator, trending sound matcher, caption optimizer.', automation: '50% automated', features: ['Script generator from stories', 'Trending sound matcher', 'Caption optimizer', 'Posting scheduler', 'View tracker'] },
   { id: 'linkedin', label: 'LinkedIn', icon: '💼', status: 'coming-soon', description: 'Founder thought leadership posts, company updates, network engagement.', automation: '70% automated', features: ['AI post writer', 'Carousel generator', 'Comment engagement', 'Connection outreach', 'Analytics'] },
@@ -89,6 +89,167 @@ function ChannelPlaceholder({ channel }) {
         <p className="text-[11px] text-gold font-bold">🔜 Coming Soon</p>
         <p className="text-[10px] text-ink-dim mt-0.5">This channel agent is in the roadmap. Reddit is live now.</p>
       </div>
+    </div>
+  );
+}
+
+// ─── Creative Generator (Instagram / all platforms) ───────────────
+function CreativeGenerator({ user }) {
+  const [topic, setTopic] = useState('');
+  const [platform, setPlatform] = useState('instagram');
+  const [generating, setGenerating] = useState(false);
+  const [creatives, setCreatives] = useState([]);
+  const [error, setError] = useState(null);
+  const API = import.meta.env.VITE_API_URL || '';
+
+  // Load past creatives
+  useEffect(() => {
+    if (!db || !user) return;
+    const unsub = onSnapshot(
+      query(collection(db, 'creatives'), orderBy('createdAt', 'desc'), limit(20)),
+      (snap) => setCreatives(snap.docs.map(d => ({ id: d.id, ...d.data() }))),
+      () => {}
+    );
+    return unsub;
+  }, [user]);
+
+  const handleGenerate = async () => {
+    if (!topic.trim() || !user) return;
+    setGenerating(true);
+    setError(null);
+    try {
+      const res = await fetch(`${API}/api/generate-creative`, {
+        method: 'POST',
+        headers: { 'content-type': 'application/json' },
+        body: JSON.stringify({ uid: user.uid, topic: topic.trim(), platform }),
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error);
+      setTopic('');
+    } catch (e) {
+      setError(e.message);
+    }
+    setGenerating(false);
+  };
+
+  const FORMATS = [
+    { id: 'instagram', label: '1:1 Square', icon: '⬜' },
+    { id: 'instagram-portrait', label: '4:5 Portrait', icon: '📱' },
+    { id: 'instagram-story', label: '9:16 Story', icon: '📲' },
+    { id: 'twitter', label: '16:9 Twitter', icon: '🐦' },
+    { id: 'linkedin', label: '1:1 LinkedIn', icon: '💼' },
+  ];
+
+  return (
+    <div>
+      {/* Generator form */}
+      <div className="rounded-2xl bg-bg-surface ring-1 ring-white/5 p-5 mb-4">
+        <h3 className="text-sm font-bold text-ink mb-3" style={{ fontFamily: 'Lora, serif' }}>
+          ✨ Generate Creative
+        </h3>
+        <textarea
+          value={topic}
+          onChange={(e) => setTopic(e.target.value)}
+          placeholder="Paste a link, describe a topic, or share a thought...&#10;&#10;Examples:&#10;• Canada just won 6-0 against Qatar in the World Cup&#10;• Write about screen-free bedtime routines&#10;• https://thestar.com/article-link"
+          className="w-full rounded-xl bg-bg-base px-4 py-3 text-sm text-ink placeholder:text-ink-dim ring-1 ring-white/10 focus:ring-gold/50 outline-none resize-y min-h-[100px] max-h-[300px]"
+          rows={3}
+        />
+
+        {/* Format selector */}
+        <div className="flex gap-2 mt-3 overflow-x-auto pb-1 scrollbar-hide">
+          {FORMATS.map(f => (
+            <button
+              key={f.id}
+              onClick={() => setPlatform(f.id)}
+              className={`shrink-0 flex items-center gap-1 rounded-full px-3 py-1.5 text-[10px] font-bold transition ${
+                platform === f.id ? 'bg-gold text-bg-base' : 'bg-white/5 text-ink-muted ring-1 ring-white/10'
+              }`}
+            >
+              {f.icon} {f.label}
+            </button>
+          ))}
+        </div>
+
+        {error && <p className="text-[11px] text-red-400 mt-2">{error}</p>}
+
+        <button
+          onClick={handleGenerate}
+          disabled={!topic.trim() || generating}
+          className="w-full mt-3 rounded-full bg-gold px-6 py-3 text-sm font-bold text-bg-base shadow-glow transition hover:brightness-110 active:scale-95 disabled:opacity-40"
+        >
+          {generating ? '⏳ Generating image + caption...' : '🎨 Generate Creative'}
+        </button>
+      </div>
+
+      {/* Generated creatives */}
+      {creatives.length > 0 && (
+        <div className="space-y-4">
+          <h3 className="text-xs font-bold uppercase tracking-wider text-ink-dim">Generated Creatives</h3>
+          {creatives.map(c => (
+            <div key={c.id} className="rounded-2xl bg-bg-surface ring-1 ring-white/5 overflow-hidden">
+              <div className="flex flex-col md:flex-row">
+                {/* Image */}
+                <div className="md:w-[300px] shrink-0">
+                  {c.imageUrl ? (
+                    <a href={c.imageUrl} target="_blank" rel="noopener noreferrer">
+                      <img src={c.imageUrl} alt={c.topic} className="w-full h-auto object-cover" loading="lazy" />
+                    </a>
+                  ) : (
+                    <div className="w-full aspect-square bg-bg-base flex items-center justify-center">
+                      <span className="text-3xl">🎨</span>
+                    </div>
+                  )}
+                </div>
+
+                {/* Content */}
+                <div className="flex-1 p-4">
+                  <div className="flex items-center gap-2 mb-2">
+                    <span className={`text-[9px] font-bold px-2 py-0.5 rounded-full ${
+                      c.status === 'ready' ? 'bg-emerald-500/10 text-emerald-400' : 'bg-gold/10 text-gold'
+                    }`}>
+                      {c.status === 'ready' ? '✓ Ready to post' : '📝 Caption only'}
+                    </span>
+                    <span className="text-[9px] text-ink-dim">{c.platform}</span>
+                    <span className="text-[9px] text-ink-dim">{new Date(c.createdAt).toLocaleTimeString()}</span>
+                  </div>
+
+                  <p className="text-[10px] font-bold text-ink-dim mb-1 uppercase tracking-wider">Topic</p>
+                  <p className="text-xs text-ink mb-3 line-clamp-1">{c.topic}</p>
+
+                  <p className="text-[10px] font-bold text-ink-dim mb-1 uppercase tracking-wider">Caption</p>
+                  <p className="text-xs text-ink-muted whitespace-pre-line leading-relaxed mb-3 max-h-[150px] overflow-y-auto">
+                    {c.caption}
+                  </p>
+
+                  {c.hashtags?.length > 0 && (
+                    <div className="flex flex-wrap gap-1 mb-3">
+                      {c.hashtags.map((h, i) => (
+                        <span key={i} className="text-[9px] bg-gold/10 text-gold px-1.5 py-0.5 rounded-full">#{h.replace('#', '')}</span>
+                      ))}
+                    </div>
+                  )}
+
+                  {/* Copy buttons */}
+                  <div className="flex gap-2">
+                    <button
+                      onClick={() => { navigator.clipboard.writeText(c.caption + '\n\n' + (c.hashtags || []).map(h => '#' + h.replace('#', '')).join(' ')); }}
+                      className="text-[10px] font-bold bg-gold/10 text-gold px-3 py-1.5 rounded-full hover:bg-gold/20 transition"
+                    >
+                      📋 Copy Caption
+                    </button>
+                    {c.imageUrl && (
+                      <a href={c.imageUrl} target="_blank" rel="noopener noreferrer"
+                        className="text-[10px] font-bold bg-white/5 text-ink-muted px-3 py-1.5 rounded-full hover:bg-white/10 transition">
+                        ⬇️ Download Image
+                      </a>
+                    )}
+                  </div>
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+      )}
     </div>
   );
 }
@@ -470,8 +631,13 @@ export default function FounderHub() {
                 </div>
               )}
 
+              {/* Instagram Channel — Creative Generator */}
+              {marketingChannel === 'instagram' && (
+                <CreativeGenerator user={user} />
+              )}
+
               {/* Other channels — coming soon placeholder */}
-              {marketingChannel !== 'reddit' && (
+              {marketingChannel !== 'reddit' && marketingChannel !== 'instagram' && (
                 <ChannelPlaceholder channel={MARKETING_CHANNELS.find(c => c.id === marketingChannel)} />
               )}
             </div>
