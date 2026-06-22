@@ -622,7 +622,7 @@ That night, {childName}, remember Pluto. Being small does not mean being unimpor
     description: 'The Rainbow batch from JLPS explores Toronto — shapes, concerts, field trips, summer fun, and the best year-end Spirit Week ever.',
     createdBy: 'deepti.ramaul@gmail.com', creatorName: 'Deepti Ramaul', creatorUsername: 'deepti-ramaul',
     ageRange: '4-6',
-    totalEpisodes: 5,
+    totalEpisodes: 6,
     episodes: [
       {
         id: 'rk_ep1_canoe', episodeNumber: 1, title: 'Shapes at Canoe Landing',
@@ -800,6 +800,67 @@ Report cards went home. Hugs happened — lots of them. Shelagh gathered the cla
 Shelagh added, "And you will always be our Rainbow class. No matter where you go."
 
 That night, {childName}, close your eyes and hear it one more time — twenty-five voices, singing together, filling a whole gymnasium with something no microphone could ever capture. Principal Diane Jamieson wrote in her newsletter that it was the highlight of the year. And she was right. That was your year. That was your Rainbow class. And it was perfect.`,
+      },
+      {
+        id: 'rk_ep6_aarhi_birthday', episodeNumber: 6, title: 'Aarhi\'s Birthday at Jump and Joy',
+        subtitle: 'Aarhi turns five! A bouncy castle, thirty friends, and dads who forgot they were grown-ups.',
+        tradition: 'universal', theme: 'friendship', durationMinutes: 5,
+        source: 'Rainbow Kindergarten · Episode 6 — Aarhi\'s Birthday Party',
+        body: `One sunny afternoon, something very special was happening.
+
+It was Aarhi's birthday!
+
+Aarhi was turning five whole years old — five fingers on one hand! And to celebrate, there was going to be a big party at a wonderful indoor play place called Jump and Joy, on Danforth Avenue, where there were slides and balls and a great big bouncy castle, all waiting inside.
+
+Aarhi wore her favourite soft red dress and a blue glittery hairband that sparkled like tiny stars whenever she turned her head. She looked so happy, and so beautiful, and she could hardly wait for her friends to arrive.
+
+One by one, the children arrived with their mums and dads. At the door, a friendly welcoming team was waiting with big smiles, helping everyone come inside and showing them where to play. They were so kind and so helpful that everyone felt happy and at home right away.
+
+Soon the whole play centre was full of friends. Nearly thirty children came! And Aarhi gave each one a big, happy hug. "You came!" she said. "Let's play!"
+
+On a table at the side, Aarhi's grandma had laid out the most delicious food — soft, tasty keema, warm chicken, and a big pot of chole. And the best part? It was open the whole time, even before the cake! So whenever a little tummy felt hungry, anyone could come and have a yummy bite. The grown-ups poured warm cups of coffee and smiled.
+
+Then it was time to play!
+
+On the left side, there was a tall, smooth slide. The children climbed up the soft steps, sat down at the top, and whoosh — slid all the way down. Up the steps, and whoosh. Up again, and whoosh. Aarhi slid down too, laughing the whole way.
+
+Next door was a great big ball pit, filled with hundreds of soft, colourful balls. The children jumped right in — splash! — into a sea of red and yellow and blue. They tossed the gentle balls up high and watched them bounce and roll. Bounce, roll. Bounce, roll.
+
+And then — the bouncy castle! Everyone climbed inside and began to jump. Boing, boing, boing! Up and down, all together, holding hands and giggling, with Aarhi bouncing right in the middle.
+
+After a while, someone called out the words everyone was waiting for: "Cake time!"
+
+All the children gathered around. And there stood a beautiful birthday cake with five candles, each one glowing like a tiny star. Everyone took a big breath and sang together:
+
+"Happy birthday, dear Aarhi…"
+
+Aarhi closed her eyes, made a secret wish, and blew out every candle in one big puff. Whoosh! Everyone clapped and cheered for the birthday girl.
+
+And then something funny and wonderful happened.
+
+A few of the dads climbed into the bouncy castle! And they began to jump — boing, boing, boing — right alongside the children. These crazy dads were laughing and wobbling and bouncing higher and higher, their legs all wobbly like jelly. The children thought it was the funniest thing they had ever seen.
+
+The mums stood at the side, watching from a safe distance, shaking their heads and smiling. Because they knew — those dads had completely forgotten they were grown-ups. They were in full kid mode, bouncing and giggling just like five-year-olds.
+
+And here is a little secret, {childName}: every grown-up was once a small child, just like you. Every dad who sits in meetings and drives the car and does the dishes — inside, there is still a silly, bouncy little kid who loves to jump. And today, just for a while, those dads let their little kid come out to play again. The mums smiled because they knew exactly what was happening.
+
+By now the afternoon light was turning soft and golden through the windows. Bellies were full. Little legs — and big, wobbly dad-legs too — were happily tired. The bouncy play centre was starting to feel calm and cosy.
+
+As everyone got ready to go home, Aarhi had one more surprise. She gave each friend a special return gift — a cute pink Hello Kitty bag, with a little treat tucked inside. The children held their Hello Kitty bags close, so happy, and said, "Thank you, Aarhi! Happy birthday!"
+
+One by one, the families gave Aarhi a gentle goodbye hug and stepped out into the soft evening. And Aarhi smiled the happiest, sleepiest smile.
+
+On the way home, the streetlights drifted by, slow and warm. Eyes everywhere were feeling heavy. In their dreams, the children could still see the slides going whoosh, the soft balls bouncing slow… and slower… and the five little candles glowing bright.
+
+Soon every little friend was home, in cosy pyjamas, under warm, soft blankets, with pillows that felt just right.
+
+The day had been so full, and so happy. And now everything was quiet, and gentle, and calm.
+
+One slow, sleepy breath… and then another…
+
+…and off to dream of bouncy castles and birthday cake, and silly bouncy dads, and everyone — big and small — playing together.
+
+Goodnight, little dreamers.`,
       },
     ],
   },

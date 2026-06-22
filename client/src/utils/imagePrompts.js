@@ -455,6 +455,9 @@ dc_nz_ep5_facts: 'Fun illustration of a kiwi bird next to a kiwi fruit (same nam
   // ─── Rainbow Kindergarten Episode 5 ───
   rk_ep5_concert_spirit: 'School gymnasium stage with colorful spotlight, rows of tiny chairs, musical notes floating in the air, cowboy hats and striped shirts and sports jerseys scattered around, spirit week celebration, last day of school feeling, warm golden light, no human figures',
 
+  // ─── Rainbow Kindergarten Episode 6 — Aarhi's Birthday ───
+  rk_ep6_aarhi_birthday: 'Indoor play centre birthday party with a big bouncy castle, colorful ball pit, slides, birthday cake with five glowing candles, pink Hello Kitty gift bags on a table, red dress and blue glittery hairband, balloons everywhere, warm golden afternoon light, joyful celebration, childrens book illustration',
+
   // ─── Islamic wisdom stories ───
   mus_prophet_kindness: 'Small fluffy cat eating from a golden bowl near a mosque doorway, warm lantern light, Islamic geometric patterns on the wall, peaceful evening, no human figures',
   mus_ibrahim_stars: 'Vast desert night sky filled with millions of stars, crescent moon, silhouette of ancient stone altar below, searching for truth in the cosmos, no human figures',
