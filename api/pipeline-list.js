@@ -11,12 +11,18 @@ export default async function handler(req, res) {
   const db = await getFirestore();
   if (!db) return res.status(500).json({ error: 'Database unavailable' });
 
-  const snap = await db.collection('pipelineRuns')
-    .where('startedBy', '==', uid)
-    .orderBy('startedAt', 'desc')
-    .limit(parseInt(limit) || 20)
-    .get();
+  try {
+    const snap = await db.collection('pipelineRuns')
+      .where('startedBy', '==', uid)
+      .limit(parseInt(limit) || 20)
+      .get();
 
-  const runs = snap.docs.map(d => ({ id: d.id, ...d.data() }));
-  return res.status(200).json({ runs });
+    const runs = snap.docs
+      .map(d => ({ id: d.id, ...d.data() }))
+      .sort((a, b) => (b.startedAt || '').localeCompare(a.startedAt || ''));
+
+    return res.status(200).json({ runs });
+  } catch (e) {
+    return res.status(200).json({ runs: [], error: e.message });
+  }
 }

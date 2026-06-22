@@ -41,10 +41,16 @@ export default async function handler(req, res) {
   // Evaluate which agents can start (no dependencies)
   const ready = evaluateReadyAgents(workflow, agentStatuses);
 
-  // Fire parallel agents
-  executeAgents(runId, wfId, ready, input).catch(console.error);
+  // Execute full pipeline (await — Lambda freezes after response)
+  try {
+    await executeAgents(runId, wfId, ready, input);
+  } catch (e) {
+    console.error('[pipeline] Execution error:', e.message);
+  }
 
-  return res.status(200).json({ runId, status: 'running', startedAgents: ready });
+  // Return final status
+  const finalRun = await getRun(runId);
+  return res.status(200).json({ runId, status: finalRun?.status || 'running', agents: finalRun?.agents });
 }
 
 // Execute agents and handle completion chain

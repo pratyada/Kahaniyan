@@ -7,12 +7,20 @@ import { getStoryArt, getGenericStoryImage } from '../utils/storyArt.js';
 import { loadSharedStory } from '../utils/shareStory.js';
 import { storage, db, auth } from '../lib/firebase.js';
 
-import { getCachedAudio, setCachedAudio, pruneAudioCache } from '../utils/audioCache.js';
+import { getCachedAudio, setCachedAudio, pruneAudioCache, getCachedAudioHash, deleteCachedAudio } from '../utils/audioCache.js';
 import StoryLoading from '../components/StoryLoading.jsx';
 import { useTheme } from '../hooks/useTheme.jsx';
 
+// Simple hash of story text — used to detect when text changes so cached audio is invalidated
+function textHash(text) {
+  if (!text) return '';
+  let h = 0;
+  for (let i = 0; i < text.length; i++) { h = ((h << 5) - h + text.charCodeAt(i)) | 0; }
+  return 'h' + Math.abs(h).toString(36);
+}
+
 // Upload audio blob to Firebase Storage and save URL back to story
-async function cacheAudioToStorage(storyId, blob) {
+async function cacheAudioToStorage(storyId, blob, storyText) {
   if (!storage || !blob || !storyId) return;
   try {
     const { ref, uploadBytes, getDownloadURL } = await import('firebase/storage');
@@ -21,11 +29,12 @@ async function cacheAudioToStorage(storyId, blob) {
     await uploadBytes(storageRef, blob, { contentType: 'audio/ogg' });
     const audioUrl = await getDownloadURL(storageRef);
 
-    // Save URL to sharedStories (so shared links play instantly)
+    // Save URL + text hash to caches (so we know when text changes)
+    const hash = textHash(storyText);
     if (db) {
-      setDoc(doc(db, 'sharedStories', storyId), { audioUrl }, { merge: true }).catch(() => {});
-      // Also save to global audio cache so all users get it instantly
+      setDoc(doc(db, 'sharedStories', storyId), { audioUrl, textHash: hash }, { merge: true }).catch(() => {});
       setDoc(doc(db, 'config', 'wisdomAudio'), { [storyId]: audioUrl }, { merge: true }).catch(() => {});
+      setDoc(doc(db, 'config', 'audioHashes'), { [storyId]: hash }, { merge: true }).catch(() => {});
     }
     // Save URL to user's library in Firestore
     const uid = auth?.currentUser?.uid;
@@ -279,25 +288,31 @@ function PlayerInner() {
   });
   const [translatedText, setTranslatedText] = useState(null);
   const [translating, setTranslating] = useState(false);
+  const [showFeedback, setShowFeedback] = useState(false);
+  const [feedbackText, setFeedbackText] = useState('');
+  const [feedbackSent, setFeedbackSent] = useState(false);
   // Track which language the current audio is playing in
   const audioLangRef = useRef(null);
   const startedRef = useRef(false);
   const [wisdomImageUrls, setWisdomImageUrls] = useState({});
   const [wisdomAudioUrls, setWisdomAudioUrls] = useState({});
+  const [audioHashes, setAudioHashes] = useState({});
 
-  // Fetch wisdom images + audio URLs for background and next-episode loading
+  // Fetch wisdom images + audio URLs + audio hashes for cache invalidation
   useEffect(() => {
     (async () => {
       try {
         const { db: fireDb } = await import('../lib/firebase.js');
         if (!fireDb) return;
         const { doc: fdoc, getDoc: fget } = await import('firebase/firestore');
-        const [imgSnap, audioSnap] = await Promise.all([
+        const [imgSnap, audioSnap, hashSnap] = await Promise.all([
           fget(fdoc(fireDb, 'config', 'wisdomImages')),
           fget(fdoc(fireDb, 'config', 'wisdomAudio')),
+          fget(fdoc(fireDb, 'config', 'audioHashes')),
         ]);
         if (imgSnap.exists()) setWisdomImageUrls(imgSnap.data());
         if (audioSnap.exists()) setWisdomAudioUrls(audioSnap.data());
+        if (hashSnap.exists()) setAudioHashes(hashSnap.data());
       } catch {}
     })();
   }, []);
@@ -383,17 +398,46 @@ function PlayerInner() {
         }
 
         // Priority 1: Check IndexedDB for locally cached blob (instant)
-        // For multilingual/FIFA stories, use language-specific cache key
+        // But first verify text hasn't changed since caching
         const cacheKey = isMultiLangStory ? `${current.id}_lang_${lang}` : current.id;
-        const skipCache = false;
-        const localBlob = (!audio && cacheKey && !skipCache) ? await getCachedAudio(cacheKey) : null;
+        let localBlob = (!audio && cacheKey) ? await getCachedAudio(cacheKey) : null;
+        if (localBlob && current.text) {
+          const localHash = await getCachedAudioHash(cacheKey);
+          const currentHash = textHash(current.text);
+          // No hash stored = old cache from before hash system — don't trust it, regenerate
+          if (!localHash || localHash !== currentHash) {
+            console.log('[My Sleepy Tale:Player] Text changed or no hash — deleting stale local audio cache');
+            await deleteCachedAudio(cacheKey);
+            localBlob = null;
+          }
+        }
         if (localBlob) {
           console.log('[My Sleepy Tale:Player] Playing from local cache (instant)');
           const url = URL.createObjectURL(localBlob);
           audio = narrator.loadCached(url);
         }
-        // Priority 2: Firebase Storage cached URL (skip for non-English multilingual — Firebase only has English)
+        // Priority 2: Firebase Storage cached URL (skip if text changed or non-English multilingual)
         else if (current.audioUrl && !(isMultiLangStory && lang !== 'English')) {
+          const currentHash = textHash(current.text);
+          const cachedHash = audioHashes[current.id];
+          const hashMismatch = cachedHash ? cachedHash !== currentHash : false;
+          // If no hash stored yet, save it now for future comparison
+          if (!cachedHash && current.text && db) {
+            import('firebase/firestore').then(({ doc, setDoc }) => {
+              setDoc(doc(db, 'config', 'audioHashes'), { [current.id]: currentHash }, { merge: true }).catch(() => {});
+            }).catch(() => {});
+          }
+          if (hashMismatch) {
+            console.log('[My Sleepy Tale:Player] Text changed — skipping cached audio, will regenerate TTS');
+            // Delete stale audio from storage so it doesn't persist
+            if (db) {
+              import('firebase/firestore').then(({ doc, setDoc }) => {
+                setDoc(doc(db, 'config', 'wisdomAudio'), { [current.id]: '' }, { merge: true }).catch(() => {});
+                setDoc(doc(db, 'config', 'audioHashes'), { [current.id]: currentHash }, { merge: true }).catch(() => {});
+              }).catch(() => {});
+            }
+            // Don't use cached audio — fall through to TTS
+          } else {
           console.log('[My Sleepy Tale:Player] Playing cached audio from Firebase');
           audio = narrator.loadCached(current.audioUrl);
           // Wait briefly to see if audio actually loads, fallback to TTS if not
@@ -409,6 +453,7 @@ function PlayerInner() {
             try { audio.pause(); audio.src = ''; audio.load(); } catch {}
             audio = null;
           }
+          } // close hash-check else
         }
 
         // Priority 3: Generate via TTS API (fallback if cached audio failed or no pre-gen)
@@ -453,12 +498,12 @@ function PlayerInner() {
           if (audio && current.id) {
             const blob = narrator.getBlob();
             if (blob) {
-              setCachedAudio(cacheKey, blob);
+              setCachedAudio(cacheKey, blob, textHash(current.text));
               pruneAudioCache(20);
             }
             // Only upload to Firebase Storage for default language (not translated versions)
             const shouldUploadToStorage = !isMultiLangStory || lang === 'English';
-            (shouldUploadToStorage ? cacheAudioToStorage(current.id, blob) : Promise.resolve()).then(() => {
+            (shouldUploadToStorage ? cacheAudioToStorage(current.id, blob, current.text) : Promise.resolve()).then(() => {
               try {
                 const raw = localStorage.getItem('mst:lastStory');
                 if (raw) {
@@ -800,6 +845,12 @@ function PlayerInner() {
                 <ArrowLeft size={16} />
               </button>
               <div className="flex items-center gap-1.5">
+                <button
+                  onClick={() => setShowFeedback(true)}
+                  className="flex items-center gap-1 rounded-full bg-gold/10 px-3 py-1.5 text-[10px] font-bold text-gold transition hover:bg-gold/20 active:scale-95"
+                >
+                  💬 Feedback
+                </button>
                 <button onClick={shareStory} className="grid h-9 w-9 place-items-center rounded-full bg-white/5 text-ink-muted transition hover:text-ink active:scale-95">
                   <Share2 size={15} />
                 </button>
@@ -808,6 +859,70 @@ function PlayerInner() {
                 </button>
               </div>
             </div>
+
+            {/* Feedback overlay */}
+            <AnimatePresence>
+              {showFeedback && (
+                <motion.div
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: 20 }}
+                  className="absolute inset-x-4 top-16 z-50 rounded-2xl bg-bg-elevated ring-1 ring-gold/20 p-5 shadow-lift"
+                >
+                  {feedbackSent ? (
+                    <div className="text-center py-4">
+                      <p className="text-2xl mb-2">💛</p>
+                      <p className="text-sm font-bold text-ink">Thank you!</p>
+                      <p className="text-xs text-ink-muted mt-1">Your feedback helps us make better stories.</p>
+                    </div>
+                  ) : (
+                    <>
+                      <div className="flex items-center justify-between mb-3">
+                        <h3 className="text-sm font-bold text-ink">💬 Quick Feedback</h3>
+                        <button onClick={() => setShowFeedback(false)} className="text-ink-dim text-xs">✕</button>
+                      </div>
+                      <p className="text-[10px] text-ink-muted mb-2">
+                        About: <span className="text-gold">{current?.title}</span>
+                      </p>
+                      <textarea
+                        value={feedbackText}
+                        onChange={(e) => setFeedbackText(e.target.value)}
+                        placeholder="What did you think? Too long? Too short? Loved it? Any changes?"
+                        className="w-full rounded-xl bg-bg-base px-3 py-2.5 text-xs text-ink ring-1 ring-white/10 focus:ring-gold/50 outline-none resize-y min-h-[80px] max-h-[200px] placeholder:text-ink-dim"
+                        autoFocus
+                      />
+                      <button
+                        onClick={async () => {
+                          if (!feedbackText.trim()) return;
+                          try {
+                            const { db: fireDb, auth: fireAuth } = await import('../lib/firebase.js');
+                            if (fireDb) {
+                              const { collection, addDoc } = await import('firebase/firestore');
+                              await addDoc(collection(fireDb, 'feedback'), {
+                                storyId: current?.id || '',
+                                storyTitle: current?.title || '',
+                                seriesId: current?.seriesId || '',
+                                text: feedbackText.trim(),
+                                uid: fireAuth?.currentUser?.uid || '',
+                                email: fireAuth?.currentUser?.email || '',
+                                source: 'player',
+                                createdAt: new Date().toISOString(),
+                              });
+                            }
+                          } catch {}
+                          setFeedbackSent(true);
+                          setTimeout(() => { setShowFeedback(false); setFeedbackSent(false); setFeedbackText(''); }, 2000);
+                        }}
+                        disabled={!feedbackText.trim()}
+                        className="w-full mt-3 rounded-full bg-gold px-4 py-2.5 text-xs font-bold text-bg-base shadow-glow transition hover:brightness-110 active:scale-95 disabled:opacity-40"
+                      >
+                        Send Feedback
+                      </button>
+                    </>
+                  )}
+                </motion.div>
+              )}
+            </AnimatePresence>
 
             {/* Title + meta — centered (or generating message) */}
             <div className="mb-3 text-center">
@@ -1111,7 +1226,7 @@ function PlayerInner() {
                             // Cache with child-name key
                             const blob = narrator.getBlob();
                             if (blob && current.id) {
-                              setCachedAudio(`${current.id}_${profile.childName}`, blob);
+                              setCachedAudio(`${current.id}_${profile.childName}`, blob, textHash(current.text));
                               pruneAudioCache(20);
                             }
                             recordPersonalized();

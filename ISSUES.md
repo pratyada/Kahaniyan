@@ -458,5 +458,57 @@
 
 ---
 
-*Last updated: 2026-06-05 (54 issues tracked)*
+### ISS-055: Stale TTS audio plays after story text is edited
+- **Status**: FIXED (2026-06-22)
+- **Reported by**: Prat (during Aarhi birthday episode edits)
+- **Severity**: High
+- **Symptoms**: Story text updated and deployed, but the player reads the OLD text. Voice and displayed text don't match.
+- **Root cause**: TTS audio was cached in 3 separate layers, none of which knew the text had changed:
+  1. **IndexedDB** (browser local) — stored the TTS audio blob with no text fingerprint
+  2. **Firebase Storage** (`audio/{storyId}.opus`) — the uploaded audio file from first-ever play
+  3. **Firestore** (`config/wisdomAudio`) — URL pointer to the cached audio
+- **Fix**: Added a `textHash` system across all 3 cache layers:
+  - `textHash(text)` — simple hash function that fingerprints the story body
+  - **On save**: audio blob + text hash stored together in IndexedDB (`audioCache.js`) and Firestore (`config/audioHashes`)
+  - **On play**: current text hash compared against stored hash at every cache layer
+  - **Mismatch** → stale cache deleted → fresh TTS regenerated → new hash saved
+  - **No hash stored** (legacy entries) → treated as stale → regenerated on next play
+- **Files changed**:
+  - `client/src/utils/audioCache.js` — added `textHash` field, `getCachedAudioHash()`, `deleteCachedAudio()`
+  - `client/src/pages/Player.jsx` — hash check at Priority 1 (IndexedDB) and Priority 2 (Firebase Storage), hash saved with `setCachedAudio()` and `cacheAudioToStorage()`
+- **Prevention**: Fully automatic going forward. Edit text → deploy → next play auto-regenerates. No manual cache clearing needed.
+
+---
+
+### ISS-056: Firebase auth popup shows "qissaa-61a78" — looks suspicious to users
+- **Status**: FIXED (2026-06-19)
+- **Reported by**: User feedback during signup
+- **Severity**: High
+- **Symptoms**: Google sign-in popup shows `qissaa-61a78.firebaseapp.com` as the auth domain, which users flagged as "fishy"
+- **Root cause**: Firebase project was created with old name "Quissa" (project ID: `qissaa-61a78`). Firebase doesn't allow renaming projects.
+- **Fix**: Set up custom auth domain `auth.mysleepytale.com`:
+  1. Firebase Hosting → custom domain → `auth.mysleepytale.com`
+  2. CNAME record in Route 53: `auth.mysleepytale.com` → `qissaa-61a78.web.app`
+  3. Google Cloud Console → OAuth redirect URI → added `https://auth.mysleepytale.com/__/auth/handler`
+  4. Firebase Auth → Authorized domains → added `auth.mysleepytale.com`
+  5. `client/.env.production` → `VITE_FIREBASE_AUTH_DOMAIN=auth.mysleepytale.com`
+- **Also fixed**: All hardcoded Firebase Storage URLs (`firebasestorage.googleapis.com/v0/b/qissaa-61a78...`) replaced with S3 URLs (`mysleepytale.com/media/...`). Images migrated to S3 bucket `mysleepytale-app/media/`.
+
+---
+
+### ISS-057: Radio and story audio play simultaneously
+- **Status**: FIXED (2026-06-17)
+- **Reported by**: Prat
+- **Severity**: Medium
+- **Symptoms**: Playing a story while radio is on → both audio sources play at the same time. RadioBar hides but radio audio continues.
+- **Root cause**: `useRadio` and `usePlayer` use separate `<audio>` elements with no cross-communication. Neither hook stops the other.
+- **Fix**: Added lightweight `window.dispatchEvent` communication:
+  - `usePlayer.load()` dispatches `mst:stop-radio` → radio hook listens and stops
+  - `useRadio.play()` dispatches `mst:stop-story` → player hook listens and stops
+  - Single audio policy: only one source plays at a time
+- **Files changed**: `client/src/hooks/usePlayer.jsx`, `client/src/hooks/useRadio.jsx`
+
+---
+
+*Last updated: 2026-06-22 (57 issues tracked)*
 *Auto-maintained by Claude during development sessions*

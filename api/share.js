@@ -96,7 +96,8 @@ const TITLES = {
   'rocket-adventures': { title: 'Rocket Adventures', tradition: 'Universal', duration: null, isSeries: true, totalEp: 3, description: 'Rocket 5 overcomes her fear of heights and explores the solar system.', firstEpId: 'ra_ep1_heights', seriesUrl: '/series/rocket-adventures' },
   'kindness-squad': { title: 'The Kindness Squad', tradition: 'Universal', duration: null, isSeries: true, totalEp: 3, description: '3 kids discover their superpowers — and they\'re all about kindness.', firstEpId: 'ks_ep1_cape', seriesUrl: '/series/kindness-squad' },
   'planet-explorers': { title: 'Planet Explorers', tradition: 'Universal', duration: null, isSeries: true, totalEp: 3, description: 'Travel the solar system — Moon, Mars, and Pluto each have a story to tell.', firstEpId: 'pe_ep1_moon', seriesUrl: '/series/planet-explorers' },
-  'rainbow-kindergarten-jlps-yr25-26': { title: 'Rainbow Kindergarten Adventures', tradition: 'Universal', duration: null, isSeries: true, totalEp: 5, description: 'The Rainbow batch from JLPS explores Toronto — shapes at Canoe Landing, a concert, the Brick Works field trip, and a summer splash.', firstEpId: 'rk_ep1_canoe', seriesUrl: '/series/rainbow-kindergarten-jlps-yr25-26' },
+  'rainbow-kindergarten-jlps-yr25-26': { title: 'Rainbow Kindergarten Adventures', tradition: 'Universal', duration: null, isSeries: true, totalEp: 6, description: 'The Rainbow batch from JLPS explores Toronto — shapes at Canoe Landing, a concert, the Brick Works field trip, summer fun, and birthday parties.', firstEpId: 'rk_ep1_canoe', seriesUrl: '/series/rainbow-kindergarten-jlps-yr25-26' },
+  rk_ep6_aarhi_birthday: { title: "Aarhi's Birthday at Jump and Joy", tradition: 'Universal', duration: 2, series: 'Rainbow Kindergarten Adventures', ep: 6, totalEp: 6, ogImage: 'https://mysleepytale.com/media/story-gallery/rk_ep6_aarhi_bday_1.jpeg' },
   'dr-spock-parenting': { title: 'Dr. Spock Says', tradition: 'Universal', duration: null, isSeries: true, totalEp: 5, description: 'Five bedtime conversations with Dr. Spock about raising 3-to-5-year-olds.', firstEpId: 'dsp_ep1_development', seriesUrl: '/series/dr-spock-parenting' },
   'little-astronaut': { title: 'Little Astronaut', tradition: 'Universal', duration: null, isSeries: true, totalEp: 5, description: 'A child astronaut explores the solar system — each planet teaches a new lesson.', firstEpId: 'la_ep1_launch', seriesUrl: '/series/little-astronaut' },
   'who-would-win-series': { title: 'Who Would Win?', tradition: 'Universal', duration: null, isSeries: true, totalEp: 5, description: 'Professor Puzzle hosts five legendary debates — who would REALLY win?', firstEpId: 'www_ep1_lion_eagle', seriesUrl: '/series/who-would-win-series' },
@@ -327,15 +328,20 @@ export default async function handler(req, res) {
         : 'A personalized bedtime story that teaches values. Free on My Sleepy Tale.';
     }
 
-    // Get actual generated image from Firestore
-    const { images: wisdomImages, gallery: wisdomGallery } = await getWisdomImages();
-    const imageKey = isSeries ? (story.firstEpId || lessonId) : lessonId;
-    image = wisdomImages[imageKey] || wisdomImages[storyId] || '';
-    if (!image) {
-      const galleryPhotos = wisdomGallery[imageKey] || wisdomGallery[storyId] || wisdomGallery[lessonId] || [];
-      if (galleryPhotos.length > 0) image = galleryPhotos[0];
+    // Check for hardcoded OG image first (e.g. uploaded party photos)
+    if (story?.ogImage) {
+      image = story.ogImage;
+    } else {
+      // Get actual generated image from Firestore
+      const { images: wisdomImages, gallery: wisdomGallery } = await getWisdomImages();
+      const imageKey = isSeries ? (story.firstEpId || lessonId) : lessonId;
+      image = wisdomImages[imageKey] || wisdomImages[storyId] || '';
+      if (!image) {
+        const galleryPhotos = wisdomGallery[imageKey] || wisdomGallery[storyId] || wisdomGallery[lessonId] || [];
+        if (galleryPhotos.length > 0) image = galleryPhotos[0];
+      }
+      if (!image) image = DEFAULT_OG_IMAGE;
     }
-    if (!image) image = DEFAULT_OG_IMAGE;
 
     redirectUrl = isSeries
       ? `https://mysleepytale.com${story.seriesUrl}`

@@ -803,62 +803,25 @@ That night, {childName}, close your eyes and hear it one more time — twenty-fi
       },
       {
         id: 'rk_ep6_aarhi_birthday', episodeNumber: 6, title: 'Aarhi\'s Birthday at Jump and Joy',
-        subtitle: 'Aarhi turns five! A bouncy castle, thirty friends, and dads who forgot they were grown-ups.',
-        tradition: 'universal', theme: 'friendship', durationMinutes: 5,
+        subtitle: 'Aarhi turns five! A bouncy castle, twenty friends, and dads who forgot they were grown-ups.',
+        tradition: 'universal', theme: 'friendship', durationMinutes: 2,
+        coverImage: 'https://mysleepytale.com/media/story-gallery/rk_ep6_aarhi_bday_1.jpeg',
         source: 'Rainbow Kindergarten · Episode 6 — Aarhi\'s Birthday Party',
-        body: `One sunny afternoon, something very special was happening.
+        body: `It was Aarhi's birthday! She was turning five, and there was a party at Jump and Joy on Danforth Avenue. Aarhi wore her favourite red dress and a blue glittery hairband that sparkled like tiny stars.
 
-It was Aarhi's birthday!
+About twenty friends came with their mums and dads. Aarhi hugged each one. "You came! Let's play!" Grandma had laid out keema chicken, chole, and bread. And next to that — plates full of pasta, pizza, and the most delicious little cupcakes. There was juice and water on the side too. Open the whole time, so no little tummy had to wait.
 
-Aarhi was turning five whole years old — five fingers on one hand! And to celebrate, there was going to be a big party at a wonderful indoor play place called Jump and Joy, on Danforth Avenue, where there were slides and balls and a great big bouncy castle, all waiting inside.
+The staff at Jump and Joy were so kind. They wiped the children's hands after eating, kept the food trays full, and made sure the coffee and tea corner was always ready for the grown-ups. There were two little washrooms right inside, so no one had to go far.
 
-Aarhi wore her favourite soft red dress and a blue glittery hairband that sparkled like tiny stars whenever she turned her head. She looked so happy, and so beautiful, and she could hardly wait for her friends to arrive.
+But the real stars were Aarhi's mum and dad. They welcomed every family at the door, made sure every child had a plate, every parent had a warm cup, and every shy little friend found someone to play with. They were not sitting down — they were moving, smiling, looking after everyone. That is what good hosts do, little one.
 
-One by one, the children arrived with their mums and dads. At the door, a friendly welcoming team was waiting with big smiles, helping everyone come inside and showing them where to play. They were so kind and so helpful that everyone felt happy and at home right away.
+In the middle was a great big bouncy castle. Everyone climbed in. Boing, boing, boing! Aarhi bounced right in the centre, holding hands with her friends.
 
-Soon the whole play centre was full of friends. Nearly thirty children came! And Aarhi gave each one a big, happy hug. "You came!" she said. "Let's play!"
+Then — cake time! Five candles glowing bright. Everyone sang: "Happy birthday, dear Aarhi…" She made a secret wish and blew them all out in one puff. Whoosh!
 
-On a table at the side, Aarhi's grandma had laid out the most delicious food — soft, tasty keema, warm chicken, and a big pot of chole. And the best part? It was open the whole time, even before the cake! So whenever a little tummy felt hungry, anyone could come and have a yummy bite. The grown-ups poured warm cups of coffee and smiled.
+Everyone enjoyed the party so much that it ran all the way to seven o'clock — half an hour late! Even a few dads tried the bouncy castle and the children thought it was the funniest thing ever.
 
-Then it was time to play!
-
-On the left side, there was a tall, smooth slide. The children climbed up the soft steps, sat down at the top, and whoosh — slid all the way down. Up the steps, and whoosh. Up again, and whoosh. Aarhi slid down too, laughing the whole way.
-
-Next door was a great big ball pit, filled with hundreds of soft, colourful balls. The children jumped right in — splash! — into a sea of red and yellow and blue. They tossed the gentle balls up high and watched them bounce and roll. Bounce, roll. Bounce, roll.
-
-And then — the bouncy castle! Everyone climbed inside and began to jump. Boing, boing, boing! Up and down, all together, holding hands and giggling, with Aarhi bouncing right in the middle.
-
-After a while, someone called out the words everyone was waiting for: "Cake time!"
-
-All the children gathered around. And there stood a beautiful birthday cake with five candles, each one glowing like a tiny star. Everyone took a big breath and sang together:
-
-"Happy birthday, dear Aarhi…"
-
-Aarhi closed her eyes, made a secret wish, and blew out every candle in one big puff. Whoosh! Everyone clapped and cheered for the birthday girl.
-
-And then something funny and wonderful happened.
-
-A few of the dads climbed into the bouncy castle! And they began to jump — boing, boing, boing — right alongside the children. These crazy dads were laughing and wobbling and bouncing higher and higher, their legs all wobbly like jelly. The children thought it was the funniest thing they had ever seen.
-
-The mums stood at the side, watching from a safe distance, shaking their heads and smiling. Because they knew — those dads had completely forgotten they were grown-ups. They were in full kid mode, bouncing and giggling just like five-year-olds.
-
-And here is a little secret, {childName}: every grown-up was once a small child, just like you. Every dad who sits in meetings and drives the car and does the dishes — inside, there is still a silly, bouncy little kid who loves to jump. And today, just for a while, those dads let their little kid come out to play again. The mums smiled because they knew exactly what was happening.
-
-By now the afternoon light was turning soft and golden through the windows. Bellies were full. Little legs — and big, wobbly dad-legs too — were happily tired. The bouncy play centre was starting to feel calm and cosy.
-
-As everyone got ready to go home, Aarhi had one more surprise. She gave each friend a special return gift — a cute pink Hello Kitty bag, with a little treat tucked inside. The children held their Hello Kitty bags close, so happy, and said, "Thank you, Aarhi! Happy birthday!"
-
-One by one, the families gave Aarhi a gentle goodbye hug and stepped out into the soft evening. And Aarhi smiled the happiest, sleepiest smile.
-
-On the way home, the streetlights drifted by, slow and warm. Eyes everywhere were feeling heavy. In their dreams, the children could still see the slides going whoosh, the soft balls bouncing slow… and slower… and the five little candles glowing bright.
-
-Soon every little friend was home, in cosy pyjamas, under warm, soft blankets, with pillows that felt just right.
-
-The day had been so full, and so happy. And now everything was quiet, and gentle, and calm.
-
-One slow, sleepy breath… and then another…
-
-…and off to dream of bouncy castles and birthday cake, and silly bouncy dads, and everyone — big and small — playing together.
+Aarhi gave each friend a pink Hello Kitty bag with a treat inside. On the way home, eyes were heavy. And in their dreams — boing, boing — birthday cake and bouncy castles.
 
 Goodnight, little dreamers.`,
       },

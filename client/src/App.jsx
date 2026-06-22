@@ -103,12 +103,8 @@ function Shell() {
   const isAdminRoute = location.pathname.startsWith('/admin');
 
   // Full-page layouts (no phone shell)
-  if (location.pathname === '/founder-hub' || location.pathname === '/content-pipeline') return (
-    <Routes>
-      <Route path="/founder-hub" element={<FounderHub />} />
-      <Route path="/content-pipeline" element={<ContentPipeline />} />
-    </Routes>
-  );
+  if (location.pathname === '/founder-hub') return <FounderHub />;
+  if (location.pathname === '/content-pipeline') return <ContentPipeline />;
   if (isAdminRoute) return <Admin />;
   // Invest page disabled for now
   // if (location.pathname === '/invest') return <Invest />;

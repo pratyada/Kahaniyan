@@ -33,12 +33,36 @@ export async function getCachedAudio(storyId) {
   }
 }
 
-export async function setCachedAudio(storyId, blob) {
+export async function setCachedAudio(storyId, blob, textHash) {
   try {
     const db = await open();
     return new Promise((resolve) => {
       const tx = db.transaction(STORE, 'readwrite');
-      tx.objectStore(STORE).put({ id: storyId, blob, cachedAt: Date.now() });
+      tx.objectStore(STORE).put({ id: storyId, blob, textHash: textHash || '', cachedAt: Date.now() });
+      tx.oncomplete = () => resolve();
+      tx.onerror = () => resolve();
+    });
+  } catch {}
+}
+
+export async function getCachedAudioHash(storyId) {
+  try {
+    const db = await open();
+    return new Promise((resolve) => {
+      const tx = db.transaction(STORE, 'readonly');
+      const req = tx.objectStore(STORE).get(storyId);
+      req.onsuccess = () => resolve(req.result?.textHash || null);
+      req.onerror = () => resolve(null);
+    });
+  } catch { return null; }
+}
+
+export async function deleteCachedAudio(storyId) {
+  try {
+    const db = await open();
+    return new Promise((resolve) => {
+      const tx = db.transaction(STORE, 'readwrite');
+      tx.objectStore(STORE).delete(storyId);
       tx.oncomplete = () => resolve();
       tx.onerror = () => resolve();
     });
