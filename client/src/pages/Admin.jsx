@@ -4908,11 +4908,14 @@ const EXPENSE_DATA = [
       { name: 'Library Printing and Coffee Donuts', amount: 20, category: 'Marketing', spender: 'Deepti' },
       { name: 'Gemini Subscription — Image Gen & Thumbnails', amount: 30, category: 'AI', spender: 'Prat' },
       { name: 'Vista Print — Visiting Cards & Flyers', amount: 95.54, category: 'Marketing', spender: 'Prat' },
+      { name: 'Higgsfield AI — Starter Plan (video/image gen)', amount: 50, category: 'AI', spender: 'Prat' },
+      { name: 'Starbucks Gift Cards — JLPS Zak & Shelagh', amount: 50, category: 'Gifts', spender: 'Deepti' },
+      { name: 'Advisor Kshitij — Gift', amount: 120, category: 'Gifts', spender: 'Prat' },
     ],
   },
 ];
 
-const CAT_COLORS = { AI: '#9f7aea', Infra: '#4299e1', SaaS: '#48bb78', Marketing: '#f0a500' };
+const CAT_COLORS = { AI: '#9f7aea', Infra: '#4299e1', SaaS: '#48bb78', Marketing: '#f0a500', Gifts: '#f472b6' };
 
 function ExpenseTracker() {
   const totalAll = EXPENSE_DATA.reduce((sum, m) => sum + m.items.reduce((s, i) => s + i.amount, 0), 0);

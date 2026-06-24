@@ -457,6 +457,7 @@ dc_nz_ep5_facts: 'Fun illustration of a kiwi bird next to a kiwi fruit (same nam
 
   // ─── Rainbow Kindergarten Episode 6 — Aarhi's Birthday ───
   rk_ep6_aarhi_birthday: 'Indoor play centre birthday party with a big bouncy castle, colorful ball pit, slides, birthday cake with five glowing candles, pink Hello Kitty gift bags on a table, red dress and blue glittery hairband, balloons everywhere, warm golden afternoon light, joyful celebration, childrens book illustration',
+  rk_ep7_photo_day: 'Children playing in a sunny Toronto playground, spider web climbing frame, merry-go-round spinning, rainbow photo frame, freezies in rainbow colours, group photo with teachers, Canoe Landing Park, CN Tower in background, warm golden summer afternoon, end of year celebration, childrens book illustration',
 
   // ─── Islamic wisdom stories ───
   mus_prophet_kindness: 'Small fluffy cat eating from a golden bowl near a mosque doorway, warm lantern light, Islamic geometric patterns on the wall, peaceful evening, no human figures',

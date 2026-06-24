@@ -226,8 +226,7 @@ export default async function handler(req, res) {
     // 6. Update wisdomAudio hash so Player knows this is fresh
     await db.collection('config').doc('audioHashes').set({ [id]: textHash }, { merge: true });
 
-    results.links.player = doc.playerUrl;
-    results.links.share = doc.shareUrl;
+    results.links.story = doc.shareUrl;
     results.content = doc;
 
     return res.status(200).json(results);

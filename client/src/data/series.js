@@ -622,7 +622,7 @@ That night, {childName}, remember Pluto. Being small does not mean being unimpor
     description: 'The Rainbow batch from JLPS explores Toronto — shapes, concerts, field trips, summer fun, and the best year-end Spirit Week ever.',
     createdBy: 'deepti.ramaul@gmail.com', creatorName: 'Deepti Ramaul', creatorUsername: 'deepti-ramaul',
     ageRange: '4-6',
-    totalEpisodes: 6,
+    totalEpisodes: 7,
     episodes: [
       {
         id: 'rk_ep1_canoe', episodeNumber: 1, title: 'Shapes at Canoe Landing',
@@ -824,6 +824,43 @@ Everyone enjoyed the party so much that it ran all the way to seven o'clock — 
 Aarhi gave each friend a pink Hello Kitty bag with a treat inside. On the way home, eyes were heavy. And in their dreams — boing, boing — birthday cake and bouncy castles.
 
 Goodnight, little dreamers.`,
+      },
+      {
+        id: 'rk_ep7_photo_day', episodeNumber: 7, title: 'Photo Day & The Grateful Garden Party',
+        subtitle: 'A celebration of friendship, kindness, and thankful hearts.',
+        tradition: 'universal', theme: 'gratitude', durationMinutes: 2,
+        coverImage: 'https://mysleepytale.com/media/published/rainbow_kindergarten_jlps_yr25_26_ep7_rainbow_class_s_grateful_garde_cover.jpg',
+        gallery: [
+          'https://mysleepytale.com/media/published/rainbow_kindergarten_jlps_yr25_26_ep7_rainbow_class_s_grateful_garde_img0.jpg',
+          'https://mysleepytale.com/media/published/rainbow_kindergarten_jlps_yr25_26_ep7_rainbow_class_s_grateful_garde_img1.jpg',
+          'https://mysleepytale.com/media/published/rainbow_kindergarten_jlps_yr25_26_ep7_rainbow_class_s_grateful_garde_img2.jpg',
+          'https://mysleepytale.com/media/published/rainbow_kindergarten_jlps_yr25_26_ep7_rainbow_class_s_grateful_garde_img3.jpg',
+          'https://mysleepytale.com/media/published/rainbow_kindergarten_jlps_yr25_26_ep7_rainbow_class_s_grateful_garde_img4.jpg',
+          'https://mysleepytale.com/media/published/rainbow_kindergarten_jlps_yr25_26_ep7_rainbow_class_s_grateful_garde_img5.jpg',
+          'https://mysleepytale.com/media/published/rainbow_kindergarten_jlps_yr25_26_ep7_rainbow_class_s_grateful_garde_img6.jpg',
+        ],
+        multilingual: true,
+        enableTranslation: true,
+        source: 'Rainbow Kindergarten \u00b7 Episode 7 \u2014 Photo Day',
+        body: `In the beautiful Canoe Landing Park playground near Toronto, the Rainbow Class was having their most special day of the year.
+
+It was the last week before summer, and Mr. Zak and Ms. Shelagh had planned something wonderful \u2014 a playground party with all the families! The weather was perfectly sunny and warm, just like a gentle hug from the sky.
+
+Little one, as you close your eyes, imagine the joy everywhere. Hunter looked through his special binoculars, spotting new friends and adventures. Dhruv showed such bravery when he had a little tumble from the swing \u2014 he got right back up with a smile, and Mr. Zak gave him a gentle bandage.
+
+All the children climbed together on the spider web, making their hands and arms stronger. Arin and Soire jumped like superheroes, landing gracefully. The merry-go-round spun with laughter and giggles. Veda, Devansh, and Aaryan became ice cream sellers, offering colourful treats to the happy parents.
+
+Ms. Shelagh took beautiful pictures of every child in the rainbow frame, capturing memories like treasures.
+
+Then something magical happened! "It's FREEZIE TIME!" said Mr. Zak. Everyone celebrated with delicious, cold, yummy freezies in rainbow colours.
+
+At the end, everyone gathered for one big, beautiful group photo. Mr. Zak and Ms. Shelagh thanked each child for being so kind, brave, and wonderful all year long. The families felt so grateful for these special teachers. The parents became paparazzi, clicking photos and smiling with pride.
+
+As the play time comes to an end, painting the sky in soft pinks and purples, everyone felt thankful \u2014 grateful for friendship, for growth, and for the beautiful memories made together. Not only kids, but the parents also have a new bond now.
+
+Little one, drift gently into dreams, remembering that being grateful for our friends and teachers makes our hearts shine brightest. The rainbow is waiting for you in dreamland.
+
+Goodnight, little one.`,
       },
     ],
   },

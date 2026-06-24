@@ -371,7 +371,7 @@ function PlayerInner() {
 
     // For multilingual/FIFA stories, always default to English (not profile language)
     const storyId = current.id || '';
-    const isMultiLangStory = storyId.includes('multilingual') || storyId.includes('fifa26');
+    const isMultiLangStory = storyId.includes('multilingual') || storyId.includes('fifa26') || current.multilingual || current.enableTranslation || publishedFlags?.multilingual;
 
     // Clear language override when switching to a non-multilingual story
     if (!isMultiLangStory && langOverride) {
@@ -607,19 +607,16 @@ function PlayerInner() {
       const { trackShareStory } = await import('../utils/analytics.js');
       trackShareStory(current?.id);
 
-      // Series episodes + wisdom stories → use /api/share (dynamic OG tags with episode image)
-      // User-generated stories → use /player?storyId (loaded from Firestore)
+      // Always use /api/share — returns OG tags for all stories (hardcoded, published, creator)
       const storyId = current?.episodeId || current?.id?.replace('lesson_', '') || current?.id;
-      const isHardcoded = current?.isWisdom || current?.seriesId;
-      let url;
-      if (isHardcoded) {
-        url = `https://mysleepytale.com/api/share?id=${storyId}`;
-      } else {
-        const { shareStoryToFirestore } = await import('../utils/shareStory.js');
-        url = await shareStoryToFirestore(current, {
-          beliefs: profile?.beliefs || [],
-          country: profile?.country || '',
-        });
+      const url = `https://mysleepytale.com/api/share?id=${storyId}`;
+
+      // Also save to Firestore for user-generated stories (so share API can find them)
+      if (!current?.isWisdom && !current?.seriesId) {
+        try {
+          const { shareStoryToFirestore } = await import('../utils/shareStory.js');
+          await shareStoryToFirestore(current, { beliefs: profile?.beliefs || [], country: profile?.country || '' });
+        } catch {}
       }
       const text = `Listen to "${current.title}" — a bedtime story on My Sleepy Tale`;
       if (navigator.share) {
@@ -730,8 +727,41 @@ function PlayerInner() {
   useEffect(() => {
     if (current || recoveredRef.current) return;
     recoveredRef.current = true;
-    setTimeout(() => reloadLast(), 0);
-  }, [current, reloadLast]);
+
+    const urlParams = new URLSearchParams(window.location.search);
+    const urlStoryId = urlParams.get('storyId');
+
+    // Try reloadLast — but only use it if the storyId matches the URL
+    const recovered = reloadLast();
+    if (recovered && (!urlStoryId || recovered.id === urlStoryId)) return;
+
+    // Check URL storyId against publishedContent in Firestore
+    if (urlStoryId) {
+      (async () => {
+        try {
+          const { db: fireDb } = await import('../lib/firebase.js');
+          if (!fireDb) return;
+          const { doc: fdoc, getDoc: fget } = await import('firebase/firestore');
+          const snap = await fget(fdoc(fireDb, 'publishedContent', urlStoryId));
+          if (snap.exists()) {
+            const pub = snap.data();
+            load({
+              id: pub.id, title: pub.title, text: pub.body,
+              subtitle: pub.subtitle, tradition: pub.tradition,
+              value: pub.theme, source: pub.source,
+              audioUrl: pub.audioUrl || null,
+              coverImage: pub.coverImage,
+              gallery: (pub.images || []).slice(1),
+              estimatedMinutes: pub.durationMinutes,
+              seriesId: pub.seriesId || null,
+              multilingual: pub.multilingual || false,
+              enableTranslation: pub.enableTranslation || false,
+            });
+          }
+        } catch {}
+      })();
+    }
+  }, [current, reloadLast, load]);
 
   // Two-phase overlay:
   // Phase 1: no story text yet → full overlay (70%)
@@ -742,6 +772,24 @@ function PlayerInner() {
   const showOverlay = noStoryYet; // only block screen when NO story text yet
   const overlayPhase = noStoryYet ? 'generating' : 'done';
   const meta = valueMeta(current?.value);
+
+  // Fetch published flags (multilingual, etc.) from Firestore — runs for all stories
+  const [publishedFlags, setPublishedFlags] = useState(null);
+  useEffect(() => {
+    if (!current?.id) return;
+    (async () => {
+      try {
+        const { db: fireDb } = await import('../lib/firebase.js');
+        if (!fireDb) return;
+        const { doc: fdoc, getDoc: fget } = await import('firebase/firestore');
+        const snap = await fget(fdoc(fireDb, 'publishedContent', current.id));
+        if (snap.exists()) {
+          const d = snap.data();
+          setPublishedFlags({ multilingual: d.multilingual, enableTranslation: d.enableTranslation });
+        }
+      } catch {}
+    })();
+  }, [current?.id]);
 
   // Check Firestore publishedContent if current story has no text
   const [checkedPublished, setCheckedPublished] = useState(false);
@@ -766,6 +814,7 @@ function PlayerInner() {
             source: pub.source,
             audioUrl: pub.audioUrl || current.audioUrl,
             coverImage: pub.coverImage,
+            gallery: (pub.images || []).slice(1),
             estimatedMinutes: pub.durationMinutes,
           });
         }
@@ -773,14 +822,38 @@ function PlayerInner() {
     })();
   }, [current, checkedPublished, load]);
 
-  // Stories without text can still play if they have cached audio
+  // Stories without text — wait for publishedContent check before showing error
+  const [loadTimeout, setLoadTimeout] = useState(false);
+  useEffect(() => {
+    const timer = setTimeout(() => setLoadTimeout(true), 3000);
+    return () => clearTimeout(timer);
+  }, []);
+
   if (current && !current.text && !current.audioUrl) {
+    if (!loadTimeout) {
+      return (
+        <div className="flex h-screen flex-col items-center justify-center bg-bg-base px-6 text-center">
+          <div className="text-3xl mb-3 animate-pulse">🌙</div>
+          <p className="text-sm text-ink-muted">Loading story...</p>
+        </div>
+      );
+    }
     return (
       <div className="flex h-screen flex-col items-center justify-center bg-bg-base px-6 text-center">
         <div className="text-4xl mb-4">😔</div>
         <h1 className="font-display text-xl font-bold text-gold">{current.title || 'Story'}</h1>
         <p className="mt-2 text-sm text-ink-muted">This story doesn't have any content to play.</p>
         <button onClick={() => { clear(); navigate('/'); }} className="btn-primary mt-6">{t('player.backToHome')}</button>
+      </div>
+    );
+  }
+
+  // No story at all — also wait before showing error (for share link redirects)
+  if (!current && !loadTimeout) {
+    return (
+      <div className="flex h-screen flex-col items-center justify-center bg-bg-base px-6 text-center">
+        <div className="text-3xl mb-3 animate-pulse">🌙</div>
+        <p className="text-sm text-ink-muted">Loading story...</p>
       </div>
     );
   }
@@ -999,11 +1072,12 @@ function PlayerInner() {
                 const storyId = current?.id || '';
                 const isMultilingual = storyId === 'multilingual_lion_mouse' || storyId === 'lesson_multilingual_lion_mouse';
                 const isFifa = storyId.includes('fifa26') || storyId.includes('lesson_fifa26');
-                if (!isMultilingual && !isFifa) return null;
+                const isPublished = current?.multilingual || current?.enableTranslation || publishedFlags?.multilingual;
+                if (!isMultilingual && !isFifa && !isPublished) return null;
 
                 const languages = isMultilingual
                   ? [['English','🇬🇧'],['French','🇫🇷'],['Hindi','🇮🇳'],['Arabic','🇸🇦'],['Spanish','🇪🇸'],['Chinese','🇨🇳'],['Polish','🇵🇱'],['Hungarian','🇭🇺'],['Tamil','🇮🇳']]
-                  : [['English','🇬🇧'],['Spanish','🇪🇸'],['French','🇫🇷'],['Hindi','🇮🇳']];
+                  : [['English','🇬🇧'],['Spanish','🇪🇸'],['French','🇫🇷'],['Hindi','🇮🇳'],['Arabic','🇸🇦'],['Tamil','🇮🇳'],['Hungarian','🇭🇺']];
 
                 return (
                   <div className="mt-2 flex items-center gap-2">

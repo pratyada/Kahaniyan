@@ -28,6 +28,19 @@ export default function StoryGallery({ storyId, coverImage, extraImages = [] }) 
         const { db } = await import('../lib/firebase.js');
         if (!db) return;
         const { doc, getDoc } = await import('firebase/firestore');
+
+        // Check publishedContent first (for Content Publisher stories)
+        const pubSnap = await getDoc(doc(db, 'publishedContent', storyId));
+        if (pubSnap.exists()) {
+          const pubData = pubSnap.data();
+          const pubImages = pubData.images || [];
+          if (pubImages.length > 0) {
+            setImages(pubImages.filter(Boolean));
+            return;
+          }
+        }
+
+        // Fallback: wisdomGallery (for hardcoded stories)
         const snap = await getDoc(doc(db, 'config', 'wisdomGallery'));
         if (snap.exists()) {
           const gallery = snap.data()[storyId] || [];

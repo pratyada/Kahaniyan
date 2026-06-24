@@ -499,7 +499,42 @@ export default function SeriesDetail() {
     setGeneratingAudio(null);
   };
 
-  const series = staticSeries || firestoreSeries;
+  // Merge published episodes from Firestore into static series
+  const [publishedEps, setPublishedEps] = useState([]);
+  useEffect(() => {
+    if (!seriesId) return;
+    (async () => {
+      try {
+        const { db: fireDb } = await import('../lib/firebase.js');
+        if (!fireDb) return;
+        const { collection, query, where, getDocs } = await import('firebase/firestore');
+        const snap = await getDocs(query(collection(fireDb, 'publishedContent'), where('seriesId', '==', seriesId)));
+        const eps = snap.docs.map(d => {
+          const data = d.data();
+          return {
+            id: data.id, episodeNumber: data.episodeNumber, title: data.title,
+            subtitle: data.subtitle, body: data.body, tradition: data.tradition,
+            theme: data.theme, durationMinutes: data.durationMinutes,
+            source: data.source, coverImage: data.coverImage,
+            gallery: (data.images || []).slice(1),
+            multilingual: data.multilingual || false,
+            enableTranslation: data.enableTranslation || false,
+          };
+        });
+        setPublishedEps(eps);
+      } catch {}
+    })();
+  }, [seriesId]);
+
+  const baseSeries = staticSeries || firestoreSeries;
+  const series = baseSeries ? {
+    ...baseSeries,
+    episodes: [
+      ...(baseSeries.episodes || []),
+      ...publishedEps.filter(pe => !(baseSeries.episodes || []).some(e => e.id === pe.id)),
+    ],
+    totalEpisodes: (baseSeries.episodes?.length || 0) + publishedEps.filter(pe => !(baseSeries.episodes || []).some(e => e.id === pe.id)).length,
+  } : null;
 
   if (!series && fsLoading) {
     return (
@@ -573,8 +608,10 @@ export default function SeriesDetail() {
       audioUrl: audioUrls[episode.id] || episode.audioUrl,
       coverImage: epImage,
       gallery: episode.gallery || galleryImages[episode.id] || [],
+      multilingual: episode.multilingual || false,
+      enableTranslation: episode.enableTranslation || false,
     });
-    navigate('/player');
+    navigate(`/player?storyId=${episode.id}`);
   };
 
   // Find next episode to play

@@ -4,6 +4,7 @@
 import { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { db } from '../../lib/firebase.js';
+import { SERIES } from '../../data/series.js';
 import { collection, query, orderBy, limit, onSnapshot } from 'firebase/firestore';
 
 const API = import.meta.env.VITE_API_URL || '';
@@ -23,6 +24,34 @@ const TYPES = [
   { id: 'blog', icon: '📝', label: 'Blog Post', desc: 'SEO blog article' },
 ];
 const BLOG_CATS = ['psychology', 'guide', 'culture', 'creators', 'toronto', 'fifa', 'comparison'];
+const SERIES_LIST = [
+  { id: 'rainbow-kindergarten-jlps-yr25-26', name: '🌈 Rainbow Kindergarten Adventures' },
+  { id: 'fifa-world-cup-2026', name: '⚽ FIFA World Cup 2026 — Toronto' },
+  { id: 'fifa-world-cup-2026-dallas', name: '⚽ FIFA World Cup 2026 — Dallas' },
+  { id: 'fire-truck-academy', name: '🚒 Fire Truck Academy' },
+  { id: 'dr-spock-parenting', name: '👨‍⚕️ Dr. Spock Says' },
+  { id: 'little-astronaut', name: '🚀 Little Astronaut' },
+  { id: 'who-would-win-series', name: '🥊 Who Would Win?' },
+  { id: 'who-would-win-animals', name: '🦁 Who Would Win? — Animal Battles' },
+  { id: 'panchatantra-tales', name: '🐒 Panchatantra Tales' },
+  { id: 'lightning-wheels', name: '🏎️ Lightning Wheels' },
+  { id: 'rocket-adventures', name: '🚀 Rocket Adventures' },
+  { id: 'kindness-squad', name: '💛 The Kindness Squad' },
+  { id: 'planet-explorers', name: '🪐 Planet Explorers' },
+  { id: 'planets-and-stars', name: '🌟 Planets & Stars' },
+  { id: 'camping-outdoors', name: '🏕️ Camping & Outdoors' },
+  { id: 'music-lessons', name: '🎵 Music Lessons' },
+  { id: 'water-and-swim', name: '🏊 Water & Swim' },
+  { id: 'maths-adventures', name: '🔢 Maths Adventures' },
+  { id: 'geometry-shapes', name: '📐 Geometry & Shapes' },
+  { id: 'discover-india', name: '🇮🇳 Discover India' },
+  { id: 'discover-canada', name: '🇨🇦 Discover Canada' },
+  { id: 'discover-united-states', name: '🇺🇸 Discover United States' },
+  { id: 'stories-of-the-prophets', name: '☪️ Stories of the Prophets' },
+  { id: 'names-of-allah', name: '☪️ Beautiful Names of Allah' },
+  { id: 'ramadan-adventures', name: '☪️ Ramadan Adventures' },
+  { id: 'tallest-towers', name: '🗼 Tallest Towers in the World' },
+];
 
 export default function ContentPublisher({ user }) {
   const [step, setStep] = useState(1);
@@ -92,14 +121,35 @@ export default function ContentPublisher({ user }) {
 
   // Image upload handler
   const handleImageUpload = (e) => {
-    const file = e.target.files?.[0];
-    if (!file) return;
-    const reader = new FileReader();
-    reader.onload = () => {
-      set('coverImageBase64', reader.result.split(',')[1]);
-      set('coverImage', reader.result); // data URL for preview
-    };
-    reader.readAsDataURL(file);
+    const files = Array.from(e.target.files || []);
+    if (!files.length) return;
+    files.forEach(file => {
+      const reader = new FileReader();
+      reader.onload = () => {
+        setForm(f => {
+          const newImages = [...f.images, reader.result];
+          return {
+            ...f,
+            images: newImages,
+            coverImage: newImages[0], // first image is always cover
+            coverImageBase64: newImages[0].split(',')[1],
+          };
+        });
+      };
+      reader.readAsDataURL(file);
+    });
+  };
+
+  const removeImage = (index) => {
+    setForm(f => {
+      const newImages = f.images.filter((_, i) => i !== index);
+      return {
+        ...f,
+        images: newImages,
+        coverImage: newImages[0] || '',
+        coverImageBase64: newImages[0] ? newImages[0].split(',')[1] : '',
+      };
+    });
   };
 
   // Publish
@@ -119,7 +169,9 @@ export default function ContentPublisher({ user }) {
         id,
         type,
         blog: { ...form.blog, slug },
-        coverImageBase64: form.coverImageBase64 || undefined,
+        coverImage: form.images[0] || form.coverImage || '',
+        coverImageBase64: form.images[0]?.startsWith('data:') ? form.images[0].split(',')[1] : undefined,
+        images: form.images,
       };
 
       const res = await fetch(`${API}/api/publish-content`, {
@@ -217,10 +269,26 @@ export default function ContentPublisher({ user }) {
           {type === 'episode' && (
             <div className="flex gap-3">
               <div className="flex-1">
-                <label className="block text-[10px] font-bold uppercase tracking-wider text-ink-dim mb-1">Series ID</label>
-                <input value={form.seriesId} onChange={e => set('seriesId', e.target.value)}
-                  placeholder="rainbow-kindergarten-jlps-yr25-26"
-                  className="w-full rounded-xl bg-bg-base px-3 py-2.5 text-xs text-ink ring-1 ring-white/10 focus:ring-gold/50 outline-none" />
+                <label className="block text-[10px] font-bold uppercase tracking-wider text-ink-dim mb-1">Series</label>
+                <select value={form.seriesId} onChange={e => {
+                    const sid = e.target.value;
+                    set('seriesId', sid);
+                    // Auto-calculate next episode number
+                    const series = SERIES.find(s => s.id === sid);
+                    if (series) {
+                      const nextEp = (series.episodes?.length || 0) + 1;
+                      set('episodeNumber', nextEp);
+                      set('source', `${series.title} · Episode ${nextEp}`);
+                    }
+                  }}
+                  className="w-full rounded-xl bg-bg-base px-3 py-2.5 text-xs text-ink ring-1 ring-white/10 focus:ring-gold/50 outline-none">
+                  <option value="">— Select series —</option>
+                  {SERIES_LIST.map(s => {
+                    const seriesData = SERIES.find(sd => sd.id === s.id);
+                    const epCount = seriesData?.episodes?.length || 0;
+                    return <option key={s.id} value={s.id}>{s.name} ({epCount} eps)</option>;
+                  })}
+                </select>
               </div>
               <div className="w-20">
                 <label className="block text-[10px] font-bold uppercase tracking-wider text-ink-dim mb-1">Ep #</label>
@@ -291,24 +359,43 @@ export default function ContentPublisher({ user }) {
             </button>
           </div>
 
-          {/* Cover image */}
+          {/* Images (multi-upload, first = cover) */}
           <div>
-            <label className="block text-[10px] font-bold uppercase tracking-wider text-ink-dim mb-1">Cover Image</label>
-            <div className="flex gap-3 items-start">
-              {form.coverImage && (
-                <img src={form.coverImage} alt="Cover" className="w-24 h-16 rounded-lg object-cover ring-1 ring-white/10" />
-              )}
-              <div className="flex-1">
-                <input type="file" accept="image/*" ref={fileInputRef} onChange={handleImageUpload} className="hidden" />
-                <button onClick={() => fileInputRef.current?.click()}
-                  className="rounded-xl bg-white/5 px-4 py-2.5 text-xs text-ink-muted ring-1 ring-white/10 hover:ring-gold/20 transition w-full text-left">
-                  📷 {form.coverImage ? 'Change image' : 'Upload cover image'}
-                </button>
-                <input value={form.coverImage?.startsWith('data:') ? '' : (form.coverImage || '')}
-                  onChange={e => set('coverImage', e.target.value)} placeholder="Or paste image URL"
-                  className="w-full mt-1.5 rounded-xl bg-bg-base px-3 py-2 text-[10px] text-ink-muted ring-1 ring-white/10 outline-none" />
-              </div>
+            <div className="flex items-center justify-between mb-1">
+              <label className="text-[10px] font-bold uppercase tracking-wider text-ink-dim">Images (first = cover)</label>
+              <span className="text-[9px] text-ink-dim">{form.images.length} uploaded</span>
             </div>
+            {form.images.length > 0 && (
+              <div className="flex gap-2 overflow-x-auto pb-2 mb-2 scrollbar-hide">
+                {form.images.map((img, i) => (
+                  <div key={i} className="relative shrink-0">
+                    <img src={img} alt={`Image ${i + 1}`} className={`w-24 h-20 rounded-lg object-cover ring-2 ${i === 0 ? 'ring-gold' : 'ring-white/10'}`} />
+                    {i === 0 && <span className="absolute -top-1 -left-1 text-[8px] bg-gold text-bg-base px-1.5 py-0.5 rounded-full font-bold">Cover</span>}
+                    <button onClick={() => removeImage(i)}
+                      className="absolute -top-1 -right-1 w-4 h-4 rounded-full bg-red-500 text-white text-[8px] flex items-center justify-center">✕</button>
+                  </div>
+                ))}
+              </div>
+            )}
+            <input type="file" accept="image/*" multiple ref={fileInputRef} onChange={handleImageUpload} className="hidden" />
+            <button onClick={() => fileInputRef.current?.click()}
+              className="rounded-xl bg-white/5 px-4 py-2.5 text-xs text-ink-muted ring-1 ring-white/10 hover:ring-gold/20 transition w-full text-left">
+              📷 Upload images (select multiple)
+            </button>
+            <input value={''} onChange={e => {
+              if (e.target.value) setForm(f => ({ ...f, images: [...f.images, e.target.value], coverImage: f.images[0] || e.target.value }));
+              e.target.value = '';
+            }} placeholder="Or paste image URL and press Enter"
+              onKeyDown={e => {
+                if (e.key === 'Enter' && e.target.value) {
+                  setForm(f => {
+                    const newImages = [...f.images, e.target.value];
+                    return { ...f, images: newImages, coverImage: newImages[0] };
+                  });
+                  e.target.value = '';
+                }
+              }}
+              className="w-full mt-1.5 rounded-xl bg-bg-base px-3 py-2 text-[10px] text-ink-muted ring-1 ring-white/10 outline-none" />
           </div>
 
           {/* Blog toggle */}
@@ -331,6 +418,13 @@ export default function ContentPublisher({ user }) {
                 </div>
                 <input value={form.blog.tag} onChange={e => setBlog('tag', e.target.value)} placeholder="Display tag"
                   className="w-full rounded-lg bg-bg-base px-3 py-1.5 text-[10px] text-ink ring-1 ring-white/10 outline-none" />
+                <div>
+                  <label className="block text-[10px] font-bold uppercase tracking-wider text-ink-dim mb-1">Blog Context & References</label>
+                  <textarea value={form.blog.context || ''} onChange={e => setBlog('context', e.target.value)}
+                    placeholder={"Write additional blog context here. Add reference links, backlinks, notes for the blog generator.\n\nExamples:\n• This story is inspired by a real birthday party at Jump for Joy on Danforth\n• Backlink: https://mysleepytale.com/blog/why-bedtime-stories-matter\n• Reference: https://thestar.com/article-link\n• Mention the Rainbow Kindergarten series"}
+                    className="w-full rounded-lg bg-bg-base px-3 py-2.5 text-[10px] text-ink ring-1 ring-white/10 focus:ring-gold/50 outline-none resize-y min-h-[100px] max-h-[250px] whitespace-pre-wrap leading-relaxed font-mono" />
+                  <p className="text-[9px] text-ink-dim mt-1">Links pasted here will be included as backlinks in the generated blog. Add any context the blog should cover beyond the story itself.</p>
+                </div>
               </div>
             )}
           </div>
@@ -343,10 +437,20 @@ export default function ContentPublisher({ user }) {
               className="w-full rounded-xl bg-bg-base px-3 py-2.5 text-xs text-ink ring-1 ring-white/10 focus:ring-gold/50 outline-none" />
           </div>
 
-          <button onClick={() => setStep(3)} disabled={!form.title || !form.body}
-            className="w-full rounded-full bg-gold px-6 py-3 text-sm font-bold text-bg-base shadow-glow disabled:opacity-40">
-            Preview →
-          </button>
+          {/* Validation hints */}
+          {(!form.title || !form.body) && (
+            <div className="rounded-xl bg-gold/5 ring-1 ring-gold/20 px-4 py-2.5 text-[11px] text-gold">
+              {!form.title && <p>⚠ Title is required</p>}
+              {!form.body && <p>⚠ Story text is required — write it or use ✨ AI Write</p>}
+            </div>
+          )}
+
+          <div className="sticky bottom-0 bg-bg-base/95 backdrop-blur-sm pt-3 pb-1 -mx-1 px-1">
+            <button onClick={() => setStep(3)} disabled={!form.title || !form.body}
+              className="w-full rounded-full bg-gold px-6 py-3 text-sm font-bold text-bg-base shadow-glow disabled:opacity-40">
+              {form.title && form.body ? '👀 Preview →' : 'Fill title + story text to preview'}
+            </button>
+          </div>
         </div>
       )}
 
@@ -358,7 +462,7 @@ export default function ContentPublisher({ user }) {
             <div className="p-4">
               <p className="text-[10px] font-bold uppercase tracking-wider text-gold mb-2">Story Card Preview</p>
               <div className="flex gap-3">
-                {form.coverImage && <img src={form.coverImage} alt="" className="w-20 h-20 rounded-xl object-cover" />}
+                {form.images[0] && <img src={form.images[0]} alt="" className="w-20 h-20 rounded-xl object-cover ring-2 ring-gold" />}
                 <div>
                   <h3 className="text-sm font-bold text-ink">{form.title}</h3>
                   <p className="text-[11px] text-ink-muted mt-0.5">{form.subtitle}</p>
@@ -375,7 +479,7 @@ export default function ContentPublisher({ user }) {
           <div className="rounded-2xl bg-bg-surface ring-1 ring-white/5 p-4">
             <p className="text-[10px] font-bold uppercase tracking-wider text-gold mb-2">Share Card Preview (WhatsApp/Twitter)</p>
             <div className="rounded-xl bg-[#1a1a25] ring-1 ring-white/10 overflow-hidden max-w-sm">
-              {form.coverImage && <img src={form.coverImage} alt="" className="w-full aspect-[16/9] object-cover" />}
+              {form.images[0] && <img src={form.images[0]} alt="" className="w-full aspect-[16/9] object-cover" />}
               <div className="p-3">
                 <p className="text-[10px] text-ink-dim">mysleepytale.com</p>
                 <p className="text-sm font-bold text-ink mt-0.5">{form.title} — My Sleepy Tale</p>
@@ -392,13 +496,12 @@ export default function ContentPublisher({ user }) {
             </div>
           </div>
 
-          {/* Links preview */}
+          {/* Link preview */}
           <div className="rounded-2xl bg-bg-surface ring-1 ring-white/5 p-4">
-            <p className="text-[10px] font-bold uppercase tracking-wider text-gold mb-2">Links (live after publish)</p>
+            <p className="text-[10px] font-bold uppercase tracking-wider text-gold mb-2">Story Link (live after publish)</p>
             <div className="space-y-1 text-[11px] text-ink-dim">
-              <p>🎧 Player: <span className="text-ink-muted">mysleepytale.com/player?storyId=...</span></p>
-              <p>🔗 Share: <span className="text-ink-muted">mysleepytale.com/api/share?id=...</span></p>
-              {form.blog.enabled && <p>📝 Blog: <span className="text-ink-muted">mysleepytale.com/blog/{form.blog.slug || '...'}</span></p>}
+              <p>🔗 <span className="text-ink-muted">mysleepytale.com/api/share?id=...</span></p>
+              {form.blog.enabled && <p>📝 <span className="text-ink-muted">mysleepytale.com/blog/{form.blog.slug || '...'}</span></p>}
             </div>
           </div>
 
@@ -434,7 +537,7 @@ export default function ContentPublisher({ user }) {
             ))}
           </div>
 
-          <button onClick={() => { setStep(1); setResult(null); setForm(f => ({ ...f, title: '', subtitle: '', body: '', coverImage: '', coverImageBase64: '', aiTopic: '' })); }}
+          <button onClick={() => { setStep(1); setResult(null); setForm(f => ({ ...f, title: '', subtitle: '', body: '', coverImage: '', coverImageBase64: '', images: [], aiTopic: '' })); }}
             className="w-full rounded-full bg-white/5 px-4 py-3 text-sm font-bold text-ink-muted ring-1 ring-white/10">
             ← Publish Another
           </button>
