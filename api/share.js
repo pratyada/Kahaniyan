@@ -312,6 +312,24 @@ export default async function handler(req, res) {
     } catch {}
   }
 
+  // Try Firestore publishedContent if still not found
+  if (!title) {
+    try {
+      const fsRes = await fetch(`${FIRESTORE_URL}/publishedContent/${storyId}`);
+      if (fsRes.ok) {
+        const data = await fsRes.json();
+        const f = data.fields || {};
+        const pubTitle = f.title?.stringValue;
+        if (pubTitle) {
+          title = pubTitle;
+          description = f.metaDescription?.stringValue || f.subtitle?.stringValue || `Listen to "${pubTitle}" — a bedtime story on My Sleepy Tale.`;
+          image = f.coverImage?.stringValue || f.ogImage?.stringValue || DEFAULT_OG_IMAGE;
+          redirectUrl = `https://mysleepytale.com/player?storyId=${storyId}`;
+        }
+      }
+    } catch {}
+  }
+
   // Static story path
   if (!title) {
     const isSeries = story?.isSeries;

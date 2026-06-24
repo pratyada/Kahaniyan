@@ -19,27 +19,34 @@ function textHash(text) {
   return 'h' + Math.abs(h).toString(36);
 }
 
-// Upload audio blob to Firebase Storage and save URL back to story
+// Upload audio blob to S3 via Lambda and save URL back to caches
 async function cacheAudioToStorage(storyId, blob, storyText) {
-  if (!storage || !blob || !storyId) return;
+  if (!blob || !storyId) return;
   try {
-    const { ref, uploadBytes, getDownloadURL } = await import('firebase/storage');
-    const { doc, setDoc } = await import('firebase/firestore');
-    const storageRef = ref(storage, `audio/${storyId}.opus`);
-    await uploadBytes(storageRef, blob, { contentType: 'audio/ogg' });
-    const audioUrl = await getDownloadURL(storageRef);
-
-    // Save URL + text hash to caches (so we know when text changes)
+    // Convert blob to base64
+    const buffer = await blob.arrayBuffer();
+    const base64 = btoa(String.fromCharCode(...new Uint8Array(buffer)));
     const hash = textHash(storyText);
-    if (db) {
-      setDoc(doc(db, 'sharedStories', storyId), { audioUrl, textHash: hash }, { merge: true }).catch(() => {});
-      setDoc(doc(db, 'config', 'wisdomAudio'), { [storyId]: audioUrl }, { merge: true }).catch(() => {});
-      setDoc(doc(db, 'config', 'audioHashes'), { [storyId]: hash }, { merge: true }).catch(() => {});
-    }
+
+    const API = import.meta.env.VITE_API_URL || '';
+    const res = await fetch(`${API}/api/upload-audio`, {
+      method: 'POST',
+      headers: { 'content-type': 'application/json' },
+      body: JSON.stringify({
+        storyId,
+        audio: base64,
+        contentType: blob.type || 'audio/ogg',
+        textHash: hash,
+      }),
+    });
+
+    if (!res.ok) throw new Error(`Upload failed: ${res.status}`);
+    const { audioUrl } = await res.json();
+
     // Save URL to user's library in Firestore
     const uid = auth?.currentUser?.uid;
     if (db && uid) {
-      const { getDoc: gd } = await import('firebase/firestore');
+      const { doc, setDoc, getDoc: gd } = await import('firebase/firestore');
       const userSnap = await gd(doc(db, 'users', uid));
       if (userSnap.exists()) {
         const lib = userSnap.data().library || [];
@@ -58,7 +65,7 @@ async function cacheAudioToStorage(storyId, blob, storyText) {
         localStorage.setItem('mst:library', JSON.stringify(updated));
       }
     } catch {}
-    console.log('[My Sleepy Tale:Player] Audio cached to Storage:', storyId);
+    console.log('[My Sleepy Tale:Player] Audio cached to S3:', audioUrl);
   } catch (e) {
     console.warn('[My Sleepy Tale:Player] Audio cache failed (non-fatal):', e.message);
   }
@@ -288,9 +295,9 @@ function PlayerInner() {
   });
   const [translatedText, setTranslatedText] = useState(null);
   const [translating, setTranslating] = useState(false);
-  const [showFeedback, setShowFeedback] = useState(false);
   const [feedbackText, setFeedbackText] = useState('');
   const [feedbackSent, setFeedbackSent] = useState(false);
+  const [showInlineFeedback, setShowInlineFeedback] = useState(false);
   // Track which language the current audio is playing in
   const audioLangRef = useRef(null);
   const startedRef = useRef(false);
@@ -736,6 +743,36 @@ function PlayerInner() {
   const overlayPhase = noStoryYet ? 'generating' : 'done';
   const meta = valueMeta(current?.value);
 
+  // Check Firestore publishedContent if current story has no text
+  const [checkedPublished, setCheckedPublished] = useState(false);
+  useEffect(() => {
+    if (!current || current.text || checkedPublished) return;
+    setCheckedPublished(true);
+    (async () => {
+      try {
+        const { db: fireDb } = await import('../lib/firebase.js');
+        if (!fireDb) return;
+        const { doc: fdoc, getDoc: fget } = await import('firebase/firestore');
+        const snap = await fget(fdoc(fireDb, 'publishedContent', current.id));
+        if (snap.exists()) {
+          const pub = snap.data();
+          load({
+            ...current,
+            text: pub.body,
+            title: pub.title,
+            subtitle: pub.subtitle,
+            tradition: pub.tradition,
+            value: pub.theme,
+            source: pub.source,
+            audioUrl: pub.audioUrl || current.audioUrl,
+            coverImage: pub.coverImage,
+            estimatedMinutes: pub.durationMinutes,
+          });
+        }
+      } catch {}
+    })();
+  }, [current, checkedPublished, load]);
+
   // Stories without text can still play if they have cached audio
   if (current && !current.text && !current.audioUrl) {
     return (
@@ -846,7 +883,7 @@ function PlayerInner() {
               </button>
               <div className="flex items-center gap-1.5">
                 <button
-                  onClick={() => setShowFeedback(true)}
+                  onClick={() => setShowInlineFeedback(true)}
                   className="flex items-center gap-1 rounded-full bg-gold/10 px-3 py-1.5 text-[10px] font-bold text-gold transition hover:bg-gold/20 active:scale-95"
                 >
                   💬 Feedback
@@ -860,9 +897,9 @@ function PlayerInner() {
               </div>
             </div>
 
-            {/* Feedback overlay */}
+            {/* Inline feedback overlay */}
             <AnimatePresence>
-              {showFeedback && (
+              {showInlineFeedback && (
                 <motion.div
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
@@ -879,7 +916,7 @@ function PlayerInner() {
                     <>
                       <div className="flex items-center justify-between mb-3">
                         <h3 className="text-sm font-bold text-ink">💬 Quick Feedback</h3>
-                        <button onClick={() => setShowFeedback(false)} className="text-ink-dim text-xs">✕</button>
+                        <button onClick={() => setShowInlineFeedback(false)} className="text-ink-dim text-xs">✕</button>
                       </div>
                       <p className="text-[10px] text-ink-muted mb-2">
                         About: <span className="text-gold">{current?.title}</span>
@@ -911,7 +948,7 @@ function PlayerInner() {
                             }
                           } catch {}
                           setFeedbackSent(true);
-                          setTimeout(() => { setShowFeedback(false); setFeedbackSent(false); setFeedbackText(''); }, 2000);
+                          setTimeout(() => { setShowInlineFeedback(false); setFeedbackSent(false); setFeedbackText(''); }, 2000);
                         }}
                         disabled={!feedbackText.trim()}
                         className="w-full mt-3 rounded-full bg-gold px-4 py-2.5 text-xs font-bold text-bg-base shadow-glow transition hover:brightness-110 active:scale-95 disabled:opacity-40"

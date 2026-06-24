@@ -8,6 +8,7 @@ import PageTransition from '../components/PageTransition.jsx';
 import { useAuth } from '../hooks/useAuth.jsx';
 import { db } from '../lib/firebase.js';
 import { collection, query, where, orderBy, limit, getDocs, doc, updateDoc, onSnapshot } from 'firebase/firestore';
+import ContentPublisher from '../components/publisher/ContentPublisher.jsx';
 
 const FOUNDER_EMAIL = 'prateekyadav2010@gmail.com';
 const API = import.meta.env.VITE_API_URL || '';
@@ -31,12 +32,21 @@ const PIPELINES = [
     link: null,
   },
   {
+    id: 'content-publisher',
+    title: 'Content Publisher',
+    icon: '📖',
+    description: 'Create and publish episodes, series, stories, and blog posts — instantly live.',
+    status: 'active',
+    accent: '#7ad9a1',
+    link: null,
+  },
+  {
     id: 'content-pipeline',
     title: 'Content Pipeline',
     icon: '✨',
     description: 'Story → Images → Blog → Social — full agentic content generation.',
     status: 'active',
-    accent: '#7ad9a1',
+    accent: '#c084fc',
     link: '/content-pipeline',
   },
   {
@@ -551,6 +561,25 @@ export default function FounderHub() {
           );
         })}
       </div>
+
+      {/* Content Publisher Section */}
+      <AnimatePresence>
+        {activeSection === 'content-publisher' && (
+          <motion.div
+            initial={{ opacity: 0, height: 0 }}
+            animate={{ opacity: 1, height: 'auto' }}
+            exit={{ opacity: 0, height: 0 }}
+            className="overflow-hidden"
+          >
+            <div className="mb-8">
+              <h2 className="text-base font-bold text-ink mb-4" style={{ fontFamily: 'Lora, serif' }}>
+                📖 Content Publisher
+              </h2>
+              <ContentPublisher user={user} />
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
 
       {/* Marketing Agents Section */}
       <AnimatePresence>
