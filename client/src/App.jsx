@@ -32,6 +32,9 @@ import Studio from './pages/Studio.jsx';
 import ContentPipeline from './pages/ContentPipeline.jsx';
 import FounderHub from './pages/FounderHub.jsx';
 import ContributeEpisode from './pages/ContributeEpisode.jsx';
+import SummerAdventures from './pages/SummerAdventures.jsx';
+import ReportCardUpload from './pages/ReportCardUpload.jsx';
+import GrowthProfile from './pages/GrowthProfile.jsx';
 import MultilingualDemo from './pages/MultilingualDemo.jsx';
 import BottomNav from './components/BottomNav.jsx';
 import BadgeUnlockToast from './components/BadgeUnlockToast.jsx';
@@ -185,6 +188,9 @@ function Shell() {
             <Route path="/my-tasks" element={<MyTasks />} />
             <Route path="/admin" element={<Admin />} />
             <Route path="/content-pipeline" element={<ContentPipeline />} />
+            <Route path="/summer" element={<SummerAdventures />} />
+            <Route path="/summer/upload" element={<ReportCardUpload />} />
+            <Route path="/summer/profile" element={<GrowthProfile />} />
             <Route path="/founder-hub" element={<FounderHub />} />
             <Route path="*" element={<Navigate to="/" replace />} />
           </Routes>

@@ -119,24 +119,44 @@ export default function ContentPublisher({ user }) {
     setAiWriting(false);
   };
 
+  // Compress image to max 1200px, JPEG quality 0.7 (~100-200KB each)
+  const compressImage = (file) => new Promise((resolve) => {
+    const img = new Image();
+    const reader = new FileReader();
+    reader.onload = () => {
+      img.onload = () => {
+        const canvas = document.createElement('canvas');
+        const MAX = 1200;
+        let w = img.width, h = img.height;
+        if (w > MAX || h > MAX) {
+          if (w > h) { h = Math.round(h * MAX / w); w = MAX; }
+          else { w = Math.round(w * MAX / h); h = MAX; }
+        }
+        canvas.width = w;
+        canvas.height = h;
+        canvas.getContext('2d').drawImage(img, 0, 0, w, h);
+        resolve(canvas.toDataURL('image/jpeg', 0.7));
+      };
+      img.src = reader.result;
+    };
+    reader.readAsDataURL(file);
+  });
+
   // Image upload handler
   const handleImageUpload = (e) => {
     const files = Array.from(e.target.files || []);
     if (!files.length) return;
-    files.forEach(file => {
-      const reader = new FileReader();
-      reader.onload = () => {
-        setForm(f => {
-          const newImages = [...f.images, reader.result];
-          return {
-            ...f,
-            images: newImages,
-            coverImage: newImages[0], // first image is always cover
-            coverImageBase64: newImages[0].split(',')[1],
-          };
-        });
-      };
-      reader.readAsDataURL(file);
+    files.forEach(async (file) => {
+      const compressed = await compressImage(file);
+      setForm(f => {
+        const newImages = [...f.images, compressed];
+        return {
+          ...f,
+          images: newImages,
+          coverImage: newImages[0],
+          coverImageBase64: newImages[0].split(',')[1],
+        };
+      });
     });
   };
 
@@ -164,14 +184,34 @@ export default function ContentPublisher({ user }) {
 
       const slug = form.blog.slug || form.title.toLowerCase().replace(/[^a-z0-9]+/g, '-').slice(0, 60);
 
+      // Upload images one-by-one first (avoids Lambda 6MB payload limit)
+      const uploadedImageUrls = [];
+      for (let i = 0; i < form.images.length; i++) {
+        const img = form.images[i];
+        if (img.startsWith('http')) {
+          uploadedImageUrls.push(img);
+        } else {
+          const b64 = img.split(',')[1];
+          const imgRes = await fetch(`${API}/api/upload-image`, {
+            method: 'POST',
+            headers: { 'content-type': 'application/json' },
+            body: JSON.stringify({ key: `media/published/${id}_img${i}.jpg`, image: b64, contentType: 'image/jpeg' }),
+          });
+          if (imgRes.ok) {
+            const { imageUrl } = await imgRes.json();
+            uploadedImageUrls.push(imageUrl);
+          }
+        }
+      }
+
       const content = {
         ...form,
         id,
         type,
         blog: { ...form.blog, slug },
-        coverImage: form.images[0] || form.coverImage || '',
-        coverImageBase64: form.images[0]?.startsWith('data:') ? form.images[0].split(',')[1] : undefined,
-        images: form.images,
+        coverImage: uploadedImageUrls[0] || form.coverImage || '',
+        coverImageBase64: undefined, // already uploaded
+        images: uploadedImageUrls,
       };
 
       const res = await fetch(`${API}/api/publish-content`, {

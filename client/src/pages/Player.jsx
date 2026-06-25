@@ -731,9 +731,16 @@ function PlayerInner() {
     const urlParams = new URLSearchParams(window.location.search);
     const urlStoryId = urlParams.get('storyId');
 
-    // Try reloadLast — but only use it if the storyId matches the URL
-    const recovered = reloadLast();
-    if (recovered && (!urlStoryId || recovered.id === urlStoryId)) return;
+    // Try localStorage — but only if it matches the URL storyId and has text
+    let saved = null;
+    try {
+      const raw = localStorage.getItem('mst:lastStory');
+      if (raw) saved = JSON.parse(raw);
+    } catch {}
+    if (saved && (!urlStoryId || saved.id === urlStoryId) && saved.text) {
+      load(saved);
+      return;
+    }
 
     // Check URL storyId against publishedContent in Firestore
     if (urlStoryId) {

@@ -585,8 +585,20 @@ export default function SeriesDetail() {
   const sp = getSeriesProgress(series.id);
   const completedCount = sp.completed.length;
 
-  const playEpisode = (episode) => {
-    const filledText = fillTokens(episode.body || '', user ? profile : null);
+  const playEpisode = async (episode) => {
+    let epBody = episode.body || '';
+    // If no body (published content might still be loading), fetch from Firestore
+    if (!epBody && episode.id) {
+      try {
+        const { db: fireDb } = await import('../lib/firebase.js');
+        if (fireDb) {
+          const { doc: fdoc, getDoc: fget } = await import('firebase/firestore');
+          const snap = await fget(fdoc(fireDb, 'publishedContent', episode.id));
+          if (snap.exists()) epBody = snap.data().body || '';
+        }
+      } catch {}
+    }
+    const filledText = fillTokens(epBody, user ? profile : null);
     // Get the best image for this episode (uploaded gallery > cover > fallback)
     const epImage = episode.coverImage || (episode.gallery || [])[0] ||
       (galleryImages[episode.id] || [])[0] || coverImages[episode.id] || null;

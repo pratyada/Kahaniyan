@@ -20,7 +20,7 @@ async function uploadToS3(key, body, contentType, cacheControl) {
 }
 
 function generateBlogHtml(content) {
-  const { title, metaDescription, body, coverImage, blog, tradition } = content;
+  const { title, metaDescription, body, coverImage, blog, tradition, images } = content;
   const slug = blog.slug;
   const date = new Date().toISOString().slice(0, 10);
   const readableDate = new Date().toLocaleDateString('en-CA', { year: 'numeric', month: 'long', day: 'numeric' });
@@ -74,6 +74,9 @@ function generateBlogHtml(content) {
     .cta h2{font-family:Fraunces,Georgia,serif;font-size:1.3rem;margin-bottom:.5rem}
     .cta h2 em{color:#f0a500;font-style:normal}
     .cta .btn-primary{display:inline-block;background:#f0a500;color:#0a0a0f;font-weight:700;padding:.7rem 1.8rem;border-radius:2rem;font-size:.9rem;margin-top:.8rem}
+    .photo-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:.75rem;margin:1.5rem 0}
+    .photo-grid img{width:100%;border-radius:.75rem;aspect-ratio:4/3;object-fit:cover;cursor:pointer;transition:transform .2s}
+    .photo-grid img:hover{transform:scale(1.02)}
     .foot{text-align:center;margin-top:2rem;color:#3a3832;font-size:.75rem;border-top:1px solid rgba(255,255,255,.05);padding-top:1rem}
     [data-blog-theme="day"] body{background:#FDF8F0!important;color:#1A1040!important}
     [data-blog-theme="day"] h1,[data-blog-theme="day"] h2{color:#1A1040!important}
@@ -99,10 +102,15 @@ function generateBlogHtml(content) {
       ${tradition ? `<span>·</span><span>${tradition}</span>` : ''}
     </div>
     <div class="story">${(body || '').replace(/\n\n/g, '</p><p>').replace(/^/, '<p>').replace(/$/, '</p>')}</div>
+    ${(images && images.length > 1) ? `
+    <h2 style="font-family:Fraunces,Georgia,serif;font-size:1.3rem;margin:2rem 0 .8rem;color:#f0a500">📸 Photos from this story</h2>
+    <div class="photo-grid">
+      ${images.map((img, i) => `<img src="${img}" alt="Story photo ${i + 1}" loading="lazy">`).join('\n      ')}
+    </div>` : ''}
     <div class="cta">
       <h2>Listen to This <em>Story</em></h2>
       <p style="color:#8a857d;font-size:.9rem;margin-bottom:.5rem">Hear it as a bedtime audio tale — free on My Sleepy Tale.</p>
-      <a href="${SITE}/player?storyId=${content.id}" class="btn-primary">▶ Listen Now</a>
+      <a href="${SITE}/api/share?id=${content.id}" class="btn-primary">▶ Listen Now</a>
     </div>
     <footer class="foot">
       <p>🌙 My Sleepy Tale — bedtime stories that feel like home</p>

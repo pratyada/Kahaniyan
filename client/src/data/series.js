@@ -7466,7 +7466,7 @@ Goodnight, little one. Keep diving. Keep dreaming. The world is watching, and it
     gradient: 'linear-gradient(135deg, #003594 0%, #c41e3a 40%, #ffd700 100%)',
     description: 'The World Cup comes to Texas! AT&T Stadium, Fair Park, the Trinity River — Dallas is ready. Learn about countries, champions, and the beautiful game through bedtime stories in English, Spanish, French & Hindi. New episodes as matches happen!',
     ageRange: '3-10',
-    totalEpisodes: 6,
+    totalEpisodes: 7,
     episodes: [
       {
         id: 'fifa26_dallas_ep1_history', episodeNumber: 1, title: 'How the World Cup Began',
@@ -7639,6 +7639,48 @@ And remember that somewhere tonight, on a tiny island in the Atlantic, a forty-y
 Dreams do not have an expiry date.
 
 Goodnight, little one. Keep diving. Keep dreaming. Dallas saw a hero tonight. And so did you.`,
+      },
+      {
+        id: 'fifa26_dallas_ep7_hiro', episodeNumber: 7, title: 'Hiro\'s Big Heart at the World Cup',
+        subtitle: 'A story about courage, joy, and being wonderfully yourself.',
+        tradition: 'universal', theme: 'courage', durationMinutes: 3,
+        coverImage: 'https://mysleepytale.com/media/published/fifa_world_cup_2026_dallas_ep7_hiro_s_big_heart_at_the_world__cover.jpg',
+        gallery: [
+          'https://mysleepytale.com/media/published/fifa_world_cup_2026_dallas_ep7_hiro_s_big_heart_at_the_world__img0.jpg',
+          'https://mysleepytale.com/media/published/fifa_world_cup_2026_dallas_ep7_hiro_s_big_heart_at_the_world__img1.jpg',
+          'https://mysleepytale.com/media/published/fifa_world_cup_2026_dallas_ep7_hiro_s_big_heart_at_the_world__img2.jpg',
+          'https://mysleepytale.com/media/published/fifa_world_cup_2026_dallas_ep7_hiro_s_big_heart_at_the_world__img3.jpg',
+          'https://mysleepytale.com/media/published/fifa_world_cup_2026_dallas_ep7_hiro_s_big_heart_at_the_world__img4.jpg',
+          'https://mysleepytale.com/media/published/fifa_world_cup_2026_dallas_ep7_hiro_s_big_heart_at_the_world__img5.jpg',
+        ],
+        multilingual: true,
+        enableTranslation: true,
+        source: 'FIFA World Cup 2026 Dallas \u00b7 Episode 7 \u2014 Hiro\'s Big Heart',
+        body: `Tonight, little one, we're travelling all the way across the world to a magical place where football dreams come true. We're going to meet a boy named Hiro, whose smile became famous around the whole world.
+
+Hiro lived in Japan, and he loved football more than anything. He had saved his pocket money for so long to travel to Toronto and watch the World Cup \u2014 the biggest football celebration on Earth. When he finally arrived at the glowing stadium, his heart felt so full it might burst into sparkles.
+
+The stadium was like a rainbow had come alive. Thousands of people from every country in the world were singing, cheering, and dancing together. Red flags waved beside blue ones. Children laughed in twenty different languages. The grass glowed green under the bright lights, and the sky above was scattered with hopeful stars. Hiro's smile grew wider and wider.
+
+A friendly reporter with a warm voice noticed Hiro's beautiful smile. She walked over and asked gently, "How are you feeling today?"
+
+Hiro's eyes sparkled. He took a breath. He knew his English wasn't perfect. His words might stumble. But his heart was bursting with something much bigger than words.
+
+"I cannot speak English," he said carefully, "but I'M EXCITEDDD!"
+
+And then something magical happened.
+
+The whole stadium stopped. Then it erupted in the most wonderful sound \u2014 not cheers, but something softer. Something like understanding. Children from Canada, Brazil, Japan, and every corner of the world smiled at Hiro. The moon seemed to smile down from the sky. The stars sparkled brighter. Even the footballs on the field glowed with golden light.
+
+Because Hiro had just taught everyone something beautiful: joy needs no perfect words. Courage speaks louder than grammar. Being yourself is braver than being perfect.
+
+Hiro didn't need to speak English beautifully. His happiness, his honesty, and his wonderful smile spoke to every single person in that stadium. And it still speaks to the world today.
+
+So tonight, little one, remember this: whether you speak one language or ten, whether your words come out exactly right or a little wobbly, the world doesn't need perfect words. The world needs your wonderful smile, your brave heart, and your true self. Just like Hiro.
+
+Now close your eyes. Imagine that glowing stadium. Feel that warm, happy feeling. The world is full of people just waiting to smile back at you.
+
+Goodnight, little one. Sleep tight, brave dreamer.`,
       },
     ],
   },
