@@ -378,6 +378,29 @@ export default function Home() {
       {/* Streak + Badges */}
       <StreakBadge />
 
+      {/* Summer Adventure — Today's adventure card (if active) */}
+      {user && (() => {
+        try {
+          const raw = localStorage.getItem('mst:summerAdventure');
+          const adv = raw ? JSON.parse(raw) : null;
+          if (!adv || adv.status !== 'active') return null;
+          return (
+            <button onClick={() => navigate('/summer')}
+              className="w-full mb-4 rounded-2xl bg-gradient-to-r from-purple-500/20 to-gold/20 ring-1 ring-gold/30 p-4 text-left active:scale-98 transition">
+              <div className="flex items-center gap-3">
+                <span className="text-3xl">🌟</span>
+                <div className="flex-1">
+                  <p className="text-[10px] font-bold uppercase tracking-wider text-gold">Summer Adventure</p>
+                  <p className="text-sm font-bold text-ink">Continue {adv.childName}'s journey</p>
+                  <p className="text-[10px] text-ink-muted mt-0.5">{adv.stats?.daysCompleted || 0} days completed · {adv.stats?.totalXP || 0} XP</p>
+                </div>
+                <span className="text-gold">→</span>
+              </div>
+            </button>
+          );
+        } catch { return null; }
+      })()}
+
       {/* Product Hunt Launch */}
       <div className="mb-4 flex justify-center">
         <a href="https://www.producthunt.com/products/my-sleepy-tale-personalized-audio-book?embed=true&utm_source=badge-featured&utm_medium=badge&utm_campaign=badge-my-sleepy-tale-personalized-audio-book" target="_blank" rel="noopener noreferrer">

@@ -13,16 +13,12 @@ export default function ReportCardUpload() {
   const { user } = useAuth();
   const { parseReportCard } = useSummerAdventure();
   const fileRef = useRef(null);
-  const [preview, setPreview] = useState(null);
+  const [pages, setPages] = useState([]); // array of data URLs
   const [processing, setProcessing] = useState(false);
+  const [processingPage, setProcessingPage] = useState(0);
   const [error, setError] = useState(null);
 
-  const handleFile = (e) => {
-    const file = e.target.files?.[0];
-    if (!file) return;
-    setError(null);
-
-    // Compress and convert
+  const compressImage = (file) => new Promise((resolve) => {
     const reader = new FileReader();
     reader.onload = () => {
       const img = new Image();
@@ -37,33 +33,90 @@ export default function ReportCardUpload() {
         canvas.width = w;
         canvas.height = h;
         canvas.getContext('2d').drawImage(img, 0, 0, w, h);
-        const dataUrl = canvas.toDataURL('image/jpeg', 0.85);
-        setPreview(dataUrl);
+        resolve(canvas.toDataURL('image/jpeg', 0.85));
       };
       img.src = reader.result;
     };
     reader.readAsDataURL(file);
+  });
+
+  const handleFiles = async (e) => {
+    const files = Array.from(e.target.files || []);
+    if (!files.length) return;
+    setError(null);
+    const compressed = await Promise.all(files.map(f => compressImage(f)));
+    setPages(prev => [...prev, ...compressed]);
   };
 
+  const removePage = (index) => setPages(pages.filter((_, i) => i !== index));
+
   const handleAnalyze = async () => {
-    if (!preview || !user) return;
+    if (pages.length === 0 || !user) return;
     setProcessing(true);
     setError(null);
-    try {
-      const base64 = preview.split(',')[1];
-      const result = await parseReportCard(base64, 'image/jpeg');
-      if (result.error) throw new Error(result.error);
 
-      // Save extracted data to session and navigate to profile
+    try {
+      // Parse each page and merge results
+      let allStrengths = [];
+      let allGrowthAreas = [];
+      let allSubjects = [];
+      let allTeacherNotes = [];
+      let allRecommendations = [];
+      let childName = null;
+      let grade = null;
+      let school = null;
+      const imageUrls = [];
+
+      for (let i = 0; i < pages.length; i++) {
+        setProcessingPage(i + 1);
+        const base64 = pages[i].split(',')[1];
+        const result = await parseReportCard(base64, 'image/jpeg');
+        if (result.error) throw new Error(result.error);
+        if (result.imageUrl) imageUrls.push(result.imageUrl);
+
+        const d = result.extractedData || {};
+        if (d.childName && !childName) childName = d.childName;
+        if (d.grade && !grade) grade = d.grade;
+        if (d.school && !school) school = d.school;
+        if (d.strengths) allStrengths.push(...d.strengths);
+        if (d.growthAreas) allGrowthAreas.push(...d.growthAreas);
+        if (d.subjects) allSubjects.push(...d.subjects);
+        if (d.teacherNotes) allTeacherNotes.push(...d.teacherNotes);
+        if (d.recommendations) allRecommendations.push(...d.recommendations);
+      }
+
+      // Deduplicate by skill name
+      const dedup = (arr) => {
+        const seen = new Set();
+        return arr.filter(item => {
+          const key = (item.skill || item.name || '').toLowerCase();
+          if (seen.has(key)) return false;
+          seen.add(key);
+          return true;
+        });
+      };
+
+      const extractedData = {
+        childName, grade, school,
+        subjects: dedup(allSubjects),
+        strengths: dedup(allStrengths),
+        growthAreas: dedup(allGrowthAreas),
+        learningSkills: [],
+        teacherNotes: [...new Set(allTeacherNotes)],
+        recommendations: [...new Set(allRecommendations)],
+      };
+
       sessionStorage.setItem('mst:reportCardData', JSON.stringify({
-        extractedData: result.extractedData,
-        imageUrl: result.imageUrl,
+        extractedData,
+        imageUrls,
+        pageCount: pages.length,
       }));
       navigate('/summer/profile');
     } catch (e) {
       setError(e.message);
     }
     setProcessing(false);
+    setProcessingPage(0);
   };
 
   return (
@@ -84,48 +137,55 @@ export default function ReportCardUpload() {
         </div>
       )}
 
-      {/* Upload area */}
-      {!preview && (
+      {/* Upload area + page thumbnails */}
+      {!processing && (
         <div className="mb-6">
-          <input type="file" accept="image/*" capture="environment" ref={fileRef} onChange={handleFile} className="hidden" />
+          <input type="file" accept="image/*" multiple capture="environment" ref={fileRef} onChange={handleFiles} className="hidden" />
 
+          {/* Page thumbnails */}
+          {pages.length > 0 && (
+            <div className="mb-4">
+              <div className="flex items-center justify-between mb-2">
+                <p className="text-[10px] font-bold uppercase tracking-wider text-gold">{pages.length} page{pages.length !== 1 ? 's' : ''} uploaded</p>
+                <button onClick={() => fileRef.current?.click()} className="text-[10px] font-bold text-gold">+ Add more pages</button>
+              </div>
+              <div className="flex gap-2 overflow-x-auto pb-2 scrollbar-hide">
+                {pages.map((page, i) => (
+                  <div key={i} className="relative shrink-0">
+                    <img src={page} alt={`Page ${i + 1}`} className="w-24 h-32 rounded-lg object-cover ring-1 ring-white/10" />
+                    <span className="absolute top-1 left-1 text-[8px] bg-gold text-bg-base px-1.5 py-0.5 rounded-full font-bold">P{i + 1}</span>
+                    <button onClick={() => removePage(i)}
+                      className="absolute -top-1 -right-1 w-4 h-4 rounded-full bg-red-500 text-white text-[8px] flex items-center justify-center">✕</button>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {/* Upload button */}
           <button onClick={() => fileRef.current?.click()}
-            className="w-full rounded-2xl border-2 border-dashed border-gold/30 bg-gold/5 p-12 text-center transition hover:border-gold/50 active:scale-98">
-            <span className="text-5xl block mb-3">📷</span>
-            <p className="text-sm font-bold text-ink">Tap to take a photo or choose a file</p>
-            <p className="text-[11px] text-ink-muted mt-1">JPEG, PNG — report card, progress report, or teacher comments</p>
+            className="w-full rounded-2xl border-2 border-dashed border-gold/30 bg-gold/5 p-8 text-center transition hover:border-gold/50 active:scale-98">
+            <span className="text-4xl block mb-2">📷</span>
+            <p className="text-sm font-bold text-ink">{pages.length === 0 ? 'Tap to take photos or choose files' : 'Add more pages'}</p>
+            <p className="text-[11px] text-ink-muted mt-1">Upload all pages of the report card — 1, 2, 3, or 4 pages</p>
           </button>
 
-          <div className="mt-4 space-y-2">
-            <p className="text-[10px] font-bold uppercase tracking-wider text-ink-dim">Tips for best results:</p>
-            <div className="flex items-start gap-2 text-[11px] text-ink-muted">
-              <span>✓</span><span>Place report card on a flat, well-lit surface</span>
+          {pages.length === 0 && (
+            <div className="mt-4 space-y-2">
+              <p className="text-[10px] font-bold uppercase tracking-wider text-ink-dim">Tips for best results:</p>
+              <div className="flex items-start gap-2 text-[11px] text-ink-muted"><span>✓</span><span>Place report card on a flat, well-lit surface</span></div>
+              <div className="flex items-start gap-2 text-[11px] text-ink-muted"><span>✓</span><span>Upload ALL pages (front + back, page 1-4)</span></div>
+              <div className="flex items-start gap-2 text-[11px] text-ink-muted"><span>✓</span><span>Make sure all text is readable in each photo</span></div>
             </div>
-            <div className="flex items-start gap-2 text-[11px] text-ink-muted">
-              <span>✓</span><span>Make sure all text is readable in the photo</span>
-            </div>
-            <div className="flex items-start gap-2 text-[11px] text-ink-muted">
-              <span>✓</span><span>Include all pages if it's multi-page</span>
-            </div>
-          </div>
-        </div>
-      )}
+          )}
 
-      {/* Preview */}
-      {preview && !processing && (
-        <div className="mb-6">
-          <div className="relative rounded-2xl overflow-hidden ring-1 ring-white/10 mb-4">
-            <img src={preview} alt="Report card" className="w-full" />
-            <button onClick={() => { setPreview(null); setError(null); }}
-              className="absolute top-2 right-2 rounded-full bg-black/50 px-3 py-1 text-[10px] text-white font-bold backdrop-blur-sm">
-              ✕ Retake
+          {/* Analyze button */}
+          {pages.length > 0 && (
+            <button onClick={handleAnalyze}
+              className="w-full mt-4 rounded-full bg-gold px-8 py-4 text-base font-bold text-bg-base shadow-glow transition hover:brightness-110 active:scale-95">
+              🧠 Analyze {pages.length} Page{pages.length !== 1 ? 's' : ''}
             </button>
-          </div>
-
-          <button onClick={handleAnalyze}
-            className="w-full rounded-full bg-gold px-8 py-4 text-base font-bold text-bg-base shadow-glow transition hover:brightness-110 active:scale-95">
-            🧠 Analyze Report Card
-          </button>
+          )}
         </div>
       )}
 
@@ -138,24 +198,23 @@ export default function ReportCardUpload() {
               <span className="text-5xl block">🔭</span>
             </motion.div>
             <h2 className="mt-4 text-lg font-bold text-ink" style={{ fontFamily: 'Lora, serif' }}>
-              Reading report card...
+              Reading page {processingPage} of {pages.length}...
             </h2>
             <p className="mt-2 text-sm text-ink-muted">
               AI is finding strengths and growth areas
             </p>
-            <div className="mt-4 flex justify-center gap-1.5">
-              {[0, 1, 2].map(i => (
-                <motion.div key={i} className="h-2 w-2 rounded-full bg-gold"
-                  animate={{ y: [0, -8, 0] }}
-                  transition={{ duration: 0.6, repeat: Infinity, delay: i * 0.15 }} />
-              ))}
+            <div className="mt-3 mx-auto max-w-xs h-2 rounded-full bg-white/5 overflow-hidden">
+              <motion.div className="h-full bg-gold rounded-full"
+                animate={{ width: `${(processingPage / pages.length) * 100}%` }}
+                transition={{ duration: 0.3 }} />
             </div>
+            <p className="mt-2 text-[10px] text-ink-dim">{processingPage}/{pages.length} pages analyzed</p>
           </motion.div>
         )}
       </AnimatePresence>
 
       {/* No report card? Manual entry */}
-      {!preview && !processing && (
+      {pages.length === 0 && !processing && (
         <div className="mt-4 rounded-xl bg-white/3 ring-1 ring-white/5 p-4 text-center">
           <p className="text-xs text-ink-muted">Don't have the report card handy?</p>
           <button onClick={() => {

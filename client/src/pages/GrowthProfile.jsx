@@ -92,11 +92,13 @@ export default function GrowthProfile() {
         growthProfile,
       });
 
-      // Generate curriculum
-      await generateCurriculum(growthProfile, adventureId);
-
-      // Navigate to the adventure
+      // Navigate immediately — curriculum generates in background
       navigate('/summer');
+
+      // Fire curriculum generation in background (don't await)
+      generateCurriculum(growthProfile, adventureId).catch(e => {
+        console.warn('[Summer] Curriculum generation error:', e.message);
+      });
     } catch (e) {
       setError('Failed to generate adventure: ' + e.message);
     }

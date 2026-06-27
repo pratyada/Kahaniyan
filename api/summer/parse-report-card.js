@@ -23,7 +23,7 @@ export default async function handler(req, res) {
         'anthropic-version': '2023-06-01',
       },
       body: JSON.stringify({
-        model: 'claude-sonnet-4-20250514',
+        model: 'claude-haiku-4-5-20251001',
         max_tokens: 2000,
         messages: [{
           role: 'user',
@@ -34,13 +34,23 @@ export default async function handler(req, res) {
             },
             {
               type: 'text',
-              text: `You are analyzing a child's school report card. Extract ALL information carefully.
+              text: `You are analyzing a child's school report card or progress report. This could be from ANY format:
 
-Return ONLY valid JSON with this exact structure:
+- Ontario Kindergarten Communication of Learning (has "Demonstrating Literacy and Mathematics Behaviours", "Problem Solving and Innovating", learning frameworks — this IS a valid report card)
+- Ontario Elementary Progress Report or Report Card
+- US report cards, UK school reports
+- Any school assessment document with student information
+
+IMPORTANT: Ontario Kindergarten reports describe learning frameworks alongside student observations. Do NOT reject these as "instructional documents" — they ARE the student's report card.
+
+Extract whatever student-specific information you can find. If the page mainly describes learning expectations/frameworks, still extract the skill areas mentioned and mark them as "on-track" by default.
+
+Return ONLY valid JSON with this structure:
 {
   "childName": "name if visible, or null",
   "grade": "JK/SK/Grade 1/Grade 2/etc or null",
   "school": "school name if visible, or null",
+  "term": "Term 1/Term 2/Final/etc or null",
   "subjects": [
     { "name": "Reading", "level": "strong|on-track|growing|needs-support", "comments": "teacher comment if any" }
   ],
@@ -57,10 +67,12 @@ Return ONLY valid JSON with this exact structure:
   "recommendations": ["any teacher suggestions for next steps"]
 }
 
+If a page only shows learning framework descriptions without specific student data, extract the skill categories mentioned (e.g., "Literacy", "Mathematics", "Problem Solving") as subjects with level "on-track" and note "Framework description — upload student-specific pages for detailed assessment."
+
 Map everything to friendly, positive labels. Never use negative language.
 "Needs support" not "failing". "Growing" not "behind". "Building" not "struggling".
 
-If this is not a report card, return: { "error": "This doesn't appear to be a school report card" }`,
+NEVER return an error saying this is not a report card. Always extract whatever you can.`,
             },
           ],
         }],

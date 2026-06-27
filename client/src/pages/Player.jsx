@@ -1,4 +1,4 @@
-import { Component, useEffect, useRef, useState } from 'react';
+import { Component, useEffect, useRef, useState, useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -298,6 +298,78 @@ function PlayerInner() {
   const [feedbackText, setFeedbackText] = useState('');
   const [feedbackSent, setFeedbackSent] = useState(false);
   const [showInlineFeedback, setShowInlineFeedback] = useState(false);
+  const [sleepMode, setSleepMode] = useState(false);
+
+  // Play next story — series next episode OR random matching story
+  const playNext = useCallback(async () => {
+    narrator.stop();
+    try {
+      const { SERIES } = await import('../data/series.js');
+      const { CULTURAL_LESSONS } = await import('../data/culturalLessons.js');
+      const beliefs = profile?.beliefs || [];
+
+      // 1. If in a series, play next episode
+      if (current?.seriesId) {
+        const series = SERIES.find(s => s.id === current.seriesId);
+        if (series?.episodes) {
+          const currentEpNum = current.episodeNumber || series.episodes.findIndex(e => e.id === current.id || e.id === current.episodeId) + 1;
+          const nextEp = series.episodes.find(e => e.episodeNumber === currentEpNum + 1);
+          if (nextEp) {
+            const { fillTokens } = await import('../utils/storyHelpers.js');
+            const filledText = fillTokens(nextEp.body || '', user ? profile : null);
+            load({
+              id: nextEp.id, title: nextEp.title, text: filledText,
+              subtitle: nextEp.subtitle, tradition: nextEp.tradition,
+              value: nextEp.theme || nextEp.value, source: nextEp.source,
+              seriesId: current.seriesId, episodeNumber: nextEp.episodeNumber,
+              episodeId: nextEp.id, isWisdom: true,
+              coverImage: nextEp.coverImage || null,
+              gallery: nextEp.gallery || [],
+              durationMinutes: nextEp.durationMinutes,
+              estimatedMinutes: nextEp.durationMinutes,
+              multilingual: nextEp.multilingual || false,
+              enableTranslation: nextEp.enableTranslation || false,
+            });
+            navigate(`/player?storyId=${nextEp.id}`);
+            return;
+          }
+        }
+      }
+
+      // 2. Random story matching beliefs — from wisdom stories + series episodes
+      const allStories = [
+        ...CULTURAL_LESSONS.filter(s => s?.body && s?.id),
+        ...SERIES.flatMap(s => (s.episodes || []).filter(e => e?.body && e?.id).map(e => ({ ...e, seriesId: s.id, tradition: e.tradition || s.tradition || 'universal' }))),
+      ];
+
+      const eligible = allStories.filter(s => {
+        if (s.visibility === 'private') return false;
+        if (s.id === current?.id) return false;
+        if (beliefs.length === 0) return s.tradition === 'universal';
+        return beliefs.includes(s.tradition) || s.tradition === 'universal';
+      });
+
+      if (eligible.length === 0) return;
+      const pick = eligible[Math.floor(Math.random() * eligible.length)];
+      const { fillTokens } = await import('../utils/storyHelpers.js');
+      const filledText = fillTokens(pick.body || '', user ? profile : null);
+      load({
+        id: pick.id, title: pick.title, text: filledText,
+        tradition: pick.tradition, value: pick.value || pick.theme,
+        source: pick.source, isWisdom: true,
+        seriesId: pick.seriesId || null,
+        episodeId: pick.id,
+        episodeNumber: pick.episodeNumber,
+        coverImage: pick.coverImage || null,
+        gallery: pick.gallery || [],
+        durationMinutes: pick.durationMinutes,
+        estimatedMinutes: pick.durationMinutes,
+      });
+      window.history.replaceState(null, '', `/player?storyId=${pick.id}`);
+    } catch (e) {
+      console.warn('[Player] playNext failed:', e.message);
+    }
+  }, [current, profile, user, narrator, load, navigate]);
   // Track which language the current audio is playing in
   const audioLangRef = useRef(null);
   const startedRef = useRef(false);
@@ -327,11 +399,12 @@ function PlayerInner() {
   // Request notification permission on mount
   useEffect(() => { requestNotificationPermission(); }, []);
 
-  // Reset startedRef when story changes so auto-play fires for new stories
+  // Reset startedRef + done when story changes so auto-play fires for new stories
   const currentIdRef = useRef(null);
   if (current && current.id !== currentIdRef.current) {
     currentIdRef.current = current.id;
     startedRef.current = false;
+    if (done) setDone(false);
   }
 
   // Timeout: if no story after 35s, show error
@@ -665,6 +738,12 @@ function PlayerInner() {
       import('../utils/playTracker.js').then(({ recordStoryPlay }) => recordStoryPlay(current)).catch(() => {});
       import('../utils/analytics.js').then(({ trackAudioCompleted }) => trackAudioCompleted(current?.id, current?.estimatedMinutes)).catch(() => {});
 
+      // Sleep mode → auto-play next story
+      if (sleepMode) {
+        setTimeout(() => playNext(), 2000); // 2 sec pause between stories
+        return;
+      }
+
       // Series episode → show next episode prompt (+ signup nudge for guests)
       if (current?.seriesId) {
         const seriesData = SERIES.find(s => s.id === current.seriesId);
@@ -722,53 +801,52 @@ function PlayerInner() {
     navigate('/');
   };
 
-  // Recover story from localStorage if current is null (e.g. navigated from library)
+  // Recover story on page refresh only
   const recoveredRef = useRef(false);
   useEffect(() => {
     if (current || recoveredRef.current) return;
     recoveredRef.current = true;
 
-    const urlParams = new URLSearchParams(window.location.search);
-    const urlStoryId = urlParams.get('storyId');
+    // Try localStorage
+    const recovered = reloadLast();
+    if (recovered) return;
 
-    // Try localStorage — but only if it matches the URL storyId and has text
-    let saved = null;
-    try {
-      const raw = localStorage.getItem('mst:lastStory');
-      if (raw) saved = JSON.parse(raw);
-    } catch {}
-    if (saved && (!urlStoryId || saved.id === urlStoryId) && saved.text) {
-      load(saved);
-      return;
-    }
+    // If URL has storyId, try loading from data
+    const urlStoryId = new URLSearchParams(window.location.search).get('storyId');
+    if (!urlStoryId) return;
 
-    // Check URL storyId against publishedContent in Firestore
-    if (urlStoryId) {
-      (async () => {
-        try {
-          const { db: fireDb } = await import('../lib/firebase.js');
-          if (!fireDb) return;
-          const { doc: fdoc, getDoc: fget } = await import('firebase/firestore');
-          const snap = await fget(fdoc(fireDb, 'publishedContent', urlStoryId));
-          if (snap.exists()) {
-            const pub = snap.data();
-            load({
-              id: pub.id, title: pub.title, text: pub.body,
-              subtitle: pub.subtitle, tradition: pub.tradition,
-              value: pub.theme, source: pub.source,
-              audioUrl: pub.audioUrl || null,
-              coverImage: pub.coverImage,
-              gallery: (pub.images || []).slice(1),
-              estimatedMinutes: pub.durationMinutes,
-              seriesId: pub.seriesId || null,
-              multilingual: pub.multilingual || false,
-              enableTranslation: pub.enableTranslation || false,
-            });
+    (async () => {
+      try {
+        // Hardcoded series
+        const { SERIES } = await import('../data/series.js');
+        for (const s of SERIES) {
+          const ep = (s.episodes || []).find(e => e.id === urlStoryId);
+          if (ep?.body) {
+            load({ id: ep.id, title: ep.title, text: ep.body, subtitle: ep.subtitle, tradition: ep.tradition, value: ep.theme || ep.value, source: ep.source, seriesId: s.id, episodeId: ep.id, episodeNumber: ep.episodeNumber, isWisdom: true, coverImage: ep.coverImage || null, gallery: ep.gallery || [], estimatedMinutes: ep.durationMinutes, multilingual: ep.multilingual || false, enableTranslation: ep.enableTranslation || false });
+            return;
           }
-        } catch {}
-      })();
-    }
-  }, [current, reloadLast, load]);
+        }
+        // Hardcoded wisdom
+        const { CULTURAL_LESSONS } = await import('../data/culturalLessons.js');
+        const lid = urlStoryId.replace('lesson_', '');
+        const lesson = CULTURAL_LESSONS.find(l => l?.id === lid || l?.id === urlStoryId);
+        if (lesson?.body) {
+          load({ id: lesson.id, title: lesson.title, text: lesson.body, tradition: lesson.tradition, value: lesson.value, source: lesson.source, isWisdom: true, estimatedMinutes: lesson.durationMinutes });
+          return;
+        }
+        // Firestore
+        const { db: fireDb } = await import('../lib/firebase.js');
+        if (!fireDb) return;
+        const { doc: fdoc, getDoc: fget } = await import('firebase/firestore');
+        const snap = await fget(fdoc(fireDb, 'publishedContent', urlStoryId));
+        if (snap.exists()) {
+          const pub = snap.data();
+          load({ id: pub.id, title: pub.title, text: pub.body, subtitle: pub.subtitle, tradition: pub.tradition, value: pub.theme, source: pub.source, audioUrl: pub.audioUrl || null, coverImage: pub.coverImage, gallery: (pub.images || []).slice(1), estimatedMinutes: pub.durationMinutes, seriesId: pub.seriesId || null, multilingual: pub.multilingual || false, enableTranslation: pub.enableTranslation || false });
+        }
+      } catch {}
+    })();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   // Two-phase overlay:
   // Phase 1: no story text yet → full overlay (70%)
@@ -836,35 +914,6 @@ function PlayerInner() {
     return () => clearTimeout(timer);
   }, []);
 
-  if (current && !current.text && !current.audioUrl) {
-    if (!loadTimeout) {
-      return (
-        <div className="flex h-screen flex-col items-center justify-center bg-bg-base px-6 text-center">
-          <div className="text-3xl mb-3 animate-pulse">🌙</div>
-          <p className="text-sm text-ink-muted">Loading story...</p>
-        </div>
-      );
-    }
-    return (
-      <div className="flex h-screen flex-col items-center justify-center bg-bg-base px-6 text-center">
-        <div className="text-4xl mb-4">😔</div>
-        <h1 className="font-display text-xl font-bold text-gold">{current.title || 'Story'}</h1>
-        <p className="mt-2 text-sm text-ink-muted">This story doesn't have any content to play.</p>
-        <button onClick={() => { clear(); navigate('/'); }} className="btn-primary mt-6">{t('player.backToHome')}</button>
-      </div>
-    );
-  }
-
-  // No story at all — also wait before showing error (for share link redirects)
-  if (!current && !loadTimeout) {
-    return (
-      <div className="flex h-screen flex-col items-center justify-center bg-bg-base px-6 text-center">
-        <div className="text-3xl mb-3 animate-pulse">🌙</div>
-        <p className="text-sm text-ink-muted">Loading story...</p>
-      </div>
-    );
-  }
-
   const handleTogglePlay = () => {
     if (!isPlaying) {
       narrator.play();
@@ -908,7 +957,88 @@ function PlayerInner() {
   const storyArtData = current?.id ? getStoryArt(lessonKey) : null;
   const bgImage = current?.coverImage || wisdomImageUrls[lessonKey] || storyArtData?.image || getGenericStoryImage(current?.id);
 
+  // === All hooks are above this line. Conditional returns below. ===
+
+  // Loading states
+  if (current && !current.text && !current.audioUrl) {
+    if (!loadTimeout) {
+      return (<div className="flex h-screen flex-col items-center justify-center bg-bg-base px-6 text-center"><div className="text-3xl mb-3 animate-pulse">🌙</div><p className="text-sm text-ink-muted">Loading story...</p></div>);
+    }
+    return (<div className="flex h-screen flex-col items-center justify-center bg-bg-base px-6 text-center"><div className="text-4xl mb-4">😔</div><h1 className="font-display text-xl font-bold text-gold">{current.title || 'Story'}</h1><p className="mt-2 text-sm text-ink-muted">This story doesn't have any content to play.</p><button onClick={() => { clear(); navigate('/'); }} className="btn-primary mt-6">{t('player.backToHome')}</button></div>);
+  }
+
+  if (!current) {
+    const urlStoryId = new URLSearchParams(window.location.search).get('storyId');
+    if (!urlStoryId && loadTimeout) { navigate('/'); return null; }
+    if (!loadTimeout) {
+      return (<div className="flex h-screen flex-col items-center justify-center bg-bg-base px-6 text-center"><div className="text-3xl mb-3 animate-pulse">🌙</div><p className="text-sm text-ink-muted">Loading story...</p></div>);
+    }
+  }
+
   const isGenerating = !current;
+
+  // Sleep Mode — full black screen with minimal controls
+  if (sleepMode) {
+    return (
+      <div className="absolute inset-0 z-50 bg-black flex flex-col" onClick={(e) => e.stopPropagation()}>
+        {/* Black screen — tap anywhere does nothing (kid-proof) */}
+        <div className="flex-1 flex items-center justify-center">
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 0.15 }}
+            className="text-center select-none"
+          >
+            <span className="text-6xl">🌙</span>
+          </motion.div>
+        </div>
+
+        {/* Minimal controls at bottom */}
+        <div className="safe-bottom px-6 pb-6">
+          {/* Progress bar */}
+          <div className="mb-4">
+            {narrator.duration > 0 && (
+              <div className="h-1 rounded-full bg-white/10 overflow-hidden">
+                <div className="h-full bg-white/30 rounded-full transition-all" style={{ width: `${(progress * 100).toFixed(1)}%` }} />
+              </div>
+            )}
+          </div>
+
+          {/* Transport controls */}
+          <div className="flex items-center justify-center gap-8 mb-4">
+            {/* Rewind 15s */}
+            <button onClick={() => { if (narrator.audio) narrator.audio.currentTime = Math.max(0, narrator.audio.currentTime - 15); }}
+              className="grid h-12 w-12 place-items-center rounded-full bg-white/5 text-white/50 active:scale-90 transition">
+              <RotateCcw size={18} />
+            </button>
+
+            {/* Play/Pause/Loading */}
+            <button onClick={ttsReady ? handleTogglePlay : undefined}
+              disabled={!ttsReady}
+              className="grid h-16 w-16 place-items-center rounded-full bg-white/10 text-white active:scale-90 transition disabled:opacity-50">
+              {!ttsReady ? <Loader2 size={24} className="animate-spin" /> : isPlaying ? <Pause size={24} /> : <Play size={24} />}
+            </button>
+
+            {/* Next story/episode */}
+            <button onClick={playNext}
+              className="grid h-12 w-12 place-items-center rounded-full bg-white/5 text-white/50 active:scale-90 transition">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M5 5v14l11-7L5 5z"/><rect x="17" y="5" width="2" height="14" rx="1"/></svg>
+            </button>
+          </div>
+
+          {/* Story title + exit */}
+          <div className="flex items-center justify-between">
+            <div className="min-w-0 flex-1">
+              <p className="text-[10px] text-white/30 truncate">{current?.title}</p>
+            </div>
+            <button onClick={() => setSleepMode(false)}
+              className="text-[10px] font-bold text-white/20 px-3 py-1.5 rounded-full bg-white/5 active:bg-white/10 transition">
+              Exit Sleep Mode
+            </button>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="absolute inset-0 z-40 overflow-hidden bg-bg-base" style={{ touchAction: 'pan-y' }}>
@@ -963,10 +1093,16 @@ function PlayerInner() {
               </button>
               <div className="flex items-center gap-1.5">
                 <button
+                  onClick={() => setSleepMode(true)}
+                  className="flex items-center gap-1 rounded-full bg-purple-500/10 px-3 py-1.5 text-[10px] font-bold text-purple-400 transition hover:bg-purple-500/20 active:scale-95"
+                >
+                  🌙 Sleep
+                </button>
+                <button
                   onClick={() => setShowInlineFeedback(true)}
                   className="flex items-center gap-1 rounded-full bg-gold/10 px-3 py-1.5 text-[10px] font-bold text-gold transition hover:bg-gold/20 active:scale-95"
                 >
-                  💬 Feedback
+                  💬
                 </button>
                 <button onClick={shareStory} className="grid h-9 w-9 place-items-center rounded-full bg-white/5 text-ink-muted transition hover:text-ink active:scale-95">
                   <Share2 size={15} />

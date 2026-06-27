@@ -35,6 +35,7 @@ import ContributeEpisode from './pages/ContributeEpisode.jsx';
 import SummerAdventures from './pages/SummerAdventures.jsx';
 import ReportCardUpload from './pages/ReportCardUpload.jsx';
 import GrowthProfile from './pages/GrowthProfile.jsx';
+import DailyAdventure from './pages/DailyAdventure.jsx';
 import MultilingualDemo from './pages/MultilingualDemo.jsx';
 import BottomNav from './components/BottomNav.jsx';
 import BadgeUnlockToast from './components/BadgeUnlockToast.jsx';
@@ -191,6 +192,7 @@ function Shell() {
             <Route path="/summer" element={<SummerAdventures />} />
             <Route path="/summer/upload" element={<ReportCardUpload />} />
             <Route path="/summer/profile" element={<GrowthProfile />} />
+            <Route path="/summer/day/:dayNumber" element={<DailyAdventure />} />
             <Route path="/founder-hub" element={<FounderHub />} />
             <Route path="*" element={<Navigate to="/" replace />} />
           </Routes>

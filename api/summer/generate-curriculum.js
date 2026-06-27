@@ -92,37 +92,32 @@ Generate all 8 weeks with 7 days each (Mon-Fri = daily adventures, Sat-Sun = fam
       return res.status(500).json({ error: 'Failed to generate curriculum. Please try again.' });
     }
 
-    // Save to Firestore if adventureId provided
+    // Save curriculum + flattened days array to adventure document (single write)
     if (adventureId) {
       const db = await getFirestore();
       if (db) {
-        await db.collection('summerAdventures').doc(adventureId).update({
-          curriculum,
-          'curriculum.generatedAt': new Date().toISOString(),
-        });
-
-        // Create day documents
+        const allDays = [];
         const weeks = curriculum.weeks || [];
         for (const week of weeks) {
           for (const day of (week.days || [])) {
-            await db.collection('summerAdventures').doc(adventureId)
-              .collection('days').doc(String(day.dayNumber)).set({
-                ...day,
-                weekNumber: week.weekNumber,
-                weekTheme: week.theme,
-                constellationName: week.constellationName,
-                story: { title: null, audioUrl: null, generatedAt: null },
-                mission: { ...day, completed: false, completedAt: null },
-                reflection: { feeling: null, answer: null, completedAt: null },
-                xpEarned: 0,
-                status: day.dayNumber === 1 ? 'available' : 'locked',
-              });
+            allDays.push({
+              ...day,
+              weekNumber: week.weekNumber,
+              weekTheme: week.theme,
+              constellationName: week.constellationName,
+              story: { title: null, audioUrl: null, generatedAt: null },
+              mission: { title: day.missionTitle, description: day.missionDescription, type: day.missionType, completed: false, completedAt: null },
+              reflection: { feeling: null, answer: null, completedAt: null },
+              xpEarned: 0,
+              status: day.dayNumber === 1 ? 'available' : 'locked',
+            });
           }
         }
 
-        // Unlock day 1
-        await db.collection('summerAdventures').doc(adventureId)
-          .collection('days').doc('1').update({ status: 'available' });
+        await db.collection('summerAdventures').doc(adventureId).update({
+          curriculum: { ...curriculum, generatedAt: new Date().toISOString() },
+          days: allDays,
+        });
       }
     }
 

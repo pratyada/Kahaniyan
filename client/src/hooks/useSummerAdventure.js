@@ -26,35 +26,39 @@ export function useSummerAdventure() {
   useEffect(() => {
     if (!user || !db) { setLoading(false); return; }
 
+    // Single where to avoid composite index requirement
     const q = query(
       collection(db, 'summerAdventures'),
       where('uid', '==', user.uid),
-      where('status', '==', 'active'),
-      limit(1)
+      limit(5)
     );
 
-    const unsub = onSnapshot(q, (snap) => {
-      if (!snap.empty) {
-        const data = { id: snap.docs[0].id, ...snap.docs[0].data() };
-        setAdventure(data);
-        saveLocal(data);
-
-        // Load days
-        const daysRef = collection(db, 'summerAdventures', data.id, 'days');
-        onSnapshot(daysRef, (daysSnap) => {
-          const d = daysSnap.docs.map(doc => ({ id: doc.id, ...doc.data() }))
-            .sort((a, b) => (a.dayNumber || 0) - (b.dayNumber || 0));
-          setDays(d);
-        });
-      } else {
-        setAdventure(null);
-        saveLocal(null);
-        setDays([]);
-      }
+    let unsub;
+    try {
+      unsub = onSnapshot(q, (snap) => {
+        const activeDoc = snap.docs.find(d => d.data().status === 'active');
+        if (activeDoc) {
+          const data = { id: activeDoc.id, ...activeDoc.data() };
+          setAdventure(data);
+          saveLocal(data);
+          // Days are stored in the adventure document itself
+          setDays((data.days || []).sort((a, b) => (a.dayNumber || 0) - (b.dayNumber || 0)));
+        } else {
+          setAdventure(null);
+          saveLocal(null);
+          setDays([]);
+        }
+        setLoading(false);
+      }, (err) => {
+        console.warn('[SummerAdventure] Firestore query failed:', err.message);
+        setLoading(false);
+      });
+    } catch (err) {
+      console.warn('[SummerAdventure] Query setup failed:', err.message);
       setLoading(false);
-    }, () => setLoading(false));
+    }
 
-    return unsub;
+    return () => { if (unsub) unsub(); };
   }, [user]);
 
   // Get current day (first available day)

@@ -25,6 +25,26 @@ export default function SummerAdventures() {
     );
   }
 
+  // Adventure created but curriculum still generating
+  if (hasAdventure && !adventure.curriculum) {
+    return (
+      <PageTransition className="page-scroll px-5 pt-10 safe-top">
+        <div className="text-center py-20">
+          <motion.div animate={{ rotate: 360 }} transition={{ duration: 3, repeat: Infinity, ease: 'linear' }}>
+            <span className="text-5xl block">🔭</span>
+          </motion.div>
+          <h2 className="mt-4 text-lg font-bold text-ink" style={{ fontFamily: 'Lora, serif' }}>
+            Creating {adventure.childName}'s Adventure...
+          </h2>
+          <p className="mt-2 text-sm text-ink-muted">
+            AI is designing 8 weeks of personalized stories and missions
+          </p>
+          <p className="mt-1 text-[10px] text-ink-dim">This takes 20-30 seconds</p>
+        </div>
+      </PageTransition>
+    );
+  }
+
   // Active adventure — show continue view
   if (hasAdventure && adventure.curriculum) {
     const progress = Math.round((completedDays.length / 56) * 100);
