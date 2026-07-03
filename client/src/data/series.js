@@ -7242,7 +7242,7 @@ Prophet Muhammad, peace be upon him, said, "Tie your camel, then trust in Allah.
     gradient: 'linear-gradient(135deg, #1a472a 0%, #006837 40%, #ffd700 100%)',
     description: 'The greatest show on Earth comes to YOUR backyard — Toronto, Vancouver, New York, Mexico City! Learn about countries, champions, and the beautiful game through bedtime stories in English, Spanish, French & Hindi. New episodes as matches happen!',
     ageRange: '3-10',
-    totalEpisodes: 7,
+    totalEpisodes: 8,
     episodes: [
       {
         id: 'fifa26_ep1_history', episodeNumber: 1, title: 'How the World Cup Began',
@@ -7452,6 +7452,36 @@ And remember that somewhere tonight, on a tiny island in the Atlantic, a forty-y
 Dreams do not have an expiry date.
 
 Goodnight, little one. Keep diving. Keep dreaming. The world is watching, and it is cheering for you.`,
+      },
+      {
+        id: 'fifa26_ep8_ronaldo', episodeNumber: 8, title: "Ronaldo's Gift of Gratitude in Toronto",
+        subtitle: 'When a thrilling match brought a city together to celebrate hard work and dreams.',
+        tradition: 'universal', theme: 'gratitude', durationMinutes: 2,
+        coverImage: 'https://mysleepytale.com/media/published/fifa_world_cup_2026_ep8_ronaldo_s_gift_of_gratitude_in_img0.jpg',
+        gallery: [
+          'https://mysleepytale.com/media/published/fifa_world_cup_2026_ep8_ronaldo_s_gift_of_gratitude_in_img1.jpg',
+          'https://mysleepytale.com/media/published/fifa_world_cup_2026_ep8_ronaldo_s_gift_of_gratitude_in_img2.jpg',
+          'https://mysleepytale.com/media/published/fifa_world_cup_2026_ep8_ronaldo_s_gift_of_gratitude_in_img3.jpg',
+        ],
+        multilingual: true, enableTranslation: true,
+        source: 'FIFA World Cup 2026 \u00b7 Episode 8 \u2014 Ronaldo in Toronto',
+        body: `Once upon a time, in the beautiful city of Toronto, little one, two friends stood outside the Delta Hotel on a magical evening during the FIFA World Cup 2026.
+
+They had just watched Portugal and Croatia play the most exciting match! It was not about who won \u2014 it was about watching players like Ronaldo and the legendary Modric give everything they had.
+
+"Did you see how hard they played?" whispered one to another.
+
+Suddenly, the crowd around them began to roar like gentle thunder. The Portugal team bus arrived. Ronaldo and his entire team walked outside to greet thousands of people waiting outside the hotel and cheering with joy. But here is the beautiful part, little one \u2014 Ronaldo paused and waved to the adults and children in the crowd. He smiled warmly, as if to say, "Thank you for believing in us."
+
+We felt tears of happiness. "They are thanking us for supporting them?"
+
+"Yes," said a mother who stood nearby. "These athletes are grateful for everyone who believes in their dreams. And you should be grateful you got to see this moment!"
+
+Ronaldo and Modric \u2014 two champions from different teams \u2014 stood together, showing that respect and gratitude matter more than any match.
+
+As the celebration continued, kids held hands, grateful for their friendship, grateful for the athletes who inspired them, and grateful to be together in Toronto, watching dreams come true.
+
+The crowd's cheers softened into the gentle sounds of the evening. Streetlights twinkled like stars, and the city felt peaceful and full of love. Close your eyes now, little one, and remember how gratitude fills our hearts with warmth, just like it filled Toronto that night.`,
       },
     ],
   },

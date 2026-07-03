@@ -221,6 +221,19 @@ export default function ContentPublisher({ user }) {
       });
       const data = await res.json();
       if (!res.ok) throw new Error(data.error);
+      // Auto-promote to production registry
+      try {
+        const prodRes = await fetch(`${API}/api/publish-to-production`, {
+          method: 'POST',
+          headers: { 'content-type': 'application/json' },
+          body: JSON.stringify({ uid: user.uid, contentId: data.id }),
+        });
+        const prodData = await prodRes.json();
+        if (prodData.storyLink) {
+          data.links = { ...data.links, story: prodData.storyLink };
+        }
+      } catch {}
+
       setResult(data);
       setStep(4);
     } catch (e) {

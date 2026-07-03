@@ -96,6 +96,7 @@ const TITLES = {
   'rocket-adventures': { title: 'Rocket Adventures', tradition: 'Universal', duration: null, isSeries: true, totalEp: 3, description: 'Rocket 5 overcomes her fear of heights and explores the solar system.', firstEpId: 'ra_ep1_heights', seriesUrl: '/series/rocket-adventures' },
   'kindness-squad': { title: 'The Kindness Squad', tradition: 'Universal', duration: null, isSeries: true, totalEp: 3, description: '3 kids discover their superpowers — and they\'re all about kindness.', firstEpId: 'ks_ep1_cape', seriesUrl: '/series/kindness-squad' },
   'planet-explorers': { title: 'Planet Explorers', tradition: 'Universal', duration: null, isSeries: true, totalEp: 3, description: 'Travel the solar system — Moon, Mars, and Pluto each have a story to tell.', firstEpId: 'pe_ep1_moon', seriesUrl: '/series/planet-explorers' },
+  fifa26_ep8_ronaldo: { title: "Ronaldo's Gift of Gratitude in Toronto", tradition: 'Universal', duration: 2, series: 'FIFA World Cup 2026 — Toronto', ep: 8, totalEp: 8, ogImage: 'https://mysleepytale.com/media/published/fifa_world_cup_2026_ep8_ronaldo_s_gift_of_gratitude_in_img0.jpg' },
   fifa26_dallas_ep7_hiro: { title: "Hiro's Big Heart at the World Cup", tradition: 'Universal', duration: 3, series: 'FIFA World Cup 2026 — Dallas', ep: 7, totalEp: 7, ogImage: 'https://mysleepytale.com/media/published/fifa_world_cup_2026_dallas_ep7_hiro_s_big_heart_at_the_world__cover.jpg' },
   rk_ep7_photo_day: { title: 'Photo Day & The Grateful Garden Party', tradition: 'Universal', duration: 2, series: 'Rainbow Kindergarten Adventures', ep: 7, totalEp: 7, ogImage: 'https://mysleepytale.com/media/published/rainbow_kindergarten_jlps_yr25_26_ep7_rainbow_class_s_grateful_garde_cover.jpg' },
   'rainbow-kindergarten-jlps-yr25-26': { title: 'Rainbow Kindergarten Adventures', tradition: 'Universal', duration: null, isSeries: true, totalEp: 7, description: 'The Rainbow batch from JLPS explores Toronto — shapes at Canoe Landing, a concert, the Brick Works field trip, summer fun, and birthday parties.', firstEpId: 'rk_ep1_canoe', seriesUrl: '/series/rainbow-kindergarten-jlps-yr25-26' },
@@ -314,7 +315,24 @@ export default async function handler(req, res) {
     } catch {}
   }
 
-  // Try Firestore publishedContent via Admin SDK
+  // Try Firestore productionStories + publishedContent via Admin SDK
+  if (!title) {
+    try {
+      const { getFirestore: getFs } = await import('./_firebase.js');
+      const adminDb = await getFs();
+      if (adminDb) {
+        // Check productionStories first
+        const prodSnap = await adminDb.collection('productionStories').doc(storyId).get();
+        if (prodSnap.exists) {
+          const pub = prodSnap.data();
+          title = pub.title;
+          description = pub.subtitle || `Listen to "${pub.title}" — a bedtime story on My Sleepy Tale.`;
+          image = pub.coverImage || pub.ogImage || DEFAULT_OG_IMAGE;
+          redirectUrl = `https://mysleepytale.com/player?storyId=${storyId}`;
+        }
+      }
+    } catch {}
+  }
   if (!title) {
     try {
       const { getFirestore: getFs } = await import('./_firebase.js');

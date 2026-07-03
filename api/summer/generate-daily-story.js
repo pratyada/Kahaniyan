@@ -16,22 +16,23 @@ export default async function handler(req, res) {
   const db = await getFirestore();
   if (!db) return res.status(500).json({ error: 'Database unavailable' });
 
-  // Get adventure + day data
+  // Get adventure data
   const advSnap = await db.collection('summerAdventures').doc(adventureId).get();
   if (!advSnap.exists) return res.status(404).json({ error: 'Adventure not found' });
   const adventure = advSnap.data();
 
-  const dayRef = db.collection('summerAdventures').doc(adventureId).collection('days').doc(String(dayNumber));
-  const daySnap = await dayRef.get();
-  if (!daySnap.exists) return res.status(404).json({ error: 'Day not found' });
-  const day = daySnap.data();
+  // Find day in the days array
+  const days = adventure.days || [];
+  const dayIndex = days.findIndex(d => d.dayNumber === parseInt(dayNumber));
+  if (dayIndex === -1) return res.status(404).json({ error: 'Day not found' });
+  const day = days[dayIndex];
 
   // If story already generated, return it
   if (day.story?.title && day.story?.body) {
     return res.status(200).json({ story: day.story, mission: day.mission, reflection: day.reflectionQuestion, cached: true });
   }
 
-  // Load Story Lab config for richer prompts
+  // Load Story Lab config
   let storyLabContext = '';
   try {
     const labSnap = await db.collection('config').doc('storyLab').get();
@@ -71,7 +72,7 @@ Rules:
 - 300-400 words (~2-3 minutes at 150 wpm)
 - The story should feel like a fun adventure, NEVER like homework or a lesson
 - End with a gentle, calming wind-down paragraph
-- Address the listener as "little one" (not by name — personalization happens in TTS)
+- Address the listener as "little one"
 - The learning objective (${targetSkill}) should be invisible — embedded in the plot, not stated
 ${storyLabContext}
 
@@ -99,25 +100,19 @@ Return ONLY valid JSON:
       story = { title: `Day ${dayNumber} Adventure`, body: text };
     }
 
-    // Save story to day document
-    await dayRef.update({
-      'story.title': story.title,
-      'story.body': story.body,
-      'story.generatedAt': new Date().toISOString(),
+    // Update story in the days array
+    days[dayIndex] = {
+      ...day,
+      story: { title: story.title, body: story.body, generatedAt: new Date().toISOString() },
       status: 'in_progress',
-    });
+    };
 
-    // Add 10 XP for starting the story
-    const { FieldValue } = await import('firebase-admin/firestore');
-    await db.collection('summerAdventures').doc(adventureId).update({
-      'stats.totalXP': FieldValue.increment(10),
-    });
-    await dayRef.update({ xpEarned: FieldValue.increment(10) });
+    await db.collection('summerAdventures').doc(adventureId).update({ days });
 
     return res.status(200).json({
       story,
       mission: {
-        title: day.missionTitle || day.mission?.title || 'Today\'s Mission',
+        title: day.missionTitle || day.mission?.title || "Today's Mission",
         description: day.missionDescription || day.mission?.description || 'Explore something new today!',
         type: day.missionType || day.mission?.type || 'observe',
       },

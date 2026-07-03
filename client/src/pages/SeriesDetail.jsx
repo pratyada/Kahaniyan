@@ -508,8 +508,21 @@ export default function SeriesDetail() {
         const { db: fireDb } = await import('../lib/firebase.js');
         if (!fireDb) return;
         const { collection, query, where, getDocs } = await import('firebase/firestore');
-        const snap = await getDocs(query(collection(fireDb, 'publishedContent'), where('seriesId', '==', seriesId)));
-        const eps = snap.docs.map(d => {
+        // Check both productionStories and publishedContent
+        const [prodSnap, pubSnap] = await Promise.all([
+          getDocs(query(collection(fireDb, 'productionStories'), where('seriesId', '==', seriesId))),
+          getDocs(query(collection(fireDb, 'publishedContent'), where('seriesId', '==', seriesId))),
+        ]);
+        const allDocs = [...prodSnap.docs, ...pubSnap.docs];
+        // Deduplicate by ID (production takes priority)
+        const seen = new Set();
+        const uniqueDocs = allDocs.filter(d => {
+          const id = d.data().id || d.id;
+          if (seen.has(id)) return false;
+          seen.add(id);
+          return true;
+        });
+        const eps = uniqueDocs.map(d => {
           const data = d.data();
           return {
             id: data.id, episodeNumber: data.episodeNumber, title: data.title,

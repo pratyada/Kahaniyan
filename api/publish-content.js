@@ -222,7 +222,7 @@ export default async function handler(req, res) {
       audioUrl: null, // generated on first play via TTS
       textHash,
       shareUrl: `${SITE}/api/share?id=${id}`,
-      playerUrl: `${SITE}/player?storyId=${id}`,
+      playerUrl: `${SITE}/api/share?id=${id}`,
       status: 'published',
       publishedAt: now,
       publishedBy: email,

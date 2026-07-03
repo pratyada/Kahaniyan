@@ -801,49 +801,74 @@ function PlayerInner() {
     navigate('/');
   };
 
-  // Recover story on page refresh only
+  // Recover story — checks localStorage, hardcoded data, then Firestore
   const recoveredRef = useRef(false);
+  const [recoveryDone, setRecoveryDone] = useState(false);
   useEffect(() => {
-    if (current || recoveredRef.current) return;
+    if ((current && current.text) || recoveredRef.current) { setRecoveryDone(true); return; }
     recoveredRef.current = true;
 
-    // Try localStorage
-    const recovered = reloadLast();
-    if (recovered) return;
-
-    // If URL has storyId, try loading from data
     const urlStoryId = new URLSearchParams(window.location.search).get('storyId');
-    if (!urlStoryId) return;
 
+    // Try localStorage — only if ID matches URL
+    try {
+      const raw = localStorage.getItem('mst:lastStory');
+      if (raw) {
+        const saved = JSON.parse(raw);
+        if (saved?.text && (!urlStoryId || saved.id === urlStoryId)) {
+          load(saved);
+          setRecoveryDone(true);
+          return;
+        }
+      }
+    } catch {}
+
+    if (!urlStoryId) { setRecoveryDone(true); return; }
+
+    // Search hardcoded data + Firestore
     (async () => {
       try {
-        // Hardcoded series
+        // 1. Hardcoded series
         const { SERIES } = await import('../data/series.js');
         for (const s of SERIES) {
           const ep = (s.episodes || []).find(e => e.id === urlStoryId);
           if (ep?.body) {
             load({ id: ep.id, title: ep.title, text: ep.body, subtitle: ep.subtitle, tradition: ep.tradition, value: ep.theme || ep.value, source: ep.source, seriesId: s.id, episodeId: ep.id, episodeNumber: ep.episodeNumber, isWisdom: true, coverImage: ep.coverImage || null, gallery: ep.gallery || [], estimatedMinutes: ep.durationMinutes, multilingual: ep.multilingual || false, enableTranslation: ep.enableTranslation || false });
+            setRecoveryDone(true);
             return;
           }
         }
-        // Hardcoded wisdom
+        // 2. Hardcoded wisdom
         const { CULTURAL_LESSONS } = await import('../data/culturalLessons.js');
         const lid = urlStoryId.replace('lesson_', '');
         const lesson = CULTURAL_LESSONS.find(l => l?.id === lid || l?.id === urlStoryId);
         if (lesson?.body) {
           load({ id: lesson.id, title: lesson.title, text: lesson.body, tradition: lesson.tradition, value: lesson.value, source: lesson.source, isWisdom: true, estimatedMinutes: lesson.durationMinutes });
+          setRecoveryDone(true);
           return;
         }
-        // Firestore
+        // 3. Firestore productionStories (auto-published from Content Publisher)
         const { db: fireDb } = await import('../lib/firebase.js');
-        if (!fireDb) return;
-        const { doc: fdoc, getDoc: fget } = await import('firebase/firestore');
-        const snap = await fget(fdoc(fireDb, 'publishedContent', urlStoryId));
-        if (snap.exists()) {
-          const pub = snap.data();
-          load({ id: pub.id, title: pub.title, text: pub.body, subtitle: pub.subtitle, tradition: pub.tradition, value: pub.theme, source: pub.source, audioUrl: pub.audioUrl || null, coverImage: pub.coverImage, gallery: (pub.images || []).slice(1), estimatedMinutes: pub.durationMinutes, seriesId: pub.seriesId || null, multilingual: pub.multilingual || false, enableTranslation: pub.enableTranslation || false });
+        if (fireDb) {
+          const { doc: fdoc, getDoc: fget } = await import('firebase/firestore');
+          const prodSnap = await fget(fdoc(fireDb, 'productionStories', urlStoryId));
+          if (prodSnap.exists()) {
+            const pub = prodSnap.data();
+            load({ id: pub.id, title: pub.title, text: pub.body, subtitle: pub.subtitle, tradition: pub.tradition, value: pub.value || pub.theme, source: pub.source, audioUrl: pub.audioUrl || null, coverImage: pub.coverImage, gallery: pub.gallery || (pub.images || []).slice(1), estimatedMinutes: pub.durationMinutes, seriesId: pub.seriesId || null, multilingual: pub.multilingual || false, enableTranslation: pub.enableTranslation || false, isWisdom: true });
+            setRecoveryDone(true);
+            return;
+          }
+          // 4. Firestore publishedContent (draft/legacy)
+          const snap = await fget(fdoc(fireDb, 'publishedContent', urlStoryId));
+          if (snap.exists()) {
+            const pub = snap.data();
+            load({ id: pub.id, title: pub.title, text: pub.body, subtitle: pub.subtitle, tradition: pub.tradition, value: pub.theme, source: pub.source, audioUrl: pub.audioUrl || null, coverImage: pub.coverImage, gallery: (pub.images || []).slice(1), estimatedMinutes: pub.durationMinutes, seriesId: pub.seriesId || null, multilingual: pub.multilingual || false, enableTranslation: pub.enableTranslation || false });
+            setRecoveryDone(true);
+            return;
+          }
         }
       } catch {}
+      setRecoveryDone(true); // done searching, nothing found
     })();
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -907,12 +932,7 @@ function PlayerInner() {
     })();
   }, [current, checkedPublished, load]);
 
-  // Stories without text — wait for publishedContent check before showing error
-  const [loadTimeout, setLoadTimeout] = useState(false);
-  useEffect(() => {
-    const timer = setTimeout(() => setLoadTimeout(true), 3000);
-    return () => clearTimeout(timer);
-  }, []);
+  // No more arbitrary timeout — we use recoveryDone to know when search is complete
 
   const handleTogglePlay = () => {
     if (!isPlaying) {
@@ -959,20 +979,21 @@ function PlayerInner() {
 
   // === All hooks are above this line. Conditional returns below. ===
 
-  // Loading states
-  if (current && !current.text && !current.audioUrl) {
-    if (!loadTimeout) {
-      return (<div className="flex h-screen flex-col items-center justify-center bg-bg-base px-6 text-center"><div className="text-3xl mb-3 animate-pulse">🌙</div><p className="text-sm text-ink-muted">Loading story...</p></div>);
-    }
-    return (<div className="flex h-screen flex-col items-center justify-center bg-bg-base px-6 text-center"><div className="text-4xl mb-4">😔</div><h1 className="font-display text-xl font-bold text-gold">{current.title || 'Story'}</h1><p className="mt-2 text-sm text-ink-muted">This story doesn't have any content to play.</p><button onClick={() => { clear(); navigate('/'); }} className="btn-primary mt-6">{t('player.backToHome')}</button></div>);
+  // Still searching for the story — show loading (never show error until recovery is done)
+  if (!current && !recoveryDone) {
+    return (<div className="flex h-screen flex-col items-center justify-center bg-bg-base px-6 text-center"><div className="text-3xl mb-3 animate-pulse">🌙</div><p className="text-sm text-ink-muted">Loading story...</p></div>);
   }
 
-  if (!current) {
+  // Recovery done but no story found
+  if (!current && recoveryDone) {
     const urlStoryId = new URLSearchParams(window.location.search).get('storyId');
-    if (!urlStoryId && loadTimeout) { navigate('/'); return null; }
-    if (!loadTimeout) {
-      return (<div className="flex h-screen flex-col items-center justify-center bg-bg-base px-6 text-center"><div className="text-3xl mb-3 animate-pulse">🌙</div><p className="text-sm text-ink-muted">Loading story...</p></div>);
-    }
+    if (!urlStoryId) { navigate('/'); return null; }
+    return (<div className="flex h-screen flex-col items-center justify-center bg-bg-base px-6 text-center"><div className="text-4xl mb-4">😔</div><h1 className="font-display text-xl font-bold text-gold">Story not found</h1><p className="mt-2 text-sm text-ink-muted">This story may have been removed or the link is incorrect.</p><button onClick={() => { clear(); navigate('/'); }} className="btn-primary mt-6">{t('player.backToHome')}</button></div>);
+  }
+
+  // Story loaded but no text (shouldn't happen normally)
+  if (current && !current.text && !current.audioUrl) {
+    return (<div className="flex h-screen flex-col items-center justify-center bg-bg-base px-6 text-center"><div className="text-4xl mb-4">😔</div><h1 className="font-display text-xl font-bold text-gold">{current.title || 'Story'}</h1><p className="mt-2 text-sm text-ink-muted">This story doesn't have any content to play.</p><button onClick={() => { clear(); navigate('/'); }} className="btn-primary mt-6">{t('player.backToHome')}</button></div>);
   }
 
   const isGenerating = !current;
