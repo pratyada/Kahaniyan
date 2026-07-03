@@ -55,7 +55,6 @@ export const SERIES_CATEGORIES = {
   'muslim-heroes': ['islamic'],
   // FIFA World Cup 2026
   'fifa-world-cup-2026': ['sports', 'geography'],
-  'fifa-world-cup-2026-dallas': ['sports', 'geography'],
 };
 
 export const COLLECTION_CATEGORIES = {

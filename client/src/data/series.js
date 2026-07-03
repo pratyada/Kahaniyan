@@ -7237,12 +7237,12 @@ Prophet Muhammad, peace be upon him, said, "Tie your camel, then trust in Allah.
   // ══════════════════════════════════════════════════════════════
   {
     id: 'fifa-world-cup-2026',
-    title: '⚽ FIFA World Cup 2026 — Toronto Kids',
+    title: '⚽ FIFA World Cup 2026 — USA, Mexico, Canada',
     icon: '⚽',
     gradient: 'linear-gradient(135deg, #1a472a 0%, #006837 40%, #ffd700 100%)',
     description: 'The greatest show on Earth comes to YOUR backyard — Toronto, Vancouver, New York, Mexico City! Learn about countries, champions, and the beautiful game through bedtime stories in English, Spanish, French & Hindi. New episodes as matches happen!',
     ageRange: '3-10',
-    totalEpisodes: 8,
+    totalEpisodes: 11,
     episodes: [
       {
         id: 'fifa26_ep1_history', episodeNumber: 1, title: 'How the World Cup Began',
@@ -7287,7 +7287,30 @@ Sixteen cities across three countries. One tournament. And every single one of t
 That night, little one, remember — the world is coming to us. Countries you have read about in books, cultures you have tasted in food, languages you have heard on the bus — they are all here, playing the beautiful game in our backyard. How lucky are we? Goodnight, little explorer. Tomorrow, the world plays on.`,
       },
       {
-        id: 'fifa26_ep3_beautiful_game', episodeNumber: 3, title: 'The Beautiful Game',
+        id: 'fifa26_ep3_dallas_city', episodeNumber: 3, title: 'Dallas — Our World Cup City',
+        subtitle: 'AT&T Stadium, Fair Park, the Trinity River — the World Cup is in Texas!',
+        tradition: 'universal', theme: 'wisdom', durationMinutes: 4,
+        source: 'FIFA World Cup 2026 · Episode 3',
+        body: `Little one, imagine you could fly over Dallas right now. Look down. What do you see?
+
+There is AT&T Stadium in Arlington — the biggest stadium hosting World Cup matches in all of North America. Eighty thousand people can fit inside. The roof opens up so you can see the Texas stars. The video screen is so large that players look like giants on it. And right now, groundskeepers are cutting the grass to exactly twenty-five millimeters, painting the lines bright white, and hanging goal nets that will catch dreams.
+
+Fly east to Fair Park — where the State Fair of Texas happens every year with its giant Big Tex statue. During the World Cup, Fair Park is transformed into a fan festival. Giant screens showing every match. Food trucks from thirty different countries. Music from every continent. Kids running around with face paint in the colours of Brazil, Japan, Senegal, Germany — all under the Texas sun.
+
+Now fly along the Trinity River — the green ribbon that flows through Dallas. Families are walking along the trails, kicking soccer balls, wearing jerseys from all over the world. On one bench sits a grandmother from Mexico watching her grandchildren play. On another, a father from Nigeria teaching his daughter to dribble. A boy from Korea and a girl from Colombia are already best friends — they met five minutes ago because they were both wearing goalkeeper gloves.
+
+Drive through Oak Cliff, and you hear Spanish and English mixing together on every street. The taquerias have World Cup specials. The barber shops have flags in the windows. The corner stores have sticker albums on the counter.
+
+Visit the Dallas Arts District — where the Winspear Opera House and the Nasher Sculpture Center stand — and you will find world-class musicians playing football anthems from every country. Art and sport, side by side, because Dallas has always been a city that celebrates both.
+
+And do not forget Frisco — just north of Dallas — where FC Dallas plays at Toyota Stadium. The youth soccer fields are packed with kids who dream of one day playing on that enormous AT&T Stadium pitch. Some of them might. Some of them are warming up right now.
+
+Sixteen cities across three countries. And Dallas — big, bold, beautiful Dallas — is one of the stars.
+
+That night, little one, remember — the world is coming to Texas. Forty-eight countries. Thousands of languages. Millions of fans. And they are all coming to YOUR city. How amazing is that? Goodnight, little Texan. Tomorrow, the world plays on your doorstep.`,
+      },
+      {
+        id: 'fifa26_ep4_beautiful_game', episodeNumber: 4, title: 'The Beautiful Game',
         subtitle: 'What is offside? Why do goalkeepers wear different colours? And why do some players cry?',
         tradition: 'universal', theme: 'wisdom', durationMinutes: 4,
         source: 'FIFA World Cup 2026 · Episode 3',
@@ -7308,7 +7331,7 @@ Some players celebrate with backflips. Some slide on their knees. Some run to th
 That night, little one, remember — football is not really about football. It is about teamwork, and never giving up, and sharing a moment of joy with people you have never met. That is why they call it the beautiful game. Goodnight, little player. Dream of the perfect goal.`,
       },
       {
-        id: 'fifa26_ep4_legends', episodeNumber: 4, title: 'Legends Who Changed the Game',
+        id: 'fifa26_ep5_legends', episodeNumber: 5, title: 'Legends Who Changed the Game',
         subtitle: 'From a boy too poor for shoes to the greatest player who ever lived.',
         tradition: 'universal', theme: 'courage', durationMinutes: 5,
         source: 'FIFA World Cup 2026 · Episode 4',
@@ -7331,7 +7354,7 @@ Every one of these legends had the same thing in common: someone told them they 
 That night, little one, remember — the greatest players were not born great. They became great because they never stopped trying. Whatever your dream is — football or not — the only person who can stop you is you. Goodnight, little legend. Your story is just beginning.`,
       },
       {
-        id: 'fifa26_ep5_your_dream', episodeNumber: 5, title: "Your Country's World Cup Dream",
+        id: 'fifa26_ep6_dream_toronto', episodeNumber: 6, title: "Your Country's World Cup Dream",
         subtitle: 'What if your team made it to the final? Close your eyes and see it.',
         tradition: 'universal', theme: 'courage', durationMinutes: 4,
         source: 'FIFA World Cup 2026 · Episode 5',
@@ -7358,7 +7381,34 @@ That night, little one, remember — every World Cup champion was once a child w
 Dream big tonight, little one. The world is your pitch. Goodnight, future champion. The beautiful game is waiting for you.`,
       },
       {
-        id: 'fifa26_ep6_draw', episodeNumber: 6, title: 'The Night Nobody Lost — Bosnia vs Canada',
+        id: 'fifa26_ep7_dream_dallas', episodeNumber: 7, title: "Your World Cup Dream — Dallas Edition",
+        subtitle: 'What if your team played at AT&T Stadium? Close your eyes and see it.',
+        tradition: 'universal', theme: 'courage', durationMinutes: 4,
+        source: 'FIFA World Cup 2026 · Episode 7',
+        body: `Little one, tonight we are going to dream the biggest dream of all.
+
+Close your eyes. Imagine your favourite country is playing in the World Cup final. At AT&T Stadium. In Arlington. Right here in Texas. Maybe it is the United States — the red, white, and blue. Maybe it is Mexico, or Brazil, or Nigeria, or Japan. Whatever country makes your heart beat a little faster when you see their flag — that is YOUR team tonight.
+
+The stadium is full. Eighty thousand people. The roof is open tonight, and the Texas stars are shining above. The noise is like thunder that never stops. You are there — not watching on TV, but THERE. In the stands. Wearing your country's jersey. Face painted in your country's colours.
+
+A family from Mexico City is sitting next to you. On the other side, a man from Senegal is drumming on his knees. Behind you, kids from Japan are waving tiny flags. In front of you, a grandmother from Germany is clasping her hands and whispering a prayer. Everyone is different. Everyone is the same. Everyone is here for the beautiful game.
+
+The players walk out of the tunnel. Your country's captain is leading the team. The anthem plays. The giant screen above — the biggest in any stadium in the world — shows every face in perfect detail. Some players sing with their eyes closed. Some are too nervous to sing. One player looks up at the open roof, at the Texas stars, and whispers something only the sky can hear.
+
+The referee blows the whistle. The match begins.
+
+Your team plays beautifully. The other team is good — really good. They score first. Your heart sinks. But your team does not give up. And in the seventy-eighth minute — a cross from the left, a header from the centre, and the ball hits the back of the net. GOAL! The stadium explodes. You jump so high you nearly lose your boots. Strangers are hugging you. Everyone is crying and laughing at the same time.
+
+The match goes to extra time. Then penalties. Your goalkeeper saves the final kick. YOUR TEAM WINS THE WORLD CUP. In Dallas. In Texas. In YOUR city.
+
+The captain lifts the trophy. Gold confetti rains down from the open roof, mixing with the Texas starlight. Players are on their knees, weeping. The coach is being lifted on shoulders. And the giant screen shows a little kid in the stands — wearing a jersey three sizes too big, tears streaming down their face, holding a sign that says "I believed."
+
+That night, little one, remember — every World Cup champion was once a child with a dream. Some of them are playing RIGHT NOW, in a stadium near you. And four years from now, or eight, or twelve — maybe, just maybe, the child dreaming tonight will be the one lifting the trophy under the Texas stars.
+
+Dream big tonight, little one. AT&T Stadium is YOUR cathedral. The world is your pitch. Goodnight, future champion. The beautiful game is waiting for you. And Dallas is ready.`,
+      },
+      {
+        id: 'fifa26_ep8_draw', episodeNumber: 8, title: 'The Night Nobody Lost — Bosnia vs Canada',
         subtitle: 'June 12, 2026 — Toronto. The first match. A draw. And a lesson bigger than any goal.',
         tradition: 'universal', theme: 'wisdom', durationMinutes: 4,
         source: 'FIFA World Cup 2026 · Episode 6 — Live Match Story',
@@ -7399,7 +7449,7 @@ Tomorrow is a new match. A new chance. Rest now. Dream of goals and saves and ro
 Goodnight, little champion. Toronto is proud tonight. And so are you.`,
       },
       {
-        id: 'fifa26_ep7_vozinha', episodeNumber: 7, title: 'Vozinha and the 7 Impossible Saves',
+        id: 'fifa26_ep9_vozinha', episodeNumber: 9, title: 'Vozinha and the 7 Impossible Saves',
         subtitle: 'A 40-year-old goalkeeper from a tiny island who became a World Cup hero.',
         tradition: 'universal', theme: 'courage', durationMinutes: 4,
         source: 'FIFA World Cup 2026 · Episode 7 — The Hero Who Wouldn\'t Give Up',
@@ -7454,7 +7504,7 @@ Dreams do not have an expiry date.
 Goodnight, little one. Keep diving. Keep dreaming. The world is watching, and it is cheering for you.`,
       },
       {
-        id: 'fifa26_ep8_ronaldo', episodeNumber: 8, title: "Ronaldo's Gift of Gratitude in Toronto",
+        id: 'fifa26_ep10_ronaldo', episodeNumber: 10, title: "Ronaldo's Gift of Gratitude in Toronto",
         subtitle: 'When a thrilling match brought a city together to celebrate hard work and dreams.',
         tradition: 'universal', theme: 'gratitude', durationMinutes: 2,
         coverImage: 'https://mysleepytale.com/media/published/fifa_world_cup_2026_ep8_ronaldo_s_gift_of_gratitude_in_img0.jpg',
@@ -7483,195 +7533,8 @@ As the celebration continued, kids held hands, grateful for their friendship, gr
 
 The crowd's cheers softened into the gentle sounds of the evening. Streetlights twinkled like stars, and the city felt peaceful and full of love. Close your eyes now, little one, and remember how gratitude fills our hearts with warmth, just like it filled Toronto that night.`,
       },
-    ],
-  },
-
-  // ══════════════════════════════════════════════════════════════
-  //  FIFA WORLD CUP 2026 — DALLAS Edition
-  // ══════════════════════════════════════════════════════════════
-  {
-    id: 'fifa-world-cup-2026-dallas',
-    title: '⚽ FIFA World Cup 2026 — Dallas Kids',
-    icon: '⚽',
-    gradient: 'linear-gradient(135deg, #003594 0%, #c41e3a 40%, #ffd700 100%)',
-    description: 'The World Cup comes to Texas! AT&T Stadium, Fair Park, the Trinity River — Dallas is ready. Learn about countries, champions, and the beautiful game through bedtime stories in English, Spanish, French & Hindi. New episodes as matches happen!',
-    ageRange: '3-10',
-    totalEpisodes: 7,
-    episodes: [
       {
-        id: 'fifa26_dallas_ep1_history', episodeNumber: 1, title: 'How the World Cup Began',
-        subtitle: 'A Frenchman had a dream — what if every country played one big football match?',
-        tradition: 'universal', theme: 'wisdom', durationMinutes: 4,
-        source: 'FIFA World Cup 2026 Dallas · Episode 1',
-        body: `Little one, close your eyes and imagine this. It is 1930. A man named Jules Rimet has a wild idea — what if every country in the entire world sent their best football players to one place and played to see who is the greatest?
-
-People laughed. "That will never work," they said. "How will teams travel across the ocean? Who will pay for it?"
-
-But Jules did not give up. He found a country willing to host — Uruguay, a tiny nation in South America. And on July 13, 1930, thirteen countries gathered in a brand-new stadium in Montevideo. The first ever World Cup.
-
-Uruguay won. The whole country celebrated for days. People danced in the streets. Factories closed. Schools closed. Because their little country had just become the champion of the entire world.
-
-Since then, the World Cup has happened every four years — except during the World Wars, when the whole world was too sad to play. Brazil has won five times — more than anyone. Germany and Italy have won four each. Argentina, with a player named Lionel Messi, won the most recent one in 2022 in a final so dramatic that grown-ups cried watching it.
-
-And now, little one, in 2026, the World Cup is HERE. In Texas. In YOUR city. The United States, Canada, and Mexico are hosting it together — the first time THREE countries have shared the World Cup. Forty-eight teams from every corner of the Earth. And Dallas — your Dallas — is one of the biggest host cities.
-
-AT&T Stadium in Arlington. One of the largest stadiums in the world. Over eighty thousand seats. A roof that opens to the Texas sky. And soon, players from countries you might have never heard of will walk onto that field, look up at that enormous screen, and chase the dream of a lifetime.
-
-That night, little one, remember Jules Rimet. He had a dream that everyone laughed at. And now, almost one hundred years later, three billion people watch what he created. Never let anyone tell you your idea is too big. The World Cup started with one person who refused to give up. Goodnight, champion. The beautiful game is waiting for you.`,
-      },
-      {
-        id: 'fifa26_dallas_ep2_city', episodeNumber: 2, title: 'Dallas — Our World Cup City',
-        subtitle: 'AT&T Stadium, Fair Park, the Trinity River — the World Cup is in Texas!',
-        tradition: 'universal', theme: 'wisdom', durationMinutes: 4,
-        source: 'FIFA World Cup 2026 Dallas · Episode 2',
-        body: `Little one, imagine you could fly over Dallas right now. Look down. What do you see?
-
-There is AT&T Stadium in Arlington — the biggest stadium hosting World Cup matches in all of North America. Eighty thousand people can fit inside. The roof opens up so you can see the Texas stars. The video screen is so large that players look like giants on it. And right now, groundskeepers are cutting the grass to exactly twenty-five millimeters, painting the lines bright white, and hanging goal nets that will catch dreams.
-
-Fly east to Fair Park — where the State Fair of Texas happens every year with its giant Big Tex statue. During the World Cup, Fair Park is transformed into a fan festival. Giant screens showing every match. Food trucks from thirty different countries. Music from every continent. Kids running around with face paint in the colours of Brazil, Japan, Senegal, Germany — all under the Texas sun.
-
-Now fly along the Trinity River — the green ribbon that flows through Dallas. Families are walking along the trails, kicking soccer balls, wearing jerseys from all over the world. On one bench sits a grandmother from Mexico watching her grandchildren play. On another, a father from Nigeria teaching his daughter to dribble. A boy from Korea and a girl from Colombia are already best friends — they met five minutes ago because they were both wearing goalkeeper gloves.
-
-Drive through Oak Cliff, and you hear Spanish and English mixing together on every street. The taquerias have World Cup specials. The barber shops have flags in the windows. The corner stores have sticker albums on the counter.
-
-Visit the Dallas Arts District — where the Winspear Opera House and the Nasher Sculpture Center stand — and you will find world-class musicians playing football anthems from every country. Art and sport, side by side, because Dallas has always been a city that celebrates both.
-
-And do not forget Frisco — just north of Dallas — where FC Dallas plays at Toyota Stadium. The youth soccer fields are packed with kids who dream of one day playing on that enormous AT&T Stadium pitch. Some of them might. Some of them are warming up right now.
-
-Sixteen cities across three countries. And Dallas — big, bold, beautiful Dallas — is one of the stars.
-
-That night, little one, remember — the world is coming to Texas. Forty-eight countries. Thousands of languages. Millions of fans. And they are all coming to YOUR city. How amazing is that? Goodnight, little Texan. Tomorrow, the world plays on your doorstep.`,
-      },
-      {
-        id: 'fifa26_dallas_ep3_game', episodeNumber: 3, title: 'The Beautiful Game',
-        subtitle: 'What is offside? Why do goalkeepers wear different colours? And why do some players cry?',
-        tradition: 'universal', theme: 'wisdom', durationMinutes: 4,
-        source: 'FIFA World Cup 2026 Dallas · Episode 3',
-        body: `Little one, let me tell you a secret. Football — or soccer, as we say here in Texas — is the simplest game in the world. And that is exactly why it is the most beautiful.
-
-You need a ball. You need two goals. You need friends. That is it. No expensive equipment. No batteries. No screen. Just a ball and your feet. In Brazil, kids play on the beach with bare feet. In Nigeria, kids play in red dirt roads with a ball made from plastic bags tied together. In England, kids play in rain so heavy they can barely see the goal. And right here in Dallas, kids play in the summer heat until their mamas call them in for dinner.
-
-Here is how it works. Two teams. Eleven players each. The aim is simple — kick the ball into the other team's net more times than they kick it into yours. You cannot use your hands — except the goalkeeper. That is why they wear a different coloured jersey, so the referee can spot them.
-
-But what about OFFSIDE? This is the rule that makes grown-ups shout at the television. Here is the easiest way to understand it: you cannot just stand next to the other team's goal and wait for someone to kick the ball to you. That would be like hiding behind the teacher during hide-and-seek. You have to be level with or behind the last defender when the ball is kicked to you. Fair play.
-
-A match is ninety minutes — two halves of forty-five minutes each. If the score is tied in a knockout match, they play thirty more minutes. And if it is STILL tied? Penalty kicks. Five players from each team. One at a time. Just the player and the goalkeeper. The stadium goes silent. The player places the ball on the white spot. Twelve yards from the goal. The goalkeeper bounces on their toes, arms wide, trying to look as big as possible.
-
-The player runs up. The whole world holds its breath. And then — KICK.
-
-Imagine that happening at AT&T Stadium. Eighty thousand people. Dead silence. Then either the loudest roar you have ever heard — or a gasp that echoes off the roof.
-
-Some players celebrate with backflips. Some slide on their knees on the perfect Texas grass. Some run to the camera and blow a kiss to their mama back home. And some cry — not because they are sad, but because they worked their entire life for this one moment, and it actually happened.
-
-That night, little one, remember — football is not really about football. It is about teamwork, and never giving up, and sharing a moment of joy with people you have never met. That is why they call it the beautiful game. Goodnight, little player. Dream of the perfect goal at AT&T Stadium.`,
-      },
-      {
-        id: 'fifa26_dallas_ep4_legends', episodeNumber: 4, title: 'Legends Who Changed the Game',
-        subtitle: 'From a boy too poor for shoes to the greatest player who ever lived.',
-        tradition: 'universal', theme: 'courage', durationMinutes: 5,
-        source: 'FIFA World Cup 2026 Dallas · Episode 4',
-        body: `Little one, every legend was once a child. Just like you. Let me tell you about some of them.
-
-PELÉ grew up in a tiny town in Brazil called Três Corações — which means "Three Hearts." His family was so poor they could not afford a real football. So young Pelé stuffed socks with newspapers and tied them with string. That was his ball. He played in the street, barefoot, kicking his sock-ball against walls until the sun went down.
-
-At SEVENTEEN years old — not much older than some of the kids at your school — Pelé played in the World Cup final. He scored two goals. Brazil won. The whole country wept with joy. A boy who could not afford shoes had just conquered the world. He went on to win three World Cups — more than any player in history.
-
-LIONEL MESSI was a tiny boy from Rosario, Argentina. So tiny that doctors said he had a growth condition. His legs were not growing properly. His family could not afford the medicine he needed. A football club in Spain — Barcelona — heard about this talented little boy and said, "Come to us. We will pay for your treatment. We will give you a chance."
-
-So at thirteen, Messi left his family, moved to a country where he did not speak the language, and trained every single day. He felt lonely. He cried at night. But he kept playing. And he became, many people say, the greatest football player who has ever lived. In 2022, at thirty-five years old, he FINALLY won the World Cup.
-
-MARTA — remember that name, little one. She is from Brazil, and she is the greatest women's football player ever. She grew up playing football with boys in the streets because there were no girls' teams. People told her, "Girls do not play football." She played anyway. She scored more World Cup goals than any person — man or woman — in history.
-
-And CLINT DEMPSEY — a Texas legend. Born in Nacogdoches, Texas. Grew up playing football with kids from the local Latino community. He learned skills that fancy academies could not teach. He became the US Men's National Team captain and scored in two World Cups. A Texas boy on the world stage.
-
-Every one of these legends had the same thing in common: someone told them they could not do it. Too poor. Too small. Wrong gender. Wrong neighbourhood. And every one of them said the same thing back — not with words, but with their feet on the ball: "Watch me."
-
-That night, little one, remember — the greatest players were not born great. They became great because they never stopped trying. And one of them was from right here in Texas. Whatever your dream is — football or not — the only person who can stop you is you. Goodnight, little legend. Your story is just beginning.`,
-      },
-      {
-        id: 'fifa26_dallas_ep5_dream', episodeNumber: 5, title: "Your World Cup Dream — Dallas Edition",
-        subtitle: 'What if your team played at AT&T Stadium? Close your eyes and see it.',
-        tradition: 'universal', theme: 'courage', durationMinutes: 4,
-        source: 'FIFA World Cup 2026 Dallas · Episode 5',
-        body: `Little one, tonight we are going to dream the biggest dream of all.
-
-Close your eyes. Imagine your favourite country is playing in the World Cup final. At AT&T Stadium. In Arlington. Right here in Texas. Maybe it is the United States — the red, white, and blue. Maybe it is Mexico, or Brazil, or Nigeria, or Japan. Whatever country makes your heart beat a little faster when you see their flag — that is YOUR team tonight.
-
-The stadium is full. Eighty thousand people. The roof is open tonight, and the Texas stars are shining above. The noise is like thunder that never stops. You are there — not watching on TV, but THERE. In the stands. Wearing your country's jersey. Face painted in your country's colours.
-
-A family from Mexico City is sitting next to you. On the other side, a man from Senegal is drumming on his knees. Behind you, kids from Japan are waving tiny flags. In front of you, a grandmother from Germany is clasping her hands and whispering a prayer. Everyone is different. Everyone is the same. Everyone is here for the beautiful game.
-
-The players walk out of the tunnel. Your country's captain is leading the team. The anthem plays. The giant screen above — the biggest in any stadium in the world — shows every face in perfect detail. Some players sing with their eyes closed. Some are too nervous to sing. One player looks up at the open roof, at the Texas stars, and whispers something only the sky can hear.
-
-The referee blows the whistle. The match begins.
-
-Your team plays beautifully. The other team is good — really good. They score first. Your heart sinks. But your team does not give up. And in the seventy-eighth minute — a cross from the left, a header from the centre, and the ball hits the back of the net. GOAL! The stadium explodes. You jump so high you nearly lose your boots. Strangers are hugging you. Everyone is crying and laughing at the same time.
-
-The match goes to extra time. Then penalties. Your goalkeeper saves the final kick. YOUR TEAM WINS THE WORLD CUP. In Dallas. In Texas. In YOUR city.
-
-The captain lifts the trophy. Gold confetti rains down from the open roof, mixing with the Texas starlight. Players are on their knees, weeping. The coach is being lifted on shoulders. And the giant screen shows a little kid in the stands — wearing a jersey three sizes too big, tears streaming down their face, holding a sign that says "I believed."
-
-That night, little one, remember — every World Cup champion was once a child with a dream. Some of them are playing RIGHT NOW, in a stadium near you. And four years from now, or eight, or twelve — maybe, just maybe, the child dreaming tonight will be the one lifting the trophy under the Texas stars.
-
-Dream big tonight, little one. AT&T Stadium is YOUR cathedral. The world is your pitch. Goodnight, future champion. The beautiful game is waiting for you. And Dallas is ready.`,
-      },
-      {
-        id: 'fifa26_dallas_ep6_vozinha', episodeNumber: 6, title: 'Vozinha and the 7 Impossible Saves',
-        subtitle: 'A 40-year-old goalkeeper from a tiny island who became a World Cup hero.',
-        tradition: 'universal', theme: 'courage', durationMinutes: 4,
-        source: 'FIFA World Cup 2026 Dallas · Episode 6 — The Hero Who Wouldn\'t Give Up',
-        body: `Little one, tonight I am going to tell you about a hero. Not a hero from a big, famous country with millions of fans. A hero from a tiny group of islands in the Atlantic Ocean called Cape Verde.
-
-Cape Verde is so small that most people have never heard of it. It has no big stadiums. No rich football clubs. No players who appear on cereal boxes. Just half a million people, warm winds, and a dream that would not die.
-
-And on those islands, there was a goalkeeper named Vozinha.
-
-Vozinha was not young. He was not famous. He was forty years old — an age when most footballers have long since hung up their boots, kissed their jerseys goodbye, and started coaching children instead of playing against them.
-
-But Vozinha had not retired. He had not given up. Every morning, he woke before the sun, stretched his aging muscles, and dived across the training pitch — left, right, left, right — catching balls that flew at him like angry birds.
-
-"You are too old," people said.
-
-"Your body will break," coaches warned.
-
-"Stronger teams will crush you," the newspapers predicted.
-
-Vozinha said nothing. He just kept diving.
-
-And then came the World Cup.
-
-Cape Verde — tiny, unknown, impossible Cape Verde — qualified. Nobody expected them to. Nobody gave them a chance. Their first match was against one of the biggest teams in the tournament. A team with superstars. A team with history. A team that expected to win easily.
-
-The match began. The big team attacked. Shot after shot. Cross after cross. The ball flew at Vozinha's goal like a storm of leather and fury.
-
-And Vozinha saved them. Every. Single. One.
-
-He dived left and pushed a bullet shot around the post. He leaped right and tipped a header over the bar. He stood tall and caught a free kick that was heading for the top corner. He fell to his knees and blocked a shot with his chest.
-
-Twenty-seven times the ball came flying at his goal. Seven of those shots were heading straight in — and seven times Vozinha said no.
-
-The crowd at AT&T Stadium — even the fans of the other team — started to cheer for him. Because courage is a language everyone understands. And Vozinha was speaking it louder than anyone had spoken it in a long, long time.
-
-When the final whistle blew, the score did not matter. What mattered was this: a forty-year-old man from a tiny island had stood in front of eighty thousand people in Texas and refused to fall.
-
-His teammates rushed to him. They lifted him on their shoulders. The captain was crying. The coach was crying. Back home in Cape Verde, an entire nation was crying — not because they were sad, but because one man had shown them that small does not mean weak, and old does not mean finished.
-
-That night, little one, remember Vozinha.
-
-Remember that heroes do not always come from big places.
-
-Remember that age does not decide your limits — courage does.
-
-Remember that sometimes the bravest thing in the world is to keep diving when everyone says you should stop.
-
-And remember that somewhere tonight, on a tiny island in the Atlantic, a forty-year-old goalkeeper is still waking up before the sun, still stretching his muscles, still diving left, right, left, right — because he knows something that the whole world learned today:
-
-Dreams do not have an expiry date.
-
-Goodnight, little one. Keep diving. Keep dreaming. Dallas saw a hero tonight. And so did you.`,
-      },
-      {
-        id: 'fifa26_dallas_ep7_hiro', episodeNumber: 7, title: 'Hiro\'s Big Heart at the World Cup',
+        id: 'fifa26_ep11_hiro', episodeNumber: 11, title: 'Hiro\'s Big Heart at the World Cup',
         subtitle: 'A story about courage, joy, and being wonderfully yourself.',
         tradition: 'universal', theme: 'courage', durationMinutes: 3,
         coverImage: 'https://mysleepytale.com/media/published/fifa_world_cup_2026_dallas_ep7_hiro_s_big_heart_at_the_world__cover.jpg',
@@ -7685,18 +7548,18 @@ Goodnight, little one. Keep diving. Keep dreaming. Dallas saw a hero tonight. An
         ],
         multilingual: true,
         enableTranslation: true,
-        source: 'FIFA World Cup 2026 Dallas \u00b7 Episode 7 \u2014 Hiro\'s Big Heart',
-        body: `Tonight, little one, we're travelling all the way across the world to a magical place where football dreams come true. We're going to meet a boy named Hiro, whose smile became famous around the whole world.
+        source: 'FIFA World Cup 2026 \u00b7 Episode 11 \u2014 Hiro\'s Big Heart',
+        body: `Tonight, little one, we\u2019re travelling all the way across the world to a magical place where football dreams come true. We\u2019re going to meet a boy named Hiro, whose smile became famous around the whole world.
 
 Hiro lived in Japan, and he loved football more than anything. He had saved his pocket money for so long to travel to Toronto and watch the World Cup \u2014 the biggest football celebration on Earth. When he finally arrived at the glowing stadium, his heart felt so full it might burst into sparkles.
 
-The stadium was like a rainbow had come alive. Thousands of people from every country in the world were singing, cheering, and dancing together. Red flags waved beside blue ones. Children laughed in twenty different languages. The grass glowed green under the bright lights, and the sky above was scattered with hopeful stars. Hiro's smile grew wider and wider.
+The stadium was like a rainbow had come alive. Thousands of people from every country in the world were singing, cheering, and dancing together. Red flags waved beside blue ones. Children laughed in twenty different languages. The grass glowed green under the bright lights, and the sky above was scattered with hopeful stars. Hiro\u2019s smile grew wider and wider.
 
-A friendly reporter with a warm voice noticed Hiro's beautiful smile. She walked over and asked gently, "How are you feeling today?"
+A friendly reporter with a warm voice noticed Hiro\u2019s beautiful smile. She walked over and asked gently, \u201cHow are you feeling today?\u201d
 
-Hiro's eyes sparkled. He took a breath. He knew his English wasn't perfect. His words might stumble. But his heart was bursting with something much bigger than words.
+Hiro\u2019s eyes sparkled. He took a breath. He knew his English wasn\u2019t perfect. His words might stumble. But his heart was bursting with something much bigger than words.
 
-"I cannot speak English," he said carefully, "but I'M EXCITEDDD!"
+\u201cI cannot speak English,\u201d he said carefully, \u201cbut I\u2019M EXCITEDDD!\u201d
 
 And then something magical happened.
 
@@ -7704,9 +7567,9 @@ The whole stadium stopped. Then it erupted in the most wonderful sound \u2014 no
 
 Because Hiro had just taught everyone something beautiful: joy needs no perfect words. Courage speaks louder than grammar. Being yourself is braver than being perfect.
 
-Hiro didn't need to speak English beautifully. His happiness, his honesty, and his wonderful smile spoke to every single person in that stadium. And it still speaks to the world today.
+Hiro didn\u2019t need to speak English beautifully. His happiness, his honesty, and his wonderful smile spoke to every single person in that stadium. And it still speaks to the world today.
 
-So tonight, little one, remember this: whether you speak one language or ten, whether your words come out exactly right or a little wobbly, the world doesn't need perfect words. The world needs your wonderful smile, your brave heart, and your true self. Just like Hiro.
+So tonight, little one, remember this: whether you speak one language or ten, whether your words come out exactly right or a little wobbly, the world doesn\u2019t need perfect words. The world needs your wonderful smile, your brave heart, and your true self. Just like Hiro.
 
 Now close your eyes. Imagine that glowing stadium. Feel that warm, happy feeling. The world is full of people just waiting to smile back at you.
 

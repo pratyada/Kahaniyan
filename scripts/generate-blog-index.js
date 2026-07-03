@@ -27,6 +27,7 @@ const SECTIONS = [
   { title: 'Creator <em>Program</em>',         cats: ['creators'] },
   { title: 'Series <em>Launches</em>',         matchTag: 'Series' },
   { title: 'Toronto <em>Stories</em>',         cats: ['toronto'] },
+  { title: 'Inspirational <em>Stories</em>',  cats: ['inspirational'] },
   { title: 'More <em>Reads</em>',              remainder: true },
 ];
 
@@ -403,6 +404,7 @@ ${sec.posts.map(p => gridCard(p)).join('\n')}
       <button class="cat" data-cat="comparison" onclick="setCat(this)">Comparisons</button>
       <button class="cat" data-cat="creators" onclick="setCat(this)">Creators</button>
       <button class="cat" data-cat="fifa" onclick="setCat(this)">\u26BD FIFA 2026</button>
+      <button class="cat" data-cat="inspirational" onclick="setCat(this)">\u2B50 Inspirational</button>
     </div>
     <p class="count" id="count">${totalArticles} article${totalArticles !== 1 ? 's' : ''}</p>
   </div>

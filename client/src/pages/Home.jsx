@@ -533,11 +533,10 @@ export default function Home() {
             </ShelfSection>
           )}
 
-          {/* 2. FIFA World Cup Series — Toronto + Dallas */}
+          {/* 2. FIFA World Cup Series */}
           {(() => {
             const fifaSeries = [
               SERIES.find(s => s.id === 'fifa-world-cup-2026'),
-              SERIES.find(s => s.id === 'fifa-world-cup-2026-dallas'),
             ].filter(Boolean);
             if (fifaSeries.length === 0) return null;
             return fifaSeries.map(series => (

@@ -19,8 +19,67 @@ async function uploadToS3(key, body, contentType, cacheControl) {
   return `${SITE}/${key}`;
 }
 
-function generateBlogHtml(content) {
-  const { title, metaDescription, body, coverImage, blog, tradition, images } = content;
+async function generateBlogContent(content) {
+  const key = process.env.ANTHROPIC_API_KEY;
+  if (!key) return { blogBody: content.body, blogTitle: content.title };
+
+  try {
+    const res = await fetch('https://api.anthropic.com/v1/messages', {
+      method: 'POST',
+      headers: { 'content-type': 'application/json', 'x-api-key': key, 'anthropic-version': '2023-06-01' },
+      body: JSON.stringify({
+        model: 'claude-haiku-4-5-20251001',
+        max_tokens: 2000,
+        system: `You write blog articles for My Sleepy Tale, an audio bedtime story platform for kids. The blog should be a ARTICLE about the story — NOT the story itself.
+
+Rules:
+- Write a 400-600 word blog article that discusses the story, its themes, and what children learn
+- Start with a compelling hook about why this story matters
+- Include context: when/where this story is set, what inspired it
+- Discuss the values/themes the story teaches (without spoiling the ending)
+- Add a "Why this story matters" section
+- Include a "Listen to this story" call-to-action
+- Mention My Sleepy Tale naturally (not salesy)
+- If blog context/references are provided, weave them in naturally as backlinks
+- Tone: warm, knowledgeable, parent-to-parent
+- SEO-friendly: use the story title and key themes naturally
+
+Return ONLY valid JSON:
+{
+  "blogTitle": "An engaging blog title (different from story title)",
+  "blogBody": "Full blog article in HTML paragraphs (<p>, <h2>, <blockquote>, <ul><li>)",
+  "metaDescription": "155 char SEO description"
+}`,
+        messages: [{ role: 'user', content: `Write a blog article about this bedtime story:
+
+Title: ${content.title}
+Story text: ${(content.body || '').slice(0, 1500)}
+Tradition: ${content.tradition || 'universal'}
+Theme: ${content.theme || 'kindness'}
+Series: ${content.source || 'standalone'}
+${content.blog?.context ? `\nAdditional context & references:\n${content.blog.context}` : ''}` }],
+      }),
+    });
+
+    if (!res.ok) return { blogBody: content.body, blogTitle: content.title };
+    const data = await res.json();
+    const text = data.content?.[0]?.text || '';
+    const match = text.match(/\{[\s\S]*\}/);
+    if (match) {
+      const parsed = JSON.parse(match[0]);
+      return {
+        blogBody: parsed.blogBody || content.body,
+        blogTitle: parsed.blogTitle || content.title,
+        metaDescription: parsed.metaDescription || content.metaDescription,
+      };
+    }
+  } catch {}
+  return { blogBody: content.body, blogTitle: content.title };
+}
+
+function generateBlogHtml(content, blogContent) {
+  const { title, metaDescription, coverImage, blog, tradition, images } = content;
+  const { blogBody, blogTitle } = blogContent || {};
   const slug = blog.slug;
   const date = new Date().toISOString().slice(0, 10);
   const readableDate = new Date().toLocaleDateString('en-CA', { year: 'numeric', month: 'long', day: 'numeric' });
@@ -94,14 +153,14 @@ function generateBlogHtml(content) {
       <a href="/" class="btn">Open App</a>
     </nav>
     ${coverImage ? `<img class="hero-img" src="${coverImage}" alt="${title}" loading="eager">` : ''}
-    <h1>${title}</h1>
+    <h1>${blogTitle || title}</h1>
     <div class="meta">
       <span>${readableDate}</span>
       <span>·</span>
       <span>${blog.readingTime || 5} min read</span>
       ${tradition ? `<span>·</span><span>${tradition}</span>` : ''}
     </div>
-    <div class="story">${(body || '').replace(/\n\n/g, '</p><p>').replace(/^/, '<p>').replace(/$/, '</p>')}</div>
+    <div class="story">${blogBody || ''}</div>
     ${(images && images.length > 1) ? `
     <h2 style="font-family:Fraunces,Georgia,serif;font-size:1.3rem;margin:2rem 0 .8rem;color:#f0a500">📸 Photos from this story</h2>
     <div class="photo-grid">
@@ -183,7 +242,8 @@ export default async function handler(req, res) {
     // 3. Generate blog HTML + upload to S3
     let blogUrl = null;
     if (content.blog?.enabled && content.blog?.slug) {
-      const blogHtml = generateBlogHtml({ ...content, id, coverImage: coverImageUrl });
+      const blogContent = await generateBlogContent({ ...content, id, coverImage: coverImageUrl });
+      const blogHtml = generateBlogHtml({ ...content, id, coverImage: coverImageUrl }, blogContent);
       blogUrl = await uploadToS3(
         `blog/${content.blog.slug}.html`,
         blogHtml, 'text/html', 'public, max-age=3600'

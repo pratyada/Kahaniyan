@@ -16,18 +16,17 @@ const TRADITIONS = [
   { v: 'jewish', l: '✡️ Jewish' }, { v: 'filipino', l: '🇵🇭 Filipino' },
   { v: 'hispanic', l: '🇲🇽 Hispanic' }, { v: 'indigenous', l: '🪶 Indigenous' },
 ];
-const THEMES = ['courage', 'kindness', 'wisdom', 'honesty', 'friendship', 'perseverance', 'sharing', 'humility', 'forgiveness', 'patience', 'gratitude'];
+const THEMES = ['courage', 'kindness', 'wisdom', 'honesty', 'friendship', 'perseverance', 'sharing', 'humility', 'forgiveness', 'patience', 'gratitude', 'inspirational'];
 const TYPES = [
   { id: 'episode', icon: '🎧', label: 'New Episode', desc: 'Add to an existing series' },
   { id: 'series', icon: '📚', label: 'New Series', desc: 'Create a series + first episode' },
   { id: 'story', icon: '✨', label: 'Standalone Story', desc: 'Single wisdom/bedtime story' },
   { id: 'blog', icon: '📝', label: 'Blog Post', desc: 'SEO blog article' },
 ];
-const BLOG_CATS = ['psychology', 'guide', 'culture', 'creators', 'toronto', 'fifa', 'comparison'];
+const BLOG_CATS = ['psychology', 'guide', 'culture', 'creators', 'toronto', 'fifa', 'comparison', 'inspirational'];
 const SERIES_LIST = [
   { id: 'rainbow-kindergarten-jlps-yr25-26', name: '🌈 Rainbow Kindergarten Adventures' },
-  { id: 'fifa-world-cup-2026', name: '⚽ FIFA World Cup 2026 — Toronto' },
-  { id: 'fifa-world-cup-2026-dallas', name: '⚽ FIFA World Cup 2026 — Dallas' },
+  { id: 'fifa-world-cup-2026', name: '⚽ FIFA World Cup 2026 — USA, Mexico, Canada' },
   { id: 'fire-truck-academy', name: '🚒 Fire Truck Academy' },
   { id: 'dr-spock-parenting', name: '👨‍⚕️ Dr. Spock Says' },
   { id: 'little-astronaut', name: '🚀 Little Astronaut' },
