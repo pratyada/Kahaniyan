@@ -10,7 +10,7 @@ import { db } from '../lib/firebase.js';
 import { collection, query, where, orderBy, limit, getDocs, doc, updateDoc, onSnapshot } from 'firebase/firestore';
 import ContentPublisher from '../components/publisher/ContentPublisher.jsx';
 
-const FOUNDER_EMAIL = 'prateekyadav2010@gmail.com';
+const FOUNDER_EMAILS = ['prateekyadav2010@gmail.com', 'rakshajoshi476@gmail.com'];
 const API = import.meta.env.VITE_API_URL || '';
 
 const PIPELINES = [
@@ -423,7 +423,7 @@ export default function FounderHub() {
 
   // Gate: founder only
   useEffect(() => {
-    if (user && user.email?.toLowerCase() !== FOUNDER_EMAIL) {
+    if (user && !FOUNDER_EMAILS.includes(user.email?.toLowerCase())) {
       navigate('/');
     }
   }, [user, navigate]);
@@ -504,7 +504,7 @@ export default function FounderHub() {
     await updateDoc(doc(db, 'redditLeads', leadId), { status: 'rejected' });
   };
 
-  if (!user || user.email?.toLowerCase() !== FOUNDER_EMAIL) return null;
+  if (!user || !FOUNDER_EMAILS.includes(user.email?.toLowerCase())) return null;
 
   return (
     <PageTransition className="page-scroll px-5 pt-10 safe-top">
