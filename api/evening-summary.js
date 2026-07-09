@@ -45,7 +45,7 @@ async function getTeam() {
 }
 
 function getAdminEmails() {
-  return ['prateekyadav2010@gmail.com', 'sahil.faraz@gmail.com', 'rakshajoshi476@gmail.com'];
+  return ['prateekyadav2010@gmail.com', 'rakshajoshi476@gmail.com'];
 }
 
 function buildTextBody(allTasks, today) {
@@ -237,9 +237,10 @@ export default async function handler(req, res) {
   const textBody = buildTextBody(allTasks, today);
   const htmlBody = buildHtmlBody(allTasks, today);
 
-  // Send to all active team members + admins
+  // Send to active team members + admins (exclude Deepti, Sahil, Vasudha)
+  const EXCLUDED_EMAILS = ['deepti.ramaul@gmail.com', 'sahil.faraz@gmail.com', 'vasudha.0512@gmail.com'];
   const recipients = new Set();
-  team.forEach(m => recipients.add(m.email));
+  team.forEach(m => { if (!EXCLUDED_EMAILS.includes(m.email.toLowerCase())) recipients.add(m.email); });
   getAdminEmails().forEach(e => recipients.add(e));
 
   const results = [];

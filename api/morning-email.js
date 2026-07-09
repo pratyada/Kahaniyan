@@ -170,9 +170,13 @@ export default async function handler(req, res) {
     byAssignee[key].push(t);
   });
 
+  // Only send morning emails to active task recipients (exclude Deepti, Sahil, Vasudha)
+  const EXCLUDED_EMAILS = ['deepti.ramaul@gmail.com', 'sahil.faraz@gmail.com', 'vasudha.0512@gmail.com'];
+
   const results = [];
   for (const [email, memberTasks] of Object.entries(byAssignee)) {
     if (!email || !email.includes('@')) continue;
+    if (EXCLUDED_EMAILS.includes(email.toLowerCase())) continue;
     const member = team.find(m => m.email === email);
     const name = member?.name || email.split('@')[0];
     const subject = `Your Tasks for ${new Date(today + 'T12:00:00').toLocaleDateString('en-CA', { weekday: 'long', month: 'long', day: 'numeric' })} — My Sleepy Tale`;

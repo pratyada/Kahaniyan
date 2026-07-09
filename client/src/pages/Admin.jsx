@@ -5654,6 +5654,9 @@ function OutreachDatabase() {
   const [sending, setSending] = useState(null);
   const [stats, setStats] = useState({ total: 0, new: 0, contacted: 0, responded: 0, signed_up: 0, paid: 0, not_interested: 0 });
   const [page, setPage] = useState(0);
+  const [showAddForm, setShowAddForm] = useState(false);
+  const [newLead, setNewLead] = useState({ email: '', contactName: '', businessName: '', city: '', businessType: '' });
+  const [adding, setAdding] = useState(false);
   const PAGE_SIZE = 100;
 
   useEffect(() => {
@@ -5695,7 +5698,7 @@ function OutreachDatabase() {
       const resp = await fetch('/api/outreach-email', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ to: lead.email, contactName: lead.firstName, businessName: '' }),
+        body: JSON.stringify({ to: lead.email, contactName: lead.firstName, businessName: lead.businessName || '' }),
       });
       const data = await resp.json();
       if (data.sent) {
@@ -5707,6 +5710,36 @@ function OutreachDatabase() {
     setSending(null);
   };
 
+  const addLead = async () => {
+    if (!newLead.email.trim() || !db) return;
+    setAdding(true);
+    try {
+      const id = `lead_${Date.now()}_${Math.random().toString(36).slice(2, 6)}`;
+      const leadData = {
+        id,
+        email: newLead.email.trim().toLowerCase(),
+        firstName: newLead.contactName.trim(),
+        lastName: '',
+        businessName: newLead.businessName.trim(),
+        city: newLead.city.trim(),
+        businessType: newLead.businessType.trim(),
+        source: 'manual',
+        status: 'new',
+        outreachSent: false,
+        outreachDay: 0,
+        createdAt: new Date().toISOString(),
+      };
+      await setDoc(doc(db, 'outreachLeads', id), leadData);
+      setLeads(prev => [leadData, ...prev]);
+      setStats(prev => ({ ...prev, total: prev.total + 1, new: prev.new + 1 }));
+      setNewLead({ email: '', contactName: '', businessName: '', city: '', businessType: '' });
+      setShowAddForm(false);
+    } catch (e) { alert('Failed to add: ' + e.message); }
+    setAdding(false);
+  };
+
+  const BUSINESS_TYPES = ['Daycare', 'Kindergarten', 'Preschool', 'Summer Camp', 'Kids Activities', 'After-School Program', 'Children\'s Bookstore', 'Pediatric Office', 'Party Venue', 'Other'];
+
   const filtered = leads.filter(l => {
     if (filter !== 'all' && l.status !== filter) return false;
     if (search) {
@@ -5714,6 +5747,8 @@ function OutreachDatabase() {
       return (l.firstName || '').toLowerCase().includes(q) ||
         (l.lastName || '').toLowerCase().includes(q) ||
         (l.email || '').toLowerCase().includes(q) ||
+        (l.businessName || '').toLowerCase().includes(q) ||
+        (l.city || '').toLowerCase().includes(q) ||
         (l.phone || '').includes(q);
     }
     return true;
@@ -5744,13 +5779,53 @@ function OutreachDatabase() {
         ))}
       </div>
 
-      {/* Search */}
+      {/* Search + Add */}
       <div className="flex gap-3">
-        <input type="text" placeholder="Search by name, email, phone..."
+        <input type="text" placeholder="Search by name, email, business, city..."
           value={search} onChange={e => { setSearch(e.target.value); setPage(0); }}
           className="flex-1 rounded-xl bg-bg-surface px-4 py-3 text-sm text-ink-base placeholder-ink-dim ring-1 ring-black/10 dark:ring-white/10 focus:ring-gold outline-none" />
         <div className="text-xs text-ink-base self-center whitespace-nowrap">{filtered.length} leads</div>
+        <button onClick={() => setShowAddForm(!showAddForm)}
+          className="rounded-xl bg-gold/20 px-4 py-2 text-sm font-bold text-gold hover:bg-gold/30 transition whitespace-nowrap">
+          + Add Lead
+        </button>
       </div>
+
+      {/* Add Lead Form */}
+      {showAddForm && (
+        <div className="rounded-2xl bg-bg-surface ring-1 ring-gold/30 p-5 space-y-3">
+          <h3 className="text-sm font-bold text-ink-base">Add Business Contact</h3>
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            <input type="email" placeholder="Email *" required value={newLead.email}
+              onChange={e => setNewLead(prev => ({ ...prev, email: e.target.value }))}
+              className="rounded-xl bg-bg-surface px-4 py-3 text-sm text-ink-base placeholder-ink-dim ring-1 ring-black/10 dark:ring-white/10 focus:ring-gold outline-none" />
+            <input type="text" placeholder="Contact Name" value={newLead.contactName}
+              onChange={e => setNewLead(prev => ({ ...prev, contactName: e.target.value }))}
+              className="rounded-xl bg-bg-surface px-4 py-3 text-sm text-ink-base placeholder-ink-dim ring-1 ring-black/10 dark:ring-white/10 focus:ring-gold outline-none" />
+            <input type="text" placeholder="Business Name *" value={newLead.businessName}
+              onChange={e => setNewLead(prev => ({ ...prev, businessName: e.target.value }))}
+              className="rounded-xl bg-bg-surface px-4 py-3 text-sm text-ink-base placeholder-ink-dim ring-1 ring-black/10 dark:ring-white/10 focus:ring-gold outline-none" />
+            <input type="text" placeholder="City (e.g. Dallas, TX)" value={newLead.city}
+              onChange={e => setNewLead(prev => ({ ...prev, city: e.target.value }))}
+              className="rounded-xl bg-bg-surface px-4 py-3 text-sm text-ink-base placeholder-ink-dim ring-1 ring-black/10 dark:ring-white/10 focus:ring-gold outline-none" />
+            <select value={newLead.businessType} onChange={e => setNewLead(prev => ({ ...prev, businessType: e.target.value }))}
+              className="rounded-xl bg-bg-surface px-4 py-3 text-sm text-ink-base ring-1 ring-black/10 dark:ring-white/10 focus:ring-gold outline-none">
+              <option value="">Business Type</option>
+              {BUSINESS_TYPES.map(t => <option key={t} value={t}>{t}</option>)}
+            </select>
+          </div>
+          <div className="flex gap-3 pt-2">
+            <button onClick={addLead} disabled={adding || !newLead.email.trim()}
+              className="rounded-xl bg-gold/20 px-5 py-2 text-sm font-bold text-gold hover:bg-gold/30 transition disabled:opacity-50">
+              {adding ? 'Adding...' : 'Add to Outreach'}
+            </button>
+            <button onClick={() => setShowAddForm(false)}
+              className="rounded-xl bg-white/5 px-5 py-2 text-sm text-ink-dim hover:bg-white/10 transition">
+              Cancel
+            </button>
+          </div>
+        </div>
+      )}
 
       {/* Lead list */}
       <div className="space-y-2">
@@ -5768,10 +5843,13 @@ function OutreachDatabase() {
                       {OUTREACH_SOURCE_LABELS[lead.source] || lead.source}
                     </span>
                   </div>
-                  <div className="flex items-center gap-4 mt-1 text-xs text-ink-base">
+                  <div className="flex items-center gap-4 mt-1 text-xs text-ink-base flex-wrap">
                     <span>{lead.email}</span>
+                    {lead.businessName && <span className="text-gold/80">{lead.businessName}</span>}
+                    {lead.city && <span>{lead.city}</span>}
+                    {lead.businessType && <span className="text-ink-dim">{lead.businessType}</span>}
                     {lead.phone && <span>{lead.phone}</span>}
-                    {lead.postalCode && <span>{lead.postalCode}</span>}
+                    {lead.postalCode && !lead.city && <span>{lead.postalCode}</span>}
                   </div>
                 </div>
                 <div className="flex items-center gap-2 shrink-0">
