@@ -5692,17 +5692,44 @@ function OutreachDatabase() {
     } catch (e) { alert('Update failed: ' + e.message); }
   };
 
-  const sendOutreach = async (lead) => {
+  const AIDA_STAGES = [
+    { value: 1, label: 'Awareness', icon: '👋', color: '#4299e1', desc: 'Introduce My Sleepy Tale' },
+    { value: 2, label: 'Interest', icon: '💡', color: '#f0a500', desc: 'Show how we can work together' },
+    { value: 3, label: 'Desire', icon: '💛', color: '#48bb78', desc: 'Social proof & testimonials' },
+    { value: 4, label: 'Action', icon: '🚀', color: '#f472b6', desc: 'Final partnership offer' },
+  ];
+
+  const getNextStage = (lead) => {
+    const current = lead.outreachStage || 0;
+    return Math.min(current + 1, 4);
+  };
+
+  const sendOutreach = async (lead, stageOverride) => {
+    const stage = stageOverride || getNextStage(lead);
     setSending(lead.id);
     try {
       const resp = await fetch('/api/outreach-email', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ to: lead.email, contactName: lead.firstName, businessName: lead.businessName || '' }),
+        body: JSON.stringify({
+          to: lead.email,
+          contactName: lead.firstName,
+          businessName: lead.businessName || '',
+          stage,
+          leadId: lead.id,
+        }),
       });
       const data = await resp.json();
       if (data.sent) {
-        await updateStatus(lead, 'contacted');
+        const updates = {
+          outreachStage: stage,
+          [`stage${stage}SentAt`]: new Date().toISOString(),
+          outreachSent: true,
+          outreachSentAt: new Date().toISOString(),
+          status: 'contacted',
+        };
+        await updateDoc(doc(db, 'outreachLeads', lead.id), updates);
+        setLeads(prev => prev.map(l => l.id === lead.id ? { ...l, ...updates } : l));
       } else {
         alert(data.message || 'Failed to send');
       }
@@ -5829,13 +5856,21 @@ function OutreachDatabase() {
 
       {/* Lead list */}
       <div className="space-y-2">
-        {filtered.slice(page * PAGE_SIZE, (page + 1) * PAGE_SIZE).map(lead => (
+        {filtered.slice(page * PAGE_SIZE, (page + 1) * PAGE_SIZE).map(lead => {
+          const currentStage = lead.outreachStage || 0;
+          const nextStage = Math.min(currentStage + 1, 4);
+          const nextInfo = AIDA_STAGES[nextStage - 1];
+          const allDone = currentStage >= 4;
+
+          return (
           <div key={lead.id} className="rounded-2xl bg-bg-surface ring-1 ring-black/10 dark:ring-white/5 overflow-hidden">
             <div className="px-5 py-3">
+              {/* Row 1: Name + status + source */}
               <div className="flex items-center justify-between gap-3">
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center gap-2 flex-wrap">
                     <span className="text-sm font-bold text-ink-base truncate">{lead.firstName} {lead.lastName}</span>
+                    {lead.businessName && <span className="text-sm text-gold/80">{lead.businessName}</span>}
                     <span className="rounded-full px-2 py-0.5 text-[8px] font-bold uppercase" style={{ background: OUTREACH_STATUS_BADGE[lead.status] + '22', color: OUTREACH_STATUS_BADGE[lead.status] }}>
                       {OUTREACH_STATUS_LABELS[lead.status] || lead.status}
                     </span>
@@ -5845,11 +5880,9 @@ function OutreachDatabase() {
                   </div>
                   <div className="flex items-center gap-4 mt-1 text-xs text-ink-base flex-wrap">
                     <span>{lead.email}</span>
-                    {lead.businessName && <span className="text-gold/80">{lead.businessName}</span>}
                     {lead.city && <span>{lead.city}</span>}
                     {lead.businessType && <span className="text-ink-dim">{lead.businessType}</span>}
                     {lead.phone && <span>{lead.phone}</span>}
-                    {lead.postalCode && !lead.city && <span>{lead.postalCode}</span>}
                   </div>
                 </div>
                 <div className="flex items-center gap-2 shrink-0">
@@ -5857,22 +5890,52 @@ function OutreachDatabase() {
                     className="rounded-lg bg-bg-surface px-2 py-1 text-[10px] text-ink-base ring-1 ring-black/10 dark:ring-white/10 outline-none cursor-pointer">
                     {OUTREACH_STATUS_OPTIONS.map(s => <option key={s} value={s}>{OUTREACH_STATUS_LABELS[s]}</option>)}
                   </select>
-                  {lead.status === 'new' && (
-                    <button onClick={() => sendOutreach(lead)} disabled={sending === lead.id}
-                      className="rounded-lg bg-[#f0a500]/20 px-3 py-1 text-[10px] font-bold text-gold hover:bg-[#f0a500]/30 transition disabled:opacity-50">
-                      {sending === lead.id ? 'Sending...' : 'Send Email'}
-                    </button>
-                  )}
-                  {lead.outreachSentAt && (
-                    <span className="text-[9px] text-ink-dim">
-                      Sent {new Date(lead.outreachSentAt).toLocaleDateString()}
-                    </span>
-                  )}
                 </div>
+              </div>
+
+              {/* Row 2: AIDA stage progress + send next */}
+              <div className="flex items-center gap-2 mt-3 flex-wrap">
+                {/* Stage dots */}
+                {AIDA_STAGES.map((st) => {
+                  const sent = currentStage >= st.value;
+                  const sentAt = lead[`stage${st.value}SentAt`];
+                  return (
+                    <div key={st.value} className="flex items-center gap-1">
+                      <button
+                        onClick={() => !sent && sendOutreach(lead, st.value)}
+                        disabled={sent || sending === lead.id}
+                        title={sent ? `${st.label} sent ${sentAt ? new Date(sentAt).toLocaleDateString() : ''}` : `Send ${st.label} email`}
+                        className={`rounded-full px-2 py-0.5 text-[9px] font-bold transition ${
+                          sent
+                            ? 'opacity-90 cursor-default'
+                            : st.value === nextStage
+                              ? 'ring-1 ring-gold cursor-pointer hover:opacity-80'
+                              : 'opacity-40 cursor-pointer hover:opacity-60'
+                        }`}
+                        style={{ background: st.color + (sent ? '33' : '15'), color: st.color }}>
+                        {st.icon} {st.label}
+                        {sent && sentAt && <span className="ml-1 opacity-60">{new Date(sentAt).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}</span>}
+                      </button>
+                      {st.value < 4 && <span className="text-[8px] text-ink-dim">→</span>}
+                    </div>
+                  );
+                })}
+
+                {/* Send next button */}
+                {!allDone && (
+                  <button onClick={() => sendOutreach(lead)} disabled={sending === lead.id}
+                    className="ml-auto rounded-lg bg-gold/20 px-3 py-1 text-[10px] font-bold text-gold hover:bg-gold/30 transition disabled:opacity-50">
+                    {sending === lead.id ? 'Sending...' : `Send ${nextInfo.label}`}
+                  </button>
+                )}
+                {allDone && (
+                  <span className="ml-auto text-[10px] text-green-500 font-bold">✓ All 4 emails sent</span>
+                )}
               </div>
             </div>
           </div>
-        ))}
+          );
+        })}
         {filtered.length > PAGE_SIZE && (
           <div className="flex items-center justify-center gap-4 py-4">
             <button onClick={() => setPage(p => Math.max(0, p - 1))} disabled={page === 0}
