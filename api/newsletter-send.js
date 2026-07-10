@@ -428,10 +428,10 @@ export default async function handler(req, res) {
 
     const snap = await db.collection('newsletterRecipients')
       .where('newsletterId', '==', newsletterId)
-      .orderBy('sentAt', 'desc')
       .limit(500)
       .get();
-    const recipients = snap.docs.map(d => d.data());
+    const recipients = snap.docs.map(d => d.data())
+      .sort((a, b) => (b.sentAt || '').localeCompare(a.sentAt || ''));
     return res.json({ recipients });
   }
 
