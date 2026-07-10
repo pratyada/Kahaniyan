@@ -427,6 +427,8 @@ function EmailNewsletter({ user }) {
   const [expandedId, setExpandedId] = useState(null);
   const [recipients, setRecipients] = useState([]);
   const [loadingRecipients, setLoadingRecipients] = useState(false);
+  const [sendOneEmail, setSendOneEmail] = useState('');
+  const [sendOneStatus, setSendOneStatus] = useState(null);
   const [error, setError] = useState(null);
   const API = import.meta.env.VITE_API_URL || '';
 
@@ -684,9 +686,40 @@ function EmailNewsletter({ user }) {
                   </div>
                 </button>
 
-                {/* Expanded recipients */}
+                {/* Expanded: send to specific email + recipients */}
                 {expandedId === nl.id && (
-                  <div className="ml-4 mt-1 rounded-xl bg-bg-base ring-1 ring-white/5 p-3 max-h-60 overflow-y-auto">
+                  <div className="ml-4 mt-1 space-y-2">
+                    {/* Send to specific email */}
+                    <div className="rounded-xl bg-bg-base ring-1 ring-white/5 p-3">
+                      <div className="flex items-center gap-2">
+                        <input type="email" placeholder="Send to specific email..."
+                          value={sendOneEmail} onChange={e => { setSendOneEmail(e.target.value); setSendOneStatus(null); }}
+                          className="flex-1 rounded-lg bg-bg-surface px-3 py-1.5 text-xs text-ink placeholder-ink-dim ring-1 ring-white/10 focus:ring-gold outline-none" />
+                        <button disabled={sending || !sendOneEmail.includes('@')}
+                          onClick={async e => {
+                            e.stopPropagation();
+                            setSending(true); setSendOneStatus(null);
+                            try {
+                              const r = await fetch(`${API}/api/newsletter-send`, {
+                                method: 'POST', headers: { 'Content-Type': 'application/json' },
+                                body: JSON.stringify({ mode: 'sendOne', newsletterId: nl.id, to: sendOneEmail.trim() }),
+                              });
+                              const d = await r.json();
+                              if (d.sent) { setSendOneStatus('sent'); setSendOneEmail(''); }
+                              else setSendOneStatus(d.error || 'failed');
+                            } catch (err) { setSendOneStatus(err.message); }
+                            setSending(false);
+                          }}
+                          className="rounded-lg bg-gold/20 px-3 py-1.5 text-[10px] font-bold text-gold hover:bg-gold/30 transition disabled:opacity-50 whitespace-nowrap">
+                          {sending ? 'Sending...' : '📤 Send'}
+                        </button>
+                      </div>
+                      {sendOneStatus === 'sent' && <p className="text-[10px] text-green-400 mt-1">Sent successfully!</p>}
+                      {sendOneStatus && sendOneStatus !== 'sent' && <p className="text-[10px] text-red-400 mt-1">{sendOneStatus}</p>}
+                    </div>
+
+                    {/* Recipients list */}
+                    <div className="rounded-xl bg-bg-base ring-1 ring-white/5 p-3 max-h-60 overflow-y-auto">
                     {loadingRecipients ? (
                       <p className="text-xs text-ink-dim text-center py-4">Loading recipients...</p>
                     ) : recipients.length === 0 ? (
@@ -711,6 +744,7 @@ function EmailNewsletter({ user }) {
                         ))}
                       </div>
                     )}
+                  </div>
                   </div>
                 )}
               </div>
