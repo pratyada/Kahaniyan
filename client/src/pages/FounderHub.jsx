@@ -502,8 +502,9 @@ function EmailNewsletter({ user }) {
     setSaving(false);
   };
 
-  const handleSendAll = async () => {
-    if (!newsletterId) return;
+  const handleSendAll = async (nlId) => {
+    const targetId = nlId || newsletterId;
+    if (!targetId) return;
     if (!confirm('Send this newsletter to ALL users? This cannot be undone.')) return;
     setSending(true);
     setError(null);
@@ -511,7 +512,7 @@ function EmailNewsletter({ user }) {
       const res = await fetch(`${API}/api/newsletter-send`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ mode: 'sendAll', newsletterId }),
+        body: JSON.stringify({ mode: 'sendAll', newsletterId: targetId }),
       });
       const data = await res.json();
       if (data.error) throw new Error(data.error);
@@ -659,9 +660,25 @@ function EmailNewsletter({ user }) {
                       </div>
                       <p className="text-[11px] text-ink-dim mt-1 truncate">{nl.subject}</p>
                     </div>
-                    <div className="text-right shrink-0">
-                      <div className="text-xs text-ink-muted">{nl.sentCount || 0} sent</div>
-                      <div className="text-[10px] text-ink-dim">{nl.sentAt ? new Date(nl.sentAt).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }) : 'Not sent'}</div>
+                    <div className="flex items-center gap-2 shrink-0">
+                      {nl.status !== 'sent' && nl.status !== 'sending' && (
+                        <>
+                          <button onClick={e => { e.stopPropagation(); setNewsletterId(nl.id); handleSendAll(nl.id); }}
+                            disabled={sending}
+                            className="rounded-lg bg-gold/20 px-3 py-1 text-[10px] font-bold text-gold hover:bg-gold/30 transition disabled:opacity-50">
+                            {sending ? 'Sending...' : '📤 Send to All'}
+                          </button>
+                          <button onClick={async e => { e.stopPropagation(); setSending(true); try { await fetch(`${API}/api/newsletter-send`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ mode: 'test', newsletterId: nl.id }) }); setSendResult({ type: 'test' }); } catch {} setSending(false); }}
+                            disabled={sending}
+                            className="rounded-lg bg-blue-500/20 px-3 py-1 text-[10px] font-bold text-blue-400 hover:bg-blue-500/30 transition disabled:opacity-50">
+                            🧪 Test
+                          </button>
+                        </>
+                      )}
+                      <div className="text-right">
+                        <div className="text-xs text-ink-muted">{nl.sentCount || 0} sent</div>
+                        <div className="text-[10px] text-ink-dim">{nl.sentAt ? new Date(nl.sentAt).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }) : 'Not sent'}</div>
+                      </div>
                     </div>
                     <span className="text-ink-dim text-xs">{expandedId === nl.id ? '▲' : '▼'}</span>
                   </div>
