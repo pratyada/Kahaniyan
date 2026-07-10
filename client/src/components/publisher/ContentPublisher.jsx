@@ -233,6 +233,22 @@ export default function ContentPublisher({ user }) {
         }
       } catch {}
 
+      // Auto-register images in wisdomImages + wisdomGallery so Player/SeriesDetail can find them
+      if (uploadedImageUrls.length > 0) {
+        try {
+          await fetch(`${API}/api/publish-content`, {
+            method: 'POST',
+            headers: { 'content-type': 'application/json' },
+            body: JSON.stringify({
+              action: 'registerImage',
+              episodeId: id,
+              imageUrl: uploadedImageUrls[0],
+              gallery: uploadedImageUrls,
+            }),
+          });
+        } catch {}
+      }
+
       setResult(data);
       setStep(4);
     } catch (e) {

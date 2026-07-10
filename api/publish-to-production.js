@@ -51,6 +51,8 @@ export default async function handler(req, res) {
     enableTranslation: content.enableTranslation || false,
     audioUrl: content.audioUrl || null,
     blog: content.blog || null,
+    storyArt: content.storyArt || null,
+    imagePrompt: content.imagePrompt || '',
     publishedAt: new Date().toISOString(),
     status: 'live',
   });
