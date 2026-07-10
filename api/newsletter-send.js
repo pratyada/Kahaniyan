@@ -376,6 +376,28 @@ export default async function handler(req, res) {
     return res.json({ sentCount, failedCount, throttledCount, total: allEmails.length });
   }
 
+  // ── SEND ONE (custom recipient) ──
+  if (mode === 'sendOne') {
+    const { newsletterId, to } = req.body;
+    if (!newsletterId || !to) return res.status(400).json({ error: 'newsletterId and to required' });
+
+    const db = await getFirestore();
+    if (!db) return res.status(500).json({ error: 'Firestore not available' });
+
+    const nlDoc = await db.collection('newsletters').doc(newsletterId).get();
+    if (!nlDoc.exists) return res.status(404).json({ error: 'Newsletter not found' });
+
+    const nl = nlDoc.data();
+    const toEmail = sanitizeEmail(to);
+
+    try {
+      await sendEmail(toEmail, nl.subject, nl.htmlContent, nl.textContent);
+      return res.json({ sent: true, to: toEmail });
+    } catch (e) {
+      return res.status(500).json({ error: e.message });
+    }
+  }
+
   // ── HISTORY ──
   if (mode === 'history') {
     const db = await getFirestore();
