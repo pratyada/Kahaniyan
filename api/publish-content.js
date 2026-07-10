@@ -191,6 +191,20 @@ export default async function handler(req, res) {
 
   if (req.method !== 'POST') return res.status(405).json({ error: 'GET or POST only' });
 
+  // Register image URL in wisdomImages (for episodes uploaded via ContentPublisher)
+  if (req.body?.action === 'registerImage') {
+    const { episodeId, imageUrl, gallery } = req.body;
+    if (!episodeId || !imageUrl) return res.status(400).json({ error: 'episodeId and imageUrl required' });
+    const db = await getFirestore();
+    if (!db) return res.status(500).json({ error: 'Database unavailable' });
+    const updates = { [episodeId]: imageUrl };
+    await db.collection('config').doc('wisdomImages').set(updates, { merge: true });
+    if (gallery && gallery.length > 0) {
+      await db.collection('config').doc('wisdomGallery').set({ [episodeId]: gallery }, { merge: true });
+    }
+    return res.json({ registered: true, episodeId, imageUrl });
+  }
+
   const { uid, content } = req.body || {};
   if (!uid || !content?.title || !content?.body) {
     return res.status(400).json({ error: 'uid, content.title, content.body required' });
