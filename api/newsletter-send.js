@@ -376,6 +376,16 @@ export default async function handler(req, res) {
     return res.json({ sentCount, failedCount, throttledCount, total: allEmails.length });
   }
 
+  // ── DELETE ──
+  if (mode === 'delete') {
+    const { newsletterId } = req.body;
+    if (!newsletterId) return res.status(400).json({ error: 'newsletterId required' });
+    const db = await getFirestore();
+    if (!db) return res.status(500).json({ error: 'Firestore not available' });
+    await db.collection('newsletters').doc(newsletterId).delete();
+    return res.json({ deleted: true, newsletterId });
+  }
+
   // ── SEND ONE (custom recipient) ──
   if (mode === 'sendOne') {
     const { newsletterId, to } = req.body;
