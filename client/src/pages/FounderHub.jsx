@@ -60,6 +60,7 @@ const PIPELINES = [
 ];
 
 const MARKETING_CHANNELS = [
+  { id: 'email-newsletter', label: 'Email Newsletter', icon: '📨', status: 'active', description: 'AI-generate branded newsletters and send to all users.', automation: '85% automated', features: ['AI content from prompt', 'Branded dark theme', 'Preview & test send', 'Bulk send to all users', 'Send tracking & history'] },
   { id: 'reddit', label: 'Reddit', icon: '🟠', status: 'active', description: 'Monitor subreddits, AI-draft comments, approve & post. 10 subreddits × 10 keywords.', automation: '80% automated', features: ['Keyword monitoring', 'AI comment drafting (3 styles)', 'Slack approval flow', 'Auto-post after approval', 'Karma tracking'] },
   { id: 'x-twitter', label: 'X / Twitter', icon: '🐦', status: 'coming-soon', description: 'Schedule tweets, reply to relevant threads, track engagement. Thread writer agent.', automation: '70% automated', features: ['Trending topic scanner', 'AI tweet/thread writer', 'Scheduled posting', 'Engagement tracker', 'Hashtag optimizer'] },
   { id: 'instagram', label: 'Instagram', icon: '📸', status: 'active', description: 'Generate post images + captions + hashtags from any topic or link.', automation: '90% automated', features: ['AI image generator', 'Caption writer', 'Hashtag optimizer', 'Multi-format (square, portrait, story)', 'Brand-consistent Soul ID'] },
@@ -410,12 +411,306 @@ function RedditStats({ leads }) {
   );
 }
 
+// ─── Email Newsletter Agent ──────────────────────────────────────
+function EmailNewsletter({ user }) {
+  const [prompt, setPrompt] = useState('');
+  const [newsletterName, setNewsletterName] = useState('');
+  const [subject, setSubject] = useState('');
+  const [htmlContent, setHtmlContent] = useState('');
+  const [textContent, setTextContent] = useState('');
+  const [generating, setGenerating] = useState(false);
+  const [saving, setSaving] = useState(false);
+  const [sending, setSending] = useState(false);
+  const [newsletterId, setNewsletterId] = useState(null);
+  const [sendResult, setSendResult] = useState(null);
+  const [newsletters, setNewsletters] = useState([]);
+  const [expandedId, setExpandedId] = useState(null);
+  const [recipients, setRecipients] = useState([]);
+  const [loadingRecipients, setLoadingRecipients] = useState(false);
+  const [error, setError] = useState(null);
+  const API = import.meta.env.VITE_API_URL || '';
+
+  // Load newsletter history
+  useEffect(() => {
+    (async () => {
+      try {
+        const res = await fetch(`${API}/api/newsletter-send`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ mode: 'history' }),
+        });
+        const data = await res.json();
+        if (data.newsletters) setNewsletters(data.newsletters);
+      } catch {}
+    })();
+  }, []);
+
+  const handleGenerate = async () => {
+    if (!prompt.trim()) return;
+    setGenerating(true);
+    setError(null);
+    setHtmlContent('');
+    setSendResult(null);
+    setNewsletterId(null);
+    try {
+      const res = await fetch(`${API}/api/newsletter-send`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ mode: 'generate', prompt }),
+      });
+      const data = await res.json();
+      if (data.error) throw new Error(data.error);
+      setSubject(data.subject || '');
+      setHtmlContent(data.htmlContent || '');
+      setTextContent(data.textContent || '');
+      // Auto-generate name from prompt
+      if (!newsletterName) {
+        setNewsletterName(prompt.toLowerCase().replace(/[^a-z0-9]+/g, '-').slice(0, 40).replace(/-$/, ''));
+      }
+    } catch (e) {
+      setError(e.message);
+    }
+    setGenerating(false);
+  };
+
+  const handleSaveAndTest = async () => {
+    if (!htmlContent || !newsletterName || !subject) return;
+    setSaving(true);
+    setError(null);
+    try {
+      // Save first
+      const saveRes = await fetch(`${API}/api/newsletter-send`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ mode: 'save', prompt, newsletterName, subject, htmlContent, textContent }),
+      });
+      const saveData = await saveRes.json();
+      if (saveData.error) throw new Error(saveData.error);
+      setNewsletterId(saveData.newsletterId);
+
+      // Then test send
+      const testRes = await fetch(`${API}/api/newsletter-send`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ mode: 'test', newsletterId: saveData.newsletterId }),
+      });
+      const testData = await testRes.json();
+      setSendResult({ type: 'test', ...testData });
+    } catch (e) {
+      setError(e.message);
+    }
+    setSaving(false);
+  };
+
+  const handleSendAll = async () => {
+    if (!newsletterId) return;
+    if (!confirm('Send this newsletter to ALL users? This cannot be undone.')) return;
+    setSending(true);
+    setError(null);
+    try {
+      const res = await fetch(`${API}/api/newsletter-send`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ mode: 'sendAll', newsletterId }),
+      });
+      const data = await res.json();
+      if (data.error) throw new Error(data.error);
+      setSendResult({ type: 'sendAll', ...data });
+      // Refresh history
+      const histRes = await fetch(`${API}/api/newsletter-send`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ mode: 'history' }),
+      });
+      const histData = await histRes.json();
+      if (histData.newsletters) setNewsletters(histData.newsletters);
+    } catch (e) {
+      setError(e.message);
+    }
+    setSending(false);
+  };
+
+  const loadRecipients = async (nlId) => {
+    if (expandedId === nlId) { setExpandedId(null); return; }
+    setExpandedId(nlId);
+    setLoadingRecipients(true);
+    try {
+      const res = await fetch(`${API}/api/newsletter-send`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ mode: 'recipients', newsletterId: nlId }),
+      });
+      const data = await res.json();
+      setRecipients(data.recipients || []);
+    } catch {}
+    setLoadingRecipients(false);
+  };
+
+  const STATUS_COLORS = { draft: '#5a5550', 'test-sent': '#2b6cb0', sending: '#f0a500', sent: '#48bb78' };
+
+  return (
+    <div className="space-y-6">
+      {/* Composer */}
+      <div className="rounded-2xl bg-bg-surface ring-1 ring-white/5 p-5 space-y-4">
+        <div className="flex items-center gap-3 mb-2">
+          <span className="text-2xl">📨</span>
+          <div>
+            <h3 className="text-sm font-bold text-ink">Newsletter Composer</h3>
+            <p className="text-[10px] text-ink-dim">Write a prompt, AI generates a branded newsletter</p>
+          </div>
+        </div>
+
+        <textarea
+          value={prompt}
+          onChange={e => setPrompt(e.target.value)}
+          placeholder="Describe what this newsletter is about... e.g. 'New Sikh stories series with 5 episodes about courage and kindness' or 'FIFA World Cup bedtime adventure series launching this week'"
+          rows={3}
+          className="w-full rounded-xl bg-bg-base px-4 py-3 text-sm text-ink placeholder-ink-dim ring-1 ring-white/10 focus:ring-gold outline-none resize-none"
+        />
+
+        <button onClick={handleGenerate} disabled={generating || !prompt.trim()}
+          className="rounded-xl bg-gold/20 px-5 py-2.5 text-sm font-bold text-gold hover:bg-gold/30 transition disabled:opacity-50">
+          {generating ? '✨ Generating...' : '✨ Generate Newsletter'}
+        </button>
+
+        {error && (
+          <div className="rounded-xl bg-red-500/10 ring-1 ring-red-500/30 px-4 py-3 text-xs text-red-400">{error}</div>
+        )}
+      </div>
+
+      {/* Preview */}
+      {htmlContent && (
+        <div className="rounded-2xl bg-bg-surface ring-1 ring-white/5 p-5 space-y-4">
+          <h3 className="text-sm font-bold text-ink">Preview & Send</h3>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            <div>
+              <label className="text-[10px] text-ink-dim uppercase tracking-wider mb-1 block">Subject Line</label>
+              <input type="text" value={subject} onChange={e => setSubject(e.target.value)}
+                className="w-full rounded-xl bg-bg-base px-4 py-2.5 text-sm text-ink ring-1 ring-white/10 focus:ring-gold outline-none" />
+            </div>
+            <div>
+              <label className="text-[10px] text-ink-dim uppercase tracking-wider mb-1 block">Newsletter Name (unique ID)</label>
+              <input type="text" value={newsletterName} onChange={e => setNewsletterName(e.target.value)}
+                placeholder="e.g. sikh-series-july-2026"
+                className="w-full rounded-xl bg-bg-base px-4 py-2.5 text-sm text-ink ring-1 ring-white/10 focus:ring-gold outline-none" />
+            </div>
+          </div>
+
+          {/* Email preview iframe */}
+          <div className="rounded-xl overflow-hidden ring-1 ring-white/10">
+            <iframe
+              srcDoc={htmlContent}
+              title="Newsletter Preview"
+              className="w-full border-0"
+              style={{ height: '500px', background: '#0a0a0f' }}
+              sandbox="allow-same-origin"
+            />
+          </div>
+
+          {/* Actions */}
+          <div className="flex items-center gap-3 flex-wrap">
+            <button onClick={handleSaveAndTest} disabled={saving || !subject || !newsletterName}
+              className="rounded-xl bg-blue-500/20 px-5 py-2.5 text-sm font-bold text-blue-400 hover:bg-blue-500/30 transition disabled:opacity-50">
+              {saving ? 'Sending test...' : '🧪 Save & Send Test'}
+            </button>
+
+            {newsletterId && (
+              <button onClick={handleSendAll} disabled={sending}
+                className="rounded-xl bg-gold/20 px-5 py-2.5 text-sm font-bold text-gold hover:bg-gold/30 transition disabled:opacity-50">
+                {sending ? '📤 Sending to all users...' : '📤 Send to All Users'}
+              </button>
+            )}
+          </div>
+
+          {/* Send result */}
+          {sendResult && (
+            <div className={`rounded-xl px-4 py-3 text-xs ${sendResult.type === 'test' ? 'bg-blue-500/10 ring-1 ring-blue-500/30 text-blue-300' : 'bg-green-500/10 ring-1 ring-green-500/30 text-green-300'}`}>
+              {sendResult.type === 'test' ? (
+                <span>Test email sent to founder emails. Check your inbox.</span>
+              ) : (
+                <span>Newsletter sent! {sendResult.sentCount} sent, {sendResult.throttledCount || 0} throttled, {sendResult.failedCount || 0} failed out of {sendResult.total} users.</span>
+              )}
+            </div>
+          )}
+        </div>
+      )}
+
+      {/* History Table */}
+      <div className="rounded-2xl bg-bg-surface ring-1 ring-white/5 p-5">
+        <h3 className="text-sm font-bold text-ink mb-4">Newsletter History</h3>
+
+        {newsletters.length === 0 ? (
+          <p className="text-xs text-ink-dim text-center py-8">No newsletters sent yet.</p>
+        ) : (
+          <div className="space-y-2">
+            {newsletters.map(nl => (
+              <div key={nl.id}>
+                <button onClick={() => loadRecipients(nl.id)}
+                  className="w-full text-left rounded-xl bg-bg-base ring-1 ring-white/5 px-4 py-3 hover:ring-gold/30 transition">
+                  <div className="flex items-center justify-between gap-3">
+                    <div className="flex-1 min-w-0">
+                      <div className="flex items-center gap-2 flex-wrap">
+                        <span className="text-xs font-bold text-ink truncate">{nl.name}</span>
+                        <span className="rounded-full px-2 py-0.5 text-[8px] font-bold uppercase"
+                          style={{ background: (STATUS_COLORS[nl.status] || '#666') + '22', color: STATUS_COLORS[nl.status] || '#666' }}>
+                          {nl.status}
+                        </span>
+                      </div>
+                      <p className="text-[11px] text-ink-dim mt-1 truncate">{nl.subject}</p>
+                    </div>
+                    <div className="text-right shrink-0">
+                      <div className="text-xs text-ink-muted">{nl.sentCount || 0} sent</div>
+                      <div className="text-[10px] text-ink-dim">{nl.sentAt ? new Date(nl.sentAt).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }) : 'Not sent'}</div>
+                    </div>
+                    <span className="text-ink-dim text-xs">{expandedId === nl.id ? '▲' : '▼'}</span>
+                  </div>
+                </button>
+
+                {/* Expanded recipients */}
+                {expandedId === nl.id && (
+                  <div className="ml-4 mt-1 rounded-xl bg-bg-base ring-1 ring-white/5 p-3 max-h-60 overflow-y-auto">
+                    {loadingRecipients ? (
+                      <p className="text-xs text-ink-dim text-center py-4">Loading recipients...</p>
+                    ) : recipients.length === 0 ? (
+                      <p className="text-xs text-ink-dim text-center py-4">No recipients yet.</p>
+                    ) : (
+                      <div className="space-y-1">
+                        <div className="flex gap-3 text-[9px] text-ink-dim uppercase tracking-wider font-bold pb-1 border-b border-white/5">
+                          <span className="flex-1">Email</span>
+                          <span className="w-16 text-center">Status</span>
+                          <span className="w-20 text-right">Date</span>
+                        </div>
+                        {recipients.map((r, i) => (
+                          <div key={i} className="flex items-center gap-3 text-[11px]">
+                            <span className="flex-1 text-ink-muted truncate">{r.email}</span>
+                            <span className={`w-16 text-center font-bold ${r.status === 'sent' ? 'text-green-400' : r.status === 'throttled' ? 'text-yellow-400' : 'text-red-400'}`}>
+                              {r.status}
+                            </span>
+                            <span className="w-20 text-right text-ink-dim">
+                              {r.sentAt ? new Date(r.sentAt).toLocaleDateString('en-US', { month: 'short', day: 'numeric' }) : ''}
+                            </span>
+                          </div>
+                        ))}
+                      </div>
+                    )}
+                  </div>
+                )}
+              </div>
+            ))}
+          </div>
+        )}
+      </div>
+    </div>
+  );
+}
+
 // ─── Main Component ───────────────────────────────────────────────
 export default function FounderHub() {
   const navigate = useNavigate();
   const { user } = useAuth();
   const [activeSection, setActiveSection] = useState(null);
-  const [marketingChannel, setMarketingChannel] = useState('reddit');
+  const [marketingChannel, setMarketingChannel] = useState('email-newsletter');
   const [redditLeads, setRedditLeads] = useState([]);
   const [loading, setLoading] = useState(false);
   const [scanning, setScanning] = useState(false);
@@ -660,13 +955,18 @@ export default function FounderHub() {
                 </div>
               )}
 
+              {/* Email Newsletter Channel */}
+              {marketingChannel === 'email-newsletter' && (
+                <EmailNewsletter user={user} />
+              )}
+
               {/* Instagram Channel — Creative Generator */}
               {marketingChannel === 'instagram' && (
                 <CreativeGenerator user={user} />
               )}
 
               {/* Other channels — coming soon placeholder */}
-              {marketingChannel !== 'reddit' && marketingChannel !== 'instagram' && (
+              {marketingChannel !== 'reddit' && marketingChannel !== 'instagram' && marketingChannel !== 'email-newsletter' && (
                 <ChannelPlaceholder channel={MARKETING_CHANNELS.find(c => c.id === marketingChannel)} />
               )}
             </div>
