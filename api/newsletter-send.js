@@ -8,7 +8,7 @@ import { canSendEmail, logEmail, isUnsubscribed } from './_emailThrottle.js';
 
 const FROM_EMAIL = 'hello@mysleepytale.com';
 const ses = new SESClient({ region: 'us-east-1' });
-const FOUNDER_EMAILS = ['prateekyadav2010@gmail.com', 'rakshajoshi476@gmail.com'];
+const FOUNDER_EMAILS = ['prateekyadav2010@gmail.com', 'rakshajoshi476@gmail.com', 'musee.initialize@gmail.com'];
 
 // ═══════════════════════════════════════
 // Email template helpers (MySleepyTale branded)
