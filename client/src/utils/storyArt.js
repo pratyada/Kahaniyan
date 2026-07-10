@@ -13,6 +13,8 @@ const STORY_ART = {
   fifa26_ep7_dream_dallas: { gradient: 'linear-gradient(135deg, #003594 0%, #ffd700 40%, #c41e3a 100%)', icon: '🌟', accent: '#ffd700', prompt: 'Child sleeping in bed with dream bubble showing them scoring World Cup goal at AT&T Stadium with roof open, Texas stars above, golden confetti, warm magical bedtime glow' },
   fifa26_ep8_draw: { gradient: 'linear-gradient(135deg, #c41e3a 0%, #002868 40%, #ffd700 100%)', icon: '🤝', accent: '#c41e3a', prompt: 'Canadian maple leaf flag and Bosnian blue triangle flag waving together, two kids shaking hands in Toronto stadium, CN Tower background, draw match, sportsmanship, warm childrens book illustration' },
   fifa26_ep9_vozinha: { gradient: 'linear-gradient(135deg, #003893 0%, #cf2027 40%, #ffd700 100%)', icon: '🧤', accent: '#ffd700', prompt: 'Vozinha in golden goalkeeper kit making an incredible diving save, Cape Verde islands in background, kids looking up at him like a hero, warm golden light, childrens book illustration' },
+  fifa26_ep10_ronaldo: { gradient: 'linear-gradient(135deg, #006847 0%, #ffd700 40%, #c41e3a 100%)', icon: '⚽', accent: '#ffd700', prompt: 'Ronaldo waving to crowd outside hotel Toronto, children cheering, warm evening lights, gratitude and sportsmanship, childrens book illustration' },
+  fifa26_ep11_hiro: { gradient: 'linear-gradient(135deg, #bc002d 0%, #ffffff 40%, #003087 100%)', icon: '🇯🇵', accent: '#bc002d', prompt: 'Japanese boy smiling at World Cup stadium, rainbow crowd from many nations, golden stadium lights, joy and excitement, childrens book illustration' },
 
   multilingual_lion_mouse: {
     gradient: 'linear-gradient(135deg, #b45309 0%, #f59e0b 40%, #fde68a 100%)',

@@ -7242,7 +7242,7 @@ Prophet Muhammad, peace be upon him, said, "Tie your camel, then trust in Allah.
     gradient: 'linear-gradient(135deg, #1a472a 0%, #006837 40%, #ffd700 100%)',
     description: 'The greatest show on Earth comes to YOUR backyard — Toronto, Vancouver, New York, Mexico City! Learn about countries, champions, and the beautiful game through bedtime stories in English, Spanish, French & Hindi. New episodes as matches happen!',
     ageRange: '3-10',
-    totalEpisodes: 11,
+    totalEpisodes: 12,
     episodes: [
       {
         id: 'fifa26_ep1_history', episodeNumber: 1, title: 'How the World Cup Began',
@@ -7574,6 +7574,30 @@ So tonight, little one, remember this: whether you speak one language or ten, wh
 Now close your eyes. Imagine that glowing stadium. Feel that warm, happy feeling. The world is full of people just waiting to smile back at you.
 
 Goodnight, little one. Sleep tight, brave dreamer.`,
+      },
+      {
+        id: 'fifa26_ep12_erling', episodeNumber: 12, title: "Erling's Golden Path: A Story of Hard Work and Kindness",
+        subtitle: 'A boy who loved soccer became a legend through hard work and kindness.',
+        tradition: 'universal', theme: 'inspirational', durationMinutes: 2,
+        multilingual: true, enableTranslation: true,
+        source: 'FIFA World Cup 2026 \u00b7 Episode 12',
+        body: `Once upon a time, in a cozy corner of Toronto, a little one named Maya was tucking into bed when she found a golden soccer ball glowing softly on her pillow.
+
+"This ball belonged to someone special," whispered a gentle voice. "His name was Erling Haaland."
+
+Erling wasn't always famous, little one. He was just a boy who loved soccer with all his heart. His father was a player too, and he taught Erling something wonderful: the greatest players weren't just fast and strong \u2014 they were also kind.
+
+Erling practiced every single day. Rain or shine, he worked harder than anyone else. When he joined Manchester City, something magical happened. He scored goal after goal after goal \u2014 so many that people called him a legend! He won the Golden Ball as one of the world's best players.
+
+But here's the beautiful part, little one: Erling never forgot kindness. He helped teammates find their confidence. He visited children in hospitals with his gentle smile. He showed the world that true glory comes from working hard AND being thoughtful toward others.
+
+In Toronto, children wore his number on their jerseys, dreaming of his dedication. They learned that becoming great means practicing with joy, never giving up, and always treating people with warmth.
+
+Maya held the golden ball and smiled. She understood now \u2014 heroes aren't just made of strength and speed. They're made of determination, kindness, and hearts full of love for what they do.
+
+As the golden ball faded into starlight, Maya's eyes grew wonderfully heavy. The lesson settled into her heart like the softest pillow.
+
+Goodnight, little one. Dream of your own golden path.`,
       },
     ],
   },

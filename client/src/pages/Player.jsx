@@ -805,17 +805,21 @@ function PlayerInner() {
   const recoveredRef = useRef(false);
   const [recoveryDone, setRecoveryDone] = useState(false);
   useEffect(() => {
-    if ((current && current.text) || recoveredRef.current) { setRecoveryDone(true); return; }
+    if (recoveredRef.current) { setRecoveryDone(true); return; }
     recoveredRef.current = true;
 
     const urlStoryId = new URLSearchParams(window.location.search).get('storyId');
 
-    // Try localStorage — only if ID matches URL
+    // If current already matches the URL storyId and has text — we're good
+    if (current?.text && current?.id === urlStoryId) { setRecoveryDone(true); return; }
+    if (current?.text && !urlStoryId) { setRecoveryDone(true); return; }
+
+    // Try localStorage — ONLY if ID matches URL
     try {
       const raw = localStorage.getItem('mst:lastStory');
       if (raw) {
         const saved = JSON.parse(raw);
-        if (saved?.text && (!urlStoryId || saved.id === urlStoryId)) {
+        if (saved?.text && urlStoryId && saved.id === urlStoryId) {
           load(saved);
           setRecoveryDone(true);
           return;
@@ -826,10 +830,12 @@ function PlayerInner() {
     if (!urlStoryId) { setRecoveryDone(true); return; }
 
     // Search hardcoded data + Firestore
+    console.log('[Player Recovery] Starting search for:', urlStoryId, 'current:', current?.id, 'hasText:', !!current?.text);
     (async () => {
       try {
         // 1. Hardcoded series
         const { SERIES } = await import('../data/series.js');
+        console.log('[Player Recovery] Checked', SERIES.length, 'series');
         for (const s of SERIES) {
           const ep = (s.episodes || []).find(e => e.id === urlStoryId);
           if (ep?.body) {
@@ -848,10 +854,14 @@ function PlayerInner() {
           return;
         }
         // 3. Firestore productionStories (auto-published from Content Publisher)
+        console.log('[Player Recovery] Not found in hardcoded data, checking Firestore...');
         const { db: fireDb } = await import('../lib/firebase.js');
+        console.log('[Player Recovery] Firebase db:', !!fireDb);
         if (fireDb) {
           const { doc: fdoc, getDoc: fget } = await import('firebase/firestore');
+          console.log('[Player Recovery] Checking productionStories for:', urlStoryId);
           const prodSnap = await fget(fdoc(fireDb, 'productionStories', urlStoryId));
+          console.log('[Player Recovery] productionStories exists:', prodSnap.exists());
           if (prodSnap.exists()) {
             const pub = prodSnap.data();
             load({ id: pub.id, title: pub.title, text: pub.body, subtitle: pub.subtitle, tradition: pub.tradition, value: pub.value || pub.theme, source: pub.source, audioUrl: pub.audioUrl || null, coverImage: pub.coverImage, gallery: pub.gallery || (pub.images || []).slice(1), estimatedMinutes: pub.durationMinutes, seriesId: pub.seriesId || null, multilingual: pub.multilingual || false, enableTranslation: pub.enableTranslation || false, isWisdom: true });
@@ -867,7 +877,10 @@ function PlayerInner() {
             return;
           }
         }
-      } catch {}
+      } catch (err) {
+        console.error('[Player Recovery] ERROR:', err.message);
+      }
+      console.log('[Player Recovery] DONE — nothing found for:', urlStoryId);
       setRecoveryDone(true); // done searching, nothing found
     })();
   // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -979,20 +992,27 @@ function PlayerInner() {
 
   // === All hooks are above this line. Conditional returns below. ===
 
-  // Still searching for the story — show loading (never show error until recovery is done)
-  if (!current && !recoveryDone) {
+  const urlStoryId = new URLSearchParams(window.location.search).get('storyId');
+  const storyMatchesUrl = !urlStoryId || current?.id === urlStoryId;
+
+  // Story loaded and matches URL — proceed to render
+  if (current?.text && storyMatchesUrl) {
+    // All good — fall through to main render
+  }
+  // Still loading — show spinner (never show error while recovery is in progress)
+  else if (!recoveryDone) {
     return (<div className="flex h-screen flex-col items-center justify-center bg-bg-base px-6 text-center"><div className="text-3xl mb-3 animate-pulse">🌙</div><p className="text-sm text-ink-muted">Loading story...</p></div>);
   }
-
-  // Recovery done but no story found
-  if (!current && recoveryDone) {
-    const urlStoryId = new URLSearchParams(window.location.search).get('storyId');
-    if (!urlStoryId) { navigate('/'); return null; }
+  // Recovery done, have URL but wrong/no story loaded — show error
+  else if (urlStoryId && (!current || !current.text || current.id !== urlStoryId)) {
     return (<div className="flex h-screen flex-col items-center justify-center bg-bg-base px-6 text-center"><div className="text-4xl mb-4">😔</div><h1 className="font-display text-xl font-bold text-gold">Story not found</h1><p className="mt-2 text-sm text-ink-muted">This story may have been removed or the link is incorrect.</p><button onClick={() => { clear(); navigate('/'); }} className="btn-primary mt-6">{t('player.backToHome')}</button></div>);
   }
-
-  // Story loaded but no text (shouldn't happen normally)
-  if (current && !current.text && !current.audioUrl) {
+  // No URL, no story — go home
+  else if (!current) {
+    navigate('/'); return null;
+  }
+  // Current has no text
+  else if (!current.text && !current.audioUrl) {
     return (<div className="flex h-screen flex-col items-center justify-center bg-bg-base px-6 text-center"><div className="text-4xl mb-4">😔</div><h1 className="font-display text-xl font-bold text-gold">{current.title || 'Story'}</h1><p className="mt-2 text-sm text-ink-muted">This story doesn't have any content to play.</p><button onClick={() => { clear(); navigate('/'); }} className="btn-primary mt-6">{t('player.backToHome')}</button></div>);
   }
 
