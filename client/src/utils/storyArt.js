@@ -15,6 +15,7 @@ const STORY_ART = {
   fifa26_ep9_vozinha: { gradient: 'linear-gradient(135deg, #003893 0%, #cf2027 40%, #ffd700 100%)', icon: '🧤', accent: '#ffd700', prompt: 'Vozinha in golden goalkeeper kit making an incredible diving save, Cape Verde islands in background, kids looking up at him like a hero, warm golden light, childrens book illustration' },
   fifa26_ep10_ronaldo: { gradient: 'linear-gradient(135deg, #006847 0%, #ffd700 40%, #c41e3a 100%)', icon: '⚽', accent: '#ffd700', prompt: 'Ronaldo waving to crowd outside hotel Toronto, children cheering, warm evening lights, gratitude and sportsmanship, childrens book illustration' },
   fifa26_ep11_hiro: { gradient: 'linear-gradient(135deg, #bc002d 0%, #ffffff 40%, #003087 100%)', icon: '🇯🇵', accent: '#bc002d', prompt: 'Japanese boy smiling at World Cup stadium, rainbow crowd from many nations, golden stadium lights, joy and excitement, childrens book illustration' },
+  fifa26_ep12_erling: { gradient: 'linear-gradient(135deg, #ba0c2f 0%, #00205b 40%, #ffd700 100%)', icon: '🇳🇴', accent: '#ffd700', prompt: 'Erling Haaland tall golden-haired footballer celebrating with arms wide, golden soccer ball glowing, Norwegian flag colors, children cheering, warm stadium lights, kindness and strength, childrens book illustration' },
 
   multilingual_lion_mouse: {
     gradient: 'linear-gradient(135deg, #b45309 0%, #f59e0b 40%, #fde68a 100%)',
