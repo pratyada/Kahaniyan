@@ -3,7 +3,7 @@
 
 import { getFirestore } from './_firebase.js';
 
-const FOUNDER_EMAIL = 'prateekyadav2010@gmail.com';
+const FOUNDER_EMAILS = ['prateekyadav2010@gmail.com', 'rakshajoshi476@gmail.com'];
 const BUCKET = 'mysleepytale-app';
 const SITE = 'https://mysleepytale.com';
 
@@ -216,7 +216,7 @@ export default async function handler(req, res) {
   // Auth check
   const userSnap = await db.collection('users').doc(uid).get();
   const email = userSnap.exists ? userSnap.data().email : '';
-  if (email.toLowerCase() !== FOUNDER_EMAIL) {
+  if (!FOUNDER_EMAILS.includes(email.toLowerCase())) {
     return res.status(403).json({ error: 'Founder access only' });
   }
 

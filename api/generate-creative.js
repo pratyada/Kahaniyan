@@ -4,7 +4,7 @@
 
 import { getFirestore } from './_firebase.js';
 
-const FOUNDER_EMAIL = 'prateekyadav2010@gmail.com';
+const FOUNDER_EMAILS = ['prateekyadav2010@gmail.com', 'rakshajoshi476@gmail.com'];
 const SOUL_ID = 'f5c1aac0-c994-48dd-90dc-a8eb9ea9419a';
 
 const PLATFORM_CONFIG = {
@@ -85,7 +85,7 @@ export default async function handler(req, res) {
   if (!db) return res.status(500).json({ error: 'Database unavailable' });
   const userSnap = await db.collection('users').doc(uid).get();
   const email = userSnap.exists ? userSnap.data().email : '';
-  if (email.toLowerCase() !== FOUNDER_EMAIL) return res.status(403).json({ error: 'Founder access only' });
+  if (!FOUNDER_EMAILS.includes(email.toLowerCase())) return res.status(403).json({ error: 'Founder access only' });
 
   const config = PLATFORM_CONFIG[platform] || PLATFORM_CONFIG.instagram;
 
