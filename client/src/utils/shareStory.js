@@ -160,66 +160,41 @@ export async function loadSharedStory(storyId) {
     }
   } catch {}
 
-  // Check Firestore productionStories (published via ContentPublisher)
+  // Check Firestore productionStories + publishedContent (published via ContentPublisher)
   if (db) {
-    try {
-      const prodRef = doc(db, 'productionStories', storyId);
-      const prodSnap = await getDoc(prodRef);
-      if (prodSnap.exists()) {
-        const pub = prodSnap.data();
-        return {
-          id: pub.id || storyId,
-          title: pub.title,
-          text: pub.body,
-          wordCount: (pub.body || '').split(/\s+/).length,
-          estimatedMinutes: pub.durationMinutes || 2,
-          value: pub.theme || 'kindness',
-          language: 'English',
-          voice: 'AI Narrator',
-          tradition: pub.tradition || 'universal',
-          source: pub.source || '',
-          createdAt: pub.publishedAt || new Date().toISOString(),
-          isWisdom: true,
-          seriesId: pub.seriesId || null,
-          episodeId: pub.id || storyId,
-          audioUrl: pub.audioUrl || null,
-          coverImage: pub.coverImage || null,
-          gallery: pub.gallery || pub.images || [],
-          multilingual: pub.multilingual || false,
-          enableTranslation: pub.enableTranslation || false,
-        };
+    for (const collection of ['productionStories', 'publishedContent']) {
+      for (const tryId of [storyId, lessonId]) {
+        try {
+          const snap = await getDoc(doc(db, collection, tryId));
+          if (snap.exists()) {
+            const pub = snap.data();
+            if (pub.body) {
+              return {
+                id: pub.id || tryId,
+                title: pub.title,
+                text: pub.body,
+                wordCount: (pub.body || '').split(/\s+/).length,
+                estimatedMinutes: pub.durationMinutes || 2,
+                value: pub.theme || 'kindness',
+                language: 'English',
+                voice: 'AI Narrator',
+                tradition: pub.tradition || 'universal',
+                source: pub.source || '',
+                createdAt: pub.publishedAt || pub.createdAt || new Date().toISOString(),
+                isWisdom: true,
+                seriesId: pub.seriesId || null,
+                episodeId: pub.id || tryId,
+                audioUrl: pub.audioUrl || null,
+                coverImage: pub.coverImage || null,
+                gallery: pub.gallery || pub.images || [],
+                multilingual: pub.multilingual || false,
+                enableTranslation: pub.enableTranslation || false,
+              };
+            }
+          }
+        } catch {}
       }
-    } catch {}
-  }
-
-  // Check Firestore publishedContent (fallback)
-  if (db) {
-    try {
-      const pubRef = doc(db, 'publishedContent', storyId);
-      const pubSnap = await getDoc(pubRef);
-      if (pubSnap.exists()) {
-        const pub = pubSnap.data();
-        return {
-          id: pub.id || storyId,
-          title: pub.title,
-          text: pub.body,
-          wordCount: (pub.body || '').split(/\s+/).length,
-          estimatedMinutes: pub.durationMinutes || 2,
-          value: pub.theme || 'kindness',
-          language: 'English',
-          voice: 'AI Narrator',
-          tradition: pub.tradition || 'universal',
-          source: pub.source || '',
-          createdAt: pub.createdAt || new Date().toISOString(),
-          isWisdom: true,
-          seriesId: pub.seriesId || null,
-          episodeId: pub.id || storyId,
-          audioUrl: pub.audioUrl || null,
-          coverImage: pub.coverImage || null,
-          gallery: pub.images || [],
-        };
-      }
-    } catch {}
+    }
   }
 
   // Last resort: check Firestore shared stories (user-generated stories)
