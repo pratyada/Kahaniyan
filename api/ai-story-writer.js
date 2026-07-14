@@ -9,7 +9,7 @@ const FOUNDER_EMAIL = 'prateekyadav2010@gmail.com';
 export default async function handler(req, res) {
   if (req.method !== 'POST') return res.status(405).json({ error: 'POST only' });
 
-  const { uid, topic, tradition, theme, targetAge, seriesContext, duration } = req.body || {};
+  const { uid, topic, tradition, theme, targetAge, seriesContext, duration, character } = req.body || {};
   if (!uid || !topic) return res.status(400).json({ error: 'uid and topic required' });
 
   const key = process.env.ANTHROPIC_API_KEY;
@@ -45,6 +45,7 @@ Rules:
 - End with "Goodnight, little one." or similar gentle closing
 ${tradition && tradition !== 'universal' ? `- Respectfully incorporate ${tradition} cultural elements` : ''}
 ${seriesContext ? `- This is part of a series: ${seriesContext}. Match the tone and style.` : ''}
+${character?.name ? `- RECURRING CHARACTER: "${character.name}" — ${character.description || ''}. ${character.catchphrase ? `Catchphrase: "${character.catchphrase}". ` : ''}${character.visualTraits ? `Visual: ${character.visualTraits}. ` : ''}This character MUST appear prominently in the story.` : ''}
 ${storyLabContext}
 
 Return ONLY valid JSON:

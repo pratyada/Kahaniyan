@@ -70,10 +70,12 @@ export default function ContentPublisher({ user }) {
     metaDescription: '', imagePrompt: '',
     blog: { enabled: false, slug: '', category: 'guide', tag: 'Story', readingTime: 5 },
     aiTopic: '',
+    character: { name: '', description: '', catchphrase: '', visualTraits: '' },
   });
 
   const set = (key, val) => setForm(f => ({ ...f, [key]: val }));
   const setBlog = (key, val) => setForm(f => ({ ...f, blog: { ...f.blog, [key]: val } }));
+  const setChar = (key, val) => setForm(f => ({ ...f, character: { ...f.character, [key]: val } }));
 
   // Load published content history
   useEffect(() => {
@@ -99,6 +101,7 @@ export default function ContentPublisher({ user }) {
           uid: user.uid, topic: form.aiTopic, tradition: form.tradition,
           theme: form.theme, targetAge: '4-7', duration: form.durationMinutes,
           seriesContext: form.source || null,
+          character: (form.character.name ? form.character : null),
         }),
       });
       const data = await res.json();
@@ -341,7 +344,6 @@ export default function ContentPublisher({ user }) {
                 <select value={form.seriesId} onChange={e => {
                     const sid = e.target.value;
                     set('seriesId', sid);
-                    // Auto-calculate next episode number
                     const series = SERIES.find(s => s.id === sid);
                     if (series) {
                       const nextEp = (series.episodes?.length || 0) + 1;
@@ -366,18 +368,55 @@ export default function ContentPublisher({ user }) {
             </div>
           )}
 
-          <div>
-            <label className="block text-[10px] font-bold uppercase tracking-wider text-ink-dim mb-1">Title</label>
-            <input value={form.title} onChange={e => set('title', e.target.value)} placeholder="Episode title"
-              className="w-full rounded-xl bg-bg-base px-3 py-2.5 text-sm text-ink ring-1 ring-white/10 focus:ring-gold/50 outline-none font-bold" />
+          {/* Character Profile (collapsible) */}
+          <details className="rounded-2xl bg-bg-surface ring-1 ring-white/5 overflow-hidden">
+            <summary className="px-4 py-3 cursor-pointer text-xs font-bold text-ink flex items-center gap-2">
+              <span className="text-lg">🦕</span> Character Profile
+              {form.character.name && <span className="text-[9px] text-gold bg-gold/10 rounded-full px-2 py-0.5">{form.character.name}</span>}
+            </summary>
+            <div className="px-4 pb-4 space-y-2">
+              <p className="text-[10px] text-ink-dim">Define a recurring character — AI will include them in every episode.</p>
+              <div className="grid grid-cols-2 gap-2">
+                <div>
+                  <label className="block text-[9px] font-bold uppercase tracking-wider text-ink-dim mb-0.5">Character Name</label>
+                  <input value={form.character.name} onChange={e => setChar('name', e.target.value)} placeholder="e.g. Dyno"
+                    className="w-full rounded-lg bg-bg-base px-3 py-2 text-xs text-ink ring-1 ring-white/10 focus:ring-gold/50 outline-none" />
+                </div>
+                <div>
+                  <label className="block text-[9px] font-bold uppercase tracking-wider text-ink-dim mb-0.5">Catchphrase</label>
+                  <input value={form.character.catchphrase} onChange={e => setChar('catchphrase', e.target.value)} placeholder="e.g. Let's stomp into adventure!"
+                    className="w-full rounded-lg bg-bg-base px-3 py-2 text-xs text-ink ring-1 ring-white/10 focus:ring-gold/50 outline-none" />
+                </div>
+              </div>
+              <div>
+                <label className="block text-[9px] font-bold uppercase tracking-wider text-ink-dim mb-0.5">Who is this character?</label>
+                <input value={form.character.description} onChange={e => setChar('description', e.target.value)}
+                  placeholder="e.g. A friendly little green dinosaur who lives in modern-day Toronto and loves helping kids"
+                  className="w-full rounded-lg bg-bg-base px-3 py-2 text-xs text-ink ring-1 ring-white/10 focus:ring-gold/50 outline-none" />
+              </div>
+              <div>
+                <label className="block text-[9px] font-bold uppercase tracking-wider text-ink-dim mb-0.5">Visual traits (for images)</label>
+                <input value={form.character.visualTraits} onChange={e => setChar('visualTraits', e.target.value)}
+                  placeholder="e.g. Small green dinosaur with orange spots, big friendly eyes, wears a tiny red backpack"
+                  className="w-full rounded-lg bg-bg-base px-3 py-2 text-xs text-ink ring-1 ring-white/10 focus:ring-gold/50 outline-none" />
+              </div>
+            </div>
+          </details>
+
+          {/* AI Write — PRIMARY action (topic first, then generate) */}
+          <div className="rounded-2xl bg-gold/5 ring-1 ring-gold/20 p-4 space-y-3">
+            <h3 className="text-xs font-bold text-gold flex items-center gap-2">✨ Describe Your Episode</h3>
+            <textarea value={form.aiTopic} onChange={e => set('aiTopic', e.target.value)}
+              placeholder="Describe what this episode is about... e.g. 'Dyno helps a shy girl named Anya on her first day at school. She's nervous about making friends but Dyno shows her that being different is her superpower.'"
+              className="w-full rounded-xl bg-bg-base px-4 py-3 text-xs text-ink ring-1 ring-white/10 focus:ring-gold/50 outline-none resize-y min-h-[80px]"
+              rows={3} />
+            <button onClick={handleAiWrite} disabled={!form.aiTopic.trim() || aiWriting}
+              className="w-full rounded-full bg-gold px-4 py-2.5 text-xs font-bold text-bg-base shadow-glow disabled:opacity-40">
+              {aiWriting ? '⏳ AI is writing your story...' : '✨ Generate Story'}
+            </button>
           </div>
 
-          <div>
-            <label className="block text-[10px] font-bold uppercase tracking-wider text-ink-dim mb-1">Subtitle</label>
-            <input value={form.subtitle} onChange={e => set('subtitle', e.target.value)} placeholder="One-line description"
-              className="w-full rounded-xl bg-bg-base px-3 py-2.5 text-xs text-ink ring-1 ring-white/10 focus:ring-gold/50 outline-none" />
-          </div>
-
+          {/* Metadata row */}
           <div className="flex gap-3">
             <div className="flex-1">
               <label className="block text-[10px] font-bold uppercase tracking-wider text-ink-dim mb-1">Tradition</label>
@@ -400,31 +439,34 @@ export default function ContentPublisher({ user }) {
             </div>
           </div>
 
+          {/* Title + Subtitle (auto-filled by AI, editable) */}
+          <div>
+            <label className="block text-[10px] font-bold uppercase tracking-wider text-ink-dim mb-1">Title</label>
+            <input value={form.title} onChange={e => set('title', e.target.value)} placeholder="Auto-generated by AI or type manually"
+              className="w-full rounded-xl bg-bg-base px-3 py-2.5 text-sm text-ink ring-1 ring-white/10 focus:ring-gold/50 outline-none font-bold" />
+          </div>
+
+          <div>
+            <label className="block text-[10px] font-bold uppercase tracking-wider text-ink-dim mb-1">Subtitle</label>
+            <input value={form.subtitle} onChange={e => set('subtitle', e.target.value)} placeholder="Auto-generated by AI or type manually"
+              className="w-full rounded-xl bg-bg-base px-3 py-2.5 text-xs text-ink ring-1 ring-white/10 focus:ring-gold/50 outline-none" />
+          </div>
+
           <div>
             <label className="block text-[10px] font-bold uppercase tracking-wider text-ink-dim mb-1">Source / Attribution</label>
             <input value={form.source} onChange={e => set('source', e.target.value)} placeholder="Rainbow Kindergarten · Episode 7"
               className="w-full rounded-xl bg-bg-base px-3 py-2.5 text-xs text-ink ring-1 ring-white/10 focus:ring-gold/50 outline-none" />
           </div>
 
-          {/* Story body */}
+          {/* Story body (AI-generated, editable) */}
           <div>
             <div className="flex items-center justify-between mb-1">
               <label className="text-[10px] font-bold uppercase tracking-wider text-ink-dim">Story Text</label>
               <span className="text-[10px] text-ink-dim">{wordCount} words · ~{estMinutes} min</span>
             </div>
             <textarea value={form.body} onChange={e => set('body', e.target.value)}
-              placeholder="Once upon a time... (use {childName} for personalization)"
+              placeholder="Click 'Generate Story' above — AI will write the story here. You can also type or edit manually."
               className="w-full rounded-xl bg-bg-base px-4 py-3 text-xs text-ink ring-1 ring-white/10 focus:ring-gold/50 outline-none resize-y min-h-[200px] max-h-[500px] font-mono leading-relaxed whitespace-pre-wrap" />
-          </div>
-
-          {/* AI Write inline */}
-          <div className="flex gap-2">
-            <input value={form.aiTopic} onChange={e => set('aiTopic', e.target.value)} placeholder="Describe topic for AI to write..."
-              className="flex-1 rounded-xl bg-bg-base px-3 py-2 text-xs text-ink ring-1 ring-white/10 outline-none" />
-            <button onClick={handleAiWrite} disabled={!form.aiTopic.trim() || aiWriting}
-              className="shrink-0 rounded-full bg-gold/10 px-4 py-2 text-[10px] font-bold text-gold disabled:opacity-40">
-              {aiWriting ? '⏳' : '✨ AI Write'}
-            </button>
           </div>
 
           {/* Images (multi-upload, first = cover) */}
