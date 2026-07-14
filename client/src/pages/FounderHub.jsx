@@ -856,7 +856,75 @@ function FounderCommand({ user }) {
                   <div className="text-[11px] font-bold text-ink">{h.data.episodeData.title}</div>
                   <div className="text-[10px] text-ink-dim">{h.data.episodeData.subtitle}</div>
                   <div className="text-[10px] text-ink-dim">Theme: {h.data.episodeData.theme} · Series: {h.data.episodeData.seriesId || 'none'}</div>
+                  {h.data.episodeData.coverImage && <img src={h.data.episodeData.coverImage} alt="" className="w-20 h-14 rounded-lg object-cover mt-1" />}
                   {h.data.episodeData.body && <div className="text-[10px] text-ink-muted mt-1">{h.data.episodeData.body}</div>}
+                </div>
+              )}
+
+              {/* Show stats */}
+              {h.data?.stats && (
+                <div className="mt-2 grid grid-cols-2 gap-2">
+                  {Object.entries(h.data.stats).map(([k, v]) => (
+                    <div key={k} className="rounded-lg bg-black/10 px-3 py-2 text-center">
+                      <div className="text-sm font-bold text-gold">{v}</div>
+                      <div className="text-[9px] text-ink-dim">{k.replace(/([A-Z])/g, ' $1').trim()}</div>
+                    </div>
+                  ))}
+                </div>
+              )}
+
+              {/* Show newsletters */}
+              {h.data?.newsletters && (
+                <div className="mt-2 space-y-1">
+                  {h.data.newsletters.map(nl => (
+                    <div key={nl.id} className="flex items-center gap-2 rounded-lg bg-black/10 px-2 py-1">
+                      <span className="text-[10px] text-ink-muted flex-1 truncate">{nl.name}</span>
+                      <span className="text-[9px] text-ink-dim">{nl.status}</span>
+                      <span className="text-[9px] text-ink-dim">{nl.sentCount} sent</span>
+                    </div>
+                  ))}
+                </div>
+              )}
+
+              {/* Show users */}
+              {h.data?.users && (
+                <div className="mt-2 space-y-1">
+                  {h.data.users.map((u, j) => (
+                    <div key={j} className="flex items-center gap-2 rounded-lg bg-black/10 px-2 py-1">
+                      <span className="text-[10px] text-ink-muted flex-1 truncate">{u.name || u.email}</span>
+                      <span className="text-[9px] text-ink-dim">{u.lastActive ? new Date(u.lastActive).toLocaleDateString('en-US', { month: 'short', day: 'numeric' }) : ''}</span>
+                    </div>
+                  ))}
+                </div>
+              )}
+
+              {/* Show outreach leads */}
+              {h.data?.leads && (
+                <div className="mt-2 space-y-1">
+                  {h.data.leads.map((l, j) => (
+                    <div key={j} className="flex items-center gap-2 rounded-lg bg-black/10 px-2 py-1">
+                      <span className="text-[10px] text-ink-muted flex-1 truncate">{l.business || l.email}</span>
+                      <span className="text-[9px] text-ink-dim">{l.city}</span>
+                      <span className="text-[9px] text-ink-dim">Stage {l.stage}/4</span>
+                    </div>
+                  ))}
+                </div>
+              )}
+
+              {/* Show generated story preview */}
+              {h.data?.story && (
+                <div className="mt-2 rounded-lg bg-black/10 px-3 py-2">
+                  <div className="text-[11px] font-bold text-ink">{h.data.story.title}</div>
+                  <div className="text-[10px] text-ink-dim">{h.data.story.subtitle}</div>
+                  <div className="text-[10px] text-ink-muted mt-1">{h.data.story.preview}</div>
+                </div>
+              )}
+
+              {/* Show newsletter preview */}
+              {h.data?.newsletter && (
+                <div className="mt-2 rounded-lg bg-black/10 px-3 py-2">
+                  <div className="text-[11px] font-bold text-ink">{h.data.newsletter.subject}</div>
+                  <div className="text-[10px] text-ink-muted mt-1">{h.data.newsletter.preview}</div>
                 </div>
               )}
             </div>
@@ -870,20 +938,27 @@ function FounderCommand({ user }) {
       )}
 
       {/* Confirmation buttons for actions that need it */}
-      {result && (result.action === 'edit' || result.action === 'delete') && result.episodeId && (
+      {result && result.confirm && (
         <div className="mt-3 rounded-xl bg-gold/5 ring-1 ring-gold/20 p-3">
           <p className="text-xs text-ink mb-2">{result.message}</p>
           {result.updates && (
             <div className="text-[10px] text-ink-dim mb-2 space-y-0.5">
               {Object.entries(result.updates).map(([k, v]) => (
-                <div key={k}><span className="text-gold">{k}:</span> {String(v).slice(0, 100)}{String(v).length > 100 ? '...' : ''}</div>
+                <div key={k}><span className="text-gold">{k}:</span> {String(v).slice(0, 200)}{String(v).length > 200 ? '...' : ''}</div>
+              ))}
+            </div>
+          )}
+          {result.params && !result.updates && (
+            <div className="text-[10px] text-ink-dim mb-2 space-y-0.5">
+              {Object.entries(result.params).filter(([k,v]) => v).map(([k, v]) => (
+                <div key={k}><span className="text-gold">{k}:</span> {String(v).slice(0, 100)}</div>
               ))}
             </div>
           )}
           <div className="flex gap-2">
             <button onClick={() => executeAction(result)} disabled={thinking}
               className="rounded-lg bg-gold/20 px-4 py-1.5 text-[10px] font-bold text-gold hover:bg-gold/30 transition disabled:opacity-50">
-              {result.action === 'delete' ? '🗑️ Confirm Delete' : '✅ Confirm Edit'}
+              {result.action === 'delete' ? '🗑️ Confirm Delete' : result.action.includes('send') ? '📤 Confirm Send' : '✅ Confirm'}
             </button>
             <button onClick={() => setResult(null)}
               className="rounded-lg bg-white/5 px-4 py-1.5 text-[10px] text-ink-dim hover:bg-white/10 transition">
@@ -896,7 +971,7 @@ function FounderCommand({ user }) {
       {/* Quick actions */}
       {history.length === 0 && (
         <div className="mt-3 flex gap-2 flex-wrap">
-          {['List all published episodes', 'Show Spike episode details', 'Edit episode title'].map(q => (
+          {['List published episodes', 'Show platform stats', 'List newsletters', 'Show recent users', 'List outreach leads', 'Write a new story'].map(q => (
             <button key={q} onClick={() => { setCommand(q); }}
               className="rounded-full bg-white/5 px-3 py-1 text-[10px] text-ink-dim hover:bg-white/10 transition">
               {q}
