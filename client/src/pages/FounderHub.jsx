@@ -756,6 +756,158 @@ function EmailNewsletter({ user }) {
   );
 }
 
+// ─── Founder AI Command Bar ──────────────────────────────────────
+function FounderCommand({ user }) {
+  const [command, setCommand] = useState('');
+  const [thinking, setThinking] = useState(false);
+  const [result, setResult] = useState(null);
+  const [history, setHistory] = useState([]);
+  const API = import.meta.env.VITE_API_URL || '';
+
+  const handleCommand = async () => {
+    if (!command.trim() || thinking) return;
+    const cmd = command.trim();
+    setCommand('');
+    setThinking(true);
+    setResult(null);
+    setHistory(prev => [...prev, { role: 'user', text: cmd }]);
+
+    try {
+      const res = await fetch(`${API}/api/founder-command`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ uid: user.uid, command: cmd }),
+      });
+      const data = await res.json();
+      if (data.error) throw new Error(data.error);
+      setResult(data);
+      setHistory(prev => [...prev, { role: 'ai', text: data.message, data }]);
+    } catch (e) {
+      setHistory(prev => [...prev, { role: 'ai', text: `Error: ${e.message}`, error: true }]);
+    }
+    setThinking(false);
+  };
+
+  const executeAction = async (action) => {
+    setThinking(true);
+    try {
+      const res = await fetch(`${API}/api/founder-command`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ uid: user.uid, executeAction: action }),
+      });
+      const data = await res.json();
+      if (data.error) throw new Error(data.error);
+      setHistory(prev => [...prev, { role: 'ai', text: `✅ ${data.message}` }]);
+      setResult(null);
+    } catch (e) {
+      setHistory(prev => [...prev, { role: 'ai', text: `Error: ${e.message}`, error: true }]);
+    }
+    setThinking(false);
+  };
+
+  return (
+    <div className="rounded-2xl bg-bg-surface ring-1 ring-gold/20 p-4 mb-6">
+      {/* Input */}
+      <div className="flex items-center gap-2">
+        <span className="text-xl">🤖</span>
+        <input
+          value={command}
+          onChange={e => setCommand(e.target.value)}
+          onKeyDown={e => e.key === 'Enter' && handleCommand()}
+          placeholder="What do you want to do? e.g. 'edit Spike episode title', 'list all published episodes', 'delete the test episode'..."
+          className="flex-1 rounded-xl bg-bg-base px-4 py-3 text-sm text-ink placeholder-ink-dim ring-1 ring-white/10 focus:ring-gold outline-none"
+        />
+        <button onClick={handleCommand} disabled={thinking || !command.trim()}
+          className="rounded-xl bg-gold px-4 py-3 text-sm font-bold text-bg-base disabled:opacity-40">
+          {thinking ? '⏳' : '→'}
+        </button>
+      </div>
+
+      {/* Chat history */}
+      {history.length > 0 && (
+        <div className="mt-3 space-y-2 max-h-[400px] overflow-y-auto">
+          {history.map((h, i) => (
+            <div key={i} className={`rounded-xl px-3 py-2 text-xs ${
+              h.role === 'user'
+                ? 'bg-gold/10 text-gold ml-12'
+                : h.error
+                  ? 'bg-red-500/10 text-red-400 mr-12'
+                  : 'bg-white/5 text-ink mr-12'
+            }`}>
+              {h.role === 'user' ? '→ ' : '🤖 '}{h.text}
+
+              {/* Show episode list */}
+              {h.data?.episodes && (
+                <div className="mt-2 space-y-1">
+                  {h.data.episodes.map(ep => (
+                    <div key={ep.id} className="flex items-center gap-2 rounded-lg bg-black/10 px-2 py-1">
+                      <span className="text-[10px] text-ink-muted flex-1 truncate">{ep.title}</span>
+                      <span className="text-[9px] text-ink-dim">{ep.series || 'standalone'}</span>
+                      <span className="text-[9px] text-ink-dim">{ep.publishedAt ? new Date(ep.publishedAt).toLocaleDateString('en-US', { month: 'short', day: 'numeric' }) : ''}</span>
+                    </div>
+                  ))}
+                </div>
+              )}
+
+              {/* Show episode info */}
+              {h.data?.episodeData && (
+                <div className="mt-2 rounded-lg bg-black/10 px-3 py-2 space-y-1">
+                  <div className="text-[11px] font-bold text-ink">{h.data.episodeData.title}</div>
+                  <div className="text-[10px] text-ink-dim">{h.data.episodeData.subtitle}</div>
+                  <div className="text-[10px] text-ink-dim">Theme: {h.data.episodeData.theme} · Series: {h.data.episodeData.seriesId || 'none'}</div>
+                  {h.data.episodeData.body && <div className="text-[10px] text-ink-muted mt-1">{h.data.episodeData.body}</div>}
+                </div>
+              )}
+            </div>
+          ))}
+          {thinking && (
+            <div className="rounded-xl bg-white/5 px-3 py-2 text-xs text-ink-dim mr-12 animate-pulse">
+              🤖 Thinking...
+            </div>
+          )}
+        </div>
+      )}
+
+      {/* Confirmation buttons for actions that need it */}
+      {result && (result.action === 'edit' || result.action === 'delete') && result.episodeId && (
+        <div className="mt-3 rounded-xl bg-gold/5 ring-1 ring-gold/20 p-3">
+          <p className="text-xs text-ink mb-2">{result.message}</p>
+          {result.updates && (
+            <div className="text-[10px] text-ink-dim mb-2 space-y-0.5">
+              {Object.entries(result.updates).map(([k, v]) => (
+                <div key={k}><span className="text-gold">{k}:</span> {String(v).slice(0, 100)}{String(v).length > 100 ? '...' : ''}</div>
+              ))}
+            </div>
+          )}
+          <div className="flex gap-2">
+            <button onClick={() => executeAction(result)} disabled={thinking}
+              className="rounded-lg bg-gold/20 px-4 py-1.5 text-[10px] font-bold text-gold hover:bg-gold/30 transition disabled:opacity-50">
+              {result.action === 'delete' ? '🗑️ Confirm Delete' : '✅ Confirm Edit'}
+            </button>
+            <button onClick={() => setResult(null)}
+              className="rounded-lg bg-white/5 px-4 py-1.5 text-[10px] text-ink-dim hover:bg-white/10 transition">
+              Cancel
+            </button>
+          </div>
+        </div>
+      )}
+
+      {/* Quick actions */}
+      {history.length === 0 && (
+        <div className="mt-3 flex gap-2 flex-wrap">
+          {['List all published episodes', 'Show Spike episode details', 'Edit episode title'].map(q => (
+            <button key={q} onClick={() => { setCommand(q); }}
+              className="rounded-full bg-white/5 px-3 py-1 text-[10px] text-ink-dim hover:bg-white/10 transition">
+              {q}
+            </button>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+}
+
 // ─── Main Component ───────────────────────────────────────────────
 export default function FounderHub() {
   const navigate = useNavigate();
@@ -874,6 +1026,9 @@ export default function FounderHub() {
           Your command center. Monitor agents, approve actions, track performance.
         </p>
       </header>
+
+      {/* AI Command Bar */}
+      <FounderCommand user={user} />
 
       {/* Pipeline Cards */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-3 mb-8">
