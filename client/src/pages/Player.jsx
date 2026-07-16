@@ -330,7 +330,7 @@ function PlayerInner() {
               multilingual: nextEp.multilingual || false,
               enableTranslation: nextEp.enableTranslation || false,
             });
-            navigate(`/player?storyId=${nextEp.id}`);
+            window.history.replaceState(null, '', `/player?storyId=${nextEp.id}`);
             return;
           }
         }
