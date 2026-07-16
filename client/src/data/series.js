@@ -1066,13 +1066,23 @@ Dr. Sleepy leaned forward gently. "You tell them the truth, in a way their heart
 
 "Then you hold them. Fear is natural. But children take their cues from us. If you are calm, they will be calm. And remind them \u2014 the sky has turned orange before, and it always, always turns blue again."
 
-"{childName}, here is what Dr. Sleepy wants you to remember, little one:
+"{childName}, here is what Dr. Sleepy wants you to remember, little one. Five special rules for smoky days:
 
-When the sky looks funny and the air smells smoky, stay inside and play. Drink lots of water. If you go outside, keep it short \u2014 no big running on smoky days. And if you feel your chest getting tight or your throat getting scratchy, tell a grown-up right away.
+Number one \u2014 Stay Inside and Play. When the sky looks hazy or orange, keep your playing indoors. Build a fort, draw a picture, read a story. Outside can wait for a blue-sky day.
 
-You are so smart for noticing the orange sky. That means you are paying attention to the world around you. And that is a wonderful thing.
+Number two \u2014 Drink Lots of Water. Smoke makes the air dry and can make your throat feel scratchy. Water is your superpower. Keep sipping all day long, like a little camel getting ready for an adventure.
 
-The fires will pass. The smoke will clear. And the sky will be the most beautiful blue you have ever seen.
+Number three \u2014 Close the Windows and Doors. Even if it feels warm, keep everything shut tight on smoky days. If your family has an air purifier, that is your indoor superhero \u2014 it cleans the air so your lungs stay happy.
+
+Number four \u2014 No Big Running Outside. On smoky days, save your energy for inside games. When you run fast, you breathe in more air, and more air means more smoke in your little lungs. Walk slowly if you do go out, and come back inside quickly.
+
+Number five \u2014 Tell a Grown-Up If You Feel Funny. If your chest feels tight, your eyes sting, your throat gets scratchy, or you start coughing \u2014 tell your mom, dad, or teacher right away. Your body is very smart. It knows when something is not right. Listen to it.
+
+Can you count those on your fingers? One \u2014 stay inside. Two \u2014 drink water. Three \u2014 close windows. Four \u2014 no big running outside. Five \u2014 tell a grown-up if you feel funny.
+
+You are so smart for learning these, {childName}. You are like a little safety expert now.
+
+The fires will pass. The smoke will clear. And the sky will be the most beautiful blue you have ever seen. It always comes back.
 
 Goodnight, little one. Breathe easy. You are safe."`,
       },
