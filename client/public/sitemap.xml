@@ -363,10 +363,15 @@
   </url>
 
   <!-- ══════ Blog (40 posts) ══════ -->
+
+  <!-- Blog posts (auto-generated) -->
   <url>
     <loc>https://mysleepytale.com/blog/</loc>
-    <lastmod>2026-07-10</lastmod>
-    <priority>0.7</priority>
+    <lastmod>2026-07-16</lastmod>
+  </url>
+  <url>
+    <loc>https://mysleepytale.com/blog/wildfire-safety-story-for-kids</loc>
+    <lastmod>2026-07-16</lastmod>
   </url>
   <url>
     <loc>https://mysleepytale.com/blog/vozinha-cape-verde-world-cup-hero</loc>
@@ -374,7 +379,7 @@
   </url>
   <url>
     <loc>https://mysleepytale.com/blog/fifa-world-cup-dallas-kids-audiobook</loc>
-    <lastmod>2026-07-10</lastmod>
+    <lastmod>2026-06-13</lastmod>
   </url>
   <url>
     <loc>https://mysleepytale.com/blog/fifa-world-cup-kids-audiobook</loc>

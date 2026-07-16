@@ -1032,59 +1032,45 @@ Good night, {childName}. You shine in your own way, and the world is brighter be
         tradition: 'universal', theme: 'wisdom', durationMinutes: 3,
         multilingual: true, enableTranslation: true,
         source: 'Dr. Sleepy\u2019s Parenting Corner \u00b7 Episode 6',
-        body: `"Dr. Sleepy, the sky turned orange today. {childName} asked me why the sun looks like a big red ball. I didn\u2019t know what to say. And honestly\u2026 I\u2019m worried about the air."
+        body: `"Dr. Sleepy, the sky turned orange today. {childName} asked me why the sun looks like a big red ball."
 
-Dr. Sleepy nodded slowly. "You are right to be concerned. Wildfires are burning across Canada right now, and the smoke can travel hundreds of kilometres. That hazy, orange sky your little one noticed? That is wildfire smoke. And while it may look dramatic, the real danger is what you cannot see \u2014 tiny particles in the air that are too small for your eyes but not too small for little lungs."
+Dr. Sleepy smiled gently. "That is wildfire smoke, little one. When forests far away catch fire, the wind carries the smoke across the sky. It makes the sun look red and the air look hazy. Brave firefighters are working very hard to put the fires out."
 
-"Is it dangerous for kids?"
+"Is the smoke bad for us?"
 
-"Children breathe faster than adults. Their lungs are still growing. And they tend to play hard \u2014 running, jumping, shouting \u2014 which means they pull more air in. So yes, smoky air affects children more than it affects us. But here is the good news: there is a lot you can do to protect them."
+"It can be, especially for little lungs like yours. But here is the wonderful news \u2014 there are five special rules that will keep you safe. Can you count them on your fingers?"
 
-"Tell me everything."
+{childName} held up one hand, ready to count.
 
-Dr. Sleepy smiled. "Let us start with the simple things.
+"Number one \u2014 Stay Inside and Play. When the sky looks hazy or orange, keep your playing indoors. Build a fort, draw a picture, read a story. Outside can wait for a blue-sky day."
 
-First, check the air quality before going outside. You can look up the Air Quality Health Index \u2014 the AQHI \u2014 on your phone or on the Weather Network. If it says high risk or very high risk, keep outdoor time short. Save the running and playground visits for days when the air is cleaner.
+{childName} put up one finger.
 
-Second, keep windows and doors closed when the smoke is thick. I know children love fresh air, but on smoky days, inside air is safer air. If you have an air purifier with a HEPA filter, turn it on. If you do not have one, even running the fan on your furnace can help filter some particles.
+"Number two \u2014 Drink Lots of Water. Smoke makes the air dry and your throat scratchy. Water is your superpower! Keep sipping all day long, like a little camel getting ready for an adventure."
 
-Third, if your child has asthma or allergies, make sure their medication is up to date and within reach. Smoke can trigger flare-ups even in children who have not had symptoms in months."
+Two fingers up.
 
-"What about those little masks? Should {childName} wear one?"
+"Number three \u2014 Close the Windows and Doors. Even if it feels warm, keep everything shut tight on smoky days. If your family has an air purifier, that is your indoor superhero \u2014 it cleans the air so your lungs stay happy."
 
-"A well-fitting N95 or KN95 mask can help if you must go outside in heavy smoke. But for very young children, masks are tricky \u2014 they do not seal well on small faces. The best protection for little ones is simply staying indoors when the air is bad."
+Three fingers.
 
-"{childName} keeps asking why there are so many fires. How do I explain that?"
+"Number four \u2014 No Big Running Outside. When you run fast, you breathe in more air, and more air means more smoke in your little lungs. Walk slowly if you must go out, and come back inside quickly."
 
-Dr. Sleepy leaned forward gently. "You tell them the truth, in a way their heart can hold. You say: the forests are very dry this summer, and sometimes fires start. Brave firefighters are working very hard to put them out. The orange sky means the wind is carrying smoke from far away. It will not last forever. The sky will be blue again."
+Four fingers now.
 
-"And then?"
+"And number five \u2014 Tell a Grown-Up If You Feel Funny. If your chest feels tight, your eyes sting, your throat gets scratchy, or you start coughing \u2014 tell your mom, dad, or teacher right away. Your body is very smart. Listen to it."
 
-"And then you say: our job is to take care of each other while the sky heals. We stay inside, we drink water, we play quiet games, we read stories. We are safe in our home."
+All five fingers up! {childName} smiled.
 
-"What if they are scared?"
+"Now let us count them one more time. One \u2014 stay inside. Two \u2014 drink water. Three \u2014 close windows. Four \u2014 no big running outside. Five \u2014 tell a grown-up if you feel funny."
 
-"Then you hold them. Fear is natural. But children take their cues from us. If you are calm, they will be calm. And remind them \u2014 the sky has turned orange before, and it always, always turns blue again."
+"Dr. Sleepy? Will the sky be blue again?"
 
-"{childName}, here is what Dr. Sleepy wants you to remember, little one. Five special rules for smoky days:
+"Always, little one. Always. The fires will pass. The smoke will clear. And the sky will be the most beautiful blue you have ever seen. It always comes back."
 
-Number one \u2014 Stay Inside and Play. When the sky looks hazy or orange, keep your playing indoors. Build a fort, draw a picture, read a story. Outside can wait for a blue-sky day.
+You are so smart for learning these rules, {childName}. You are like a little safety expert now.
 
-Number two \u2014 Drink Lots of Water. Smoke makes the air dry and can make your throat feel scratchy. Water is your superpower. Keep sipping all day long, like a little camel getting ready for an adventure.
-
-Number three \u2014 Close the Windows and Doors. Even if it feels warm, keep everything shut tight on smoky days. If your family has an air purifier, that is your indoor superhero \u2014 it cleans the air so your lungs stay happy.
-
-Number four \u2014 No Big Running Outside. On smoky days, save your energy for inside games. When you run fast, you breathe in more air, and more air means more smoke in your little lungs. Walk slowly if you do go out, and come back inside quickly.
-
-Number five \u2014 Tell a Grown-Up If You Feel Funny. If your chest feels tight, your eyes sting, your throat gets scratchy, or you start coughing \u2014 tell your mom, dad, or teacher right away. Your body is very smart. It knows when something is not right. Listen to it.
-
-Can you count those on your fingers? One \u2014 stay inside. Two \u2014 drink water. Three \u2014 close windows. Four \u2014 no big running outside. Five \u2014 tell a grown-up if you feel funny.
-
-You are so smart for learning these, {childName}. You are like a little safety expert now.
-
-The fires will pass. The smoke will clear. And the sky will be the most beautiful blue you have ever seen. It always comes back.
-
-Goodnight, little one. Breathe easy. You are safe."`,
+Goodnight, little one. Breathe easy. You are safe.`,
       },
     ],
   },
