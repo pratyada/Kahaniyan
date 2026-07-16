@@ -772,7 +772,11 @@ const CREATIVE_FORMATS = [
 function CreativeStudio({ user }) {
   const [prompt, setPrompt] = useState('');
   const [selectedFormats, setSelectedFormats] = useState(['instagram_post', 'instagram_story', 'linkedin_banner', 'email_header']);
+  const [variations, setVariations] = useState(1);
   const [generating, setGenerating] = useState(false);
+  const [generatingVideo, setGeneratingVideo] = useState(false);
+  const [videoPrompt, setVideoPrompt] = useState('');
+  const [videoResults, setVideoResults] = useState(null);
   const [results, setResults] = useState(null);
   const [campaigns, setCampaigns] = useState([]);
   const [error, setError] = useState(null);
@@ -806,7 +810,7 @@ function CreativeStudio({ user }) {
       const res = await fetch(`${API}/api/generate-social-creatives`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ uid: user.uid, prompt, formats: selectedFormats }),
+        body: JSON.stringify({ uid: user.uid, prompt, formats: selectedFormats, variations }),
       });
       const data = await res.json();
       if (data.error) throw new Error(data.error);
@@ -868,9 +872,23 @@ function CreativeStudio({ user }) {
           </div>
         </div>
 
+        {/* Variations selector */}
+        <div className="flex items-center gap-4">
+          <label className="text-[10px] font-bold uppercase tracking-wider text-ink-dim">Variations per format</label>
+          <div className="flex gap-1">
+            {[1, 2, 3, 4, 5].map(n => (
+              <button key={n} onClick={() => setVariations(n)}
+                className={`w-8 h-8 rounded-lg text-xs font-bold transition ${variations === n ? 'bg-gold text-bg-base' : 'bg-bg-base text-ink-dim ring-1 ring-white/10 hover:ring-gold/30'}`}>
+                {n}
+              </button>
+            ))}
+          </div>
+          <span className="text-[9px] text-ink-dim">= {selectedFormats.length * variations} total images</span>
+        </div>
+
         <button onClick={handleGenerate} disabled={generating || !prompt.trim() || !selectedFormats.length}
           className="w-full rounded-xl bg-gold px-5 py-3 text-sm font-bold text-bg-base shadow-glow disabled:opacity-40">
-          {generating ? `🎨 Generating ${selectedFormats.length} creatives...` : `🎨 Generate ${selectedFormats.length} Creative${selectedFormats.length !== 1 ? 's' : ''}`}
+          {generating ? `🎨 Generating ${selectedFormats.length * variations} creatives...` : `🎨 Generate ${selectedFormats.length * variations} Creative${selectedFormats.length * variations !== 1 ? 's' : ''}`}
         </button>
 
         {generating && (
@@ -887,35 +905,98 @@ function CreativeStudio({ user }) {
 
       {/* Results */}
       {results && (
-        <div className="rounded-2xl bg-bg-surface ring-1 ring-white/5 p-5">
-          <h3 className="text-sm font-bold text-ink mb-4">Generated Creatives</h3>
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            {Object.entries(results.creatives).map(([key, creative]) => (
-              <div key={key} className="rounded-xl bg-bg-base ring-1 ring-white/5 overflow-hidden">
-                {creative.status === 'done' ? (
-                  <>
-                    <a href={creative.url} target="_blank" rel="noopener noreferrer">
-                      <img src={creative.url} alt={creative.format} className="w-full h-auto" loading="lazy" />
-                    </a>
-                    <div className="p-3 flex items-center justify-between">
-                      <div>
-                        <div className="text-xs font-bold text-ink">{creative.format}</div>
-                        <div className="text-[9px] text-ink-dim">{creative.size}</div>
-                      </div>
-                      <a href={creative.url} target="_blank" rel="noopener noreferrer" download
-                        className="rounded-lg bg-gold/20 px-3 py-1 text-[10px] font-bold text-gold hover:bg-gold/30 transition">
-                        Download
-                      </a>
-                    </div>
-                  </>
-                ) : (
-                  <div className="p-6 text-center">
-                    <div className="text-red-400 text-xs">Failed: {creative.error}</div>
+        <div className="rounded-2xl bg-bg-surface ring-1 ring-white/5 p-5 space-y-6">
+          <h3 className="text-sm font-bold text-ink">Generated Creatives</h3>
+
+          {Object.entries(results.creatives).map(([key, formatData]) => (
+            <div key={key}>
+              <h4 className="text-xs font-bold text-gold mb-2">{formatData.format} ({formatData.size})</h4>
+              <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
+                {(formatData.images || []).map((img, i) => (
+                  <div key={i} className="rounded-xl bg-bg-base ring-1 ring-white/5 overflow-hidden">
+                    {img.status === 'done' ? (
+                      <>
+                        <a href={img.url} target="_blank" rel="noopener noreferrer">
+                          <img src={img.url} alt={`${formatData.format} v${img.variation}`} className="w-full h-auto" loading="lazy" />
+                        </a>
+                        <div className="p-2 flex items-center justify-between">
+                          <span className="text-[9px] text-ink-dim">v{img.variation}</span>
+                          <a href={img.url} target="_blank" rel="noopener noreferrer" download
+                            className="rounded-lg bg-gold/20 px-2 py-0.5 text-[9px] font-bold text-gold">Download</a>
+                        </div>
+                      </>
+                    ) : (
+                      <div className="p-4 text-center text-[10px] text-red-400">Failed</div>
+                    )}
                   </div>
-                )}
+                ))}
               </div>
-            ))}
+            </div>
+          ))}
+
+          {/* Video Generation */}
+          <div className="rounded-xl bg-purple-500/5 ring-1 ring-purple-500/20 p-4 space-y-3">
+            <h4 className="text-xs font-bold text-purple-400 flex items-center gap-2">🎬 Generate Video from Images</h4>
+            <p className="text-[10px] text-ink-dim">Select images above, AI generates a video using Gemini Veo 3.1</p>
+            <textarea
+              value={videoPrompt}
+              onChange={e => setVideoPrompt(e.target.value)}
+              placeholder="Video prompt... e.g. 'Gentle zoom in with magical sparkles, floating golden particles, warm bedtime atmosphere' (leave empty for auto)"
+              rows={2}
+              className="w-full rounded-xl bg-bg-base px-4 py-2.5 text-xs text-ink placeholder-ink-dim ring-1 ring-white/10 focus:ring-purple-500 outline-none resize-none"
+            />
+            <button onClick={async () => {
+              setGeneratingVideo(true);
+              setVideoResults(null);
+              try {
+                // Collect all successful image URLs
+                const allImageUrls = [];
+                Object.values(results.creatives).forEach(f => {
+                  (f.images || []).forEach(img => {
+                    if (img.status === 'done') allImageUrls.push(img.url);
+                  });
+                });
+                if (!allImageUrls.length) throw new Error('No images to generate video from');
+                const r = await fetch(`${API}/api/generate-social-creatives`, {
+                  method: 'POST',
+                  headers: { 'Content-Type': 'application/json' },
+                  body: JSON.stringify({ uid: user.uid, mode: 'video', imageUrls: allImageUrls, videoPrompt: videoPrompt || undefined, campaignId: results.campaignId, prompt }),
+                });
+                const data = await r.json();
+                if (data.error) throw new Error(data.error);
+                setVideoResults(data.videos);
+              } catch (e) { setError(e.message); }
+              setGeneratingVideo(false);
+            }} disabled={generatingVideo}
+              className="w-full rounded-xl bg-purple-500/20 px-5 py-2.5 text-xs font-bold text-purple-400 hover:bg-purple-500/30 transition disabled:opacity-40">
+              {generatingVideo ? '🎬 Generating videos... (this takes 2-5 min)' : '🎬 Generate Videos from All Images'}
+            </button>
           </div>
+
+          {/* Video results */}
+          {videoResults && (
+            <div>
+              <h4 className="text-xs font-bold text-purple-400 mb-2">Generated Videos</h4>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                {videoResults.map((v, i) => (
+                  <div key={i} className="rounded-xl bg-bg-base ring-1 ring-white/5 overflow-hidden">
+                    {v.status === 'done' ? (
+                      <>
+                        <video src={v.url} controls className="w-full h-auto" />
+                        <div className="p-2 flex items-center justify-between">
+                          <span className="text-[9px] text-ink-dim">Video {i + 1}</span>
+                          <a href={v.url} target="_blank" rel="noopener noreferrer" download
+                            className="rounded-lg bg-purple-500/20 px-2 py-0.5 text-[9px] font-bold text-purple-400">Download</a>
+                        </div>
+                      </>
+                    ) : (
+                      <div className="p-4 text-center text-[10px] text-red-400">Failed: {v.error?.slice(0, 100)}</div>
+                    )}
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
         </div>
       )}
 
@@ -934,12 +1015,18 @@ function CreativeStudio({ user }) {
                 </summary>
                 <div className="px-4 pb-4 grid grid-cols-2 sm:grid-cols-3 gap-2">
                   {c.creatives && Object.entries(c.creatives).map(([key, cr]) => (
-                    cr.status === 'done' && (
-                      <a key={key} href={cr.url} target="_blank" rel="noopener noreferrer" className="block">
-                        <img src={cr.url} alt={cr.format} className="w-full h-auto rounded-lg ring-1 ring-white/5" loading="lazy" />
-                        <div className="text-[9px] text-ink-dim mt-1">{cr.format} · {cr.size}</div>
+                    (cr.images || []).filter(img => img.status === 'done').map((img, j) => (
+                      <a key={`${key}-${j}`} href={img.url} target="_blank" rel="noopener noreferrer" className="block">
+                        <img src={img.url} alt={cr.format} className="w-full h-auto rounded-lg ring-1 ring-white/5" loading="lazy" />
+                        <div className="text-[9px] text-ink-dim mt-1">{cr.format} · v{img.variation}</div>
                       </a>
-                    )
+                    ))
+                  ))}
+                  {c.videos && c.videos.filter(v => v.status === 'done').map((v, j) => (
+                    <div key={`video-${j}`}>
+                      <video src={v.url} controls className="w-full h-auto rounded-lg ring-1 ring-white/5" />
+                      <div className="text-[9px] text-purple-400 mt-1">Video {j + 1}</div>
+                    </div>
                   ))}
                 </div>
               </details>
