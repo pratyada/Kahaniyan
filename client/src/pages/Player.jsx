@@ -1,6 +1,6 @@
 import { Component, useEffect, useRef, useState, useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useNavigate, useSearchParams } from 'react-router-dom';
+import { useNavigate, useSearchParams, useParams } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ArrowLeft, X, Share2, Play, Pause, RotateCcw, Loader2, Timer } from 'lucide-react';
 import { getStoryArt, getGenericStoryImage } from '../utils/storyArt.js';
@@ -166,9 +166,10 @@ export default function Player() {
 function SharedStoryGate() {
   const { t } = useTranslation();
   const [searchParams] = useSearchParams();
+  const { storyId: routeStoryId } = useParams();
   const navigate = useNavigate();
   const { current, load, clear } = usePlayer();
-  const sharedStoryId = searchParams.get('storyId') || '';
+  const sharedStoryId = routeStoryId || searchParams.get('storyId') || '';
   const [status, setStatus] = useState(sharedStoryId ? 'loading' : 'ready');
   const loadedRef = useRef(false);
 
@@ -330,7 +331,7 @@ function PlayerInner() {
               multilingual: nextEp.multilingual || false,
               enableTranslation: nextEp.enableTranslation || false,
             });
-            window.history.replaceState(null, '', `/player?storyId=${nextEp.id}`);
+            window.history.replaceState(null, '', `/story/${nextEp.id}`);
             return;
           }
         }
@@ -365,7 +366,7 @@ function PlayerInner() {
         durationMinutes: pick.durationMinutes,
         estimatedMinutes: pick.durationMinutes,
       });
-      window.history.replaceState(null, '', `/player?storyId=${pick.id}`);
+      window.history.replaceState(null, '', `/story/${pick.id}`);
     } catch (e) {
       console.warn('[Player] playNext failed:', e.message);
     }

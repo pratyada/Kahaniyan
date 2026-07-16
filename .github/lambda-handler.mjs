@@ -26,6 +26,38 @@ export async function handler(event) {
     return { statusCode: 200, headers: CORS, body: '' };
   }
 
+  // Handle /story/{storyId} — serve OG tags then redirect to player
+  const storyMatch = path.match(/^\/story\/(.+?)(\?.*)?$/);
+  if (storyMatch) {
+    const storyId = storyMatch[1];
+    // Reuse share handler with the story ID
+    const fakeReq = { method: 'GET', headers: event.headers || {}, query: { id: storyId }, url: `/api/share?id=${storyId}` };
+    let html = '';
+    const fakeRes = {
+      status: () => fakeRes,
+      setHeader: () => {},
+      send: (data) => { html = data; },
+      json: (data) => { html = JSON.stringify(data); },
+    };
+    try {
+      const shareHandler = await loadHandler('share');
+      await shareHandler(fakeReq, fakeRes);
+      // Replace the redirect URL to use /story/ instead of /player?storyId=
+      html = html.replace(/url=https:\/\/mysleepytale\.com\/player\?storyId=[^"]+/, `url=https://mysleepytale.com/story/${storyId}`);
+      // Remove the meta refresh redirect — let the SPA handle it
+      html = html.replace(/<meta http-equiv="refresh"[^>]*>/, '');
+      // Add script to load the SPA
+      html = html.replace('</head>', `<script>window.location.replace('/player?storyId=${storyId}');</script></head>`);
+    } catch (e) {
+      html = `<html><head><meta http-equiv="refresh" content="0;url=/player?storyId=${storyId}"></head><body>Loading...</body></html>`;
+    }
+    return {
+      statusCode: 200,
+      headers: { 'Content-Type': 'text/html', 'Cache-Control': 'public, max-age=3600', ...CORS },
+      body: html,
+    };
+  }
+
   // Extract route name from /api/{routeName}
   const match = path.match(/^\/api\/(.+?)(\?.*)?$/);
   if (!match) {

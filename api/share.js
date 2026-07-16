@@ -335,7 +335,7 @@ export default async function handler(req, res) {
           title = pub.title;
           description = pub.subtitle || `Listen to "${pub.title}" — a bedtime story on My Sleepy Tale.`;
           image = pub.coverImage || pub.ogImage || DEFAULT_OG_IMAGE;
-          redirectUrl = `https://mysleepytale.com/player?storyId=${storyId}`;
+          redirectUrl = `https://mysleepytale.com/story/${storyId}`;
         }
       }
     } catch {}
@@ -351,7 +351,7 @@ export default async function handler(req, res) {
           title = pub.title;
           description = pub.metaDescription || pub.subtitle || `Listen to "${pub.title}" — a bedtime story on My Sleepy Tale.`;
           image = pub.coverImage || pub.ogImage || DEFAULT_OG_IMAGE;
-          redirectUrl = `https://mysleepytale.com/player?storyId=${storyId}`;
+          redirectUrl = `https://mysleepytale.com/story/${storyId}`;
         }
       }
     } catch {}
@@ -369,7 +369,7 @@ export default async function handler(req, res) {
           title = pubTitle;
           description = f.metaDescription?.stringValue || f.subtitle?.stringValue || `Listen to "${pubTitle}" — a bedtime story on My Sleepy Tale.`;
           image = f.coverImage?.stringValue || f.ogImage?.stringValue || DEFAULT_OG_IMAGE;
-          redirectUrl = `https://mysleepytale.com/player?storyId=${storyId}`;
+          redirectUrl = `https://mysleepytale.com/story/${storyId}`;
         }
       }
     } catch {}
@@ -408,7 +408,7 @@ export default async function handler(req, res) {
 
     redirectUrl = isSeries
       ? `https://mysleepytale.com${story.seriesUrl}`
-      : `https://mysleepytale.com/player?storyId=${storyId || 'lesson_' + lessonId}`;
+      : `https://mysleepytale.com/story/${storyId || lessonId}`;
   }
 
   const html = `<!DOCTYPE html>

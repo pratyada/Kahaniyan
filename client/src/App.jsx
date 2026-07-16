@@ -165,6 +165,7 @@ function Shell() {
             />
             <Route path="/onboarding" element={<Onboarding />} />
             <Route path="/player" element={<Player />} />
+            <Route path="/story/:storyId" element={<Player />} />
             <Route path="/library" element={<Library />} />
             <Route path="/creation" element={<Library />} />
             <Route path="/search" element={<SearchPage />} />
