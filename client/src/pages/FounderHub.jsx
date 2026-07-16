@@ -63,6 +63,7 @@ const MARKETING_CHANNELS = [
   { id: 'email-newsletter', label: 'Email Newsletter', icon: '📨', status: 'active', description: 'AI-generate branded newsletters and send to all users.', automation: '85% automated', features: ['AI content from prompt', 'Branded dark theme', 'Preview & test send', 'Bulk send to all users', 'Send tracking & history'] },
   { id: 'reddit', label: 'Reddit', icon: '🟠', status: 'active', description: 'Monitor subreddits, AI-draft comments, approve & post. 10 subreddits × 10 keywords.', automation: '80% automated', features: ['Keyword monitoring', 'AI comment drafting (3 styles)', 'Slack approval flow', 'Auto-post after approval', 'Karma tracking'] },
   { id: 'x-twitter', label: 'X / Twitter', icon: '🐦', status: 'coming-soon', description: 'Schedule tweets, reply to relevant threads, track engagement. Thread writer agent.', automation: '70% automated', features: ['Trending topic scanner', 'AI tweet/thread writer', 'Scheduled posting', 'Engagement tracker', 'Hashtag optimizer'] },
+  { id: 'creative-studio', label: 'Creative Studio', icon: '🎨', status: 'active', description: 'Generate multi-format social media creatives from a single prompt. Instagram, Story, LinkedIn, Email, Pinterest, YouTube.', automation: '95% automated', features: ['Multi-format generation', 'AI prompt enhancement', 'Brand-consistent design', 'Auto-upload to S3', 'Campaign history'] },
   { id: 'instagram', label: 'Instagram', icon: '📸', status: 'active', description: 'Generate post images + captions + hashtags from any topic or link.', automation: '90% automated', features: ['AI image generator', 'Caption writer', 'Hashtag optimizer', 'Multi-format (square, portrait, story)', 'Brand-consistent Soul ID'] },
   { id: 'medium', label: 'Medium', icon: '📝', status: 'coming-soon', description: 'Auto-repurpose blog posts into Medium articles with backlinks.', automation: '90% automated', features: ['Blog-to-Medium converter', 'Backlink injector', 'Tag optimizer', 'Publication submitter', 'Clap tracker'] },
   { id: 'tiktok', label: 'TikTok', icon: '🎵', status: 'coming-soon', description: 'Video script generator, trending sound matcher, caption optimizer.', automation: '50% automated', features: ['Script generator from stories', 'Trending sound matcher', 'Caption optimizer', 'Posting scheduler', 'View tracker'] },
@@ -756,6 +757,200 @@ function EmailNewsletter({ user }) {
   );
 }
 
+// ─── Creative Studio (Multi-format Social Media) ─────────────────
+const CREATIVE_FORMATS = [
+  { id: 'instagram_post', label: 'Instagram Post', size: '1080×1080', icon: '📸' },
+  { id: 'instagram_story', label: 'Story (IG/WhatsApp)', size: '1080×1920', icon: '📱' },
+  { id: 'linkedin_banner', label: 'LinkedIn/X Banner', size: '1200×630', icon: '💼' },
+  { id: 'email_header', label: 'Email Header', size: '1200×400', icon: '📧' },
+  { id: 'facebook_post', label: 'Facebook Post', size: '1200×630', icon: '📘' },
+  { id: 'x_post', label: 'X/Twitter Post', size: '1600×900', icon: '🐦' },
+  { id: 'pinterest_pin', label: 'Pinterest Pin', size: '1000×1500', icon: '📌' },
+  { id: 'youtube_thumb', label: 'YouTube Thumbnail', size: '1280×720', icon: '▶️' },
+];
+
+function CreativeStudio({ user }) {
+  const [prompt, setPrompt] = useState('');
+  const [selectedFormats, setSelectedFormats] = useState(['instagram_post', 'instagram_story', 'linkedin_banner', 'email_header']);
+  const [generating, setGenerating] = useState(false);
+  const [results, setResults] = useState(null);
+  const [campaigns, setCampaigns] = useState([]);
+  const [error, setError] = useState(null);
+  const API = import.meta.env.VITE_API_URL || '';
+
+  // Load past campaigns
+  useEffect(() => {
+    (async () => {
+      try {
+        const res = await fetch(`${API}/api/generate-social-creatives`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ uid: user.uid, mode: 'list' }),
+        });
+        const data = await res.json();
+        if (data.campaigns) setCampaigns(data.campaigns);
+      } catch {}
+    })();
+  }, []);
+
+  const toggleFormat = (id) => {
+    setSelectedFormats(prev => prev.includes(id) ? prev.filter(f => f !== id) : [...prev, id]);
+  };
+
+  const handleGenerate = async () => {
+    if (!prompt.trim() || !selectedFormats.length) return;
+    setGenerating(true);
+    setError(null);
+    setResults(null);
+    try {
+      const res = await fetch(`${API}/api/generate-social-creatives`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ uid: user.uid, prompt, formats: selectedFormats }),
+      });
+      const data = await res.json();
+      if (data.error) throw new Error(data.error);
+      setResults(data);
+      // Refresh campaigns
+      setCampaigns(prev => [{ id: data.campaignId, prompt, formats: selectedFormats, creatives: data.creatives, status: 'done', createdAt: new Date().toISOString() }, ...prev]);
+    } catch (e) {
+      setError(e.message);
+    }
+    setGenerating(false);
+  };
+
+  return (
+    <div className="space-y-6">
+      {/* Composer */}
+      <div className="rounded-2xl bg-bg-surface ring-1 ring-white/5 p-5 space-y-4">
+        <div className="flex items-center gap-3 mb-2">
+          <span className="text-2xl">🎨</span>
+          <div>
+            <h3 className="text-sm font-bold text-ink">Creative Studio</h3>
+            <p className="text-[10px] text-ink-dim">Describe what you want, pick formats, AI generates all creatives</p>
+          </div>
+        </div>
+
+        <textarea
+          value={prompt}
+          onChange={e => setPrompt(e.target.value)}
+          placeholder="Describe the creative... e.g. 'FIFA World Cup 2026 quarter-finals to finals — Argentina vs Spain final, 5 new bedtime story episodes, featuring flags and golden trophy'"
+          rows={3}
+          className="w-full rounded-xl bg-bg-base px-4 py-3 text-sm text-ink placeholder-ink-dim ring-1 ring-white/10 focus:ring-gold outline-none resize-none"
+        />
+
+        {/* Format checkboxes */}
+        <div>
+          <div className="flex items-center justify-between mb-2">
+            <label className="text-[10px] font-bold uppercase tracking-wider text-ink-dim">Select Formats</label>
+            <div className="flex gap-2">
+              <button onClick={() => setSelectedFormats(CREATIVE_FORMATS.map(f => f.id))}
+                className="text-[9px] text-gold hover:text-gold/80">Select All</button>
+              <button onClick={() => setSelectedFormats([])}
+                className="text-[9px] text-ink-dim hover:text-ink">Clear</button>
+            </div>
+          </div>
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
+            {CREATIVE_FORMATS.map(f => (
+              <button key={f.id} onClick={() => toggleFormat(f.id)}
+                className={`rounded-xl px-3 py-2.5 text-left ring-1 transition text-xs ${
+                  selectedFormats.includes(f.id)
+                    ? 'bg-gold/10 ring-gold/30 text-ink'
+                    : 'bg-bg-base ring-white/5 text-ink-dim hover:ring-white/15'
+                }`}>
+                <div className="flex items-center gap-1.5">
+                  <span>{f.icon}</span>
+                  <span className="font-bold">{f.label}</span>
+                </div>
+                <div className="text-[9px] text-ink-dim mt-0.5">{f.size}</div>
+              </button>
+            ))}
+          </div>
+        </div>
+
+        <button onClick={handleGenerate} disabled={generating || !prompt.trim() || !selectedFormats.length}
+          className="w-full rounded-xl bg-gold px-5 py-3 text-sm font-bold text-bg-base shadow-glow disabled:opacity-40">
+          {generating ? `🎨 Generating ${selectedFormats.length} creatives...` : `🎨 Generate ${selectedFormats.length} Creative${selectedFormats.length !== 1 ? 's' : ''}`}
+        </button>
+
+        {generating && (
+          <div className="rounded-xl bg-gold/5 ring-1 ring-gold/20 p-4 text-center">
+            <div className="text-2xl mb-2 animate-pulse">🎨</div>
+            <p className="text-xs text-ink-muted">AI is enhancing your prompt and generating {selectedFormats.length} creatives via Higgsfield GPT Image 2. This takes 1-3 minutes...</p>
+          </div>
+        )}
+
+        {error && (
+          <div className="rounded-xl bg-red-500/10 ring-1 ring-red-500/30 px-4 py-3 text-xs text-red-400">{error}</div>
+        )}
+      </div>
+
+      {/* Results */}
+      {results && (
+        <div className="rounded-2xl bg-bg-surface ring-1 ring-white/5 p-5">
+          <h3 className="text-sm font-bold text-ink mb-4">Generated Creatives</h3>
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            {Object.entries(results.creatives).map(([key, creative]) => (
+              <div key={key} className="rounded-xl bg-bg-base ring-1 ring-white/5 overflow-hidden">
+                {creative.status === 'done' ? (
+                  <>
+                    <a href={creative.url} target="_blank" rel="noopener noreferrer">
+                      <img src={creative.url} alt={creative.format} className="w-full h-auto" loading="lazy" />
+                    </a>
+                    <div className="p-3 flex items-center justify-between">
+                      <div>
+                        <div className="text-xs font-bold text-ink">{creative.format}</div>
+                        <div className="text-[9px] text-ink-dim">{creative.size}</div>
+                      </div>
+                      <a href={creative.url} target="_blank" rel="noopener noreferrer" download
+                        className="rounded-lg bg-gold/20 px-3 py-1 text-[10px] font-bold text-gold hover:bg-gold/30 transition">
+                        Download
+                      </a>
+                    </div>
+                  </>
+                ) : (
+                  <div className="p-6 text-center">
+                    <div className="text-red-400 text-xs">Failed: {creative.error}</div>
+                  </div>
+                )}
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+
+      {/* Past campaigns */}
+      {campaigns.length > 0 && (
+        <div className="rounded-2xl bg-bg-surface ring-1 ring-white/5 p-5">
+          <h3 className="text-sm font-bold text-ink mb-4">Past Campaigns</h3>
+          <div className="space-y-3">
+            {campaigns.map(c => (
+              <details key={c.id} className="rounded-xl bg-bg-base ring-1 ring-white/5 overflow-hidden">
+                <summary className="px-4 py-3 cursor-pointer text-xs text-ink flex items-center justify-between">
+                  <span className="truncate flex-1 font-bold">{c.prompt?.slice(0, 80)}{c.prompt?.length > 80 ? '...' : ''}</span>
+                  <span className="text-[9px] text-ink-dim ml-2 shrink-0">
+                    {c.formats?.length || 0} formats · {c.createdAt ? new Date(c.createdAt).toLocaleDateString('en-US', { month: 'short', day: 'numeric' }) : ''}
+                  </span>
+                </summary>
+                <div className="px-4 pb-4 grid grid-cols-2 sm:grid-cols-3 gap-2">
+                  {c.creatives && Object.entries(c.creatives).map(([key, cr]) => (
+                    cr.status === 'done' && (
+                      <a key={key} href={cr.url} target="_blank" rel="noopener noreferrer" className="block">
+                        <img src={cr.url} alt={cr.format} className="w-full h-auto rounded-lg ring-1 ring-white/5" loading="lazy" />
+                        <div className="text-[9px] text-ink-dim mt-1">{cr.format} · {cr.size}</div>
+                      </a>
+                    )
+                  ))}
+                </div>
+              </details>
+            ))}
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}
+
 // ─── Founder AI Command Bar ──────────────────────────────────────
 function FounderCommand({ user }) {
   const [command, setCommand] = useState('');
@@ -1241,13 +1436,18 @@ export default function FounderHub() {
                 <EmailNewsletter user={user} />
               )}
 
+              {/* Creative Studio */}
+              {marketingChannel === 'creative-studio' && (
+                <CreativeStudio user={user} />
+              )}
+
               {/* Instagram Channel — Creative Generator */}
               {marketingChannel === 'instagram' && (
                 <CreativeGenerator user={user} />
               )}
 
               {/* Other channels — coming soon placeholder */}
-              {marketingChannel !== 'reddit' && marketingChannel !== 'instagram' && marketingChannel !== 'email-newsletter' && (
+              {marketingChannel !== 'reddit' && marketingChannel !== 'instagram' && marketingChannel !== 'email-newsletter' && marketingChannel !== 'creative-studio' && (
                 <ChannelPlaceholder channel={MARKETING_CHANNELS.find(c => c.id === marketingChannel)} />
               )}
             </div>
