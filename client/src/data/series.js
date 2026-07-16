@@ -866,23 +866,23 @@ Goodnight, little one.`,
   },
   {
     id: 'dr-spock-parenting',
-    title: 'Dr. Spock Says',
+    title: 'Dr. Sleepy's Parenting Corner',
     icon: '👨‍⚕️',
     gradient: 'linear-gradient(135deg, #1e3a5f 0%, #2563eb 50%, #93c5fd 100%)',
     createdBy: 'deepti.ramaul@gmail.com', creatorName: 'Deepti Ramaul', creatorUsername: 'deepti-ramaul',
-    description: 'Five bedtime conversations with Dr. Spock — the world\'s most trusted baby doctor answers a parent\'s real questions about raising 3-to-5-year-olds.',
+    description: 'Five bedtime conversations with Dr. Sleepy — inspired by Dr. Sleepy\'s timeless parenting wisdom. A gentle doctor answers a parent\'s real questions about raising 3-to-5-year-olds.',
     ageRange: '3-5',
     totalEpisodes: 5,
     episodes: [
       {
         id: 'dsp_ep1_development', episodeNumber: 1, title: 'Growing So Fast',
-        subtitle: 'A parent worries their child is behind. Dr. Spock reassures them.',
+        subtitle: 'A parent worries their child is behind. Dr. Sleepy reassures them.',
         tradition: 'universal', theme: 'development', durationMinutes: 2,
         value: 'wisdom',
-        source: 'Dr. Spock Says · Episode 1',
-        body: `"Dr. Spock, my {childName} just turned four. Other kids in class are writing their names already. Mine still scribbles. Should I be worried?"
+        source: 'Dr. Sleepy's Parenting Corner · Episode 1',
+        body: `"Dr. Sleepy, my {childName} just turned four. Other kids in class are writing their names already. Mine still scribbles. Should I be worried?"
 
-Dr. Spock leaned back and smiled. "Trust yourself. You know more than you think you do. Every child has their own clock. Some walk at nine months, some at fifteen. Neither is better."
+Dr. Sleepy leaned back and smiled. "Trust yourself. You know more than you think you do. Every child has their own clock. Some walk at nine months, some at fifteen. Neither is better."
 
 "But the other parents keep comparing."
 
@@ -898,7 +898,7 @@ Dr. Spock leaned back and smiled. "Trust yourself. You know more than you think 
 
 "And the questions! Why is the sky blue, why do dogs bark, why why why all day long."
 
-Dr. Spock laughed. "That is your child building a brain, one question at a time. Answer simply and honestly. You do not need to know everything. Saying I do not know, let us find out together is one of the best things a parent can say."
+Dr. Sleepy laughed. "That is your child building a brain, one question at a time. Answer simply and honestly. You do not need to know everything. Saying I do not know, let us find out together is one of the best things a parent can say."
 
 "So {childName} is okay?"
 
@@ -911,8 +911,8 @@ Good night, {childName}. You are growing at exactly the right speed.`,
         subtitle: 'When your child is sick — what to worry about and what to let pass.',
         tradition: 'universal', theme: 'health', durationMinutes: 2,
         value: 'wisdom',
-        source: 'Dr. Spock Says · Episode 2',
-        body: `"Dr. Spock, {childName} has had a runny nose for five days. I have wiped that nose a hundred times. When do I call the doctor?"
+        source: 'Dr. Sleepy's Parenting Corner · Episode 2',
+        body: `"Dr. Sleepy, {childName} has had a runny nose for five days. I have wiped that nose a hundred times. When do I call the doctor?"
 
 "A cold is a cold. Seven to ten days of sniffles, maybe a mild fever, a little cough. That is the body doing its job. Rest, fluids, and patience."
 
@@ -932,7 +932,7 @@ Good night, {childName}. You are growing at exactly the right speed.`,
 
 "If your gut says something is wrong, call. That is what your pediatrician is for. You are not bothering them. You are being a good parent."
 
-"Thank you, Dr. Spock."
+"Thank you, Dr. Sleepy."
 
 "Thank yourself. You stayed calm. That is the best medicine of all."
 
@@ -943,8 +943,8 @@ Sleep well tonight, {childName}. Your body is strong and knows how to heal.`,
         subtitle: 'What you can handle at home — and when to rush to the ER.',
         tradition: 'universal', theme: 'safety', durationMinutes: 2,
         value: 'courage',
-        source: 'Dr. Spock Says · Episode 3',
-        body: `"Dr. Spock, {childName} fell off the swing today and scraped both knees. There was so much blood I almost panicked."
+        source: 'Dr. Sleepy's Parenting Corner · Episode 3',
+        body: `"Dr. Sleepy, {childName} fell off the swing today and scraped both knees. There was so much blood I almost panicked."
 
 "Scrapes always look worse than they are. Wash gently with soap and water. Press a clean cloth on it. Once the bleeding stops, a bandage and a kiss. That is the whole treatment."
 
@@ -968,11 +968,11 @@ Good night, {childName}. A few scrapes just mean you had a brave day.`,
       },
       {
         id: 'dsp_ep4_behavior', episodeNumber: 4, title: 'Big Feelings, Little Body',
-        subtitle: 'Tantrums, tough questions, and the word NO — Dr. Spock explains.',
+        subtitle: 'Tantrums, tough questions, and the word NO — Dr. Sleepy explains.',
         tradition: 'universal', theme: 'behavior', durationMinutes: 2,
         value: 'patience',
-        source: 'Dr. Spock Says · Episode 4',
-        body: `"Dr. Spock, {childName} threw a full tantrum at the grocery store today. Screaming, kicking, on the floor. Everyone was staring."
+        source: 'Dr. Sleepy's Parenting Corner · Episode 4',
+        body: `"Dr. Sleepy, {childName} threw a full tantrum at the grocery store today. Screaming, kicking, on the floor. Everyone was staring."
 
 "Let them stare. A tantrum is not bad parenting. It is a small person with big feelings and no tools to manage them yet."
 
@@ -986,7 +986,7 @@ Good night, {childName}. A few scrapes just mean you had a brave day.`,
 
 "There is something else. {childName} asked me where babies come from."
 
-Dr. Spock nodded. "Answer simply and honestly. A baby grows inside a mother, and when the baby is big enough, the baby comes out. That is usually all a four-year-old wants to know. If they ask more, answer more. Use real words for body parts. There is no shame in the human body."
+Dr. Sleepy nodded. "Answer simply and honestly. A baby grows inside a mother, and when the baby is big enough, the baby comes out. That is usually all a four-year-old wants to know. If they ask more, answer more. Use real words for body parts. There is no shame in the human body."
 
 "And the sibling fights? {childName} hit the baby."
 
@@ -996,11 +996,11 @@ Good night, {childName}. Your big feelings mean you have a big heart.`,
       },
       {
         id: 'dsp_ep5_special', episodeNumber: 5, title: 'Every Child Shines',
-        subtitle: 'When your child is different — Dr. Spock on disability, difference, and love.',
+        subtitle: 'When your child is different — Dr. Sleepy on disability, difference, and love.',
         tradition: 'universal', theme: 'inclusion', durationMinutes: 2,
         value: 'compassion',
-        source: 'Dr. Spock Says · Episode 5',
-        body: `"Dr. Spock, we just got the diagnosis. The doctor said {childName} has a developmental delay. I have not stopped crying."
+        source: 'Dr. Sleepy's Parenting Corner · Episode 5',
+        body: `"Dr. Sleepy, we just got the diagnosis. The doctor said {childName} has a developmental delay. I have not stopped crying."
 
 "Then cry. Grief is not weakness. You are mourning the path you imagined. That is human."
 
