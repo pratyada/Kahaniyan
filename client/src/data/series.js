@@ -7781,15 +7781,15 @@ Both teams would play for pride. For their fans who had travelled so far. For ev
 
 And then \u2014 THE FINAL.
 
-France vs Argentina. Two football empires. Two teams who believe the World Cup belongs to them.
-
-France, with Mbapp\u00e9 running like the wind, Griezmann scheming like a chess master, and a defence that bends but never breaks.
+Argentina vs Spain. Two football empires. Two teams who believe the beautiful game belongs to them.
 
 Argentina, with the ghost of Messi\u2019s 2022 magic still in their hearts, with \u00c1lvarez\u2019s impossible goals, with Fern\u00e1ndez pulling strings from midfield, and with the hunger of a team trying to win three in a row \u2014 something no country has done in 80 years.
 
+Spain, with Pedri\u2019s magic feet, Lamine Yamal\u2019s fearless runs, and a style of football so beautiful it makes the ball sing. La Roja, back in the final, ready to prove that tiki-taka still rules the world.
+
 In dressing rooms across the city, boots were being polished. Shirts were being folded. Players were calling their families.
 
-"Are you nervous?" a little boy in Paris asked his father.
+"Are you nervous?" a little boy in Madrid asked his father.
 
 "Yes," said his father. "But the best kind of nervous. The kind that means something wonderful is about to happen."
 
