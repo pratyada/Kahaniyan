@@ -7716,50 +7716,48 @@ Now close your eyes and dream of something beautiful \u2014 of passes that conne
 Goodnight, little one. Dream boldly.`,
       },
       {
-        id: 'fifa26_ep15_england_argentina', episodeNumber: 15, title: "The Night the Game Refused to End",
-        subtitle: 'England vs Argentina \u2014 when the last minute rewrites everything.',
-        tradition: 'universal', theme: 'wisdom', durationMinutes: 4,
+        id: 'fifa26_ep15_england_argentina', episodeNumber: 15, title: "The Night Argentina Never Gave Up",
+        subtitle: 'England vs Argentina \u2014 Messi\u2019s two assists rewrite the final minutes.',
+        tradition: 'universal', theme: 'wisdom', durationMinutes: 3,
         multilingual: true, enableTranslation: true,
         source: 'FIFA World Cup 2026 \u00b7 Episode 15',
-        body: `Once upon a time, little one, in a stadium buzzing with 80,000 voices, England and Argentina played a football match that nobody who watched will ever, ever forget.
+        body: `Once upon a time, little one, in a stadium packed with 80,000 voices, England and Argentina played a football match that nobody who watched will ever, ever forget.
 
 This was the semi-final of the FIFA World Cup 2026. England, the Three Lions, against Argentina, the defending champions. Two giants. One place in the final.
 
-England started brilliantly. Jude Bellingham \u2014 young, fearless, with legs that never stop running \u2014 controlled the midfield like a conductor leading an orchestra. Every pass was perfect. Every run was dangerous.
+The first half was tense. Both teams were careful, respectful, knowing that one mistake could end everything. The ball moved back and forth like a heartbeat \u2014 steady, nervous, alive.
 
-In the 34th minute, Phil Foden received the ball on the left side. He cut inside, looked up, and curled a shot so beautiful it kissed the inside of the far post and rippled the net. England 1, Argentina 0.
+Then, in the 55th minute, England struck. Anthony Gordon finished a beautiful team attack, sweeping the ball into the net with confidence. England 1, Argentina 0.
 
 The English fans went wild. They sang and chanted. They could feel it \u2014 the final was so close they could almost touch it.
 
-As the match went on, England defended magnificently. Harry Kane dropped deep to help. Declan Rice won tackle after tackle. The backline was a wall of concentration.
+As the minutes ticked on, England defended with everything they had. Argentina pushed forward, but the Three Lions held firm. 70 minutes. 75. 80. The English fans started to believe. Almost there.
 
-Argentina tried everything. Juli\u00e1n \u00c1lvarez darted and dashed. Enzo Fern\u00e1ndez sprayed passes like a painter with a brush. But England held firm. Minute after minute. The clock ticked toward 90 minutes.
+And then, little one, football reminded everyone of its most magical truth: the game is never over until it is over.
 
-85 minutes. England still leading. 87 minutes. The English fans started to believe. 89 minutes. Almost there.
+In the 85th minute, Lionel Messi received the ball in midfield. At 39 years old, many people said he was too slow, too tired. But Messi does not need speed. He has something rarer \u2014 vision. He saw what nobody else could see.
 
-And then, little one, football reminded everyone of its most magical and terrifying truth: the game is never over until it is over.
+Messi created space with one gentle touch, drew two defenders toward him, and then slipped a perfect pass into the path of Enzo Fern\u00e1ndez. Fern\u00e1ndez drove the ball home with power and precision. England 1, Argentina 1.
 
-In the 90th minute, Argentina won a free kick near the edge of the box. The stadium fell silent for one heartbeat. The ball was struck with fury and desperation \u2014 and it flew into the top corner. 1-1.
+The Argentine fans erupted. But Messi was not finished.
 
-The English players sank to their knees. But there was no time to feel sorry. The game had extra time \u2014 and Argentina smelled blood.
+Deep into stoppage time \u2014 the 92nd minute \u2014 Messi received the ball one more time. The stadium held its breath. He looked up, and delivered another precise pass into the danger area. Substitute Lautaro Mart\u00ednez met it perfectly and finished the move.
 
-In the 97th minute, a long ball found \u00c1lvarez. He controlled it with his chest, spun past a defender, and struck it low and hard. The goalkeeper dived. The ball crept under his hand and into the net.
+England 1, Argentina 2.
 
-Argentina 2, England 1.
+The final whistle blew moments later. Argentina had come from behind to win in the dying minutes. Messi had not scored a single goal \u2014 but he had created both of Argentina\u2019s goals with two brilliant assists.
 
-The Argentine players piled on top of each other in a mountain of blue and white joy. The English players stood in stunned silence. The crowd was half tears, half celebration.
+And here is the beautiful lesson, little one.
 
-And here is what makes this story beautiful, little one.
+Messi could have tried to be the hero. He could have shot every time he got the ball. But instead, he did something even braver \u2014 he trusted his teammates. He created chances for others to succeed. He made Fern\u00e1ndez and Mart\u00ednez the heroes.
 
-After the whistle, Jude Bellingham walked over to \u00c1lvarez and hugged him. "You were incredible," he said. And \u00c1lvarez replied, "So were you. Never stop playing like that."
+That is what great leaders do. They do not always need to score the winning goal. They help others shine. They see what nobody else can see, and they share it.
 
-Because football is not about the last minute. It is about all the minutes. Every sprint, every pass, every moment of bravery. England played with all their heart. Argentina never gave up.
+After the match, Jude Bellingham walked over to Messi and said, "You are still the greatest." Messi smiled, hugged him, and whispered, "You will be too. Keep going."
 
-And the lesson that floats to your pillow tonight is this: never stop trying. Even when it looks impossible. Even when the clock says time is almost up. Because you never know which moment will change everything.
+Never stop believing, little one. Never stop working as a team. And remember \u2014 sometimes the biggest victories arrive in the very last minute.
 
-The game is never over until it is over.
-
-Goodnight, little one. Dream of comebacks, and of hearts that never, ever quit.`,
+Goodnight, little one. Dream of comebacks, and of leaders who lift others up.`,
       },
       {
         id: 'fifa26_ep16_egypt_argentina_final', episodeNumber: 16, title: "Egypt\u2019s Golden Run \u2014 The Final That Moved the World",
