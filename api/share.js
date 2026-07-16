@@ -100,7 +100,7 @@ const TITLES = {
   fifa26_ep11_hiro: { title: "Hiro's Big Heart at the World Cup", tradition: 'Universal', duration: 3, series: 'FIFA World Cup 2026 — USA, Mexico, Canada', ep: 11, totalEp: 12, ogImage: 'https://mysleepytale.com/media/published/fifa_world_cup_2026_dallas_ep7_hiro_s_big_heart_at_the_world__cover.jpg' },
   fifa26_ep12_erling: { title: "Erling's Golden Path: A Story of Hard Work and Kindness", tradition: 'Universal', duration: 2, series: 'FIFA World Cup 2026 — USA, Mexico, Canada', ep: 12, totalEp: 17 },
   fifa26_ep13_norway_homecoming: { title: "Norway's Golden Homecoming", tradition: 'Universal', duration: 3, series: 'FIFA World Cup 2026 — USA, Mexico, Canada', ep: 13, totalEp: 17 },
-  fifa26_ep14_france_spain: { title: "When France Danced Past Spain", tradition: 'Universal', duration: 3, series: 'FIFA World Cup 2026 — USA, Mexico, Canada', ep: 14, totalEp: 17 },
+  fifa26_ep14_spain_france: { title: "When Spain Silenced the Thunder", tradition: 'Universal', duration: 3, series: 'FIFA World Cup 2026 — USA, Mexico, Canada', ep: 14, totalEp: 17 },
   fifa26_ep15_england_argentina: { title: "The Night the Game Refused to End", tradition: 'Universal', duration: 4, series: 'FIFA World Cup 2026 — USA, Mexico, Canada', ep: 15, totalEp: 17 },
   fifa26_ep16_egypt_argentina_final: { title: "Egypt's Golden Run — The Final That Moved the World", tradition: 'Universal', duration: 4, series: 'FIFA World Cup 2026 — USA, Mexico, Canada', ep: 16, totalEp: 17 },
   fifa26_ep17_finals_ready: { title: "The Night Before the Final — When Dreams Come True", tradition: 'Universal', duration: 3, series: 'FIFA World Cup 2026 — USA, Mexico, Canada', ep: 17, totalEp: 17 },

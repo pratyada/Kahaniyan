@@ -7634,36 +7634,38 @@ Now close your eyes. Feel that warm blanket of love around you. You are enough, 
 Goodnight, little one. You are already someone\u2019s hero.`,
       },
       {
-        id: 'fifa26_ep14_france_spain', episodeNumber: 14, title: "When France Danced Past Spain",
-        subtitle: 'A quarter-final of flair, passion, and the beautiful French way.',
+        id: 'fifa26_ep14_spain_france', episodeNumber: 14, title: "When Spain Silenced the Thunder",
+        subtitle: 'Spain vs France \u2014 tiki-taka conquers lightning.',
         tradition: 'universal', theme: 'courage', durationMinutes: 3,
         multilingual: true, enableTranslation: true,
         source: 'FIFA World Cup 2026 \u00b7 Episode 14',
-        body: `Once upon a time, little one, two of the most talented football nations in the world met under the bright stadium lights. France and Spain \u2014 two countries that play football like artists paint.
+        body: `Once upon a time, little one, two of the most talented football nations in the world met under the bright stadium lights. Spain and France \u2014 two countries that play football like artists paint.
 
-Spain came in with their famous tiki-taka \u2014 short, quick passes that move like music. Pedri, their young midfield magician, controlled the ball as if it were attached to his shoes by invisible thread. Lamine Yamal, still so young, dribbled past defenders like he was dancing through a garden.
+France came in with Kylian Mbapp\u00e9 \u2014 the fastest player many have ever seen. When he gets the ball and starts running, it is like watching lightning decide to play football. Antoine Griezmann, the clever fox, drifted into spaces nobody expected. France were the favourites. France were dangerous.
 
-But France \u2014 oh, France had Kylian Mbapp\u00e9.
+But Spain \u2014 oh, Spain had something different. Something older and deeper. They had tiki-taka.
 
-Mbapp\u00e9 is the fastest player many have ever seen. When he gets the ball and starts running, it is like watching lightning decide to play football. And in this match, the lightning struck.
+Pedri, their young midfield magician, controlled the ball as if it were attached to his shoes by invisible thread. Lamine Yamal, still so young, dribbled past defenders like he was dancing through a garden. And the whole team moved as one \u2014 passing, passing, passing \u2014 like a heartbeat.
 
-In the first half, Spain controlled the game. They passed and passed and passed, searching for the perfect moment. The Spanish fans clapped to the rhythm of each pass \u2014 tap, tap, tap \u2014 like a heartbeat.
+In the first half, France tried to strike fast. Mbapp\u00e9 sprinted down the wing and nearly scored with a thundering shot. The French fans roared. It looked like the lightning might win.
 
-But France was patient. Antoine Griezmann, the clever fox, kept drifting into spaces nobody expected. Aur\u00e9lien Tchouam\u00e9ni won every ball in midfield like a gentle giant guarding a castle.
+But Spain were patient. They kept the ball. They passed it left, then right, then through the middle. Tap, tap, tap. The Spanish fans clapped to the rhythm. And slowly, beautifully, France began to chase shadows.
 
-Then, just before halftime, Mbapp\u00e9 received the ball near the halfway line. He looked up. He saw a tiny gap between two Spanish defenders. And he ran.
+Then, just before halftime, Pedri played a pass so perfect it seemed to bend through time. Lamine Yamal received it in the box, looked up with those fearless young eyes, and placed the ball into the far corner with the calmness of someone who had done this a thousand times in his dreams. Spain 1, France 0.
 
-The stadium gasped. Mbapp\u00e9 flew past one defender, then another, and then \u2014 with the softest touch \u2014 slid the ball past the goalkeeper. The French fans exploded with joy. The stadium shook.
+The stadium erupted in red and gold.
 
-Spain tried everything in the second half. They pushed forward bravely, and Pedri nearly scored with a beautiful curling shot. But the French goalkeeper, Mike Maignan, stretched like a cat and tipped it over the bar.
+In the second half, France threw everything forward. Mbapp\u00e9 ran and ran and ran. Griezmann tried every trick. But Spain\u2019s defence held firm \u2014 Rodri standing like a lighthouse in midfield, winning every challenge, redirecting every attack.
 
-France added another goal through Griezmann \u2014 a cheeky chip that floated over the goalkeeper and into the net like a feather landing on a lake.
+And then, in the 78th minute, Spain struck again. A flowing move that involved seventeen passes \u2014 seventeen! \u2014 ended with Yamal sliding the ball across to Dani Olmo, who swept it home. Spain 2, France 0.
 
-Spain\u2019s players walked off the pitch with their heads high. They had played beautifully. Sometimes, little one, you can play wonderfully and still not win. That does not mean you were not wonderful.
+Mbapp\u00e9 stood in the centre circle, hands on his hips. Not angry. Just admiring. Because he knew what everyone in the stadium knew: Spain had played the most beautiful football of the tournament.
 
-And France danced on. Mbapp\u00e9 smiled his electric smile. The dream of another World Cup final was alive.
+The French players walked off with their heads high. They had given everything. Mbapp\u00e9 hugged Pedri and whispered, "Go win it all."
 
-Now close your eyes and dream of running fast \u2014 so fast that the wind cannot catch you, and every step feels like flying.
+And Spain danced on. Yamal smiled his electric smile. The dream of another World Cup final was alive.
+
+Now close your eyes and dream of something beautiful \u2014 of passes that connect, of teams that move like music, and of young hearts that play without fear.
 
 Goodnight, little one. Dream boldly.`,
       },
