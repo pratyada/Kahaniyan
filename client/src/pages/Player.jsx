@@ -809,7 +809,7 @@ function PlayerInner() {
     if (recoveredRef.current) { setRecoveryDone(true); return; }
     recoveredRef.current = true;
 
-    const urlStoryId = new URLSearchParams(window.location.search).get('storyId');
+    const urlStoryId = new URLSearchParams(window.location.search).get('storyId') || window.location.pathname.match(/\/story\/(.+)/)?.[1] || '';
 
     // If current already matches the URL storyId and has text — we're good
     if (current?.text && current?.id === urlStoryId) { setRecoveryDone(true); return; }
@@ -993,20 +993,20 @@ function PlayerInner() {
 
   // === All hooks are above this line. Conditional returns below. ===
 
-  const urlStoryId = new URLSearchParams(window.location.search).get('storyId');
-  const storyMatchesUrl = !urlStoryId || current?.id === urlStoryId;
-
-  // Story loaded and matches URL — proceed to render
-  if (current?.text && storyMatchesUrl) {
+  // Story loaded with text — always proceed to render (trust the loaded data)
+  if (current?.text) {
     // All good — fall through to main render
   }
   // Still loading — show spinner (never show error while recovery is in progress)
   else if (!recoveryDone) {
     return (<div className="flex h-screen flex-col items-center justify-center bg-bg-base px-6 text-center"><div className="text-3xl mb-3 animate-pulse">🌙</div><p className="text-sm text-ink-muted">Loading story...</p></div>);
   }
-  // Recovery done, have URL but wrong/no story loaded — show error
-  else if (urlStoryId && (!current || !current.text || current.id !== urlStoryId)) {
-    return (<div className="flex h-screen flex-col items-center justify-center bg-bg-base px-6 text-center"><div className="text-4xl mb-4">😔</div><h1 className="font-display text-xl font-bold text-gold">Story not found</h1><p className="mt-2 text-sm text-ink-muted">This story may have been removed or the link is incorrect.</p><button onClick={() => { clear(); navigate('/'); }} className="btn-primary mt-6">{t('player.backToHome')}</button></div>);
+  // Recovery done but no story loaded — show error
+  else if (!current || !current.text) {
+    const hasUrlId = new URLSearchParams(window.location.search).get('storyId') || window.location.pathname.match(/\/story\/(.+)/)?.[1];
+    if (hasUrlId) {
+      return (<div className="flex h-screen flex-col items-center justify-center bg-bg-base px-6 text-center"><div className="text-4xl mb-4">😔</div><h1 className="font-display text-xl font-bold text-gold">Story not found</h1><p className="mt-2 text-sm text-ink-muted">This story may have been removed or the link is incorrect.</p><button onClick={() => { clear(); navigate('/'); }} className="btn-primary mt-6">{t('player.backToHome')}</button></div>);
+    }
   }
   // No URL, no story — go home
   else if (!current) {
