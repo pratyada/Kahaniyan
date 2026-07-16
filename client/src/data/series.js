@@ -866,7 +866,7 @@ Goodnight, little one.`,
   },
   {
     id: 'dr-spock-parenting',
-    title: 'Dr. Sleepy's Parenting Corner',
+    title: "Dr. Sleepy\u2019s Parenting Corner",
     icon: '👨‍⚕️',
     gradient: 'linear-gradient(135deg, #1e3a5f 0%, #2563eb 50%, #93c5fd 100%)',
     createdBy: 'deepti.ramaul@gmail.com', creatorName: 'Deepti Ramaul', creatorUsername: 'deepti-ramaul',
@@ -879,7 +879,7 @@ Goodnight, little one.`,
         subtitle: 'A parent worries their child is behind. Dr. Sleepy reassures them.',
         tradition: 'universal', theme: 'development', durationMinutes: 2,
         value: 'wisdom',
-        source: 'Dr. Sleepy's Parenting Corner · Episode 1',
+        source: 'Dr. Sleepy\u2019s Parenting Corner \u00b7 Episode 1',
         body: `"Dr. Sleepy, my {childName} just turned four. Other kids in class are writing their names already. Mine still scribbles. Should I be worried?"
 
 Dr. Sleepy leaned back and smiled. "Trust yourself. You know more than you think you do. Every child has their own clock. Some walk at nine months, some at fifteen. Neither is better."
@@ -911,7 +911,7 @@ Good night, {childName}. You are growing at exactly the right speed.`,
         subtitle: 'When your child is sick — what to worry about and what to let pass.',
         tradition: 'universal', theme: 'health', durationMinutes: 2,
         value: 'wisdom',
-        source: 'Dr. Sleepy's Parenting Corner · Episode 2',
+        source: 'Dr. Sleepy\u2019s Parenting Corner \u00b7 Episode 2',
         body: `"Dr. Sleepy, {childName} has had a runny nose for five days. I have wiped that nose a hundred times. When do I call the doctor?"
 
 "A cold is a cold. Seven to ten days of sniffles, maybe a mild fever, a little cough. That is the body doing its job. Rest, fluids, and patience."
@@ -943,7 +943,7 @@ Sleep well tonight, {childName}. Your body is strong and knows how to heal.`,
         subtitle: 'What you can handle at home — and when to rush to the ER.',
         tradition: 'universal', theme: 'safety', durationMinutes: 2,
         value: 'courage',
-        source: 'Dr. Sleepy's Parenting Corner · Episode 3',
+        source: 'Dr. Sleepy\u2019s Parenting Corner \u00b7 Episode 3',
         body: `"Dr. Sleepy, {childName} fell off the swing today and scraped both knees. There was so much blood I almost panicked."
 
 "Scrapes always look worse than they are. Wash gently with soap and water. Press a clean cloth on it. Once the bleeding stops, a bandage and a kiss. That is the whole treatment."
@@ -971,7 +971,7 @@ Good night, {childName}. A few scrapes just mean you had a brave day.`,
         subtitle: 'Tantrums, tough questions, and the word NO — Dr. Sleepy explains.',
         tradition: 'universal', theme: 'behavior', durationMinutes: 2,
         value: 'patience',
-        source: 'Dr. Sleepy's Parenting Corner · Episode 4',
+        source: 'Dr. Sleepy\u2019s Parenting Corner \u00b7 Episode 4',
         body: `"Dr. Sleepy, {childName} threw a full tantrum at the grocery store today. Screaming, kicking, on the floor. Everyone was staring."
 
 "Let them stare. A tantrum is not bad parenting. It is a small person with big feelings and no tools to manage them yet."
@@ -999,7 +999,7 @@ Good night, {childName}. Your big feelings mean you have a big heart.`,
         subtitle: 'When your child is different — Dr. Sleepy on disability, difference, and love.',
         tradition: 'universal', theme: 'inclusion', durationMinutes: 2,
         value: 'compassion',
-        source: 'Dr. Sleepy's Parenting Corner · Episode 5',
+        source: 'Dr. Sleepy\u2019s Parenting Corner \u00b7 Episode 5',
         body: `"Dr. Sleepy, we just got the diagnosis. The doctor said {childName} has a developmental delay. I have not stopped crying."
 
 "Then cry. Grief is not weakness. You are mourning the path you imagined. That is human."
