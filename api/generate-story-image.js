@@ -20,10 +20,11 @@ export default async function handler(req, res) {
       },
       body: JSON.stringify({
         model: 'gpt-image-1',
-        prompt: `Children's bedtime storybook illustration, soft watercolor style, warm dreamy colors, no text or words anywhere in the image: ${prompt}`,
+        prompt: `Children's bedtime storybook illustration, soft watercolor style, warm dreamy colors, no text or words anywhere in the image. No real people or celebrities, only fictional cartoon characters: ${prompt}`,
         n: 1,
         size: '1024x1024',
         quality: 'low',
+        output_format: 'b64_json',
       }),
     });
 
