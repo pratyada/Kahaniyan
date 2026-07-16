@@ -1032,7 +1032,7 @@ Good night, {childName}. You shine in your own way, and the world is brighter be
         tradition: 'universal', theme: 'wisdom', durationMinutes: 3,
         multilingual: true, enableTranslation: true,
         source: 'Dr. Sleepy\u2019s Parenting Corner \u00b7 Episode 6',
-        body: `"Dr. Sleepy, the sky turned orange today. {childName} asked me why the sun looks like a big red ball."
+        body: `"Dr. Sleepy, the sky turned orange today. My little one asked me why the sun looks like a big red ball."
 
 Dr. Sleepy smiled gently. "That is wildfire smoke, little one. When forests far away catch fire, the wind carries the smoke across the sky. It makes the sun look red and the air look hazy. Brave firefighters are working very hard to put the fires out."
 
@@ -1040,11 +1040,11 @@ Dr. Sleepy smiled gently. "That is wildfire smoke, little one. When forests far 
 
 "It can be, especially for little lungs like yours. But here is the wonderful news \u2014 there are five special rules that will keep you safe. Can you count them on your fingers?"
 
-{childName} held up one hand, ready to count.
+The little one held up one hand, ready to count.
 
 "Number one \u2014 Stay Inside and Play. When the sky looks hazy or orange, keep your playing indoors. Build a fort, draw a picture, read a story. Outside can wait for a blue-sky day."
 
-{childName} put up one finger.
+One finger up.
 
 "Number two \u2014 Drink Lots of Water. Smoke makes the air dry and your throat scratchy. Water is your superpower! Keep sipping all day long, like a little camel getting ready for an adventure."
 
@@ -1060,7 +1060,7 @@ Four fingers now.
 
 "And number five \u2014 Tell a Grown-Up If You Feel Funny. If your chest feels tight, your eyes sting, your throat gets scratchy, or you start coughing \u2014 tell your mom, dad, or teacher right away. Your body is very smart. Listen to it."
 
-All five fingers up! {childName} smiled.
+All five fingers up! The little one smiled.
 
 "Now let us count them one more time. One \u2014 stay inside. Two \u2014 drink water. Three \u2014 close windows. Four \u2014 no big running outside. Five \u2014 tell a grown-up if you feel funny."
 
@@ -1068,7 +1068,7 @@ All five fingers up! {childName} smiled.
 
 "Always, little one. Always. The fires will pass. The smoke will clear. And the sky will be the most beautiful blue you have ever seen. It always comes back."
 
-You are so smart for learning these rules, {childName}. You are like a little safety expert now.
+You are so smart for learning these rules, little one. You are like a little safety expert now.
 
 Goodnight, little one. Breathe easy. You are safe.`,
       },
