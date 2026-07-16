@@ -22,6 +22,8 @@ const STORY_ART = {
   fifa26_ep16_egypt_argentina_final: { gradient: 'linear-gradient(135deg, #c09300 0%, #000000 40%, #c41e3a 100%)', icon: '🇪🇬', accent: '#c09300', prompt: 'Egyptian footballer Salah with golden pyramids behind him, World Cup trophy glowing in stadium lights, Egyptian and Argentine fans together giving standing ovation, tears and respect, warm golden atmosphere, childrens book illustration' },
   fifa26_ep17_finals_ready: { gradient: 'linear-gradient(135deg, #ffd700 0%, #75aadb 40%, #c60b1e 100%)', icon: '🏆', accent: '#ffd700', prompt: 'Golden World Cup trophy gleaming on a pedestal at centre of a magnificent stadium, Argentine blue-white flag and Spanish red-yellow flag on either side, stars twinkling above, magical anticipation, childrens book illustration' },
 
+  dsp_ep6_wildfires: { gradient: 'linear-gradient(135deg, #ff6b35 0%, #d4380d 40%, #1a1a2e 100%)', icon: '🔥', accent: '#ff6b35', prompt: 'A parent and child looking out a window at an orange smoky sky, air purifier running nearby, cozy safe indoor scene, warm lamp light, gentle caring atmosphere, childrens book illustration' },
+
   multilingual_lion_mouse: {
     gradient: 'linear-gradient(135deg, #b45309 0%, #f59e0b 40%, #fde68a 100%)',
     icon: '🦁', accent: '#f59e0b',

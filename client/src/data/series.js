@@ -870,9 +870,9 @@ Goodnight, little one.`,
     icon: '👨‍⚕️',
     gradient: 'linear-gradient(135deg, #1e3a5f 0%, #2563eb 50%, #93c5fd 100%)',
     createdBy: 'deepti.ramaul@gmail.com', creatorName: 'Deepti Ramaul', creatorUsername: 'deepti-ramaul',
-    description: 'Five bedtime conversations with Dr. Sleepy — inspired by Dr. Sleepy\'s timeless parenting wisdom. A gentle doctor answers a parent\'s real questions about raising 3-to-5-year-olds.',
-    ageRange: '3-5',
-    totalEpisodes: 5,
+    description: 'Bedtime conversations with Dr. Sleepy — inspired by Dr. Spock\'s timeless parenting wisdom. A gentle doctor answers a parent\'s real questions about raising little ones.',
+    ageRange: '3-8',
+    totalEpisodes: 6,
     episodes: [
       {
         id: 'dsp_ep1_development', episodeNumber: 1, title: 'Growing So Fast',
@@ -1025,6 +1025,56 @@ Good night, {childName}. Your big feelings mean you have a big heart.`,
 "No parent is enough alone. Build your team — doctors, teachers, therapists, other parents who understand. And remember what I always say. Trust yourself. You know this child better than any specialist ever will."
 
 Good night, {childName}. You shine in your own way, and the world is brighter because of it.`,
+      },
+      {
+        id: 'dsp_ep6_wildfires', episodeNumber: 6, title: 'When the Sky Turns Orange',
+        subtitle: 'Wildfires, smoky skies, and how to keep little lungs safe.',
+        tradition: 'universal', theme: 'wisdom', durationMinutes: 3,
+        multilingual: true, enableTranslation: true,
+        source: 'Dr. Sleepy\u2019s Parenting Corner \u00b7 Episode 6',
+        body: `"Dr. Sleepy, the sky turned orange today. {childName} asked me why the sun looks like a big red ball. I didn\u2019t know what to say. And honestly\u2026 I\u2019m worried about the air."
+
+Dr. Sleepy nodded slowly. "You are right to be concerned. Wildfires are burning across Canada right now, and the smoke can travel hundreds of kilometres. That hazy, orange sky your little one noticed? That is wildfire smoke. And while it may look dramatic, the real danger is what you cannot see \u2014 tiny particles in the air that are too small for your eyes but not too small for little lungs."
+
+"Is it dangerous for kids?"
+
+"Children breathe faster than adults. Their lungs are still growing. And they tend to play hard \u2014 running, jumping, shouting \u2014 which means they pull more air in. So yes, smoky air affects children more than it affects us. But here is the good news: there is a lot you can do to protect them."
+
+"Tell me everything."
+
+Dr. Sleepy smiled. "Let us start with the simple things.
+
+First, check the air quality before going outside. You can look up the Air Quality Health Index \u2014 the AQHI \u2014 on your phone or on the Weather Network. If it says high risk or very high risk, keep outdoor time short. Save the running and playground visits for days when the air is cleaner.
+
+Second, keep windows and doors closed when the smoke is thick. I know children love fresh air, but on smoky days, inside air is safer air. If you have an air purifier with a HEPA filter, turn it on. If you do not have one, even running the fan on your furnace can help filter some particles.
+
+Third, if your child has asthma or allergies, make sure their medication is up to date and within reach. Smoke can trigger flare-ups even in children who have not had symptoms in months."
+
+"What about those little masks? Should {childName} wear one?"
+
+"A well-fitting N95 or KN95 mask can help if you must go outside in heavy smoke. But for very young children, masks are tricky \u2014 they do not seal well on small faces. The best protection for little ones is simply staying indoors when the air is bad."
+
+"{childName} keeps asking why there are so many fires. How do I explain that?"
+
+Dr. Sleepy leaned forward gently. "You tell them the truth, in a way their heart can hold. You say: the forests are very dry this summer, and sometimes fires start. Brave firefighters are working very hard to put them out. The orange sky means the wind is carrying smoke from far away. It will not last forever. The sky will be blue again."
+
+"And then?"
+
+"And then you say: our job is to take care of each other while the sky heals. We stay inside, we drink water, we play quiet games, we read stories. We are safe in our home."
+
+"What if they are scared?"
+
+"Then you hold them. Fear is natural. But children take their cues from us. If you are calm, they will be calm. And remind them \u2014 the sky has turned orange before, and it always, always turns blue again."
+
+"{childName}, here is what Dr. Sleepy wants you to remember, little one:
+
+When the sky looks funny and the air smells smoky, stay inside and play. Drink lots of water. If you go outside, keep it short \u2014 no big running on smoky days. And if you feel your chest getting tight or your throat getting scratchy, tell a grown-up right away.
+
+You are so smart for noticing the orange sky. That means you are paying attention to the world around you. And that is a wonderful thing.
+
+The fires will pass. The smoke will clear. And the sky will be the most beautiful blue you have ever seen.
+
+Goodnight, little one. Breathe easy. You are safe."`,
       },
     ],
   },

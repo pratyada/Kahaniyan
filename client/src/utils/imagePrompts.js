@@ -41,6 +41,8 @@ export const STORY_PROMPTS = {
   fifa26_ep16_egypt_argentina_final: 'Mohamed Salah standing in centre of World Cup final stadium with golden pyramids magically visible behind him, Egyptian fans in tears of pride, Argentine players walking over to embrace Egyptian players in respect, standing ovation from entire stadium, golden trophy glowing nearby, Pixar-meets-Ghibli watercolor bedtime illustration',
   fifa26_ep17_finals_ready: 'Golden FIFA World Cup trophy gleaming on a pedestal at centre of a magnificent stadium at night, Argentine blue-white flag on one side Spanish red-yellow flag on the other, stars twinkling above, magical anticipation in the air, empty pitch waiting for the greatest match, Pixar-meets-Ghibli watercolor bedtime illustration',
 
+  dsp_ep6_wildfires: 'A parent and child sitting together on a cozy couch looking out a large window at a dramatic orange smoky sky, an air purifier glowing blue nearby, stuffed animals and books scattered around, warm safe indoor scene with soft lamp light, the child pointing at the sky with curiosity not fear, gentle caring atmosphere, Pixar-meets-Ghibli watercolor bedtime illustration',
+
   // ══════ MULTILINGUAL ══════
   multilingual_lion_mouse: 'A majestic golden lion lying under a baobab tree with a tiny white mouse standing on his paw, golden African savanna at sunset, nine colorful speech bubbles floating around them with different scripts (Hindi, Arabic, Chinese, Tamil, French, Spanish, Polish, Hungarian), warm bedtime illustration style',
   // ══════ WISDOM STORIES ══════
