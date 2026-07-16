@@ -7242,7 +7242,7 @@ Prophet Muhammad, peace be upon him, said, "Tie your camel, then trust in Allah.
     gradient: 'linear-gradient(135deg, #1a472a 0%, #006837 40%, #ffd700 100%)',
     description: 'The greatest show on Earth comes to YOUR backyard — Toronto, Vancouver, New York, Mexico City! Learn about countries, champions, and the beautiful game through bedtime stories in English, Spanish, French & Hindi. New episodes as matches happen!',
     ageRange: '3-10',
-    totalEpisodes: 12,
+    totalEpisodes: 17,
     episodes: [
       {
         id: 'fifa26_ep1_history', episodeNumber: 1, title: 'How the World Cup Began',
@@ -7598,6 +7598,218 @@ Maya held the golden ball and smiled. She understood now \u2014 heroes aren't ju
 As the golden ball faded into starlight, Maya's eyes grew wonderfully heavy. The lesson settled into her heart like the softest pillow.
 
 Goodnight, little one. Dream of your own golden path.`,
+      },
+      {
+        id: 'fifa26_ep13_norway_homecoming', episodeNumber: 13, title: "Norway's Golden Homecoming",
+        subtitle: 'A nation welcomes home its heroes — because love does not need a trophy.',
+        tradition: 'universal', theme: 'gratitude', durationMinutes: 3,
+        multilingual: true, enableTranslation: true,
+        source: 'FIFA World Cup 2026 \u00b7 Episode 13',
+        body: `Once upon a time, little one, a plane flew through the cold, clear skies above Norway, carrying a team of footballers who had just lost a very big match.
+
+In the quarter-finals of the FIFA World Cup 2026, Norway had faced England \u2014 the Three Lions, a team with history as heavy as a crown. And England had won.
+
+On the pitch, Erling Haaland had given everything. He had sprinted like the northern wind. He had shot with all his strength. His teammates \u2014 Martin \u00d8degaard with his magical feet, Sander Berge with his giant heart \u2014 had played with a fire that made the whole world lean forward in their seats.
+
+But sometimes, little one, even when you play your very best, the other team plays a little better. And that is not failure. That is football.
+
+When the final whistle blew, Erling did not hang his head. He walked to every England player and shook their hand. He hugged his teammates and whispered, "I am so proud of us."
+
+And then came the most beautiful part of all.
+
+When the plane landed in Oslo, the capital of Norway, the team expected a quiet airport. Maybe a few family members. Maybe a bus home.
+
+Instead, they found thousands. Tens of thousands. The streets from the airport to the city centre were lined with people waving Norwegian flags \u2014 red, white, and blue, fluttering like a river of love. Children sat on their parents\u2019 shoulders, holding signs that said "You are our heroes" and "Thank you for making us dream."
+
+Erling stepped off the plane and his eyes filled with tears. Not because he was sad. Because he felt something even bigger than winning \u2014 he felt loved. He felt that his country was saying, "You gave us joy. You gave us hope. You gave us weeks of believing in something beautiful."
+
+The mayor of Oslo gave a speech. She said, "You did not bring home a trophy. You brought home something more important \u2014 you brought home pride."
+
+And little one, that is the lesson the Norwegian wind carries to your pillow tonight. You do not need to win to be a hero. You need to try your hardest, treat others with kindness, and come home knowing you gave your very best.
+
+That is what Norway did. And their country loved them for it.
+
+Now close your eyes. Feel that warm blanket of love around you. You are enough, just as you are.
+
+Goodnight, little one. You are already someone\u2019s hero.`,
+      },
+      {
+        id: 'fifa26_ep14_france_spain', episodeNumber: 14, title: "When France Danced Past Spain",
+        subtitle: 'A quarter-final of flair, passion, and the beautiful French way.',
+        tradition: 'universal', theme: 'courage', durationMinutes: 3,
+        multilingual: true, enableTranslation: true,
+        source: 'FIFA World Cup 2026 \u00b7 Episode 14',
+        body: `Once upon a time, little one, two of the most talented football nations in the world met under the bright stadium lights. France and Spain \u2014 two countries that play football like artists paint.
+
+Spain came in with their famous tiki-taka \u2014 short, quick passes that move like music. Pedri, their young midfield magician, controlled the ball as if it were attached to his shoes by invisible thread. Lamine Yamal, still so young, dribbled past defenders like he was dancing through a garden.
+
+But France \u2014 oh, France had Kylian Mbapp\u00e9.
+
+Mbapp\u00e9 is the fastest player many have ever seen. When he gets the ball and starts running, it is like watching lightning decide to play football. And in this match, the lightning struck.
+
+In the first half, Spain controlled the game. They passed and passed and passed, searching for the perfect moment. The Spanish fans clapped to the rhythm of each pass \u2014 tap, tap, tap \u2014 like a heartbeat.
+
+But France was patient. Antoine Griezmann, the clever fox, kept drifting into spaces nobody expected. Aur\u00e9lien Tchouam\u00e9ni won every ball in midfield like a gentle giant guarding a castle.
+
+Then, just before halftime, Mbapp\u00e9 received the ball near the halfway line. He looked up. He saw a tiny gap between two Spanish defenders. And he ran.
+
+The stadium gasped. Mbapp\u00e9 flew past one defender, then another, and then \u2014 with the softest touch \u2014 slid the ball past the goalkeeper. The French fans exploded with joy. The stadium shook.
+
+Spain tried everything in the second half. They pushed forward bravely, and Pedri nearly scored with a beautiful curling shot. But the French goalkeeper, Mike Maignan, stretched like a cat and tipped it over the bar.
+
+France added another goal through Griezmann \u2014 a cheeky chip that floated over the goalkeeper and into the net like a feather landing on a lake.
+
+Spain\u2019s players walked off the pitch with their heads high. They had played beautifully. Sometimes, little one, you can play wonderfully and still not win. That does not mean you were not wonderful.
+
+And France danced on. Mbapp\u00e9 smiled his electric smile. The dream of another World Cup final was alive.
+
+Now close your eyes and dream of running fast \u2014 so fast that the wind cannot catch you, and every step feels like flying.
+
+Goodnight, little one. Dream boldly.`,
+      },
+      {
+        id: 'fifa26_ep15_england_argentina', episodeNumber: 15, title: "The Night the Game Refused to End",
+        subtitle: 'England vs Argentina \u2014 when the last minute rewrites everything.',
+        tradition: 'universal', theme: 'wisdom', durationMinutes: 4,
+        multilingual: true, enableTranslation: true,
+        source: 'FIFA World Cup 2026 \u00b7 Episode 15',
+        body: `Once upon a time, little one, in a stadium buzzing with 80,000 voices, England and Argentina played a football match that nobody who watched will ever, ever forget.
+
+This was the semi-final of the FIFA World Cup 2026. England, the Three Lions, against Argentina, the defending champions. Two giants. One place in the final.
+
+England started brilliantly. Jude Bellingham \u2014 young, fearless, with legs that never stop running \u2014 controlled the midfield like a conductor leading an orchestra. Every pass was perfect. Every run was dangerous.
+
+In the 34th minute, Phil Foden received the ball on the left side. He cut inside, looked up, and curled a shot so beautiful it kissed the inside of the far post and rippled the net. England 1, Argentina 0.
+
+The English fans went wild. They sang and chanted. They could feel it \u2014 the final was so close they could almost touch it.
+
+As the match went on, England defended magnificently. Harry Kane dropped deep to help. Declan Rice won tackle after tackle. The backline was a wall of concentration.
+
+Argentina tried everything. Juli\u00e1n \u00c1lvarez darted and dashed. Enzo Fern\u00e1ndez sprayed passes like a painter with a brush. But England held firm. Minute after minute. The clock ticked toward 90 minutes.
+
+85 minutes. England still leading. 87 minutes. The English fans started to believe. 89 minutes. Almost there.
+
+And then, little one, football reminded everyone of its most magical and terrifying truth: the game is never over until it is over.
+
+In the 90th minute, Argentina won a free kick near the edge of the box. The stadium fell silent for one heartbeat. The ball was struck with fury and desperation \u2014 and it flew into the top corner. 1-1.
+
+The English players sank to their knees. But there was no time to feel sorry. The game had extra time \u2014 and Argentina smelled blood.
+
+In the 97th minute, a long ball found \u00c1lvarez. He controlled it with his chest, spun past a defender, and struck it low and hard. The goalkeeper dived. The ball crept under his hand and into the net.
+
+Argentina 2, England 1.
+
+The Argentine players piled on top of each other in a mountain of blue and white joy. The English players stood in stunned silence. The crowd was half tears, half celebration.
+
+And here is what makes this story beautiful, little one.
+
+After the whistle, Jude Bellingham walked over to \u00c1lvarez and hugged him. "You were incredible," he said. And \u00c1lvarez replied, "So were you. Never stop playing like that."
+
+Because football is not about the last minute. It is about all the minutes. Every sprint, every pass, every moment of bravery. England played with all their heart. Argentina never gave up.
+
+And the lesson that floats to your pillow tonight is this: never stop trying. Even when it looks impossible. Even when the clock says time is almost up. Because you never know which moment will change everything.
+
+The game is never over until it is over.
+
+Goodnight, little one. Dream of comebacks, and of hearts that never, ever quit.`,
+      },
+      {
+        id: 'fifa26_ep16_egypt_argentina_final', episodeNumber: 16, title: "Egypt\u2019s Golden Run \u2014 The Final That Moved the World",
+        subtitle: 'Egypt played the final of their dreams \u2014 and won every heart.',
+        tradition: 'universal', theme: 'courage', durationMinutes: 4,
+        multilingual: true, enableTranslation: true,
+        source: 'FIFA World Cup 2026 \u00b7 Episode 16',
+        body: `Once upon a time, little one, a team from the land of the pyramids walked onto the biggest stage in football \u2014 the FIFA World Cup Final.
+
+Egypt. A country that had waited over 90 years to return to the World Cup. A country where football is not just a sport \u2014 it is the heartbeat of 100 million people. And now, somehow, wonderfully, impossibly, they were in the final.
+
+Their journey had been a fairy tale. They had beaten teams nobody expected them to beat. Their fans \u2014 thousands who had travelled from Cairo, Alexandria, and tiny villages along the Nile \u2014 had made every stadium feel like home.
+
+Mohamed Salah, the Egyptian King, had played the tournament of his life. At 34, many said he was too old for this stage. But Salah had answered with goals, assists, and moments of magic that reminded the world why they fell in love with him.
+
+In the final, Egypt faced Argentina \u2014 Lionel Scaloni\u2019s defending champions, hungry for a third consecutive trophy.
+
+From the first minute, Egypt played without fear. They pressed high. They moved the ball with confidence. Omar Marmoush, the young striker from Frankfurt, ran at the Argentine defence like a sandstorm.
+
+In the 23rd minute, Salah received the ball on the right wing. He did what only Salah can do \u2014 he cut inside onto his left foot, and curled a shot that seemed to bend through time itself. The ball found the net. Egypt 1, Argentina 0.
+
+The Egyptian fans went absolutely wild. Drums, chants, flags \u2014 the stadium became Cairo for ten glorious minutes.
+
+But Argentina are Argentina. They do not panic. They breathe, they reset, and they come again.
+
+Before halftime, \u00c1lvarez equalised with a fierce shot from outside the box. In the second half, Argentina\u2019s experience began to show. They controlled possession, they slowed the game, they waited for their moment.
+
+And then came the decisions that will be debated for years.
+
+A penalty was given to Argentina \u2014 a soft challenge in the box that Egyptian players surrounded the referee to protest. The replays were unclear. Fans around the world argued. But the decision stood. Argentina converted. 2-1.
+
+Egypt pushed forward with everything they had. In the 85th minute, Marmoush hit the crossbar with a header that shook the stadium. In the 88th minute, a shot from Tr\u00e9z\u00e9guet was cleared off the line by a sliding Argentine defender.
+
+So close. So painfully, beautifully close.
+
+When the final whistle blew, the Egyptian players fell to the grass. Some cried. Some lay staring at the sky. And then something extraordinary happened.
+
+The Argentine players, the winners, walked to every Egyptian player and lifted them up. Embraced them. Told them they were warriors.
+
+Salah stood in the centre circle, tears streaming, and the entire stadium \u2014 Argentine fans and Egyptian fans together \u2014 gave him a standing ovation. Because everyone knew: Egypt had not just played a final. They had played the hearts of every person watching.
+
+And little one, here is what the Egyptian stars whisper to you tonight. You do not need the trophy to win respect. You do not need the perfect ending to have a perfect story. What matters is how you play. How you treat people. How you rise after every fall.
+
+Egypt rose higher than the pyramids this summer. And the world will never forget it.
+
+Now close your eyes. Feel the warm desert wind. Hear the gentle drums. You played beautifully today, little one. And that is enough.
+
+Goodnight. The Pharaohs are watching over you.`,
+      },
+      {
+        id: 'fifa26_ep17_finals_ready', episodeNumber: 17, title: "The Night Before the Final \u2014 When Dreams Come True",
+        subtitle: 'Two matches remain \u2014 the third-place game and THE FINAL. The world holds its breath.',
+        tradition: 'universal', theme: 'inspirational', durationMinutes: 3,
+        multilingual: true, enableTranslation: true,
+        source: 'FIFA World Cup 2026 \u00b7 Episode 17',
+        body: `Once upon a time, little one, there were two matches left in the greatest football tournament on Earth.
+
+The FIFA World Cup 2026 had given us everything. Tears and joy. Upsets and comebacks. Tiny nations roaring and giants stumbling. Goals that made stadiums shake and saves that made time stand still.
+
+And now, only four teams remained.
+
+For the third-place match, England and Egypt would meet one last time. Two teams whose World Cup dreams had ended just one step from the final. But here is the beautiful thing about the third-place match, little one \u2014 it is not about sadness. It is about celebration.
+
+England\u2019s Jude Bellingham had become one of the stars of the tournament. Young, brave, playing every match like it was the most important of his life. And Egypt\u2019s Mohamed Salah had shown the world that age is just a number when your heart is made of gold.
+
+Both teams would play for pride. For their fans who had travelled so far. For every child watching at home who wanted to see their heroes one more time.
+
+And then \u2014 THE FINAL.
+
+France vs Argentina. Two football empires. Two teams who believe the World Cup belongs to them.
+
+France, with Mbapp\u00e9 running like the wind, Griezmann scheming like a chess master, and a defence that bends but never breaks.
+
+Argentina, with the ghost of Messi\u2019s 2022 magic still in their hearts, with \u00c1lvarez\u2019s impossible goals, with Fern\u00e1ndez pulling strings from midfield, and with the hunger of a team trying to win three in a row \u2014 something no country has done in 80 years.
+
+In dressing rooms across the city, boots were being polished. Shirts were being folded. Players were calling their families.
+
+"Are you nervous?" a little boy in Paris asked his father.
+
+"Yes," said his father. "But the best kind of nervous. The kind that means something wonderful is about to happen."
+
+And in Buenos Aires, a little girl asked her grandmother, "Will Argentina win?"
+
+Her grandmother smiled. "Win or lose, mi amor, we have already won. We got to watch. We got to dream. We got to feel alive."
+
+And that, little one, is what the World Cup is really about. Not just the trophy. Not just the goals. But the feeling \u2014 that beautiful, tingly, heart-pounding feeling \u2014 that the whole world is watching the same ball, at the same time, holding the same breath.
+
+Tomorrow, someone will lift the golden trophy. Someone will be champion of the world. But tonight, everyone is equal. Everyone is dreaming.
+
+So close your eyes. Hold your own golden dream in your hands. Feel the excitement bubbling in your chest.
+
+Because tomorrow, anything can happen.
+
+And that is the most magical sentence in all of sport.
+
+Goodnight, little one. Dream of the final. Dream of magic. Dream of golden evenings and beautiful goals and stadiums full of love.
+
+The world\u2019s most beautiful game continues tomorrow.`,
       },
     ],
   },
