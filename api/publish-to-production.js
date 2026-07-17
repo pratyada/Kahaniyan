@@ -4,9 +4,7 @@
 // This endpoint writes to S3 as a "production registry" — the actual series.js stays in git.
 // The Player checks this registry as an additional source.
 
-import { getFirestore } from './_firebase.js';
-
-const FOUNDER_EMAILS = ['prateekyadav2010@gmail.com', 'rakshajoshi476@gmail.com'];
+import { getFirestore, FOUNDER_EMAILS } from './_firebase.js';
 
 export default async function handler(req, res) {
   if (req.method !== 'POST') return res.status(405).json({ error: 'POST only' });

@@ -1,9 +1,7 @@
 // POST /api/publish-content — Publish story/episode/series/blog to production.
 // Saves to Firestore, uploads images + blog HTML to S3, returns live links.
 
-import { getFirestore } from './_firebase.js';
-
-const FOUNDER_EMAILS = ['prateekyadav2010@gmail.com', 'rakshajoshi476@gmail.com'];
+import { getFirestore, FOUNDER_EMAILS } from './_firebase.js';
 const BUCKET = 'mysleepytale-app';
 const SITE = 'https://mysleepytale.com';
 

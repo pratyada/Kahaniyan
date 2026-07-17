@@ -10,7 +10,7 @@ import { db } from '../lib/firebase.js';
 import { collection, query, where, orderBy, limit, getDocs, doc, updateDoc, onSnapshot } from 'firebase/firestore';
 import ContentPublisher from '../components/publisher/ContentPublisher.jsx';
 
-const FOUNDER_EMAILS = ['prateekyadav2010@gmail.com', 'rakshajoshi476@gmail.com'];
+const FOUNDER_EMAILS = ['prateekyadav2010@gmail.com', 'rakshajoshi476@gmail.com']; // NOTE: canonical list in api/_firebase.js
 const API = import.meta.env.VITE_API_URL || '';
 
 const PIPELINES = [

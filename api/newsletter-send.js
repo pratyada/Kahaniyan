@@ -3,12 +3,12 @@
 
 import { SESClient, SendEmailCommand } from '@aws-sdk/client-ses';
 import { escapeHtml, sanitizeEmail } from './_emailSanitize.js';
-import { getFirestore } from './_firebase.js';
+import { getFirestore, FOUNDER_EMAILS } from './_firebase.js';
 import { canSendEmail, logEmail, isUnsubscribed } from './_emailThrottle.js';
 
 const FROM_EMAIL = 'hello@mysleepytale.com';
 const ses = new SESClient({ region: 'us-east-1' });
-const FOUNDER_EMAILS = ['prateekyadav2010@gmail.com', 'rakshajoshi476@gmail.com', 'musee.initialize@gmail.com'];
+const TEST_EMAILS = [...FOUNDER_EMAILS, 'musee.initialize@gmail.com'];
 
 // ═══════════════════════════════════════
 // Email template helpers (MySleepyTale branded)
@@ -258,7 +258,7 @@ export default async function handler(req, res) {
     const nl = nlDoc.data();
     const results = [];
 
-    for (const testEmail of FOUNDER_EMAILS) {
+    for (const testEmail of TEST_EMAILS) {
       try {
         await sendEmail(testEmail, `[TEST] ${nl.subject}`, nl.htmlContent, nl.textContent);
         results.push({ email: testEmail, status: 'sent' });
@@ -291,89 +291,95 @@ export default async function handler(req, res) {
 
     await db.collection('newsletters').doc(newsletterId).update({ status: 'sending' });
 
-    // Get unsubscribed
-    const unsubscribed = new Set();
     try {
-      const unsubDoc = await db.collection('config').doc('newsletterUnsubscribed').get();
-      if (unsubDoc.exists) {
-        (unsubDoc.data().emails || []).forEach(e => unsubscribed.add(e.toLowerCase()));
-      }
-    } catch {}
-
-    // Get all users
-    const allEmails = [];
-    try {
-      const usersSnap = await db.collection('users').get();
-      usersSnap.forEach(d => {
-        const email = d.data().email?.toLowerCase();
-        if (email && !unsubscribed.has(email)) allEmails.push(email);
-      });
-    } catch (e) {
-      await db.collection('newsletters').doc(newsletterId).update({ status: 'draft' });
-      return res.status(500).json({ error: 'Failed to fetch users: ' + e.message });
-    }
-
-    let sentCount = 0, failedCount = 0, throttledCount = 0;
-    const batch = db.batch();
-    const batchRecipients = [];
-
-    for (const email of allEmails) {
-      const throttle = await canSendEmail(email, 'marketing');
-      if (!throttle.allowed) {
-        throttledCount++;
-        batchRecipients.push({
-          newsletterId,
-          newsletterName: nl.name,
-          email,
-          status: 'throttled',
-          reason: throttle.reason,
-          sentAt: new Date().toISOString(),
-        });
-        continue;
-      }
-
+      // Get unsubscribed
+      const unsubscribed = new Set();
       try {
-        await sendEmail(email, nl.subject, nl.htmlContent, nl.textContent);
-        await logEmail(email, 'newsletter-custom', 'marketing', nl.subject);
-        sentCount++;
-        batchRecipients.push({
-          newsletterId,
-          newsletterName: nl.name,
-          email,
-          status: 'sent',
-          sentAt: new Date().toISOString(),
+        const unsubDoc = await db.collection('config').doc('newsletterUnsubscribed').get();
+        if (unsubDoc.exists) {
+          (unsubDoc.data().emails || []).forEach(e => unsubscribed.add(e.toLowerCase()));
+        }
+      } catch {}
+
+      // Get all users
+      const allEmails = [];
+      try {
+        const usersSnap = await db.collection('users').get();
+        usersSnap.forEach(d => {
+          const email = d.data().email?.toLowerCase();
+          if (email && !unsubscribed.has(email)) allEmails.push(email);
         });
       } catch (e) {
-        failedCount++;
-        batchRecipients.push({
-          newsletterId,
-          newsletterName: nl.name,
-          email,
-          status: 'failed',
-          error: e.message,
-          sentAt: new Date().toISOString(),
-        });
+        await db.collection('newsletters').doc(newsletterId).update({ status: 'test-sent' });
+        return res.status(500).json({ error: 'Failed to fetch users: ' + e.message });
       }
+
+      let sentCount = 0, failedCount = 0, throttledCount = 0;
+      const batch = db.batch();
+      const batchRecipients = [];
+
+      for (const email of allEmails) {
+        const throttle = await canSendEmail(email, 'marketing');
+        if (!throttle.allowed) {
+          throttledCount++;
+          batchRecipients.push({
+            newsletterId,
+            newsletterName: nl.name,
+            email,
+            status: 'throttled',
+            reason: throttle.reason,
+            sentAt: new Date().toISOString(),
+          });
+          continue;
+        }
+
+        try {
+          await sendEmail(email, nl.subject, nl.htmlContent, nl.textContent);
+          await logEmail(email, 'newsletter-custom', 'marketing', nl.subject);
+          sentCount++;
+          batchRecipients.push({
+            newsletterId,
+            newsletterName: nl.name,
+            email,
+            status: 'sent',
+            sentAt: new Date().toISOString(),
+          });
+        } catch (e) {
+          failedCount++;
+          batchRecipients.push({
+            newsletterId,
+            newsletterName: nl.name,
+            email,
+            status: 'failed',
+            error: e.message,
+            sentAt: new Date().toISOString(),
+          });
+        }
+      }
+
+      // Write recipient records
+      for (const r of batchRecipients) {
+        const ref = db.collection('newsletterRecipients').doc();
+        batch.set(ref, r);
+      }
+      await batch.commit();
+
+      // Update newsletter doc
+      await db.collection('newsletters').doc(newsletterId).update({
+        status: 'sent',
+        sentAt: new Date().toISOString(),
+        recipientCount: allEmails.length,
+        sentCount,
+        failedCount,
+        throttledCount,
+      });
+
+      return res.json({ sentCount, failedCount, throttledCount, total: allEmails.length });
+    } catch (e) {
+      // Reset to test-sent so it can be retried
+      await db.collection('newsletters').doc(newsletterId).update({ status: 'test-sent' }).catch(() => {});
+      return res.status(500).json({ error: 'Send failed: ' + e.message });
     }
-
-    // Write recipient records
-    for (const r of batchRecipients) {
-      const ref = db.collection('newsletterRecipients').doc();
-      batch.set(ref, r);
-    }
-    await batch.commit();
-
-    // Update newsletter doc
-    await db.collection('newsletters').doc(newsletterId).update({
-      status: 'sent',
-      sentAt: new Date().toISOString(),
-      recipientCount: allEmails.length,
-      sentCount,
-      failedCount,
-      throttledCount,
-    });
-
-    return res.json({ sentCount, failedCount, throttledCount, total: allEmails.length });
   }
 
   // ── DELETE ──

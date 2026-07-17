@@ -7,8 +7,15 @@ import { getFirestore } from './_firebase.js';
 export default async function handler(req, res) {
   if (req.method !== 'POST') return res.status(405).json({ error: 'POST only' });
 
-  const { storyId, audio, contentType, textHash } = req.body || {};
+  const { uid, storyId, audio, contentType, textHash } = req.body || {};
+  if (!uid) return res.status(403).json({ error: 'Authentication required' });
   if (!storyId || !audio) return res.status(400).json({ error: 'storyId and audio required' });
+
+  // Auth check — verify user exists
+  const db2 = await getFirestore();
+  if (!db2) return res.status(500).json({ error: 'Database unavailable' });
+  const userSnap = await db2.collection('users').doc(uid).get();
+  if (!userSnap.exists) return res.status(403).json({ error: 'User not found' });
 
   try {
     const { S3Client, PutObjectCommand } = await import('@aws-sdk/client-s3');

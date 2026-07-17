@@ -2,9 +2,7 @@
 // Body: { uid, prompt, formats[], variations: 1-5, mode: 'generate'|'list'|'video' }
 // Video: { mode: 'video', imageUrls[], videoPrompt, campaignId }
 
-import { getFirestore } from './_firebase.js';
-
-const FOUNDER_EMAILS = ['prateekyadav2010@gmail.com', 'rakshajoshi476@gmail.com'];
+import { getFirestore, FOUNDER_EMAILS } from './_firebase.js';
 
 const FORMAT_CONFIG = {
   instagram_post: { label: 'Instagram Post', size: '1080×1080', aspect: '1:1', icon: '📸' },

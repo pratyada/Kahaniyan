@@ -19,3 +19,5 @@ export async function getFirestore() {
   const fb = await getFirebaseAdmin();
   return fb ? fb.firestore() : null;
 }
+
+export const FOUNDER_EMAILS = ['prateekyadav2010@gmail.com', 'rakshajoshi476@gmail.com'];

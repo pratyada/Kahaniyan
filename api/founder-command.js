@@ -2,10 +2,8 @@
 // Interprets natural language commands and executes actions
 // Actions: edit/delete/list/info episodes, send newsletter, manage outreach, create stories, user stats
 
-import { getFirestore } from './_firebase.js';
+import { getFirestore, FOUNDER_EMAILS } from './_firebase.js';
 import { SESClient, SendEmailCommand } from '@aws-sdk/client-ses';
-
-const FOUNDER_EMAILS = ['prateekyadav2010@gmail.com', 'rakshajoshi476@gmail.com'];
 const ses = new SESClient({ region: 'us-east-1' });
 
 async function interpretCommand(command, context) {

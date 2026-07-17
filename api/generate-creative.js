@@ -2,9 +2,7 @@
 // Body: { uid, topic, platform, style, aspectRatio }
 // Uses Claude for caption + Higgsfield for image generation.
 
-import { getFirestore } from './_firebase.js';
-
-const FOUNDER_EMAILS = ['prateekyadav2010@gmail.com', 'rakshajoshi476@gmail.com'];
+import { getFirestore, FOUNDER_EMAILS } from './_firebase.js';
 const SOUL_ID = 'f5c1aac0-c994-48dd-90dc-a8eb9ea9419a';
 
 const PLATFORM_CONFIG = {

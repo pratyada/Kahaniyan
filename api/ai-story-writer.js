@@ -2,9 +2,7 @@
 // Body: { uid, topic, tradition, theme, targetAge, seriesContext?, duration? }
 // Returns: { title, subtitle, body, metaDescription, wordCount }
 
-import { getFirestore } from './_firebase.js';
-
-const FOUNDER_EMAIL = 'prateekyadav2010@gmail.com';
+import { getFirestore, FOUNDER_EMAILS } from './_firebase.js';
 
 export default async function handler(req, res) {
   if (req.method !== 'POST') return res.status(405).json({ error: 'POST only' });
