@@ -440,6 +440,16 @@ function PlayerInner() {
     }
 
     console.log('[My Sleepy Tale:Player] Starting playback:', current.title);
+
+    // Ensure {childName} and other tokens are always filled — catches all loading paths
+    if (current.text && current.text.includes('{childName}')) {
+      const filledText = fillTokens(current.text, user ? profile : null);
+      if (filledText !== current.text) {
+        load({ ...current, text: filledText });
+        return; // re-trigger this effect with filled text
+      }
+    }
+
     // Kill any orphaned audio elements before starting fresh
     document.querySelectorAll('audio').forEach(a => { try { a.pause(); a.src = ''; } catch {} });
 

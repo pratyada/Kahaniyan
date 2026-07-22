@@ -9,6 +9,8 @@ import { canSendEmail, logEmail, isUnsubscribed } from './_emailThrottle.js';
 const FROM_EMAIL = 'hello@mysleepytale.com';
 const ses = new SESClient({ region: 'us-east-1' });
 const TEST_EMAILS = [...FOUNDER_EMAILS, 'musee.initialize@gmail.com'];
+// Default storybook hero for generated newsletters (see kahaniyan/NEWSLETTER-STYLE.md)
+const DEFAULT_HERO = 'https://mysleepytale.com/og/newsletter-hero.jpg';
 
 // ═══════════════════════════════════════
 // Email template helpers (MySleepyTale branded)
@@ -107,40 +109,48 @@ Generate 2-4 sections. Make the content specific to what was announced.`,
   return JSON.parse(match[0]);
 }
 
-function buildHtmlFromContent(content) {
-  const sectionsHtml = (content.sections || []).map(s =>
-    `<div style="margin-bottom:16px;display:flex;align-items:flex-start;gap:12px;">
-      <span style="font-size:24px;flex-shrink:0;">${s.emoji || '✨'}</span>
-      <div>
-        <strong style="color:#f5f0e8;font-size:15px;">${escapeHtml(s.title)}</strong>
-        <p style="font-size:14px;line-height:1.7;margin:6px 0 0;color:#c8c3ba;">${escapeHtml(s.body)}</p>
-      </div>
-    </div>`
-  ).join('');
+// Storybook FORMAT (see kahaniyan/NEWSLETTER-STYLE.md): hero image → intro →
+// visual 2-col equal-size icon "tip diagram" → CTA → sign-off from {sender}.
+function sectionCard(s) {
+  return `<td width="50%" valign="top" style="padding:8px;">
+    <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background:#15151f;border:1px solid #1a1a28;border-radius:14px;"><tr><td valign="top" style="padding:18px 16px;height:150px;text-align:center;">
+      <div style="font-size:34px;line-height:1;">${s.emoji || '✨'}</div>
+      <div style="font-family:Georgia,serif;font-weight:700;font-size:15px;color:#f5f0e8;margin:8px 0 5px;">${escapeHtml(s.title)}</div>
+      <div style="font-size:12.5px;line-height:1.5;color:#b8b3aa;">${escapeHtml(s.body)}</div>
+    </td></tr></table></td>`;
+}
+
+function buildHtmlFromContent(content, sender) {
+  const sections = content.sections || [];
+  let rows = '';
+  for (let i = 0; i < sections.length; i += 2) {
+    const a = sectionCard(sections[i]);
+    const b = sections[i + 1] ? sectionCard(sections[i + 1]) : '<td width="50%"></td>';
+    rows += `<tr>${a}${b}</tr>`;
+  }
+  const diagram = sections.length
+    ? `<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="margin:0 0 20px;">${rows}</table>`
+    : '';
+  const who = escapeHtml(sender || 'The My Sleepy Tale Team');
 
   const body = `
-    ${card(`
-      <p style="font-size:16px;line-height:1.7;margin:0 0 16px;color:#c8c3ba;">
-        ${escapeHtml(content.intro)}
-      </p>
-      ${sectionsHtml}
-    `)}
+    <img src="${DEFAULT_HERO}" alt="My Sleepy Tale" width="600" style="display:block;width:100%;max-width:600px;border-radius:18px;border:0;margin:0 0 20px;">
+    <p style="font-size:16px;line-height:1.7;margin:0 0 20px;color:#c8c3ba;">${escapeHtml(content.intro)}</p>
+    ${diagram}
     ${content.closing ? highlightBox(`<p style="font-size:14px;color:#f0a500;font-weight:bold;margin:0;">${escapeHtml(content.closing)}</p>`) : ''}
     ${ctaButton(content.ctaText || 'Explore Stories', content.ctaUrl || 'https://mysleepytale.com')}
-    ${card(`<p style="font-size:14px;line-height:1.7;margin:0;">
-      Warm regards,<br>
-      <strong style="color:#f5f0e8;">The My Sleepy Tale Team</strong><br>
-      <a href="https://mysleepytale.com" style="color:#f0a500;text-decoration:none;">mysleepytale.com</a>
-    </p>`)}
-  `;
+    <p style="font-size:15px;line-height:1.65;margin:8px 0 0;color:#c8c3ba;">
+      Warm regards,<br><strong style="color:#f5f0e8;">— ${who}</strong><br><span style="color:#8a857d;">My Sleepy Tale</span>
+    </p>`;
 
   return wrapNewsletter(content.headline || 'My Sleepy Tale', body);
 }
 
-function buildTextFromContent(content) {
+function buildTextFromContent(content, sender) {
   const sections = (content.sections || []).map(s =>
     `${s.emoji || '•'} ${s.title}\n  ${s.body}`
   ).join('\n\n');
+  const who = sender || 'The My Sleepy Tale Team';
 
   return `${content.headline || 'My Sleepy Tale'}
 
@@ -153,7 +163,8 @@ ${content.closing || ''}
 ${content.ctaText || 'Explore'}: ${content.ctaUrl || 'https://mysleepytale.com'}
 
 Warm regards,
-The My Sleepy Tale Team
+— ${who}
+My Sleepy Tale
 mysleepytale.com
 
 Unsubscribe: https://mysleepytale.com/settings?unsubscribe=true`;
@@ -189,13 +200,13 @@ export default async function handler(req, res) {
 
   // ── GENERATE ──
   if (mode === 'generate') {
-    const { prompt } = req.body;
+    const { prompt, sender } = req.body; // sender = who's publishing (e.g. "Raksha", "Prateek")
     if (!prompt) return res.status(400).json({ error: 'prompt required' });
 
     try {
       const content = await generateContent(prompt);
-      const htmlContent = buildHtmlFromContent(content);
-      const textContent = buildTextFromContent(content);
+      const htmlContent = buildHtmlFromContent(content, sender);
+      const textContent = buildTextFromContent(content, sender);
       return res.json({
         subject: content.subject,
         htmlContent,
