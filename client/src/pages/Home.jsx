@@ -100,23 +100,23 @@ export default function Home() {
   // Culture filter → dedicated page
   if (cultureFilter) return <CulturePage />;
 
-  const [viewMode, setViewMode] = useState(searchParams.get('view') === 'series' ? 'series' : 'episodes');
+  // Unified view — no more toggle
 
   // FIFA banner — show once per session
   const [showFifaBanner, setShowFifaBanner] = useState(() => {
-    try { return !sessionStorage.getItem('mst:fifa-banner-dismissed'); } catch { return true; }
+    try { return !sessionStorage.getItem('mst:fifa-series-banner-dismissed'); } catch { return true; }
   });
   useEffect(() => {
     if (!showFifaBanner) return;
     const timer = setTimeout(() => {
       setShowFifaBanner(false);
-      try { sessionStorage.setItem('mst:fifa-banner-dismissed', '1'); } catch {}
+      try { sessionStorage.setItem('mst:fifa-series-banner-dismissed', '1'); } catch {}
     }, 5000);
     return () => clearTimeout(timer);
   }, [showFifaBanner]);
   const dismissFifaBanner = () => {
     setShowFifaBanner(false);
-    try { sessionStorage.setItem('mst:fifa-banner-dismissed', '1'); } catch {}
+    try { sessionStorage.setItem('mst:fifa-series-banner-dismissed', '1'); } catch {}
   };
 
   const { query: searchQuery, setQuery: setSearchQuery, results: searchResults } = useSearch({
@@ -267,7 +267,7 @@ export default function Home() {
 
   return (
     <PageTransition className="relative page-scroll px-5 pt-10 safe-top">
-      {/* FIFA World Cup Banner */}
+      {/* FIFA Series Banner */}
       <AnimatePresence>
         {showFifaBanner && (
           <motion.div
@@ -283,17 +283,22 @@ export default function Home() {
               animate={{ scale: 1, opacity: 1 }}
               exit={{ scale: 0.9, opacity: 0 }}
               transition={{ duration: 0.3 }}
-              className="relative w-full max-w-lg lg:max-w-3xl rounded-2xl overflow-hidden shadow-2xl"
+              className="relative w-full max-w-lg lg:max-w-3xl rounded-2xl overflow-hidden shadow-2xl bg-gradient-to-br from-[#0a2e0a] via-[#0a0a0f] to-[#1a0a2e]"
               onClick={e => e.stopPropagation()}
             >
-              <img src="/og/toronto-vs-dallas.jpg" alt="Toronto vs Dallas — FIFA World Cup 2026 Kids Audiobooks" className="w-full h-auto" />
-              <div className="absolute bottom-0 left-0 right-0 p-3 sm:p-5 flex items-center gap-3">
+              <div className="p-6 sm:p-8 text-center">
+                <div className="text-5xl sm:text-6xl mb-3">⚽</div>
+                <h2 className="text-xl sm:text-2xl font-bold text-gold mb-2">FIFA World Cup 2026</h2>
+                <p className="text-sm sm:text-base text-white/80 mb-1 leading-relaxed">All episodes now available!</p>
+                <p className="text-xs sm:text-sm text-white/60 mb-5 leading-relaxed">History, geography, sportsmanship & life lessons — told as bedtime stories for kids.</p>
+              </div>
+              <div className="px-6 sm:px-8 pb-6 sm:pb-8 flex items-center gap-3">
                 <button
                   onClick={() => { dismissFifaBanner(); navigate('/series/fifa-world-cup-2026'); }}
                   className="flex-1 flex items-center justify-center gap-2 rounded-xl bg-gold px-4 sm:px-6 py-2.5 sm:py-3 text-xs sm:text-sm font-bold text-bg-base shadow-glow transition active:scale-95"
                 >
                   <Play size={16} fill="currentColor" />
-                  Listen
+                  Listen Now
                 </button>
                 <button
                   onClick={dismissFifaBanner}
@@ -401,44 +406,30 @@ export default function Home() {
         } catch { return null; }
       })()}
 
-      {/* Product Hunt Launch */}
-      <div className="mb-4 flex justify-center">
+      {/* Product Hunt Launch + Sell With Boost */}
+      <div className="mb-4 flex flex-wrap items-center justify-center gap-3">
         <a href="https://www.producthunt.com/products/my-sleepy-tale-personalized-audio-book?embed=true&utm_source=badge-featured&utm_medium=badge&utm_campaign=badge-my-sleepy-tale-personalized-audio-book" target="_blank" rel="noopener noreferrer">
           <img alt="My Sleepy Tale on Product Hunt" width="250" height="54" src={`https://api.producthunt.com/widgets/embed-image/v1/featured.svg?post_id=1174662&theme=${document.documentElement.dataset.theme === 'day' ? 'light' : 'dark'}&t=1781731481591`} />
         </a>
+        <a href="https://sellwithboost.com" target="_blank" rel="noopener noreferrer" aria-label="Listed on Sell With Boost">
+          <img alt="Listed on Sell With Boost" height="54" style={{ height: '54px', width: 'auto' }} src="https://sellwithboost.com/badge/listing.svg" />
+        </a>
       </div>
 
-      {/* Episodes / Series toggle */}
-      <div className="mb-5 flex items-center justify-center">
-        <div className="flex rounded-full bg-bg-surface p-1 ring-1 ring-white/5">
+      {/* Shared with me — inline pill (when available) */}
+      {user && sharedSeries.length > 0 && (
+        <div className="mb-4 flex justify-center">
           <button
-            onClick={() => setViewMode('episodes')}
-            className={`rounded-full px-5 py-2 text-xs font-bold transition ${
-              viewMode === 'episodes' ? 'bg-gold text-bg-base shadow-glow' : 'text-ink-muted'
-            }`}
+            onClick={() => {
+              const el = document.getElementById('shared-section');
+              if (el) el.scrollIntoView({ behavior: 'smooth' });
+            }}
+            className="rounded-full bg-blue-500/15 px-4 py-1.5 text-[11px] font-bold text-blue-400 ring-1 ring-blue-500/30 transition active:scale-95"
           >
-            Story
+            📬 {sharedSeries.length} shared with you
           </button>
-          <button
-            onClick={() => setViewMode('series')}
-            className={`rounded-full px-5 py-2 text-xs font-bold transition ${
-              viewMode === 'series' ? 'bg-gold text-bg-base shadow-glow' : 'text-ink-muted'
-            }`}
-          >
-            Series
-          </button>
-          {user && sharedSeries.length > 0 && (
-            <button
-              onClick={() => setViewMode('shared')}
-              className={`rounded-full px-5 py-2 text-xs font-bold transition ${
-                viewMode === 'shared' ? 'bg-blue-500 text-white shadow-glow' : 'text-ink-muted'
-              }`}
-            >
-              Shared with me ({sharedSeries.length})
-            </button>
-          )}
         </div>
-      </div>
+      )}
 
       {/* Search bar */}
       <div className="mb-4">
@@ -512,8 +503,8 @@ export default function Home() {
         );
       })()}
 
-      {/* ═══ EPISODES VIEW ═══ */}
-      {!searchQuery && viewMode === 'episodes' && (() => {
+      {/* ═══ UNIFIED VIEW — Hero → Picks → Categories → Trending → Shared ═══ */}
+      {!searchQuery && (() => {
         const shownIds = new Set();
         const dedupe = (stories) => stories.filter(s => { if (shownIds.has(s.id)) return false; shownIds.add(s.id); return true; });
         const featuredDeduped = dedupe(featuredStories);
@@ -533,100 +524,28 @@ export default function Home() {
             </ShelfSection>
           )}
 
-          {/* 2. FIFA World Cup Series */}
-          {(() => {
-            const fifaSeries = [
-              SERIES.find(s => s.id === 'fifa-world-cup-2026'),
-            ].filter(Boolean);
-            if (fifaSeries.length === 0) return null;
-            return fifaSeries.map(series => (
-              <ShelfSection key={series.id} title={series.title} onSeeAll={() => navigate(`/series/${series.id}`)}>
-                <ShelfRow>
-                  {series.episodes.map(ep => (
-                    <StoryTile key={ep.id} lesson={ep} imageUrl={wisdomImageUrls[ep.id]} onPlay={handlePlay} />
-                  ))}
-                </ShelfRow>
-              </ShelfSection>
-            ));
-          })()}
+          {/* 2. Series by Category — Netflix-style shelves */}
+          <CategoryShelves wisdomImageUrls={wisdomImageUrls} cultureFilter={cultureFilter} />
 
           {/* 3. Trending */}
           <TrendingShelf allLessons={allLessons} wisdomImageUrls={wisdomImageUrls} onPlay={handlePlay} shownIds={shownIds} />
         </>);
       })()}
 
-      {/* ═══ SERIES VIEW — Netflix-style category shelves ═══ */}
-      {!searchQuery && viewMode === 'series' && (
-        <CategoryShelves wisdomImageUrls={wisdomImageUrls} cultureFilter={cultureFilter} />
-      )}
-
-      {/* ═══ SHARED WITH ME VIEW ═══ */}
-      {!searchQuery && viewMode === 'shared' && (
-        <div className="space-y-6 mb-8">
-          {sharedLoading ? (
-            <p className="text-ink-muted text-sm px-5">Loading...</p>
-          ) : sharedSeries.length === 0 ? (
-            <p className="text-ink-muted text-sm px-5">Nothing shared with you yet</p>
-          ) : (
-            sharedSeries.map(s => (
-              <div key={s.id}>
-                {/* Series header */}
-                <ShelfSection title={
-                  <motion.span whileTap={{ scale: 0.97 }} onClick={() => navigate(`/series/${s.id}`)}
-                    className="flex items-center gap-2 cursor-pointer">
-                    <span className="text-lg">{s.icon || '📚'}</span>
-                    <span>{s.title}</span>
-                    <span className="text-[10px] font-normal text-ink-muted ml-1">by {s.authorName}</span>
-                  </motion.span>
-                }>
-                  <ShelfRow>
-                    {(s.episodes || []).map((ep, i) => (
-                      <motion.button key={`${s.id}_ep${i}`} whileTap={{ scale: 0.96 }}
-                        onClick={() => navigate(`/series/${s.id}`)}
-                        className="group relative flex w-40 lg:w-48 shrink-0 snap-start flex-col justify-end overflow-hidden rounded-2xl text-left"
-                        style={{ aspectRatio: '2/3', minHeight: 240 }}>
-                        {/* Background */}
-                        {(ep.coverImage || (ep.gallery || [])[0]) ? (
-                          <img src={ep.coverImage || ep.gallery[0]} alt=""
-                            className="absolute inset-0 h-full w-full object-cover transition-transform duration-500 group-hover:scale-110"
-                            loading="lazy" onError={e => { e.target.style.display = 'none'; }} />
-                        ) : (
-                          <div className="absolute inset-0 bg-gradient-to-br from-[#1a1040] to-[#0a0a0f]" />
-                        )}
-                        <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
-
-                        {/* Play button */}
-                        <div className="absolute right-2.5 top-2.5 grid h-8 w-8 place-items-center rounded-full bg-black/30 text-white/80 backdrop-blur-sm">
-                          <Play size={12} fill="currentColor" />
-                        </div>
-
-                        {/* Episode number */}
-                        <div className="absolute left-2.5 top-2.5 grid h-7 w-7 place-items-center rounded-full bg-black/50 text-[11px] font-bold text-white backdrop-blur-sm">
-                          {ep.episodeNumber || i + 1}
-                        </div>
-
-                        {/* Bottom content */}
-                        <div className="relative z-10 p-3">
-                          <p className="text-[11px] font-bold text-white leading-snug line-clamp-2"
-                            style={{ fontFamily: 'Lora, serif', textShadow: '0 1px 4px rgba(0,0,0,0.5)' }}>
-                            {ep.title}
-                          </p>
-                          <p className="text-[9px] text-white/50 mt-1">
-                            {Math.max(1, Math.round((ep.wordCount || ep.body?.split?.(/\s+/).length || 200) / 150))} min
-                            {ep.contributorName && ` · ${ep.contributorName}`}
-                          </p>
-                        </div>
-                      </motion.button>
-                    ))}
-                  </ShelfRow>
-                </ShelfSection>
-              </div>
-            ))
-          )}
+      {/* ═══ SHARED WITH ME ═══ */}
+      {!searchQuery && user && sharedSeries.length > 0 && (
+        <div id="shared-section" className="space-y-6 mb-8">
+          <ShelfSection title="📬 Shared with Me">
+            <ShelfRow>
+              {sharedSeries.map(s => (
+                <SeriesCard key={s.id} series={s} onClick={() => navigate(`/series/${s.id}`)} />
+              ))}
+            </ShelfRow>
+          </ShelfSection>
         </div>
       )}
 
-      {!searchQuery && viewMode === 'episodes' && (<>
+      {!searchQuery && (<>
       {/* Wisdom stories by belief (or culture filter) — shown first when filtered */}
       {traditionShelves.length > 0 && traditionShelves.map((shelf) => (
         <ShelfSection key={shelf.id} title={shelf.title}>
@@ -710,7 +629,7 @@ export default function Home() {
       <CreateFAB onClick={() => navigate('/creation')} />
 
       {/* SEO Footer — internal links for crawlers */}
-      {!searchQuery && viewMode === 'episodes' && (
+      {!searchQuery && (
         <nav className="mt-10 mb-4 border-t border-white/5 pt-6 px-2" aria-label="Explore More">
           <p className="text-[10px] font-bold text-ink-dim mb-3" style={{ fontFamily: 'Lora, serif' }}>Explore More</p>
           <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-x-6 gap-y-4">
