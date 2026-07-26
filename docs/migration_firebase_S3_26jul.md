@@ -59,7 +59,11 @@ node scripts/update-firestore-urls.js
 - Outputs `scripts/migration-mapping.json` for verification
 - Updates Firestore via `/api/publish-content` (registerImage action)
 
-### Completion: [ ] PENDING
+### Completion: [x] DONE (July 26, 2026)
+- 590 cover images migrated
+- 15 gallery images migrated
+- 0 errors
+- 601/601 Firestore entries now point to S3
 
 ---
 
