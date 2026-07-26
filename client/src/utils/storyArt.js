@@ -423,6 +423,15 @@ const STORY_ART = {
   jewish_shabbat_candles: { gradient: 'linear-gradient(135deg, #92400e 0%, #d97706 40%, #fef3c7 100%)', icon: '🕯️', accent: '#f59e0b', prompt: 'Two Shabbat candles with challah and wine, woman blessing, warm family atmosphere' },
   jewish_vineyard_kindness: { gradient: 'linear-gradient(135deg, #4c1d95 0%, #7c3aed 40%, #c4b5fd 100%)', icon: '🍇', accent: '#8b5cf6', prompt: 'A vineyard owner offering grapes to travellers, golden light, rolling hills, generous' },
   jewish_hanukkah_flame: { gradient: 'linear-gradient(135deg, #1e40af 0%, #3b82f6 40%, #fbbf24 100%)', icon: '🕎', accent: '#fbbf24', prompt: 'A menorah with one candle lit by a window, snow outside, warm glow, deep blue night' },
+  // Brave Moments That Changed the World
+  brave_ep1_che: { gradient: 'linear-gradient(135deg, #7c2d12 0%, #dc2626 40%, #fbbf24 100%)', icon: '🏍️', accent: '#dc2626', prompt: 'Young man on motorcycle through South American villages, compassion, journey of awakening' },
+  brave_ep2_mandela: { gradient: 'linear-gradient(135deg, #1e3a5f 0%, #f59e0b 40%, #22c55e 100%)', icon: '✊', accent: '#f59e0b', prompt: 'Mandela walking out of prison into golden sunlight, crowds cheering, rainbow, freedom' },
+  brave_ep3_gandhi: { gradient: 'linear-gradient(135deg, #92400e 0%, #f0a500 40%, #0ea5e9 100%)', icon: '🧂', accent: '#f0a500', prompt: 'Gandhi picking up salt at the ocean shore, thousands marching behind, golden sunset' },
+  brave_ep4_shastri: { gradient: 'linear-gradient(135deg, #1a472a 0%, #f97316 40%, #fef3c7 100%)', icon: '🌾', accent: '#f97316', prompt: 'Humble leader at radio, farmers and soldiers flanking, wheat fields, sacrifice and service' },
+  brave_ep5_bhagat: { gradient: 'linear-gradient(135deg, #7c2d12 0%, #ea580c 40%, #fbbf24 100%)', icon: '🔥', accent: '#ea580c', prompt: 'Young man standing tall in courtroom, light streaming on face, courage and defiance' },
+  brave_ep6_neet: { gradient: 'linear-gradient(135deg, #1e40af 0%, #8b5cf6 40%, #f0a500 100%)', icon: '📚', accent: '#8b5cf6', prompt: 'Thousands of students marching together, signs about fairness, blazing sun, unity' },
+  brave_ep7_chipko: { gradient: 'linear-gradient(135deg, #14532d 0%, #22c55e 40%, #fbbf24 100%)', icon: '🌳', accent: '#22c55e', prompt: 'Women in saris hugging ancient Himalayan trees, loggers surprised, forest sunlight' },
+  brave_ep8_billy_bishop: { gradient: 'linear-gradient(135deg, #1e3a5f 0%, #0ea5e9 40%, #f0a500 100%)', icon: '🏙️', accent: '#0ea5e9', prompt: 'Toronto waterfront, CN Tower, families in parks, community standing together, sunset' },
 };
 
 // Tradition-level art (for tradition badges/headers)

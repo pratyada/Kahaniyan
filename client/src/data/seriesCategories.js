@@ -3,6 +3,7 @@
 // Rule: no two categories should have the exact same content.
 
 export const SERIES_CATEGORIES = {
+  'brave-moments': ['history', 'life-skills'],
   'fire-truck-academy': ['adventure', 'life-skills'],
   'panchatantra-tales': ['history', 'life-skills'],
   'lightning-wheels': ['adventure', 'sports'],

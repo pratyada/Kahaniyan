@@ -7859,5 +7859,290 @@ The world\u2019s most beautiful game continues tomorrow.`,
       },
     ],
   },
+  {
+    id: 'brave-moments',
+    title: 'Brave Moments That Changed the World',
+    icon: '✊',
+    gradient: 'linear-gradient(135deg, #7c2d12 0%, #dc2626 50%, #fbbf24 100%)',
+    description: 'Real stories of ordinary courage — when one person or one moment made powerful people listen and changed the world forever.',
+    ageRange: '5-10',
+    totalEpisodes: 8,
+    episodes: [
+      {
+        id: 'brave_ep1_che', episodeNumber: 1, title: 'The Doctor Who Chose the Poor',
+        subtitle: 'A young doctor sees suffering across South America and decides to fight for those who have nothing.',
+        tradition: 'universal', theme: 'courage', durationMinutes: 5,
+        source: 'Brave Moments · Episode 1',
+        body: `{childName}, tonight I want to tell you about a young man named Ernesto. He grew up in Argentina — a country far across the ocean, where the mountains touch the clouds and the rivers run wide and silver.
+
+Ernesto wanted to be a doctor. He studied hard. He loved reading. He played rugby. He had asthma, which made his chest tight sometimes, but he never let it stop him.
+
+One day, when Ernesto was twenty-three years old, he climbed onto an old motorcycle with his best friend Alberto. They decided to ride across all of South America — through Argentina, Chile, Peru, Colombia, and Venezuela.
+
+It was supposed to be an adventure. And it was. But it was also something else.
+
+In Chile, Ernesto met miners who worked deep underground in terrible heat, coughing black dust, earning almost nothing. In Peru, he visited a village where families had no clean water, no medicine, no school. In a hospital for people with a skin disease called leprosy, the patients were kept on an island — separated from everyone, as if they were not even human.
+
+Ernesto sat with them. He shook their hands when nobody else would. He played football with them. He listened to their stories.
+
+And something changed inside him forever.
+
+He realized that being a doctor could help one person at a time. But the sickness he saw was not just in bodies — it was in the way the world was arranged. A few people had everything. Millions had nothing.
+
+Ernesto decided he would spend his whole life fighting for the people who had nothing. He became known as Che Guevara. He helped lead a revolution in Cuba — a small island where a few wealthy families owned almost everything while farmers starved.
+
+Now, {childName}, people all around the world still disagree about Che. Some say he was a hero. Some say he made mistakes. That is how it is with real people — they are never only one thing.
+
+But here is the moment that matters: a young doctor on a motorcycle saw suffering and refused to look away. He could have gone home, opened a nice clinic, lived comfortably. Instead, he chose the harder road.
+
+{childName}, you do not need a motorcycle or a revolution to change things. Sometimes the bravest moment is simply refusing to look away when someone is hurting. Sometimes it is sitting with the person nobody else will sit with.
+
+That is where change begins — in one heart that decides: this is not okay, and I will do something about it.
+
+Goodnight, brave one. Dream of roads that lead to kindness.`,
+      },
+      {
+        id: 'brave_ep2_mandela', episodeNumber: 2, title: 'Twenty-Seven Years and One Vote',
+        subtitle: 'A man who spent 27 years in prison walked out and forgave the people who locked him away.',
+        tradition: 'universal', theme: 'courage', durationMinutes: 5,
+        source: 'Brave Moments · Episode 2',
+        body: `{childName}, imagine being locked in a tiny room. The room is so small you can stretch out your arms and touch both walls. The floor is cold stone. You sleep on a thin mat. You break rocks in the hot sun every day.
+
+Now imagine staying in that room for twenty-seven years.
+
+That is what happened to a man named Nelson Mandela, in a country called South Africa.
+
+South Africa had a terrible law called apartheid. It meant that people with darker skin could not go to the same schools, the same beaches, the same restaurants, or even the same hospitals as people with lighter skin. Imagine being told you cannot drink from the same water fountain as another child — just because of the color of your skin.
+
+Nelson Mandela said: this is wrong. And he fought against it. He organized protests. He gave speeches. He told the world that every person deserves to be treated the same.
+
+The government was afraid of him. So they put him in prison on a tiny island called Robben Island. They thought if they locked him away, people would forget him.
+
+But people did not forget.
+
+Year after year, the whole world demanded: Free Mandela. Children in faraway countries wore T-shirts with his face. Musicians wrote songs about him. Nations refused to trade with South Africa until they changed.
+
+And after twenty-seven long years, on February 11, 1990, the prison doors opened. Nelson Mandela walked out. He was seventy-one years old. His hair had turned grey. His body was tired.
+
+But here is the moment that changed everything, {childName}. Listen carefully.
+
+When Mandela walked out of that prison, he did not say: I want revenge. He did not say: now it is your turn to suffer. He said: let us forgive. Let us build this country together — all of us, side by side.
+
+And four years later, for the very first time, every person in South Africa — no matter their skin color — was allowed to vote. Nelson Mandela became the first Black president of South Africa. He invited his former prison guards to his inauguration. He wore the rugby jersey of a team that had once stood for apartheid, and united the whole country behind it.
+
+{childName}, twenty-seven years is a very long time. Most people would come out of prison angry. But Mandela understood something powerful: hatred is a prison too. And forgiveness is the only key that opens every door.
+
+Goodnight, little one. Dream of doors that open, and hearts that forgive.`,
+      },
+      {
+        id: 'brave_ep3_gandhi', episodeNumber: 3, title: 'The Salt That Shook an Empire',
+        subtitle: 'A thin man in simple clothes walked to the sea and picked up a handful of salt — and the mightiest empire in the world trembled.',
+        tradition: 'hindu', theme: 'courage', durationMinutes: 5,
+        source: 'Brave Moments · Episode 3',
+        body: `{childName}, let me tell you about salt. You know salt — the tiny white crystals your family puts on food. It is so small, so ordinary, so cheap. You would never think salt could shake the whole world.
+
+But it did.
+
+A long time ago, India was ruled by the British Empire — the most powerful empire on Earth. They controlled India's land, India's people, and even India's salt. The British made a law that said: Indian people cannot make their own salt. They must buy salt from us and pay a tax on it.
+
+Salt! Something the sea gives for free. Something every family needs to cook. The British were taxing the poorest people in the world for something that came from their own ocean.
+
+A thin man with round glasses named Mohandas Gandhi said: enough. But he did not pick up a weapon. He did not shout or threaten. He did something nobody expected.
+
+On March 12, 1930, Gandhi started walking. Just walking. From his home to the sea. The distance was 385 kilometers — imagine walking from one end of your world to the other.
+
+He started with seventy-eight people. But as he walked through village after village, something magical happened. People came out of their homes and joined him. Farmers left their fields. Teachers left their schools. Mothers carried their babies and walked alongside him.
+
+By the time Gandhi reached the sea, twenty-four days later, thousands upon thousands of people walked behind him. The whole world was watching.
+
+And then came the moment, {childName}.
+
+Gandhi bent down at the edge of the ocean. He picked up a small lump of natural salt from the mud. He held it up in his thin, wrinkled hand.
+
+That was it. That was the revolution. A thin old man picking up salt.
+
+But that tiny act said something enormous: we do not accept your unjust law. We will make our own salt. We are free.
+
+The British arrested Gandhi. They arrested over sixty thousand people. But it did not matter. The world had seen. And the world understood: you cannot hold down a nation that has decided to stand up.
+
+India won its freedom seventeen years later. And it all began with a handful of salt.
+
+{childName}, remember this: you do not need to be big or strong or loud to change the world. Sometimes the bravest thing is the quietest thing. A walk. A handful of salt. A simple refusal to accept what is wrong.
+
+Goodnight, brave heart. Dream of oceans and salt and the courage that lives inside quiet people.`,
+      },
+      {
+        id: 'brave_ep4_shastri', episodeNumber: 4, title: 'The Smallest Prime Minister',
+        subtitle: 'A leader so humble he owned almost nothing — and he asked his whole country to skip one meal so the soldiers could eat.',
+        tradition: 'hindu', theme: 'humility', durationMinutes: 5,
+        source: 'Brave Moments · Episode 4',
+        body: `{childName}, tonight I want to tell you about one of the most honest leaders the world has ever known. His name was Lal Bahadur Shastri, and he was the Prime Minister of India.
+
+Shastri was small. Really small. Just five feet tall. When he stood next to other world leaders, he barely reached their shoulders. People sometimes underestimated him because of his size.
+
+But inside that small body lived one of the biggest hearts in all of history.
+
+Shastri grew up poor. So poor that as a boy, he used to swim across a river every day to get to school because his family could not afford the boat fare. He studied under streetlights because there was no electricity at home. He wore simple white clothes his whole life — even as Prime Minister.
+
+In 1965, India was at war with Pakistan. Soldiers were fighting at the border. The country was running low on food. People were worried. How would India feed its army and its people at the same time?
+
+And here came the moment, {childName}.
+
+Shastri went on the radio and asked every Indian citizen to skip one meal every week. Just one meal. So that the grain saved could feed the soldiers protecting the country.
+
+But he did not just ask others. He did it himself first. He and his family skipped their Monday dinner every single week. The Prime Minister of a nation with five hundred million people went to bed hungry — by choice.
+
+He gave India a slogan that still echoes today: "Jai Jawan, Jai Kisan" — which means "Victory to the Soldier, Victory to the Farmer." He was saying: the people who protect us and the people who feed us are the real heroes.
+
+And the country listened. Millions of families skipped one meal a week. Together, they saved enough food to keep the soldiers strong. India held its ground.
+
+When Shastri passed away, people opened his bank accounts and discovered something that made the whole country cry: the Prime Minister of India had almost no money. He owned no house, no car, no gold. He had even taken a loan to buy a small car — and his family still owed money on it.
+
+{childName}, in a world where powerful people often take and take and take, Shastri gave and gave and gave. He showed that true leadership is not about being the tallest person in the room. It is about being the one who eats last.
+
+Goodnight, little one. Dream of leaders who serve. Dream of hands that give more than they take. Dream of being the kind of person who makes the world a little more fair, one small act at a time.`,
+      },
+      {
+        id: 'brave_ep5_bhagat', episodeNumber: 5, title: 'The Boy Who Was Not Afraid',
+        subtitle: 'A twenty-three-year-old looked at the most powerful empire on Earth and said: I am not afraid of you.',
+        tradition: 'sikh', theme: 'bravery', durationMinutes: 5,
+        source: 'Brave Moments · Episode 5',
+        body: `{childName}, sometimes the bravest people in history are not old and wise. Sometimes they are young — so young that the world cannot believe their courage.
+
+Bhagat Singh was born in Punjab, India, in 1907. His family was already full of freedom fighters. His uncle had been a revolutionary. The air in his home smelled of courage and sacrifice.
+
+When Bhagat Singh was just twelve years old, something terrible happened in a garden called Jallianwala Bagh in the city of Amritsar. British soldiers opened fire on thousands of unarmed Indian people who had gathered peacefully. Hundreds of men, women, and children lost their lives that day.
+
+Young Bhagat Singh visited that garden the next day. He collected the soil, still red, and kept it in a bottle. He made a promise to himself: I will spend my life fighting for my country's freedom.
+
+And he did.
+
+Bhagat Singh became a thinker, a reader, a writer. He read books about freedom movements all around the world. He believed that India's young people had the power to change everything — if they were willing to sacrifice.
+
+When the British passed cruel laws to silence Indian voices, Bhagat Singh and his friend walked into the British Assembly and threw smoke bombs — not to hurt anyone, but to make the world hear. They could have run away. Instead, they stood there and shouted: "Inquilab Zindabad!" — Long live the revolution!
+
+They let themselves be arrested. On purpose. Because they wanted the trial. They wanted the world to see what the British were doing to India.
+
+During his trial, Bhagat Singh stood tall. He was twenty-three years old. He smiled. He was not afraid. He told the court that ideas cannot be locked in prison. He said: "You can chain my body, but you cannot chain my mind."
+
+{childName}, Bhagat Singh showed the world that courage is not about size or strength or weapons. It is about believing in something so strongly that you are willing to give up everything for it.
+
+He inspired millions of young Indians to join the freedom movement. Students left their classrooms. Workers left their factories. The whole country woke up.
+
+Even today, if you go to India, you will see Bhagat Singh's face everywhere — on walls, on T-shirts, in songs. Because a young man who was not afraid reminded an entire nation to stop being afraid too.
+
+{childName}, you are never too young to stand up for what is right. Your voice matters. Your courage matters. Even when the world feels very big and you feel very small — remember Bhagat Singh, who proved that one brave heart can wake up millions.
+
+Goodnight, brave dreamer. Dream of voices that echo through time.`,
+      },
+      {
+        id: 'brave_ep6_neet', episodeNumber: 6, title: 'The Students Who Would Not Be Silent',
+        subtitle: 'When exam papers were leaked and the system said "move on," students across India said: no.',
+        tradition: 'universal', theme: 'honesty', durationMinutes: 5,
+        source: 'Brave Moments · Episode 6',
+        body: `{childName}, imagine you study for a very important test. You study for months. You wake up early, you skip playing with friends, you practice problems until your hand hurts from writing. Your whole future depends on this one exam.
+
+And then you find out that some people got the answers before the test even started. They cheated. And the people in charge say: never mind, the results still count.
+
+Would you accept that? Or would you stand up and say: this is not fair?
+
+In India, there is an exam called NEET. It is the exam that decides who gets to become a doctor. Millions of students — over two million every year — take this exam. For many families, it is the biggest day of their lives. Parents sell their jewelry. Families take loans. Students study eighteen hours a day for years.
+
+In 2024, something terrible was discovered. The exam papers had been leaked. Some students had received the questions and answers before the exam even started. The scores did not make sense — too many perfect scores from certain areas, impossible patterns that could not be explained by hard work alone.
+
+The students were heartbroken. And then they were angry. Not the breaking-things kind of angry. The standing-up kind of angry.
+
+They marched. They organized. They used their phones to share evidence. They wrote letters. They filed court cases. They stood in the blazing summer heat outside government buildings and said: we will not move until this is fixed.
+
+The powerful people said: go home. The students said: no.
+
+And something remarkable happened. One person who had just arrived back in India on June 5th started organizing and speaking out. Day after day. Week after week. The movement grew bigger and louder. Students from every state, every language, every background came together. They were not a political party. They were just young people who believed in fairness.
+
+By July 25th — just fifty days later — the pressure was so enormous that the Education Minister of one of the most powerful political parties in the country had to resign. A cabinet minister, backed by billions of dollars and millions of supporters, brought down by students with nothing but the truth.
+
+{childName}, this is what happens when people refuse to accept dishonesty. The students did not have money. They did not have power. They did not have connections. But they had something stronger: they were right. And they would not be silent.
+
+Remember this: when a system is unfair, staying quiet is not being polite. Staying quiet is letting the unfairness win. The bravest thing you can ever do is say "this is wrong" — even when everyone around you says "just accept it."
+
+Goodnight, little one. Dream of a world where hard work is always rewarded and fairness always wins.`,
+      },
+      {
+        id: 'brave_ep7_chipko', episodeNumber: 7, title: 'The Women Who Hugged Trees',
+        subtitle: 'When the government sent men with axes, village women wrapped their arms around the trees and said: cut us first.',
+        tradition: 'hindu', theme: 'compassion-animals', durationMinutes: 5,
+        source: 'Brave Moments · Episode 7',
+        body: `{childName}, can you imagine hugging a tree? Wrapping your arms around its rough bark, pressing your cheek against it, feeling the ancient life humming inside?
+
+Now imagine doing that while someone stands behind you with an axe, ready to chop the tree down. And you say: you will have to cut me first.
+
+That is exactly what happened in a place called Uttarakhand, high in the mountains of northern India, in 1973.
+
+The Himalayan forests were home to villages where people lived simply. The trees gave them everything — firewood to cook, fruit to eat, shade from the sun, roots that held the soil together so the rain would not wash their homes away.
+
+But the government gave permission to logging companies to cut down the forests. Men arrived with trucks and axes. They planned to chop down thousands of trees and sell the wood to factories in the cities far below.
+
+A woman named Gaura Devi heard the axes coming. She was the head of the village women's group. She was not a politician. She was not famous. She was a grandmother who lived in a small house in the mountains.
+
+Gaura Devi gathered the women of her village — twenty-seven women. They walked into the forest and stood in front of the trees. When the loggers arrived, the women wrapped their arms around the tree trunks.
+
+"You will have to cut through us to cut these trees," they said.
+
+The loggers were shocked. They threatened the women. They tried to scare them away. But the women did not move. They held on to the trees and sang songs.
+
+This was the Chipko Movement. "Chipko" means "to cling" or "to hug" in Hindi. And it spread like wildfire through the mountains.
+
+In village after village, women came out and hugged trees. Mothers, grandmothers, daughters — standing together, arms around ancient trunks, protecting the forest that protected them.
+
+The movement grew so large that the whole world took notice. Scientists came and proved what the village women already knew: cutting these forests would cause landslides, floods, and the destruction of rivers that millions of people depended on.
+
+And in 1980, the government of India finally listened. Prime Minister Indira Gandhi issued a fifteen-year ban on tree-cutting in the Himalayan forests. The women had won.
+
+{childName}, the Chipko women did not have weapons or money or political power. They had their arms and their courage and their love for the forest that raised them.
+
+Sometimes protecting something you love means standing in front of it and refusing to move. Sometimes the most powerful protest is the gentlest one — a hug.
+
+Goodnight, tree-hugger. Dream of ancient forests and brave grandmothers and the quiet strength of people who love the Earth.`,
+      },
+      {
+        id: 'brave_ep8_billy_bishop', episodeNumber: 8, title: 'The Neighbours Who Saved the Waterfront',
+        subtitle: 'When the government wanted to expand an airport over their neighbourhood, the people of Toronto said: not our waterfront.',
+        tradition: 'universal', theme: 'courage', durationMinutes: 5,
+        source: 'Brave Moments · Episode 8',
+        body: `{childName}, let me tell you a story that happened right here — in our city of Toronto, just this year.
+
+Down by the lake, where the blue water meets the city skyline, there is a small airport called Billy Bishop. It sits on a tiny island connected to the city by a short tunnel. Small planes fly in and out — little propeller aircraft that carry people to nearby cities.
+
+Billy Bishop is part of Toronto's waterfront. Near it are parks where families ride bikes, playgrounds where children play, and neighbourhoods where thousands of families live.
+
+In March 2026, the Premier of Ontario announced a big plan: he wanted to expand Billy Bishop Airport. Make it much bigger. Build longer runways. Bring in large jet planes — the kind that roar so loud you have to cover your ears.
+
+The government passed a law to take control of the airport land from the City of Toronto. They said it would bring money and jobs.
+
+But the people who lived near the waterfront saw it differently.
+
+More jets would mean more noise — roaring engines over homes where babies sleep, over schools where children learn, over parks where families gather. It would mean more pollution over the lake. It would mean changing the waterfront from a place for people into a place for airplanes.
+
+Toronto's Mayor, Olivia Chow, called it "a pure power grab." She said the people of Toronto should decide what happens to their own waterfront — not politicians in a distant office.
+
+And then the people spoke up.
+
+Over eighty-seven thousand people — 87,000! — wrote to the government. Mothers, fathers, teachers, children, grandparents. They wrote letters saying: this is our waterfront. These are our parks. This is where our children play. Do not take this from us.
+
+Environmental groups joined in. Neighbourhood associations organized. People put up signs in their windows. They attended meetings. They signed petitions. They refused to stay quiet.
+
+And on July 25, 2026, the federal Transport Minister announced: the expansion is stopped. The government listened to the people. The waterfront would stay as it is — a place for families, not for jumbo jets.
+
+Eighty-seven thousand voices. That is what it took. Not weapons. Not money. Just people caring enough about their home to say: no.
+
+{childName}, this story is not from a history book. It happened right now. In your city. Your neighbours did this. Your community stood together and said: we matter. Our children matter. Our parks matter.
+
+And the government — one of the most powerful institutions in the country — listened.
+
+Remember this: your voice counts. One letter, one message, one person standing up might seem small. But eighty-seven thousand small voices together can stop anything.
+
+Goodnight, neighbour. Dream of waterfronts and parks and communities that protect what they love.`,
+      },
+    ],
+  },
 ];
 
