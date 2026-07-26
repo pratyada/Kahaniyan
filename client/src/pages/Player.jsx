@@ -408,13 +408,14 @@ function PlayerInner() {
     if (done) setDone(false);
   }
 
-  // Timeout: if no story after 35s, show error
+  // Timeout: if no story after 35s, show error with retry
   const [waitTimeout, setWaitTimeout] = useState(false);
+  const [retrying, setRetrying] = useState(false);
   useEffect(() => {
-    if (current) return;
+    if (current) { setWaitTimeout(false); return; }
     const t = setTimeout(() => setWaitTimeout(true), 35000);
     return () => clearTimeout(t);
-  }, [current]);
+  }, [current, retrying]);
 
   // Auto-play when current story is available
   useEffect(() => {
@@ -1081,9 +1082,10 @@ function PlayerInner() {
           <div className="flex items-center justify-between">
             <div className="min-w-0 flex-1">
               <p className="text-[10px] text-white/30 truncate">{current?.title}</p>
+              <p className="text-[8px] text-white/15 mt-0.5">Screen stays dark. Stories auto-play.</p>
             </div>
             <button onClick={() => setSleepMode(false)}
-              className="text-[10px] font-bold text-white/20 px-3 py-1.5 rounded-full bg-white/5 active:bg-white/10 transition">
+              className="text-xs font-bold text-white/40 px-4 py-2 rounded-full bg-white/8 ring-1 ring-white/10 active:bg-white/15 transition">
               Exit Sleep Mode
             </button>
           </div>
@@ -1236,9 +1238,12 @@ function PlayerInner() {
                   {waitTimeout ? (
                     <>
                       <div className="text-4xl mb-2">😔</div>
-                      <h1 className="text-xl font-bold text-gold" style={{ fontFamily: 'Lora, serif' }}>Story took too long</h1>
-                      <p className="mt-1 text-xs text-ink-muted">The server might be busy.</p>
-                      <button onClick={() => navigate(-1)} className="btn-primary mt-4 px-6 py-2 text-sm">Go Back</button>
+                      <h1 className="text-xl font-bold text-gold" style={{ fontFamily: 'Lora, serif' }}>Taking longer than usual</h1>
+                      <p className="mt-1 text-xs text-ink-muted">The server might be busy. You can retry or go back.</p>
+                      <div className="mt-4 flex items-center justify-center gap-3">
+                        <button onClick={() => { setRetrying(r => !r); setWaitTimeout(false); window.location.reload(); }} className="rounded-xl bg-gold px-5 py-2.5 text-sm font-bold text-bg-base shadow-glow transition active:scale-95">Retry</button>
+                        <button onClick={() => navigate(-1)} className="rounded-xl bg-white/10 px-5 py-2.5 text-sm font-bold text-ink-muted transition active:scale-95">Go Back</button>
+                      </div>
                     </>
                   ) : (
                     <>
@@ -1428,12 +1433,18 @@ function PlayerInner() {
                   />
                 )}
               </div>
-              {narrator.duration > 0 && (
-                <div className="mt-1 flex justify-between text-[10px] uppercase tracking-wider text-ink-dim">
-                  <span>{Math.floor(progress * narrator.duration / 60)}:{String(Math.floor(progress * narrator.duration % 60)).padStart(2,'0')}</span>
-                  <span>-{Math.floor((1 - progress) * narrator.duration / 60)}:{String(Math.floor((1 - progress) * narrator.duration % 60)).padStart(2,'0')}</span>
-                </div>
-              )}
+              {(() => {
+                const dur = narrator.duration > 0 ? narrator.duration : (current?.text ? Math.max(60, Math.round(current.text.split(/\s+/).length / 150 * 60 / (speed || 0.9))) : 0);
+                if (!dur) return null;
+                const elapsed = progress * dur;
+                const remaining = (1 - progress) * dur;
+                return (
+                  <div className="mt-1 flex justify-between text-[10px] uppercase tracking-wider text-ink-dim">
+                    <span>{Math.floor(elapsed / 60)}:{String(Math.floor(elapsed % 60)).padStart(2,'0')}</span>
+                    <span>{narrator.duration > 0 ? '' : '~'}{Math.floor(remaining / 60)}:{String(Math.floor(remaining % 60)).padStart(2,'0')}</span>
+                  </div>
+                );
+              })()}
             </div>
 
             {/* Controls — large, obvious, mobile-first */}
@@ -1456,14 +1467,17 @@ function PlayerInner() {
                   onClick={handleTogglePlay}
                   disabled={narrator.loading}
                   aria-label={narrator.loading ? t('player.loading') : isPlaying ? t('player.pause') : t('player.play')}
-                  className={`group relative grid h-20 w-20 place-items-center rounded-full transition active:scale-95 ${
+                  className={`group relative flex flex-col h-20 w-20 items-center justify-center rounded-full transition active:scale-95 ${
                     narrator.loading
                       ? 'bg-bg-elevated ring-2 ring-gold/30'
                       : 'bg-gold text-bg-base shadow-glow'
                   }`}
                 >
                   {narrator.loading ? (
-                    <Loader2 size={24} className="animate-spin text-gold" />
+                    <>
+                      <Loader2 size={20} className="animate-spin text-gold" />
+                      <span className="text-[8px] font-bold text-gold/70 mt-1">~20 sec</span>
+                    </>
                   ) : isPlaying ? (
                     <Pause size={28} fill="currentColor" />
                   ) : (
@@ -1503,8 +1517,8 @@ function PlayerInner() {
                 </button>
               </div>
 
-              {/* Personalize with child's name — Pro feature */}
-              {profile?.childName && profile.childName !== 'little one' && current?.text?.includes(profile.childName) && !personalized && (
+              {/* Personalize with child's name — Pro feature (only show after story finishes or when paused) */}
+              {done && profile?.childName && profile.childName !== 'little one' && current?.text?.includes(profile.childName) && !personalized && (
                 <div className="mt-4 flex justify-center">
                   {canPersonalize(profile?.tier) ? (
                     <button
@@ -1539,7 +1553,7 @@ function PlayerInner() {
                             setPersonalized(true);
                           }
                         } catch (e) {
-                          alert('Personalization failed: ' + e.message);
+                          console.warn('[Player] Personalization failed:', e.message);
                         }
                         setPersonalizing(false);
                       }}
