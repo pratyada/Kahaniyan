@@ -65,7 +65,7 @@ async function generateContent(prompt) {
     method: 'POST',
     headers: { 'content-type': 'application/json', 'x-api-key': key, 'anthropic-version': '2023-06-01' },
     body: JSON.stringify({
-      model: 'claude-haiku-4-5-20251001',
+      model: 'claude-sonnet-4-6',
       max_tokens: 2000,
       system: `You write email newsletters for My Sleepy Tale — a free platform with 200+ audio bedtime stories for kids spanning 20+ cultural traditions (Hindu, Islamic, Sikh, Christian, Buddhist, Indigenous, Filipino, and more) in English, French, and Spanish.
 

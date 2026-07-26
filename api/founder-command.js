@@ -14,7 +14,7 @@ async function interpretCommand(command, context) {
     method: 'POST',
     headers: { 'content-type': 'application/json', 'x-api-key': key, 'anthropic-version': '2023-06-01' },
     body: JSON.stringify({
-      model: 'claude-haiku-4-5-20251001',
+      model: 'claude-sonnet-4-6',
       max_tokens: 3000,
       system: `You are the AI assistant for MySleepyTale's Founder Hub. You interpret natural language commands from founders and return structured actions.
 
@@ -36,6 +36,7 @@ OUTREACH:
 9. "outreach_add" — Add a new business lead (email, businessName, city, businessType, contactName)
 10. "outreach_send" — Send AIDA email to a lead (stage 1-4)
 11. "outreach_list" — List recent outreach leads
+11b. "outreach_import_dallas" — Bulk-import the 117 pre-cleaned Dallas/DFW seed leads into the outreach database (one-time; dedups by email). Trigger phrases: "import dallas leads", "load the dallas list".
 
 USERS & STATS:
 12. "user_count" — Get total user count
@@ -151,7 +152,7 @@ export default async function handler(req, res) {
     if (action === 'outreach_send' && params?.email) {
       try {
         const { default: outreachHandler } = await import('./outreach-email.js');
-        const fakeReq = { method: 'POST', body: { to: params.email, contactName: params.contactName || '', businessName: params.businessName || '', stage: params.stage || 1, force: true } };
+        const fakeReq = { method: 'POST', body: { to: params.email, contactName: params.contactName || '', businessName: params.businessName || '', businessType: params.businessType || '', stage: params.stage || 1, force: true } };
         let result = {};
         const fakeRes = { status: () => fakeRes, json: (d) => { result = d; } };
         await outreachHandler(fakeReq, fakeRes);
@@ -178,6 +179,41 @@ export default async function handler(req, res) {
         createdAt: new Date().toISOString(),
       });
       return res.json({ success: true, action: 'outreach_add', message: `Added ${params.businessName || params.email} to outreach.` });
+    }
+
+    // ── Bulk-import the Dallas/DFW seed leads (one-time) ──
+    if (action === 'outreach_import_dallas') {
+      const { DALLAS_LEADS } = await import('./dallas-seed.js');
+      // Dedup against existing leads by email
+      const existing = new Set();
+      const snap = await db.collection('outreachLeads').get();
+      snap.forEach(d => { const e = (d.data().email || '').toLowerCase(); if (e) existing.add(e); });
+      let added = 0, skipped = 0;
+      const batch = db.batch();
+      for (const lead of DALLAS_LEADS) {
+        const email = (lead.email || '').toLowerCase();
+        if (!email || existing.has(email)) { skipped++; continue; }
+        const id = `lead_dallas_${added}_${email.replace(/[^a-z0-9]/g, '').slice(0, 12)}`;
+        batch.set(db.collection('outreachLeads').doc(id), {
+          id,
+          email,
+          firstName: lead.firstName || '',
+          lastName: '',
+          businessName: lead.businessName || '',
+          city: lead.city || 'Dallas',
+          businessType: lead.businessType || '',
+          campaign: 'dallas',
+          source: 'dallas-2026',
+          status: 'new',
+          outreachStage: 0,
+          outreachSent: false,
+          createdAt: new Date().toISOString(),
+        });
+        existing.add(email);
+        added++;
+      }
+      if (added) await batch.commit();
+      return res.json({ success: true, action: 'outreach_import_dallas', message: `Imported ${added} Dallas leads (${skipped} already existed).`, added, skipped });
     }
 
     // ── Send custom email ──

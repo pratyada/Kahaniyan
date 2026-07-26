@@ -26,7 +26,7 @@ async function generateBlogContent(content) {
       method: 'POST',
       headers: { 'content-type': 'application/json', 'x-api-key': key, 'anthropic-version': '2023-06-01' },
       body: JSON.stringify({
-        model: 'claude-haiku-4-5-20251001',
+        model: 'claude-sonnet-4-6',
         max_tokens: 2000,
         system: `You write blog articles for My Sleepy Tale, an audio bedtime story platform for kids. The blog should be a ARTICLE about the story — NOT the story itself.
 

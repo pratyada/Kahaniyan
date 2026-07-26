@@ -26,7 +26,7 @@ async function generateCaption(topic, platform) {
     method: 'POST',
     headers: { 'content-type': 'application/json', 'x-api-key': key, 'anthropic-version': '2023-06-01' },
     body: JSON.stringify({
-      model: 'claude-haiku-4-5-20251001',
+      model: 'claude-sonnet-4-6',
       max_tokens: 1000,
       system: `You write social media posts for MySleepyTale, an audio bedtime story platform for kids. 200+ stories, 11 cultural traditions, 9 languages. Free. Built in Toronto.
 
@@ -60,7 +60,7 @@ async function generateImagePrompt(topic) {
     method: 'POST',
     headers: { 'content-type': 'application/json', 'x-api-key': key, 'anthropic-version': '2023-06-01' },
     body: JSON.stringify({
-      model: 'claude-haiku-4-5-20251001',
+      model: 'claude-sonnet-4-6',
       max_tokens: 500,
       system: `You generate image prompts for MySleepyTale social media posts. Style: Pixar-quality children's illustration, Disney cinematic lighting, magical bedtime atmosphere, warm golden glow, deep navy night sky. Never include text/words in images. Never depict real people or likenesses. Return ONLY the prompt text, nothing else.`,
       messages: [{ role: 'user', content: `Generate an image prompt for a social media post about: ${topic}` }],
