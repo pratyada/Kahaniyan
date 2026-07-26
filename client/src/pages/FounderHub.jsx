@@ -9,6 +9,7 @@ import { useAuth } from '../hooks/useAuth.jsx';
 import { db } from '../lib/firebase.js';
 import { collection, query, where, orderBy, limit, getDocs, doc, updateDoc, onSnapshot } from 'firebase/firestore';
 import ContentPublisher from '../components/publisher/ContentPublisher.jsx';
+import AudioDownloader from '../components/founder/AudioDownloader.jsx';
 
 const FOUNDER_EMAILS = ['prateekyadav2010@gmail.com', 'rakshajoshi476@gmail.com']; // NOTE: canonical list in api/_firebase.js
 const API = import.meta.env.VITE_API_URL || '';
@@ -70,7 +71,7 @@ const MARKETING_CHANNELS = [
   { id: 'linkedin', label: 'LinkedIn', icon: '💼', status: 'coming-soon', description: 'Founder thought leadership posts, company updates, network engagement.', automation: '70% automated', features: ['AI post writer', 'Carousel generator', 'Comment engagement', 'Connection outreach', 'Analytics'] },
   { id: 'product-hunt', label: 'Product Hunt', icon: '🚀', status: 'coming-soon', description: 'Launch day automation, comment monitoring, maker responses.', automation: '40% automated', features: ['Launch day dashboard', 'Comment responder', 'Upvote tracker', 'Maker comment drafter', 'Post-launch follow-up'] },
   { id: 'quora', label: 'Quora', icon: '❓', status: 'coming-soon', description: 'Find relevant questions, draft expert answers with backlinks.', automation: '80% automated', features: ['Question finder', 'AI answer drafter', 'Backlink placer', 'Upvote tracker', 'Topic follower'] },
-  { id: 'email-outreach', label: 'Email Outreach', icon: '📧', status: 'coming-soon', description: 'Blogger outreach, partnership emails, press pitches.', automation: '70% automated', features: ['Contact finder', 'AI pitch writer', 'Follow-up scheduler', 'Open/reply tracker', 'Template library'] },
+  { id: 'email-outreach', label: 'Email Outreach', icon: '📧', status: 'active', description: 'Dallas / DFW outreach — review the ready-to-send templates per audience before we send.', automation: 'review + send', features: ['6 audience segments', '117 cleaned contacts', 'CAN-SPAM compliant', 'Per-segment preview', 'Founder approval gate'] },
   { id: 'directories', label: 'Directories', icon: '📋', status: 'coming-soon', description: 'Auto-submit to startup directories, track listings.', automation: '90% automated', features: ['30+ directory list', 'Auto-fill submitter', 'Status tracker', 'Backlink verifier', 'Renewal reminders'] },
 ];
 
@@ -100,6 +101,215 @@ function ChannelPlaceholder({ channel }) {
       <div className="rounded-xl bg-gold/5 ring-1 ring-gold/20 p-3 text-center">
         <p className="text-[11px] text-gold font-bold">🔜 Coming Soon</p>
         <p className="text-[10px] text-ink-dim mt-0.5">This channel agent is in the roadmap. Reddit is live now.</p>
+      </div>
+    </div>
+  );
+}
+
+// ─── Dallas / DFW Outreach — review templates before send ─────────
+const DALLAS_ADDR = '373 Front St West, Toronto, ON, Canada M5V 3R7';
+const DALLAS_UNSUB = 'https://mysleepytale.com/settings?unsubscribe=true';
+const DALLAS_SEGMENTS = [
+  {
+    id: 'museums', name: 'Museums, Attractions & Nature Centers', count: 52, accent: '#7ad9a1',
+    orgs: ['Perot Museum', 'Frontiers of Flight', 'Play Street Museum', 'River Legacy', 'Dallas World Aquarium', 'Crayola Experience', 'Kidtopia'],
+    subject: 'A free bedtime-story library for the families who visit {{Org}} 🌙',
+    body: `Hi {{Name}},
+
+I run My Sleepy Tale — a free library of 200+ gentle audio bedtime stories for kids ages 3–10, in English, Spanish and French, spanning 20+ cultural traditions. Families use it for nap time, the car ride home, and winding down after a big day out.
+
+With so many young visitors coming through {{Org}}, I'd love to share it — a free story playlist your families can enjoy at home, no sign-up needed. And with the FIFA World Cup coming to Dallas in 2026, our kids' World Cup story series is a fun, timely tie-in for your programming.
+
+Could I send a one-page flyer / QR code you could share with visiting families, or explore a small story-time collaboration?
+
+🌙 Listen free: https://mysleepytale.com
+Warmly,
+Raksha · My Sleepy Tale`,
+  },
+  {
+    id: 'daycares', name: 'Daycares & Preschools', count: 20, accent: '#60a5fa',
+    orgs: ['KinderCare', 'Kiddie Academy'],
+    subject: 'A free quiet-time story library for the little ones at {{Org}} 🌙',
+    body: `Hi {{Name}},
+
+I run My Sleepy Tale — a free library of 200+ calm audio stories for kids ages 3–10 (English, Spanish & French). Teachers use it for nap time, quiet time, and smooth transitions between activities.
+
+I'd love to offer {{Org}} a free classroom playlist — no sign-up, no cost — that your educators can play during rest time and families can continue at home. With the FIFA World Cup coming to Dallas, our kids' World Cup series is a playful bonus.
+
+Could I send over a one-page flyer and a QR code for your classrooms and parent newsletter?
+
+🌙 Listen free: https://mysleepytale.com
+Warmly,
+Raksha · My Sleepy Tale`,
+  },
+  {
+    id: 'pediatric', name: 'Pediatric Clinics & Dentists', count: 4, accent: '#f472b6',
+    orgs: ['Park Cities Pediatrics', 'Beyond Pediatric Dentistry', 'Dragan Smiles'],
+    subject: "A free calm-down story resource for your patients' families 🌙",
+    body: `Hi {{Name}},
+
+I run My Sleepy Tale — a free library of 200+ gentle audio bedtime stories for kids ages 3–10 (English, Spanish & French). Parents use it to ease anxiety at bedtime, in waiting rooms, and before appointments.
+
+I'd love to offer {{Org}} a free resource to pass along to patient families — a calming story playlist, no sign-up needed. Many pediatric practices share it as a "healthy bedtime" tip.
+
+Could I send a one-page flyer / QR code for your waiting room or patient emails?
+
+🌙 Listen free: https://mysleepytale.com
+Warmly,
+Raksha · My Sleepy Tale`,
+  },
+  {
+    id: 'sleep', name: 'Sleep Consultants & Newborn Care', count: 9, accent: '#c084fc', badge: 'highest fit',
+    orgs: ['Live Love Sleep', 'Mommywise', 'Tranquil Beginnings'],
+    subject: 'A gentle bedtime-story tool your families might love — collab? 🌙',
+    body: `Hi {{Name}},
+
+I love what you do at {{Org}} — helping families find calm at bedtime is close to my heart. I run My Sleepy Tale, a free library of 200+ soothing audio bedtime stories for kids 3–10 (English, Spanish & French, 20+ traditions).
+
+It pairs beautifully with sleep coaching — a consistent, screen-free wind-down ritual families can lean on between sessions. I'd love to explore a collaboration: free Pro access for you to try, an affiliate link so it's worth your while to recommend, and cross-promotion to each other's audiences.
+
+Open to a quick chat, or a flyer you could share with your clients?
+
+🌙 Explore free: https://mysleepytale.com
+Warmly,
+Raksha · My Sleepy Tale`,
+  },
+  {
+    id: 'faith', name: 'Cultural / Faith Organizations', count: 10, accent: '#fbbf24',
+    orgs: ['JCC Dallas'],
+    subject: "Bedtime stories from your tradition — free for {{Org}}'s families 🌙",
+    body: `Hi {{Name}},
+
+My Sleepy Tale is a free kids' bedtime-story platform, and one thing makes us different: we have gentle, respectful stories across 20+ faith and cultural traditions — including Jewish stories and values — in English, Spanish and French.
+
+For the families at {{Org}}, it's a lovely way for children to hear stories from their own heritage at bedtime. It's completely free, and I'd be glad to share a flyer or set up a short story-time for your children's programs.
+
+Could I send over a one-page flyer / QR code for your families?
+
+🌙 Explore free: https://mysleepytale.com
+Warmly,
+Raksha · My Sleepy Tale`,
+  },
+  {
+    id: 'retail', name: 'Kids Retail: Boutiques & Toy Stores', count: 22, accent: '#fb923c', badge: 'cross-promo',
+    orgs: ['CAMP', 'The Toy Maven', 'JoJo Mommy', 'Layette Dallas', 'Baby Bliss', 'KidBiz USA', 'Hip Hip Hooray'],
+    subject: 'A free story library to delight your customers’ kids — cross-promo? 🌙',
+    body: `Hi {{Name}},
+
+I run My Sleepy Tale — a free library of 200+ gentle audio bedtime stories for kids 3–10 (English, Spanish & French). Your customers are exactly the families who love it.
+
+I'd love to explore a simple cross-promotion: a free story playlist + QR you could share in-store or in your emails (a lovely value-add for your customers), and we'd happily feature {{Org}} to our Dallas families in return. With the FIFA World Cup coming to Dallas, our kids' World Cup series is a fun seasonal hook.
+
+Could I send a one-page flyer / QR, or explore an affiliate/partner setup?
+
+🌙 Listen free: https://mysleepytale.com
+Warmly,
+Raksha · My Sleepy Tale`,
+  },
+];
+
+function DallasHighlight({ text }) {
+  // highlight {{Name}} / {{Org}} merge tags
+  const parts = text.split(/(\{\{Name\}\}|\{\{Org\}\})/g);
+  return parts.map((p, i) =>
+    p === '{{Name}}' || p === '{{Org}}'
+      ? <span key={i} className="rounded bg-gold/15 px-1 text-gold font-semibold">{p}</span>
+      : <span key={i}>{p}</span>
+  );
+}
+
+function DallasOutreach() {
+  const [seg, setSeg] = useState(DALLAS_SEGMENTS[0].id);
+  const [reviewed, setReviewed] = useState({});
+  const active = DALLAS_SEGMENTS.find(s => s.id === seg);
+  const total = DALLAS_SEGMENTS.reduce((n, s) => n + s.count, 0);
+  const reviewedCount = Object.values(reviewed).filter(Boolean).length;
+
+  return (
+    <div>
+      {/* Summary */}
+      <div className="rounded-2xl bg-bg-surface ring-1 ring-white/5 p-4 mb-4">
+        <div className="flex flex-wrap items-center justify-between gap-2 mb-3">
+          <div>
+            <h3 className="text-sm font-bold text-ink">Dallas / DFW Outreach — Review</h3>
+            <p className="text-[11px] text-ink-dim">{total} cleaned contacts · 23 orgs · {DALLAS_SEGMENTS.length} audience segments</p>
+          </div>
+          <span className="rounded-full bg-amber-500/10 text-amber-400 ring-1 ring-amber-500/20 px-3 py-1 text-[10px] font-bold">
+            ⏳ Pending founder approval to send
+          </span>
+        </div>
+        <div className="rounded-xl bg-white/3 ring-1 ring-white/5 p-3 text-[11px] text-ink-muted leading-relaxed">
+          <span className="font-bold text-ink">From:</span> hello@mysleepytale.com (Raksha · My Sleepy Tale) &nbsp;·&nbsp;
+          <span className="font-bold text-ink">Address:</span> {DALLAS_ADDR} &nbsp;·&nbsp;
+          <span className="font-bold text-ink">Unsubscribe</span> + physical address appended to every email (CAN-SPAM compliant).
+          Send in warmed batches (≤30/day), test-to-self first.
+        </div>
+      </div>
+
+      {/* Segment pills */}
+      <div className="flex gap-2 overflow-x-auto pb-2 mb-4 -mx-1 px-1">
+        {DALLAS_SEGMENTS.map(s => (
+          <button
+            key={s.id}
+            onClick={() => setSeg(s.id)}
+            className={`shrink-0 flex items-center gap-1.5 rounded-full px-3 py-2 text-[11px] font-bold transition active:scale-95 ${
+              seg === s.id ? 'bg-gold text-bg-base shadow-glow' : 'bg-white/5 text-ink-muted ring-1 ring-white/10 hover:ring-gold/20'
+            }`}
+          >
+            {reviewed[s.id] && <span>✅</span>}
+            {s.name.split(':')[0].split(' ')[0]} <span className="opacity-60">({s.count})</span>
+          </button>
+        ))}
+      </div>
+
+      {/* Selected segment — email preview */}
+      {active && (
+        <div className="rounded-2xl bg-bg-surface ring-1 ring-white/5 overflow-hidden mb-4">
+          <div className="p-4 border-b border-white/5" style={{ background: `linear-gradient(90deg, ${active.accent}14, transparent)` }}>
+            <div className="flex flex-wrap items-center gap-2 mb-1">
+              <h4 className="text-sm font-bold text-ink">{active.name}</h4>
+              <span className="rounded-full px-2 py-0.5 text-[10px] font-bold" style={{ background: `${active.accent}22`, color: active.accent }}>{active.count} recipients</span>
+              {active.badge && <span className="rounded-full bg-gold/15 text-gold px-2 py-0.5 text-[10px] font-bold">{active.badge}</span>}
+            </div>
+            <div className="flex flex-wrap gap-1.5 mt-2">
+              {active.orgs.map(o => (
+                <span key={o} className="text-[10px] bg-white/5 text-ink-dim px-2 py-0.5 rounded-full">{o}</span>
+              ))}
+            </div>
+          </div>
+          <div className="p-4">
+            <p className="text-[10px] font-bold uppercase tracking-wider text-ink-dim mb-1">Subject</p>
+            <p className="text-sm text-ink font-semibold mb-4"><DallasHighlight text={active.subject} /></p>
+            <p className="text-[10px] font-bold uppercase tracking-wider text-ink-dim mb-1">Body</p>
+            <div className="text-[13px] text-ink-muted leading-relaxed whitespace-pre-line rounded-xl bg-white/3 ring-1 ring-white/5 p-4">
+              <DallasHighlight text={active.body} />
+            </div>
+            <div className="mt-3 text-[10px] text-ink-dim leading-relaxed border-t border-white/5 pt-3">
+              My Sleepy Tale · {DALLAS_ADDR}<br />
+              You're receiving this as a Dallas-area family business. <a href={DALLAS_UNSUB} className="text-gold/70 underline">Unsubscribe</a>
+            </div>
+          </div>
+          <div className="p-4 border-t border-white/5 flex items-center justify-between">
+            <p className="text-[11px] text-ink-dim">{reviewed[active.id] ? '✅ Marked reviewed' : 'Read through, then mark reviewed'}</p>
+            <button
+              onClick={() => setReviewed(r => ({ ...r, [active.id]: !r[active.id] }))}
+              className={`rounded-full px-4 py-2 text-xs font-bold transition active:scale-95 ${
+                reviewed[active.id] ? 'bg-emerald-500/15 text-emerald-400 ring-1 ring-emerald-500/30' : 'bg-gold text-bg-base shadow-glow hover:brightness-110'
+              }`}
+            >
+              {reviewed[active.id] ? '✅ Reviewed' : 'Mark reviewed'}
+            </button>
+          </div>
+        </div>
+      )}
+
+      {/* Review progress + hand-off note */}
+      <div className="rounded-2xl bg-gold/5 ring-1 ring-gold/20 p-4 text-center">
+        <p className="text-[11px] text-gold font-bold mb-1">{reviewedCount} / {DALLAS_SEGMENTS.length} segments reviewed</p>
+        <p className="text-[10px] text-ink-dim leading-relaxed">
+          When all segments look good, tell Prateek "Dallas templates approved" — sending happens in warmed batches
+          from the outreach pipeline (not from here), so nothing goes out by accident. Recipient list: 117 contacts, cleaned & deduped.
+        </p>
       </div>
     </div>
   );
@@ -1435,6 +1645,12 @@ export default function FounderHub() {
               </h2>
               <ContentPublisher user={user} />
             </div>
+            <div className="mb-8">
+              <h2 className="text-base font-bold text-ink mb-4" style={{ fontFamily: 'Lora, serif' }}>
+                🎧 Audio Downloader — YouTube & Spotify
+              </h2>
+              <AudioDownloader />
+            </div>
           </motion.div>
         )}
       </AnimatePresence>
@@ -1533,8 +1749,13 @@ export default function FounderHub() {
                 <CreativeGenerator user={user} />
               )}
 
+              {/* Email Outreach — Dallas / DFW templates review */}
+              {marketingChannel === 'email-outreach' && (
+                <DallasOutreach />
+              )}
+
               {/* Other channels — coming soon placeholder */}
-              {marketingChannel !== 'reddit' && marketingChannel !== 'instagram' && marketingChannel !== 'email-newsletter' && marketingChannel !== 'creative-studio' && (
+              {marketingChannel !== 'reddit' && marketingChannel !== 'instagram' && marketingChannel !== 'email-newsletter' && marketingChannel !== 'creative-studio' && marketingChannel !== 'email-outreach' && (
                 <ChannelPlaceholder channel={MARKETING_CHANNELS.find(c => c.id === marketingChannel)} />
               )}
             </div>
