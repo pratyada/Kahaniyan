@@ -412,7 +412,7 @@ export default function Home() {
           <img alt="My Sleepy Tale on Product Hunt" width="250" height="54" src={`https://api.producthunt.com/widgets/embed-image/v1/featured.svg?post_id=1174662&theme=${document.documentElement.dataset.theme === 'day' ? 'light' : 'dark'}&t=1781731481591`} />
         </a>
         <a href="https://sellwithboost.com" target="_blank" rel="noopener noreferrer" aria-label="Listed on Sell With Boost">
-          <img alt="Listed on Sell With Boost" height="54" style={{ height: '54px', width: 'auto' }} src="https://sellwithboost.com/badge/listing.svg" />
+          <img alt="Listed on Sell With Boost" height="54" style={{ height: '54px', width: 'auto' }} src={`https://sellwithboost.com/badge/${document.documentElement.dataset.theme === 'day' ? 'listing-dark' : 'listing'}.svg`} />
         </a>
       </div>
 
