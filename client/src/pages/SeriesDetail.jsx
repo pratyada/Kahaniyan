@@ -819,8 +819,24 @@ export default function SeriesDetail() {
                 {done ? <CheckCircle size={14} /> : ep.episodeNumber}
               </div>
 
-              {/* Share + Play buttons */}
+              {/* Share + Copy + Play buttons */}
               <div className="absolute right-2 top-2 flex gap-1.5">
+                {/* Copy description */}
+                <button
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    const desc = `${ep.title}\n${ep.subtitle || ''}\n\n${(ep.body || '').replace(/\{childName\}/g, 'little one').slice(0, 2000)}`;
+                    navigator.clipboard.writeText(desc).then(() => {
+                      e.currentTarget.textContent = '✓';
+                      setTimeout(() => { e.currentTarget.textContent = '📋'; }, 1500);
+                    }).catch(() => {});
+                  }}
+                  className="grid h-7 w-7 place-items-center rounded-full bg-black/40 text-white/70 backdrop-blur-sm transition active:scale-90 text-[10px]"
+                  title="Copy description"
+                >
+                  📋
+                </button>
+                {/* Share link */}
                 <button
                   onClick={(e) => {
                     e.stopPropagation();
