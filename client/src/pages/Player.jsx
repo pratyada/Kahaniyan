@@ -451,7 +451,11 @@ function PlayerInner() {
       }
     }
 
-    // Kill any orphaned audio elements before starting fresh
+    // Kill any orphaned audio before starting fresh. The narrator plays via
+    // `new Audio()` elements that are NOT in the DOM, so querySelectorAll misses
+    // them — stop the narrator explicitly, else the previous episode keeps playing
+    // underneath the new one (the "two episodes at once" overlap on switch).
+    narrator.stop();
     document.querySelectorAll('audio').forEach(a => { try { a.pause(); a.src = ''; } catch {} });
 
     // For multilingual/FIFA stories, always default to English (not profile language)
@@ -508,8 +512,8 @@ function PlayerInner() {
           const url = URL.createObjectURL(localBlob);
           audio = narrator.loadCached(url);
         }
-        // Priority 2: Firebase Storage cached URL (skip if text changed or non-English multilingual)
-        else if (current.audioUrl && !(isMultiLangStory && lang !== 'English')) {
+        // Priority 2: Cached audio URL (skip dead Firebase Storage URLs, text changes, or non-English multilingual)
+        else if (current.audioUrl && !current.audioUrl.includes('firebasestorage.googleapis.com') && !(isMultiLangStory && lang !== 'English')) {
           const currentHash = textHash(current.text);
           const cachedHash = audioHashes[current.id];
           const hashMismatch = cachedHash ? cachedHash !== currentHash : false;
@@ -615,6 +619,13 @@ function PlayerInner() {
         }
 
         if (!audio) return; // aborted
+        // The episode changed while this async load was in flight (slow TTS gen or
+        // cache fetch). Discard this now-stale audio, otherwise it would start playing
+        // on top of the episode the user switched to.
+        if (currentIdRef.current !== current.id) {
+          try { audio.pause(); audio.src = ''; audio.load(); } catch {}
+          return;
+        }
         setTtsReady(true);
         setAudio(audio); // register with global context so clear() can stop it
         audio.playbackRate = speed;
