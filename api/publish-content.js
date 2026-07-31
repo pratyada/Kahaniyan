@@ -203,6 +203,27 @@ export default async function handler(req, res) {
     return res.json({ registered: true, episodeId, imageUrl });
   }
 
+  // Clear dead audio URLs from wisdomAudio
+  if (req.body?.action === 'clearDeadAudio') {
+    const db = await getFirestore();
+    if (!db) return res.status(500).json({ error: 'Database unavailable' });
+    const snap = await db.collection('config').doc('wisdomAudio').get();
+    if (!snap.exists) return res.json({ cleared: 0 });
+    const data = snap.data();
+    const updates = {};
+    let cleared = 0;
+    for (const [k, v] of Object.entries(data)) {
+      if (typeof v === 'string' && v.includes('firebasestorage.googleapis.com')) {
+        updates[k] = '';
+        cleared++;
+      }
+    }
+    if (cleared > 0) {
+      await db.collection('config').doc('wisdomAudio').set(updates, { merge: true });
+    }
+    return res.json({ cleared, total: Object.keys(data).length });
+  }
+
   const { uid, content } = req.body || {};
   if (!uid || !content?.title || !content?.body) {
     return res.status(400).json({ error: 'uid, content.title, content.body required' });
