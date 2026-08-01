@@ -446,6 +446,7 @@ function PlayerInner() {
     if (current.text && current.text.includes('{childName}')) {
       const filledText = fillTokens(current.text, user ? profile : null);
       if (filledText !== current.text) {
+        startedRef.current = false; // reset so effect re-runs after load
         load({ ...current, text: filledText });
         return; // re-trigger this effect with filled text
       }
