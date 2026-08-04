@@ -11,7 +11,7 @@ import { collection, query, where, orderBy, limit, getDocs, doc, updateDoc, onSn
 import ContentPublisher from '../components/publisher/ContentPublisher.jsx';
 import AudioDownloader from '../components/founder/AudioDownloader.jsx';
 
-const FOUNDER_EMAILS = ['prateekyadav2010@gmail.com', 'rakshajoshi476@gmail.com']; // NOTE: canonical list in api/_firebase.js
+const FOUNDER_EMAILS = ['prateekyadav2010@gmail.com', 'rakshajoshi476@gmail.com', 'raksha1107@gmail.com']; // NOTE: canonical list in api/_firebase.js
 const API = import.meta.env.VITE_API_URL || '';
 
 const PIPELINES = [

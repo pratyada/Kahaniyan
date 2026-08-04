@@ -20,4 +20,4 @@ export async function getFirestore() {
   return fb ? fb.firestore() : null;
 }
 
-export const FOUNDER_EMAILS = ['prateekyadav2010@gmail.com', 'rakshajoshi476@gmail.com'];
+export const FOUNDER_EMAILS = ['prateekyadav2010@gmail.com', 'rakshajoshi476@gmail.com', 'raksha1107@gmail.com'];
