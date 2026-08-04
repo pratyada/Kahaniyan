@@ -6,7 +6,7 @@ import { useAuth } from '../../hooks/useAuth.jsx';
 import { useLocalizedSeries } from '../../hooks/useLocalizedData.js';
 import { Download, Play, Loader, CheckCircle, XCircle } from 'lucide-react';
 
-const API = import.meta.env.VITE_API_URL || '';
+const API = import.meta.env.VITE_API_BASE_URL || '';
 
 const VOICES = [
   { id: 'sage', label: 'Sage (calm narrator)', region: 'Indian/Western' },
