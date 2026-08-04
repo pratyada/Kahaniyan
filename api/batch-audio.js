@@ -78,7 +78,7 @@ export default async function handler(req, res) {
   const userSnap = await db.collection('users').doc(uid).get();
   const email = userSnap.exists ? userSnap.data().email?.toLowerCase() : '';
   if (!AUDIO_FOUNDERS.includes(email)) {
-    return res.status(403).json({ error: 'Audio download restricted to Prateek & Raksha', debug: { uid, email, allowed: AUDIO_FOUNDERS } });
+    return res.status(403).json({ error: 'Audio download restricted to Prateek & Raksha' });
   }
 
   if (!OPENAI_KEY) return res.status(503).json({ error: 'OpenAI not configured' });
