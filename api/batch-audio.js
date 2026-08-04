@@ -10,8 +10,8 @@ const OPENAI_KEY = process.env.OPENAI_API_KEY;
 const s3 = new S3Client({ region: 'us-east-1' });
 const BUCKET = 'mysleepytale-app';
 
-// Allowed founders for audio download
-const AUDIO_FOUNDERS = ['prateekyadav@outlook.com', 'raksha1107@gmail.com'];
+// Allowed founders for audio download — canonical list (Prateek + Raksha)
+const AUDIO_FOUNDERS = FOUNDER_EMAILS.map(e => e.toLowerCase());
 
 async function generateTTS(text, voice = 'sage', speed = 0.9) {
   const res = await fetch('https://api.openai.com/v1/audio/speech', {
@@ -74,11 +74,11 @@ export default async function handler(req, res) {
   const db = await getFirestore();
   if (!db) return res.status(500).json({ error: 'Firestore not available' });
 
-  // Auth — only Prateek + Raksha
+  // Auth — only founders
   const userSnap = await db.collection('users').doc(uid).get();
   const email = userSnap.exists ? userSnap.data().email?.toLowerCase() : '';
   if (!AUDIO_FOUNDERS.includes(email)) {
-    return res.status(403).json({ error: 'Audio download restricted to Prateek & Raksha' });
+    return res.status(403).json({ error: 'Audio download restricted to Prateek & Raksha', debug: { uid, email, allowed: AUDIO_FOUNDERS } });
   }
 
   if (!OPENAI_KEY) return res.status(503).json({ error: 'OpenAI not configured' });
