@@ -2,6 +2,11 @@
 // Fetches actual generated images from Firestore when available.
 // Falls back to Unsplash for stories without generated images.
 
+// Auto-generated from client/src/data/culturalLessons.js — covers ALL 211 wisdom
+// stories so shared links show the real title/tradition (not "A Bedtime Story").
+// Regenerate: node scripts/generate-share-titles.mjs
+import { WISDOM_TITLES } from './wisdom-titles.js';
+
 const PROJECT_ID = process.env.FIREBASE_PROJECT_ID || 'qissaa-61a78';
 const FIRESTORE_URL = `https://firestore.googleapis.com/v1/projects/${PROJECT_ID}/databases/(default)/documents`;
 
@@ -113,7 +118,8 @@ const TITLES = {
   brave_ep5_bhagat: { title: 'The Boy Who Was Not Afraid', tradition: 'Sikh', duration: 5, series: 'Brave Moments That Changed the World', ep: 5, totalEp: 8 },
   brave_ep6_neet: { title: 'The Students Who Would Not Be Silent', tradition: 'Universal', duration: 5, series: 'Brave Moments That Changed the World', ep: 6, totalEp: 8 },
   brave_ep7_chipko: { title: 'The Women Who Hugged Trees', tradition: 'Hindu', duration: 5, series: 'Brave Moments That Changed the World', ep: 7, totalEp: 8 },
-  brave_ep8_billy_bishop: { title: 'The Neighbours Who Saved the Waterfront', tradition: 'Universal', duration: 5, series: 'Brave Moments That Changed the World', ep: 8, totalEp: 8 },
+  brave_ep8_billy_bishop: { title: 'The Neighbours Who Saved the Waterfront', tradition: 'Universal', duration: 5, series: 'Brave Moments That Changed the World', ep: 8, totalEp: 9 },
+  brave_ep9_nimsdai: { title: 'The Man Who Touched Every Sky', tradition: 'Universal', duration: 6, series: 'Brave Moments That Changed the World', ep: 9, totalEp: 9 },
   rk_ep7_photo_day: { title: 'Photo Day & The Grateful Garden Party', tradition: 'Universal', duration: 2, series: 'Rainbow Kindergarten Adventures', ep: 7, totalEp: 7, ogImage: 'https://mysleepytale.com/media/published/rainbow_kindergarten_jlps_yr25_26_ep7_rainbow_class_s_grateful_garde_cover.jpg' },
   'rainbow-kindergarten-jlps-yr25-26': { title: 'Rainbow Kindergarten Adventures', tradition: 'Universal', duration: null, isSeries: true, totalEp: 7, description: 'The Rainbow batch from JLPS explores Toronto — shapes at Canoe Landing, a concert, the Brick Works field trip, summer fun, and birthday parties.', firstEpId: 'rk_ep1_canoe', seriesUrl: '/series/rainbow-kindergarten-jlps-yr25-26' },
   rk_ep6_aarhi_birthday: { title: "Aarhi's Birthday at Jump and Joy", tradition: 'Universal', duration: 2, series: 'Rainbow Kindergarten Adventures', ep: 6, totalEp: 6, ogImage: 'https://mysleepytale.com/media/story-gallery/rk_ep6_aarhi_bday_1.jpeg' },
@@ -296,8 +302,10 @@ export default async function handler(req, res) {
   }
 
   const lessonId = storyId.startsWith('lesson_') ? storyId.slice(7) : storyId;
-  // Check both the raw storyId and lessonId (series IDs have hyphens, not lesson_ prefix)
-  let story = TITLES[storyId] || TITLES[lessonId];
+  // Check both the raw storyId and lessonId (series IDs have hyphens, not lesson_ prefix).
+  // WISDOM_TITLES (auto-generated from culturalLessons) covers every wisdom story;
+  // the hand-kept TITLES map wins when present (it carries series/episode/ogImage extras).
+  let story = TITLES[storyId] || TITLES[lessonId] || WISDOM_TITLES[storyId] || WISDOM_TITLES[lessonId];
 
   let title, description, image, redirectUrl;
 

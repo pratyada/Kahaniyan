@@ -431,6 +431,7 @@ const STORY_ART = {
   brave_ep5_bhagat: { gradient: 'linear-gradient(135deg, #7c2d12 0%, #ea580c 40%, #fbbf24 100%)', icon: '🔥', accent: '#ea580c', prompt: 'Young man standing tall in courtroom, light streaming on face, courage and defiance' },
   brave_ep6_neet: { gradient: 'linear-gradient(135deg, #1e40af 0%, #8b5cf6 40%, #f0a500 100%)', icon: '📚', accent: '#8b5cf6', prompt: 'Thousands of students marching together, signs about fairness, blazing sun, unity' },
   brave_ep7_chipko: { gradient: 'linear-gradient(135deg, #14532d 0%, #22c55e 40%, #fbbf24 100%)', icon: '🌳', accent: '#22c55e', prompt: 'Women in saris hugging ancient Himalayan trees, loggers surprised, forest sunlight' },
+  brave_ep9_nimsdai: { gradient: 'linear-gradient(135deg, #1e3a5f 0%, #f97316 40%, #fbbf24 100%)', icon: '🏔️', accent: '#f97316', prompt: 'Nepali mountaineer on Himalayan summit, prayer flags, fourteen peaks, golden sunrise, triumph' },
   brave_ep8_billy_bishop: { gradient: 'linear-gradient(135deg, #1e3a5f 0%, #0ea5e9 40%, #f0a500 100%)', icon: '🏙️', accent: '#0ea5e9', prompt: 'Toronto waterfront, CN Tower, families in parks, community standing together, sunset' },
 };
 
