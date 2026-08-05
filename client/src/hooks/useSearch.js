@@ -15,6 +15,8 @@ function searchText(item) {
     item.subtitle,
     item.description,
     item.source,
+    item.id?.replace(/[_-]/g, ' '),
+    item.seriesTitle,
     tradition?.label,
     tradition?.key,
     theme?.label,
