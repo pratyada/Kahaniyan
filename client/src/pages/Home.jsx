@@ -32,6 +32,22 @@ import { buildTraditionShelves, buildAgeShelf } from '../utils/shelfBuilder.js';
 import { fillTokens } from '../utils/storyHelpers.js';
 import CulturePage from './CulturePage.jsx';
 
+// New launches / featured series — pinned to the TOP of Home for EVERYONE,
+// belief-agnostic (shown regardless of the family's beliefs). These are the
+// inspiring, universal stories we want to lead with. Add a new launch's series
+// id here to feature it at the top; remove it when it's no longer "new".
+const FEATURED_SERIES_IDS = ['brave-moments'];
+
+// Newest episode — shown as a launch pop-up card + a "New Released" card at the top of Home.
+const NEW_RELEASE = {
+  id: 'brave_ep9_nimsdai',
+  title: 'The Man Who Touched Every Sky',
+  subtitle: 'A boy from a tiny Himalayan village who climbed all fourteen of the world’s highest mountains — and showed everyone that nothing is impossible.',
+  series: 'Brave Moments That Changed the World',
+  image: 'https://mysleepytale.com/media/stories/brave_ep9_nimsdai.jpg',
+  playUrl: '/player?storyId=brave_ep9_nimsdai',
+};
+
 export default function Home() {
   const { t } = useTranslation();
   const navigate = useNavigate();
@@ -117,6 +133,15 @@ export default function Home() {
   const dismissFifaBanner = () => {
     setShowFifaBanner(false);
     try { sessionStorage.setItem('mst:fifa-series-banner-dismissed', '1'); } catch {}
+  };
+
+  // New-release launch pop-up — shows once per user for this episode
+  const [showNewRelease, setShowNewRelease] = useState(() => {
+    try { return !localStorage.getItem('mst:new-release-' + NEW_RELEASE.id); } catch { return true; }
+  });
+  const dismissNewRelease = () => {
+    setShowNewRelease(false);
+    try { localStorage.setItem('mst:new-release-' + NEW_RELEASE.id, '1'); } catch {}
   };
 
   const { query: searchQuery, setQuery: setSearchQuery, results: searchResults } = useSearch({
@@ -267,6 +292,23 @@ export default function Home() {
 
   return (
     <PageTransition className="relative page-scroll px-5 pt-10 safe-top">
+      {/* 🆕 New-release launch pop-up */}
+      {showNewRelease && (
+        <div className="fixed inset-0 z-[60] flex items-center justify-center bg-black/70 p-4 backdrop-blur-sm" onClick={dismissNewRelease}>
+          <div className="relative w-full max-w-sm overflow-hidden rounded-3xl bg-bg-surface shadow-2xl ring-1 ring-white/10" onClick={e => e.stopPropagation()}>
+            <button onClick={dismissNewRelease} aria-label="Close" className="absolute right-3 top-3 z-10 flex h-8 w-8 items-center justify-center rounded-full bg-black/50 text-lg text-white active:scale-90">×</button>
+            <img src={NEW_RELEASE.image} alt={NEW_RELEASE.title} className="h-44 w-full object-cover" />
+            <div className="p-5">
+              <span className="inline-block rounded-full bg-gold/15 px-3 py-1 text-[10px] font-bold uppercase tracking-wider text-gold">🆕 New Release</span>
+              <h2 className="mt-3 text-xl font-bold text-ink" style={{ fontFamily: 'Lora, serif' }}>{NEW_RELEASE.title}</h2>
+              <p className="mt-0.5 text-[11px] text-ink-dim">{NEW_RELEASE.series}</p>
+              <p className="mt-2 text-[13px] leading-relaxed text-ink-muted">{NEW_RELEASE.subtitle}</p>
+              <button onClick={() => { dismissNewRelease(); navigate(NEW_RELEASE.playUrl); }} className="mt-4 w-full rounded-full bg-gold px-5 py-3 text-sm font-bold text-bg-base shadow-glow transition active:scale-95">🎧 Listen now</button>
+              <button onClick={dismissNewRelease} className="mt-2 w-full rounded-full px-5 py-2 text-xs font-medium text-ink-dim">Maybe later</button>
+            </div>
+          </div>
+        </div>
+      )}
       {/* FIFA Series Banner */}
       <AnimatePresence>
         {showFifaBanner && (
@@ -459,7 +501,7 @@ export default function Home() {
               <ShelfSection title={`Series (${matchedSeries.length})`}>
                 <ShelfRow>
                   {matchedSeries.map(s => (
-                    <SeriesCard key={s.id} series={s} onClick={() => navigate(`/series/${s.id}`)} />
+                    <SeriesCard key={s.id} series={s} coverImage={(s.episodes || []).map(e => wisdomImageUrls[e.id] || e.coverImage).find(Boolean)} onClick={() => navigate(`/series/${s.id}`)} />
                   ))}
                 </ShelfRow>
               </ShelfSection>
@@ -510,8 +552,42 @@ export default function Home() {
         const featuredDeduped = dedupe(featuredStories);
         const tonightDeduped = dedupe(tonightPicks);
         return (<>
+          {/* 🆕 New Released — top card */}
+          <button
+            onClick={() => navigate(NEW_RELEASE.playUrl)}
+            className="mb-4 flex w-full items-stretch overflow-hidden rounded-2xl bg-bg-surface text-left ring-1 ring-gold/25 transition active:scale-[0.98]"
+          >
+            <img src={NEW_RELEASE.image} alt="" className="h-24 w-32 shrink-0 object-cover" />
+            <div className="flex-1 p-3">
+              <span className="text-[9px] font-bold uppercase tracking-wider text-gold">🆕 New Released</span>
+              <p className="mt-0.5 text-sm font-bold leading-tight text-ink">{NEW_RELEASE.title}</p>
+              <p className="mt-0.5 text-[10px] text-ink-dim">{NEW_RELEASE.series}</p>
+              <span className="mt-1 inline-block text-[11px] font-bold text-gold">🎧 Listen now →</span>
+            </div>
+          </button>
+
           {/* Hero slider */}
           <HeroSlider stories={featuredDeduped} wisdomImageUrls={wisdomImageUrls} onPlay={handlePlay} />
+
+          {/* 0. New & Inspiring — pinned to the top for EVERYONE, belief-agnostic */}
+          {(() => {
+            const featured = FEATURED_SERIES_IDS.map(id => SERIES.find(s => s.id === id)).filter(Boolean);
+            if (featured.length === 0) return null;
+            return (
+              <ShelfSection title="🌟 New & Inspiring — Just Launched" subtitle="Real courage, real people. For every family.">
+                <ShelfRow>
+                  {featured.map(s => (
+                    <SeriesCard
+                      key={s.id}
+                      series={s}
+                      coverImage={wisdomImageUrls[s.episodes?.[0]?.id] || (s.episodes || []).map(e => wisdomImageUrls[e.id]).find(Boolean)}
+                      onClick={() => navigate(`/series/${s.id}`)}
+                    />
+                  ))}
+                </ShelfRow>
+              </ShelfSection>
+            );
+          })()}
 
           {/* 1. Tonight's Picks */}
           {tonightDeduped.length > 0 && (
@@ -538,7 +614,7 @@ export default function Home() {
           <ShelfSection title="📬 Shared with Me">
             <ShelfRow>
               {sharedSeries.map(s => (
-                <SeriesCard key={s.id} series={s} onClick={() => navigate(`/series/${s.id}`)} />
+                <SeriesCard key={s.id} series={s} coverImage={(s.episodes || []).map(e => wisdomImageUrls[e.id] || e.coverImage).find(Boolean)} onClick={() => navigate(`/series/${s.id}`)} />
               ))}
             </ShelfRow>
           </ShelfSection>
@@ -605,7 +681,11 @@ export default function Home() {
 
       {/* Community Creations — user-created stories & series */}
       {(() => {
-        const communitySeries = firestoreSeries.filter(s => !s._isBuiltIn);
+        // Exclude series that duplicate a built-in id (e.g. dr-spock-parenting,
+        // rainbow-kindergarten) — those already show in the main series shelves,
+        // so listing the Firestore copy here caused the "duplicate story" on Home.
+        const builtInSeriesIds = new Set(SERIES_BUILTIN.map(s => s.id));
+        const communitySeries = firestoreSeries.filter(s => !s._isBuiltIn && !builtInSeriesIds.has(s.id));
         const communityStories = firestoreStories;
         if (communitySeries.length === 0 && communityStories.length === 0) return null;
         return (
