@@ -7869,81 +7869,6 @@ The world\u2019s most beautiful game continues tomorrow.`,
     totalEpisodes: 9,
     episodes: [
       {
-        id: 'brave_ep9_nimsdai', episodeNumber: 9, title: 'The Man Who Touched Every Sky',
-        subtitle: 'A boy from a tiny Himalayan village climbed all fourteen of the world\'s highest mountains — and showed the world that impossible is just a word.',
-        tradition: 'universal', theme: 'courage', durationMinutes: 6,
-        source: 'Brave Moments · Episode 9',
-        body: `{childName}, tonight I want to tell you about a man who grew up so poor he did not have shoes. A man who joined the toughest military unit in the world. A man who stood on top of every giant mountain on Earth. And a man who, in the end, gave his life to the mountains he loved.
-
-His name was Nirmal Purja. But everyone called him Nims. Or Nimsdai — which means "big brother Nims" in Nepali.
-
-Nims was born on July 25, 1983, in a tiny village called Dana, tucked into the folds of the Himalayas in Nepal. His family was very poor. So poor that his three older brothers worked to pay for his school. So poor that as a little boy, Nims looked up at the enormous mountains towering above his village and thought: one day, I will stand on top of those.
-
-When Nims grew up, he joined the British Army — a famous regiment called the Gurkhas, known as some of the bravest soldiers on Earth. But Nims wanted more. He applied to join the Special Boat Service — the most elite special forces unit in the Royal Navy. No Gurkha had ever been accepted. They told him it was impossible.
-
-Nims made it. The first Gurkha ever.
-
-But even that was not enough. The mountains were calling.
-
-In 2018, Nims did something nobody had ever done. He quit the army — giving up his pension, his security, everything — and announced a plan so wild that the entire climbing world laughed at him.
-
-He said: I will climb all fourteen of the world's tallest mountains — every peak above 8,000 meters — in just seven months.
-
-The previous record? Seven years. Nims wanted to do it in seven months.
-
-People said it was impossible. The weather windows were wrong. The logistics were impossible. No human body could survive that many death zones in a row.
-
-Nims smiled and said: "I am sick of people saying things are impossible."
-
-And then he did it. In six months and six days.
-
-He climbed Annapurna, Dhaulagiri, Kangchenjunga, Everest, Lhotse, and Makalu — six mountains above 8,000 meters — in just one month. He climbed Everest, Lhotse, and Makalu in forty-eight hours. Forty-eight hours for three of the tallest mountains on Earth.
-
-He called his mission "Project Possible." Because that was his whole message to the world: everything is possible.
-
-But here is what made Nims truly special, {childName}. It was not the records. It was what he did between the records.
-
-On Kangchenjunga, at 8,500 meters — where the air is so thin you can barely think — Nims found a climber lying in the snow, abandoned by his team, left to die. Everyone else walked past. Nims stopped. He gave up his own oxygen. He carried the man down the mountain on his back. It took six hours. He saved that man's life.
-
-He did not have to. At that altitude, stopping means risking your own death. But Nims said: "Above the death zone, there is still a human zone."
-
-In January 2021, Nims led ten Nepalese climbers to the summit of K2 — the most dangerous mountain on Earth — in winter. Nobody had ever done it. For thirty-four years, the world's best climbers had tried and failed. Nims and his team stood on top at minus sixty degrees, winds howling at one hundred kilometers per hour. And Nims was the only one who did it without extra oxygen.
-
-When they reached the summit, they sang the Nepali national anthem. Nims cried. Not for himself. For Nepal. He wanted the world to know that Nepali climbers were not just helpers carrying bags for foreign climbers. They were the greatest mountaineers on Earth.
-
-He created the Nimsdai Foundation to build schools in mountain villages, to clean up garbage left on mountains by climbers, and to support the families of Sherpas who risked their lives so others could reach the top.
-
-By July 2025, Nims had summited 8,000-meter peaks fifty times. Twenty-two of those without any extra oxygen. Numbers that no human had ever reached.
-
-And then came Broad Peak.
-
-On July 30, 2026 — just five days after his forty-third birthday — Nims was climbing Broad Peak in Pakistan with his team. At 6,600 meters, between Camp 2 and Camp 3, the mountain let go. A massive avalanche swept down the slope without warning.
-
-Ten climbers were taken that morning. Nims was one of them.
-
-The climbing world went silent. Prince William called him "one of the world's greatest mountaineers." Bear Grylls called him "a remarkable and unique man with an unstoppable spirit."
-
-But {childName}, here is what I want you to remember about Nims. Not the records. Not the summits. Five lessons from his life:
-
-One: he came from nothing. No shoes. No money. No connections. And he became the greatest.
-
-Two: when people said "impossible," he did not argue. He just did it.
-
-Three: at the highest point on Earth, where most people think only of themselves, he stopped to save a stranger.
-
-Four: he did not climb for fame. He climbed so the world would respect the people of Nepal — the Sherpas, the guides, the mountain people who had been invisible for too long.
-
-Five: he knew the mountains could take him. He climbed anyway. Because a life spent being careful is not the same as a life fully lived.
-
-The mountains gave Nims everything. And in the end, the mountains took him home.
-
-{childName}, you do not need to climb a mountain to live like Nims. You just need to look at the impossible things in your life — the hard test, the scary conversation, the dream that feels too big — and whisper to yourself what Nims whispered before every climb:
-
-"Everything is possible."
-
-Goodnight, brave one. Dream of mountains and snow and a man from a tiny village who touched every sky.`,
-      },
-      {
         id: 'brave_ep1_che', episodeNumber: 1, title: 'The Doctor Who Chose the Poor',
         subtitle: 'A young doctor sees suffering across South America and decides to fight for those who have nothing.',
         tradition: 'universal', theme: 'courage', durationMinutes: 5,
@@ -8216,6 +8141,35 @@ And the government — one of the most powerful institutions in the country — 
 Remember this: your voice counts. One letter, one message, one person standing up might seem small. But eighty-seven thousand small voices together can stop anything.
 
 Goodnight, neighbour. Dream of waterfronts and parks and communities that protect what they love.`,
+      },
+      {
+        id: 'brave_ep9_nimsdai', episodeNumber: 9, title: 'The Man Who Touched Every Sky',
+        subtitle: 'A boy from a tiny Himalayan village climbed all fourteen of the world\'s highest mountains — and showed the world that impossible is just a word.',
+        tradition: 'universal', theme: 'courage', durationMinutes: 4,
+        source: 'Brave Moments · Episode 9',
+        body: `{childName}, tonight I want to tell you about a boy who grew up so poor he had no shoes — and who grew up to stand on top of every giant mountain on Earth.
+
+His name was Nirmal Purja. But everyone called him Nims.
+
+Nims was born in a tiny village high in the mountains of Nepal. His family was so poor that his older brothers worked to pay for his school. As a little boy, Nims would look up at the enormous snowy peaks above his village and think: one day, I will stand on top of those.
+
+When he grew up, Nims became a Gurkha — one of the bravest kinds of soldier in the world. Then he tried to join the most elite special forces team of all. No Gurkha had ever been accepted. They told him it was impossible. Nims made it anyway — the very first one.
+
+But the mountains were calling him. So Nims announced he would climb all fourteen of the world's tallest mountains — every peak above eight thousand meters — in just seven months. The old record was seven years. The whole world laughed. Nims only smiled and said, "I am tired of people saying things are impossible."
+
+And then he did it — in six months and six days. He called his mission "Project Possible," because that was his message to everyone: everything is possible.
+
+But here is what made Nims truly special, {childName}. High up on one mountain — where the air is so thin you can barely breathe — Nims found a climber lying in the snow, left behind, all alone. Everyone else had walked past. Nims stopped. He gave up his own oxygen, lifted the man onto his back, and carried him down for six long hours, and saved his life.
+
+Another time, in the freezing winter, Nims led a team of climbers from Nepal to the top of the most dangerous mountain of all — something no one had ever done. When they reached the top, they sang together, and Nims cried. Not for himself — for his country. He wanted the whole world to know that the mountain people of Nepal were the greatest climbers on Earth.
+
+Nims loved the mountains with his whole heart, and they loved him back. But mountains are wild and powerful things. One morning, high on a peak called Broad Peak, the snow broke loose in a great avalanche. Ten climbers were caught that day — and Nims was one of them.
+
+The whole world went quiet. Kings and adventurers called him one of the bravest people who had ever lived.
+
+The mountains gave Nims everything, {childName}. And in the end, they took him home. But the boy who once had no shoes had already shown the whole world something they would never forget: that nothing — nothing at all — is truly impossible.
+
+Goodnight, brave one. Dream of mountains and snow, and of a boy from a tiny village who touched every sky.`,
       },
     ],
   },
