@@ -213,23 +213,18 @@ export default function Home() {
 
   // Featured stories for hero slider
   const featuredStories = useMemo(() => {
-    const pinIds = ['fifa26_ep1_history', 'multilingual_lion_mouse'];
-    let pool = allLessons.filter(filterByBelief);
-    if (pool.length < 5) pool = allLessons.filter(l => l.tradition === 'universal');
-    const day = Math.floor(Date.now() / 86400000);
-    const shuffled = pool
-      .filter(l => !pinIds.includes(l.id))
-      .map((l, i) => ({ l, sort: ((i * 2654435761 + day * 3) >>> 0) % 10000 }))
-      .sort((a, b) => a.sort - b.sort)
-      .map((x) => x.l)
-      .slice(0, 3);
-    // Pin FIFA first, multilingual second, then 3 rotating
-    // FIFA episodes are in SERIES data, not allLessons — find them there
+    // 5 fixed hero stories — all with Higgsfield anime covers
+    const heroIds = [
+      'brave_ep9_nimsdai',       // Nimsdai — newest, most inspiring
+      'fifa26_ep1_history',      // FIFA — flagship series
+      'fta_ep1_afraid',          // Fire Truck Academy — kids favorite
+      'krishna_squirrel',        // Cultural — top wisdom story
+      'multilingual_lion_mouse', // Classic fable
+    ];
     const allSeriesEps = SERIES.flatMap(s => s.episodes.map(ep => ({ ...ep, seriesId: s.id, seriesTitle: s.title })));
-    const pinned = pinIds.map(id =>
+    return heroIds.map(id =>
       allLessons.find(l => l.id === id) || allSeriesEps.find(ep => ep.id === id)
     ).filter(Boolean);
-    return [...pinned, ...shuffled];
   }, [allLessons, beliefs]);
 
   // Tonight's picks
