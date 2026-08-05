@@ -1697,7 +1697,7 @@ function PlayerInner() {
         )}
       </AnimatePresence>
 
-      {/* Signup nudge for guests — after story ends */}
+      {/* Email capture for guests — after story ends */}
       <AnimatePresence>
         {showSignupNudge && (
           <motion.div
@@ -1711,51 +1711,109 @@ function PlayerInner() {
               animate={{ scale: 1, y: 0 }}
               className="w-full max-w-sm rounded-3xl bg-bg-elevated p-6 text-center shadow-lift ring-1 ring-white/10"
             >
-              <div className="text-4xl mb-3">🌙</div>
-              <h3 className="text-xl font-bold text-ink" style={{ fontFamily: 'Lora, serif' }}>
-                Loved it?
-              </h3>
-              <p className="mt-3 text-sm text-ink-muted leading-relaxed">
-                Imagine hearing <span className="text-gold font-bold">your child's name</span> in every story — their friends, their pet, their real adventures turned into bedtime magic.
-              </p>
-              <p className="mt-2 text-xs text-ink-dim">
-                Sign up free and we will personalize every story just for your little one.
-              </p>
-
-              <motion.button
-                whileTap={{ scale: 0.97 }}
-                onClick={() => { setShowSignupNudge(false); narrator.stop(); navigate('/login'); }}
-                className="mt-5 w-full rounded-2xl bg-gold py-4 text-base font-bold text-bg-base shadow-glow"
-              >
-                Sign up free — personalize for my child
-              </motion.button>
-
-              {/* If series has next episode, show continue option */}
               {(() => {
-                if (!current?.seriesId) return null;
-                const seriesData = SERIES.find(s => s.id === current.seriesId);
-                const currentIdx = seriesData?.episodes.findIndex(e => e.id === current.episodeId);
+                const seriesData = current?.seriesId ? SERIES.find(s => s.id === current.seriesId) : null;
+                const currentIdx = seriesData?.episodes.findIndex(e => e.id === current?.episodeId) ?? -1;
                 const nextEp = seriesData?.episodes[currentIdx + 1];
-                if (!nextEp) return null;
-                return (
-                  <button
-                    onClick={() => {
-                      setShowSignupNudge(false);
-                      setNextSeriesEpisode(nextEp);
-                    }}
-                    className="mt-3 w-full rounded-xl bg-white/5 py-3 text-xs font-bold text-gold ring-1 ring-white/10"
-                  >
-                    ▶ Play next: Ep {nextEp.episodeNumber} — {nextEp.title}
-                  </button>
+                const [captureEmail, setCaptureEmail] = useState('');
+                const [captured, setCaptured] = useState(false);
+                const [submitting, setSubmitting] = useState(false);
+
+                const handleCapture = async () => {
+                  if (!captureEmail || !captureEmail.includes('@')) return;
+                  setSubmitting(true);
+                  try {
+                    const { db: fireDb } = await import('../lib/firebase.js');
+                    if (fireDb) {
+                      const { collection, addDoc } = await import('firebase/firestore');
+                      await addDoc(collection(fireDb, 'emailCaptures'), {
+                        email: captureEmail.toLowerCase().trim(),
+                        source: 'player-next-episode',
+                        storyId: current?.id || '',
+                        seriesId: current?.seriesId || '',
+                        nextEpisode: nextEp?.title || '',
+                        capturedAt: new Date().toISOString(),
+                      });
+                    }
+                  } catch {}
+                  setCaptured(true);
+                  setSubmitting(false);
+                  // Auto-advance to next episode after capture
+                  if (nextEp) {
+                    setTimeout(() => { setShowSignupNudge(false); setNextSeriesEpisode(nextEp); }, 1500);
+                  }
+                };
+
+                return captured ? (
+                  <>
+                    <div className="text-4xl mb-3">✨</div>
+                    <h3 className="text-xl font-bold text-gold" style={{ fontFamily: 'Lora, serif' }}>
+                      You are in!
+                    </h3>
+                    <p className="mt-2 text-sm text-ink-muted">We will send you new episodes and bedtime stories every week.</p>
+                    {nextEp && <p className="mt-3 text-xs text-gold animate-pulse">Loading next episode...</p>}
+                  </>
+                ) : (
+                  <>
+                    <div className="text-4xl mb-3">{nextEp ? '🎧' : '🌙'}</div>
+                    <h3 className="text-xl font-bold text-ink" style={{ fontFamily: 'Lora, serif' }}>
+                      {nextEp ? `Episode ${nextEp.episodeNumber} is ready` : 'Loved this story?'}
+                    </h3>
+                    {nextEp ? (
+                      <p className="mt-2 text-sm text-ink-muted leading-relaxed">
+                        <span className="text-gold font-bold">{nextEp.title}</span> — enter your email and we will remind you at bedtime with new stories every week.
+                      </p>
+                    ) : (
+                      <p className="mt-2 text-sm text-ink-muted leading-relaxed">
+                        Get a <span className="text-gold font-bold">new bedtime story every week</span> — gentle, calming tales with your child's name woven in.
+                      </p>
+                    )}
+
+                    <input
+                      type="email"
+                      value={captureEmail}
+                      onChange={e => setCaptureEmail(e.target.value)}
+                      onKeyDown={e => e.key === 'Enter' && handleCapture()}
+                      placeholder="your@email.com"
+                      className="mt-4 w-full rounded-xl bg-bg-base px-4 py-3.5 text-sm text-ink placeholder-ink-dim ring-1 ring-white/10 outline-none focus:ring-gold/50 text-center"
+                      autoFocus
+                    />
+
+                    <motion.button
+                      whileTap={{ scale: 0.97 }}
+                      onClick={handleCapture}
+                      disabled={submitting || !captureEmail.includes('@')}
+                      className="mt-3 w-full rounded-2xl bg-gold py-3.5 text-sm font-bold text-bg-base shadow-glow disabled:opacity-40"
+                    >
+                      {submitting ? 'Saving...' : nextEp ? `Get Episode ${nextEp.episodeNumber} + Weekly Stories` : 'Get New Stories Every Week'}
+                    </motion.button>
+
+                    <div className="mt-3 flex gap-2 justify-center">
+                      {nextEp && (
+                        <button
+                          onClick={() => { setShowSignupNudge(false); setNextSeriesEpisode(nextEp); }}
+                          className="text-[11px] text-gold/70 underline underline-offset-2"
+                        >
+                          Skip, play next
+                        </button>
+                      )}
+                      <button
+                        onClick={() => { setShowSignupNudge(false); navigate('/login'); }}
+                        className="text-[11px] text-ink-dim underline underline-offset-2"
+                      >
+                        Sign in with Google
+                      </button>
+                    </div>
+
+                    <button
+                      onClick={() => { setShowSignupNudge(false); narrator.stop(); navigate('/'); }}
+                      className="mt-2 text-[10px] text-ink-dim/50"
+                    >
+                      Maybe later
+                    </button>
+                  </>
                 );
               })()}
-
-              <button
-                onClick={() => { setShowSignupNudge(false); narrator.stop(); navigate('/'); }}
-                className="mt-3 text-[11px] text-ink-dim"
-              >
-                Maybe later
-              </button>
             </motion.div>
           </motion.div>
         )}
