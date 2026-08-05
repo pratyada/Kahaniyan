@@ -36,7 +36,7 @@ import CulturePage from './CulturePage.jsx';
 // belief-agnostic (shown regardless of the family's beliefs). These are the
 // inspiring, universal stories we want to lead with. Add a new launch's series
 // id here to feature it at the top; remove it when it's no longer "new".
-const FEATURED_SERIES_IDS = ['brave-moments'];
+const FEATURED_SERIES_IDS = ['brave-moments', 'fire-truck-academy', 'who-would-win-animals', 'fifa-world-cup-2026', 'planets-and-stars'];
 
 // Newest episode — shown as a launch pop-up card + a "New Released" card at the top of Home.
 const NEW_RELEASE = {
@@ -574,7 +574,7 @@ export default function Home() {
             const featured = FEATURED_SERIES_IDS.map(id => SERIES.find(s => s.id === id)).filter(Boolean);
             if (featured.length === 0) return null;
             return (
-              <ShelfSection title="🌟 New & Inspiring — Just Launched" subtitle="Real courage, real people. For every family.">
+              <ShelfSection title="🚀 Just Launched" subtitle="New series for every family.">
                 <ShelfRow>
                   {featured.map(s => (
                     <SeriesCard
