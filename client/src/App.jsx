@@ -37,6 +37,7 @@ import ReportCardUpload from './pages/ReportCardUpload.jsx';
 import GrowthProfile from './pages/GrowthProfile.jsx';
 import DailyAdventure from './pages/DailyAdventure.jsx';
 import MultilingualDemo from './pages/MultilingualDemo.jsx';
+import Privacy from './pages/Privacy.jsx';
 import BottomNav from './components/BottomNav.jsx';
 import BadgeUnlockToast from './components/BadgeUnlockToast.jsx';
 import PlayerBar from './components/PlayerBar.jsx';
@@ -194,6 +195,7 @@ function Shell() {
             <Route path="/summer/upload" element={<ReportCardUpload />} />
             <Route path="/summer/profile" element={<GrowthProfile />} />
             <Route path="/summer/day/:dayNumber" element={<DailyAdventure />} />
+            <Route path="/privacy" element={<Privacy />} />
             <Route path="/founder-hub" element={<FounderHub />} />
             <Route path="*" element={<Navigate to="/" replace />} />
           </Routes>
