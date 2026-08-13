@@ -237,7 +237,7 @@ export default function KidRecord() {
           className="mt-6 flex gap-3"
         >
           <button onClick={() => navigate('/incubate')} className="rounded-xl bg-gold px-6 py-3 text-sm font-bold text-bg-base transition active:scale-95">
-            Back to Story Lab
+            Back to Incubate
           </button>
           <button onClick={reRecord} className="rounded-xl bg-white/10 px-6 py-3 text-sm font-bold text-ink-muted transition active:scale-95">
             Record Another

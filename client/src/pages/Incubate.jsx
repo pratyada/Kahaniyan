@@ -1,4 +1,4 @@
-// Story Lab — Kids Creator Hub
+// Incubate — Kids Creator Hub
 // Create tab: pick a prompt image, speak a topic, or free record
 // My Stories tab: list of kid's recordings with status + play count
 
@@ -71,7 +71,7 @@ export default function Incubate() {
       <PageTransition className="page-scroll px-5 pt-10 pb-32 safe-top">
         <div className="flex flex-col items-center justify-center min-h-[60vh] text-center">
           <div className="text-6xl mb-4">🎙️</div>
-          <h1 className="text-2xl font-bold text-ink" style={{ fontFamily: 'Lora, serif' }}>Story Lab</h1>
+          <h1 className="text-2xl font-bold text-ink" style={{ fontFamily: 'Lora, serif' }}>Incubate</h1>
           <p className="mt-2 text-sm text-ink-muted max-w-xs">Your child can create and record their own bedtime stories here.</p>
           <button onClick={loginGoogle} className="mt-6 rounded-2xl bg-gold px-8 py-4 text-sm font-bold text-bg-base shadow-glow transition active:scale-95">
             Sign in to start creating
@@ -87,7 +87,7 @@ export default function Incubate() {
       <div className="text-center mb-6">
         <motion.div initial={{ scale: 0 }} animate={{ scale: 1 }} className="text-5xl mb-2">🎙️</motion.div>
         <h1 className="text-xl font-bold text-ink" style={{ fontFamily: 'Lora, serif' }}>
-          {kidName}'s Story Lab
+          {kidName}'s Incubate Lab
         </h1>
         <p className="text-xs text-ink-muted mt-1">Create, record, and share your own stories!</p>
       </div>
