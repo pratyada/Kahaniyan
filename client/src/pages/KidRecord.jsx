@@ -261,23 +261,29 @@ export default function KidRecord() {
         </div>
       </div>
 
-      {/* Recording area — image as full background or topic as hero */}
-      <div className="flex-1 flex flex-col items-center justify-center px-5 relative">
-        {/* Full background image */}
-        {promptImage && (
-          <>
-            <img src={promptImage} alt={prompt} className="absolute inset-0 h-full w-full object-contain rounded-2xl" style={{ top: 0, maxHeight: '50vh' }} />
-            <div className="absolute inset-0 bg-gradient-to-t from-bg-base via-bg-base/60 to-transparent" style={{ top: '30vh' }} />
-          </>
-        )}
-        {/* Topic text prompt */}
-        {prompt && !promptImage && !recording && !recorded && (
-          <div className="mb-8 rounded-2xl bg-bg-surface/80 p-5 ring-1 ring-gold/20 text-center backdrop-blur-sm max-w-sm">
+      {/* Prompt image — full display */}
+      {promptImage && (
+        <div className="px-5 mb-4">
+          <div className="rounded-2xl overflow-hidden ring-1 ring-white/10">
+            <img src={promptImage} alt={prompt} className="w-full object-contain" style={{ maxHeight: '45vh' }} />
+          </div>
+          {prompt && <p className="text-center text-xs text-ink-muted mt-2">{prompt}</p>}
+        </div>
+      )}
+
+      {/* Topic text prompt */}
+      {prompt && !promptImage && !recording && !recorded && (
+        <div className="px-5 mb-4">
+          <div className="rounded-2xl bg-bg-surface p-5 ring-1 ring-gold/20 text-center max-w-sm mx-auto">
             <p className="text-xl font-bold text-gold" style={{ fontFamily: 'Lora, serif' }}>"{prompt}"</p>
             <p className="text-[11px] text-ink-muted mt-2">Tell a story about this!</p>
           </div>
-        )}
-        <div className="relative z-10 flex flex-col items-center">
+        </div>
+      )}
+
+      {/* Recording controls — below the image */}
+      <div className="flex-1 flex flex-col items-center justify-center px-5">
+        <div className="flex flex-col items-center">
         {/* Validation failed */}
         {validationResult && !validationResult.safe && (
           <motion.div
