@@ -181,6 +181,7 @@ export default function KidRecord() {
         }),
       });
 
+      savedStoryIdRef.current = storyId;
       setSaved(true);
     } catch (e) {
       console.error('[KidRecord] Save failed:', e.message);
@@ -201,48 +202,108 @@ export default function KidRecord() {
 
   const formatTime = (s) => `${Math.floor(s / 60)}:${String(s % 60).padStart(2, '0')}`;
 
+  // Animation state
+  const [animating, setAnimating] = useState(false);
+  const [animationDone, setAnimationDone] = useState(false);
+  const [videoUrl, setVideoUrl] = useState(null);
+  const [animError, setAnimError] = useState(null);
+  const savedStoryIdRef = useRef(null);
+
+  const handleAnimate = async () => {
+    if (!savedStoryIdRef.current || !user) return;
+    setAnimating(true);
+    setAnimError(null);
+    try {
+      const res = await fetch(`${API}/api/kid-story-animate`, {
+        method: 'POST',
+        headers: { 'content-type': 'application/json' },
+        body: JSON.stringify({ parentUid: user.uid, storyId: savedStoryIdRef.current }),
+      });
+      const data = await res.json();
+      if (data.videoUrl) {
+        setVideoUrl(data.videoUrl);
+        setAnimationDone(true);
+      } else {
+        setAnimError(data.error || 'Animation failed');
+      }
+    } catch (e) {
+      setAnimError(e.message);
+    }
+    setAnimating(false);
+  };
+
   // Celebration screen after save
   if (saved) {
     return (
       <PageTransition className="flex h-screen flex-col items-center justify-center bg-bg-base px-6 text-center">
-        <motion.div
-          initial={{ scale: 0 }}
-          animate={{ scale: 1 }}
-          transition={{ type: 'spring', stiffness: 200 }}
-          className="text-7xl mb-4"
-        >
-          🌟
-        </motion.div>
-        <motion.h1
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.3 }}
-          className="text-2xl font-bold text-gold"
-          style={{ fontFamily: 'Lora, serif' }}
-        >
-          Amazing Story!
-        </motion.h1>
-        <motion.p
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 0.6 }}
-          className="mt-2 text-sm text-ink-muted"
-        >
-          {title || 'Your story'} has been saved. You earned ⭐ 5 stars!
-        </motion.p>
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 1 }}
-          className="mt-6 flex gap-3"
-        >
-          <button onClick={() => navigate('/incubate')} className="rounded-xl bg-gold px-6 py-3 text-sm font-bold text-bg-base transition active:scale-95">
-            Back to Incubate
-          </button>
-          <button onClick={reRecord} className="rounded-xl bg-white/10 px-6 py-3 text-sm font-bold text-ink-muted transition active:scale-95">
-            Record Another
-          </button>
-        </motion.div>
+        {animationDone && videoUrl ? (
+          <>
+            <motion.div initial={{ scale: 0 }} animate={{ scale: 1 }} className="text-5xl mb-3">🎬</motion.div>
+            <h1 className="text-xl font-bold text-gold" style={{ fontFamily: 'Lora, serif' }}>Your Story Came Alive!</h1>
+            <div className="mt-4 w-full max-w-sm rounded-2xl overflow-hidden ring-1 ring-gold/30">
+              <video src={videoUrl} controls autoPlay playsInline className="w-full" style={{ maxHeight: '50vh' }} />
+            </div>
+            <div className="mt-4 flex gap-3">
+              <button onClick={() => navigate('/incubate')} className="rounded-xl bg-gold px-5 py-3 text-sm font-bold text-bg-base transition active:scale-95">
+                Back to Incubate
+              </button>
+              <button onClick={() => {
+                const url = `https://mysleepytale.com/player?storyId=${savedStoryIdRef.current}`;
+                if (navigator.share) navigator.share({ title: title || 'My Story', url }).catch(() => {});
+                else { navigator.clipboard.writeText(url); alert('Link copied!'); }
+              }} className="rounded-xl bg-white/10 px-5 py-3 text-sm font-bold text-ink-muted transition active:scale-95">
+                Share
+              </button>
+            </div>
+          </>
+        ) : (
+          <>
+            <motion.div initial={{ scale: 0 }} animate={{ scale: 1 }} transition={{ type: 'spring', stiffness: 200 }} className="text-7xl mb-4">
+              🌟
+            </motion.div>
+            <motion.h1 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }}
+              className="text-2xl font-bold text-gold" style={{ fontFamily: 'Lora, serif' }}>
+              Amazing Story!
+            </motion.h1>
+            <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.6 }} className="mt-2 text-sm text-ink-muted">
+              {title || 'Your story'} has been saved. You earned ⭐ 5 stars!
+            </motion.p>
+
+            {/* Animate button — only if they used an image prompt */}
+            {promptImage && (
+              <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 1 }}>
+                {animating ? (
+                  <div className="mt-5 text-center">
+                    <div className="text-3xl animate-pulse mb-2">✨</div>
+                    <p className="text-sm text-gold font-bold">Bringing your story to life...</p>
+                    <p className="text-[10px] text-ink-dim mt-1">This takes about 30-60 seconds</p>
+                  </div>
+                ) : animError ? (
+                  <div className="mt-5 text-center">
+                    <p className="text-xs text-red-400 mb-2">{animError}</p>
+                    <button onClick={handleAnimate} className="rounded-xl bg-gold/20 px-5 py-2.5 text-xs font-bold text-gold ring-1 ring-gold/30 transition active:scale-95">
+                      Try Again
+                    </button>
+                  </div>
+                ) : (
+                  <button onClick={handleAnimate}
+                    className="mt-5 rounded-2xl bg-gradient-to-r from-purple-500 to-gold px-8 py-4 text-sm font-bold text-white shadow-glow transition active:scale-95">
+                    🎬 Animate My Story!
+                  </button>
+                )}
+              </motion.div>
+            )}
+
+            <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 1.5 }} className="mt-4 flex gap-3">
+              <button onClick={() => navigate('/incubate')} className="rounded-xl bg-gold px-6 py-3 text-sm font-bold text-bg-base transition active:scale-95">
+                Back to Incubate
+              </button>
+              <button onClick={reRecord} className="rounded-xl bg-white/10 px-6 py-3 text-sm font-bold text-ink-muted transition active:scale-95">
+                Record Another
+              </button>
+            </motion.div>
+          </>
+        )}
       </PageTransition>
     );
   }
