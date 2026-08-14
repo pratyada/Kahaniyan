@@ -10,22 +10,18 @@ import PageTransition from '../components/PageTransition.jsx';
 import { useAuth } from '../hooks/useAuth.jsx';
 import { useFamilyProfile } from '../hooks/useFamilyProfile.js';
 
-// Curated prompt images for kids to pick from (rotate daily)
-const PROMPT_IMAGES = [
-  { id: 'dragon', url: 'https://mysleepytale.com/media/stories/col_fire_truck.jpg', label: 'A fire truck on an adventure' },
-  { id: 'space', url: 'https://mysleepytale.com/media/stories/pe_ep1_moon.jpg', label: 'A trip to the moon' },
-  { id: 'ocean', url: 'https://mysleepytale.com/media/stories/ws_ep1_splash.jpg', label: 'Splashing in the ocean' },
-  { id: 'animals', url: 'https://mysleepytale.com/media/stories/col_loyal_dog.jpg', label: 'A loyal dog' },
-  { id: 'forest', url: 'https://mysleepytale.com/media/stories/brave_ep7_chipko.jpg', label: 'A magical forest' },
-  { id: 'city', url: 'https://mysleepytale.com/media/stories/brave_ep8_billy_bishop.jpg', label: 'A big city adventure' },
-];
-
-function getPromptImages() {
-  const day = Math.floor(Date.now() / 86400000);
-  const shuffled = PROMPT_IMAGES
-    .map((img, i) => ({ img, sort: ((i * 2654435761 + day * 7) >>> 0) % 10000 }))
+// Pick random prompt images from the full library (600+ images)
+function getPromptImages(wisdomImages) {
+  const entries = Object.entries(wisdomImages || {})
+    .filter(([, url]) => url && url.includes('mysleepytale.com') && !url.includes('gallery'))
+    .map(([id, url]) => ({ id, url, label: id.replace(/_/g, ' ').replace(/^(col|ep|dc|ps|pe|fta|www|wwwa|brave|fifa26|tt|ks|lw|ra|rat|ws|ml|ma|gs|co|dsp|la|rk|sop|noa|cop|aiq|im|hj|bd|mh|mus|fil|ti|wnj|sikh|jewish|jain|christian|buddhist|indigenous|universal|lesson)\s?/i, '').trim() }))
+    .filter(e => e.label.length > 2);
+  // Shuffle based on current minute (changes every reload)
+  const seed = Math.floor(Date.now() / 60000);
+  const shuffled = entries
+    .map((e, i) => ({ e, sort: ((i * 2654435761 + seed * 7) >>> 0) % 100000 }))
     .sort((a, b) => a.sort - b.sort)
-    .map(x => x.img);
+    .map(x => x.e);
   return shuffled.slice(0, 4);
 }
 
@@ -37,9 +33,23 @@ export default function Incubate() {
   const [kidStories, setKidStories] = useState([]);
   const [loading, setLoading] = useState(false);
   const [topicInput, setTopicInput] = useState('');
+  const [wisdomImages, setWisdomImages] = useState({});
 
   const kidName = profile?.childName || 'Little Creator';
-  const promptImages = getPromptImages();
+  const promptImages = getPromptImages(wisdomImages);
+
+  // Load all wisdom images for prompt picker
+  useEffect(() => {
+    (async () => {
+      try {
+        const { db } = await import('../lib/firebase.js');
+        if (!db) return;
+        const { doc, getDoc } = await import('firebase/firestore');
+        const snap = await getDoc(doc(db, 'config', 'wisdomImages'));
+        if (snap.exists()) setWisdomImages(snap.data());
+      } catch {}
+    })();
+  }, []);
 
   // Load kid's stories from Firestore
   useEffect(() => {
