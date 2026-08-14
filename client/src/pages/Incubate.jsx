@@ -9,6 +9,8 @@ import { Mic, Play, Trash2, Share2, Lock, CheckCircle, Clock, AlertTriangle } fr
 import PageTransition from '../components/PageTransition.jsx';
 import { useAuth } from '../hooks/useAuth.jsx';
 import { useFamilyProfile } from '../hooks/useFamilyProfile.js';
+import { useKidCredits } from '../hooks/useKidCredits.js';
+import StarCounter from '../components/StarCounter.jsx';
 
 // Pick random prompt images from the full library (600+ images)
 function getPromptImages(wisdomImages) {
@@ -35,6 +37,7 @@ export default function Incubate() {
   const [topicInput, setTopicInput] = useState('');
   const [wisdomImages, setWisdomImages] = useState({});
 
+  const { credits } = useKidCredits();
   const kidName = profile?.childName || 'Little Creator';
   const promptImages = getPromptImages(wisdomImages);
 
@@ -100,6 +103,7 @@ export default function Incubate() {
           {kidName}'s Incubate Lab
         </h1>
         <p className="text-xs text-ink-muted mt-1">Create, record, and share your own stories!</p>
+        {user && <div className="mt-3"><StarCounter balance={credits.balance} totalEarned={credits.totalEarned} streak={credits.streak} compact /></div>}
       </div>
 
       {/* Tab toggle */}

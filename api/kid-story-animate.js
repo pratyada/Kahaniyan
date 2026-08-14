@@ -129,6 +129,14 @@ export default async function handler(req, res) {
     // Step 4: Update Firestore
     await storyRef.update({ videoUrl, animatedAt: new Date().toISOString() });
 
+    // Award +10 credits for animating
+    try {
+      const { default: creditsHandler } = await import('./kid-credits.js');
+      const fakeReq = { method: 'POST', body: { action: 'award', kidId: story.kidId, parentUid, type: 'story_animated', storyId } };
+      const fakeRes = { status: () => fakeRes, json: () => {} };
+      await creditsHandler(fakeReq, fakeRes);
+    } catch {}
+
     return res.json({ videoUrl, cached: false, durationSeconds: 8 });
   } catch (e) {
     console.error('[kid-story-animate] Error:', e.message);

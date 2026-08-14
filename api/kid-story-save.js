@@ -58,6 +58,15 @@ export default async function handler(req, res) {
     };
 
     await db.collection('kidStories').doc(storyId).set(story);
+
+    // Award credits (+5 for creating a story)
+    try {
+      const { default: creditsHandler } = await import('./kid-credits.js');
+      const fakeReq = { method: 'POST', body: { action: 'award', kidId, parentUid, type: 'story_created', storyId } };
+      const fakeRes = { status: () => fakeRes, json: () => {} };
+      await creditsHandler(fakeReq, fakeRes);
+    } catch {}
+
     return res.json({ saved: true, storyId, audioUrl });
   }
 
@@ -111,6 +120,18 @@ export default async function handler(req, res) {
     const storyRef = db.collection('kidStories').doc(storyId);
     const { FieldValue } = await import('firebase-admin/firestore');
     await storyRef.update({ plays: FieldValue.increment(1) });
+
+    // Award +1 credit to story creator
+    try {
+      const storyData = (await storyRef.get()).data();
+      if (storyData?.kidId) {
+        const { default: creditsHandler } = await import('./kid-credits.js');
+        const fakeReq = { method: 'POST', body: { action: 'award', kidId: storyData.kidId, parentUid: storyData.parentUid, type: 'play_received', storyId } };
+        const fakeRes = { status: () => fakeRes, json: () => {} };
+        await creditsHandler(fakeReq, fakeRes);
+      }
+    } catch {}
+
     return res.json({ played: true });
   }
 
@@ -127,6 +148,16 @@ export default async function handler(req, res) {
         likes: FieldValue.increment(1),
         likedBy: FieldValue.arrayUnion(uid),
       });
+      // Award +2 credit to story creator
+      try {
+        const storyData = (await storyRef.get()).data();
+        if (storyData?.kidId) {
+          const { default: creditsHandler } = await import('./kid-credits.js');
+          const fakeReq = { method: 'POST', body: { action: 'award', kidId: storyData.kidId, parentUid: storyData.parentUid, type: 'like_received', storyId } };
+          const fakeRes = { status: () => fakeRes, json: () => {} };
+          await creditsHandler(fakeReq, fakeRes);
+        }
+      } catch {}
     } else {
       await storyRef.update({
         likes: FieldValue.increment(-1),
