@@ -342,9 +342,9 @@ export default function KidRecord() {
         </div>
       )}
 
-      {/* Recording controls — below the image */}
-      <div className="flex-1 flex flex-col items-center justify-center px-5">
-        <div className="flex flex-col items-center">
+      {/* Recording controls — below the image, above bottom nav */}
+      <div className="flex-1 flex flex-col items-center justify-center px-5 pb-24">
+        <div className="flex flex-col items-center relative">
         {/* Validation failed */}
         {validationResult && !validationResult.safe && (
           <motion.div
@@ -401,13 +401,12 @@ export default function KidRecord() {
               )}
             </div>
 
-            {/* Pulsing animation when recording */}
+            {/* Pulsing animation when recording — behind button */}
             {recording && (
               <motion.div
-                animate={{ scale: [1, 1.3, 1], opacity: [0.3, 0.1, 0.3] }}
+                animate={{ scale: [1, 1.4, 1], opacity: [0.3, 0.08, 0.3] }}
                 transition={{ duration: 1.5, repeat: Infinity }}
-                className="absolute h-36 w-36 rounded-full bg-red-500/20 -z-10"
-                style={{ top: '50%', transform: 'translateY(-80px)' }}
+                className="h-36 w-36 rounded-full bg-red-500/20 -z-10 -mt-32 pointer-events-none"
               />
             )}
           </>
@@ -435,7 +434,7 @@ export default function KidRecord() {
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          className="px-5 pb-6 safe-bottom"
+          className="px-5 pb-28 safe-bottom"
         >
           <input
             type="text"
