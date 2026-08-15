@@ -54,23 +54,20 @@ export default function Incubate() {
     })();
   }, []);
 
-  // Load kid's stories from Firestore
+  // Load kid's stories via API (avoids Firestore permission issues)
+  const API = import.meta.env.VITE_API_BASE_URL || '';
   useEffect(() => {
     if (!user) return;
     (async () => {
       setLoading(true);
       try {
-        const { db } = await import('../lib/firebase.js');
-        if (!db) return;
-        const { collection, query, where, orderBy, getDocs } = await import('firebase/firestore');
-        const kidId = `${user.uid}_${0}`; // first profile
-        const q = query(
-          collection(db, 'kidStories'),
-          where('parentUid', '==', user.uid),
-          orderBy('createdAt', 'desc')
-        );
-        const snap = await getDocs(q);
-        setKidStories(snap.docs.map(d => ({ id: d.id, ...d.data() })));
+        const res = await fetch(`${API}/api/kid-story-save`, {
+          method: 'POST',
+          headers: { 'content-type': 'application/json' },
+          body: JSON.stringify({ action: 'list', parentUid: user.uid }),
+        });
+        const data = await res.json();
+        setKidStories(data.stories || []);
       } catch (e) {
         console.warn('[Incubate] Error loading stories:', e.message);
       }

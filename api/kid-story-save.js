@@ -13,6 +13,18 @@ export default async function handler(req, res) {
   const db = await getFirestore();
   if (!db) return res.status(500).json({ error: 'Firestore not available' });
 
+  // ── LIST kid's stories ──
+  if (action === 'list') {
+    const { parentUid } = req.body;
+    if (!parentUid) return res.status(400).json({ error: 'parentUid required' });
+    const snap = await db.collection('kidStories')
+      .where('parentUid', '==', parentUid)
+      .orderBy('createdAt', 'desc')
+      .limit(50)
+      .get();
+    return res.json({ stories: snap.docs.map(d => ({ id: d.id, ...d.data() })) });
+  }
+
   // ── SAVE new story ──
   if (!action || action === 'save') {
     const { parentUid, profileIndex = 0, storyId, audioKey, title, topic, promptImageUrl, promptType, language, durationSeconds, transcript } = req.body;
