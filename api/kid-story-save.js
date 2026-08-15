@@ -17,12 +17,14 @@ export default async function handler(req, res) {
   if (action === 'list') {
     const { parentUid } = req.body;
     if (!parentUid) return res.status(400).json({ error: 'parentUid required' });
+    // Simple query without orderBy (avoids composite index requirement)
     const snap = await db.collection('kidStories')
       .where('parentUid', '==', parentUid)
-      .orderBy('createdAt', 'desc')
       .limit(50)
       .get();
-    return res.json({ stories: snap.docs.map(d => ({ id: d.id, ...d.data() })) });
+    const stories = snap.docs.map(d => ({ id: d.id, ...d.data() }))
+      .sort((a, b) => (b.createdAt || '').localeCompare(a.createdAt || ''));
+    return res.json({ stories });
   }
 
   // ── SAVE new story ──
