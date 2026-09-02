@@ -75,7 +75,8 @@ export function useSearch({ allLessons = [], series = [], collections = [], beli
     if (!hasQuery && !hasFilters) return { stories: [], series: [], episodes: [], total: 0 };
 
     const filterItem = (item) => {
-      if (!passesBeliefFilter(item)) return false;
+      // When user is actively searching, skip belief filter — show ALL matching results
+      if (!hasQuery && !passesBeliefFilter(item)) return false;
       if (traditionFilter && item.tradition !== traditionFilter) return false;
       if (themeFilter && item.theme !== themeFilter) return false;
       if (hasQuery && !matchesQuery(searchText(item), tokens)) return false;
@@ -89,12 +90,12 @@ export function useSearch({ allLessons = [], series = [], collections = [], beli
         const hasMatchingEp = (s.episodes || []).some(ep => {
           if (traditionFilter && ep.tradition !== traditionFilter) return false;
           if (themeFilter && ep.theme !== themeFilter) return false;
-          return passesBeliefFilter(ep);
+          return true;
         });
         if (!hasMatchingEp) return false;
       }
       if (hasQuery) {
-        const text = [s.title, s.description, s.icon].filter(Boolean).join(' ').toLowerCase();
+        const text = [s.title, s.description, s.icon, s.id?.replace(/[_-]/g, ' ')].filter(Boolean).join(' ').toLowerCase();
         if (!matchesQuery(text, tokens)) return false;
       }
       return true;
