@@ -34,3 +34,4 @@ User-agent: Bytespider
 Disallow: /
 
 Sitemap: https://mysleepytale.com/sitemap.xml
+LLMs.txt: https://mysleepytale.com/llms.txt

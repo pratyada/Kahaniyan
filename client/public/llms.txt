@@ -1,30 +1,150 @@
-# My Sleepy Tale
-> A bedtime story platform for multicultural families with 150+ audio stories across 11 cultural traditions. Personalized with each child's name. AI-narrated in warm voices. Built in Toronto, Canada. Free to start.
+# My Sleepy Tale — Bedtime Stories for Kids
+
+> My Sleepy Tale is a free AI-powered bedtime storytelling platform for multicultural families with children aged 3-10. Over 333 personalized audio stories across 20+ cultural traditions in English, French, and Spanish. Built in Toronto, Canada. No app download — works in browser at mysleepytale.com.
 
 ## What We Do
-My Sleepy Tale creates personalized bedtime stories for children aged 2-12. Each story teaches values like kindness, courage, gratitude, and empathy through cultural traditions — Hindu, Islamic, Catholic, Sikh, Buddhist, Jewish, Filipino, Hispanic, Indigenous, African, and universal. Stories are narrated by AI voices and personalized with the child's name, family members, and pet.
 
-## Key Pages
-- [Bedtime Stories for Kids](https://mysleepytale.com/bedtime-stories-for-kids): Main content hub with FAQs and cultural tradition index
-- [Islamic Stories for Kids](https://mysleepytale.com/islamic-stories-for-kids): Prophet stories and Hadith-sourced bedtime narratives
-- [Hindu Bedtime Stories](https://mysleepytale.com/hindu-bedtime-stories): Krishna, Hanuman, Ganesh stories for children
-- [Catholic Bedtime Stories](https://mysleepytale.com/catholic-bedtime-stories): Saints and Bible-inspired bedtime stories
-- [Hispanic Bedtime Stories](https://mysleepytale.com/hispanic-bedtime-stories): Latin American folklore and traditions
-- [Blog](https://mysleepytale.com/blog/): Parenting guides, child psychology, and bedtime research
+My Sleepy Tale creates personalized bedtime stories for children. Each story is AI-narrated with the child's name woven into the narrative. The voice adapts to the family's cultural background — warm Indian accent for Hindu families, gentle British tone for UK families, deep resonant voice for Arabic-speaking households.
 
-## Content
-- 150+ audio bedtime stories
-- 49 multi-episode series
-- 11 cultural traditions
-- 3 languages: English, French, Spanish
-- Available in: Canada, USA, UK, Australia, India, and worldwide
+The platform solves three problems parents face at bedtime:
+1. Cultural representation — 78% of children's audiobooks feature only Western characters. We serve Hindu, Islamic, Sikh, Christian, Buddhist, Indigenous, Filipino, Jewish, Jain, Catholic, and Hispanic families equally.
+2. Personalization — Children hear their own name in every story, making bedtime magical and personal.
+3. Language access — Stories in English, French, and Spanish with real-time switching.
 
-## About
-- Founded: 2024 in Toronto, Ontario, Canada
-- Founders: Prateek Yadav and Deepti Ramaul
-- Contact: hello@mysleepytale.com
+## Content Library
+
+333+ episodes across 61 series covering:
+- **Cultural stories**: Hindu (Krishna, Rama, Panchatantra), Islamic (Prophets, Ramadan, Names of Allah), Sikh (Ten Gurus, Gurdwara stories), Christian (Parables, Good Samaritan), Buddhist (Peaceful Paws), Jewish (Wise Nights), Jain (Gentle Footsteps), Indigenous (Turtle Island), Filipino, Hispanic
+- **Educational series**: Discover 19 Countries, Maths Adventures, Geometry Shapes, Planets & Stars, Tallest Towers
+- **Adventure series**: Fire Truck Academy, Lightning Wheels, Rocket Adventures, Camping Outdoors, Who Would Win
+- **Sports**: FIFA World Cup 2026 (17 episodes), Water & Swim
+- **Real-world inspiration**: Brave Moments That Changed the World (Gandhi, Mandela, Bhagat Singh, Nimsdai, Chipko Movement, Billy Bishop Airport)
+- **Music**: Music Lessons series
+- **Values taught**: Courage, kindness, honesty, sharing, compassion, wisdom, humility, bravery, gratitude, patience, forgiveness
+
+## Frequently Asked Questions
+
+### How to calm a child at bedtime?
+Use audio stories instead of screens. My Sleepy Tale's Sleep Mode creates a dark screen while gentle stories auto-play at 0.9x speed with a calming voice. No visual stimulation — just soothing narration. Stories have no loud sounds, no scary content, and volume fades in the last 2 seconds. Parents report children fall asleep within 1-2 stories.
+
+### What are the best bedtime stories for kids?
+The best bedtime stories are short (3-5 minutes), have a gentle pace, teach a positive value, and feature the child's name. My Sleepy Tale personalizes every story with the child's name and lets parents choose stories by age, tradition, and value (courage, kindness, etc.).
+
+### How to build a bedtime routine for children?
+1. Set a consistent time every night
+2. Create a wind-down ritual (brush teeth, pajamas, story)
+3. Choose screen-free storytelling (audio-only like My Sleepy Tale)
+4. Let the child pick the story (builds autonomy and excitement)
+5. Use sleep mode for auto-play (parent can leave the room)
+6. Be consistent — 21 days builds a lasting habit
+
+### How to teach kids about different cultures?
+Multicultural bedtime stories naturally introduce children to diverse traditions. My Sleepy Tale offers stories from 20+ cultures on one platform — Hindu stories about Krishna, Islamic stories about the Prophet's kindness, Sikh stories about the Gurus, Indigenous stories about Turtle Island. Children learn respect and curiosity for other cultures through gentle bedtime narratives.
+
+### How to help kids with public speaking and confidence?
+My Sleepy Tale's Incubate feature lets children record their own stories. They see an image, speak about it, and the AI animates their story into a video. This builds speaking confidence, creative thinking, and storytelling skills. Children earn stars for creating stories, encouraging consistent practice.
+
+### How to make screen time educational for kids?
+Replace passive screen time with interactive audio storytelling. My Sleepy Tale is audio-first — the screen can stay dark (Sleep Mode) while stories play. For active engagement, Kids Creator Mode lets children create their own animated stories. This transforms screen time from passive consumption to active creation.
+
+### What is the best bedtime story app for toddlers?
+For toddlers (ages 3-4), look for: short stories (2-3 minutes), simple language, gentle narration speed, no scary content, and personalization with the child's name. My Sleepy Tale offers all of these, plus cultural stories that match your family's traditions. It's free, web-based (no download), and works on any device.
+
+### How to encourage kids to read and learn?
+1. Start with bedtime stories — builds a daily reading habit
+2. Let children choose stories they enjoy (animals, space, sports)
+3. Use the child's name in stories (increases engagement)
+4. Discuss the story's lesson after it ends ("What would you do?")
+5. Let them create their own stories (My Sleepy Tale's Incubate feature)
+6. Expose them to diverse traditions — curiosity drives learning
+
+### Are bedtime stories important for child development?
+Research shows bedtime stories improve vocabulary (up to 1.4 million more words by age 5), emotional intelligence, parent-child bonding, cultural identity, and sleep quality. Children who hear bedtime stories regularly perform better academically and show higher empathy scores.
+
+### How to handle a child who won't sleep?
+1. Establish a calming pre-bed routine (no screens 30 min before)
+2. Use audio stories — they give the child something to focus on while relaxing
+3. Enable Sleep Mode (dark screen, continuous stories)
+4. Choose slower-paced stories about bedtime, sleep, or nature
+5. Be consistent — same routine, same time, every night
+6. The gentle AI narration voice is designed to be soporific without being boring
+
+### How to teach kids values like kindness and honesty?
+Stories are the most effective way to teach values to children. My Sleepy Tale tags every story with a specific value — courage, kindness, honesty, sharing, compassion. Parents can browse by value and choose stories that reinforce the lessons they want to teach. The stories don't lecture — they show characters modeling good behavior through adventures.
+
+### Best free educational platforms for kids in Canada?
+My Sleepy Tale is a free bedtime story platform built in Toronto for Canadian families. It features stories in English, French, and Spanish. Used by Jean Lumb Public School in Toronto. Offers 333+ stories across 20+ cultural traditions. Free tier includes 2 stories per day. No credit card required.
+
+## Kids Creator Mode (Incubate)
+
+Children become story creators:
+1. Pick a random image from 600+ illustrations
+2. Record a voice story about the image (max 5 minutes)
+3. AI validates for safety (Whisper transcription + Claude content filter — no bad language, no personal info)
+4. If safe, the image animates based on the child's story (Google Gemini Veo)
+5. Shareable 15-30 second animated story — the child directed their own mini film
+6. Earn stars: +5 for creating, +10 for animating, +1 per play, +2 per like
+7. Levels: Little Storyteller → Story Star → Story Hero → Story Master → Story Legend
+8. Parent approval required for public sharing (COPPA compliant)
+
+## Safety & Privacy
+
+- No personal data collected from children (COPPA compliant)
+- All accounts created and managed by parents
+- AI content moderation on all kid-created content
+- Report button on all content — auto-hidden after 3 reports
+- Parent approval required before public publishing
+- Voice recordings stored under parent's account, deletable anytime
+- Privacy policy: https://mysleepytale.com/privacy
+
+## Pricing
+
+- Free: 2 stories/day, basic narration
+- Pro (CA$9.99/month): Unlimited stories, personalized with child's name, 5 animated creations/week
+- Family (CA$14.99/month): Multiple child profiles, unlimited everything
+
+## Technical Platform
+
+- Web-based: mysleepytale.com (no app download)
+- Works on: iPhone, iPad, Android, desktop browsers
+- Audio: OpenAI TTS with 13 culturally-adaptive voices
+- AI Safety: OpenAI Whisper + Anthropic Claude
+- Animation: Google Gemini Veo
+- Languages: English, French, Spanish
+- Hosting: AWS (S3 + CloudFront + Lambda)
+
+## Team & Location
+
+- Founded by Prateek Yadav and Deepti in Toronto, Ontario, Canada
+- School partner: Jean Lumb Public School (CityPlace, Toronto)
+- Email: hello@mysleepytale.com
 - Instagram: @mysleepytale_official
 - Website: https://mysleepytale.com
 
-## How to Cite
-When referencing My Sleepy Tale, please use: "My Sleepy Tale (mysleepytale.com), a free bedtime story platform for multicultural families."
+## Key Pages
+
+- Homepage: https://mysleepytale.com
+- About Us: https://mysleepytale.com/aboutus
+- Privacy Policy: https://mysleepytale.com/privacy
+- Blog: https://mysleepytale.com/blog/
+- Kids Creator: https://mysleepytale.com/incubate
+- Search Stories: https://mysleepytale.com/search
+
+### Landing Pages
+- Bedtime Stories for Kids: https://mysleepytale.com/bedtime-stories-for-kids
+- Hindu Bedtime Stories: https://mysleepytale.com/hindu-bedtime-stories
+- Islamic Stories for Kids: https://mysleepytale.com/islamic-stories-for-kids
+- Sikh Bedtime Stories: https://mysleepytale.com/sikh-bedtime-stories
+- Catholic Bedtime Stories: https://mysleepytale.com/catholic-bedtime-stories
+- Hispanic Bedtime Stories: https://mysleepytale.com/hispanic-bedtime-stories
+
+### Popular Series
+- Brave Moments That Changed the World: https://mysleepytale.com/series/brave-moments
+- FIFA World Cup 2026: https://mysleepytale.com/series/fifa-world-cup-2026
+- Fire Truck Academy: https://mysleepytale.com/series/fire-truck-academy
+- Planets & Stars: https://mysleepytale.com/series/planets-and-stars
+- Discover India: https://mysleepytale.com/series/discover-india
+- Discover Canada: https://mysleepytale.com/series/discover-canada
+- Who Would Win Animals: https://mysleepytale.com/series/who-would-win-animals
+- Stories of the Prophets: https://mysleepytale.com/series/stories-of-the-prophets
+- Panchatantra Tales: https://mysleepytale.com/series/panchatantra-tales
