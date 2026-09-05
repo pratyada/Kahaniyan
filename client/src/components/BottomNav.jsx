@@ -9,7 +9,7 @@ import { Moon, Search, Feather, Radio, BookOpen, User, Sparkles, Mic } from 'luc
 const TAB_KEYS = [
   { to: '/', key: 'home', Icon: Moon },
   { to: '/creation', key: 'creation', Icon: Feather, labelOverride: 'Create' },
-  { to: '/incubate', key: 'incubate', Icon: Mic, labelOverride: 'Incubate', authOnly: true },
+  { to: '/incubate', key: 'incubate', Icon: Mic, labelOverride: 'My Stories', authOnly: true },
   { to: '/settings', key: 'settings', Icon: User, labelOverride: 'Settings' },
 ];
 

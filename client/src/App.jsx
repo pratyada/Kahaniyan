@@ -40,6 +40,8 @@ import MultilingualDemo from './pages/MultilingualDemo.jsx';
 import Privacy from './pages/Privacy.jsx';
 import Incubate from './pages/Incubate.jsx';
 import KidRecord from './pages/KidRecord.jsx';
+import ChainStory from './pages/ChainStory.jsx';
+import ChainRecord from './pages/ChainRecord.jsx';
 import BottomNav from './components/BottomNav.jsx';
 import BadgeUnlockToast from './components/BadgeUnlockToast.jsx';
 import PlayerBar from './components/PlayerBar.jsx';
@@ -200,6 +202,9 @@ function Shell() {
             <Route path="/privacy" element={<Privacy />} />
             <Route path="/incubate" element={<Incubate />} />
             <Route path="/incubate/record" element={<KidRecord />} />
+            <Route path="/incubate/chain/:chainId" element={<ChainStory />} />
+            <Route path="/incubate/chain/join/:inviteToken" element={<ChainStory />} />
+            <Route path="/incubate/chain/:chainId/record" element={<ChainRecord />} />
             <Route path="/founder-hub" element={<FounderHub />} />
             <Route path="*" element={<Navigate to="/" replace />} />
           </Routes>

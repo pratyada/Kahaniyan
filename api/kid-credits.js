@@ -17,6 +17,9 @@ const CREDIT_RULES = {
   like_received: 2,
   streak_3: 10,
   streak_7: 25,
+  chain_created: 5,
+  chain_part_added: 3,
+  chain_compiled: 15,
 };
 
 // Level thresholds

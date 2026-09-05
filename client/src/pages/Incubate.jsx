@@ -36,6 +36,7 @@ export default function Incubate() {
   const [loading, setLoading] = useState(false);
   const [topicInput, setTopicInput] = useState('');
   const [wisdomImages, setWisdomImages] = useState({});
+  const [chainStories, setChainStories] = useState([]);
 
   const { credits } = useKidCredits();
   const kidName = profile?.childName || 'Little Creator';
@@ -71,6 +72,17 @@ export default function Incubate() {
       } catch (e) {
         console.warn('[Incubate] Error loading stories:', e.message);
       }
+      // Also load chain stories
+      try {
+        const kidId = `${user.uid}_${0}`;
+        const chainRes = await fetch(`${API}/api/kid-story-chain`, {
+          method: 'POST',
+          headers: { 'content-type': 'application/json' },
+          body: JSON.stringify({ action: 'list-mine', kidId }),
+        });
+        const chainData = await chainRes.json();
+        setChainStories(chainData.chains || []);
+      } catch {}
       setLoading(false);
     })();
   }, [user]);
@@ -81,7 +93,7 @@ export default function Incubate() {
       <PageTransition className="page-scroll px-5 pt-10 pb-32 safe-top">
         <div className="flex flex-col items-center justify-center min-h-[60vh] text-center">
           <div className="text-6xl mb-4">🎙️</div>
-          <h1 className="text-2xl font-bold text-ink" style={{ fontFamily: 'Lora, serif' }}>Incubate</h1>
+          <h1 className="text-2xl font-bold text-ink" style={{ fontFamily: 'Lora, serif' }}>My Stories</h1>
           <p className="mt-2 text-sm text-ink-muted max-w-xs">Your child can create and record their own bedtime stories here.</p>
           <button onClick={loginGoogle} className="mt-6 rounded-2xl bg-gold px-8 py-4 text-sm font-bold text-bg-base shadow-glow transition active:scale-95">
             Sign in to start creating
@@ -97,7 +109,7 @@ export default function Incubate() {
       <div className="text-center mb-6">
         <motion.div initial={{ scale: 0 }} animate={{ scale: 1 }} className="text-5xl mb-2">🎙️</motion.div>
         <h1 className="text-xl font-bold text-ink" style={{ fontFamily: 'Lora, serif' }}>
-          {kidName}'s Incubate Lab
+          {kidName}'s Stories
         </h1>
         <p className="text-xs text-ink-muted mt-1">Create, record, and share your own stories!</p>
         {user && <div className="mt-3"><StarCounter balance={credits.balance} totalEarned={credits.totalEarned} streak={credits.streak} compact /></div>}
@@ -184,6 +196,23 @@ export default function Incubate() {
               <div>
                 <h3 className="text-sm font-bold text-ink">🎤 Free Story</h3>
                 <p className="text-[11px] text-ink-muted mt-0.5">Tell any story you want — no prompt needed!</p>
+              </div>
+            </div>
+          </motion.button>
+
+          {/* Option 4: Chain Story with friends */}
+          <motion.button
+            whileTap={{ scale: 0.97 }}
+            onClick={() => navigate('/incubate/record?mode=image&chain=true')}
+            className="w-full rounded-2xl bg-gradient-to-r from-blue-500/20 to-purple-500/20 p-5 ring-1 ring-purple-500/20 text-left transition"
+          >
+            <div className="flex items-center gap-4">
+              <div className="grid h-14 w-14 place-items-center rounded-full bg-purple-500/20">
+                <span className="text-2xl">🔗</span>
+              </div>
+              <div>
+                <h3 className="text-sm font-bold text-ink">🔗 Build a Story with Friends</h3>
+                <p className="text-[11px] text-ink-muted mt-0.5">Start a chain story — friends add their parts!</p>
               </div>
             </div>
           </motion.button>
@@ -278,6 +307,32 @@ export default function Incubate() {
               </div>
             </motion.div>
           ))}
+
+          {/* Chain Stories */}
+          {chainStories.length > 0 && (
+            <>
+              <h3 className="text-sm font-bold text-ink mt-6 mb-3" style={{ fontFamily: 'Lora, serif' }}>🔗 Chain Stories</h3>
+              {chainStories.map(chain => (
+                <motion.button
+                  key={chain.id}
+                  whileTap={{ scale: 0.98 }}
+                  onClick={() => navigate(`/incubate/chain/${chain.id}`)}
+                  className="w-full rounded-2xl bg-bg-surface p-4 ring-1 ring-purple-500/10 text-left mb-2"
+                >
+                  <div className="flex items-center gap-3">
+                    <div className="grid h-12 w-12 shrink-0 place-items-center rounded-xl bg-purple-500/20 text-xl">🔗</div>
+                    <div className="flex-1 min-w-0">
+                      <p className="text-sm font-bold text-ink truncate">{chain.title}</p>
+                      <p className="text-[10px] text-ink-muted">{chain.partCount} part{chain.partCount !== 1 ? 's' : ''} · {chain.participantNames?.length || 1} kid{(chain.participantNames?.length || 1) !== 1 ? 's' : ''}</p>
+                      <span className={`inline-block mt-1 rounded-full px-2 py-0.5 text-[9px] font-bold ${chain.status === 'open' ? 'bg-green-500/20 text-green-400' : chain.status === 'compiled' ? 'bg-gold/20 text-gold' : 'bg-white/10 text-ink-muted'}`}>
+                        {chain.status === 'open' ? '🟢 Open' : chain.status === 'compiled' ? '✨ Compiled' : '🔒 Closed'}
+                      </span>
+                    </div>
+                  </div>
+                </motion.button>
+              ))}
+            </>
+          )}
         </div>
       )}
 
