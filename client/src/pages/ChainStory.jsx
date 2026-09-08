@@ -1,5 +1,5 @@
 // Chain Story — View collaborative chain, listen to parts, share, close/compile
-// Routes: /incubate/chain/:chainId OR /incubate/chain/join/:inviteToken
+// Routes: /creators/chain/:chainId OR /creators/chain/join/:inviteToken
 
 import { useState, useEffect, useRef } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
@@ -101,7 +101,7 @@ export default function ChainStory() {
       });
       const data = await res.json();
       if (data.claimed) {
-        navigate(`/incubate/chain/${chain.id}/record?partNumber=${data.partNumber}&storyId=${data.storyId}&audioKey=${encodeURIComponent(data.audioKey)}&uploadUrl=${encodeURIComponent(data.uploadUrl)}`);
+        navigate(`/creators/chain/${chain.id}/record?partNumber=${data.partNumber}&storyId=${data.storyId}&audioKey=${encodeURIComponent(data.audioKey)}&uploadUrl=${encodeURIComponent(data.uploadUrl)}`);
       } else {
         setClaimError(data.reason || 'Could not claim turn');
       }
@@ -139,7 +139,7 @@ export default function ChainStory() {
 
   // Share
   const handleShare = () => {
-    const url = `https://mysleepytale.com/incubate/chain/join/${chain.inviteToken}`;
+    const url = `https://mysleepytale.com/creators/chain/join/${chain.inviteToken}`;
     const text = `Join "${chain.title}" — a chain story on My Sleepy Tale! Add your part.`;
     if (navigator.share) {
       navigator.share({ title: chain.title, text, url }).catch(() => {});
@@ -165,7 +165,7 @@ export default function ChainStory() {
         <div className="text-4xl mb-3">😔</div>
         <h1 className="text-xl font-bold text-gold">Story not found</h1>
         <p className="mt-2 text-sm text-ink-muted">{error || 'This chain story may have been removed.'}</p>
-        <button onClick={() => navigate('/incubate')} className="mt-4 rounded-xl bg-gold px-6 py-3 text-sm font-bold text-bg-base">Back to My Stories</button>
+        <button onClick={() => navigate('/creators')} className="mt-4 rounded-xl bg-gold px-6 py-3 text-sm font-bold text-bg-base">Back to Creators</button>
       </PageTransition>
     );
   }
@@ -173,8 +173,8 @@ export default function ChainStory() {
   return (
     <PageTransition className="page-scroll px-5 pt-10 pb-32 safe-top">
       {/* Back */}
-      <button onClick={() => navigate('/incubate')} className="mb-4 flex items-center gap-1 text-xs text-ink-muted">
-        <ArrowLeft size={14} /> Back to My Stories
+      <button onClick={() => navigate('/creators')} className="mb-4 flex items-center gap-1 text-xs text-ink-muted">
+        <ArrowLeft size={14} /> Back to Creators
       </button>
 
       {/* Header */}

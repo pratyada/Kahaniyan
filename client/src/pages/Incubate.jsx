@@ -109,7 +109,7 @@ export default function Incubate() {
       <div className="text-center mb-6">
         <motion.div initial={{ scale: 0 }} animate={{ scale: 1 }} className="text-5xl mb-2">🎙️</motion.div>
         <h1 className="text-xl font-bold text-ink" style={{ fontFamily: 'Lora, serif' }}>
-          {kidName}'s Stories
+          {kidName}'s Creator Studio
         </h1>
         <p className="text-xs text-ink-muted mt-1">Create, record, and share your own stories!</p>
         {user && <div className="mt-3"><StarCounter balance={credits.balance} totalEarned={credits.totalEarned} streak={credits.streak} compact /></div>}
@@ -149,7 +149,7 @@ export default function Incubate() {
                 <motion.button
                   key={img.id}
                   whileTap={{ scale: 0.95 }}
-                  onClick={() => navigate(`/incubate/record?mode=image&prompt=${encodeURIComponent(img.label)}&image=${encodeURIComponent(img.url)}`)}
+                  onClick={() => navigate(`/creators/record?mode=image&prompt=${encodeURIComponent(img.label)}&image=${encodeURIComponent(img.url)}`)}
                   className="relative overflow-hidden rounded-xl aspect-[4/3] ring-1 ring-white/10 transition active:ring-gold/50"
                 >
                   <img src={img.url} alt={img.label} className="h-full w-full object-cover" loading="lazy" />
@@ -169,12 +169,12 @@ export default function Incubate() {
                 type="text"
                 value={topicInput}
                 onChange={e => setTopicInput(e.target.value)}
-                onKeyDown={e => e.key === 'Enter' && topicInput.trim() && navigate(`/incubate/record?mode=topic&prompt=${encodeURIComponent(topicInput.trim())}`)}
+                onKeyDown={e => e.key === 'Enter' && topicInput.trim() && navigate(`/creators/record?mode=topic&prompt=${encodeURIComponent(topicInput.trim())}`)}
                 placeholder="a dragon who loves ice cream..."
                 className="flex-1 rounded-xl bg-bg-base px-4 py-3 text-sm text-ink placeholder-ink-dim ring-1 ring-white/10 outline-none focus:ring-gold/50"
               />
               <button
-                onClick={() => topicInput.trim() && navigate(`/incubate/record?mode=topic&prompt=${encodeURIComponent(topicInput.trim())}`)}
+                onClick={() => topicInput.trim() && navigate(`/creators/record?mode=topic&prompt=${encodeURIComponent(topicInput.trim())}`)}
                 disabled={!topicInput.trim()}
                 className="rounded-xl bg-gold px-4 py-3 text-sm font-bold text-bg-base transition active:scale-95 disabled:opacity-40"
               >
@@ -186,7 +186,7 @@ export default function Incubate() {
           {/* Option 3: Free record */}
           <motion.button
             whileTap={{ scale: 0.97 }}
-            onClick={() => navigate('/incubate/record?mode=free')}
+            onClick={() => navigate('/creators/record?mode=free')}
             className="w-full rounded-2xl bg-gradient-to-r from-purple-500/20 to-gold/20 p-5 ring-1 ring-gold/20 text-left transition"
           >
             <div className="flex items-center gap-4">
@@ -203,7 +203,7 @@ export default function Incubate() {
           {/* Option 4: Chain Story with friends */}
           <motion.button
             whileTap={{ scale: 0.97 }}
-            onClick={() => navigate('/incubate/record?mode=image&chain=true')}
+            onClick={() => navigate('/creators/record?mode=image&chain=true')}
             className="w-full rounded-2xl bg-gradient-to-r from-blue-500/20 to-purple-500/20 p-5 ring-1 ring-purple-500/20 text-left transition"
           >
             <div className="flex items-center gap-4">
@@ -316,7 +316,7 @@ export default function Incubate() {
                 <motion.button
                   key={chain.id}
                   whileTap={{ scale: 0.98 }}
-                  onClick={() => navigate(`/incubate/chain/${chain.id}`)}
+                  onClick={() => navigate(`/creators/chain/${chain.id}`)}
                   className="w-full rounded-2xl bg-bg-surface p-4 ring-1 ring-purple-500/10 text-left mb-2"
                 >
                   <div className="flex items-center gap-3">

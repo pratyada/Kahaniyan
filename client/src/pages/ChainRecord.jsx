@@ -1,6 +1,6 @@
 // Chain Record — Record a part for a collaborative chain story
 // Must listen to ALL previous parts before recording
-// Route: /incubate/chain/:chainId/record?partNumber=N&storyId=X&audioKey=Y&uploadUrl=Z
+// Route: /creators/chain/:chainId/record?partNumber=N&storyId=X&audioKey=Y&uploadUrl=Z
 
 import { useState, useRef, useEffect, useCallback } from 'react';
 import { useNavigate, useParams, useSearchParams } from 'react-router-dom';
@@ -196,11 +196,11 @@ export default function ChainRecord() {
         <p className="mt-2 text-sm text-ink-muted">You earned ⭐ {partNumber === 1 ? 5 : 3} stars!</p>
         <p className="mt-1 text-xs text-ink-dim">{chain?.title} now has {partNumber} part{partNumber !== 1 ? 's' : ''}</p>
         <div className="mt-6 flex gap-3">
-          <button onClick={() => navigate(`/incubate/chain/${chainId}`)} className="rounded-xl bg-gold px-6 py-3 text-sm font-bold text-bg-base transition active:scale-95">
+          <button onClick={() => navigate(`/creators/chain/${chainId}`)} className="rounded-xl bg-gold px-6 py-3 text-sm font-bold text-bg-base transition active:scale-95">
             View Chain Story
           </button>
           <button onClick={() => {
-            const url = `https://mysleepytale.com/incubate/chain/join/${chain?.inviteToken}`;
+            const url = `https://mysleepytale.com/creators/chain/join/${chain?.inviteToken}`;
             if (navigator.share) navigator.share({ title: chain?.title, text: 'Add your part!', url }).catch(() => {});
             else { navigator.clipboard.writeText(url); alert('Link copied!'); }
           }} className="rounded-xl bg-white/10 px-6 py-3 text-sm font-bold text-ink-muted transition active:scale-95">
@@ -219,7 +219,7 @@ export default function ChainRecord() {
     <PageTransition className="flex flex-col h-screen bg-bg-base safe-top">
       {/* Header */}
       <div className="flex items-center gap-3 px-5 pt-4 pb-2">
-        <button onClick={() => navigate(`/incubate/chain/${chainId}`)} className="grid h-10 w-10 place-items-center rounded-full bg-white/5 text-ink-muted transition active:scale-90">
+        <button onClick={() => navigate(`/creators/chain/${chainId}`)} className="grid h-10 w-10 place-items-center rounded-full bg-white/5 text-ink-muted transition active:scale-90">
           <ArrowLeft size={18} />
         </button>
         <div className="flex-1">

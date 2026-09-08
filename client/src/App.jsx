@@ -200,11 +200,11 @@ function Shell() {
             <Route path="/summer/profile" element={<GrowthProfile />} />
             <Route path="/summer/day/:dayNumber" element={<DailyAdventure />} />
             <Route path="/privacy" element={<Privacy />} />
-            <Route path="/incubate" element={<Incubate />} />
-            <Route path="/incubate/record" element={<KidRecord />} />
-            <Route path="/incubate/chain/:chainId" element={<ChainStory />} />
-            <Route path="/incubate/chain/join/:inviteToken" element={<ChainStory />} />
-            <Route path="/incubate/chain/:chainId/record" element={<ChainRecord />} />
+            <Route path="/creators" element={<Incubate />} />
+            <Route path="/creators/record" element={<KidRecord />} />
+            <Route path="/creators/chain/:chainId" element={<ChainStory />} />
+            <Route path="/creators/chain/join/:inviteToken" element={<ChainStory />} />
+            <Route path="/creators/chain/:chainId/record" element={<ChainRecord />} />
             <Route path="/founder-hub" element={<FounderHub />} />
             <Route path="*" element={<Navigate to="/" replace />} />
           </Routes>

@@ -244,8 +244,8 @@ export default function KidRecord() {
               <video src={videoUrl} controls autoPlay playsInline className="w-full" style={{ maxHeight: '50vh' }} />
             </div>
             <div className="mt-4 flex gap-3">
-              <button onClick={() => navigate('/incubate')} className="rounded-xl bg-gold px-5 py-3 text-sm font-bold text-bg-base transition active:scale-95">
-                Back to My Stories
+              <button onClick={() => navigate('/creators')} className="rounded-xl bg-gold px-5 py-3 text-sm font-bold text-bg-base transition active:scale-95">
+                Back to Creators
               </button>
               <button onClick={() => {
                 const url = `https://mysleepytale.com/player?storyId=${savedStoryIdRef.current}`;
@@ -295,8 +295,8 @@ export default function KidRecord() {
             )}
 
             <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 1.5 }} className="mt-4 flex gap-3">
-              <button onClick={() => navigate('/incubate')} className="rounded-xl bg-gold px-6 py-3 text-sm font-bold text-bg-base transition active:scale-95">
-                Back to My Stories
+              <button onClick={() => navigate('/creators')} className="rounded-xl bg-gold px-6 py-3 text-sm font-bold text-bg-base transition active:scale-95">
+                Back to Creators
               </button>
               <button onClick={reRecord} className="rounded-xl bg-white/10 px-6 py-3 text-sm font-bold text-ink-muted transition active:scale-95">
                 Record Another
@@ -312,7 +312,7 @@ export default function KidRecord() {
     <PageTransition className="flex flex-col h-screen bg-bg-base safe-top">
       {/* Header */}
       <div className="flex items-center gap-3 px-5 pt-4 pb-2">
-        <button onClick={() => navigate('/incubate')} className="grid h-10 w-10 place-items-center rounded-full bg-white/5 text-ink-muted transition active:scale-90">
+        <button onClick={() => navigate('/creators')} className="grid h-10 w-10 place-items-center rounded-full bg-white/5 text-ink-muted transition active:scale-90">
           <ArrowLeft size={18} />
         </button>
         <div className="flex-1">

@@ -45,7 +45,7 @@ const NEW_RELEASE = {
   subtitle: ‘Your child picks a picture, records a story in their own voice, and shares it with friends who add their parts. Creativity, confidence, and collaboration — all in one.’,
   series: ‘My Stories — NEW Feature’,
   image: ‘https://mysleepytale.com/media/stories/fta_ep1_afraid.jpg’,
-  playUrl: ‘/incubate’,
+  playUrl: ‘/creators’,
 };
 
 export default function Home() {
@@ -331,7 +331,7 @@ export default function Home() {
               </div>
               <div className="px-6 sm:px-8 pb-6 sm:pb-8 flex items-center gap-3">
                 <button
-                  onClick={() => { dismissFifaBanner(); navigate('/incubate'); }}
+                  onClick={() => { dismissFifaBanner(); navigate('/creators'); }}
                   className="flex-1 flex items-center justify-center gap-2 rounded-xl bg-gold px-4 sm:px-6 py-2.5 sm:py-3 text-xs sm:text-sm font-bold text-bg-base shadow-glow transition active:scale-95"
                 >
                   🎤 Start Creating
