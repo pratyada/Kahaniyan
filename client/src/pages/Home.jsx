@@ -40,12 +40,12 @@ const FEATURED_SERIES_IDS = ['brave-moments', 'fire-truck-academy', 'who-would-w
 
 // Newest episode — shown as a launch pop-up card + a "New Released" card at the top of Home.
 const NEW_RELEASE = {
-  id: 'brave_ep9_nimsdai',
-  title: 'The Man Who Touched Every Sky',
-  subtitle: 'A boy from a tiny Himalayan village who climbed all fourteen of the world’s highest mountains — and showed everyone that nothing is impossible.',
-  series: 'Brave Moments That Changed the World',
-  image: 'https://mysleepytale.com/media/stories/brave_ep9_nimsdai.jpg',
-  playUrl: '/player?storyId=brave_ep9_nimsdai',
+  id: ‘kids-creator-launch’,
+  title: ‘Kids Can Now Create Stories!’,
+  subtitle: ‘Your child picks a picture, records a story in their own voice, and shares it with friends who add their parts. Creativity, confidence, and collaboration — all in one.’,
+  series: ‘My Stories — NEW Feature’,
+  image: ‘https://mysleepytale.com/media/stories/fta_ep1_afraid.jpg’,
+  playUrl: ‘/incubate’,
 };
 
 export default function Home() {
@@ -120,19 +120,19 @@ export default function Home() {
 
   // FIFA banner — show once per session
   const [showFifaBanner, setShowFifaBanner] = useState(() => {
-    try { return !sessionStorage.getItem('mst:fifa-series-banner-dismissed'); } catch { return true; }
+    try { return !sessionStorage.getItem('mst:kids-creator-banner-dismissed'); } catch { return true; }
   });
   useEffect(() => {
     if (!showFifaBanner) return;
     const timer = setTimeout(() => {
       setShowFifaBanner(false);
-      try { sessionStorage.setItem('mst:fifa-series-banner-dismissed', '1'); } catch {}
+      try { sessionStorage.setItem('mst:kids-creator-banner-dismissed', '1'); } catch {}
     }, 5000);
     return () => clearTimeout(timer);
   }, [showFifaBanner]);
   const dismissFifaBanner = () => {
     setShowFifaBanner(false);
-    try { sessionStorage.setItem('mst:fifa-series-banner-dismissed', '1'); } catch {}
+    try { sessionStorage.setItem('mst:kids-creator-banner-dismissed', '1'); } catch {}
   };
 
   // New-release launch pop-up — shows once per user for this episode
@@ -304,7 +304,7 @@ export default function Home() {
           </div>
         </div>
       )}
-      {/* FIFA Series Banner */}
+      {/* Kids Creator Banner */}
       <AnimatePresence>
         {showFifaBanner && (
           <motion.div
@@ -320,22 +320,21 @@ export default function Home() {
               animate={{ scale: 1, opacity: 1 }}
               exit={{ scale: 0.9, opacity: 0 }}
               transition={{ duration: 0.3 }}
-              className="relative w-full max-w-lg lg:max-w-3xl rounded-2xl overflow-hidden shadow-2xl bg-gradient-to-br from-[#0a2e0a] via-[#0a0a0f] to-[#1a0a2e]"
+              className="relative w-full max-w-lg lg:max-w-3xl rounded-2xl overflow-hidden shadow-2xl bg-gradient-to-br from-[#1a0a2e] via-[#0a0a0f] to-[#2e1a0a]"
               onClick={e => e.stopPropagation()}
             >
               <div className="p-6 sm:p-8 text-center">
-                <div className="text-5xl sm:text-6xl mb-3">⚽</div>
-                <h2 className="text-xl sm:text-2xl font-bold text-gold mb-2">FIFA World Cup 2026</h2>
-                <p className="text-sm sm:text-base text-white/80 mb-1 leading-relaxed">All episodes now available!</p>
-                <p className="text-xs sm:text-sm text-white/60 mb-5 leading-relaxed">History, geography, sportsmanship & life lessons — told as bedtime stories for kids.</p>
+                <div className="text-5xl sm:text-6xl mb-3">🎙️</div>
+                <h2 className="text-xl sm:text-2xl font-bold text-gold mb-2">Kids Can Create Stories!</h2>
+                <p className="text-sm sm:text-base text-white/80 mb-1 leading-relaxed">Pick a picture. Record your voice. Build a story with friends!</p>
+                <p className="text-xs sm:text-sm text-white/60 mb-5 leading-relaxed">Your child creates, shares, and earns stars. Chain stories let friends add their own parts. Creativity meets collaboration.</p>
               </div>
               <div className="px-6 sm:px-8 pb-6 sm:pb-8 flex items-center gap-3">
                 <button
-                  onClick={() => { dismissFifaBanner(); navigate('/series/fifa-world-cup-2026'); }}
+                  onClick={() => { dismissFifaBanner(); navigate('/incubate'); }}
                   className="flex-1 flex items-center justify-center gap-2 rounded-xl bg-gold px-4 sm:px-6 py-2.5 sm:py-3 text-xs sm:text-sm font-bold text-bg-base shadow-glow transition active:scale-95"
                 >
-                  <Play size={16} fill="currentColor" />
-                  Listen Now
+                  🎤 Start Creating
                 </button>
                 <button
                   onClick={dismissFifaBanner}
