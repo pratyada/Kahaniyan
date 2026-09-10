@@ -190,7 +190,7 @@ function Shell() {
             <Route path="/series/:seriesId" element={<SeriesDetail />} />
             <Route path="/demo/multilingual" element={<MultilingualDemo />} />
             <Route path="/creator" element={<Navigate to="/creation" replace />} />
-            <Route path="/creators" element={<Curators />} />
+            <Route path="/curators" element={<Curators />} />
             <Route path="/creator/:slug" element={<CuratorPage />} />
             <Route path="/my-tasks" element={<MyTasks />} />
             <Route path="/admin" element={<Admin />} />

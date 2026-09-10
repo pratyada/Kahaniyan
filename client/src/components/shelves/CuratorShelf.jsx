@@ -72,7 +72,7 @@ export default function CuratorShelf() {
   if (creators.length === 0 && !loading) return null;
 
   return (
-    <ShelfSection title="✍️ Our Creators" subtitle="Stories & series by the community" onSeeAll={() => navigate('/creators')}>
+    <ShelfSection title="✍️ Our Creators" subtitle="Stories & series by the community" onSeeAll={() => navigate('/curators')}>
       <ShelfRow>
         {creators.map((creator) => (
           <motion.button

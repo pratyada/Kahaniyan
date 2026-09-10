@@ -150,7 +150,7 @@ export default function CuratorPage() {
           <button onClick={() => navigate(-1)} className="flex items-center gap-1 text-[11px] font-bold uppercase tracking-wider text-ink-muted hover:text-ink">
             <ArrowLeft size={14} /> Back
           </button>
-          <button onClick={() => navigate('/creators')} className="text-[11px] font-bold text-gold hover:text-gold-bright">
+          <button onClick={() => navigate('/curators')} className="text-[11px] font-bold text-gold hover:text-gold-bright">
             All Creators →
           </button>
         </div>

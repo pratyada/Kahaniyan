@@ -683,7 +683,7 @@ export default function Home() {
         const communityStories = firestoreStories;
         if (communitySeries.length === 0 && communityStories.length === 0) return null;
         return (
-        <ShelfSection title="✍️ Community Creations" subtitle="Stories & series by our creators" onSeeAll={() => navigate('/creators')}>
+        <ShelfSection title="✍️ Community Creations" subtitle="Stories & series by our creators" onSeeAll={() => navigate('/curators')}>
           <ShelfRow>
             {communitySeries.map(ser => (
               <StoryTile key={ser.id} lesson={{ ...ser, title: `${ser.icon || '📚'} ${ser.title}`, source: `${ser.totalEpisodes} episodes · by ${ser.authorName || 'Creator'}` }} imageUrl={ser.episodes?.[0]?.coverImage} onPlay={() => navigate(`/series/${ser.id}`)} />

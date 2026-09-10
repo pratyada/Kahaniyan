@@ -1,5 +1,5 @@
 // All Creators — animated avatar circles with hover details + search.
-// Route: /creators
+// Route: /curators
 
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
