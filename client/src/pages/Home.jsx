@@ -40,12 +40,12 @@ const FEATURED_SERIES_IDS = ['brave-moments', 'fire-truck-academy', 'who-would-w
 
 // Newest episode — shown as a launch pop-up card + a "New Released" card at the top of Home.
 const NEW_RELEASE = {
-  id: ‘kids-creator-launch’,
-  title: ‘Kids Can Now Create Stories!’,
-  subtitle: ‘Your child picks a picture, records a story in their own voice, and shares it with friends who add their parts. Creativity, confidence, and collaboration — all in one.’,
-  series: ‘My Stories — NEW Feature’,
-  image: ‘https://mysleepytale.com/media/stories/fta_ep1_afraid.jpg’,
-  playUrl: ‘/creators’,
+  id: 'kids-creator-launch',
+  title: 'Kids Can Now Create Stories!',
+  subtitle: 'Your child picks a picture, records a story in their own voice, and shares it with friends who add their parts. Creativity, confidence, and collaboration — all in one.',
+  series: 'My Stories — NEW Feature',
+  image: 'https://mysleepytale.com/media/stories/fta_ep1_afraid.jpg',
+  playUrl: '/creators',
 };
 
 export default function Home() {
