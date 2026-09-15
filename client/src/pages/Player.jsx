@@ -513,31 +513,17 @@ function PlayerInner() {
           const url = URL.createObjectURL(localBlob);
           audio = narrator.loadCached(url);
         }
-        // Priority 2: Cached audio URL (skip dead Firebase Storage URLs, text changes, or non-English multilingual)
-        else if (current.audioUrl && !current.audioUrl.includes('firebasestorage.googleapis.com') && !(isMultiLangStory && lang !== 'English')) {
-          const currentHash = textHash(current.text);
-          const cachedHash = audioHashes[current.id];
-          const hashMismatch = cachedHash ? cachedHash !== currentHash : false;
-          // If no hash stored yet, save it now for future comparison
-          if (!cachedHash && current.text && db) {
-            import('firebase/firestore').then(({ doc, setDoc }) => {
-              setDoc(doc(db, 'config', 'audioHashes'), { [current.id]: currentHash }, { merge: true }).catch(() => {});
-            }).catch(() => {});
-          }
-          if (hashMismatch) {
-            console.log('[My Sleepy Tale:Player] Text changed — skipping cached audio, will regenerate TTS');
-            // Delete stale audio from storage so it doesn't persist
-            if (db) {
-              import('firebase/firestore').then(({ doc, setDoc }) => {
-                setDoc(doc(db, 'config', 'wisdomAudio'), { [current.id]: '' }, { merge: true }).catch(() => {});
-                setDoc(doc(db, 'config', 'audioHashes'), { [current.id]: currentHash }, { merge: true }).catch(() => {});
-              }).catch(() => {});
-            }
-            // Don't use cached audio — fall through to TTS
-          } else {
-          console.log('[My Sleepy Tale:Player] Playing cached audio from Firebase');
+        // Priority 2: Stored audio URL — play it DIRECTLY. The pre-generated file
+        // is the source of truth for generic playback, so we no longer (a) skip by
+        // hostname [every admin-generated URL is firebasestorage.* and was being
+        // discarded], nor (b) run a name-based hash check that regenerated TTS and
+        // destructively wiped the shared config for all users. A real 5s liveness
+        // probe detects genuinely dead URLs and falls back to TTS. Name-in-audio
+        // stays on the paid Personalize path (cached per child in Priority 0).
+        else if (current.audioUrl && !(isMultiLangStory && lang !== 'English')) {
+          console.log('[My Sleepy Tale:Player] Playing stored audio (instant)');
           audio = narrator.loadCached(current.audioUrl);
-          // Wait briefly to see if audio actually loads, fallback to TTS if not
+          // Use the stored audio if it actually loads within 5s, else fall back to TTS.
           const loadedOk = await new Promise((resolve) => {
             let resolved = false;
             audio.oncanplay = () => { if (!resolved) { resolved = true; resolve(true); } };
@@ -545,12 +531,11 @@ function PlayerInner() {
             setTimeout(() => { if (!resolved) { resolved = true; resolve(false); } }, 5000);
           });
           if (!loadedOk) {
-            console.warn('[My Sleepy Tale:Player] Cached audio failed, falling back to TTS');
+            console.warn('[My Sleepy Tale:Player] Stored audio failed to load, falling back to TTS');
             // CRITICAL: stop and discard the failed audio element before TTS fallback
             try { audio.pause(); audio.src = ''; audio.load(); } catch {}
             audio = null;
           }
-          } // close hash-check else
         }
 
         // Priority 3: Generate via TTS API (fallback if cached audio failed or no pre-gen)
