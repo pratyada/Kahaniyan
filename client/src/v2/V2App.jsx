@@ -50,6 +50,7 @@ export default function V2App() {
         <div className="mx-auto w-full max-w-[1040px] pb-28 lg:pb-12">
           <Routes>
             <Route path="/v2" element={<ListenHome />} />
+            <Route path="/v2/player/:storyId" element={<V2Player />} />
             <Route path="/v2/player" element={<V2Player />} />
             <Route path="/v2/series/:seriesId" element={<V2Series />} />
             <Route path="/v2/build" element={<Build />} />

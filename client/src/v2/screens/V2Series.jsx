@@ -30,7 +30,7 @@ export default function V2Series() {
     load(buildStory(ep, wisdomAudioUrls || {}, wisdomImageUrls || {}, {
       seriesId: series.id, episodeId: ep.id, episodeNumber: ep.episodeNumber, coverImage: wisdomImageUrls?.[ep.id] || ep.coverImage || cover || null,
     }));
-    navigate('/v2/player');
+    navigate(`/v2/player/${ep.id}`);
   };
 
   return (
