@@ -7,7 +7,7 @@
 // ─────────────────────────────────────────────────────────────
 import { useEffect } from 'react';
 import { Routes, Route, Navigate, NavLink, useLocation } from 'react-router-dom';
-import { Headphones, Wand2, Orbit, User } from 'lucide-react';
+import { Headphones, Wand2, Orbit } from 'lucide-react';
 import { useAuth } from '../hooks/useAuth.jsx';
 import { useFamilyProfile } from '../hooks/useFamilyProfile.js';
 import { NIGHT_BG, GOLD } from './ui.js';
@@ -18,11 +18,12 @@ import Profile from './screens/Profile.jsx';
 import V2Player from './screens/V2Player.jsx';
 import V2Series from './screens/V2Series.jsx';
 
+// Profile is NOT a nav item — it's reached via the username/avatar (sidebar bottom
+// card on desktop, avatar slot on the mobile bar). No duplicate profile icon.
 const NAV = [
   { to: '/v2', Icon: Headphones, label: 'Listen', end: true },
   { to: '/v2/build', Icon: Wand2, label: 'Build', end: false },
   { to: '/v2/world', Icon: Orbit, label: 'My World', end: false },
-  { to: '/v2/profile', Icon: User, label: 'Profile', end: false },
 ];
 
 export default function V2App() {
@@ -119,9 +120,11 @@ function Sidebar() {
   );
 }
 
-/* ── Mobile: bottom tab bar ── */
+/* ── Mobile: bottom tab bar (nav tabs + username/avatar for profile) ── */
 function BottomBar() {
   const { pathname } = useLocation();
+  const { user } = useAuth();
+  const profileActive = pathname.startsWith('/v2/profile');
   return (
     <nav
       className="lg:hidden fixed bottom-0 left-0 right-0 z-30 border-t border-white/8 backdrop-blur-xl safe-bottom"
@@ -144,6 +147,24 @@ function BottomBar() {
             </li>
           );
         })}
+        {/* Profile = username/avatar, not a generic icon */}
+        <li className="flex-1">
+          <NavLink
+            to="/v2/profile"
+            className={`flex min-h-[60px] flex-col items-center justify-center gap-1 py-2 transition ${
+              profileActive ? 'text-[#F6C453]' : 'text-[#7A6B8A] active:text-[#F7F1E8]'
+            }`}
+          >
+            {user?.photoURL ? (
+              <img src={user.photoURL} alt="" referrerPolicy="no-referrer" className={`h-6 w-6 rounded-full object-cover ${profileActive ? 'ring-2 ring-[#F6C453]' : ''}`} />
+            ) : (
+              <span className="grid h-6 w-6 place-items-center rounded-full text-[10px] font-bold text-[#0D1B2A]" style={{ background: profileActive ? GOLD : '#B8AAC8' }}>
+                {(user?.displayName?.[0] || user?.email?.[0] || 'S').toUpperCase()}
+              </span>
+            )}
+            <span className="text-[10px] font-bold uppercase tracking-[0.09em]">{user ? 'Me' : 'Sign in'}</span>
+          </NavLink>
+        </li>
       </ul>
     </nav>
   );
