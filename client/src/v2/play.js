@@ -14,6 +14,8 @@ export function buildStory(item, audioUrls = {}, imageUrls = {}, extra = {}) {
     source: item.source,
     durationMinutes: item.durationMinutes,
     isWisdom: true,
+    multilingual: item.multilingual || /multilingual|fifa26/i.test(item.id || ''),
+    enableTranslation: item.enableTranslation || false,
     audioUrl: audioUrls[item.id] || null,
     coverImage: imageUrls[item.id] || item.coverImage || null,
     ...extra,

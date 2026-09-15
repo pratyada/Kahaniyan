@@ -15,6 +15,7 @@ function searchText(item) {
     item.subtitle,
     item.description,
     item.source,
+    item.body, // index the story text so keywords inside the story are searchable
     item.id?.replace(/[_-]/g, ' '),
     item.seriesTitle,
     tradition?.label,

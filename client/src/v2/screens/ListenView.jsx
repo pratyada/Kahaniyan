@@ -1,9 +1,12 @@
-// V2 Listen — presentational. New night-sky shell + the EXISTING production cover
-// cards (StoryTile / SeriesCard) you prefer. All props are plain data from ListenHome.
-import { Mic, Flame, Star, Sparkles, Library } from 'lucide-react';
+// V2 Listen — presentational. New night-sky shell + your production cover cards.
+// Search (top) · category filters · featured carousel · category shelves ·
+// played outline · multilingual badge. All props are plain data from ListenHome.
+import { Search, X, Mic, Flame, Star, Library } from 'lucide-react';
 import StoryTile from '../../components/cards/StoryTile.jsx';
 import SeriesCard from '../../components/cards/SeriesCard.jsx';
 import HeroSlider from '../../components/HeroSlider.jsx';
+import { TRADITIONS, THEMES } from '../../data/culturalLessons.js';
+import { isPlayed, isMultiLang } from '../played.js';
 import { GOLD } from '../ui.js';
 
 function greeting() {
@@ -13,11 +16,21 @@ function greeting() {
   return 'Good evening';
 }
 
-export default function ListenView({ childName, streak, tonight, highlights, stories, series, loading, onPlay, onOpenSeries, onOpenVoice }) {
-  // Featured carousel — at least 5 stories (auto-rotating hero slider)
-  const heroLessons = (stories || []).slice(0, 6).map((s) => s.lesson);
-  const heroImages = {};
-  (stories || []).forEach((s) => { if (s.imageUrl) heroImages[s.lesson.id] = s.imageUrl; });
+export default function ListenView(props) {
+  const {
+    childName, streak, loading, playedSet,
+    query, onSearch, traditionFilter, themeFilter, onToggleTradition, onToggleTheme, onClearFilters,
+    results, heroLessons, heroImages, topWeek, shelves, seriesList,
+    onPlay, onOpenSeries, onOpenVoice,
+  } = props;
+
+  const searching = (query || '').trim().length > 0;
+  const filtering = !!(traditionFilter || themeFilter);
+  const active = searching || filtering;
+
+  const renderStory = (item) => (
+    <StoryCard key={item.lesson.id} item={item} played={isPlayed(playedSet, item.lesson.id)} multi={isMultiLang(item.lesson)} onPlay={onPlay} />
+  );
 
   return (
     <div className="px-5 lg:px-8 pt-7 lg:pt-10">
@@ -37,43 +50,112 @@ export default function ListenView({ childName, streak, tonight, highlights, sto
         </div>
       </header>
 
-      {/* Featured carousel — 5+ stories, auto-rotating */}
-      {heroLessons.length > 0 && (
-        <div className="mt-6">
-          <HeroSlider stories={heroLessons} wisdomImageUrls={heroImages} onPlay={onPlay} />
-        </div>
-      )}
+      {/* Search */}
+      <div className="mt-5 relative">
+        <Search size={17} className="absolute left-4 top-1/2 -translate-y-1/2 text-[#7A6B8A]" />
+        <input
+          value={query}
+          onChange={(e) => onSearch(e.target.value)}
+          placeholder="Search stories, themes, keywords…"
+          className="w-full rounded-full bg-white/[0.06] ring-1 ring-white/10 focus:ring-[#F6C453]/50 outline-none py-3 pl-11 pr-10 text-sm text-[#F7F1E8] placeholder:text-[#7A6B8A]"
+        />
+        {searching && (
+          <button onClick={() => onSearch('')} className="absolute right-3.5 top-1/2 -translate-y-1/2 text-[#7A6B8A] hover:text-[#F7F1E8]">
+            <X size={17} />
+          </button>
+        )}
+      </div>
 
-      {/* Top of the Week — real SeriesCards */}
-      {highlights?.length > 0 && (
-        <Section icon={Star} title="Top of the Week">
-          <Row extraPad>
-            {highlights.map(({ series: s, coverImage }) => (
-              <SeriesCard key={s.id} series={s} coverImage={coverImage} onClick={() => onOpenSeries(s.id)} />
-            ))}
-          </Row>
-        </Section>
-      )}
+      {/* Filter chips */}
+      <div className="mt-3 flex gap-2 overflow-x-auto pb-1 -mx-5 px-5 lg:-mx-8 lg:px-8" style={{ scrollbarWidth: 'none' }}>
+        <Chip active={!filtering} onClick={onClearFilters}>All</Chip>
+        {TRADITIONS.filter((t) => t.key !== 'universal').map((t) => (
+          <Chip key={t.key} active={traditionFilter === t.key} onClick={() => onToggleTradition(t.key)}>{t.icon} {t.label}</Chip>
+        ))}
+        {THEMES.map((t) => (
+          <Chip key={t.key} active={themeFilter === t.key} onClick={() => onToggleTheme(t.key)}>{t.icon} {t.label}</Chip>
+        ))}
+      </div>
 
-      {/* Stories — real StoryTiles */}
-      <Section icon={Sparkles} title="Stories">
-        <Row>
-          {loading
-            ? [0, 1, 2, 3].map((i) => <div key={i} className="w-40 lg:w-48 shrink-0 rounded-2xl bg-white/5 animate-pulse" style={{ aspectRatio: '2/3', minHeight: 240 }} />)
-            : stories.map(({ lesson, imageUrl }) => <StoryTile key={lesson.id} lesson={lesson} imageUrl={imageUrl} onPlay={onPlay} />)}
-        </Row>
-      </Section>
-
-      {/* Series — real SeriesCards */}
-      <Section icon={Library} title="Series">
-        <Row extraPad>
-          {series.map(({ series: s, coverImage }) => (
-            <SeriesCard key={s.id} series={s} coverImage={coverImage} onClick={() => onOpenSeries(s.id)} />
+      {active ? (
+        /* Search / filter results */
+        <section className="mt-7">
+          <h2 className="text-[15px] font-bold text-[#F7F1E8] mb-4">
+            {results.total > 0 ? `${results.total} result${results.total === 1 ? '' : 's'}` : 'No stories found'}
+            {searching ? ` for “${query.trim()}”` : ''}
+          </h2>
+          {results.series?.length > 0 && (
+            <div className="flex gap-4 overflow-x-auto pb-2 pt-1 pl-2 -mx-5 px-5 lg:-mx-8 lg:px-8 mb-6" style={{ scrollbarWidth: 'none' }}>
+              {results.series.map(({ series: s, coverImage }) => (
+                <SeriesCard key={s.id} series={s} coverImage={coverImage} onClick={() => onOpenSeries(s.id)} />
+              ))}
+            </div>
+          )}
+          <div className="flex flex-wrap gap-4">
+            {results.stories.map(renderStory)}
+          </div>
+          {results.total === 0 && (
+            <p className="text-[13px] text-[#7A6B8A] mt-2">Try a different word — a name, a value like “courage”, or a tradition.</p>
+          )}
+        </section>
+      ) : (
+        /* Default browse */
+        <>
+          {heroLessons?.length > 0 && (
+            <div className="mt-6"><HeroSlider stories={heroLessons} wisdomImageUrls={heroImages} onPlay={onPlay} /></div>
+          )}
+          {topWeek?.length > 0 && (
+            <Section icon={Star} title="Top of the Week">
+              <Row extraPad>{topWeek.map(({ series: s, coverImage }) => (<SeriesCard key={s.id} series={s} coverImage={coverImage} onClick={() => onOpenSeries(s.id)} />))}</Row>
+            </Section>
+          )}
+          {loading && (!shelves || shelves.length === 0) && (
+            <Section title="Loading stories…"><Row>{[0, 1, 2, 3].map((i) => <Skeleton key={i} />)}</Row></Section>
+          )}
+          {(shelves || []).map((sh) => (
+            sh.stories.length ? (
+              <Section key={sh.id} title={sh.title}><Row>{sh.stories.map(renderStory)}</Row></Section>
+            ) : null
           ))}
-        </Row>
-      </Section>
+          {seriesList?.length > 0 && (
+            <Section icon={Library} title="All Series">
+              <Row extraPad>{seriesList.map(({ series: s, coverImage }) => (<SeriesCard key={s.id} series={s} coverImage={coverImage} onClick={() => onOpenSeries(s.id)} />))}</Row>
+            </Section>
+          )}
+        </>
+      )}
 
       <Footer />
+    </div>
+  );
+}
+
+function Chip({ active, onClick, children }) {
+  return (
+    <button
+      onClick={onClick}
+      className={`shrink-0 whitespace-nowrap rounded-full px-3.5 py-1.5 text-xs font-bold transition ${active ? 'text-[#0D1B2A]' : 'text-[#B8AAC8] bg-white/[0.06] ring-1 ring-white/10 hover:ring-white/20'}`}
+      style={active ? { background: GOLD } : undefined}
+    >
+      {children}
+    </button>
+  );
+}
+
+function StoryCard({ item, played, multi, onPlay }) {
+  return (
+    <div className="relative shrink-0">
+      <div className={`rounded-2xl ${played ? 'ring-2 ring-[#F6C453]/70' : ''}`}>
+        <div className={played ? 'opacity-70' : ''}>
+          <StoryTile lesson={item.lesson} imageUrl={item.imageUrl} onPlay={onPlay} />
+        </div>
+      </div>
+      {played && (
+        <span className="absolute bottom-2.5 left-2.5 z-10 rounded-full bg-[#F6C453] px-2 py-[3px] text-[8px] font-bold uppercase tracking-wide text-[#0D1B2A]">Played</span>
+      )}
+      {multi && (
+        <span className="absolute bottom-2.5 right-2.5 z-10 flex items-center gap-0.5 rounded-full bg-black/55 px-1.5 py-[3px] text-[8px] font-bold text-white/90 backdrop-blur-sm ring-1 ring-white/15">🌐 Langs</span>
+      )}
     </div>
   );
 }
@@ -82,7 +164,7 @@ function Section({ icon: Icon, title, children }) {
   return (
     <section className="mt-9">
       <h2 className="flex items-center gap-2 text-[15px] font-bold text-[#F7F1E8] mb-4">
-        <Icon size={17} strokeWidth={2} style={{ color: GOLD }} /> {title}
+        {Icon && <Icon size={17} strokeWidth={2} style={{ color: GOLD }} />} {title}
       </h2>
       {children}
     </section>
@@ -94,6 +176,9 @@ function Row({ children, extraPad }) {
       {children}
     </div>
   );
+}
+function Skeleton() {
+  return <div className="shrink-0 w-40 lg:w-48 rounded-2xl bg-white/5 animate-pulse" style={{ aspectRatio: '2/3', minHeight: 240 }} />;
 }
 
 function Footer() {
