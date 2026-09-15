@@ -28,6 +28,7 @@ import MyTasks from './pages/MyTasks.jsx';
 import SearchPage from './pages/Search.jsx';
 import AboutUs from './pages/AboutUs.jsx';
 import Creatives from './pages/Creatives.jsx';
+import V2App from './v2/V2App.jsx';
 import Studio from './pages/Studio.jsx';
 import ContentPipeline from './pages/ContentPipeline.jsx';
 import FounderHub from './pages/FounderHub.jsx';
@@ -78,6 +79,9 @@ function Shell() {
   useEffect(() => {
     trackPageView(location.pathname, document.title);
   }, [location.pathname]);
+
+  // ── MST V2 redesign — opt-in via /v2 path (feature flag). Isolated shell, existing routes untouched. ──
+  if (location.pathname.startsWith('/v2')) return <V2App />;
 
   // Wait for auth + profile to load
   if (authLoading || !ready) return null;
