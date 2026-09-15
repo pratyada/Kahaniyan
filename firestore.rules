@@ -1,0 +1,79 @@
+rules_version = '2';
+
+// ─────────────────────────────────────────────────────────────
+// My Sleepy Tale — Firestore security rules.
+//
+// ⚠️  REVIEW against the current rules in the Firebase console before deploying.
+//     This file is the source-of-truth going forward. Deploy with:
+//       firebase deploy --only firestore:rules
+//     (Rules do NOT ship through the AWS pipeline — this is a manual step.)
+//
+// The security-critical rule is on /users/{uid}: a client may manage its own
+// profile, but can NEVER change `subscriptionTier` or `accountStatus`. Those are
+// written ONLY by the server (Stripe webhook / admin SDK, which bypasses rules).
+// Entitlement is therefore server-authoritative and cannot be faked from the client.
+// ─────────────────────────────────────────────────────────────
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    function isSignedIn() { return request.auth != null; }
+    function isOwner(uid) { return isSignedIn() && request.auth.uid == uid; }
+    function isAdmin() {
+      return isSignedIn()
+        && exists(/databases/$(database)/documents/config/app)
+        && (request.auth.token.email in get(/databases/$(database)/documents/config/app).data.adminEmails);
+    }
+    // Keys the client must never write on its own user doc.
+    function changesProtected() {
+      return request.resource.data.diff(resource.data).affectedKeys()
+        .hasAny(['subscriptionTier', 'accountStatus']);
+    }
+
+    // ── Users: owner-managed, but entitlement fields are server-only ──
+    match /users/{uid} {
+      allow read: if isOwner(uid) || isAdmin();
+      // New doc: owner may create, but cannot self-grant a plan/status.
+      allow create: if isOwner(uid)
+        && !request.resource.data.keys().hasAny(['subscriptionTier', 'accountStatus']);
+      // Updates: owner may edit profiles/library/etc., but NOT subscriptionTier/accountStatus.
+      allow update: if isOwner(uid) && !changesProtected();
+      allow delete: if false; // server only
+      // Subcollections (if any) — owner scoped.
+      match /{sub=**} {
+        allow read, write: if isOwner(uid) || isAdmin();
+      }
+    }
+
+    // ── Public content: readable by all, writable only by admins (server/admin panel) ──
+    match /config/{doc}            { allow read: if true; allow write: if isAdmin(); }
+    match /wisdomStories/{id}       { allow read: if true; allow write: if isAdmin(); }
+    match /series/{id}              { allow read: if true; allow write: if isAdmin(); }
+    match /productionStories/{id}   { allow read: if true; allow write: if isAdmin(); }
+    match /publishedContent/{id}    { allow read: if true; allow write: if isAdmin(); }
+
+    // ── Play tracking: readable by all; anyone (incl. guests) may record a play ──
+    match /storyPlays/{id}  { allow read: if true; allow create, update: if true; allow delete: if false; }
+    match /playEvents/{id}  { allow read: if isAdmin(); allow create: if true; allow update, delete: if false; }
+
+    // ── Creator / kids content ──
+    match /creatorSeries/{id}  { allow read: if true; allow write: if isSignedIn(); }
+    match /creatorStories/{id} { allow read: if true; allow write: if isSignedIn(); }
+    match /kidStories/{id} {
+      // Public read only when approved+public; otherwise owner/admin.
+      allow read: if (resource.data.visibility == 'public' && resource.data.approved == true)
+                     || (isSignedIn() && resource.data.parentUid == request.auth.uid) || isAdmin();
+      allow create: if isSignedIn() && request.resource.data.parentUid == request.auth.uid;
+      allow update: if (isSignedIn() && resource.data.parentUid == request.auth.uid) || isAdmin();
+      allow delete: if isAdmin();
+    }
+
+    // ── Feedback / misc user-generated ──
+    match /voiceFeedback/{id} { allow read: if isAdmin(); allow create: if true; }
+
+    // ── Everything else (tasks, expenses, outreachLeads, internal): admin only ──
+    match /{document=**} {
+      allow read, write: if isAdmin();
+    }
+  }
+}

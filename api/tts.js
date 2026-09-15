@@ -1,5 +1,6 @@
 // OpenAI Text-to-Speech with smart voice routing by country + belief.
 // 13 voices across tts-1 and gpt-4o-mini-tts models.
+import { getUserTier, isPaidTier } from './_entitlement.js';
 
 const OPENAI_KEY = process.env.OPENAI_API_KEY;
 
@@ -92,6 +93,7 @@ export default async function handler(req, res) {
     beliefs = [],
     speed = 0.9,
     uid,
+    customVoiceId,
   } = req.body || {};
 
   // Basic abuse prevention — require a user identifier or referrer from our domain
@@ -99,6 +101,18 @@ export default async function handler(req, res) {
   const isFromOurSite = referer.includes('mysleepytale.com') || referer.includes('localhost');
   if (!uid && !req.headers['x-user-uid'] && !isFromOurSite) {
     return res.status(401).json({ error: 'Unauthorized request' });
+  }
+
+  // Paid-feature enforcement (server-authoritative): a cloned/custom voice is a
+  // paid feature. Verify the tier from Firestore (webhook-set, client-immutable);
+  // free users silently fall back to the default narrator. Never trust the client.
+  let voiceId = customVoiceId || null;
+  if (voiceId) {
+    const tier = await getUserTier(uid || req.headers['x-user-uid']);
+    if (!isPaidTier(tier)) {
+      console.log('[tts] customVoiceId ignored — free tier');
+      voiceId = null;
+    }
   }
 
   if (!text || text.length < 10) {
@@ -125,7 +139,7 @@ export default async function handler(req, res) {
         input: trimmedText,
         voice,
         speed: Math.max(0.25, Math.min(4.0, speed)),
-        response_format: 'opus',
+        response_format: 'mp3', // MP3 = plays on iOS Safari (Opus does not)
       }),
     });
 
@@ -140,7 +154,7 @@ export default async function handler(req, res) {
       });
     }
 
-    res.setHeader('Content-Type', 'audio/ogg');
+    res.setHeader('Content-Type', 'audio/mpeg');
     res.setHeader('Cache-Control', 'public, max-age=86400');
     res.setHeader('X-Voice-Used', voice);
     res.setHeader('X-Model-Used', model);

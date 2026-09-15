@@ -105,6 +105,7 @@ export function FamilyProfileProvider({ children }) {
           const cloudIdx = Math.min(data.activeIndex || 0, Math.max(0, cloudProfiles.length - 1));
 
           if (data.accountStatus) setAccountStatus(data.accountStatus);
+          setSubscriptionTier(data.subscriptionTier || 'free'); // server-authoritative entitlement
 
           // Always update auth metadata on login so admin can see emails
           try {
@@ -248,11 +249,13 @@ export function FamilyProfileProvider({ children }) {
                 lastActiveAt: new Date().toISOString(),
               }
             : {};
+          // merge:true so client saves never clobber SERVER-owned fields
+          // (subscriptionTier, accountStatus, library, referralCode, …).
           await setDoc(userDocRef(uid), stripUndefined({
             profiles: nextProfiles,
             activeIndex: nextIdx,
             ...authMeta,
-          }));
+          }), { merge: true });
           console.log('[My Sleepy Tale:profile] Firestore sync done');
         } catch (e) {
           console.error('[My Sleepy Tale:profile] Firestore write FAILED:', e.message);
@@ -265,6 +268,9 @@ export function FamilyProfileProvider({ children }) {
   );
 
   const [accountStatus, setAccountStatus] = useState('active');
+  // Server-authoritative plan (set only by the Stripe webhook via admin SDK).
+  const [subscriptionTier, setSubscriptionTier] = useState('free');
+  const isPaid = ['pro', 'family', 'enterprise', 'annual', 'premium'].includes(String(subscriptionTier || '').toLowerCase());
 
   const profile = profiles[activeIndex] || null;
 
@@ -347,6 +353,8 @@ export function FamilyProfileProvider({ children }) {
         activeIndex,
         ready,
         accountStatus,
+        subscriptionTier,
+        isPaid,
         save,
         update,
         clear,

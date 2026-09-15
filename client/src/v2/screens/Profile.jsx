@@ -1,6 +1,10 @@
-// V2 Profile — account, login/logout, subscription, settings. Night-sky base.
+// V2 Profile — account, login/logout, plan, settings. Plan + pricing come from the
+// SERVER (/api/plans); entitlement is the server-authoritative subscriptionTier;
+// upgrading goes through the SERVER checkout (/api/create-checkout). No client-trusted
+// purchase state.
+import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { LogOut, ChevronRight, Gem, Mic2, Star, Shield, Settings as SettingsIcon, Moon } from 'lucide-react';
+import { LogOut, ChevronRight, Gem, Mic2, Star, Shield, Settings as SettingsIcon, Moon, Check } from 'lucide-react';
 import { useAuth } from '../../hooks/useAuth.jsx';
 import { useFamilyProfile } from '../../hooks/useFamilyProfile.js';
 import { GOLD } from '../ui.js';
@@ -8,7 +12,27 @@ import { GOLD } from '../ui.js';
 export default function Profile() {
   const navigate = useNavigate();
   const { user, loginGoogle, logout, error } = useAuth();
-  const { profile } = useFamilyProfile();
+  const { profile, subscriptionTier, isPaid } = useFamilyProfile();
+  const [plans, setPlans] = useState([]);
+  const [busy, setBusy] = useState(false);
+
+  useEffect(() => {
+    fetch('/api/plans').then((r) => r.json()).then((d) => setPlans(d.plans || [])).catch(() => {});
+  }, []);
+  const familyPlan = plans.find((p) => p.tier === 'family');
+
+  const startCheckout = async () => {
+    if (!user) return loginGoogle && loginGoogle();
+    setBusy(true);
+    try {
+      const r = await fetch('/api/create-checkout', {
+        method: 'POST', headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ tier: 'family', uid: user.uid, email: user.email }),
+      });
+      const { url } = await r.json();
+      if (url) window.location.href = url; else setBusy(false);
+    } catch { setBusy(false); }
+  };
 
   /* ── Signed out ── */
   if (!user) {
@@ -27,11 +51,7 @@ export default function Profile() {
             <li className="flex items-center gap-2.5"><Mic2 size={15} style={{ color: GOLD }} /> Add family voices (Mum, Dad, Grandma)</li>
             <li className="flex items-center gap-2.5"><Shield size={15} style={{ color: GOLD }} /> Private &amp; safe — family only</li>
           </ul>
-          <button
-            onClick={() => loginGoogle && loginGoogle()}
-            className="mt-6 w-full rounded-full px-6 py-3.5 text-sm font-bold text-[#0D1B2A] active:scale-95 transition"
-            style={{ background: GOLD }}
-          >
+          <button onClick={() => loginGoogle && loginGoogle()} className="mt-6 w-full rounded-full px-6 py-3.5 text-sm font-bold text-[#0D1B2A] active:scale-95 transition" style={{ background: GOLD }}>
             Continue with Google
           </button>
           {error && <p className="mt-3 text-center text-[12px] text-[#f3727f]">{error}</p>}
@@ -64,27 +84,35 @@ export default function Profile() {
             {(user.displayName?.[0] || user.email?.[0] || 'S').toUpperCase()}
           </span>
         )}
-        <div className="min-w-0">
+        <div className="min-w-0 flex-1">
           <p className="font-display text-lg text-[#F7F1E8] truncate">{user.displayName || 'My account'}</p>
           <p className="text-[12px] text-[#7A6B8A] truncate">{user.email}</p>
         </div>
+        <span className="shrink-0 rounded-full px-2.5 py-1 text-[10px] font-bold uppercase tracking-wide" style={isPaid ? { background: GOLD, color: '#0D1B2A' } : { background: 'rgba(255,255,255,0.08)', color: '#B8AAC8' }}>
+          {isPaid ? (subscriptionTier === 'family' ? 'Family Plus' : subscriptionTier) : 'Free'}
+        </span>
       </div>
 
-      {/* Upgrade */}
-      <button
-        onClick={() => navigate('/settings')}
-        className="mt-4 w-full flex items-center gap-3 rounded-2xl p-4 text-left ring-1 transition active:scale-[0.99]"
-        style={{ background: 'linear-gradient(120deg, rgba(246,196,83,0.16), rgba(246,196,83,0.04))', borderColor: 'rgba(246,196,83,0.3)' }}
-      >
-        <div className="grid h-11 w-11 place-items-center rounded-xl shrink-0" style={{ background: 'rgba(246,196,83,0.2)' }}>
-          <Gem size={20} style={{ color: GOLD }} />
+      {/* Plan card */}
+      {isPaid ? (
+        <div className="mt-4 flex items-center gap-3 rounded-2xl p-4 ring-1" style={{ background: 'linear-gradient(120deg, rgba(246,196,83,0.16), rgba(246,196,83,0.04))', borderColor: 'rgba(246,196,83,0.3)' }}>
+          <div className="grid h-11 w-11 place-items-center rounded-xl shrink-0" style={{ background: 'rgba(246,196,83,0.2)' }}><Check size={20} style={{ color: GOLD }} /></div>
+          <div className="min-w-0 flex-1">
+            <p className="text-sm font-bold text-[#F7F1E8]">Family Plus is active</p>
+            <p className="text-[12px] text-[#B8AAC8]">Family voices · unlimited creations · ad-free</p>
+          </div>
+          <button onClick={() => navigate('/settings')} className="text-[12px] font-bold" style={{ color: GOLD }}>Manage</button>
         </div>
-        <div className="min-w-0 flex-1">
-          <p className="text-sm font-bold text-[#F7F1E8]">Family Plus</p>
-          <p className="text-[12px] text-[#B8AAC8]">Family voices · unlimited sparkles · ad-free</p>
-        </div>
-        <ChevronRight size={18} className="text-[#7A6B8A]" />
-      </button>
+      ) : (
+        <button onClick={startCheckout} disabled={busy} className="mt-4 w-full flex items-center gap-3 rounded-2xl p-4 text-left ring-1 transition active:scale-[0.99] disabled:opacity-60" style={{ background: 'linear-gradient(120deg, rgba(246,196,83,0.16), rgba(246,196,83,0.04))', borderColor: 'rgba(246,196,83,0.3)' }}>
+          <div className="grid h-11 w-11 place-items-center rounded-xl shrink-0" style={{ background: 'rgba(246,196,83,0.2)' }}><Gem size={20} style={{ color: GOLD }} /></div>
+          <div className="min-w-0 flex-1">
+            <p className="text-sm font-bold text-[#F7F1E8]">{busy ? 'Opening checkout…' : (familyPlan?.name || 'Family Plus')}{familyPlan ? ` · ${familyPlan.priceLabel}${familyPlan.period}` : ''}</p>
+            <p className="text-[12px] text-[#B8AAC8]">{familyPlan?.trial ? `${familyPlan.trial} · ` : ''}Family voices · unlimited sparkles · ad-free</p>
+          </div>
+          <ChevronRight size={18} className="text-[#7A6B8A]" />
+        </button>
+      )}
 
       {/* Settings rows */}
       <div className="mt-5 rounded-2xl ring-1 ring-white/10 overflow-hidden divide-y divide-white/8">
@@ -100,11 +128,7 @@ export default function Profile() {
         ))}
       </div>
 
-      {/* Logout */}
-      <button
-        onClick={() => logout && logout()}
-        className="mt-5 w-full flex items-center justify-center gap-2 rounded-full px-6 py-3.5 text-sm font-bold text-[#f3727f] ring-1 ring-[#f3727f]/30 hover:bg-[#f3727f]/10 active:scale-95 transition"
-      >
+      <button onClick={() => logout && logout()} className="mt-5 w-full flex items-center justify-center gap-2 rounded-full px-6 py-3.5 text-sm font-bold text-[#f3727f] ring-1 ring-[#f3727f]/30 hover:bg-[#f3727f]/10 active:scale-95 transition">
         <LogOut size={16} /> Log out
       </button>
     </div>
