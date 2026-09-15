@@ -1,8 +1,9 @@
 // V2 Listen — presentational. New night-sky shell + the EXISTING production cover
 // cards (StoryTile / SeriesCard) you prefer. All props are plain data from ListenHome.
-import { Mic, Flame, Play, Star, Sparkles, Library, Moon } from 'lucide-react';
+import { Mic, Flame, Star, Sparkles, Library } from 'lucide-react';
 import StoryTile from '../../components/cards/StoryTile.jsx';
 import SeriesCard from '../../components/cards/SeriesCard.jsx';
+import HeroSlider from '../../components/HeroSlider.jsx';
 import { GOLD } from '../ui.js';
 
 function greeting() {
@@ -13,6 +14,11 @@ function greeting() {
 }
 
 export default function ListenView({ childName, streak, tonight, highlights, stories, series, loading, onPlay, onOpenSeries, onOpenVoice }) {
+  // Featured carousel — at least 5 stories (auto-rotating hero slider)
+  const heroLessons = (stories || []).slice(0, 6).map((s) => s.lesson);
+  const heroImages = {};
+  (stories || []).forEach((s) => { if (s.imageUrl) heroImages[s.lesson.id] = s.imageUrl; });
+
   return (
     <div className="px-5 lg:px-8 pt-7 lg:pt-10">
       {/* Header */}
@@ -31,24 +37,11 @@ export default function ListenView({ childName, streak, tonight, highlights, sto
         </div>
       </header>
 
-      {/* Tonight's chapter — wide hero */}
-      {tonight && (
-        <button
-          onClick={() => onOpenSeries(tonight.series.id)}
-          className="mt-6 w-full text-left rounded-3xl overflow-hidden ring-1 ring-white/10 relative active:scale-[0.99] transition"
-          style={{ minHeight: 196, background: tonight.series.gradient || 'linear-gradient(135deg,#1a0a2e,#2e1a0a)' }}
-        >
-          {tonight.coverImage && <img src={tonight.coverImage} alt="" className="absolute inset-0 h-full w-full object-cover opacity-50" />}
-          <div className="absolute inset-0" style={{ background: 'linear-gradient(100deg,rgba(7,10,25,0.9) 30%,rgba(7,10,25,0.2) 100%)' }} />
-          <div className="relative p-6 lg:p-7 max-w-[460px]">
-            <p className="text-[11px] font-bold uppercase tracking-[0.14em] text-white/70 flex items-center gap-1.5"><Moon size={13} /> Tonight&apos;s chapter</p>
-            <p className="font-display text-xl lg:text-2xl text-white mt-2 leading-snug">{tonight.series.title}</p>
-            <p className="text-[13px] text-white/75 mt-1.5 line-clamp-2">{tonight.series.episodes?.[0]?.title} — {tonight.series.episodes?.[0]?.subtitle || tonight.series.description}</p>
-            <span className="inline-flex items-center gap-2 mt-4 rounded-full px-5 py-2.5 text-sm font-bold text-[#0D1B2A]" style={{ background: GOLD }}>
-              <Play size={15} strokeWidth={2.5} fill="#0D1B2A" /> Listen now
-            </span>
-          </div>
-        </button>
+      {/* Featured carousel — 5+ stories, auto-rotating */}
+      {heroLessons.length > 0 && (
+        <div className="mt-6">
+          <HeroSlider stories={heroLessons} wisdomImageUrls={heroImages} onPlay={onPlay} />
+        </div>
       )}
 
       {/* Top of the Week — real SeriesCards */}

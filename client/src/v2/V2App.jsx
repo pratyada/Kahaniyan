@@ -29,8 +29,12 @@ export default function V2App() {
   useEffect(() => {
     const el = document.documentElement;
     const prev = el.getAttribute('data-theme');
-    el.setAttribute('data-theme', 'night');
-    return () => { if (prev) el.setAttribute('data-theme', prev); };
+    const apply = () => el.setAttribute('data-theme', 'night');
+    apply();
+    // Re-assert after ThemeProvider's own mount effect (which runs after this
+    // child effect and would otherwise restore the user's day theme).
+    const raf = requestAnimationFrame(apply);
+    return () => { cancelAnimationFrame(raf); if (prev) el.setAttribute('data-theme', prev); };
   }, []);
 
   return (
