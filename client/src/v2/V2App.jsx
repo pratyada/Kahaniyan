@@ -5,6 +5,7 @@
 // Committed night-sky theme so it always matches the design regardless of app theme.
 // Four tabs: Listen · Build · My World · Profile.
 // ─────────────────────────────────────────────────────────────
+import { useEffect } from 'react';
 import { Routes, Route, Navigate, NavLink, useLocation } from 'react-router-dom';
 import { Headphones, Wand2, Orbit, User } from 'lucide-react';
 import { useAuth } from '../hooks/useAuth.jsx';
@@ -23,6 +24,15 @@ const NAV = [
 ];
 
 export default function V2App() {
+  // Force the night theme while in V2 so reused production cards (gold accents)
+  // render correctly regardless of the user's day/night toggle. Restore on exit.
+  useEffect(() => {
+    const el = document.documentElement;
+    const prev = el.getAttribute('data-theme');
+    el.setAttribute('data-theme', 'night');
+    return () => { if (prev) el.setAttribute('data-theme', prev); };
+  }, []);
+
   return (
     <div
       className="fixed inset-0 flex text-[#F7F1E8]"
