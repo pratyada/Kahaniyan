@@ -7,8 +7,8 @@ import { useWisdomData } from '../../hooks/useWisdomData.js';
 import { useFamilyProfile } from '../../hooks/useFamilyProfile.js';
 import { usePlayer } from '../../hooks/usePlayer.jsx';
 import { useAuth } from '../../hooks/useAuth.jsx';
-import { playLesson } from '../../utils/storyHelpers.js';
 import { SERIES } from '../../data/series.js';
+import { buildStory } from '../play.js';
 import ListenView from './ListenView.jsx';
 
 export default function ListenHome() {
@@ -48,8 +48,8 @@ export default function ListenHome() {
       stories={stories}
       series={series}
       loading={loading && stories.length === 0}
-      onPlay={(lesson) => playLesson(lesson, profile, wisdomAudioUrls || {}, load, navigate, user)}
-      onOpenSeries={(id) => navigate(`/series/${id}`)}
+      onPlay={(lesson) => { load(buildStory(lesson, wisdomAudioUrls || {}, wisdomImageUrls || {})); navigate('/v2/player'); }}
+      onOpenSeries={(id) => navigate(`/v2/series/${id}`)}
       onOpenVoice={() => navigate('/v2/profile')}
     />
   );

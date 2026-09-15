@@ -15,6 +15,8 @@ import ListenHome from './screens/ListenHome.jsx';
 import Build from './screens/Build.jsx';
 import MyWorld from './screens/MyWorld.jsx';
 import Profile from './screens/Profile.jsx';
+import V2Player from './screens/V2Player.jsx';
+import V2Series from './screens/V2Series.jsx';
 
 const NAV = [
   { to: '/v2', Icon: Headphones, label: 'Listen', end: true },
@@ -47,6 +49,8 @@ export default function V2App() {
         <div className="mx-auto w-full max-w-[1040px] pb-28 lg:pb-12">
           <Routes>
             <Route path="/v2" element={<ListenHome />} />
+            <Route path="/v2/player" element={<V2Player />} />
+            <Route path="/v2/series/:seriesId" element={<V2Series />} />
             <Route path="/v2/build" element={<Build />} />
             <Route path="/v2/world" element={<MyWorld />} />
             <Route path="/v2/profile" element={<Profile />} />
