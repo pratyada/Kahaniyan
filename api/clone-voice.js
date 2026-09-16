@@ -1,7 +1,12 @@
 // ElevenLabs Voice Cloning — creates a cloned voice from an audio sample.
 // Accepts audio as base64 or fetches from Firebase Storage URL.
+// Gated server-side: the FIRST clone is free; additional voices require a paid tier.
+// Persists the clone to users/{uid}.voiceClones (admin SDK) so it's the source of truth.
+import { getFirestore } from './_firebase.js';
+import { getUserTier, isPaidTier } from './_entitlement.js';
 
 const ELEVENLABS_KEY = process.env.ELEVENLABS_API_KEY;
+const FREE_CLONES = 1;
 
 export const config = { api: { bodyParser: { sizeLimit: '6mb' } } };
 
@@ -14,10 +19,27 @@ export default async function handler(req, res) {
     return res.status(503).json({ error: 'ElevenLabs not configured' });
   }
 
-  const { name, audioBase64, audioUrl, language, description } = req.body || {};
+  const { uid, name, relation, audioBase64, audioUrl, language, description } = req.body || {};
 
   if (!name) {
     return res.status(400).json({ error: 'Voice name is required' });
+  }
+  if (!uid) {
+    return res.status(401).json({ error: 'Sign in required' });
+  }
+
+  // ── Paid gating: first voice free, extras require a paid plan (server-authoritative) ──
+  const db = await getFirestore();
+  let existing = [];
+  try {
+    const snap = db ? await db.collection('users').doc(uid).get() : null;
+    existing = (snap && snap.exists && snap.data().voiceClones) || [];
+  } catch { existing = []; }
+  if (existing.length >= FREE_CLONES) {
+    const tier = await getUserTier(uid);
+    if (!isPaidTier(tier)) {
+      return res.status(402).json({ error: 'upgrade_required', message: 'Your first voice is free — add more with Family Plus.' });
+    }
   }
 
   try {
@@ -61,10 +83,26 @@ export default async function handler(req, res) {
 
     const data = await response.json();
 
-    return res.status(200).json({
-      voiceId: data.voice_id,
-      name: data.name,
-    });
+    const clone = {
+      id: data.voice_id,
+      name,
+      relation: relation || '',
+      language: language || 'English',
+      createdAt: new Date().toISOString(),
+    };
+
+    // Persist to users/{uid}.voiceClones (server-owned source of truth)
+    try {
+      if (db) {
+        const fb = (await import('firebase-admin')).default;
+        await db.collection('users').doc(uid).set(
+          { voiceClones: fb.firestore.FieldValue.arrayUnion(clone) },
+          { merge: true }
+        );
+      }
+    } catch (e) { console.warn('voiceClones persist failed:', e.message); }
+
+    return res.status(200).json({ voiceId: data.voice_id, name: data.name, clone });
   } catch (err) {
     console.error('Clone voice error:', err);
     return res.status(500).json({ error: 'Voice cloning failed' });

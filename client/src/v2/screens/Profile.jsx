@@ -62,7 +62,7 @@ export default function Profile() {
 
   /* ── Signed in ── */
   const rows = [
-    { Icon: Mic2, label: 'My Voices', sub: 'Clone a family voice', onClick: () => navigate('/voices') },
+    { Icon: Mic2, label: 'My Voices', sub: 'Clone a family voice', onClick: () => navigate('/v2/voices') },
     { Icon: Star, label: 'Family & kids', sub: profile?.childName ? `${profile.childName}'s profile` : 'Set up a child', onClick: () => navigate('/family') },
     { Icon: Shield, label: 'Privacy & safety', sub: 'Parental controls', onClick: () => navigate('/privacy') },
     { Icon: SettingsIcon, label: 'App settings', sub: 'Theme, language, more', onClick: () => navigate('/settings') },

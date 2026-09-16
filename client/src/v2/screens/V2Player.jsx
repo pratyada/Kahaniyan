@@ -8,6 +8,8 @@ import { ChevronLeft, Play, Pause, RotateCcw, RotateCw, Moon, Mic, Timer, Globe 
 import { usePlayer } from '../../hooks/usePlayer.jsx';
 import { useNarrator } from '../../hooks/useNarrator.js';
 import { useWisdomData } from '../../hooks/useWisdomData.js';
+import { useAuth } from '../../hooks/useAuth.jsx';
+import { getActiveVoice } from '../voice.js';
 import { getStoryArt, getTraditionArt } from '../../utils/storyArt.js';
 import { TRADITIONS } from '../../data/culturalLessons.js';
 import { SERIES } from '../../data/series.js';
@@ -43,7 +45,9 @@ export default function V2Player() {
   const { storyId } = useParams();
   const { current, load } = usePlayer();
   const nar = useNarrator();
+  const { user } = useAuth();
   const { allLessons, wisdomImageUrls, wisdomAudioUrls } = useWisdomData();
+  const [activeVoice] = useState(getActiveVoice()); // selected cloned voice, if any
   const startedRef = useRef(null);
   const [sleepMin, setSleepMin] = useState(0);
   const [lang, setLang] = useState('English');
@@ -70,7 +74,7 @@ export default function V2Player() {
   // Playback — stored audio (with probe) → TTS fallback; non-English → translate + TTS
   useEffect(() => {
     if (!current) return;
-    const key = `${current.id}|${lang}`;
+    const key = `${current.id}|${lang}|${activeVoice?.id || 'default'}`;
     if (startedRef.current === key) return;
     startedRef.current = key;
 
@@ -84,7 +88,11 @@ export default function V2Player() {
 
     (async () => {
       let audio = null;
-      if (lang === 'English' && current.audioUrl) {
+      // Cloned voice selected → always regenerate in that voice (skip default stored audio)
+      if (activeVoice?.id && current.text) {
+        try { audio = await nar.generate({ text: current.text, customVoiceId: activeVoice.id, uid: user?.uid }); } catch { /* nar.error */ }
+      }
+      if (!audio && !activeVoice?.id && lang === 'English' && current.audioUrl) {
         audio = nar.loadCached(current.audioUrl);
         const ok = await probe(audio);
         if (!ok || cancelled) { try { audio.pause(); audio.src = ''; audio.load(); } catch {} audio = null; }
@@ -109,7 +117,7 @@ export default function V2Player() {
 
     return () => { cancelled = true; nar.stop(); };
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [current?.id, lang]);
+  }, [current?.id, lang, activeVoice?.id]);
 
   useEffect(() => {
     if (sleepRef.current) clearTimeout(sleepRef.current);
@@ -141,7 +149,7 @@ export default function V2Player() {
       <div className="flex items-center justify-between">
         <button onClick={() => navigate(-1)} className="grid h-10 w-10 place-items-center rounded-full bg-white/[0.06] ring-1 ring-white/10 text-[#F7F1E8] active:scale-95"><ChevronLeft size={20} /></button>
         <p className="text-[11px] font-bold uppercase tracking-[0.16em] text-[#7A6B8A]">Now Playing</p>
-        <button onClick={() => navigate('/v2/profile')} className="grid h-10 w-10 place-items-center rounded-full bg-white/[0.06] ring-1 ring-white/10 text-[#B8AAC8] active:scale-95"><Mic size={16} /></button>
+        <button onClick={() => navigate('/v2/voices')} className="grid h-10 w-10 place-items-center rounded-full bg-white/[0.06] ring-1 ring-white/10 text-[#B8AAC8] active:scale-95" title="Voice"><Mic size={16} /></button>
       </div>
 
       <div className="mt-6 mx-auto w-full max-w-[320px] aspect-square rounded-3xl overflow-hidden ring-1 ring-white/10 relative" style={{ background: art.gradient || 'linear-gradient(135deg,#243349,#0D1B2A)' }}>

@@ -121,7 +121,7 @@ export function useNarrator() {
   }, [cleanup, setupAudio]);
 
   // Generate fresh audio via TTS API
-  const generate = useCallback(async ({ text, narrator, language, customVoiceId, country, beliefs }) => {
+  const generate = useCallback(async ({ text, narrator, language, customVoiceId, uid, country, beliefs }) => {
     cleanup();
     setLoading(true);
     setError(null);
@@ -132,10 +132,15 @@ export function useNarrator() {
     abortRef.current = controller;
 
     try {
-      const res = await fetch(`${API_BASE}/api/tts`, {
+      // A cloned voice routes to ElevenLabs; otherwise the default OpenAI narrator.
+      const endpoint = customVoiceId ? `${API_BASE}/api/generate-elevenlabs-audio` : `${API_BASE}/api/tts`;
+      const body = customVoiceId
+        ? { text, voiceId: customVoiceId, uid }
+        : { text, narrator, language, customVoiceId, country, beliefs };
+      const res = await fetch(endpoint, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ text, narrator, language, customVoiceId, country, beliefs }),
+        body: JSON.stringify(body),
         signal: controller.signal,
       });
 

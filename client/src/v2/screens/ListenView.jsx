@@ -7,6 +7,7 @@ import SeriesCard from '../../components/cards/SeriesCard.jsx';
 import HeroSlider from '../../components/HeroSlider.jsx';
 import { TRADITIONS, THEMES } from '../../data/culturalLessons.js';
 import { isPlayed, isMultiLang } from '../played.js';
+import { getActiveVoice } from '../voice.js';
 import { GOLD } from '../ui.js';
 
 function greeting() {
@@ -42,7 +43,7 @@ export default function ListenView(props) {
         </h1>
         <div className="mt-4 flex items-center gap-2">
           <button onClick={onOpenVoice} className="flex items-center gap-1.5 rounded-full bg-white/[0.06] px-3.5 py-2 text-xs font-semibold text-[#B8AAC8] ring-1 ring-white/10 hover:ring-white/20 transition">
-            <Mic size={13} strokeWidth={2} /> Playing in: <span className="text-[#F7F1E8]">Default</span>
+            <Mic size={13} strokeWidth={2} /> Playing in: <span className="text-[#F7F1E8]">{getActiveVoice()?.name || 'Default'}</span>
           </button>
           <span className="flex items-center gap-1.5 rounded-full px-3.5 py-2 text-xs font-bold" style={{ color: GOLD, background: 'rgba(246,196,83,0.10)', border: '1px solid rgba(246,196,83,0.22)' }}>
             <Flame size={13} strokeWidth={2.2} /> {streak} {streak === 1 ? 'night' : 'nights'}

@@ -106,6 +106,7 @@ export function FamilyProfileProvider({ children }) {
 
           if (data.accountStatus) setAccountStatus(data.accountStatus);
           setSubscriptionTier(data.subscriptionTier || 'free'); // server-authoritative entitlement
+          setVoiceClones(data.voiceClones || []);
 
           // Always update auth metadata on login so admin can see emails
           try {
@@ -270,6 +271,7 @@ export function FamilyProfileProvider({ children }) {
   const [accountStatus, setAccountStatus] = useState('active');
   // Server-authoritative plan (set only by the Stripe webhook via admin SDK).
   const [subscriptionTier, setSubscriptionTier] = useState('free');
+  const [voiceClones, setVoiceClones] = useState([]); // server-persisted cloned voices
   const isPaid = ['pro', 'family', 'enterprise', 'annual', 'premium'].includes(String(subscriptionTier || '').toLowerCase());
 
   const profile = profiles[activeIndex] || null;
@@ -355,6 +357,7 @@ export function FamilyProfileProvider({ children }) {
         accountStatus,
         subscriptionTier,
         isPaid,
+        voiceClones,
         save,
         update,
         clear,

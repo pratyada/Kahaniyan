@@ -80,7 +80,7 @@ export default function ListenHome() {
       // actions
       onPlay={(lesson) => { load(buildStory(lesson, wisdomAudioUrls || {}, wisdomImageUrls || {})); navigate(`/v2/player/${lesson.id}`); }}
       onOpenSeries={(id) => navigate(`/v2/series/${id}`)}
-      onOpenVoice={() => navigate('/v2/profile')}
+      onOpenVoice={() => navigate('/v2/voices')}
     />
   );
 }

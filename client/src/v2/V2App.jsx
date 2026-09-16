@@ -17,6 +17,7 @@ import MyWorld from './screens/MyWorld.jsx';
 import Profile from './screens/Profile.jsx';
 import V2Player from './screens/V2Player.jsx';
 import V2Series from './screens/V2Series.jsx';
+import MyVoices from './screens/MyVoices.jsx';
 
 // Profile is NOT a nav item — it's reached via the username/avatar (sidebar bottom
 // card on desktop, avatar slot on the mobile bar). No duplicate profile icon.
@@ -56,6 +57,7 @@ export default function V2App() {
             <Route path="/v2/build" element={<Build />} />
             <Route path="/v2/world" element={<MyWorld />} />
             <Route path="/v2/profile" element={<Profile />} />
+            <Route path="/v2/voices" element={<MyVoices />} />
             <Route path="*" element={<Navigate to="/v2" replace />} />
           </Routes>
         </div>

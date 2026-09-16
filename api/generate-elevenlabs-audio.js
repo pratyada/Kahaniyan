@@ -1,5 +1,6 @@
-// ElevenLabs TTS — premium audio generation for pre-loaded stories.
-// Uses text-to-speech API with voice selection.
+// ElevenLabs TTS — premium audio generation for pre-loaded stories AND cloned voices.
+// Pass `voiceId` (a cloned ElevenLabs voice) for personalized playback — paid only.
+import { getUserTier, isPaidTier } from './_entitlement.js';
 
 const ELEVENLABS_KEY = process.env.ELEVENLABS_API_KEY;
 
@@ -24,7 +25,7 @@ export default async function handler(req, res) {
     return res.status(503).json({ error: 'ElevenLabs not configured' });
   }
 
-  const { text, voice = 'george', model = 'eleven_multilingual_v2', stability = 0.6, similarity = 0.8 } = req.body || {};
+  const { text, voice = 'george', voiceId, uid, model = 'eleven_multilingual_v2', stability = 0.6, similarity = 0.8 } = req.body || {};
 
   if (!text || text.length < 10) {
     return res.status(400).json({ error: 'Text too short' });
@@ -32,12 +33,22 @@ export default async function handler(req, res) {
 
   const voiceConfig = VOICES[voice] || VOICES.george;
 
+  // A cloned voice (raw voiceId) is a paid feature — verify server-side.
+  let resolvedVoiceId = voiceConfig.id;
+  if (voiceId) {
+    const tier = await getUserTier(uid);
+    if (!isPaidTier(tier)) {
+      return res.status(402).json({ error: 'upgrade_required', message: 'Cloned voices need Family Plus.' });
+    }
+    resolvedVoiceId = voiceId;
+  }
+
   // Split long text into small chunks and generate ALL in parallel to stay under 30s
   const MAX_CHUNK = 2000; // chars per chunk — small enough for ~8s each
   const fullText = text.slice(0, 10000);
 
   const generateChunk = async (chunk) => {
-    const r = await fetch(`https://api.elevenlabs.io/v1/text-to-speech/${voiceConfig.id}`, {
+    const r = await fetch(`https://api.elevenlabs.io/v1/text-to-speech/${resolvedVoiceId}`, {
       method: 'POST',
       headers: { 'xi-api-key': ELEVENLABS_KEY, 'Content-Type': 'application/json', 'Accept': 'audio/mpeg' },
       body: JSON.stringify({ text: chunk, model_id: model, voice_settings: { stability, similarity_boost: similarity, style: 0.3, use_speaker_boost: true } }),
