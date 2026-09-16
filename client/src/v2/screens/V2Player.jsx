@@ -63,7 +63,31 @@ export default function V2Player() {
     if (content) {
       load(buildStory(content, wisdomAudioUrls || {}, wisdomImageUrls || {},
         content.seriesId ? { seriesId: content.seriesId, episodeId: content.id } : {}));
+      return;
     }
+    // Not a built-in story → try a shared kid-created story (kidStories/{id}).
+    let cancelled = false;
+    (async () => {
+      try {
+        const { db } = await import('../../lib/firebase.js');
+        if (!db) return;
+        const { doc, getDoc } = await import('firebase/firestore');
+        const snap = await getDoc(doc(db, 'kidStories', storyId));
+        if (cancelled || !snap.exists()) return;
+        const k = snap.data();
+        load({
+          id: `lesson_${storyId}`,
+          title: k.title || 'A little story',
+          text: k.transcript || '',
+          audioUrl: k.audioUrl || null,
+          coverImage: k.videoUrl ? null : (k.promptImageUrl || null),
+          videoUrl: k.videoUrl || null,
+          source: 'A story by a young creator 🌙',
+          isWisdom: false,
+        });
+      } catch { /* not found / no access */ }
+    })();
+    return () => { cancelled = true; };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [storyId, allLessons]);
 

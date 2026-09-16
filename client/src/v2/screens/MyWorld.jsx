@@ -2,7 +2,7 @@
 // Lists real kidStories via kid-story-save (action:list). Empty state invites the first.
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Lock, Star, Wand2, Heart, Play, X } from 'lucide-react';
+import { Lock, Star, Wand2, Heart, Play, X, Share2, Check } from 'lucide-react';
 import { useAuth } from '../../hooks/useAuth.jsx';
 import { useFamilyProfile } from '../../hooks/useFamilyProfile.js';
 import { GOLD } from '../ui.js';
@@ -15,6 +15,20 @@ export default function MyWorld() {
 
   const [stories, setStories] = useState(null); // null = loading
   const [open, setOpen] = useState(null); // selected story for lightbox
+  const [copied, setCopied] = useState(false);
+
+  const publishAndShare = async (story) => {
+    const id = story.id;
+    try {
+      await fetch('/api/kid-story-save', {
+        method: 'POST', headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ action: 'publish', parentUid: user.uid, storyId: id, visibility: 'family' }),
+      });
+    } catch {}
+    const url = `${window.location.origin}/v2/player/${id}`;
+    try { if (navigator.share) { await navigator.share({ title: story.title || 'My story', text: 'Listen to my story 🌙', url }); return; } } catch { return; }
+    try { await navigator.clipboard.writeText(url); setCopied(true); setTimeout(() => setCopied(false), 1800); } catch {}
+  };
 
   useEffect(() => {
     if (!user) { setStories([]); return; }
@@ -123,6 +137,14 @@ export default function MyWorld() {
             {open.audioUrl && !open.videoUrl && (
               <audio src={open.audioUrl} controls autoPlay className="mt-3 w-full" />
             )}
+            <button
+              onClick={() => publishAndShare(open)}
+              className="mt-3 w-full flex items-center justify-center gap-2 rounded-full px-6 py-3 text-sm font-bold text-[#0D1B2A]"
+              style={{ background: GOLD }}
+            >
+              {copied ? <><Check size={16} /> Link copied!</> : <><Share2 size={16} /> Share with family</>}
+            </button>
+            <p className="mt-2 text-center text-[10px] text-[#7A6B8A]">Anyone with the link can listen — no public feed.</p>
           </div>
         </div>
       )}

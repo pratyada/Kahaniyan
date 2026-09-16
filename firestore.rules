@@ -60,8 +60,9 @@ service cloud.firestore {
     match /creatorSeries/{id}  { allow read: if true; allow write: if isSignedIn(); }
     match /creatorStories/{id} { allow read: if true; allow write: if isSignedIn(); }
     match /kidStories/{id} {
-      // Public read only when approved+public; otherwise owner/admin.
-      allow read: if (resource.data.visibility == 'public' && resource.data.approved == true)
+      // Approved stories are readable by anyone with the link (unlisted family sharing);
+      // drafts stay owner/admin-only. Publishing (visibility 'family') sets approved:true.
+      allow read: if resource.data.approved == true
                      || (isSignedIn() && resource.data.parentUid == request.auth.uid) || isAdmin();
       allow create: if isSignedIn() && request.resource.data.parentUid == request.auth.uid;
       allow update: if (isSignedIn() && resource.data.parentUid == request.auth.uid) || isAdmin();
