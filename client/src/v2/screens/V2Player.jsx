@@ -4,7 +4,7 @@
 // with a liveness probe → TTS fallback for dead URLs. Multilingual → language picker.
 import { useEffect, useRef, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { ChevronLeft, Play, Pause, RotateCcw, RotateCw, Moon, Mic, Timer, Globe } from 'lucide-react';
+import { ChevronLeft, Play, Pause, RotateCcw, RotateCw, Moon, Mic, Timer, Globe, Share2, Check } from 'lucide-react';
 import { usePlayer } from '../../hooks/usePlayer.jsx';
 import { useNarrator } from '../../hooks/useNarrator.js';
 import { useWisdomData } from '../../hooks/useWisdomData.js';
@@ -51,6 +51,7 @@ export default function V2Player() {
   const startedRef = useRef(null);
   const [sleepMin, setSleepMin] = useState(0);
   const [lang, setLang] = useState('English');
+  const [copied, setCopied] = useState(false);
   const sleepRef = useRef(null);
 
   // Ensure the story for THIS url is the active one (resolve + load if needed)
@@ -144,12 +145,27 @@ export default function V2Player() {
   const dur = nar.duration || 0;
   const curT = nar.progress * dur;
 
+  // Unique, shareable link for THIS story
+  const shareUrl = `${typeof window !== 'undefined' ? window.location.origin : 'https://mysleepytale.com'}/v2/player/${cleanId}`;
+  const shareStory = async () => {
+    const title = current?.title ? `${current.title} · My Sleepy Tale` : 'My Sleepy Tale';
+    try {
+      if (navigator.share) { await navigator.share({ title, text: 'A bedtime story on My Sleepy Tale 🌙', url: shareUrl }); return; }
+    } catch { return; /* user cancelled the share sheet */ }
+    try { await navigator.clipboard.writeText(shareUrl); setCopied(true); setTimeout(() => setCopied(false), 1600); } catch {}
+  };
+
   return (
     <div className="px-5 lg:px-8 pt-6 pb-28 max-w-[560px] mx-auto">
       <div className="flex items-center justify-between">
         <button onClick={() => navigate(-1)} className="grid h-10 w-10 place-items-center rounded-full bg-white/[0.06] ring-1 ring-white/10 text-[#F7F1E8] active:scale-95"><ChevronLeft size={20} /></button>
         <p className="text-[11px] font-bold uppercase tracking-[0.16em] text-[#7A6B8A]">Now Playing</p>
-        <button onClick={() => navigate('/v2/voices')} className="grid h-10 w-10 place-items-center rounded-full bg-white/[0.06] ring-1 ring-white/10 text-[#B8AAC8] active:scale-95" title="Voice"><Mic size={16} /></button>
+        <div className="flex items-center gap-2">
+          <button onClick={shareStory} className="grid h-10 w-10 place-items-center rounded-full bg-white/[0.06] ring-1 ring-white/10 text-[#B8AAC8] active:scale-95" title="Share this story">
+            {copied ? <Check size={16} style={{ color: GOLD }} /> : <Share2 size={16} />}
+          </button>
+          <button onClick={() => navigate('/v2/voices')} className="grid h-10 w-10 place-items-center rounded-full bg-white/[0.06] ring-1 ring-white/10 text-[#B8AAC8] active:scale-95" title="Voice"><Mic size={16} /></button>
+        </div>
       </div>
 
       <div className="mt-6 mx-auto w-full max-w-[320px] aspect-square rounded-3xl overflow-hidden ring-1 ring-white/10 relative" style={{ background: art.gradient || 'linear-gradient(135deg,#243349,#0D1B2A)' }}>
@@ -194,6 +210,7 @@ export default function V2Player() {
       </div>
 
       {nar.error && <p className="mt-4 text-center text-[12px] text-[#f3727f]">{nar.error}</p>}
+      {copied && <p className="mt-3 text-center text-[12px] font-bold" style={{ color: GOLD }}>🔗 Link copied — paste to share!</p>}
 
       <div className="mt-8 flex items-center justify-center gap-2">
         <Timer size={14} className="text-[#7A6B8A]" />
