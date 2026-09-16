@@ -5,6 +5,10 @@
 
 import { getFirestore } from './_firebase.js';
 
+// Audio base64 can be large — raise the request body limit (default was too small,
+// causing "Load failed" on longer recordings).
+export const config = { api: { bodyParser: { sizeLimit: '12mb' } } };
+
 const OPENAI_KEY = process.env.OPENAI_API_KEY;
 const ANTHROPIC_KEY = process.env.ANTHROPIC_API_KEY;
 
@@ -59,7 +63,7 @@ async function checkSafety(transcript, kidAge = 7) {
       'anthropic-version': '2023-06-01',
     },
     body: JSON.stringify({
-      model: 'claude-sonnet-4-6',
+      model: 'claude-haiku-4-5-20251001',
       max_tokens: 300,
       system: `You are a content safety filter for a children's storytelling platform (ages 3-10).
 Analyze the transcript of a story recorded by a ${kidAge}-year-old child.

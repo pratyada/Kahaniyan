@@ -10,7 +10,7 @@ import { useWisdomData } from '../../hooks/useWisdomData.js';
 import { sparklesLeft, useSparkle, hasConsent, grantConsent, blobToBase64 } from '../kidbuild.js';
 import { GOLD } from '../ui.js';
 
-const MAX_SEC = 180;
+const MAX_SEC = 120;
 
 export default function Build() {
   const navigate = useNavigate();
@@ -75,7 +75,10 @@ export default function Build() {
     setError('');
     try {
       const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
-      const mr = new MediaRecorder(stream, { mimeType: 'audio/webm' });
+      // Low bitrate keeps the upload small (avoids body-size "Load failed").
+      let mr;
+      try { mr = new MediaRecorder(stream, { mimeType: 'audio/webm', audioBitsPerSecond: 32000 }); }
+      catch { mr = new MediaRecorder(stream); }
       chunksRef.current = [];
       mr.ondataavailable = (ev) => { if (ev.data.size) chunksRef.current.push(ev.data); };
       mr.onstop = () => {
@@ -101,49 +104,66 @@ export default function Build() {
     if (!blob || !picture) return;
     if (sparklesLeft(isPaid) <= 0) { setError('No sparkles left today — ask a grown-up for more.'); return; }
     setStep('checking'); setError('');
+    const step = (m) => new Error(m);
     try {
       // 1) Safety check (transcribe + moderate)
       const audioBase64 = await blobToBase64(blob);
-      const vRes = await fetch('/api/content-validate', {
-        method: 'POST', headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ audioBase64, contentType: 'audio/webm', kidAge }),
-      });
-      const v = await vRes.json();
+      let v;
+      try {
+        const vRes = await fetch('/api/content-validate', {
+          method: 'POST', headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ audioBase64, contentType: 'audio/webm', kidAge }),
+        });
+        if (!vRes.ok) throw 0;
+        v = await vRes.json();
+      } catch { throw step("I couldn't hear the story clearly — try a shorter recording."); }
       if (!v.safe) { setFailReason(v.reason || "Some words ruffled my feathers. Let's try a gentler story!"); setStep('blocked'); return; }
 
-      // 2) Animating (presign → upload → save → animate). Uploaded local photos can't
-      // be animated yet (no hosted URL) — save without animation for now.
+      // 2) Save the story (picture + the child's voice). THIS is success.
       setStep('animating');
-      const pre = await fetch('/api/kid-story-presign', {
-        method: 'POST', headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ parentUid: user.uid, profileIndex: activeIndex, contentType: 'audio/webm' }),
-      }).then((r) => r.json());
-      if (!pre.uploadUrl) throw new Error(pre.error || 'Could not start upload');
+      let pre;
+      try {
+        pre = await fetch('/api/kid-story-presign', {
+          method: 'POST', headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ parentUid: user.uid, profileIndex: activeIndex, contentType: 'audio/webm' }),
+        }).then((r) => r.json());
+      } catch { throw step('Could not reach the story server. Please try again.'); }
+      if (!pre?.uploadUrl) throw step(pre?.error || 'Could not start the upload.');
 
-      await fetch(pre.uploadUrl, { method: 'PUT', headers: { 'Content-Type': 'audio/webm' }, body: blob });
+      const put = await fetch(pre.uploadUrl, { method: 'PUT', headers: { 'Content-Type': 'audio/webm' }, body: blob }).catch(() => null);
+      if (!put || !put.ok) throw step('Could not save the recording. Please try again.');
 
-      await fetch('/api/kid-story-save', {
-        method: 'POST', headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          parentUid: user.uid, profileIndex: activeIndex, storyId: pre.storyId, audioKey: pre.audioKey,
-          title: `${kidName}'s story`, promptImageUrl: picture.local ? null : picture.url,
-          promptType: 'image', language: 'English', durationSeconds: seconds, transcript: v.transcript,
-        }),
-      });
+      let saveRes = {};
+      try {
+        saveRes = await fetch('/api/kid-story-save', {
+          method: 'POST', headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            parentUid: user.uid, profileIndex: activeIndex, storyId: pre.storyId, audioKey: pre.audioKey,
+            title: `${kidName}'s story`, promptImageUrl: picture.local ? null : picture.url,
+            promptType: 'image', language: 'English', durationSeconds: seconds, transcript: v.transcript,
+          }),
+        }).then((r) => r.json());
+      } catch { throw step('Could not save your story. Please try again.'); }
 
+      useSparkle(isPaid);
+
+      // 3) Animate — BEST EFFORT. Provider may be unavailable; the story still exists
+      // with the picture + the child's voice. Never fail the flow on animation.
       let videoUrl = null;
       if (!picture.local) {
-        const a = await fetch('/api/kid-story-animate', {
-          method: 'POST', headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ parentUid: user.uid, storyId: pre.storyId }),
-        }).then((r) => r.json());
-        videoUrl = a.videoUrl || null;
+        try {
+          const a = await fetch('/api/kid-story-animate', {
+            method: 'POST', headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ parentUid: user.uid, storyId: pre.storyId }),
+          });
+          if (a.ok) { const d = await a.json(); videoUrl = d.videoUrl || null; }
+        } catch { /* animation unavailable — fine */ }
       }
-      useSparkle(isPaid);
-      setResult({ videoUrl, imageUrl: picture.url, storyId: pre.storyId });
+
+      setResult({ videoUrl, imageUrl: picture.url, audioUrl: URL.createObjectURL(blob), storyId: pre.storyId });
       setStep('reveal');
     } catch (e) {
-      setError(e.message || 'Something went wrong. Please try again.');
+      setError(e?.message || 'Something went wrong. Please try again.');
       setStep('record');
     }
   };
@@ -199,7 +219,7 @@ export default function Build() {
   if (step === 'reveal') {
     return (
       <Wrap>
-        <Header title="You made it come alive!" onBack={reset} />
+        <Header title={result?.videoUrl ? 'You made it come alive!' : 'Your story is ready!'} onBack={reset} />
         <div className="mt-4 rounded-3xl overflow-hidden ring-1 ring-white/10 relative aspect-square max-w-[380px] mx-auto bg-black">
           {result?.videoUrl ? (
             <video src={result.videoUrl} className="h-full w-full object-cover" autoPlay loop playsInline controls />
@@ -207,7 +227,14 @@ export default function Build() {
             <img src={result?.imageUrl} alt="" className="h-full w-full object-cover" />
           )}
         </div>
+        {/* Play the child's recording (over the picture) when there's no animation yet */}
+        {!result?.videoUrl && result?.audioUrl && (
+          <audio src={result.audioUrl} controls autoPlay className="mt-3 w-full max-w-[380px] mx-auto block" />
+        )}
         <p className="text-center text-[13px] text-[#B8AAC8] mt-3">🎙️ In {kidName}'s own voice · ⭐ +1 star</p>
+        {!result?.videoUrl && (
+          <p className="text-center text-[11px] text-[#7A6B8A] mt-1">✨ Animation is coming soon — your story is saved with your picture &amp; voice.</p>
+        )}
         <div className="mt-5 flex flex-col gap-2.5 max-w-[380px] mx-auto">
           <button onClick={() => navigate('/v2/world')} className="w-full flex items-center justify-center gap-2 rounded-full px-6 py-3.5 text-sm font-bold text-[#0D1B2A]" style={{ background: GOLD }}>
             <Check size={17} /> Add to my world
