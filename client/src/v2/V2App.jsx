@@ -5,7 +5,7 @@
 // Committed night-sky theme so it always matches the design regardless of app theme.
 // Four tabs: Listen · Build · My World · Profile.
 // ─────────────────────────────────────────────────────────────
-import { useEffect } from 'react';
+import { useEffect, useRef } from 'react';
 import { Routes, Route, Navigate, NavLink, useLocation, useNavigate } from 'react-router-dom';
 import { Headphones, Wand2, Orbit } from 'lucide-react';
 import { useAuth } from '../hooks/useAuth.jsx';
@@ -34,6 +34,13 @@ export default function V2App() {
   const { profile, ready } = useFamilyProfile();
   const { pathname } = useLocation();
   const navigate = useNavigate();
+  const mainRef = useRef(null);
+
+  // Always open a new screen from the top (esp. the player — never land scrolled down).
+  useEffect(() => {
+    mainRef.current?.scrollTo({ top: 0, left: 0 });
+    try { window.scrollTo(0, 0); } catch {}
+  }, [pathname]);
 
   // First-run: a signed-in user with no child set up → onboarding (once).
   useEffect(() => {
@@ -64,7 +71,7 @@ export default function V2App() {
       style={{ background: NIGHT_BG, fontFamily: "'DM Sans', system-ui, sans-serif" }}
     >
       <Sidebar />
-      <main className="flex-1 min-w-0 overflow-y-auto overflow-x-hidden">
+      <main ref={mainRef} className="flex-1 min-w-0 overflow-y-auto overflow-x-hidden">
         <div className="mx-auto w-full max-w-[1040px] pb-28 lg:pb-12">
           <Routes>
             <Route path="/v2" element={<ListenHome />} />

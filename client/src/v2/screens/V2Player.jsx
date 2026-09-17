@@ -187,7 +187,7 @@ export default function V2Player() {
   };
 
   return (
-    <div className="px-5 lg:px-8 pt-6 pb-28 max-w-[560px] mx-auto">
+    <div className="px-5 lg:px-8 pt-5 pb-28 max-w-[520px] mx-auto">
       <div className="flex items-center justify-between">
         <button onClick={() => navigate(-1)} className="grid h-10 w-10 place-items-center rounded-full bg-white/[0.06] ring-1 ring-white/10 text-[#F7F1E8] active:scale-95"><ChevronLeft size={20} /></button>
         <p className="text-[11px] font-bold uppercase tracking-[0.16em] text-[#7A6B8A]">Now Playing</p>
@@ -199,11 +199,11 @@ export default function V2Player() {
         </div>
       </div>
 
-      <div className="mt-6 mx-auto w-full max-w-[320px] aspect-square rounded-3xl overflow-hidden ring-1 ring-white/10 relative" style={{ background: art.gradient || 'linear-gradient(135deg,#243349,#0D1B2A)' }}>
+      <div className="mt-5 mx-auto w-full max-w-[256px] sm:max-w-[288px] aspect-square rounded-3xl overflow-hidden ring-1 ring-white/10 relative" style={{ background: art.gradient || 'linear-gradient(135deg,#243349,#0D1B2A)' }}>
         {cover ? <img src={cover} alt="" className="h-full w-full object-cover" /> : <span className="absolute inset-0 grid place-items-center"><Moon size={40} className="text-white/25" /></span>}
       </div>
 
-      <div className="mt-6 text-center">
+      <div className="mt-4 text-center">
         {tradition && (<span className="inline-flex items-center gap-1 rounded-full px-2.5 py-1 text-[10px] font-bold text-white/90 mb-2" style={{ background: `${tradArt.color}33` }}>{tradition.icon} {tradition.label}</span>)}
         <h1 className="font-display text-2xl text-[#F7F1E8] leading-snug">{current.title}</h1>
         {current.source && <p className="text-[12px] text-[#7A6B8A] mt-1">{current.source}</p>}
@@ -222,7 +222,7 @@ export default function V2Player() {
         </div>
       )}
 
-      <div className="mt-6">
+      <div className="mt-5">
         <div className="h-2 rounded-full bg-white/10 cursor-pointer relative" onClick={(e) => { const r = e.currentTarget.getBoundingClientRect(); nar.seek(Math.max(0, Math.min(1, (e.clientX - r.left) / r.width))); }}>
           <div className="h-full rounded-full" style={{ width: `${(nar.progress || 0) * 100}%`, background: GOLD }} />
         </div>
@@ -232,7 +232,7 @@ export default function V2Player() {
         </div>
       </div>
 
-      <div className="mt-6 flex items-center justify-center gap-7">
+      <div className="mt-5 flex items-center justify-center gap-7">
         <button onClick={() => nar.seekBy(-15)} className="grid h-12 w-12 place-items-center rounded-full text-[#B8AAC8] hover:text-[#F7F1E8] active:scale-95 relative"><RotateCcw size={26} strokeWidth={1.8} /><span className="absolute text-[8px] font-bold">15</span></button>
         <button onClick={() => (nar.playing ? nar.pause() : nar.resume())} className="grid h-[72px] w-[72px] place-items-center rounded-full text-[#0D1B2A] active:scale-95" style={{ background: GOLD, boxShadow: '0 10px 34px rgba(246,196,83,0.35)' }}>
           {nar.playing ? <Pause size={30} fill="#0D1B2A" /> : <Play size={30} fill="#0D1B2A" className="ml-1" />}
@@ -245,7 +245,7 @@ export default function V2Player() {
 
       {/* Read along — text on demand (kept minimal/clean like a social player) */}
       {current.text && (
-        <div className="mt-8">
+        <div className="mt-6">
           <button onClick={() => setShowText((s) => !s)} className="mx-auto flex items-center gap-1.5 text-[12px] font-bold text-[#7A6B8A] hover:text-[#B8AAC8] transition">
             <BookOpen size={13} /> {showText ? 'Hide text' : 'Read along'} <ChevronDown size={13} style={{ transform: showText ? 'rotate(180deg)' : 'none', transition: 'transform .2s' }} />
           </button>
@@ -253,7 +253,7 @@ export default function V2Player() {
         </div>
       )}
 
-      <div className="mt-8 flex items-center justify-center gap-2">
+      <div className="mt-6 flex items-center justify-center gap-2">
         <Timer size={14} className="text-[#7A6B8A]" />
         <span className="text-[12px] text-[#7A6B8A] mr-1">Sleep timer</span>
         {[0, 5, 10, 20].map((m) => (
