@@ -20,8 +20,9 @@ function orbPos(i) {
 
 // Self-contained kid-drawing look for the ?demo preview (no network, never 404s).
 function demoStar(emoji, c1, c2) {
-  const svg = `<svg xmlns='http://www.w3.org/2000/svg' width='300' height='300'><defs><linearGradient id='g' x1='0' y1='0' x2='1' y2='1'><stop offset='0' stop-color='${c1}'/><stop offset='1' stop-color='${c2}'/></linearGradient></defs><rect width='300' height='300' fill='url(%23g)'/><text x='150' y='195' font-size='150' text-anchor='middle'>${emoji}</text></svg>`;
-  return `data:image/svg+xml,${encodeURIComponent(svg).replace(/%23/g, '#')}`;
+  const svg = `<svg xmlns='http://www.w3.org/2000/svg' width='300' height='300'><defs><linearGradient id='g' x1='0' y1='0' x2='1' y2='1'><stop offset='0' stop-color='${c1}'/><stop offset='1' stop-color='${c2}'/></linearGradient></defs><rect width='300' height='300' fill='url(#g)'/><text x='150' y='198' font-size='150' text-anchor='middle'>${emoji}</text></svg>`;
+  // base64 (UTF-8 safe for emoji) — avoids the '#' fragment problem in raw data URIs
+  return `data:image/svg+xml;base64,${btoa(unescape(encodeURIComponent(svg)))}`;
 }
 const DEMO_STORIES = [
   { id: 'demo1', storyId: 'demo1', title: 'My Flying Car', promptImageUrl: demoStar('🚗', '#5B8CFF', '#8E5BFF'), likes: 3, plays: 12 },
