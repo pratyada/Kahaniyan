@@ -1,11 +1,22 @@
-// V2 My World — the child's PRIVATE gallery of creations (family-only, no public feed).
-// Lists real kidStories via kid-story-save (action:list). Empty state invites the first.
+// V2 My World — the child's PRIVATE, GROWING world of creations (family-only, no public feed).
+// Two views: an animated night-sky CONSTELLATION (each story = a glowing star on a trail that
+// grows every night) and a plain Grid. Lists real kidStories via kid-story-save (action:list).
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Lock, Star, Wand2, Heart, Play, X, Share2, Check, Trash2 } from 'lucide-react';
+import { Lock, Star, Wand2, Heart, Play, X, Share2, Check, Trash2, Sparkles, LayoutGrid, Orbit } from 'lucide-react';
 import { useAuth } from '../../hooks/useAuth.jsx';
 import { useFamilyProfile } from '../../hooks/useFamilyProfile.js';
 import { GOLD } from '../ui.js';
+
+// Deterministic, pleasing scatter so a star always sits in the same place.
+const XPATTERN = [50, 30, 68, 40, 72, 34, 62, 46];
+function orbPos(i) {
+  const h = (i * 2654435761) >>> 0;      // Knuth multiplicative hash → stable jitter
+  const jitter = (h % 13) - 6;           // -6..6 %
+  const x = Math.max(15, Math.min(82, XPATTERN[i % XPATTERN.length] + jitter));
+  const y = 60 + i * 118;                // trail flows downward as the world grows
+  return { x, y };
+}
 
 export default function MyWorld() {
   const navigate = useNavigate();
@@ -16,6 +27,7 @@ export default function MyWorld() {
   const [stories, setStories] = useState(null); // null = loading
   const [open, setOpen] = useState(null); // selected story for lightbox
   const [copied, setCopied] = useState(false);
+  const [view, setView] = useState('world'); // 'world' (animated) | 'grid'
 
   const publishAndShare = async (story) => {
     const id = story.id;
@@ -82,15 +94,33 @@ export default function MyWorld() {
     );
   }
 
+  const n = stories?.length || 0;
+
   return (
     <div className="px-5 lg:px-8 pt-7 lg:pt-10 pb-28 max-w-[760px]">
-      {Head}
+      {/* self-contained animations so we don't touch global config */}
+      <style>{`
+        @keyframes mwFloat { 0%,100%{ transform: translate(-50%, 0); } 50%{ transform: translate(-50%, -9px); } }
+        @keyframes mwPulse { 0%,100%{ box-shadow: 0 0 0 0 rgba(246,196,83,0.45), 0 8px 26px rgba(246,196,83,0.30); } 50%{ box-shadow: 0 0 0 10px rgba(246,196,83,0), 0 8px 30px rgba(246,196,83,0.45); } }
+        @keyframes mwDash { to { stroke-dashoffset: -60; } }
+        @media (prefers-reduced-motion: reduce){ .mw-orb, .mw-line { animation: none !important; } }
+      `}</style>
+
+      <div className="flex items-start justify-between gap-3">
+        {Head}
+        {n > 0 && (
+          <div className="mt-1 flex rounded-full bg-white/[0.06] p-0.5 ring-1 ring-white/10 shrink-0">
+            <ToggleBtn active={view === 'world'} onClick={() => setView('world')} icon={Orbit} label="World" />
+            <ToggleBtn active={view === 'grid'} onClick={() => setView('grid')} icon={LayoutGrid} label="Grid" />
+          </div>
+        )}
+      </div>
 
       {stories === null ? (
         <div className="mt-6 grid grid-cols-2 sm:grid-cols-3 gap-3">
           {[0, 1, 2].map((i) => <div key={i} className="aspect-square rounded-2xl bg-white/5 animate-pulse" />)}
         </div>
-      ) : stories.length === 0 ? (
+      ) : n === 0 ? (
         <section className="mt-6 max-w-[560px]">
           <div className="relative rounded-3xl overflow-hidden ring-1 ring-white/10" style={{ height: 300, background: 'radial-gradient(120% 90% at 50% 8%, #1F1450 0%, #0D1B2A 58%, #070A19 100%)' }}>
             {[[18, 26], [72, 20], [46, 52], [83, 60], [28, 74], [62, 80], [13, 58]].map(([x, y], i) => (
@@ -112,25 +142,34 @@ export default function MyWorld() {
       ) : (
         <>
           <div className="mt-5 flex items-center justify-between">
-            <p className="text-[13px] text-[#B8AAC8]"><span className="font-bold text-[#F7F1E8]">{stories.length}</span> {stories.length === 1 ? 'story' : 'stories'} in your world 🌟</p>
-            <button onClick={() => navigate('/v2/build')} className="rounded-full px-4 py-2 text-xs font-bold text-[#0D1B2A]" style={{ background: GOLD }}>＋ New story</button>
+            <p className="text-[13px] text-[#B8AAC8]">
+              <span className="font-bold text-[#F7F1E8]">{n}</span> {n === 1 ? 'star' : 'stars'} in {name ? `${name}'s` : 'your'} sky
+              <span className="text-[#7A6B8A]"> · growing 🌱</span>
+            </p>
+            <button onClick={() => navigate('/v2/build')} className="flex items-center gap-1.5 rounded-full px-4 py-2 text-xs font-bold text-[#0D1B2A]" style={{ background: GOLD }}><Wand2 size={13} strokeWidth={2.4} /> New</button>
           </div>
-          <div className="mt-4 grid grid-cols-2 sm:grid-cols-3 gap-3">
-            {stories.map((s) => {
-              const thumb = s.promptImageUrl || s.coverImage || null;
-              return (
-                <button key={s.storyId || s.id} onClick={() => setOpen(s)} className="relative aspect-square rounded-2xl overflow-hidden ring-1 ring-white/10 active:scale-95 transition group text-left" style={{ background: 'linear-gradient(135deg,#243349,#0D1B2A)' }}>
-                  {thumb ? <img src={thumb} alt="" loading="lazy" className="h-full w-full object-cover" /> : <span className="absolute inset-0 grid place-items-center"><Star size={22} className="text-white/25" /></span>}
-                  <div className="absolute inset-0" style={{ background: 'linear-gradient(180deg,rgba(0,0,0,0) 45%,rgba(7,10,25,0.85) 100%)' }} />
-                  {s.videoUrl && <span className="absolute top-2 right-2 grid h-7 w-7 place-items-center rounded-full bg-black/50 backdrop-blur-sm"><Play size={12} className="text-white" fill="white" /></span>}
-                  <div className="absolute bottom-0 left-0 right-0 p-2.5">
-                    <p className="text-[11px] font-bold text-white leading-tight line-clamp-2">{s.title || 'My story'}</p>
-                    {(s.plays || s.likes) ? <p className="text-[9px] text-white/60 mt-0.5">▶ {s.plays || 0} · ♥ {s.likes || 0}</p> : null}
-                  </div>
-                </button>
-              );
-            })}
-          </div>
+
+          {view === 'world' ? (
+            <WorldSky stories={stories} name={name} onOpen={setOpen} />
+          ) : (
+            <div className="mt-4 grid grid-cols-2 sm:grid-cols-3 gap-3">
+              {stories.map((s) => {
+                const thumb = s.promptImageUrl || s.coverImage || null;
+                return (
+                  <button key={s.storyId || s.id} onClick={() => setOpen(s)} className="relative aspect-square rounded-2xl overflow-hidden ring-1 ring-white/10 active:scale-95 transition group text-left" style={{ background: 'linear-gradient(135deg,#243349,#0D1B2A)' }}>
+                    {thumb ? <img src={thumb} alt="" loading="lazy" className="h-full w-full object-cover" /> : <span className="absolute inset-0 grid place-items-center"><Star size={22} className="text-white/25" /></span>}
+                    <div className="absolute inset-0" style={{ background: 'linear-gradient(180deg,rgba(0,0,0,0) 45%,rgba(7,10,25,0.85) 100%)' }} />
+                    {s.videoUrl && <span className="absolute top-2 right-2 grid h-7 w-7 place-items-center rounded-full bg-black/50 backdrop-blur-sm"><Play size={12} className="text-white" fill="white" /></span>}
+                    <div className="absolute bottom-0 left-0 right-0 p-2.5">
+                      <p className="text-[11px] font-bold text-white leading-tight line-clamp-2">{s.title || 'My story'}</p>
+                      {(s.plays || s.likes) ? <p className="text-[9px] text-white/60 mt-0.5">▶ {s.plays || 0} · ♥ {s.likes || 0}</p> : null}
+                    </div>
+                  </button>
+                );
+              })}
+            </div>
+          )}
+
           <p className="flex items-center justify-center gap-1.5 text-center text-[11px] text-[#7A6B8A] mt-6"><Lock size={11} /> Private — family only. Share with Grandma by invite (coming soon).</p>
         </>
       )}
@@ -149,7 +188,7 @@ export default function MyWorld() {
             <div className="mt-3 flex items-center justify-between">
               <div className="min-w-0">
                 <p className="font-display text-lg text-white truncate">{open.title || 'My story'}</p>
-                <p className="text-[11px] text-white/60">🎙️ In {name || 'their'} own voice{open.audioUrl ? '' : ''}</p>
+                <p className="text-[11px] text-white/60">🎙️ In {name || 'their'} own voice</p>
               </div>
               <button onClick={() => setOpen(null)} className="grid h-9 w-9 place-items-center rounded-full bg-white/10 text-white shrink-0"><X size={18} /></button>
             </div>
@@ -181,3 +220,99 @@ export default function MyWorld() {
     </div>
   );
 }
+
+function ToggleBtn({ active, onClick, icon: Icon, label }) {
+  return (
+    <button onClick={onClick} className={`flex items-center gap-1.5 rounded-full px-3 py-1.5 text-[11px] font-bold transition ${active ? 'text-[#0D1B2A]' : 'text-[#B8AAC8]'}`} style={active ? { background: GOLD } : undefined}>
+      <Icon size={13} strokeWidth={2.2} /> {label}
+    </button>
+  );
+}
+
+// Animated night sky: a wandering constellation trail that grows with every creation.
+function WorldSky({ stories, name, onOpen }) {
+  const positions = stories.map((_, i) => orbPos(i));
+  const lastY = positions.length ? positions[positions.length - 1].y : 60;
+  const totalH = lastY + 170;
+  // background twinkle field — deterministic
+  const bg = [];
+  for (let i = 0; i < 46; i++) {
+    const h = ((i + 3) * 2654435761) >>> 0;
+    bg.push({ x: (h % 100), y: ((h >> 7) % 100), s: 1 + ((h >> 3) % 3), d: (h % 40) / 10 });
+  }
+
+  return (
+    <div className="mt-4 relative rounded-3xl overflow-hidden ring-1 ring-white/10"
+      style={{ height: totalH, background: 'radial-gradient(120% 60% at 50% -6%, #241452 0%, #12173A 44%, #070A19 100%)' }}>
+
+      {/* crescent moon */}
+      <div className="absolute" style={{ right: 22, top: 20, width: 40, height: 40, borderRadius: '50%', boxShadow: 'inset -11px 6px 0 0 #F6E7B8', filter: 'drop-shadow(0 0 16px rgba(246,196,83,0.35))', opacity: 0.9 }} />
+
+      {/* background stars */}
+      {bg.map((st, i) => (
+        <span key={i} className="absolute animate-twinkle" style={{ left: `${st.x}%`, top: `${(st.y / 100) * totalH}px`, animationDelay: `${st.d}s` }}>
+          <span style={{ display: 'block', width: st.s, height: st.s, borderRadius: '50%', background: 'rgba(255,255,255,0.6)' }} />
+        </span>
+      ))}
+
+      {/* constellation trail connecting the creations */}
+      {positions.length > 1 && (
+        <svg className="absolute inset-0" width="100%" height={totalH} viewBox={`0 0 100 ${totalH}`} preserveAspectRatio="none" style={{ pointerEvents: 'none' }}>
+          <polyline
+            className="mw-line"
+            points={positions.map((p, i) => `${p.x},${p.y + orbSize(i) / 2}`).join(' ')}
+            fill="none" stroke={GOLD} strokeOpacity="0.35" strokeWidth="1"
+            strokeDasharray="1.4 5" strokeLinecap="round" vectorEffect="non-scaling-stroke"
+            style={{ animation: 'mwDash 3s linear infinite' }}
+          />
+        </svg>
+      )}
+
+      {/* the creation stars */}
+      {stories.map((s, i) => {
+        const p = positions[i];
+        const size = orbSize(i);
+        const thumb = s.promptImageUrl || s.coverImage || null;
+        const isNewest = i === 0;
+        return (
+          <button
+            key={s.storyId || s.id}
+            onClick={() => onOpen(s)}
+            className="mw-orb group absolute active:scale-90 transition"
+            style={{
+              left: `${p.x}%`, top: p.y, width: size, height: size,
+              animation: `mwFloat ${4.5 + (i % 4) * 0.6}s ease-in-out ${(i % 5) * 0.4}s infinite`,
+            }}
+            aria-label={s.title || 'My story'}
+          >
+            <span className="block h-full w-full rounded-full overflow-hidden ring-2"
+              style={{
+                borderColor: 'transparent', boxShadow: isNewest ? undefined : '0 6px 22px rgba(0,0,0,0.45), 0 0 16px rgba(246,196,83,0.25)',
+                animation: isNewest ? 'mwPulse 2.4s ease-in-out infinite' : undefined,
+                outline: `2px solid ${isNewest ? GOLD : 'rgba(246,196,83,0.55)'}`,
+              }}>
+              {thumb
+                ? <img src={thumb} alt="" loading="lazy" className="h-full w-full object-cover" />
+                : <span className="grid h-full w-full place-items-center" style={{ background: 'linear-gradient(135deg,#243349,#0D1B2A)' }}><Star size={18} className="text-white/40" fill="currentColor" /></span>}
+            </span>
+            {/* video sparkle badge */}
+            {s.videoUrl && <span className="absolute -top-1 -right-1 grid h-6 w-6 place-items-center rounded-full bg-[#0D1B2A] ring-1 ring-white/20"><Play size={10} className="text-white" fill="white" /></span>}
+            {isNewest && <span className="absolute -top-2 left-1/2 -translate-x-1/2"><Sparkles size={14} style={{ color: GOLD }} /></span>}
+            {/* title label */}
+            <span className="absolute left-1/2 -translate-x-1/2 mt-1.5 top-full whitespace-nowrap text-[10px] font-semibold text-white/85"
+              style={{ textShadow: '0 1px 4px rgba(0,0,0,0.8)' }}>
+              {(s.title || 'My story').length > 18 ? (s.title || 'My story').slice(0, 17) + '…' : (s.title || 'My story')}
+            </span>
+          </button>
+        );
+      })}
+
+      {/* horizon caption at the growing edge */}
+      <div className="absolute left-0 right-0 text-center" style={{ top: lastY + 74 }}>
+        <p className="text-[11px] text-white/45">✨ Make another to light up a new star ✨</p>
+      </div>
+    </div>
+  );
+}
+
+function orbSize(i) { return i === 0 ? 76 : 58; }
