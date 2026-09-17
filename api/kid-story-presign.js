@@ -26,11 +26,13 @@ export default async function handler(req, res) {
   const audioKey = `audio/kids/${kidId}/${storyId}.${ext}`;
 
   try {
+    // NOTE: only ContentType is signed — the browser PUT must send exactly that
+    // header and nothing else signed. (CacheControl was signed but not sent by the
+    // browser, causing SignatureDoesNotMatch → "Could not save the recording".)
     const command = new PutObjectCommand({
       Bucket: BUCKET,
       Key: audioKey,
       ContentType: contentType,
-      CacheControl: 'public, max-age=2592000',
     });
     const uploadUrl = await getSignedUrl(s3, command, { expiresIn: 600 }); // 10 min
 
