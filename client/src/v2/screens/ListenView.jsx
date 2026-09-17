@@ -20,7 +20,7 @@ function greeting() {
 export default function ListenView(props) {
   const {
     childName, streak, loading, playedSet,
-    query, onSearch, traditionFilter, themeFilter, onToggleTradition, onToggleTheme, onClearFilters,
+    query, onSearch, traditionFilter, themeFilter, onToggleTradition, onToggleTheme, onClearFilters, showTraditions = true,
     results, heroLessons, heroImages, topWeek, shelves, seriesList,
     onPlay, onOpenSeries, onOpenVoice,
   } = props;
@@ -70,7 +70,7 @@ export default function ListenView(props) {
       {/* Filter chips */}
       <div className="mt-3 flex gap-2 overflow-x-auto pb-1 -mx-5 px-5 lg:-mx-8 lg:px-8" style={{ scrollbarWidth: 'none' }}>
         <Chip active={!filtering} onClick={onClearFilters}>All</Chip>
-        {TRADITIONS.filter((t) => t.key !== 'universal').map((t) => (
+        {showTraditions && TRADITIONS.filter((t) => t.key !== 'universal').map((t) => (
           <Chip key={t.key} active={traditionFilter === t.key} onClick={() => onToggleTradition(t.key)}>{t.icon} {t.label}</Chip>
         ))}
         {THEMES.map((t) => (

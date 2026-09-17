@@ -14,3 +14,4 @@ client/dist/
 server/dist/
 .vercel
 .env*.local
+docs/higgsfield_API.csv

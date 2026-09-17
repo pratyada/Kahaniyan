@@ -318,6 +318,8 @@ export const TITLES = {
 // Returns { title, description, image, redirectUrl, found }.
 export async function resolveStory(storyId) {
   const id = storyId || '';
+  // Kid-created stories (ks_…) get their OWN picture as the preview image.
+  if (id.startsWith('ks_')) return resolveKidStory(id);
   const lessonId = id.startsWith('lesson_') ? id.slice(7) : id;
   let story = TITLES[id] || TITLES[lessonId] || WISDOM_TITLES[id] || WISDOM_TITLES[lessonId];
 

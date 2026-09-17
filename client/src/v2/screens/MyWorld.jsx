@@ -2,7 +2,7 @@
 // Lists real kidStories via kid-story-save (action:list). Empty state invites the first.
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Lock, Star, Wand2, Heart, Play, X, Share2, Check } from 'lucide-react';
+import { Lock, Star, Wand2, Heart, Play, X, Share2, Check, Trash2 } from 'lucide-react';
 import { useAuth } from '../../hooks/useAuth.jsx';
 import { useFamilyProfile } from '../../hooks/useFamilyProfile.js';
 import { GOLD } from '../ui.js';
@@ -19,15 +19,34 @@ export default function MyWorld() {
 
   const publishAndShare = async (story) => {
     const id = story.id;
+    // Publish (family/approved) so the link resolves + shows THIS story's picture as
+    // the preview. Share the /api/share link → unique per-story OG image (not generic).
     try {
       await fetch('/api/kid-story-save', {
         method: 'POST', headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ action: 'publish', parentUid: user.uid, storyId: id, visibility: 'family' }),
       });
     } catch {}
-    const url = `${window.location.origin}/v2/player/${id}`;
+    const url = `${window.location.origin}/api/share?id=${id}`;
     try { if (navigator.share) { await navigator.share({ title: story.title || 'My story', text: 'Listen to my story 🌙', url }); return; } } catch { return; }
     try { await navigator.clipboard.writeText(url); setCopied(true); setTimeout(() => setCopied(false), 1800); } catch {}
+  };
+
+  const toggleLike = async (story) => {
+    const liked = (story.likedBy || []).includes(user.uid);
+    const nextAction = liked ? 'unlike' : 'like';
+    // optimistic
+    const upd = (s) => ({ ...s, likes: (s.likes || 0) + (liked ? -1 : 1), likedBy: liked ? (s.likedBy || []).filter((u) => u !== user.uid) : [...(s.likedBy || []), user.uid] });
+    setOpen((o) => (o && o.id === story.id ? upd(o) : o));
+    setStories((list) => (list || []).map((s) => (s.id === story.id ? upd(s) : s)));
+    try { await fetch('/api/kid-story-save', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ action: nextAction, storyId: story.id, uid: user.uid }) }); } catch {}
+  };
+
+  const deleteStory = async (story) => {
+    if (!window.confirm('Delete this story? This cannot be undone.')) return;
+    setStories((list) => (list || []).filter((s) => s.id !== story.id));
+    setOpen(null);
+    try { await fetch('/api/kid-story-save', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ action: 'delete', parentUid: user.uid, storyId: story.id }) }); } catch {}
   };
 
   useEffect(() => {
@@ -137,6 +156,17 @@ export default function MyWorld() {
             {open.audioUrl && !open.videoUrl && (
               <audio src={open.audioUrl} controls autoPlay className="mt-3 w-full" />
             )}
+            {/* Like + Delete */}
+            <div className="mt-3 flex items-center gap-2">
+              <button
+                onClick={() => toggleLike(open)}
+                className="flex-1 flex items-center justify-center gap-2 rounded-full px-4 py-2.5 text-sm font-bold ring-1 transition"
+                style={(open.likedBy || []).includes(user?.uid) ? { background: 'rgba(243,114,127,0.15)', borderColor: 'rgba(243,114,127,0.4)', color: '#f3727f' } : { borderColor: 'rgba(255,255,255,0.15)', color: '#B8AAC8' }}
+              >
+                <Heart size={16} fill={(open.likedBy || []).includes(user?.uid) ? '#f3727f' : 'none'} /> {open.likes || 0}
+              </button>
+              <button onClick={() => deleteStory(open)} className="grid h-11 w-11 place-items-center rounded-full ring-1 ring-[#f3727f]/30 text-[#f3727f] active:scale-95" title="Delete story"><Trash2 size={16} /></button>
+            </div>
             <button
               onClick={() => publishAndShare(open)}
               className="mt-3 w-full flex items-center justify-center gap-2 rounded-full px-6 py-3 text-sm font-bold text-[#0D1B2A]"

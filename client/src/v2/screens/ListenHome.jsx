@@ -6,7 +6,7 @@ import { useWisdomData } from '../../hooks/useWisdomData.js';
 import { useFamilyProfile } from '../../hooks/useFamilyProfile.js';
 import { usePlayer } from '../../hooks/usePlayer.jsx';
 import { useSearch } from '../../hooks/useSearch.js';
-import { buildTraditionShelves, buildAgeShelf } from '../../utils/shelfBuilder.js';
+import { buildTraditionShelves, buildThemeShelves, buildAgeShelf } from '../../utils/shelfBuilder.js';
 import { SERIES } from '../../data/series.js';
 import { COLLECTIONS } from '../../data/collections.js';
 import { buildStory } from '../play.js';
@@ -22,13 +22,20 @@ export default function ListenHome() {
   const childName = profile?.childName && profile.childName !== 'little one' ? profile.childName : null;
   const streak = Number((typeof localStorage !== 'undefined' && localStorage.getItem('mst:streak')) || 1);
   const beliefs = profile?.beliefs || [];
+  // Universal = no specific belief → show ONLY universal stories, no religion filters/shelves.
+  const isUniversal = !(beliefs && beliefs.length) || (beliefs.length === 1 && String(beliefs[0]).toLowerCase() === 'universal');
 
   const img = (id) => wisdomImageUrls?.[id] || null;
   const cover = (s) => (s.episodes || []).map((e) => wisdomImageUrls?.[e.id] || e.coverImage).find(Boolean) || null;
   const toCards = (arr) => (arr || []).map((l) => ({ lesson: l, imageUrl: img(l.id) }));
 
   const seriesRaw = useMemo(() => (SERIES || []).filter((s) => !s.comingSoon && s.episodes?.length), []);
-  const lessonsRaw = useMemo(() => (allLessons || []).filter((l) => l && l.body && l.title), [allLessons]);
+  const lessonsAll = useMemo(() => (allLessons || []).filter((l) => l && l.body && l.title), [allLessons]);
+  // Story pool — universal users never see religion-tagged stories.
+  const lessonsRaw = useMemo(
+    () => (isUniversal ? lessonsAll.filter((l) => !l.tradition || l.tradition === 'universal') : lessonsAll),
+    [lessonsAll, isUniversal]
+  );
 
   const { query, setQuery, results, traditionFilter, toggleTradition, themeFilter, toggleTheme } =
     useSearch({ allLessons: lessonsRaw, series: seriesRaw, collections: COLLECTIONS, beliefs });
@@ -49,9 +56,13 @@ export default function ListenHome() {
     const topWeekRaw = seriesRaw.slice(0, 6);
     topWeekRaw.forEach((s) => seenSeries.add(s.id));
 
-    // Story shelves: "for your age" first, then by tradition — each de-duped
+    // Story shelves: "for your age" first, then by tradition (belief users) or by
+    // value/theme (universal users — no religion shelves) — each de-duped.
     const ageShelf = buildAgeShelf(lessonsRaw, profile?.age || 6, beliefs);
-    const raw = [...(ageShelf ? [ageShelf] : []), ...buildTraditionShelves(lessonsRaw, beliefs)];
+    const categoryShelves = isUniversal
+      ? buildThemeShelves(lessonsRaw, [])
+      : buildTraditionShelves(lessonsRaw, beliefs);
+    const raw = [...(ageShelf ? [ageShelf] : []), ...categoryShelves];
     const shelves = raw
       .map((sh) => {
         const fresh = (sh.stories || []).filter((s) => { if (seen.has(s.id)) return false; seen.add(s.id); return true; });
@@ -66,7 +77,7 @@ export default function ListenHome() {
       seriesList: seriesRaw.filter((s) => !seenSeries.has(s.id)).map((s) => ({ series: s, coverImage: cover(s) })),
       shelves,
     };
-  }, [lessonsRaw, seriesRaw, beliefs, wisdomImageUrls, profile?.age]);
+  }, [lessonsRaw, seriesRaw, beliefs, wisdomImageUrls, profile?.age, isUniversal]);
 
   const searchStories = useMemo(() => toCards([...(results.stories || []), ...(results.episodes || [])]), [results, wisdomImageUrls]);
   const searchSeries = useMemo(() => (results.series || []).map((s) => ({ series: s, coverImage: cover(s) })), [results, wisdomImageUrls]);
@@ -86,6 +97,7 @@ export default function ListenHome() {
       themeFilter={themeFilter}
       onToggleTradition={toggleTradition}
       onToggleTheme={toggleTheme}
+      showTraditions={!isUniversal}
       onClearFilters={() => { if (traditionFilter) toggleTradition(traditionFilter); if (themeFilter) toggleTheme(themeFilter); }}
       results={{ stories: searchStories, series: searchSeries, total: results.total }}
       // browse (de-duped)
