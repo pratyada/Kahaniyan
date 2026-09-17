@@ -9,6 +9,7 @@ import { TRADITIONS, THEMES } from '../../data/culturalLessons.js';
 import { isPlayed, isMultiLang } from '../played.js';
 import { getActiveVoice } from '../voice.js';
 import { GOLD } from '../ui.js';
+import SiteFooter from '../SiteFooter.jsx';
 
 function greeting() {
   const h = new Date().getHours();
@@ -126,7 +127,7 @@ export default function ListenView(props) {
         </>
       )}
 
-      <Footer />
+      <SiteFooter />
     </div>
   );
 }
@@ -182,27 +183,3 @@ function Skeleton() {
   return <div className="shrink-0 w-40 lg:w-48 rounded-2xl bg-white/5 animate-pulse" style={{ aspectRatio: '2/3', minHeight: 240 }} />;
 }
 
-function Footer() {
-  return (
-    <footer className="mt-12">
-      <div className="border-t border-white/8 pt-7 flex flex-col items-center gap-4">
-        <div className="flex flex-wrap items-center justify-center gap-3">
-          <a href="https://www.producthunt.com/products/my-sleepy-tale-personalized-audio-book?embed=true&utm_source=badge-featured&utm_medium=badge&utm_campaign=badge-my-sleepy-tale-personalized-audio-book" target="_blank" rel="noopener noreferrer">
-            <img alt="My Sleepy Tale on Product Hunt" style={{ height: '44px', width: 'auto' }} src="https://api.producthunt.com/widgets/embed-image/v1/featured.svg?post_id=1174662&theme=dark" />
-          </a>
-          <a href="https://sellwithboost.com" target="_blank" rel="noopener noreferrer" aria-label="Listed on Sell With Boost">
-            <img alt="Listed on Sell With Boost" style={{ height: '44px', width: 'auto' }} src="https://sellwithboost.com/badge/listing.svg" />
-          </a>
-        </div>
-        <nav className="flex flex-wrap items-center justify-center gap-x-4 gap-y-1 text-[11px] text-[#7A6B8A]">
-          {/* open in a new tab so the V2 shell/menu never changes */}
-          <a href="/aboutus" target="_blank" rel="noopener noreferrer" className="hover:text-[#B8AAC8]">About</a>
-          <a href="/blog/" target="_blank" rel="noopener noreferrer" className="hover:text-[#B8AAC8]">Blog</a>
-          <a href="/privacy" target="_blank" rel="noopener noreferrer" className="hover:text-[#B8AAC8]">Privacy</a>
-          <a href="mailto:hello@mysleepytale.com" className="hover:text-[#B8AAC8]">Contact</a>
-        </nav>
-        <p className="text-[10px] text-[#7A6B8A] text-center leading-relaxed">My Sleepy Tale · Toronto, Canada · Bedtime stories that teach roots &amp; values</p>
-      </div>
-    </footer>
-  );
-}
