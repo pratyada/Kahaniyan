@@ -18,11 +18,27 @@ function orbPos(i) {
   return { x, y };
 }
 
+// Self-contained kid-drawing look for the ?demo preview (no network, never 404s).
+function demoStar(emoji, c1, c2) {
+  const svg = `<svg xmlns='http://www.w3.org/2000/svg' width='300' height='300'><defs><linearGradient id='g' x1='0' y1='0' x2='1' y2='1'><stop offset='0' stop-color='${c1}'/><stop offset='1' stop-color='${c2}'/></linearGradient></defs><rect width='300' height='300' fill='url(%23g)'/><text x='150' y='195' font-size='150' text-anchor='middle'>${emoji}</text></svg>`;
+  return `data:image/svg+xml,${encodeURIComponent(svg).replace(/%23/g, '#')}`;
+}
+const DEMO_STORIES = [
+  { id: 'demo1', storyId: 'demo1', title: 'My Flying Car', promptImageUrl: demoStar('🚗', '#5B8CFF', '#8E5BFF'), likes: 3, plays: 12 },
+  { id: 'demo2', storyId: 'demo2', title: 'Rainbow Dragon', promptImageUrl: demoStar('🐉', '#FF7EB6', '#FFB35B'), likes: 5, plays: 20 },
+  { id: 'demo3', storyId: 'demo3', title: 'Moon Picnic', promptImageUrl: demoStar('🌙', '#2B2E63', '#6E4BC9'), likes: 2, plays: 7 },
+  { id: 'demo4', storyId: 'demo4', title: 'Underwater City', promptImageUrl: demoStar('🐠', '#1FA2A6', '#2B6EE0'), likes: 4, plays: 15 },
+  { id: 'demo5', storyId: 'demo5', title: 'Robot Best Friend', promptImageUrl: demoStar('🤖', '#7A8CA6', '#3A4A63'), likes: 1, plays: 4 },
+  { id: 'demo6', storyId: 'demo6', title: 'Candy Mountain', promptImageUrl: demoStar('🍭', '#FF8FD0', '#FF5B8C'), likes: 6, plays: 22 },
+  { id: 'demo7', storyId: 'demo7', title: 'Space Puppy', promptImageUrl: demoStar('🐶', '#3A2C6B', '#5B8CFF'), likes: 3, plays: 9 },
+];
+
 export default function MyWorld() {
   const navigate = useNavigate();
   const { user, loginGoogle } = useAuth();
   const { profile } = useFamilyProfile();
-  const name = profile?.childName && profile.childName !== 'little one' ? profile.childName : null;
+  const demo = typeof window !== 'undefined' && new URLSearchParams(window.location.search).has('demo');
+  const name = (profile?.childName && profile.childName !== 'little one' ? profile.childName : null) || (demo ? 'Aria' : null);
 
   const [stories, setStories] = useState(null); // null = loading
   const [open, setOpen] = useState(null); // selected story for lightbox
@@ -30,6 +46,7 @@ export default function MyWorld() {
   const [view, setView] = useState('world'); // 'world' (animated) | 'grid'
 
   const publishAndShare = async (story) => {
+    if (!user) return; // demo/preview — no-op
     const id = story.id;
     // Publish (family/approved) so the link resolves + shows THIS story's picture as
     // the preview. Share the /api/share link → unique per-story OG image (not generic).
@@ -45,6 +62,7 @@ export default function MyWorld() {
   };
 
   const toggleLike = async (story) => {
+    if (!user) return; // demo/preview — no-op
     const liked = (story.likedBy || []).includes(user.uid);
     const nextAction = liked ? 'unlike' : 'like';
     // optimistic
@@ -55,6 +73,7 @@ export default function MyWorld() {
   };
 
   const deleteStory = async (story) => {
+    if (!user) return; // demo/preview — no-op
     if (!window.confirm('Delete this story? This cannot be undone.')) return;
     setStories((list) => (list || []).filter((s) => s.id !== story.id));
     setOpen(null);
@@ -62,6 +81,7 @@ export default function MyWorld() {
   };
 
   useEffect(() => {
+    if (demo) { setStories(DEMO_STORIES); return; } // ?demo → preview the world with sample stars
     if (!user) { setStories([]); return; }
     fetch('/api/kid-story-save', {
       method: 'POST', headers: { 'Content-Type': 'application/json' },
@@ -79,8 +99,8 @@ export default function MyWorld() {
     </header>
   );
 
-  // Signed out
-  if (!user) {
+  // Signed out (demo bypasses so you can preview the world without an account)
+  if (!user && !demo) {
     return (
       <div className="px-5 lg:px-8 pt-7 lg:pt-10 max-w-[520px]">
         {Head}
