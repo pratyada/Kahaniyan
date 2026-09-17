@@ -3,10 +3,11 @@
 // grows every night) and a plain Grid. Lists real kidStories via kid-story-save (action:list).
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Lock, Star, Wand2, Heart, Play, X, Share2, Check, Trash2, Sparkles, LayoutGrid, Orbit } from 'lucide-react';
+import { Lock, Star, Wand2, Heart, Play, X, Share2, Check, Trash2, Sparkles, LayoutGrid, Orbit, Layers } from 'lucide-react';
 import { useAuth } from '../../hooks/useAuth.jsx';
 import { useFamilyProfile } from '../../hooks/useFamilyProfile.js';
 import { GOLD } from '../ui.js';
+import WorldClusters from './WorldClusters.jsx';
 
 // Deterministic, pleasing scatter so a star always sits in the same place.
 const XPATTERN = [50, 30, 68, 40, 72, 34, 62, 46];
@@ -25,13 +26,20 @@ function demoStar(emoji, c1, c2) {
   return `data:image/svg+xml;base64,${btoa(unescape(encodeURIComponent(svg)))}`;
 }
 const DEMO_STORIES = [
-  { id: 'demo1', storyId: 'demo1', title: 'My Flying Car', promptImageUrl: demoStar('🚗', '#5B8CFF', '#8E5BFF'), likes: 3, plays: 12 },
-  { id: 'demo2', storyId: 'demo2', title: 'Rainbow Dragon', promptImageUrl: demoStar('🐉', '#FF7EB6', '#FFB35B'), likes: 5, plays: 20 },
-  { id: 'demo3', storyId: 'demo3', title: 'Moon Picnic', promptImageUrl: demoStar('🌙', '#2B2E63', '#6E4BC9'), likes: 2, plays: 7 },
-  { id: 'demo4', storyId: 'demo4', title: 'Underwater City', promptImageUrl: demoStar('🐠', '#1FA2A6', '#2B6EE0'), likes: 4, plays: 15 },
-  { id: 'demo5', storyId: 'demo5', title: 'Robot Best Friend', promptImageUrl: demoStar('🤖', '#7A8CA6', '#3A4A63'), likes: 1, plays: 4 },
-  { id: 'demo6', storyId: 'demo6', title: 'Candy Mountain', promptImageUrl: demoStar('🍭', '#FF8FD0', '#FF5B8C'), likes: 6, plays: 22 },
-  { id: 'demo7', storyId: 'demo7', title: 'Space Puppy', promptImageUrl: demoStar('🐶', '#3A2C6B', '#5B8CFF'), likes: 3, plays: 9 },
+  { id: 'demo1',  storyId: 'demo1',  topic: 'machines', title: 'My Flying Car',      promptImageUrl: demoStar('🚗', '#5B8CFF', '#8E5BFF'), likes: 3, plays: 12 },
+  { id: 'demo2',  storyId: 'demo2',  topic: 'magic',    title: 'Rainbow Dragon',     promptImageUrl: demoStar('🐉', '#FF7EB6', '#FFB35B'), likes: 5, plays: 20 },
+  { id: 'demo3',  storyId: 'demo3',  topic: 'space',    title: 'Moon Picnic',        promptImageUrl: demoStar('🌙', '#2B2E63', '#6E4BC9'), likes: 2, plays: 7 },
+  { id: 'demo4',  storyId: 'demo4',  topic: 'nature',   title: 'Underwater City',    promptImageUrl: demoStar('🐠', '#1FA2A6', '#2B6EE0'), likes: 4, plays: 15 },
+  { id: 'demo5',  storyId: 'demo5',  topic: 'machines', title: 'Robot Best Friend',  promptImageUrl: demoStar('🤖', '#7A8CA6', '#3A4A63'), likes: 1, plays: 4 },
+  { id: 'demo6',  storyId: 'demo6',  topic: 'silly',    title: 'Candy Mountain',     promptImageUrl: demoStar('🍭', '#FF8FD0', '#FF5B8C'), likes: 6, plays: 22 },
+  { id: 'demo7',  storyId: 'demo7',  topic: 'nature',   title: 'Space Puppy',        promptImageUrl: demoStar('🐶', '#3A2C6B', '#5B8CFF'), likes: 3, plays: 9 },
+  { id: 'demo8',  storyId: 'demo8',  topic: 'space',    title: 'Rocket to Grandma',  promptImageUrl: demoStar('🚀', '#243B8F', '#7A5BFF'), likes: 4, plays: 11 },
+  { id: 'demo9',  storyId: 'demo9',  topic: 'magic',    title: 'Unicorn School',     promptImageUrl: demoStar('🦄', '#C05BFF', '#FF8FD0'), likes: 7, plays: 25 },
+  { id: 'demo10', storyId: 'demo10', topic: 'space',    title: 'Star Sailboat',      promptImageUrl: demoStar('⭐', '#2B2E63', '#4FB0FF'), likes: 2, plays: 6 },
+  { id: 'demo11', storyId: 'demo11', topic: 'machines', title: 'Train That Flew',    promptImageUrl: demoStar('🚂', '#134E5E', '#33C3E0'), likes: 3, plays: 10 },
+  { id: 'demo12', storyId: 'demo12', topic: 'nature',   title: 'Brave Little Fox',   promptImageUrl: demoStar('🦊', '#C25A2E', '#FFB35B'), likes: 5, plays: 18 },
+  { id: 'demo13', storyId: 'demo13', topic: 'magic',    title: "Wizard's Cat",       promptImageUrl: demoStar('🧙', '#5B2C87', '#B15BFF'), likes: 2, plays: 8 },
+  { id: 'demo14', storyId: 'demo14', topic: 'silly',    title: 'Upside-Down Day',    promptImageUrl: demoStar('😜', '#B23A73', '#FF9F6B'), likes: 4, plays: 13 },
 ];
 
 export default function MyWorld() {
@@ -44,7 +52,13 @@ export default function MyWorld() {
   const [stories, setStories] = useState(null); // null = loading
   const [open, setOpen] = useState(null); // selected story for lightbox
   const [copied, setCopied] = useState(false);
-  const [view, setView] = useState('world'); // 'world' (animated) | 'grid'
+  const [view, setView] = useState(demo ? 'themes' : 'world'); // 'world' | 'themes' | 'grid'
+  const [isWide, setIsWide] = useState(typeof window !== 'undefined' ? window.innerWidth >= 640 : true);
+  useEffect(() => {
+    const on = () => setIsWide(window.innerWidth >= 640);
+    window.addEventListener('resize', on);
+    return () => window.removeEventListener('resize', on);
+  }, []);
 
   const publishAndShare = async (story) => {
     if (!user) return; // demo/preview — no-op
@@ -132,6 +146,7 @@ export default function MyWorld() {
         {n > 0 && (
           <div className="mt-1 flex rounded-full bg-white/[0.06] p-0.5 ring-1 ring-white/10 shrink-0">
             <ToggleBtn active={view === 'world'} onClick={() => setView('world')} icon={Orbit} label="World" />
+            <ToggleBtn active={view === 'themes'} onClick={() => setView('themes')} icon={Layers} label="Themes" />
             <ToggleBtn active={view === 'grid'} onClick={() => setView('grid')} icon={LayoutGrid} label="Grid" />
           </div>
         )}
@@ -172,6 +187,8 @@ export default function MyWorld() {
 
           {view === 'world' ? (
             <WorldSky stories={stories} name={name} onOpen={setOpen} />
+          ) : view === 'themes' ? (
+            <WorldClusters stories={stories} name={name} onOpen={setOpen} isWide={isWide} />
           ) : (
             <div className="mt-4 grid grid-cols-2 sm:grid-cols-3 gap-3">
               {stories.map((s) => {
