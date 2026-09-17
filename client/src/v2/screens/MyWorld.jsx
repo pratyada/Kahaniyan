@@ -32,7 +32,7 @@ const DEMO_STORIES = [
   { id: 'demo4',  storyId: 'demo4',  topic: 'nature',   title: 'Underwater City',    promptImageUrl: demoStar('🐠', '#1FA2A6', '#2B6EE0'), likes: 4, plays: 15 },
   { id: 'demo5',  storyId: 'demo5',  topic: 'machines', title: 'Robot Best Friend',  promptImageUrl: demoStar('🤖', '#7A8CA6', '#3A4A63'), likes: 1, plays: 4 },
   { id: 'demo6',  storyId: 'demo6',  topic: 'silly',    title: 'Candy Mountain',     promptImageUrl: demoStar('🍭', '#FF8FD0', '#FF5B8C'), likes: 6, plays: 22 },
-  { id: 'demo7',  storyId: 'demo7',  topic: 'nature',   title: 'Space Puppy',        promptImageUrl: demoStar('🐶', '#3A2C6B', '#5B8CFF'), likes: 3, plays: 9 },
+  { id: 'demo7',  storyId: 'demo7',  topic: 'space',    title: 'Space Puppy',        promptImageUrl: demoStar('🐶', '#3A2C6B', '#5B8CFF'), likes: 3, plays: 9 },
   { id: 'demo8',  storyId: 'demo8',  topic: 'space',    title: 'Rocket to Grandma',  promptImageUrl: demoStar('🚀', '#243B8F', '#7A5BFF'), likes: 4, plays: 11 },
   { id: 'demo9',  storyId: 'demo9',  topic: 'magic',    title: 'Unicorn School',     promptImageUrl: demoStar('🦄', '#C05BFF', '#FF8FD0'), likes: 7, plays: 25 },
   { id: 'demo10', storyId: 'demo10', topic: 'space',    title: 'Star Sailboat',      promptImageUrl: demoStar('⭐', '#2B2E63', '#4FB0FF'), likes: 2, plays: 6 },

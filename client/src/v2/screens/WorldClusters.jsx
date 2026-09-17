@@ -10,11 +10,11 @@ import { GOLD } from '../ui.js';
 // The five clusters. `keywords` power the fallback classifier for real stories that
 // don't yet carry a topic. `interest` is a placeholder for the ML sentiment score.
 export const CLUSTERS = [
-  { key: 'space',    title: 'Space & Sky',       icon: Rocket,   c1: '#3A2C6B', c2: '#5B8CFF', mood: 'Curious 🤔',   insight: 'Drawn to the unknown & big questions', interest: 86, keywords: ['moon', 'star', 'space', 'rocket', 'planet', 'sky', 'astro', 'galaxy', 'comet'] },
-  { key: 'magic',    title: 'Magic & Myth',      icon: Sparkles, c1: '#5B2C87', c2: '#FF7EB6', mood: 'Dreamy ✨',    insight: 'Rich fantasy & world-building',        interest: 78, keywords: ['dragon', 'unicorn', 'wizard', 'magic', 'fairy', 'spell', 'myth', 'giant', 'castle'] },
-  { key: 'machines', title: 'Machines & Motion', icon: Cog,      c1: '#134E5E', c2: '#33C3E0', mood: 'Inventive 🔧', insight: 'Wants to know how things work',        interest: 72, keywords: ['car', 'robot', 'train', 'plane', 'machine', 'rocket ship', 'truck', 'engine', 'build'] },
-  { key: 'nature',   title: 'Nature & Animals',  icon: Leaf,     c1: '#1D6B4C', c2: '#4FD1A5', mood: 'Kind 💚',      insight: 'Empathy & caring for creatures',       interest: 68, keywords: ['fish', 'fox', 'forest', 'ocean', 'puppy', 'dog', 'cat', 'bird', 'animal', 'tree', 'sea'] },
-  { key: 'silly',    title: 'Silly & Sweet',     icon: Candy,    c1: '#B23A73', c2: '#FF9F6B', mood: 'Joyful 😄',    insight: 'Playful humor & pure joy',             interest: 64, keywords: ['candy', 'giggle', 'silly', 'upside', 'funny', 'sweet', 'cake', 'party', 'laugh'] },
+  { key: 'space',    title: 'Space & Sky',   icon: Rocket,   c1: '#3A2C6B', c2: '#5B8CFF', tag: 'Big questions', interest: 86, keywords: ['moon', 'star', 'space', 'rocket', 'planet', 'sky', 'astro', 'galaxy', 'comet'] },
+  { key: 'magic',    title: 'Magic & Myth',  icon: Sparkles, c1: '#5B2C87', c2: '#FF7EB6', tag: 'Fantasy',       interest: 78, keywords: ['dragon', 'unicorn', 'wizard', 'magic', 'fairy', 'spell', 'myth', 'giant', 'castle'] },
+  { key: 'machines', title: 'Machines',      icon: Cog,      c1: '#134E5E', c2: '#33C3E0', tag: 'How things work', interest: 72, keywords: ['car', 'robot', 'train', 'plane', 'machine', 'rocket ship', 'truck', 'engine', 'build'] },
+  { key: 'nature',   title: 'Animals',       icon: Leaf,     c1: '#1D6B4C', c2: '#4FD1A5', tag: 'Caring',        interest: 68, keywords: ['fish', 'fox', 'forest', 'ocean', 'puppy', 'dog', 'cat', 'bird', 'animal', 'tree', 'sea'] },
+  { key: 'silly',    title: 'Silly & Fun',   icon: Candy,    c1: '#B23A73', c2: '#FF9F6B', tag: 'Pure fun',      interest: 64, keywords: ['candy', 'giggle', 'silly', 'upside', 'funny', 'sweet', 'cake', 'party', 'laugh'] },
 ];
 
 const CLUSTER_MAP = CLUSTERS.reduce((m, c) => { m[c.key] = c; return m; }, {});
@@ -23,10 +23,10 @@ const CLUSTER_MAP = CLUSTERS.reduce((m, c) => { m[c.key] = c; return m; }, {});
 // Two columns + a centered fifth, staggered so nothing hides on first load.
 const POS = {
   space:    { top: 4,   left: '2%',  rotate: -5 },
-  magic:    { top: 30,  left: '50%', rotate: 5 },
-  machines: { top: 350, left: '4%',  rotate: 4 },
-  nature:   { top: 378, left: '52%', rotate: -4 },
-  silly:    { top: 712, left: '27%', rotate: 3 },
+  magic:    { top: 22,  left: '52%', rotate: 5 },
+  machines: { top: 214, left: '4%',  rotate: 4 },
+  nature:   { top: 232, left: '54%', rotate: -4 },
+  silly:    { top: 418, left: '26%', rotate: 3 },
 };
 
 export function classifyTopic(story) {
@@ -53,26 +53,25 @@ export default function WorldClusters({ stories, name, onOpen, isWide }) {
         </div>
         <div>
           <h2 className="font-display text-2xl lg:text-[28px] leading-none" style={{ color: GOLD }}>{name ? `${name}'s` : 'Your'} Story World</h2>
-          <p className="text-[12px] text-[#B8AAC8] mt-1">Grouped by what sparks their imagination</p>
+          <p className="text-[12px] text-[#B8AAC8] mt-1">Grouped by what they love</p>
         </div>
       </div>
 
-      {/* Cognitive framing */}
-      <div className="mt-4 flex items-start gap-2.5 rounded-2xl bg-white/[0.05] ring-1 ring-white/10 px-4 py-3">
-        <Brain size={17} strokeWidth={2} className="mt-0.5 shrink-0" style={{ color: GOLD }} />
-        <p className="text-[12.5px] leading-relaxed text-[#CDBFE0]">
-          MST reads the themes &amp; feeling in every story {name || 'your child'} makes and clusters them — so tomorrow's
-          adventure can grow from what they love today. <span className="text-[#7A6B8A]">Drag a card to explore.</span>
-        </p>
+      {/* Cognitive framing — one short line */}
+      <div className="mt-4 flex items-center gap-2.5 rounded-2xl bg-white/[0.05] ring-1 ring-white/10 px-4 py-3">
+        <Brain size={16} strokeWidth={2} className="shrink-0" style={{ color: GOLD }} />
+        <p className="text-[12.5px] text-[#CDBFE0]">Bigger the group, the more they love it. <span className="text-[#7A6B8A]">Drag to explore.</span></p>
       </div>
 
       {/* Cluster cards */}
       <DraggableCardContainer className="mt-6">
-        <div ref={boardRef} className="relative" style={{ minHeight: isWide ? 1030 : undefined }}>
+        <div ref={boardRef} className="relative" style={{ minHeight: isWide ? 620 : undefined }}>
           {grouped.map(({ cluster, items }) => {
             const p = POS[cluster.key] || { top: 0, left: '0%', rotate: 0 };
+            // box grows with how many stories fall in the category
+            const w = Math.min(300, 190 + (items.length - 1) * 26);
             const wideStyle = isWide
-              ? { position: 'absolute', top: p.top, left: p.left, rotate: p.rotate, width: 240 }
+              ? { position: 'absolute', top: p.top, left: p.left, rotate: p.rotate, width: w }
               : { rotate: p.rotate, width: '100%', maxWidth: 340, marginLeft: 'auto', marginRight: 'auto' };
             return (
               <div key={cluster.key} className={isWide ? '' : 'mb-5'}>
@@ -94,10 +93,10 @@ export default function WorldClusters({ stories, name, onOpen, isWide }) {
   );
 }
 
-function ClusterCardInner({ cluster, items, name, onOpen }) {
+function ClusterCardInner({ cluster, items, onOpen }) {
   const Icon = cluster.icon;
   return (
-    <div className="p-4" style={{ background: 'linear-gradient(160deg,#141C33 0%,#0C1226 100%)' }}>
+    <div className="p-3.5" style={{ background: 'linear-gradient(160deg,#141C33 0%,#0C1226 100%)' }}>
       {/* colored top accent */}
       <div className="absolute inset-x-0 top-0 h-1" style={{ background: `linear-gradient(90deg,${cluster.c1},${cluster.c2})` }} />
 
@@ -107,17 +106,17 @@ function ClusterCardInner({ cluster, items, name, onOpen }) {
         </span>
         <div className="min-w-0">
           <p className="font-display text-[16px] text-[#F7F1E8] leading-tight truncate">{cluster.title}</p>
-          <p className="text-[10.5px] text-[#7A6B8A]">{items.length} {items.length === 1 ? 'story' : 'stories'} · {cluster.mood}</p>
+          <p className="text-[10.5px] text-[#7A6B8A]">{items.length} {items.length === 1 ? 'story' : 'stories'} · {cluster.tag}</p>
         </div>
       </div>
 
-      {/* story chips */}
+      {/* story chips — all of them, so a bigger group looks fuller */}
       <div className="mt-3 flex flex-wrap gap-2">
-        {items.slice(0, 6).map((s) => (
+        {items.map((s) => (
           <button
             key={s.id || s.storyId}
             onClick={() => onOpen && onOpen(s)}
-            className="group relative h-11 w-11 rounded-full overflow-hidden ring-2 ring-white/15 active:scale-90 transition"
+            className="relative h-10 w-10 rounded-full overflow-hidden ring-2 ring-white/15 active:scale-90 transition"
             title={s.title}
           >
             {s.promptImageUrl || s.coverImage
@@ -125,33 +124,14 @@ function ClusterCardInner({ cluster, items, name, onOpen }) {
               : <span className="grid h-full w-full place-items-center bg-white/5 text-white/40 text-xs">★</span>}
           </button>
         ))}
-        {items.length > 6 && (
-          <span className="grid h-11 w-11 place-items-center rounded-full bg-white/[0.06] ring-1 ring-white/10 text-[11px] font-bold text-[#B8AAC8]">+{items.length - 6}</span>
-        )}
       </div>
 
-      {/* insight + interest */}
-      <div className="mt-3.5 rounded-xl bg-black/25 px-3 py-2.5">
-        <div className="flex items-center gap-1.5">
-          <Sparkles size={11} style={{ color: GOLD }} />
-          <span className="text-[9px] font-bold uppercase tracking-wide text-[#7A6B8A]">AI-grouped theme</span>
-        </div>
-        <p className="text-[12px] text-[#E7DEF2] mt-1 leading-snug">{cluster.insight}</p>
-        <div className="mt-2 flex items-center gap-2">
-          <div className="h-1.5 flex-1 rounded-full bg-white/8 overflow-hidden">
-            <div className="h-full rounded-full" style={{ width: `${cluster.interest}%`, background: `linear-gradient(90deg,${cluster.c1},${cluster.c2})` }} />
-          </div>
-          <span className="text-[9.5px] font-semibold text-[#B8AAC8]">interest</span>
-        </div>
-      </div>
-
-      {/* next-step nudge */}
       <button
         onClick={() => onOpen && items[0] && onOpen(items[0])}
-        className="mt-3 w-full flex items-center justify-center gap-1.5 rounded-full py-2 text-[12px] font-bold text-[#0D1B2A]"
+        className="mt-3.5 w-full flex items-center justify-center gap-1.5 rounded-full py-2 text-[12px] font-bold text-[#0D1B2A]"
         style={{ background: GOLD }}
       >
-        <Wand2 size={13} strokeWidth={2.4} /> Grow this theme
+        <Wand2 size={13} strokeWidth={2.4} /> Grow
       </button>
     </div>
   );
