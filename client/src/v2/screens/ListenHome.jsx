@@ -6,7 +6,7 @@ import { useWisdomData } from '../../hooks/useWisdomData.js';
 import { useFamilyProfile } from '../../hooks/useFamilyProfile.js';
 import { usePlayer } from '../../hooks/usePlayer.jsx';
 import { useSearch } from '../../hooks/useSearch.js';
-import { buildTraditionShelves, buildThemeShelves, buildAgeShelf } from '../../utils/shelfBuilder.js';
+import { buildTraditionShelves, buildAgeShelf, buildUniversalLearningPath } from '../../utils/shelfBuilder.js';
 import { SERIES } from '../../data/series.js';
 import { COLLECTIONS } from '../../data/collections.js';
 import { buildStory } from '../play.js';
@@ -27,7 +27,7 @@ export default function ListenHome() {
 
   const img = (id) => wisdomImageUrls?.[id] || null;
   const cover = (s) => (s.episodes || []).map((e) => wisdomImageUrls?.[e.id] || e.coverImage).find(Boolean) || null;
-  const toCards = (arr) => (arr || []).map((l) => ({ lesson: l, imageUrl: img(l.id) }));
+  const toCards = (arr) => (arr || []).map((l) => ({ lesson: l, imageUrl: img(l.id) || l.coverImage || null }));
 
   const seriesRaw = useMemo(() => (SERIES || []).filter((s) => !s.comingSoon && s.episodes?.length), []);
   const lessonsAll = useMemo(() => (allLessons || []).filter((l) => l && l.body && l.title), [allLessons]);
@@ -47,23 +47,43 @@ export default function ListenHome() {
     const seen = new Set();
     const seenSeries = new Set();
 
-    // Featured carousel (6 diverse stories) — reserved so they don't repeat below
-    const heroLessons = lessonsRaw.slice(0, 6);
-    heroLessons.forEach((l) => seen.add(l.id));
-    const heroImages = {}; heroLessons.forEach((l) => { if (img(l.id)) heroImages[l.id] = img(l.id); });
+    // Universal users never see religion-tagged SERIES either (a series is secular
+    // only if every episode is universal/untagged — excludes Sikh/Islamic/etc.).
+    const seriesPool = isUniversal
+      ? seriesRaw.filter((s) => (s.episodes || []).every((e) => !e.tradition || e.tradition === 'universal'))
+      : seriesRaw;
+
+    // Category shelves. Universal (no-belief) users get the curated secular
+    // "learning path" drawn from universal SERIES episodes (50+ stories, no
+    // religion). Belief users get "for your age" + their tradition shelves.
+    const rawShelves = isUniversal
+      ? buildUniversalLearningPath(seriesRaw, lessonsRaw)
+      : [
+          ...(buildAgeShelf(lessonsRaw, profile?.age || 6, beliefs) ? [buildAgeShelf(lessonsRaw, profile?.age || 6, beliefs)] : []),
+          ...buildTraditionShelves(lessonsRaw, beliefs),
+        ];
+
+    // Featured carousel (6 diverse stories). Universal: one from each of the first
+    // categories so the hero is varied; belief: first 6 lessons. Reserved so they
+    // don't repeat below.
+    let heroLessons = [];
+    if (isUniversal) {
+      for (const sh of rawShelves) {
+        if (heroLessons.length >= 6) break;
+        const s0 = (sh.stories || []).find((x) => !seen.has(x.id));
+        if (s0) { heroLessons.push(s0); seen.add(s0.id); }
+      }
+    } else {
+      heroLessons = lessonsRaw.slice(0, 6);
+      heroLessons.forEach((l) => seen.add(l.id));
+    }
+    const heroImages = {}; heroLessons.forEach((l) => { const u = img(l.id) || l.coverImage; if (u) heroImages[l.id] = u; });
 
     // Top of the Week series (reserved from the All-Series shelf)
-    const topWeekRaw = seriesRaw.slice(0, 6);
+    const topWeekRaw = seriesPool.slice(0, 6);
     topWeekRaw.forEach((s) => seenSeries.add(s.id));
 
-    // Story shelves: "for your age" first, then by tradition (belief users) or by
-    // value/theme (universal users — no religion shelves) — each de-duped.
-    const ageShelf = buildAgeShelf(lessonsRaw, profile?.age || 6, beliefs);
-    const categoryShelves = isUniversal
-      ? buildThemeShelves(lessonsRaw, [])
-      : buildTraditionShelves(lessonsRaw, beliefs);
-    const raw = [...(ageShelf ? [ageShelf] : []), ...categoryShelves];
-    const shelves = raw
+    const shelves = rawShelves
       .map((sh) => {
         const fresh = (sh.stories || []).filter((s) => { if (seen.has(s.id)) return false; seen.add(s.id); return true; });
         return { id: sh.id, title: sh.title, stories: toCards(fresh.slice(0, 14)) };
@@ -74,7 +94,7 @@ export default function ListenHome() {
       heroLessons,
       heroImages,
       topWeek: topWeekRaw.map((s) => ({ series: s, coverImage: cover(s) })),
-      seriesList: seriesRaw.filter((s) => !seenSeries.has(s.id)).map((s) => ({ series: s, coverImage: cover(s) })),
+      seriesList: seriesPool.filter((s) => !seenSeries.has(s.id)).map((s) => ({ series: s, coverImage: cover(s) })),
       shelves,
     };
   }, [lessonsRaw, seriesRaw, beliefs, wisdomImageUrls, profile?.age, isUniversal]);

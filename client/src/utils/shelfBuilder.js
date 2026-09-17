@@ -72,6 +72,42 @@ export function buildThemeShelves(allLessons, beliefs) {
   return shelves;
 }
 
+// Curated secular "learning path" for universal (no-belief) users. Pulls universal
+// SERIES episodes (+ universal standalone lessons) into topic categories so the home
+// is full without ever showing religion-tagged content. Episodes are filtered to
+// tradition 'universal', which excludes every religious series.
+const LEARNING_PATH = [
+  { id: 'lp-world',    title: '🌍 Explore the World',   series: ['discover-india', 'discover-canada', 'discover-united-states', 'discover-united-kingdom', 'discover-japan', 'discover-china', 'discover-australia', 'discover-brazil', 'discover-france', 'discover-egypt', 'discover-mexico', 'discover-italy', 'discover-germany', 'discover-southkorea', 'discover-russia', 'discover-southafrica', 'discover-turkey', 'discover-uae', 'discover-spain', 'discover-newzealand'] },
+  { id: 'lp-space',    title: '🚀 Science & Space',     series: ['planets-and-stars', 'planet-explorers', 'little-astronaut', 'rocket-adventures', 'rocket-adventures-team'] },
+  { id: 'lp-numbers',  title: '🔢 Numbers & Shapes',    series: ['maths-adventures', 'geometry-shapes'] },
+  { id: 'lp-animals',  title: '🦁 Animal Tales',        series: ['who-would-win-animals', 'who-would-win-series', 'panchatantra-tales'] },
+  { id: 'lp-towers',   title: '🏙️ Amazing Structures',  series: ['tallest-towers'] },
+  { id: 'lp-kindness', title: '💛 Kindness & Courage',  series: ['kindness-squad', 'brave-moments'] },
+  { id: 'lp-skills',   title: '🏕️ Life Skills',         series: ['camping-outdoors', 'water-and-swim', 'music-lessons', 'fire-truck-academy', 'lightning-wheels'] },
+  { id: 'lp-worldcup', title: '⚽ World Cup 2026',       series: ['fifa-world-cup-2026'] },
+  { id: 'lp-school',   title: '🏫 School Days',          series: ['rainbow-kindergarten-jlps-yr25-26'] },
+];
+
+export function buildUniversalLearningPath(seriesRaw, universalLessons) {
+  const byId = {};
+  (seriesRaw || []).forEach((s) => { byId[s.id] = s; });
+  const shelves = [];
+  for (const cat of LEARNING_PATH) {
+    let stories = [];
+    for (const sid of cat.series) {
+      const s = byId[sid];
+      if (!s) continue;
+      const eps = (s.episodes || []).filter((e) => e && e.body && e.title && (!e.tradition || e.tradition === 'universal'));
+      stories = stories.concat(eps);
+    }
+    if (stories.length >= 2) shelves.push({ id: cat.id, title: cat.title, stories });
+  }
+  if ((universalLessons || []).length >= 2) {
+    shelves.push({ id: 'lp-wisdom', title: '🌱 Little Life Lessons', stories: universalLessons });
+  }
+  return shelves;
+}
+
 export function buildTrendingShelf(allLessons, playCounts) {
   if (!playCounts || Object.keys(playCounts).length <= 1) return null;
 
