@@ -68,6 +68,8 @@ const COLUMNS = [
 ];
 
 const LEGAL = [
+  ['Blog', '/blog/'],
+  ['About', '/aboutus'],
   ['Terms & Conditions', '/terms.html'],
   ['Privacy Policy', '/privacy'],
   ['Refund & Cancellation', '/refund-policy.html'],
