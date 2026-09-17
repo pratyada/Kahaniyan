@@ -6,7 +6,7 @@ import { useWisdomData } from '../../hooks/useWisdomData.js';
 import { useFamilyProfile } from '../../hooks/useFamilyProfile.js';
 import { usePlayer } from '../../hooks/usePlayer.jsx';
 import { useSearch } from '../../hooks/useSearch.js';
-import { buildTraditionShelves, buildThemeShelves } from '../../utils/shelfBuilder.js';
+import { buildTraditionShelves, buildAgeShelf } from '../../utils/shelfBuilder.js';
 import { SERIES } from '../../data/series.js';
 import { COLLECTIONS } from '../../data/collections.js';
 import { buildStory } from '../play.js';
@@ -33,23 +33,40 @@ export default function ListenHome() {
   const { query, setQuery, results, traditionFilter, toggleTradition, themeFilter, toggleTheme } =
     useSearch({ allLessons: lessonsRaw, series: seriesRaw, collections: COLLECTIONS, beliefs });
 
-  // Featured carousel (6 stories) — needs raw lessons + an image map
-  const heroLessons = useMemo(() => lessonsRaw.slice(0, 6), [lessonsRaw]);
-  const heroImages = useMemo(() => {
-    const m = {}; heroLessons.forEach((l) => { if (img(l.id)) m[l.id] = img(l.id); }); return m;
-  }, [heroLessons, wisdomImageUrls]);
+  // Browse feed — built with a GLOBAL de-dup set so no story (or series) repeats
+  // across the carousel + shelves (matches production's variation). Prefer tradition
+  // + age shelves (not theme, which double-counts every story).
+  const browse = useMemo(() => {
+    const seen = new Set();
+    const seenSeries = new Set();
 
-  const topWeek = useMemo(() => seriesRaw.slice(0, 6).map((s) => ({ series: s, coverImage: cover(s) })), [seriesRaw, wisdomImageUrls]);
-  const seriesList = useMemo(() => seriesRaw.map((s) => ({ series: s, coverImage: cover(s) })), [seriesRaw, wisdomImageUrls]);
+    // Featured carousel (6 diverse stories) — reserved so they don't repeat below
+    const heroLessons = lessonsRaw.slice(0, 6);
+    heroLessons.forEach((l) => seen.add(l.id));
+    const heroImages = {}; heroLessons.forEach((l) => { if (img(l.id)) heroImages[l.id] = img(l.id); });
 
-  // Category shelves — by tradition, then by value/theme (makes Listen full & browsable)
-  const shelves = useMemo(() => {
-    const trad = buildTraditionShelves(lessonsRaw, beliefs);
-    const theme = buildThemeShelves(lessonsRaw, beliefs);
-    return [...trad, ...theme]
-      .filter((sh) => sh.stories?.length >= 2)
-      .map((sh) => ({ id: sh.id, title: sh.title, stories: toCards(sh.stories.slice(0, 14)) }));
-  }, [lessonsRaw, beliefs, wisdomImageUrls]);
+    // Top of the Week series (reserved from the All-Series shelf)
+    const topWeekRaw = seriesRaw.slice(0, 6);
+    topWeekRaw.forEach((s) => seenSeries.add(s.id));
+
+    // Story shelves: "for your age" first, then by tradition — each de-duped
+    const ageShelf = buildAgeShelf(lessonsRaw, profile?.age || 6, beliefs);
+    const raw = [...(ageShelf ? [ageShelf] : []), ...buildTraditionShelves(lessonsRaw, beliefs)];
+    const shelves = raw
+      .map((sh) => {
+        const fresh = (sh.stories || []).filter((s) => { if (seen.has(s.id)) return false; seen.add(s.id); return true; });
+        return { id: sh.id, title: sh.title, stories: toCards(fresh.slice(0, 14)) };
+      })
+      .filter((sh) => sh.stories.length >= 2);
+
+    return {
+      heroLessons,
+      heroImages,
+      topWeek: topWeekRaw.map((s) => ({ series: s, coverImage: cover(s) })),
+      seriesList: seriesRaw.filter((s) => !seenSeries.has(s.id)).map((s) => ({ series: s, coverImage: cover(s) })),
+      shelves,
+    };
+  }, [lessonsRaw, seriesRaw, beliefs, wisdomImageUrls, profile?.age]);
 
   const searchStories = useMemo(() => toCards([...(results.stories || []), ...(results.episodes || [])]), [results, wisdomImageUrls]);
   const searchSeries = useMemo(() => (results.series || []).map((s) => ({ series: s, coverImage: cover(s) })), [results, wisdomImageUrls]);
@@ -71,12 +88,12 @@ export default function ListenHome() {
       onToggleTheme={toggleTheme}
       onClearFilters={() => { if (traditionFilter) toggleTradition(traditionFilter); if (themeFilter) toggleTheme(themeFilter); }}
       results={{ stories: searchStories, series: searchSeries, total: results.total }}
-      // browse
-      heroLessons={heroLessons}
-      heroImages={heroImages}
-      topWeek={topWeek}
-      shelves={shelves}
-      seriesList={seriesList}
+      // browse (de-duped)
+      heroLessons={browse.heroLessons}
+      heroImages={browse.heroImages}
+      topWeek={browse.topWeek}
+      shelves={browse.shelves}
+      seriesList={browse.seriesList}
       // actions
       onPlay={(lesson) => { load(buildStory(lesson, wisdomAudioUrls || {}, wisdomImageUrls || {})); navigate(`/v2/player/${lesson.id}`); }}
       onOpenSeries={(id) => navigate(`/v2/series/${id}`)}

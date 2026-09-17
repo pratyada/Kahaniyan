@@ -96,6 +96,12 @@ export default function V2Player() {
 
   useEffect(() => { setLang('English'); }, [current?.id]);
 
+  // Unique browser-tab title per story
+  useEffect(() => {
+    if (current?.title) document.title = `${current.title} · My Sleepy Tale`;
+    return () => { document.title = 'My Sleepy Tale — Bedtime Stories for Kids'; };
+  }, [current?.title]);
+
   // Playback — stored audio (with probe) → TTS fallback; non-English → translate + TTS
   useEffect(() => {
     if (!current) return;

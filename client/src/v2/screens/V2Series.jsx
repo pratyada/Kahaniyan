@@ -1,4 +1,5 @@
 // V2 Series detail — night-sky episode list. Playing an episode stays in V2.
+import { useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { ChevronLeft, Play, Moon } from 'lucide-react';
 import { SERIES } from '../../data/series.js';
@@ -14,6 +15,12 @@ export default function V2Series() {
   const { load } = usePlayer();
 
   const series = (SERIES || []).find((s) => s.id === seriesId);
+
+  useEffect(() => {
+    document.title = series ? `${series.title} · My Sleepy Tale` : 'My Sleepy Tale';
+    return () => { document.title = 'My Sleepy Tale — Bedtime Stories for Kids'; };
+  }, [series]);
+
   if (!series) {
     return (
       <div className="px-5 pt-16 text-center">
