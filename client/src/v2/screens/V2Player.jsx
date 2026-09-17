@@ -52,7 +52,7 @@ export default function V2Player() {
   const [sleepMin, setSleepMin] = useState(0);
   const [lang, setLang] = useState('English');
   const [copied, setCopied] = useState(false);
-  const [showText, setShowText] = useState(false);
+  const [showText, setShowText] = useState(true); // story text visible by default (collapsible)
   const sleepRef = useRef(null);
 
   // Ensure the story for THIS url is the active one (resolve + load if needed)
