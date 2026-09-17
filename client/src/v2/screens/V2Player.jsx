@@ -249,11 +249,7 @@ export default function V2Player() {
           <button onClick={() => setShowText((s) => !s)} className="mx-auto flex items-center gap-1.5 text-[12px] font-bold text-[#7A6B8A] hover:text-[#B8AAC8] transition">
             <BookOpen size={13} /> {showText ? 'Hide text' : 'Read along'} <ChevronDown size={13} style={{ transform: showText ? 'rotate(180deg)' : 'none', transition: 'transform .2s' }} />
           </button>
-          {showText && (
-            <div className="mt-3 max-h-[42vh] overflow-y-auto rounded-2xl bg-white/[0.04] ring-1 ring-white/10 p-4 font-display text-[15px] leading-relaxed text-[#D8CEE0] whitespace-pre-line">
-              {current.text}
-            </div>
-          )}
+          {showText && <HighlightedText text={current.text} progress={nar.progress || 0} />}
         </div>
       )}
 
@@ -266,6 +262,63 @@ export default function V2Player() {
           </button>
         ))}
       </div>
+    </div>
+  );
+}
+
+// Karaoke-style read-along: highlights the line being narrated (driven by playback
+// progress), dims past/future lines, and auto-scrolls to keep it in view. Matches
+// the production player's HighlightedText, restyled for the V2 night-sky theme.
+function HighlightedText({ text, progress }) {
+  const containerRef = useRef(null);
+  const activeRef = useRef(null);
+
+  const lines = (text || '').split('\n').filter((l) => l.trim());
+  const totalChars = (text || '').length || 1;
+  const adjusted = Math.min(1, progress || 0);
+
+  let charsSoFar = 0;
+  let activeLine = 0;
+  for (let i = 0; i < lines.length; i++) {
+    charsSoFar += lines[i].length + 1; // +1 for the newline
+    if (charsSoFar / totalChars > adjusted) { activeLine = i; break; }
+    if (i === lines.length - 1) activeLine = i;
+  }
+
+  useEffect(() => {
+    if (activeRef.current && containerRef.current) {
+      const c = containerRef.current;
+      const a = activeRef.current;
+      const cr = c.getBoundingClientRect();
+      const ar = a.getBoundingClientRect();
+      if (ar.top > cr.bottom - 80 || ar.bottom < cr.top + 20) {
+        c.scrollTo({ top: a.offsetTop - c.offsetTop - c.clientHeight / 3, behavior: 'smooth' });
+      }
+    }
+  }, [activeLine]);
+
+  return (
+    <div ref={containerRef} className="mt-3 max-h-[42vh] overflow-y-auto rounded-2xl bg-white/[0.04] ring-1 ring-white/10 p-4 font-display text-[15px] leading-[1.9]">
+      {lines.map((line, i) => {
+        const isActive = i === activeLine;
+        const isPast = i < activeLine;
+        return (
+          <p
+            key={i}
+            ref={isActive ? activeRef : null}
+            className="mb-3 rounded-lg px-2.5 py-1.5 transition-all duration-500"
+            style={
+              isActive
+                ? { background: 'rgba(246,196,83,0.12)', boxShadow: 'inset 0 0 0 1.5px rgba(246,196,83,0.55)', color: '#F7F1E8' }
+                : isPast
+                  ? { color: '#B8AAC8' }
+                  : { color: '#6B5F7A' }
+            }
+          >
+            {line}
+          </p>
+        );
+      })}
     </div>
   );
 }
