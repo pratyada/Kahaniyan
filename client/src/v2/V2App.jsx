@@ -6,7 +6,7 @@
 // Four tabs: Listen · Build · My World · Profile.
 // ─────────────────────────────────────────────────────────────
 import { useEffect } from 'react';
-import { Routes, Route, Navigate, NavLink, useLocation } from 'react-router-dom';
+import { Routes, Route, Navigate, NavLink, useLocation, useNavigate } from 'react-router-dom';
 import { Headphones, Wand2, Orbit } from 'lucide-react';
 import { useAuth } from '../hooks/useAuth.jsx';
 import { useFamilyProfile } from '../hooks/useFamilyProfile.js';
@@ -18,6 +18,8 @@ import Profile from './screens/Profile.jsx';
 import V2Player from './screens/V2Player.jsx';
 import V2Series from './screens/V2Series.jsx';
 import MyVoices from './screens/MyVoices.jsx';
+import WelcomeV2 from './screens/WelcomeV2.jsx';
+import SettingsV2 from './screens/SettingsV2.jsx';
 
 // Profile is NOT a nav item — it's reached via the username/avatar (sidebar bottom
 // card on desktop, avatar slot on the mobile bar). No duplicate profile icon.
@@ -28,6 +30,21 @@ const NAV = [
 ];
 
 export default function V2App() {
+  const { user } = useAuth();
+  const { profile, ready } = useFamilyProfile();
+  const { pathname } = useLocation();
+  const navigate = useNavigate();
+
+  // First-run: a signed-in user with no child set up → onboarding (once).
+  useEffect(() => {
+    if (!user || !ready) return;
+    let welcomed = false;
+    try { welcomed = localStorage.getItem('mst:v2welcomed') === '1'; } catch {}
+    if (!profile?.childName && !welcomed && !pathname.startsWith('/v2/welcome')) {
+      navigate('/v2/welcome', { replace: true });
+    }
+  }, [user, ready, profile?.childName, pathname, navigate]);
+
   // Force the night theme while in V2 so reused production cards (gold accents)
   // render correctly regardless of the user's day/night toggle. Restore on exit.
   useEffect(() => {
@@ -58,6 +75,8 @@ export default function V2App() {
             <Route path="/v2/world" element={<MyWorld />} />
             <Route path="/v2/profile" element={<Profile />} />
             <Route path="/v2/voices" element={<MyVoices />} />
+            <Route path="/v2/welcome" element={<WelcomeV2 />} />
+            <Route path="/v2/settings" element={<SettingsV2 />} />
             <Route path="*" element={<Navigate to="/v2" replace />} />
           </Routes>
         </div>

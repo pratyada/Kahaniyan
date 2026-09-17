@@ -195,9 +195,10 @@ function Footer() {
           </a>
         </div>
         <nav className="flex flex-wrap items-center justify-center gap-x-4 gap-y-1 text-[11px] text-[#7A6B8A]">
-          <a href="/aboutus" className="hover:text-[#B8AAC8]">About</a>
-          <a href="/blog/" className="hover:text-[#B8AAC8]">Blog</a>
-          <a href="/privacy" className="hover:text-[#B8AAC8]">Privacy</a>
+          {/* open in a new tab so the V2 shell/menu never changes */}
+          <a href="/aboutus" target="_blank" rel="noopener noreferrer" className="hover:text-[#B8AAC8]">About</a>
+          <a href="/blog/" target="_blank" rel="noopener noreferrer" className="hover:text-[#B8AAC8]">Blog</a>
+          <a href="/privacy" target="_blank" rel="noopener noreferrer" className="hover:text-[#B8AAC8]">Privacy</a>
           <a href="mailto:hello@mysleepytale.com" className="hover:text-[#B8AAC8]">Contact</a>
         </nav>
         <p className="text-[10px] text-[#7A6B8A] text-center leading-relaxed">My Sleepy Tale · Toronto, Canada · Bedtime stories that teach roots &amp; values</p>
