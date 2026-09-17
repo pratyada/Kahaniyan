@@ -37,6 +37,9 @@ export default function Build() {
   const timerRef = useRef(null);
 
   const pics = useMemo(() => Object.values(wisdomImageUrls || {}).filter(Boolean).slice(0, 8), [wisdomImageUrls]);
+  // Playable URL for the just-recorded clip (so you can replay before making magic)
+  const blobUrl = useMemo(() => (blob ? URL.createObjectURL(blob) : null), [blob]);
+  useEffect(() => () => { if (blobUrl) URL.revokeObjectURL(blobUrl); }, [blobUrl]);
   useEffect(() => { setLeft(sparklesLeft(isPaid)); }, [isPaid, step]);
   useEffect(() => () => { if (timerRef.current) clearInterval(timerRef.current); }, []);
 
@@ -266,9 +269,12 @@ export default function Build() {
           >
             {recording ? <Square size={46} className="text-white" fill="white" /> : <Mic size={56} strokeWidth={1.8} className="text-[#0D1B2A]" />}
           </button>
-          <p className="mt-4 font-display text-xl text-[#F7F1E8]">{recording ? `${mm}:${ss}` : 'Tap and tell me your story!'}</p>
+          <p className="mt-4 font-display text-xl text-[#F7F1E8]">{recording ? `${mm}:${ss}` : (blob ? 'Have a listen 👂' : 'Tap and tell me your story!')}</p>
+          {!recording && blob && blobUrl && (
+            <audio src={blobUrl} controls className="mt-4 w-full max-w-[380px]" />
+          )}
           {!recording && blob && (
-            <button onClick={makeMagic} className="mt-6 w-full max-w-[380px] flex items-center justify-center gap-2 rounded-full px-6 py-3.5 text-sm font-bold text-[#0D1B2A]" style={{ background: GOLD }}>
+            <button onClick={makeMagic} className="mt-5 w-full max-w-[380px] flex items-center justify-center gap-2 rounded-full px-6 py-3.5 text-sm font-bold text-[#0D1B2A]" style={{ background: GOLD }}>
               <Wand2 size={17} /> Make the magic ✨
             </button>
           )}
