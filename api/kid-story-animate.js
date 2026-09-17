@@ -114,7 +114,8 @@ async function submitJob(imageUrl, prompt) {
     method: 'POST',
     headers: hfHeaders(),
     body: JSON.stringify({
-      input: {
+      // Higgsfield expects the top-level field `params` (verified live: `input` → 422).
+      params: {
         model: HF_MODEL,
         prompt,
         input_images: [{ type: 'image_url', image_url: imageUrl }],

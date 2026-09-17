@@ -4,7 +4,7 @@
 // with a liveness probe → TTS fallback for dead URLs. Multilingual → language picker.
 import { useEffect, useRef, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { ChevronLeft, Play, Pause, RotateCcw, RotateCw, Moon, Mic, Timer, Globe, Share2, Check } from 'lucide-react';
+import { ChevronLeft, Play, Pause, RotateCcw, RotateCw, Moon, Mic, Timer, Globe, Share2, Check, BookOpen, ChevronDown } from 'lucide-react';
 import { usePlayer } from '../../hooks/usePlayer.jsx';
 import { useNarrator } from '../../hooks/useNarrator.js';
 import { useWisdomData } from '../../hooks/useWisdomData.js';
@@ -52,6 +52,7 @@ export default function V2Player() {
   const [sleepMin, setSleepMin] = useState(0);
   const [lang, setLang] = useState('English');
   const [copied, setCopied] = useState(false);
+  const [showText, setShowText] = useState(false);
   const sleepRef = useRef(null);
 
   // Ensure the story for THIS url is the active one (resolve + load if needed)
@@ -241,6 +242,20 @@ export default function V2Player() {
 
       {nar.error && <p className="mt-4 text-center text-[12px] text-[#f3727f]">{nar.error}</p>}
       {copied && <p className="mt-3 text-center text-[12px] font-bold" style={{ color: GOLD }}>🔗 Link copied — paste to share!</p>}
+
+      {/* Read along — text on demand (kept minimal/clean like a social player) */}
+      {current.text && (
+        <div className="mt-8">
+          <button onClick={() => setShowText((s) => !s)} className="mx-auto flex items-center gap-1.5 text-[12px] font-bold text-[#7A6B8A] hover:text-[#B8AAC8] transition">
+            <BookOpen size={13} /> {showText ? 'Hide text' : 'Read along'} <ChevronDown size={13} style={{ transform: showText ? 'rotate(180deg)' : 'none', transition: 'transform .2s' }} />
+          </button>
+          {showText && (
+            <div className="mt-3 max-h-[42vh] overflow-y-auto rounded-2xl bg-white/[0.04] ring-1 ring-white/10 p-4 font-display text-[15px] leading-relaxed text-[#D8CEE0] whitespace-pre-line">
+              {current.text}
+            </div>
+          )}
+        </div>
+      )}
 
       <div className="mt-8 flex items-center justify-center gap-2">
         <Timer size={14} className="text-[#7A6B8A]" />
