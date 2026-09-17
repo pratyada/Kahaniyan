@@ -52,8 +52,8 @@ import RadioBar from './components/RadioBar.jsx';
 // Rollback for anyone: append ?classic to any URL (persists) → old site.
 // Re-enable V2: append ?v2. Deep old routes (/admin, /blog, /aboutus, old share
 // links, SEO landing pages, etc.) are NEVER redirected — only the home entry.
-// STAGED: flip to true (one line) once Raksha confirms her Kids-Build retest.
-const V2_IS_DEFAULT = false;
+// LIVE: V2 is the default experience. Rollback for anyone with ?classic.
+const V2_IS_DEFAULT = true;
 
 import { AuthProvider, useAuth } from './hooks/useAuth.jsx';
 import { FamilyProfileProvider, useFamilyProfile } from './hooks/useFamilyProfile.js';
