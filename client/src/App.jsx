@@ -47,6 +47,14 @@ import BottomNav from './components/BottomNav.jsx';
 import BadgeUnlockToast from './components/BadgeUnlockToast.jsx';
 import PlayerBar from './components/PlayerBar.jsx';
 import RadioBar from './components/RadioBar.jsx';
+// ── V2 FLIP CONTROL ──
+// When true, mysleepytale.com/ sends real visitors into the V2 experience (/v2).
+// Rollback for anyone: append ?classic to any URL (persists) → old site.
+// Re-enable V2: append ?v2. Deep old routes (/admin, /blog, /aboutus, old share
+// links, SEO landing pages, etc.) are NEVER redirected — only the home entry.
+// STAGED: flip to true (one line) once Raksha confirms her Kids-Build retest.
+const V2_IS_DEFAULT = false;
+
 import { AuthProvider, useAuth } from './hooks/useAuth.jsx';
 import { FamilyProfileProvider, useFamilyProfile } from './hooks/useFamilyProfile.js';
 import { PlayerProvider, usePlayer } from './hooks/usePlayer.jsx';
@@ -80,8 +88,31 @@ function Shell() {
     trackPageView(location.pathname, document.title);
   }, [location.pathname]);
 
-  // ── MST V2 redesign — opt-in via /v2 path (feature flag). Isolated shell, existing routes untouched. ──
+  // Persist the classic/v2 rollback choice so it sticks across navigation.
+  useEffect(() => {
+    try {
+      const sp = new URLSearchParams(location.search);
+      if (sp.has('classic')) localStorage.setItem('mst:classic', '1');
+      if (sp.has('v2')) localStorage.removeItem('mst:classic');
+    } catch (e) { /* private mode / no storage */ }
+  }, [location.search]);
+
+  // ── MST V2 redesign — the app itself lives under /v2 (isolated shell). ──
   if (location.pathname.startsWith('/v2')) return <V2App />;
+
+  // ── V2 FLIP: home entry (mysleepytale.com/) opens V2 by default. ──
+  // Skipped when the visitor opted into classic (?classic or the sticky flag,
+  // unless ?v2 overrides it). Only '/' is redirected — every deep route stays put.
+  {
+    const sp = new URLSearchParams(location.search);
+    let wantsClassic = sp.has('classic');
+    try {
+      if (!sp.has('v2') && localStorage.getItem('mst:classic') === '1') wantsClassic = true;
+    } catch (e) { /* ignore */ }
+    if (V2_IS_DEFAULT && !wantsClassic && location.pathname === '/') {
+      return <Navigate to="/v2" replace />;
+    }
+  }
 
   // Wait for auth + profile to load
   if (authLoading || !ready) return null;

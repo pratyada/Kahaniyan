@@ -83,8 +83,11 @@ function handler(event) {
     : uri;
   if (LANDING[noTrailing]) return request;
 
-  // ── 3. Rewrite crawler request → /api/og, preserving the original URI+query ──
-  // Reconstruct the original query string so /player?storyId=… etc. resolve.
+  // ── 3. Redirect crawler → /api/og (Option A) ──
+  // A URI rewrite can't cross cache behaviors (CloudFront picks the origin from the
+  // ORIGINAL uri, before this function runs), so rewriting /v2/... → /api/og would
+  // still hit the S3 default behavior. Instead return a 302 to /api/og?path=…, which
+  // re-enters CloudFront and matches the /api/* behavior → OG Lambda. Crawlers follow it.
   var qs = request.querystring || {};
   var originalUri = uri;
   var pairs = [];
@@ -105,10 +108,12 @@ function handler(event) {
   }
   if (pairs.length) originalUri = uri + '?' + pairs.join('&');
 
-  request.uri = '/api/og';
-  request.querystring = {
-    path: { value: encodeURIComponent(originalUri) }
+  return {
+    statusCode: 302,
+    statusDescription: 'Found',
+    headers: {
+      'location': { value: '/api/og?path=' + encodeURIComponent(originalUri) },
+      'cache-control': { value: 'no-store' }
+    }
   };
-
-  return request;
 }

@@ -316,7 +316,20 @@
     <script>
       (function () {
         try {
-          if (location.pathname.indexOf('/v2') !== 0) return;
+          // Show the V2 splash on /v2 always, and on '/' (the flipped home) unless
+          // the visitor opted into the classic site. Non-JS crawlers ignore this
+          // script and keep the static SEO fallback in #root.
+          // Keep in sync with V2_IS_DEFAULT in src/App.jsx (two-line flip).
+          var V2_IS_DEFAULT = false;
+          var p = location.pathname;
+          var onV2 = p.indexOf('/v2') === 0;
+          var classic = false;
+          try {
+            var sp = new URLSearchParams(location.search);
+            classic = sp.has('classic') || (!sp.has('v2') && localStorage.getItem('mst:classic') === '1');
+          } catch (e) {}
+          var onFlippedHome = V2_IS_DEFAULT && p === '/' && !classic;
+          if (!onV2 && !onFlippedHome) return;
           var root = document.getElementById('root');
           if (!root) return;
           var name = '';
