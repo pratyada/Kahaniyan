@@ -68,9 +68,10 @@ export default function Build() {
   const onUpload = async (e) => {
     const file = e.target.files?.[0];
     if (!file) return;
-    // Slice-1: use a local object URL to record against; animate needs a hosted URL,
-    // so uploaded photos currently can't be animated (library pictures can). TODO: image upload.
-    setPicture({ url: URL.createObjectURL(file), local: true });
+    // Keep the File so makeMagic can upload it to S3 → it persists in My World and can
+    // animate. (Before, we only kept a local object URL that never left the device, so
+    // the saved story had no image and showed blank in My World.)
+    setPicture({ url: URL.createObjectURL(file), local: true, file });
     if (!hasConsent()) { setConsentOpen(true); return; }
     setStep('record');
   };
@@ -142,13 +143,30 @@ export default function Build() {
       const put = await fetch(pre.uploadUrl, { method: 'PUT', headers: { 'Content-Type': uploadType }, body: upload }).catch(() => null);
       if (!put || !put.ok) throw step('Could not save the recording. Please try again.');
 
+      // 2b) An uploaded photo lives only on the device — push it to S3 so it persists in
+      // My World (and can animate). Library pictures are already hosted. Best-effort:
+      // if the upload fails the story still saves with the child's voice.
+      let promptImageUrl = picture.local ? null : picture.url;
+      if (picture.local && picture.file) {
+        try {
+          const small = await shrinkImage(picture.file);
+          const imageBase64 = await blobToBase64(small);
+          const key = `images/kids/${pre.kidId}/${pre.storyId}.jpg`;
+          const up = await fetch('/api/upload-image', {
+            method: 'POST', headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ uid: user.uid, key, image: imageBase64, contentType: 'image/jpeg' }),
+          }).then((r) => r.json());
+          if (up?.imageUrl) promptImageUrl = up.imageUrl;
+        } catch { /* keep null — story still saves with the voice */ }
+      }
+
       let saveRes = {};
       try {
         saveRes = await fetch('/api/kid-story-save', {
           method: 'POST', headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
             parentUid: user.uid, profileIndex: activeIndex, storyId: pre.storyId, audioKey: pre.audioKey,
-            title: `${kidName}'s story`, promptImageUrl: picture.local ? null : picture.url,
+            title: `${kidName}'s story`, promptImageUrl,
             promptType: 'image', language: 'English', durationSeconds: seconds, transcript: v.transcript,
           }),
         }).then((r) => r.json());
@@ -157,9 +175,10 @@ export default function Build() {
       useSparkle(isPaid);
 
       // 3) Animate — BEST EFFORT. Provider may be unavailable; the story still exists
-      // with the picture + the child's voice. Never fail the flow on animation.
+      // with the picture + the child's voice. Never fail the flow on animation. Works for
+      // any hosted image (library or a just-uploaded photo).
       let videoUrl = null;
-      if (!picture.local) {
+      if (promptImageUrl) {
         try {
           const a = await fetch('/api/kid-story-animate', {
             method: 'POST', headers: { 'Content-Type': 'application/json' },
@@ -169,7 +188,7 @@ export default function Build() {
         } catch { /* animation unavailable — fine */ }
       }
 
-      setResult({ videoUrl, imageUrl: picture.url, audioUrl: URL.createObjectURL(blob), storyId: pre.storyId });
+      setResult({ videoUrl, imageUrl: promptImageUrl || picture.url, audioUrl: URL.createObjectURL(blob), storyId: pre.storyId });
       setStep('reveal');
     } catch (e) {
       setError(e?.message || 'Something went wrong. Please try again.');
@@ -312,6 +331,22 @@ export default function Build() {
       </section>
     </Wrap>
   );
+}
+
+// Downscale a phone photo to a sane size before uploading — keeps the base64 payload
+// well under the Lambda body limit and speeds up the save. Falls back to the original.
+async function shrinkImage(file, max = 1280, quality = 0.85) {
+  const url = URL.createObjectURL(file);
+  try {
+    const img = await new Promise((res, rej) => { const i = new Image(); i.onload = () => res(i); i.onerror = rej; i.src = url; });
+    const scale = Math.min(1, max / Math.max(img.width || max, img.height || max));
+    const w = Math.max(1, Math.round((img.width || max) * scale));
+    const h = Math.max(1, Math.round((img.height || max) * scale));
+    const canvas = document.createElement('canvas');
+    canvas.width = w; canvas.height = h;
+    canvas.getContext('2d').drawImage(img, 0, 0, w, h);
+    return await new Promise((res) => canvas.toBlob((b) => res(b || file), 'image/jpeg', quality));
+  } catch { return file; } finally { URL.revokeObjectURL(url); }
 }
 
 function Wrap({ children }) {
