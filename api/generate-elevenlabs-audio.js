@@ -1,8 +1,12 @@
 // ElevenLabs TTS — premium audio generation for pre-loaded stories AND cloned voices.
 // Pass `voiceId` (a cloned ElevenLabs voice) for personalized playback — paid only.
 import { getUserTier, isPaidTier } from './_entitlement.js';
+import crypto from 'crypto';
+import { S3Client, HeadObjectCommand, GetObjectCommand, PutObjectCommand } from '@aws-sdk/client-s3';
 
 const ELEVENLABS_KEY = process.env.ELEVENLABS_API_KEY;
+const s3 = new S3Client({ region: 'us-east-1' });
+const CACHE_BUCKET = 'mysleepytale-app';
 
 const VOICES = {
   george: { id: 'JBFqnCBsd6RMkjVDRZzb', name: 'George - Warm Storyteller' },
@@ -25,7 +29,9 @@ export default async function handler(req, res) {
     return res.status(503).json({ error: 'ElevenLabs not configured' });
   }
 
-  const { text, voice = 'george', voiceId, uid, model = 'eleven_multilingual_v2', stability = 0.6, similarity = 0.8 } = req.body || {};
+  // Turbo v2.5 is ~3-4x faster than multilingual_v2 with near-identical quality —
+  // big cut to the first-play wait for cloned voices.
+  const { text, voice = 'george', voiceId, uid, model = 'eleven_turbo_v2_5', stability = 0.6, similarity = 0.8 } = req.body || {};
 
   if (!text || text.length < 10) {
     return res.status(400).json({ error: 'Text too short' });
@@ -46,6 +52,8 @@ export default async function handler(req, res) {
   // Split long text into small chunks and generate ALL in parallel to stay under 30s
   const MAX_CHUNK = 2000; // chars per chunk — small enough for ~8s each
   const fullText = text.slice(0, 10000);
+  // Cache key by voice + model + exact text → same story in same voice replays instantly.
+  const cacheKey = `tts-cache/${resolvedVoiceId}/${crypto.createHash('sha256').update(model + '|' + fullText).digest('hex').slice(0, 40)}.mp3`;
 
   const generateChunk = async (chunk) => {
     const r = await fetch(`https://api.elevenlabs.io/v1/text-to-speech/${resolvedVoiceId}`, {
@@ -58,6 +66,21 @@ export default async function handler(req, res) {
   };
 
   try {
+    // ── Cache HIT: serve the previously generated clip instantly (instant replay) ──
+    try {
+      await s3.send(new HeadObjectCommand({ Bucket: CACHE_BUCKET, Key: cacheKey }));
+      const obj = await s3.send(new GetObjectCommand({ Bucket: CACHE_BUCKET, Key: cacheKey }));
+      const cached = Buffer.from(await obj.Body.transformToByteArray());
+      if (cached.length > 0) {
+        res.setHeader('Content-Type', 'audio/mpeg');
+        res.setHeader('Cache-Control', 'public, max-age=86400');
+        res.setHeader('X-Cache', 'HIT');
+        res.write(cached);
+        res.end();
+        return;
+      }
+    } catch { /* cache miss → generate below */ }
+
     let audioBuffer;
     if (fullText.length <= MAX_CHUNK) {
       audioBuffer = await generateChunk(fullText);
@@ -79,8 +102,14 @@ export default async function handler(req, res) {
       audioBuffer = Buffer.concat(buffers);
     }
 
+    // Store for instant replay next time (best-effort — never fail playback on this).
+    try {
+      await s3.send(new PutObjectCommand({ Bucket: CACHE_BUCKET, Key: cacheKey, Body: audioBuffer, ContentType: 'audio/mpeg', CacheControl: 'public, max-age=2592000' }));
+    } catch { /* cache write failed — fine */ }
+
     res.setHeader('Content-Type', 'audio/mpeg');
     res.setHeader('Cache-Control', 'public, max-age=86400');
+    res.setHeader('X-Cache', 'MISS');
     // Match api/tts.js: write() then end() — the Lambda adapter drops a buffer
     // passed directly to res.end(audioBuffer) (produced an empty 0-byte response).
     res.write(audioBuffer);
