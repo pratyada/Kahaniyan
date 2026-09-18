@@ -8,6 +8,7 @@ import { useAuth } from '../../hooks/useAuth.jsx';
 import { useFamilyProfile } from '../../hooks/useFamilyProfile.js';
 import { useWisdomData } from '../../hooks/useWisdomData.js';
 import { sparklesLeft, useSparkle, hasConsent, grantConsent, blobToBase64 } from '../kidbuild.js';
+import { toWav } from '../wav.js';
 import { GOLD } from '../ui.js';
 
 const MAX_SEC = 120;
@@ -109,13 +110,18 @@ export default function Build() {
     setStep('checking'); setError('');
     const step = (m) => new Error(m);
     try {
+      // Convert to WAV so the shared recording plays on EVERY device (incl. iOS
+      // Safari, which can't decode webm/opus). Fall back to original on failure.
+      let upload = blob, uploadType = 'audio/webm';
+      try { upload = await toWav(blob); uploadType = 'audio/wav'; } catch { upload = blob; uploadType = blob.type || 'audio/webm'; }
+
       // 1) Safety check (transcribe + moderate)
-      const audioBase64 = await blobToBase64(blob);
+      const audioBase64 = await blobToBase64(upload);
       let v;
       try {
         const vRes = await fetch('/api/content-validate', {
           method: 'POST', headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ audioBase64, contentType: 'audio/webm', kidAge }),
+          body: JSON.stringify({ audioBase64, contentType: uploadType, kidAge }),
         });
         if (!vRes.ok) throw 0;
         v = await vRes.json();
@@ -128,12 +134,12 @@ export default function Build() {
       try {
         pre = await fetch('/api/kid-story-presign', {
           method: 'POST', headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ parentUid: user.uid, profileIndex: activeIndex, contentType: 'audio/webm' }),
+          body: JSON.stringify({ parentUid: user.uid, profileIndex: activeIndex, contentType: uploadType }),
         }).then((r) => r.json());
       } catch { throw step('Could not reach the story server. Please try again.'); }
       if (!pre?.uploadUrl) throw step(pre?.error || 'Could not start the upload.');
 
-      const put = await fetch(pre.uploadUrl, { method: 'PUT', headers: { 'Content-Type': 'audio/webm' }, body: blob }).catch(() => null);
+      const put = await fetch(pre.uploadUrl, { method: 'PUT', headers: { 'Content-Type': uploadType }, body: upload }).catch(() => null);
       if (!put || !put.ok) throw step('Could not save the recording. Please try again.');
 
       let saveRes = {};

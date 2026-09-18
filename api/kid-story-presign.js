@@ -22,7 +22,10 @@ export default async function handler(req, res) {
 
   const kidId = `${parentUid}_${profileIndex}`;
   const storyId = `ks_${Date.now()}_${Math.random().toString(36).slice(2, 6)}`;
-  const ext = contentType.includes('mp4') ? 'mp4' : 'webm';
+  const ext = contentType.includes('wav') ? 'wav'
+    : (contentType.includes('mp4') || contentType.includes('m4a') || contentType.includes('aac')) ? 'm4a'
+    : (contentType.includes('mpeg') || contentType.includes('mp3')) ? 'mp3'
+    : 'webm';
   const audioKey = `audio/kids/${kidId}/${storyId}.${ext}`;
 
   try {
