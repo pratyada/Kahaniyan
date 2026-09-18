@@ -6,6 +6,7 @@ import { ChevronLeft, Mic, Square, Check, Trash2, Plus, Gem, Volume2 } from 'luc
 import { useAuth } from '../../hooks/useAuth.jsx';
 import { useFamilyProfile } from '../../hooks/useFamilyProfile.js';
 import { blobToBase64 } from '../kidbuild.js';
+import { toWav } from '../wav.js';
 import { getActiveVoice, setActiveVoice } from '../voice.js';
 import { GOLD } from '../ui.js';
 
@@ -63,10 +64,13 @@ export default function MyVoices() {
     if (!blob || !name.trim()) { setError('Add a name and a recording first.'); return; }
     setMode('weaving'); setError('');
     try {
-      const audioBase64 = await blobToBase64(blob);
+      // Convert to WAV — ElevenLabs reliably accepts wav/mp3/m4a; webm/opus often fails.
+      let sample = blob, ct = 'audio/webm';
+      try { sample = await toWav(blob, 22050); ct = 'audio/wav'; } catch { sample = blob; ct = blob.type || 'audio/webm'; }
+      const audioBase64 = await blobToBase64(sample);
       const r = await fetch('/api/clone-voice', {
         method: 'POST', headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ uid: user.uid, name: name.trim(), relation: '', audioBase64, language: 'English' }),
+        body: JSON.stringify({ uid: user.uid, name: name.trim(), relation: '', audioBase64, contentType: ct, language: 'English' }),
       });
       if (r.status === 402) { setMode('upsell'); return; }
       const d = await r.json();

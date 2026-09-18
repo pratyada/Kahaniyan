@@ -19,7 +19,7 @@ export default async function handler(req, res) {
     return res.status(503).json({ error: 'ElevenLabs not configured' });
   }
 
-  const { uid, name, relation, audioBase64, audioUrl, language, description } = req.body || {};
+  const { uid, name, relation, audioBase64, audioUrl, language, description, contentType } = req.body || {};
 
   if (!name) {
     return res.status(400).json({ error: 'Voice name is required' });
@@ -61,7 +61,10 @@ export default async function handler(req, res) {
     const formData = new FormData();
     formData.append('name', `My Sleepy Tale - ${name}`);
     formData.append('description', description || `Voice clone for ${name} (${language || 'English'})`);
-    formData.append('files', new Blob([audioBuffer], { type: 'audio/webm' }), `${name}.webm`);
+    // ElevenLabs accepts wav/mp3/m4a reliably; webm/opus often fails. Client sends WAV.
+    const ct = contentType || 'audio/webm';
+    const ext = ct.includes('wav') ? 'wav' : (ct.includes('mp4') || ct.includes('m4a')) ? 'm4a' : (ct.includes('mpeg') || ct.includes('mp3')) ? 'mp3' : 'webm';
+    formData.append('files', new Blob([audioBuffer], { type: ct }), `${name}.${ext}`);
 
     const response = await fetch('https://api.elevenlabs.io/v1/voices/add', {
       method: 'POST',
