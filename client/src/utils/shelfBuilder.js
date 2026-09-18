@@ -78,7 +78,7 @@ export function buildThemeShelves(allLessons, beliefs) {
 // tradition 'universal', which excludes every religious series.
 const LEARNING_PATH = [
   { id: 'lp-world',    title: '🌍 Explore the World',   series: ['discover-india', 'discover-canada', 'discover-united-states', 'discover-united-kingdom', 'discover-japan', 'discover-china', 'discover-australia', 'discover-brazil', 'discover-france', 'discover-egypt', 'discover-mexico', 'discover-italy', 'discover-germany', 'discover-southkorea', 'discover-russia', 'discover-southafrica', 'discover-turkey', 'discover-uae', 'discover-spain', 'discover-newzealand'] },
-  { id: 'lp-space',    title: '🚀 Science & Space',     series: ['planets-and-stars', 'planet-explorers', 'little-astronaut', 'rocket-adventures', 'rocket-adventures-team'] },
+  { id: 'lp-space',    title: '🚀 Science & Space',     series: ['planets-and-stars', 'little-astronaut', 'rocket-adventures', 'rocket-adventures-team'] },
   { id: 'lp-numbers',  title: '🔢 Numbers & Shapes',    series: ['maths-adventures', 'geometry-shapes'] },
   { id: 'lp-animals',  title: '🦁 Animal Tales',        series: ['who-would-win-animals', 'who-would-win-series', 'panchatantra-tales'] },
   { id: 'lp-towers',   title: '🏙️ Amazing Structures',  series: ['tallest-towers'] },

@@ -543,78 +543,6 @@ That night, {childName}, remember The Kindness Squad. A cape woven from kindness
   },
 
   {
-    id: 'planet-explorers', 
-    title: 'Planet Explorers',
-    icon: '🪐',
-    gradient: 'linear-gradient(135deg, #1e1b4b 0%, #312e81 50%, #fbbf24 100%)',
-    description: 'Travel the solar system — Moon, Mars, and Pluto each have a story to tell.',
-    ageRange: '4-8',
-    totalEpisodes: 3,
-    episodes: [
-      {
-        id: 'pe_ep1_moon', episodeNumber: 1, title: 'Why the Moon Is Never Lonely',
-        subtitle: 'The Moon thinks nobody cares. The Sun shows her the truth.',
-        tradition: 'universal', theme: 'wisdom', durationMinutes: 4,
-        source: 'Planet Explorers · Episode 1',
-        body: `The Moon looked down at Earth and sighed. "Everyone has friends down there. Birds fly together. Fish swim in schools. Children play in groups. But I am alone up here."
-
-The Sun heard this and said: "Moon, look again. Every night, billions of children look up at you before they sleep. You are the last thing they see. The thing that makes them feel safe in the dark."
-
-The Moon blinked. "They look at me?"
-
-"Every single night. You are never alone, Moon. You just can't see your friends from up there. But they see you."
-
-The Moon glowed a little brighter that night. Not from the Sun's reflection. From something else. Something warmer.
-
-That night, {childName}, remember the Moon. Sometimes when you feel alone, it's not because nobody cares. It's because you can't see how many people are thinking of you right now. Look up at the Moon tonight — and know that the Moon is looking back at you.`,
-      },
-      {
-        id: 'pe_ep2_mars', episodeNumber: 2, title: 'Why Mars Is Red',
-        subtitle: 'Mars was blue once. Then he chose to face the Sun.',
-        tradition: 'universal', theme: 'courage', durationMinutes: 4,
-        source: 'Planet Explorers · Episode 2',
-        body: `Long ago, Mars was blue like Earth. Oceans, rivers, rain. But one day, the Sun grew hotter. The oceans began to boil.
-
-Mars had a choice: hide behind Jupiter or face the Sun directly.
-
-Mars chose to face it. Alone. The heat burned his oceans away. Turned his soil red with iron. Changed him forever. But Mars never moved. Never hid.
-
-Now, when humans look up, they see that red planet and say: "One day, we will live there." Because something about Mars — his stubbornness, his refusal to hide — makes humans want to be near him.
-
-Jupiter, who had offered to shield Mars, asked: "Do you regret it?"
-
-Mars looked at his red, dusty surface. No oceans. No rivers. No rain. "I am not who I was," he said. "But I am still here. And I faced it."
-
-That night, {childName}, remember Mars. Facing something hard might change you. But hiding from it changes you more — and not in a good way. Be like Mars. Face it. Even if it turns you red.`,
-      },
-      {
-        id: 'pe_ep3_pluto', episodeNumber: 3, title: 'Pluto\'s Big Heart',
-        subtitle: 'They said Pluto was too small. Then NASA found something incredible.',
-        tradition: 'universal', theme: 'humility', durationMinutes: 4,
-        source: 'Planet Explorers · Episode 3',
-        body: `When they said Pluto was too small to be a planet, little Pluto cried. All his life, he had been one of the nine. Now they said eight was enough.
-
-"You're too small," they said. "Too far. Too cold. Not enough."
-
-Pluto drifted away. Alone in the dark edge of the solar system. The other planets stopped talking about him.
-
-But then, a spacecraft came. From Earth. Just to see HIM. It traveled 9 years and 3 billion miles — just for Pluto.
-
-And when it arrived, it photographed something no one expected: a giant, heart-shaped glacier on Pluto's surface. Bigger than Texas. Visible from space.
-
-The whole world gasped. Pluto had the biggest heart in the solar system. You just had to look closely.
-
-Saturn said: "We should have looked closer."
-
-Jupiter said: "We should have visited sooner."
-
-The Moon — who understood loneliness — said: "We should have never stopped calling him family."
-
-That night, {childName}, remember Pluto. Being small does not mean being unimportant. Sometimes the smallest ones have the biggest hearts. And the people who seem the farthest away might be the ones who need your visit the most.`,
-      },
-    ],
-  },
-  {
     id: 'rainbow-kindergarten-jlps-yr25-26',
     title: 'Rainbow Kindergarten Adventures',
     icon: '🌈',
@@ -2409,13 +2337,13 @@ That night, {childName}, remember Zain's Measurement Mission. The world is full 
   },
 
   {
-    id: 'planets-and-stars', 
+    id: 'planets-and-stars',
     title: 'Planets & Stars',
     icon: '🪐',
     gradient: 'linear-gradient(135deg, #2e1065 0%, #7c3aed 50%, #fbbf24 100%)',
-    description: 'Why does the Moon glow? Why is Mars red? Each planet has a personality, a story, and a life lesson — bedtime tales from across the solar system.',
-    ageRange: '3-7',
-    totalEpisodes: 5,
+    description: 'Why does the Moon glow? Why is Mars red? What is a black hole? Each planet, star and wonder of space has a personality, a story, and a gentle life lesson — bedtime tales from across the whole universe.',
+    ageRange: '3-8',
+    totalEpisodes: 9,
     episodes: [
       {
         id: 'ps_ep1_moon', episodeNumber: 1, title: 'Why the Moon Glows',
@@ -2615,6 +2543,88 @@ But it was little Mercury who said the truest thing: "Being small never meant be
 Pluto's heart glowed in the permanent twilight of the outer solar system. He was still small. Still cold. Still far away. But the whole world knew his name again. And this time, they knew it for the right reason.
 
 That night, {childName}, remember Pluto. You don't have to be the biggest or the closest to matter. Sometimes the smallest, most distant person in the room has the biggest heart of all. And when someone finally takes the time to look — really look — they'll see it shining.`,
+      },
+      {
+        id: 'pe_ep1_moon', episodeNumber: 6, title: 'Why the Moon Is Never Lonely',
+        subtitle: 'The Moon thinks nobody cares. The Sun shows her the truth.',
+        tradition: 'universal', theme: 'wisdom', durationMinutes: 4,
+        source: 'Planets & Stars · Episode 6',
+        body: `The Moon looked down at Earth and sighed. "Everyone has friends down there. Birds fly together. Fish swim in schools. Children play in groups. But I am alone up here."
+
+The Sun heard this and said: "Moon, look again. Every night, billions of children look up at you before they sleep. You are the last thing they see. The thing that makes them feel safe in the dark."
+
+The Moon blinked. "They look at me?"
+
+"Every single night. You are never alone, Moon. You just can't see your friends from up there. But they see you."
+
+The Moon glowed a little brighter that night. Not from the Sun's reflection. From something else. Something warmer.
+
+That night, {childName}, remember the Moon. Sometimes when you feel alone, it's not because nobody cares. It's because you can't see how many people are thinking of you right now. Look up at the Moon tonight — and know that the Moon is looking back at you.`,
+      },
+      {
+        id: 'pe_ep2_mars', episodeNumber: 7, title: 'Why Mars Is Red',
+        subtitle: 'Mars was blue once. Then he chose to face the Sun.',
+        tradition: 'universal', theme: 'courage', durationMinutes: 4,
+        source: 'Planets & Stars · Episode 7',
+        body: `Long ago, Mars was blue like Earth. Oceans, rivers, rain. But one day, the Sun grew warmer. The oceans began to drift away into the sky.
+
+Mars had a choice: hide behind Jupiter or face the Sun directly.
+
+Mars chose to face it. Alone. The warmth carried his oceans up into space. Turned his soil red with iron. Changed him forever. But Mars never moved. Never hid.
+
+Now, when humans look up, they see that red planet and say: "One day, we will visit there." Because something about Mars — his steadiness, his refusal to hide — makes humans want to be near him.
+
+Jupiter, who had offered to shield Mars, asked: "Do you wish you had hidden?"
+
+Mars looked at his red, dusty surface. No oceans. No rivers. No rain. "I am not who I was," he said. "But I am still here. And I faced it."
+
+That night, {childName}, remember Mars. Facing something hard might change you. But hiding from it changes you more. Be like Mars. Face it — gently, bravely — even if it turns you a brand new colour.`,
+      },
+      {
+        id: 'pe_ep3_pluto', episodeNumber: 8, title: "Pluto's Big Heart",
+        subtitle: 'They said Pluto was too small. Then a little spaceship found something wonderful.',
+        tradition: 'universal', theme: 'humility', durationMinutes: 4,
+        source: 'Planets & Stars · Episode 8',
+        body: `When they said Pluto was too small to be a planet, little Pluto felt very quiet inside. All his life, he had been one of the nine. Now they said eight was enough.
+
+"You're small," they said. "Far away. Cold."
+
+Pluto drifted along the gentle, dark edge of the solar system, feeling forgotten.
+
+But then, a little spaceship came. All the way from Earth. Just to see HIM. It travelled nine whole years and three billion miles — just for Pluto.
+
+And when it arrived, it took a photograph of something nobody expected: a giant, heart-shaped patch of soft, bright ice on Pluto's surface. Bigger than a whole country. Shining out into space.
+
+The whole world smiled. Pluto had the biggest heart in the solar system. You just had to look closely.
+
+Saturn said: "We should have looked closer." Jupiter said: "We should have visited sooner." And the Moon — who understood loneliness — said: "We should have never stopped calling him family."
+
+That night, {childName}, remember Pluto. Being small does not mean being unimportant. Sometimes the smallest ones have the biggest hearts. And the friend who seems the farthest away might be the one who most loves your visit.`,
+      },
+      {
+        id: 'ps_ep9_blackhole', episodeNumber: 9, title: 'What Is a Black Hole?',
+        subtitle: 'A giant star grew so full of love it folded the sky into a cozy, secret pocket.',
+        tradition: 'universal', theme: 'wisdom', durationMinutes: 5,
+        source: 'Planets & Stars · Episode 9',
+        body: `Far past the very last planet, where the sky is soft and velvet dark, there once lived a giant star named Blaze. Blaze was the biggest, brightest star for a billion miles. He shone so warmly that little comets came just to toast their frosty tails.
+
+But being a giant star is heavy, heavy work. Every single day, Blaze held himself up against his own great weight — like a champion balancing a whole mountain on his hands. For millions and millions of years, he held on.
+
+One peaceful night, Blaze grew sleepy. "I think," he whispered, with a yawn as wide as the sky, "it's time for a good long rest." And so, very gently, Blaze began to tuck himself in — pulling smaller, and smaller, and smaller — until he folded his whole enormous self into a spot tinier than a whisper.
+
+And THAT, {childName}, is the secret of a black hole. It is not really a hole at all! It is a giant star that hugged itself so snugly that it pressed a little dimple into space — the way your head makes a cozy dip when it sinks into a soft, sleepy pillow.
+
+Now here is the magic part. Everything in the whole universe has a pull. The Earth pulls you gently down to your bed so you don't float away at night. That gentle pull has a name — gravity. Gravity is simply how much a thing likes to keep others close. The more there is of you, the bigger and warmer your hug.
+
+And Blaze? Oh, Blaze now had the biggest hug in all of space. So big that even light — the fastest, zippiest, most ticklish traveler there is — loves to swirl around him, round and round, glowing in slow and dreamy circles, like a firefly dancing near a lantern.
+
+A tiny blue star peeked over, a little unsure. "Is he… scary?"
+
+"Not at all," said the wise old Moon, who could see very far. "He is only quiet now. He keeps every song, every sparkle, and every story that ever drifted his way — safe, forever, in his cozy pocket of sky. Nothing he loves is ever lost."
+
+So the little stars began to twirl closer, and Blaze spun them softly, gently, round and round — like a grandfather rocking a cradle in the dark.
+
+That night, {childName}, remember the black hole. The very biggest pull in the whole universe wasn't made from being loud, or scary, or fast. It was made from a giant, sleepy heart that simply had a LOT of love to hold. Gravity is just love you can feel — the quiet, invisible way that big things keep little things safe and close. And guess what? You have your own gravity too. The more kindness you carry inside, the more gently the whole world spins toward you.`,
       },
     ],
   },
