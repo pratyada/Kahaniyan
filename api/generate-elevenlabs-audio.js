@@ -81,8 +81,10 @@ export default async function handler(req, res) {
 
     res.setHeader('Content-Type', 'audio/mpeg');
     res.setHeader('Cache-Control', 'public, max-age=86400');
-    res.setHeader('X-Voice-Used', voiceConfig.name);
-    res.end(audioBuffer);
+    // Match api/tts.js: write() then end() — the Lambda adapter drops a buffer
+    // passed directly to res.end(audioBuffer) (produced an empty 0-byte response).
+    res.write(audioBuffer);
+    res.end();
   } catch (err) {
     console.error('ElevenLabs error:', err);
     return res.status(500).json({ error: 'Audio generation failed' });
