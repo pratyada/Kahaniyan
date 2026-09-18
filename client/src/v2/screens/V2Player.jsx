@@ -122,24 +122,31 @@ export default function V2Player() {
 
     (async () => {
       let audio = null;
-      // Cloned voice selected → always regenerate in that voice (skip default stored audio)
-      if (activeVoice?.id && current.text) {
-        try { audio = await nar.generate({ text: current.text, customVoiceId: activeVoice.id, uid: user?.uid }); } catch { /* nar.error */ }
-      }
-      if (!audio && !activeVoice?.id && lang === 'English' && current.audioUrl) {
+      // A CHILD'S OWN RECORDING (kid-created story) must ALWAYS play their real
+      // voice — never a cloned voice, never AI/TTS. Play the stored audio directly.
+      const isKidRecording = current.isWisdom === false && !!current.audioUrl;
+      if (isKidRecording) {
         audio = nar.loadCached(current.audioUrl);
-        const ok = await probe(audio);
-        if (!ok || cancelled) { try { audio.pause(); audio.src = ''; audio.load(); } catch {} audio = null; }
-      }
-      if (!audio && current.text && !cancelled) {
-        let text = current.text;
-        if (lang !== 'English') {
-          try {
-            const r = await fetch('/api/translate', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ text, language: lang }) });
-            if (r.ok) { const { translated } = await r.json(); if (translated) text = translated; }
-          } catch { /* keep English text */ }
+      } else {
+        // Cloned voice selected → regenerate generic stories in that voice
+        if (activeVoice?.id && current.text) {
+          try { audio = await nar.generate({ text: current.text, customVoiceId: activeVoice.id, uid: user?.uid }); } catch { /* nar.error */ }
         }
-        try { audio = await nar.generate({ text, narrator: current.voice || 'AI Narrator', language: 'English' }); } catch { /* nar.error */ }
+        if (!audio && !activeVoice?.id && lang === 'English' && current.audioUrl) {
+          audio = nar.loadCached(current.audioUrl);
+          const ok = await probe(audio);
+          if (!ok || cancelled) { try { audio.pause(); audio.src = ''; audio.load(); } catch {} audio = null; }
+        }
+        if (!audio && current.text && !cancelled) {
+          let text = current.text;
+          if (lang !== 'English') {
+            try {
+              const r = await fetch('/api/translate', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ text, language: lang }) });
+              if (r.ok) { const { translated } = await r.json(); if (translated) text = translated; }
+            } catch { /* keep English text */ }
+          }
+          try { audio = await nar.generate({ text, narrator: current.voice || 'AI Narrator', language: 'English' }); } catch { /* nar.error */ }
+        }
       }
       if (audio && !cancelled) {
         const go = () => audio.play?.().catch(() => {});
