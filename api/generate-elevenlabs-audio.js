@@ -1,6 +1,7 @@
 // ElevenLabs TTS — premium audio generation for pre-loaded stories AND cloned voices.
 // Pass `voiceId` (a cloned ElevenLabs voice) for personalized playback — paid only.
-import { getUserTier, canUseClonedVoice } from './_entitlement.js';
+import { getUserTier, canUseClonedVoice, isPaidTier } from './_entitlement.js';
+import { getFirestore } from './_firebase.js';
 import crypto from 'crypto';
 import { S3Client, HeadObjectCommand, GetObjectCommand, PutObjectCommand } from '@aws-sdk/client-s3';
 
@@ -41,8 +42,9 @@ export default async function handler(req, res) {
 
   // A cloned voice (raw voiceId) is a paid feature — verify server-side.
   let resolvedVoiceId = voiceConfig.id;
+  let tier = 'free';
   if (voiceId) {
-    const tier = await getUserTier(uid);
+    tier = await getUserTier(uid);
     if (!canUseClonedVoice(tier)) {
       return res.status(402).json({ error: 'upgrade_required', message: 'Cloned voices need Family Plus.' });
     }
@@ -54,6 +56,8 @@ export default async function handler(req, res) {
   const fullText = text.slice(0, 10000);
   // Cache key by voice + model + exact text → same story in same voice replays instantly.
   const cacheKey = `tts-cache/${resolvedVoiceId}/${crypto.createHash('sha256').update(model + '|' + fullText).digest('hex').slice(0, 40)}.mp3`;
+  // Story key by text only (voice-agnostic) → for the monthly distinct-story cap.
+  const storyKey = crypto.createHash('sha256').update(fullText).digest('hex').slice(0, 40);
 
   const generateChunk = async (chunk) => {
     const r = await fetch(`https://api.elevenlabs.io/v1/text-to-speech/${resolvedVoiceId}`, {
@@ -80,6 +84,27 @@ export default async function handler(req, res) {
         return;
       }
     } catch { /* cache miss → generate below */ }
+
+    // ── Monthly cap: 10 distinct cloned-voice stories per user per month (non-paid) ──
+    // Runs only on a cache MISS (a genuinely new generation). Replays are served from
+    // cache above and never count. The same story in a different voice counts once.
+    if (voiceId && uid && !isPaidTier(tier)) {
+      const db = await getFirestore();
+      if (db) {
+        const month = new Date().toISOString().slice(0, 7); // YYYY-MM
+        const uref = db.collection('users').doc(uid);
+        const snap = await uref.get();
+        let usage = (snap.exists && snap.data().clonedVoiceUsage) || {};
+        if (usage.month !== month) usage = { month, stories: [] };
+        if (!usage.stories.includes(storyKey)) {
+          if ((usage.stories || []).length >= 10) {
+            return res.status(429).json({ error: 'monthly_limit', message: "You've reached 10 stories in your cloned voice this month. It resets next month." });
+          }
+          usage.stories.push(storyKey);
+          await uref.set({ clonedVoiceUsage: usage }, { merge: true });
+        }
+      }
+    }
 
     let audioBuffer;
     if (fullText.length <= MAX_CHUNK) {

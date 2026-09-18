@@ -35,6 +35,11 @@ export default async function handler(req, res) {
     const snap = db ? await db.collection('users').doc(uid).get() : null;
     existing = (snap && snap.exists && snap.data().voiceClones) || [];
   } catch { existing = []; }
+  // Hard cap: at most 5 voices per account (sign-up already required above via uid).
+  const MAX_CLONES = 5;
+  if (existing.length >= MAX_CLONES) {
+    return res.status(403).json({ error: 'clone_limit', message: 'You can have up to 5 voices per account.' });
+  }
   if (existing.length >= FREE_CLONES) {
     const tier = await getUserTier(uid);
     if (!canUseClonedVoice(tier)) {
