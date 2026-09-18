@@ -1,4 +1,4 @@
-// V2 Player — night-sky playback. Story-SPECIFIC via /v2/player/:storyId so it's
+// V2 Player — night-sky playback. Story-SPECIFIC via /player/:storyId so it's
 // refresh-safe, deep-linkable and shareable (resolves + loads the story from the id
 // if it isn't already the active one). Plays stored audio directly via loadCached
 // with a liveness probe → TTS fallback for dead URLs. Multilingual → language picker.
@@ -163,7 +163,7 @@ export default function V2Player() {
       <div className="px-5 pt-20 text-center max-w-[480px] mx-auto">
         <Moon size={36} className="mx-auto mb-3" style={{ color: GOLD }} />
         <p className="text-[#B8AAC8]">{storyId ? 'Loading this story…' : 'Nothing playing yet.'}</p>
-        <button onClick={() => navigate('/v2')} className="mt-5 rounded-full px-6 py-3 text-sm font-bold text-[#0D1B2A]" style={{ background: GOLD }}>Browse stories</button>
+        <button onClick={() => navigate('/')} className="mt-5 rounded-full px-6 py-3 text-sm font-bold text-[#0D1B2A]" style={{ background: GOLD }}>Browse stories</button>
       </div>
     );
   }
@@ -177,7 +177,7 @@ export default function V2Player() {
   const curT = nar.progress * dur;
 
   // Unique, shareable link for THIS story
-  const shareUrl = `${typeof window !== 'undefined' ? window.location.origin : 'https://mysleepytale.com'}/v2/player/${cleanId}`;
+  const shareUrl = `${typeof window !== 'undefined' ? window.location.origin : 'https://mysleepytale.com'}/player/${cleanId}`;
   const shareStory = async () => {
     const title = current?.title ? `${current.title} · My Sleepy Tale` : 'My Sleepy Tale';
     try {
@@ -195,7 +195,7 @@ export default function V2Player() {
           <button onClick={shareStory} className="grid h-10 w-10 place-items-center rounded-full bg-white/[0.06] ring-1 ring-white/10 text-[#B8AAC8] active:scale-95" title="Share this story">
             {copied ? <Check size={16} style={{ color: GOLD }} /> : <Share2 size={16} />}
           </button>
-          <button onClick={() => navigate('/v2/voices')} className="grid h-10 w-10 place-items-center rounded-full bg-white/[0.06] ring-1 ring-white/10 text-[#B8AAC8] active:scale-95" title="Voice"><Mic size={16} /></button>
+          <button onClick={() => navigate('/voices')} className="grid h-10 w-10 place-items-center rounded-full bg-white/[0.06] ring-1 ring-white/10 text-[#B8AAC8] active:scale-95" title="Voice"><Mic size={16} /></button>
         </div>
       </div>
 

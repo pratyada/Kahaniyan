@@ -63,9 +63,9 @@ export default function Profile() {
   /* ── Signed in ── */
   // All rows stay inside the V2 shell — no jumping to the old app (keeps the menu consistent).
   const rows = [
-    { Icon: Mic2, label: 'My Voices', sub: 'Clone a family voice', onClick: () => navigate('/v2/voices') },
-    { Icon: Star, label: 'Family & kids', sub: profile?.childName ? `${profile.childName}'s profile` : 'Set up a child', onClick: () => navigate('/v2/settings') },
-    { Icon: SettingsIcon, label: 'Settings', sub: 'Child, language, privacy, more', onClick: () => navigate('/v2/settings') },
+    { Icon: Mic2, label: 'My Voices', sub: 'Clone a family voice', onClick: () => navigate('/voices') },
+    { Icon: Star, label: 'Family & kids', sub: profile?.childName ? `${profile.childName}'s profile` : 'Set up a child', onClick: () => navigate('/settings') },
+    { Icon: SettingsIcon, label: 'Settings', sub: 'Child, language, privacy, more', onClick: () => navigate('/settings') },
   ];
 
   return (
@@ -101,7 +101,7 @@ export default function Profile() {
             <p className="text-sm font-bold text-[#F7F1E8]">Family Plus is active</p>
             <p className="text-[12px] text-[#B8AAC8]">Family voices · unlimited creations · ad-free</p>
           </div>
-          <button onClick={() => navigate('/v2/settings')} className="text-[12px] font-bold" style={{ color: GOLD }}>Manage</button>
+          <button onClick={() => navigate('/settings')} className="text-[12px] font-bold" style={{ color: GOLD }}>Manage</button>
         </div>
       ) : (
         <button onClick={startCheckout} disabled={busy} className="mt-4 w-full flex items-center gap-3 rounded-2xl p-4 text-left ring-1 transition active:scale-[0.99] disabled:opacity-60" style={{ background: 'linear-gradient(120deg, rgba(246,196,83,0.16), rgba(246,196,83,0.04))', borderColor: 'rgba(246,196,83,0.3)' }}>

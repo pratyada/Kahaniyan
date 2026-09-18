@@ -239,7 +239,7 @@ export default function Build() {
           <p className="text-center text-[11px] text-[#7A6B8A] mt-1">✨ Animation is coming soon — your story is saved with your picture &amp; voice.</p>
         )}
         <div className="mt-5 flex flex-col gap-2.5 max-w-[380px] mx-auto">
-          <button onClick={() => navigate('/v2/world')} className="w-full flex items-center justify-center gap-2 rounded-full px-6 py-3.5 text-sm font-bold text-[#0D1B2A]" style={{ background: GOLD }}>
+          <button onClick={() => navigate('/world')} className="w-full flex items-center justify-center gap-2 rounded-full px-6 py-3.5 text-sm font-bold text-[#0D1B2A]" style={{ background: GOLD }}>
             <Check size={17} /> Add to my world
           </button>
           <button onClick={reset} className="w-full flex items-center justify-center gap-2 rounded-full px-6 py-3 text-sm font-bold text-[#B8AAC8] ring-1 ring-white/10">

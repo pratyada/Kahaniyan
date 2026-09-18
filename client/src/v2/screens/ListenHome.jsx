@@ -127,9 +127,9 @@ export default function ListenHome() {
       shelves={browse.shelves}
       seriesList={browse.seriesList}
       // actions
-      onPlay={(lesson) => { load(buildStory(lesson, wisdomAudioUrls || {}, wisdomImageUrls || {})); navigate(`/v2/player/${lesson.id}`); }}
-      onOpenSeries={(id) => navigate(`/v2/series/${id}`)}
-      onOpenVoice={() => navigate('/v2/voices')}
+      onPlay={(lesson) => { load(buildStory(lesson, wisdomAudioUrls || {}, wisdomImageUrls || {})); navigate(`/player/${lesson.id}`); }}
+      onOpenSeries={(id) => navigate(`/series/${id}`)}
+      onOpenVoice={() => navigate('/voices')}
     />
   );
 }

@@ -207,18 +207,20 @@ export default async function handler(req, res) {
     }
   }
 
-  // /v2/player/:id  — built-in story first, else a shared (approved) kid story.
+  // /player/:id (clean) and legacy /v2/player/:id — built-in story first, else a
+  // shared (approved) kid story. Canonical redirect is the clean /player/:id.
   if (!meta) {
-    const m = pathname.match(/^\/v2\/player\/(.+)$/);
+    const m = pathname.match(/^\/(?:v2\/)?player\/(.+)$/);
     if (m) {
       const id = m[1];
+      const clean = `${SITE}/player/${encodeURIComponent(id)}`;
       const s = await resolveStory(id);
       if (s.found) {
-        meta = { ...s, type: 'article', redirectUrl: `${SITE}/v2/player/${encodeURIComponent(id)}` };
+        meta = { ...s, type: 'article', redirectUrl: clean };
       } else {
         const kid = await resolveKidStory(id);
         if (kid) meta = { ...kid, type: 'article' };
-        else meta = { ...s, type: 'article', redirectUrl: `${SITE}/v2/player/${encodeURIComponent(id)}` };
+        else meta = { ...s, type: 'article', redirectUrl: clean };
       }
     }
   }
@@ -228,8 +230,7 @@ export default async function handler(req, res) {
     const m = pathname.match(/^\/(?:v2\/)?series\/(.+)$/);
     if (m) {
       const s = await resolveStory(m[1]);
-      const v2 = pathname.startsWith('/v2/');
-      meta = { ...s, type: 'article', redirectUrl: `${SITE}${v2 ? '/v2' : ''}/series/${encodeURIComponent(m[1])}` };
+      meta = { ...s, type: 'article', redirectUrl: `${SITE}/series/${encodeURIComponent(m[1])}` };
     }
   }
 

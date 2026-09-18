@@ -1,4 +1,4 @@
-// Shared child-setup form — used by V2 onboarding (/v2/welcome) and settings.
+// Shared child-setup form — used by V2 onboarding (/welcome) and settings.
 // Captures child name + age + belief (single-select; universal = no religion).
 import { useState } from 'react';
 import { TRADITIONS } from '../../data/culturalLessons.js';

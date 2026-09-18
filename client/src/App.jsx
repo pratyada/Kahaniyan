@@ -97,21 +97,22 @@ function Shell() {
     } catch (e) { /* private mode / no storage */ }
   }, [location.search]);
 
-  // ── MST V2 redesign — the app itself lives under /v2 (isolated shell). ──
-  if (location.pathname.startsWith('/v2')) return <V2App />;
-
-  // ── V2 FLIP: home entry (mysleepytale.com/) opens V2 by default. ──
-  // Skipped when the visitor opted into classic (?classic or the sticky flag,
-  // unless ?v2 overrides it). Only '/' is redirected — every deep route stays put.
+  // ── V2 owns the consumer app at CLEAN ROOT paths (+ /v2/* alias for old links). ──
+  // Classic mode (?classic or the sticky flag) → the old app. Reserved legacy paths
+  // (admin, blog, aboutus, privacy, landing pages, tools, auth, record…) are not V2
+  // paths, so they fall through to the old routes below.
   {
     const sp = new URLSearchParams(location.search);
     let wantsClassic = sp.has('classic');
     try {
       if (!sp.has('v2') && localStorage.getItem('mst:classic') === '1') wantsClassic = true;
     } catch (e) { /* ignore */ }
-    if (V2_IS_DEFAULT && !wantsClassic && location.pathname === '/') {
-      return <Navigate to="/v2" replace />;
-    }
+    const p = location.pathname;
+    const v2Exact = p === '/' || p === '/build' || p === '/world' || p === '/profile' ||
+                    p === '/voices' || p === '/welcome' || p === '/settings' || p === '/player';
+    const isV2Path = p.startsWith('/v2') || v2Exact ||
+                     p.startsWith('/player/') || p.startsWith('/series/') || p.startsWith('/story/');
+    if (V2_IS_DEFAULT && !wantsClassic && isV2Path) return <V2App />;
   }
 
   // Wait for auth + profile to load

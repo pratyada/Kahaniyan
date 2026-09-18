@@ -25,7 +25,7 @@ export default function V2Series() {
     return (
       <div className="px-5 pt-16 text-center">
         <p className="text-[#B8AAC8]">Series not found.</p>
-        <button onClick={() => navigate('/v2')} className="mt-4 rounded-full px-6 py-3 text-sm font-bold text-[#0D1B2A]" style={{ background: GOLD }}>Back to Listen</button>
+        <button onClick={() => navigate('/')} className="mt-4 rounded-full px-6 py-3 text-sm font-bold text-[#0D1B2A]" style={{ background: GOLD }}>Back to Listen</button>
       </div>
     );
   }
@@ -37,7 +37,7 @@ export default function V2Series() {
     load(buildStory(ep, wisdomAudioUrls || {}, wisdomImageUrls || {}, {
       seriesId: series.id, episodeId: ep.id, episodeNumber: ep.episodeNumber, coverImage: wisdomImageUrls?.[ep.id] || ep.coverImage || cover || null,
     }));
-    navigate(`/v2/player/${ep.id}`);
+    navigate(`/player/${ep.id}`);
   };
 
   return (

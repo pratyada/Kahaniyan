@@ -35,7 +35,7 @@ export default function MyVoices() {
   if (!user) {
     return (
       <Wrap>
-        <Header title="My Voices" onBack={() => navigate('/v2/profile')} />
+        <Header title="My Voices" onBack={() => navigate('/profile')} />
         <div className="mt-8 rounded-3xl p-6 ring-1 ring-white/10 bg-white/[0.05] text-center">
           <Volume2 size={34} style={{ color: GOLD }} className="mx-auto mb-3" />
           <p className="font-display text-lg text-[#F7F1E8]">Sign in to add family voices</p>
@@ -106,7 +106,7 @@ export default function MyVoices() {
           <Gem size={34} style={{ color: GOLD }} className="mx-auto mb-3" />
           <p className="font-display text-xl text-[#F7F1E8]">Your first voice is free</p>
           <p className="text-[13px] text-[#B8AAC8] mt-2">Add Mum, Dad &amp; Grandma with <b>Family Plus</b> — unlimited voices, every story read in a voice they love.</p>
-          <button onClick={() => navigate('/v2/profile')} className="mt-5 w-full rounded-full px-6 py-3.5 text-sm font-bold text-[#0D1B2A]" style={{ background: GOLD }}>See Family Plus</button>
+          <button onClick={() => navigate('/profile')} className="mt-5 w-full rounded-full px-6 py-3.5 text-sm font-bold text-[#0D1B2A]" style={{ background: GOLD }}>See Family Plus</button>
         </div>
       </Wrap>
     );
@@ -161,7 +161,7 @@ export default function MyVoices() {
   /* ── list ── */
   return (
     <Wrap>
-      <Header title="My Voices" onBack={() => navigate('/v2/profile')} />
+      <Header title="My Voices" onBack={() => navigate('/profile')} />
       <p className="text-[13px] text-[#B8AAC8] mt-1">Pick the voice that reads your stories.</p>
 
       <div className="mt-5 space-y-2.5 max-w-[520px]">

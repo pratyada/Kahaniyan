@@ -19,7 +19,7 @@ export default function SettingsV2() {
   const lang = profile?.language || 'English';
 
   const links = [
-    { Icon: Mic2, label: 'My Voices', sub: 'Family voice clones', onClick: () => navigate('/v2/voices') },
+    { Icon: Mic2, label: 'My Voices', sub: 'Family voice clones', onClick: () => navigate('/voices') },
     { Icon: BookOpen, label: 'How it works', sub: 'Guides', onClick: () => window.open('/guides', '_blank') },
     { Icon: Info, label: 'About My Sleepy Tale', sub: 'Our story', onClick: () => window.open('/aboutus', '_blank') },
     { Icon: Shield, label: 'Privacy & safety', sub: 'COPPA & parental controls', onClick: () => window.open('/privacy', '_blank') },
@@ -28,7 +28,7 @@ export default function SettingsV2() {
   return (
     <div className="px-5 lg:px-8 pt-7 lg:pt-10 pb-28 max-w-[560px]">
       <header className="flex items-center gap-2">
-        <button onClick={() => navigate('/v2/profile')} className="grid h-9 w-9 place-items-center rounded-full bg-white/[0.06] ring-1 ring-white/10 text-[#F7F1E8]"><ChevronLeft size={18} /></button>
+        <button onClick={() => navigate('/profile')} className="grid h-9 w-9 place-items-center rounded-full bg-white/[0.06] ring-1 ring-white/10 text-[#F7F1E8]"><ChevronLeft size={18} /></button>
         <h1 className="font-display text-[24px] lg:text-3xl text-[#F7F1E8]">Settings</h1>
       </header>
 

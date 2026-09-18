@@ -322,14 +322,17 @@
           // Keep in sync with V2_IS_DEFAULT in src/App.jsx (two-line flip).
           var V2_IS_DEFAULT = true;
           var p = location.pathname;
-          var onV2 = p.indexOf('/v2') === 0;
           var classic = false;
           try {
             var sp = new URLSearchParams(location.search);
             classic = sp.has('classic') || (!sp.has('v2') && localStorage.getItem('mst:classic') === '1');
           } catch (e) {}
-          var onFlippedHome = V2_IS_DEFAULT && p === '/' && !classic;
-          if (!onV2 && !onFlippedHome) return;
+          var V2P = { '/':1, '/build':1, '/world':1, '/profile':1, '/voices':1, '/welcome':1, '/settings':1, '/player':1 };
+          var isV2 = p.indexOf('/v2') === 0 || V2P[p] ||
+                     p.indexOf('/player/') === 0 || p.indexOf('/series/') === 0 || p.indexOf('/story/') === 0;
+          // Under classic (or if V2 is off) only the explicit /v2 alias shows the splash.
+          var show = (!V2_IS_DEFAULT || classic) ? (p.indexOf('/v2') === 0) : isV2;
+          if (!show) return;
           var root = document.getElementById('root');
           if (!root) return;
           var name = '';

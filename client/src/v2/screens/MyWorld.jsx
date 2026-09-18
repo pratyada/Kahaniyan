@@ -170,7 +170,7 @@ export default function MyWorld() {
               </div>
             </div>
           </div>
-          <button onClick={() => navigate('/v2/build')} className="mt-5 w-full flex items-center justify-center gap-2 rounded-full px-6 py-3.5 text-sm font-bold text-[#0D1B2A]" style={{ background: GOLD, boxShadow: '0 10px 30px rgba(246,196,83,0.28)' }}>
+          <button onClick={() => navigate('/build')} className="mt-5 w-full flex items-center justify-center gap-2 rounded-full px-6 py-3.5 text-sm font-bold text-[#0D1B2A]" style={{ background: GOLD, boxShadow: '0 10px 30px rgba(246,196,83,0.28)' }}>
             <Wand2 size={17} strokeWidth={2.2} /> Make my first story
           </button>
           <p className="flex items-center justify-center gap-1.5 text-center text-[11px] text-[#7A6B8A] mt-6"><Heart size={12} /> Private — family only, no public feed.</p>
@@ -182,7 +182,7 @@ export default function MyWorld() {
               <span className="font-bold text-[#F7F1E8]">{n}</span> {n === 1 ? 'star' : 'stars'} in {name ? `${name}'s` : 'your'} sky
               <span className="text-[#7A6B8A]"> · growing 🌱</span>
             </p>
-            <button onClick={() => navigate('/v2/build')} className="flex items-center gap-1.5 rounded-full px-4 py-2 text-xs font-bold text-[#0D1B2A]" style={{ background: GOLD }}><Wand2 size={13} strokeWidth={2.4} /> New</button>
+            <button onClick={() => navigate('/build')} className="flex items-center gap-1.5 rounded-full px-4 py-2 text-xs font-bold text-[#0D1B2A]" style={{ background: GOLD }}><Wand2 size={13} strokeWidth={2.4} /> New</button>
           </div>
 
           {view === 'world' ? (

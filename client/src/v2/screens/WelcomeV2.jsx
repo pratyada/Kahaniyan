@@ -13,8 +13,8 @@ export default function WelcomeV2() {
       <div className="text-4xl">🌙</div>
       <h1 className="font-display text-[26px] lg:text-3xl mt-3 text-[#F7F1E8]">Welcome to My Sleepy Tale</h1>
       <p className="text-[13px] text-[#B8AAC8] mt-1 mb-7">Two quick things so every story feels made for your child.</p>
-      <ChildSetup initial={profile} cta="Start listening ✨" onSave={(p) => { save(p); navigate('/v2'); }} />
-      <button onClick={() => navigate('/v2')} className="mt-4 text-xs font-bold text-[#7A6B8A]">Skip for now</button>
+      <ChildSetup initial={profile} cta="Start listening ✨" onSave={(p) => { save(p); navigate('/'); }} />
+      <button onClick={() => navigate('/')} className="mt-4 text-xs font-bold text-[#7A6B8A]">Skip for now</button>
     </div>
   );
 }

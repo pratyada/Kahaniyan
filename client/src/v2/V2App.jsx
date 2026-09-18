@@ -24,10 +24,17 @@ import SettingsV2 from './screens/SettingsV2.jsx';
 // Profile is NOT a nav item — it's reached via the username/avatar (sidebar bottom
 // card on desktop, avatar slot on the mobile bar). No duplicate profile icon.
 const NAV = [
-  { to: '/v2', Icon: Headphones, label: 'Listen', end: true },
-  { to: '/v2/build', Icon: Wand2, label: 'Build', end: false },
-  { to: '/v2/world', Icon: Orbit, label: 'My World', end: false },
+  { to: '/', Icon: Headphones, label: 'Listen', end: true },
+  { to: '/build', Icon: Wand2, label: 'Build', end: false },
+  { to: '/world', Icon: Orbit, label: 'My World', end: false },
 ];
+
+// Old shared /v2/* links → strip the prefix and land on the clean path.
+function StripV2() {
+  const { pathname, search } = useLocation();
+  const to = (pathname.replace(/^\/v2/, '') || '/') + (search || '');
+  return <Navigate to={to} replace />;
+}
 
 export default function V2App() {
   const { user } = useAuth();
@@ -47,8 +54,8 @@ export default function V2App() {
     if (!user || !ready) return;
     let welcomed = false;
     try { welcomed = localStorage.getItem('mst:v2welcomed') === '1'; } catch {}
-    if (!profile?.childName && !welcomed && !pathname.startsWith('/v2/welcome')) {
-      navigate('/v2/welcome', { replace: true });
+    if (!profile?.childName && !welcomed && pathname !== '/welcome') {
+      navigate('/welcome', { replace: true });
     }
   }, [user, ready, profile?.childName, pathname, navigate]);
 
@@ -74,17 +81,22 @@ export default function V2App() {
       <main ref={mainRef} className="flex-1 min-w-0 overflow-y-auto overflow-x-hidden">
         <div className="mx-auto w-full max-w-[1040px] pb-28 lg:pb-12">
           <Routes>
-            <Route path="/v2" element={<ListenHome />} />
-            <Route path="/v2/player/:storyId" element={<V2Player />} />
-            <Route path="/v2/player" element={<V2Player />} />
-            <Route path="/v2/series/:seriesId" element={<V2Series />} />
-            <Route path="/v2/build" element={<Build />} />
-            <Route path="/v2/world" element={<MyWorld />} />
-            <Route path="/v2/profile" element={<Profile />} />
-            <Route path="/v2/voices" element={<MyVoices />} />
-            <Route path="/v2/welcome" element={<WelcomeV2 />} />
-            <Route path="/v2/settings" element={<SettingsV2 />} />
-            <Route path="*" element={<Navigate to="/v2" replace />} />
+            <Route path="/" element={<ListenHome />} />
+            <Route path="/player/:storyId" element={<V2Player />} />
+            <Route path="/player" element={<V2Player />} />
+            {/* old shared story links keep working */}
+            <Route path="/story/:storyId" element={<V2Player />} />
+            <Route path="/series/:seriesId" element={<V2Series />} />
+            <Route path="/build" element={<Build />} />
+            <Route path="/world" element={<MyWorld />} />
+            <Route path="/profile" element={<Profile />} />
+            <Route path="/voices" element={<MyVoices />} />
+            <Route path="/welcome" element={<WelcomeV2 />} />
+            <Route path="/settings" element={<SettingsV2 />} />
+            {/* legacy /v2/* links → strip prefix → clean path */}
+            <Route path="/v2" element={<StripV2 />} />
+            <Route path="/v2/*" element={<StripV2 />} />
+            <Route path="*" element={<Navigate to="/" replace />} />
           </Routes>
         </div>
       </main>
@@ -131,7 +143,7 @@ function Sidebar() {
       </nav>
 
       <div className="mt-auto">
-        <NavLink to="/v2/profile" className="flex items-center gap-3 rounded-xl px-3 py-2.5 ring-1 ring-white/8 hover:ring-white/15 transition">
+        <NavLink to="/profile" className="flex items-center gap-3 rounded-xl px-3 py-2.5 ring-1 ring-white/8 hover:ring-white/15 transition">
           {user?.photoURL ? (
             <img src={user.photoURL} alt="" referrerPolicy="no-referrer" className="h-8 w-8 rounded-full object-cover" />
           ) : (
@@ -153,7 +165,7 @@ function Sidebar() {
 function BottomBar() {
   const { pathname } = useLocation();
   const { user } = useAuth();
-  const profileActive = pathname.startsWith('/v2/profile');
+  const profileActive = pathname.startsWith('/profile');
   return (
     <nav
       className="lg:hidden fixed bottom-0 left-0 right-0 z-30 border-t border-white/8 backdrop-blur-xl safe-bottom"
@@ -179,7 +191,7 @@ function BottomBar() {
         {/* Profile = username/avatar, not a generic icon */}
         <li className="flex-1">
           <NavLink
-            to="/v2/profile"
+            to="/profile"
             className={`flex min-h-[60px] flex-col items-center justify-center gap-1 py-2 transition ${
               profileActive ? 'text-[#F6C453]' : 'text-[#7A6B8A] active:text-[#F7F1E8]'
             }`}
