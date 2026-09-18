@@ -15,7 +15,7 @@ const READ_LINE = "Once upon a time, under a big silver moon, a little star wish
 export default function MyVoices() {
   const navigate = useNavigate();
   const { user, loginGoogle } = useAuth();
-  const { voiceClones, isPaid } = useFamilyProfile();
+  const { voiceClones, isPaid, refreshVoiceClones } = useFamilyProfile();
 
   const [clones, setClones] = useState([]);
   const [active, setActive] = useState(getActiveVoice());
@@ -78,6 +78,10 @@ export default function MyVoices() {
       const clone = d.clone || { id: d.voiceId, name: name.trim() };
       setClones((c) => [clone, ...c]);
       pick(clone);
+      // Sync the provider from the server (source of truth) so the new voice survives
+      // navigating away and back — otherwise the one-time-fetched voiceClones is stale
+      // on remount and the voice appears to vanish until a hard refresh.
+      refreshVoiceClones && refreshVoiceClones();
       setMode('done');
     } catch (e) { setError(e.message || 'Could not weave the voice. Try again.'); setMode('add'); }
   };

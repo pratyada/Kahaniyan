@@ -274,6 +274,17 @@ export function FamilyProfileProvider({ children }) {
   const [voiceClones, setVoiceClones] = useState([]); // server-persisted cloned voices
   const isPaid = ['pro', 'family', 'enterprise', 'annual', 'premium'].includes(String(subscriptionTier || '').toLowerCase());
 
+  // Re-read voiceClones from the server (source of truth). voiceClones is otherwise a
+  // one-time fetch on login, so a newly cloned voice vanishes on remount until a hard
+  // refresh. Call this after a clone/delete so the list stays in sync without reloading.
+  const refreshVoiceClones = useCallback(async () => {
+    try {
+      if (!uid || !db) return;
+      const snap = await getDoc(userDocRef(uid));
+      if (snap.exists()) setVoiceClones(snap.data().voiceClones || []);
+    } catch { /* keep current state on failure */ }
+  }, [uid]);
+
   const profile = profiles[activeIndex] || null;
 
   const save = useCallback(
@@ -358,6 +369,7 @@ export function FamilyProfileProvider({ children }) {
         subscriptionTier,
         isPaid,
         voiceClones,
+        refreshVoiceClones,
         save,
         update,
         clear,
