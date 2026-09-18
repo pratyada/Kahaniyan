@@ -66,16 +66,18 @@ export default function V2Player() {
         content.seriesId ? { seriesId: content.seriesId, episodeId: content.id } : {}));
       return;
     }
-    // Not a built-in story → try a shared kid-created story (kidStories/{id}).
+    // Not a built-in story → try a shared kid-created story via the SERVER
+    // (admin SDK read; works regardless of client Firestore rules / approval).
     let cancelled = false;
     (async () => {
       try {
-        const { db } = await import('../../lib/firebase.js');
-        if (!db) return;
-        const { doc, getDoc } = await import('firebase/firestore');
-        const snap = await getDoc(doc(db, 'kidStories', storyId));
-        if (cancelled || !snap.exists()) return;
-        const k = snap.data();
+        const r = await fetch('/api/kid-story-save', {
+          method: 'POST', headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ action: 'get', storyId }),
+        });
+        if (!r.ok || cancelled) return;
+        const { story: k } = await r.json();
+        if (!k || cancelled) return;
         load({
           id: `lesson_${storyId}`,
           title: k.title || 'A little story',
@@ -86,7 +88,7 @@ export default function V2Player() {
           source: 'A story by a young creator 🌙',
           isWisdom: false,
         });
-      } catch { /* not found / no access */ }
+      } catch { /* not found / not shared */ }
     })();
     return () => { cancelled = true; };
     // eslint-disable-next-line react-hooks/exhaustive-deps

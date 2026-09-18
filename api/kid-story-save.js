@@ -27,6 +27,28 @@ export default async function handler(req, res) {
     return res.json({ stories });
   }
 
+  // ── GET one SHARED story (for shared-link playback; server read via admin SDK) ──
+  // Only returns stories the parent chose to share (visibility family/public or
+  // published/approved). Private drafts are never exposed. Bypasses client Firestore
+  // rules so shared links always play.
+  if (action === 'get') {
+    const { storyId } = req.body;
+    if (!storyId) return res.status(400).json({ error: 'storyId required' });
+    const snap = await db.collection('kidStories').doc(storyId).get();
+    if (!snap.exists) return res.status(404).json({ error: 'Story not found' });
+    const d = snap.data();
+    const shared = d.visibility === 'family' || d.visibility === 'public' || d.approved === true || d.status === 'published';
+    if (!shared) return res.status(403).json({ error: 'This story is private' });
+    return res.json({ story: {
+      id: snap.id,
+      title: d.title || 'A little story',
+      transcript: d.transcript || '',
+      audioUrl: d.audioUrl || null,
+      videoUrl: d.videoUrl || null,
+      promptImageUrl: d.promptImageUrl || null,
+    } });
+  }
+
   // ── SAVE new story ──
   if (!action || action === 'save') {
     const { parentUid, profileIndex = 0, storyId, audioKey, title, topic, promptImageUrl, promptType, language, durationSeconds, transcript } = req.body;
