@@ -1,6 +1,6 @@
 // ElevenLabs TTS — premium audio generation for pre-loaded stories AND cloned voices.
 // Pass `voiceId` (a cloned ElevenLabs voice) for personalized playback — paid only.
-import { getUserTier, isPaidTier } from './_entitlement.js';
+import { getUserTier, canUseClonedVoice } from './_entitlement.js';
 import crypto from 'crypto';
 import { S3Client, HeadObjectCommand, GetObjectCommand, PutObjectCommand } from '@aws-sdk/client-s3';
 
@@ -43,7 +43,7 @@ export default async function handler(req, res) {
   let resolvedVoiceId = voiceConfig.id;
   if (voiceId) {
     const tier = await getUserTier(uid);
-    if (!isPaidTier(tier)) {
+    if (!canUseClonedVoice(tier)) {
       return res.status(402).json({ error: 'upgrade_required', message: 'Cloned voices need Family Plus.' });
     }
     resolvedVoiceId = voiceId;

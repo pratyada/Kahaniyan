@@ -3,7 +3,7 @@
 // Gated server-side: the FIRST clone is free; additional voices require a paid tier.
 // Persists the clone to users/{uid}.voiceClones (admin SDK) so it's the source of truth.
 import { getFirestore } from './_firebase.js';
-import { getUserTier, isPaidTier } from './_entitlement.js';
+import { getUserTier, canUseClonedVoice } from './_entitlement.js';
 
 const ELEVENLABS_KEY = process.env.ELEVENLABS_API_KEY;
 const FREE_CLONES = 1;
@@ -37,7 +37,7 @@ export default async function handler(req, res) {
   } catch { existing = []; }
   if (existing.length >= FREE_CLONES) {
     const tier = await getUserTier(uid);
-    if (!isPaidTier(tier)) {
+    if (!canUseClonedVoice(tier)) {
       return res.status(402).json({ error: 'upgrade_required', message: 'Your first voice is free — add more with Family Plus.' });
     }
   }

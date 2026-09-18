@@ -10,6 +10,18 @@ export function isPaidTier(tier) {
   return PAID_TIERS.has(String(tier || '').toLowerCase());
 }
 
+// ── Launch promo: voice cloning + cloned-voice playback FREE for EVERYONE until
+// this date (announced by the "hear your voice" launch email). After it lapses,
+// voice reverts to a paid feature. Change VOICE_FREE_UNTIL to extend/end it.
+export const VOICE_FREE_UNTIL = process.env.VOICE_FREE_UNTIL || '2026-10-01T04:00:00Z'; // ~Sep 30 EOD ET
+export function isVoicePromoActive() {
+  return new Date() < new Date(VOICE_FREE_UNTIL);
+}
+// True if the user may use cloned voices right now (paid OR during the free promo).
+export function canUseClonedVoice(tier) {
+  return isPaidTier(tier) || isVoicePromoActive();
+}
+
 // Authoritative tier for a uid, read from users/{uid}.subscriptionTier.
 // Falls back to 'free' on any error / missing config (fail closed).
 export async function getUserTier(uid) {
