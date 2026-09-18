@@ -2606,6 +2606,7 @@ That night, {childName}, remember Pluto. Being small does not mean being unimpor
         subtitle: 'A giant star grew so full of love it folded the sky into a cozy, secret pocket.',
         tradition: 'universal', theme: 'wisdom', durationMinutes: 5,
         source: 'Planets & Stars · Episode 9',
+        coverImage: 'https://mysleepytale.com/media/stories/ps_ep9_blackhole.jpg',
         body: `Far past the very last planet, where the sky is soft and velvet dark, there once lived a giant star named Blaze. Blaze was the biggest, brightest star for a billion miles. He shone so warmly that little comets came just to toast their frosty tails.
 
 But being a giant star is heavy, heavy work. Every single day, Blaze held himself up against his own great weight — like a champion balancing a whole mountain on his hands. For millions and millions of years, he held on.
