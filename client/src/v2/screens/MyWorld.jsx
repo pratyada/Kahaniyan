@@ -61,7 +61,7 @@ export default function MyWorld() {
   }, []);
 
   const publishAndShare = async (story) => {
-    if (!user) return; // demo/preview — no-op
+    if (!user || demo) return; // demo/preview samples aren't real → no share/like/delete
     const id = story.id;
     // Publish (family/approved) so the link resolves + shows THIS story's picture as
     // the preview. Share the /api/share link → unique per-story OG image (not generic).
@@ -77,7 +77,7 @@ export default function MyWorld() {
   };
 
   const toggleLike = async (story) => {
-    if (!user) return; // demo/preview — no-op
+    if (!user || demo) return; // demo/preview samples aren't real → no share/like/delete
     const liked = (story.likedBy || []).includes(user.uid);
     const nextAction = liked ? 'unlike' : 'like';
     // optimistic
@@ -88,7 +88,7 @@ export default function MyWorld() {
   };
 
   const deleteStory = async (story) => {
-    if (!user) return; // demo/preview — no-op
+    if (!user || demo) return; // demo/preview samples aren't real → no share/like/delete
     if (!window.confirm('Delete this story? This cannot be undone.')) return;
     setStories((list) => (list || []).filter((s) => s.id !== story.id));
     setOpen(null);
