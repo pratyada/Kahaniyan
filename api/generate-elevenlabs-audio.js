@@ -9,6 +9,86 @@ const ELEVENLABS_KEY = process.env.ELEVENLABS_API_KEY;
 const s3 = new S3Client({ region: 'us-east-1' });
 const CACHE_BUCKET = 'mysleepytale-app';
 
+// ─────────────────────────────────────────────────────────────────────────────
+// BEDTIME PACING — tunable knobs
+// These control how the story text is normalized and slowed down for a calm,
+// unhurried cloned-voice read. Change these to re-tune the cadence.
+// ─────────────────────────────────────────────────────────────────────────────
+
+// Bump this whenever the pacing logic below changes. It is folded into the S3
+// cache key so old "rushed" clips are never served after a pacing update.
+const PACING_VERSION = 'pace-v1';
+
+// Delivery speed passed to ElevenLabs voice_settings.speed.
+// Range ~0.7 (very slow) … 1.0 (normal) … 1.2 (fast). 0.9 = gentle bedtime read.
+// If the model/API rejects `speed`, we retry without it (graceful degrade).
+const NARRATION_SPEED = 0.9;
+
+// Voice-setting defaults tuned for a soothing, consistent bedtime read:
+//  - higher stability  → less expressive swing, steadier tone
+//  - lower style       → calmer, less dramatic delivery
+// All three remain overridable per-request via req.body.
+const DEFAULT_STABILITY = 0.7;
+const DEFAULT_SIMILARITY = 0.8;
+const DEFAULT_STYLE = 0.15;
+
+// ElevenLabs `<break>` tags reliably insert silence, but the provider caps the
+// TOTAL break time per request and support varies by model (turbo_v2_5 is
+// inconsistent with them). We therefore DEFAULT OFF and rely on punctuation +
+// newlines, which reliably slow delivery. Flip USE_BREAK_TAGS on to add a single
+// short break ONLY at paragraph boundaries (never per-sentence) if desired.
+const USE_BREAK_TAGS = false;
+const PARAGRAPH_BREAK_TAG = '<break time="0.6s" />';
+
+// ─────────────────────────────────────────────────────────────────────────────
+// paceStoryText — normalize punctuation/whitespace and add a calm bedtime cadence
+// WITHOUT ever changing the words or their meaning (kid-safe: only spacing,
+// punctuation and pauses are touched).
+// ─────────────────────────────────────────────────────────────────────────────
+function paceStoryText(raw) {
+  if (!raw) return raw;
+  let t = String(raw);
+
+  // 1) Normalize whitespace ---------------------------------------------------
+  t = t.replace(/\r\n?/g, '\n');                     // CRLF / CR → LF
+  t = t.replace(/[ \t  -​]+/g, ' ');  // any run of h-space → 1 space
+  t = t.replace(/ *\n */g, '\n');                    // trim spaces around newlines
+  t = t.replace(/\n{2,}/g, '\n\n');                  // collapse to paragraph breaks
+  t = t.replace(/(?<!\n)\n(?!\n)/g, ' ');            // lone newline → space (only \n\n = paragraph)
+
+  // 2) Fix doubled / awkward punctuation (no words changed) --------------------
+  t = t.replace(/\s+([,.;:!?…])/g, '$1');  // no space BEFORE punctuation
+  t = t.replace(/([,;:])\1+/g, '$1');      // ",," → ","  ";;" → ";"
+  t = t.replace(/\.{3,}/g, '…');           // "..." / "...." → single ellipsis
+  t = t.replace(/([.!?])[.!?]+/g, '$1');   // "?!" "!!" ".." → first mark only
+
+  // 3) Ensure a single space AFTER sentence punctuation when a word follows ----
+  t = t.replace(/([.!?…])(["')\]]?)(?=[A-Za-zÀ-ɏ"'(¡¿])/g, '$1$2 ');
+  t = t.replace(/([,;:])(?=[A-Za-zÀ-ɏ"'(])/g, '$1 '); // single space after , ; :
+  t = t.replace(/[ ]{2,}/g, ' ');          // squeeze any doubles introduced above
+
+  // 4) Rebuild with a calm cadence -------------------------------------------
+  // Each paragraph → its sentences, one per line (a newline gives ElevenLabs a
+  // gentle micro-pause). Paragraphs are separated by a blank line for a longer,
+  // settling pause. Every sentence is guaranteed terminal punctuation.
+  const paragraphs = t.split('\n\n').map(p => p.trim()).filter(Boolean);
+
+  const pacedParagraphs = paragraphs.map(para => {
+    // Split into sentences, keeping the delimiter on each piece.
+    const sentences = (para.match(/[^.!?…]+[.!?…]*/g) || [para])
+      .map(s => s.trim())
+      .filter(Boolean)
+      .map(s => (/[.!?…"')\]]$/.test(s) ? s : s + '.')); // guarantee terminal punct
+    return sentences.join('\n'); // one sentence per line → gentle in-para pauses
+  });
+
+  const paragraphJoiner = USE_BREAK_TAGS
+    ? `\n\n${PARAGRAPH_BREAK_TAG}\n\n`   // short silence only at paragraph breaks
+    : '\n\n';                            // blank line = reliable settling pause
+
+  return pacedParagraphs.join(paragraphJoiner).trim();
+}
+
 const VOICES = {
   george: { id: 'JBFqnCBsd6RMkjVDRZzb', name: 'George - Warm Storyteller' },
   lily: { id: 'pFZP5JQG7iQjIQuC4Bku', name: 'Lily - Velvety Actress' },
@@ -32,7 +112,16 @@ export default async function handler(req, res) {
 
   // Turbo v2.5 is ~3-4x faster than multilingual_v2 with near-identical quality —
   // big cut to the first-play wait for cloned voices.
-  const { text, voice = 'george', voiceId, uid, model = 'eleven_turbo_v2_5', stability = 0.6, similarity = 0.8 } = req.body || {};
+  const {
+    text,
+    voice = 'george',
+    voiceId,
+    uid,
+    model = 'eleven_turbo_v2_5',
+    stability = DEFAULT_STABILITY,
+    similarity = DEFAULT_SIMILARITY,
+    style = DEFAULT_STYLE,
+  } = req.body || {};
 
   if (!text || text.length < 10) {
     return res.status(400).json({ error: 'Text too short' });
@@ -53,18 +142,35 @@ export default async function handler(req, res) {
 
   // Split long text into small chunks and generate ALL in parallel to stay under 30s
   const MAX_CHUNK = 2000; // chars per chunk — small enough for ~8s each
-  const fullText = text.slice(0, 10000);
-  // Cache key by voice + model + exact text → same story in same voice replays instantly.
-  const cacheKey = `tts-cache/${resolvedVoiceId}/${crypto.createHash('sha256').update(model + '|' + fullText).digest('hex').slice(0, 40)}.mp3`;
-  // Story key by text only (voice-agnostic) → for the monthly distinct-story cap.
-  const storyKey = crypto.createHash('sha256').update(fullText).digest('hex').slice(0, 40);
+  // Raw story text (unmodified) — used for the monthly cap so the SAME story always
+  // counts once, regardless of how we pace it.
+  const rawText = text.slice(0, 10000);
+  // Paced text — normalized punctuation + calm bedtime cadence. THIS is what we
+  // actually send to ElevenLabs and cache.
+  const fullText = paceStoryText(rawText);
+  // Cache key by voice + PACING_VERSION + model + exact text → same story in same
+  // voice replays instantly. PACING_VERSION busts stale "rushed" clips when the
+  // pacing logic changes so the new cadence takes effect immediately.
+  const cacheKey = `tts-cache/${resolvedVoiceId}/${crypto.createHash('sha256').update(PACING_VERSION + '|' + model + '|' + fullText).digest('hex').slice(0, 40)}.mp3`;
+  // Story key by RAW text only (voice-agnostic, pacing-agnostic) → monthly cap.
+  const storyKey = crypto.createHash('sha256').update(rawText).digest('hex').slice(0, 40);
+
+  // Soothing, consistent read. `speed` slows delivery for a calm bedtime pace.
+  const baseVoiceSettings = { stability, similarity_boost: similarity, style, use_speaker_boost: true };
 
   const generateChunk = async (chunk) => {
-    const r = await fetch(`https://api.elevenlabs.io/v1/text-to-speech/${resolvedVoiceId}`, {
+    const call = (settings) => fetch(`https://api.elevenlabs.io/v1/text-to-speech/${resolvedVoiceId}`, {
       method: 'POST',
       headers: { 'xi-api-key': ELEVENLABS_KEY, 'Content-Type': 'application/json', 'Accept': 'audio/mpeg' },
-      body: JSON.stringify({ text: chunk, model_id: model, voice_settings: { stability, similarity_boost: similarity, style: 0.3, use_speaker_boost: true } }),
+      body: JSON.stringify({ text: chunk, model_id: model, voice_settings: settings }),
     });
+
+    // First try WITH speed. If the model/API rejects it (400/422), degrade
+    // gracefully by retrying without `speed` so playback never breaks.
+    let r = await call({ ...baseVoiceSettings, speed: NARRATION_SPEED });
+    if (!r.ok && (r.status === 400 || r.status === 422)) {
+      r = await call(baseVoiceSettings);
+    }
     if (!r.ok) throw new Error(`ElevenLabs ${r.status}: ${await r.text()}`);
     return Buffer.from(await r.arrayBuffer());
   };
