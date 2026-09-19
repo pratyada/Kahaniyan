@@ -4,7 +4,7 @@
 // with a liveness probe → TTS fallback for dead URLs. Multilingual → language picker.
 import { useEffect, useRef, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { ChevronLeft, Play, Pause, RotateCcw, RotateCw, Moon, Mic, Timer, Globe, Share2, Check, BookOpen, ChevronDown } from 'lucide-react';
+import { ChevronLeft, Play, Pause, RotateCcw, RotateCw, Moon, Mic, Globe, Share2, Check, BookOpen, ChevronDown } from 'lucide-react';
 import { usePlayer } from '../../hooks/usePlayer.jsx';
 import { useNarrator } from '../../hooks/useNarrator.js';
 import { useWisdomData } from '../../hooks/useWisdomData.js';
@@ -50,6 +50,7 @@ export default function V2Player() {
   const [activeVoice] = useState(getActiveVoice()); // selected cloned voice, if any
   const startedRef = useRef(null);
   const [sleepMin, setSleepMin] = useState(0);
+  const [sleepOpen, setSleepOpen] = useState(false); // sleep-timer popover
   const [lang, setLang] = useState('English');
   const [copied, setCopied] = useState(false);
   const [showText, setShowText] = useState(true); // story text visible by default (collapsible)
@@ -262,14 +263,36 @@ export default function V2Player() {
         </div>
       )}
 
-      <div className="mt-6 flex items-center justify-center gap-2">
-        <Timer size={14} className="text-[#7A6B8A]" />
-        <span className="text-[12px] text-[#7A6B8A] mr-1">Sleep timer</span>
-        {[0, 5, 10, 20].map((m) => (
-          <button key={m} onClick={() => setSleepMin(m)} className={`rounded-full px-3 py-1 text-[11px] font-bold transition ${sleepMin === m ? 'text-[#0D1B2A]' : 'text-[#B8AAC8] bg-white/[0.06] ring-1 ring-white/10'}`} style={sleepMin === m ? { background: GOLD } : undefined}>
-            {m === 0 ? 'Off' : `${m}m`}
+      {/* Sleep timer — a single moon icon to save space; tap to reveal 5/10/15/20 */}
+      <div className="mt-6 flex items-center justify-center">
+        <div className="relative">
+          <button
+            onClick={() => setSleepOpen((o) => !o)}
+            aria-label={sleepMin > 0 ? `Sleep timer: ${sleepMin} minutes` : 'Sleep timer'}
+            className={`flex items-center gap-1.5 rounded-full px-3 py-1.5 text-[12px] font-bold ring-1 transition ${sleepMin > 0 ? 'text-[#0D1B2A]' : 'text-[#B8AAC8] bg-white/[0.06] ring-white/10'}`}
+            style={sleepMin > 0 ? { background: GOLD, borderColor: 'transparent' } : undefined}
+          >
+            <Moon size={14} />
+            {sleepMin > 0 && <span>{sleepMin}m</span>}
           </button>
-        ))}
+          {sleepOpen && (
+            <>
+              <div className="fixed inset-0 z-40" onClick={() => setSleepOpen(false)} />
+              <div className="absolute z-50 bottom-full mb-2 left-1/2 -translate-x-1/2 flex items-center gap-1 rounded-full p-1 ring-1 ring-white/10 bg-[#0F1E30] shadow-xl">
+                {[0, 5, 10, 15, 20].map((m) => (
+                  <button
+                    key={m}
+                    onClick={() => { setSleepMin(m); setSleepOpen(false); }}
+                    className={`rounded-full px-2.5 py-1 text-[11px] font-bold transition ${sleepMin === m ? 'text-[#0D1B2A]' : 'text-[#B8AAC8] hover:bg-white/[0.06]'}`}
+                    style={sleepMin === m ? { background: GOLD } : undefined}
+                  >
+                    {m === 0 ? 'Off' : m}
+                  </button>
+                ))}
+              </div>
+            </>
+          )}
+        </div>
       </div>
     </div>
   );
