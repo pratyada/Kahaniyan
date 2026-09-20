@@ -12,6 +12,7 @@
 import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
+import { CHROME_CSS, HEADER, FOOTER } from './blog-chrome.mjs';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const BLOG_DIR = path.join(__dirname, '..', 'client', 'public', 'blog');
@@ -146,10 +147,15 @@ function assignSections(posts) {
 }
 
 // ── Generate featured card HTML ─────────────────────────────────────
+function dataTags(post) {
+  // Extra searchable keywords (title + tag + category), attribute-safe.
+  return escapeHtml(`${post.tag} ${post.category} ${post.title}`.toLowerCase());
+}
+
 function featuredCard(post) {
   return `
   <!-- Featured — ${post.title} -->
-  <div class="featured" data-post data-cat="${post.category}">
+  <div class="featured" data-post data-cat="${post.category}" data-tags="${dataTags(post)}">
     <a href="/blog/${post.slug}">
       <div class="img">
         <img src="${post.ogImage}" alt="${escapeHtml(post.title)}" loading="eager">
@@ -167,7 +173,7 @@ function featuredCard(post) {
 // ── Generate grid card HTML ─────────────────────────────────────────
 function gridCard(post) {
   return `
-      <a href="/blog/${post.slug}" class="card" data-post data-cat="${post.category}">
+      <a href="/blog/${post.slug}" class="card" data-post data-cat="${post.category}" data-tags="${dataTags(post)}">
         <div class="thumb">
           <img src="${post.ogImage}" alt="${escapeHtml(post.title)}" loading="lazy">
           <span class="tag">${post.tag}</span>
@@ -315,7 +321,7 @@ ${sec.posts.map(p => gridCard(p)).join('\n')}
       const cat=document.querySelector('.cat.on')?.dataset.cat||'all';
       let vis=0;
       document.querySelectorAll('[data-post]').forEach(c=>{
-        const text=(c.textContent||'').toLowerCase();
+        const text=((c.textContent||'')+' '+(c.dataset.tags||'')+' '+(c.dataset.cat||'')).toLowerCase();
         const postCat=c.dataset.cat||'';
         const ok=(!q||text.includes(q))&&(cat==='all'||postCat===cat);
         c.style.display=ok?'':'none';
@@ -331,6 +337,13 @@ ${sec.posts.map(p => gridCard(p)).join('\n')}
           grid.style.display=hasVisible?'':'none';
         }
       });
+      // Friendly empty state
+      const empty=document.getElementById('noResults');
+      if(empty){
+        empty.style.display=vis===0?'block':'none';
+        const qEl=document.getElementById('noResultsQuery');
+        if(qEl)qEl.textContent=q?('“'+document.getElementById('search').value+'”'):'that filter';
+      }
     }
     function setCat(btn){
       document.querySelectorAll('.cat').forEach(b=>b.classList.remove('on'));
@@ -374,14 +387,10 @@ ${sec.posts.map(p => gridCard(p)).join('\n')}
 [data-blog-theme="day"] .lang-card, [data-blog-theme="day"] .belief-card { background: #fff !important; border-color: rgba(0,0,0,.06) !important; }
 [data-blog-theme="day"] .belief-card .name, [data-blog-theme="day"] .lang-card .name { color: #1A1040 !important; }
 </style>
+${CHROME_CSS}
 </head>
 <body>
-
-  <!-- Nav -->
-  <nav class="nav">
-    <a href="/" class="brand">\u{1F319} My Sleepy Tale</a>
-    <a href="/" class="app-btn">Open App</a>
-  </nav>
+${HEADER}
 
   <!-- Hero -->
   <div class="hero">
@@ -393,7 +402,7 @@ ${sec.posts.map(p => gridCard(p)).join('\n')}
   <!-- Search + Filters -->
   <div class="controls">
     <div class="search-row">
-      <input type="text" id="search" placeholder="Search articles..." oninput="filterPosts()">
+      <input type="search" id="search" placeholder="Search articles..." aria-label="Search articles by title or topic" autocomplete="off" oninput="filterPosts()">
     </div>
     <div class="cats">
       <button class="cat on" data-cat="all" onclick="setCat(this)">All</button>
@@ -414,6 +423,13 @@ ${featuredHtml}
   <!-- Grid -->
   <div class="grid-wrap">
 ${gridHtml}
+    <!-- Empty state -->
+    <div id="noResults" style="display:none;text-align:center;padding:3rem 1rem 4rem;color:#8a857d">
+      <div style="font-size:2.2rem;margin-bottom:.6rem">\u{1F50D}</div>
+      <p style="font-family:Fraunces,Georgia,serif;font-size:1.2rem;color:#f5f0e8;margin-bottom:.4rem">No matching articles</p>
+      <p style="font-size:.9rem">Nothing matched <strong id="noResultsQuery">that filter</strong>. Try a different word or clear your search.</p>
+      <button onclick="document.getElementById('search').value='';document.querySelector('.cat[data-cat=&quot;all&quot;]').click();document.getElementById('search').focus()" style="margin-top:1rem;background:rgba(240,165,0,.12);color:#f0a500;font-weight:600;font-size:.82rem;border:1px solid rgba(240,165,0,.25);border-radius:2rem;padding:.55rem 1.3rem;cursor:pointer">Clear filters</button>
+    </div>
   </div>
 
   <!-- CTA -->
@@ -425,11 +441,7 @@ ${gridHtml}
     </div>
   </div>
 
-  <!-- Footer -->
-  <footer class="foot">
-    <p>\u{1F319} My Sleepy Tale \u2014 bedtime stories that feel like home</p>
-    <p style="margin-top:.4rem"><a href="/">Home</a> \u00B7 <a href="/creators">Creators</a> \u00B7 <a href="/creation">Create</a></p>
-  </footer>
+${FOOTER}
 
 </body>
 </html>`;

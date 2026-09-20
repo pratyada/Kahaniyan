@@ -112,7 +112,7 @@
       const cat=document.querySelector('.cat.on')?.dataset.cat||'all';
       let vis=0;
       document.querySelectorAll('[data-post]').forEach(c=>{
-        const text=(c.textContent||'').toLowerCase();
+        const text=((c.textContent||'')+' '+(c.dataset.tags||'')+' '+(c.dataset.cat||'')).toLowerCase();
         const postCat=c.dataset.cat||'';
         const ok=(!q||text.includes(q))&&(cat==='all'||postCat===cat);
         c.style.display=ok?'':'none';
@@ -128,6 +128,13 @@
           grid.style.display=hasVisible?'':'none';
         }
       });
+      // Friendly empty state
+      const empty=document.getElementById('noResults');
+      if(empty){
+        empty.style.display=vis===0?'block':'none';
+        const qEl=document.getElementById('noResultsQuery');
+        if(qEl)qEl.textContent=q?('“'+document.getElementById('search').value+'”'):'that filter';
+      }
     }
     function setCat(btn){
       document.querySelectorAll('.cat').forEach(b=>b.classList.remove('on'));
@@ -171,14 +178,72 @@
 [data-blog-theme="day"] .lang-card, [data-blog-theme="day"] .belief-card { background: #fff !important; border-color: rgba(0,0,0,.06) !important; }
 [data-blog-theme="day"] .belief-card .name, [data-blog-theme="day"] .lang-card .name { color: #1A1040 !important; }
 </style>
+<style id="mst-blog-chrome">
+/* My Sleepy Tale — canonical blog chrome (header / footer / bottom-nav / hero) */
+.mstc-hdr{position:sticky;top:0;z-index:50;background:rgba(10,10,15,.92);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border-bottom:1px solid rgba(255,255,255,.06)}
+.mstc-hdr-in{max-width:1000px;margin:0 auto;padding:.7rem 1.25rem;display:flex;align-items:center;justify-content:space-between;gap:1rem}
+.mstc-back{display:inline-flex;align-items:center;gap:.4rem;font-family:'DM Sans',system-ui,sans-serif;font-size:.85rem;font-weight:600;color:#a8a39a;text-decoration:none;transition:color .2s}
+.mstc-back:hover{color:#f0a500}
+.mstc-back svg{width:16px;height:16px;stroke-width:2}
+.mstc-brand{font-family:Fraunces,Georgia,serif;font-size:1rem;font-weight:700;color:#f5f0e8;text-decoration:none;display:inline-flex;align-items:center;gap:.4rem}
+.mstc-hero{position:relative;overflow:hidden;display:block;width:100%;max-width:1000px;margin:0 auto}
+.mstc-hero-in{aspect-ratio:16/6;min-height:170px;display:flex;flex-direction:column;justify-content:center;gap:.7rem;padding:2rem 1.5rem;text-align:center}
+@media(max-width:600px){.mstc-hero-in{aspect-ratio:16/9}}
+.mstc-hero-emoji{font-size:2.4rem;line-height:1}
+.mstc-hero-badge{display:inline-block;margin:0 auto;font-family:'DM Sans',system-ui,sans-serif;font-size:.62rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:rgba(255,255,255,.9);background:rgba(0,0,0,.22);border:1px solid rgba(255,255,255,.25);border-radius:2rem;padding:.3rem .85rem}
+.mstc-hero-title{font-family:Fraunces,Georgia,serif;font-size:clamp(1.4rem,4vw,2.1rem);font-weight:700;line-height:1.2;color:#fff;text-shadow:0 2px 20px rgba(0,0,0,.25);max-width:640px;margin:0 auto}
+@media(min-width:800px){.mstc-hero{border-radius:0 0 1.5rem 1.5rem}}
+/* footer */
+.mstc-ftr{background:rgba(255,255,255,.02);border-top:1px solid rgba(255,255,255,.07);margin-top:3rem}
+.mstc-ftr-in{max-width:1000px;margin:0 auto;padding:2.5rem 1.5rem 1rem}
+.mstc-ftr-h{font-family:Fraunces,Georgia,serif;font-size:.7rem;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:#8a857d;margin:0 0 1.2rem;text-align:center}
+.mstc-ftr-cols{display:grid;grid-template-columns:repeat(2,1fr);gap:1.4rem 1.2rem}
+@media(min-width:640px){.mstc-ftr-cols{grid-template-columns:repeat(3,1fr)}}
+@media(min-width:960px){.mstc-ftr-cols{grid-template-columns:repeat(6,1fr)}}
+.mstc-ftr-col h4{font-family:'DM Sans',system-ui,sans-serif;font-size:.72rem;font-weight:700;color:#b8aac8;margin:0 0 .6rem}
+.mstc-ftr-col ul{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:.4rem}
+.mstc-ftr-col a{font-size:.72rem;line-height:1.35;color:#8a857d;text-decoration:none;transition:color .2s}
+.mstc-ftr-col a:hover{color:#f0a500}
+.mstc-legal{margin-top:1.8rem;padding-top:1.2rem;border-top:1px solid rgba(255,255,255,.07);display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:.5rem 1rem}
+.mstc-legal a{font-size:.72rem;font-weight:600;color:#b8aac8;text-decoration:none;transition:color .2s}
+.mstc-legal a:hover{color:#f5f0e8}
+.mstc-copy{margin:.9rem 0 0;text-align:center;font-size:.68rem;color:#6e6a63;line-height:1.6}
+/* bottom nav (mobile) */
+.mstc-bnav{position:fixed;bottom:0;left:0;right:0;z-index:50;background:rgba(10,10,15,.95);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border-top:1px solid rgba(255,255,255,.06);padding-bottom:env(safe-area-inset-bottom)}
+.mstc-bnav ul{display:flex;max-width:500px;margin:0 auto;padding:.4rem .5rem 0;list-style:none}
+.mstc-bnav li{flex:1;text-align:center}
+.mstc-bnav a{display:flex;flex-direction:column;align-items:center;gap:.15rem;padding:.45rem 0;color:#6e6a63;font-size:.58rem;font-weight:700;text-transform:uppercase;letter-spacing:.1em;text-decoration:none;transition:color .2s}
+.mstc-bnav a:hover,.mstc-bnav a.on{color:#f0a500}
+.mstc-bnav svg{width:21px;height:21px;stroke-width:1.8}
+body{padding-bottom:4.2rem}
+/* never let article images overflow */
+article img,.article-wrap img,.wrap img,.c img{max-width:100%;height:auto}
+/* Day-theme overrides (posts set data-blog-theme="day" on <html>) */
+[data-blog-theme="day"] .mstc-hdr{background:rgba(253,248,240,.95);border-bottom-color:rgba(0,0,0,.07)}
+[data-blog-theme="day"] .mstc-back{color:#5E4880}
+[data-blog-theme="day"] .mstc-back:hover{color:#6B4FA8}
+[data-blog-theme="day"] .mstc-brand{color:#1A1040}
+[data-blog-theme="day"] .mstc-ftr{background:rgba(107,79,168,.03);border-top-color:rgba(0,0,0,.07)}
+[data-blog-theme="day"] .mstc-ftr-h{color:#6B4FA8}
+[data-blog-theme="day"] .mstc-ftr-col h4{color:#1A1040}
+[data-blog-theme="day"] .mstc-ftr-col a{color:#5E4880}
+[data-blog-theme="day"] .mstc-ftr-col a:hover{color:#6B4FA8}
+[data-blog-theme="day"] .mstc-legal{border-top-color:rgba(0,0,0,.08)}
+[data-blog-theme="day"] .mstc-legal a{color:#5E4880}
+[data-blog-theme="day"] .mstc-legal a:hover{color:#1A1040}
+[data-blog-theme="day"] .mstc-copy{color:#9A8BB0}
+[data-blog-theme="day"] .mstc-bnav{background:rgba(253,248,240,.95);border-top-color:rgba(0,0,0,.07)}
+[data-blog-theme="day"] .mstc-bnav a{color:#9A8BB0}
+[data-blog-theme="day"] .mstc-bnav a.on,[data-blog-theme="day"] .mstc-bnav a:hover{color:#6B4FA8}
+</style>
 </head>
 <body>
-
-  <!-- Nav -->
-  <nav class="nav">
-    <a href="/" class="brand">🌙 My Sleepy Tale</a>
-    <a href="/" class="app-btn">Open App</a>
-  </nav>
+<!-- MST-HEADER-START -->
+<header class="mstc-hdr"><div class="mstc-hdr-in">
+  <a href="/blog" class="mstc-back"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M15 18l-6-6 6-6"/></svg>All articles</a>
+  <a href="/" class="mstc-brand">🌙 My Sleepy Tale</a>
+</div></header>
+<!-- MST-HEADER-END -->
 
   <!-- Hero -->
   <div class="hero">
@@ -190,7 +255,7 @@
   <!-- Search + Filters -->
   <div class="controls">
     <div class="search-row">
-      <input type="text" id="search" placeholder="Search articles..." oninput="filterPosts()">
+      <input type="search" id="search" placeholder="Search articles..." aria-label="Search articles by title or topic" autocomplete="off" oninput="filterPosts()">
     </div>
     <div class="cats">
       <button class="cat on" data-cat="all" onclick="setCat(this)">All</button>
@@ -203,12 +268,42 @@
       <button class="cat" data-cat="fifa" onclick="setCat(this)">⚽ FIFA 2026</button>
       <button class="cat" data-cat="inspirational" onclick="setCat(this)">⭐ Inspirational</button>
     </div>
-    <p class="count" id="count">43 articles</p>
+    <p class="count" id="count">45 articles</p>
   </div>
 
 
+  <!-- Featured — Bedtime Stories in Your Own Voice: How Voice Cloning Works -->
+  <div class="featured" data-post data-cat="guide" data-tags="voice cloning guide bedtime stories in your own voice: how voice cloning works">
+    <a href="/blog/bedtime-stories-in-your-own-voice">
+      <div class="img">
+        <img src="https://mysleepytale.com/media/blog/bedtime-stories-in-your-own-voice.jpg" alt="Bedtime Stories in Your Own Voice: How Voice Cloning Works" loading="eager">
+      </div>
+      <div class="body">
+        <span class="tag">🎙️ New — Voice Cloning</span>
+        <h2>Bedtime Stories in Your Own Voice: How Voice Cloning Works</h2>
+        <p class="desc">Now your child can hear every bedtime story in your voice — or Grandma's. Here's how AI voice cloning works, why kids sleep better hearing a familiar voice, and how to set yours up in under a minute.</p>
+        <div class="meta"><span>6 min read</span><span class="dot"></span><span>September 18, 2026</span><span class="dot"></span><span>Voice Cloning</span></div>
+      </div>
+    </a>
+  </div>
+
+  <!-- Featured — Hearing Grandma's Voice Again: How a Cloned Voice Keeps Memories Alive -->
+  <div class="featured" data-post data-cat="guide" data-tags="memories guide hearing grandma's voice again: how a cloned voice keeps memories alive">
+    <a href="/blog/grandmas-voice-bedtime-stories-and-memories">
+      <div class="img">
+        <img src="https://mysleepytale.com/media/blog/grandmas-voice-bedtime-stories-and-memories.jpg" alt="Hearing Grandma's Voice Again: How a Cloned Voice Keeps Memories Alive" loading="eager">
+      </div>
+      <div class="body">
+        <span class="tag">💛 New — A Keepsake</span>
+        <h2>Hearing Grandma's Voice Again: How a Cloned Voice Keeps Memories Alive</h2>
+        <p class="desc">A familiar voice is a time machine. Here's how families use voice cloning to hear Grandma's voice again at bedtime — preserving a precious voice as a keepsake and bringing warm memories flooding back.</p>
+        <div class="meta"><span>6 min read</span><span class="dot"></span><span>September 18, 2026</span><span class="dot"></span><span>Memories</span></div>
+      </div>
+    </a>
+  </div>
+
   <!-- Featured — A Bedtime Story About Wildfires — Helping Kids Feel Calm & Prepared -->
-  <div class="featured" data-post data-cat="safety">
+  <div class="featured" data-post data-cat="safety" data-tags="🔥 new story — live now safety a bedtime story about wildfires — helping kids feel calm &amp; prepared">
     <a href="/blog/wildfire-safety-story-for-kids">
       <div class="img">
         <img src="https://yprateek.com/images/wildfire-globe-og.jpg" alt="A Bedtime Story About Wildfires — Helping Kids Feel Calm &amp; Prepared" loading="eager">
@@ -223,7 +318,7 @@
   </div>
 
   <!-- Featured — Vozinha — The 40-Year-Old Goalkeeper Who Became a World Cup Hero -->
-  <div class="featured" data-post data-cat="fifa">
+  <div class="featured" data-post data-cat="fifa" data-tags="🧤 trending — fifa 2026 fifa vozinha — the 40-year-old goalkeeper who became a world cup hero">
     <a href="/blog/vozinha-cape-verde-world-cup-hero">
       <div class="img">
         <img src="https://mysleepytale.com/og/vozinha-hero.jpg" alt="Vozinha — The 40-Year-Old Goalkeeper Who Became a World Cup Hero" loading="eager">
@@ -238,7 +333,7 @@
   </div>
 
   <!-- Featured — FIFA World Cup 2026 Dallas for Kids — Learn Football Through Bedtime Audiobooks -->
-  <div class="featured" data-post data-cat="fifa">
+  <div class="featured" data-post data-cat="fifa" data-tags="⚽ new series — dallas fifa fifa world cup 2026 dallas for kids — learn football through bedtime audiobooks">
     <a href="/blog/fifa-world-cup-dallas-kids-audiobook">
       <div class="img">
         <img src="https://images.unsplash.com/photo-1431324155629-1a6deb1dec8d?w=1200&h=630&fit=crop&q=80" alt="FIFA World Cup 2026 Dallas for Kids — Learn Football Through Bedtime Audiobooks" loading="eager">
@@ -253,7 +348,7 @@
   </div>
 
   <!-- Featured — FIFA World Cup 2026 for Kids — Learn Football Through Bedtime Audiobooks -->
-  <div class="featured" data-post data-cat="fifa">
+  <div class="featured" data-post data-cat="fifa" data-tags="⚽ new series — live now fifa fifa world cup 2026 for kids — learn football through bedtime audiobooks">
     <a href="/blog/fifa-world-cup-kids-audiobook">
       <div class="img">
         <img src="https://images.unsplash.com/photo-1431324155629-1a6deb1dec8d?w=1200&h=630&fit=crop&q=80" alt="FIFA World Cup 2026 for Kids — Learn Football Through Bedtime Audiobooks" loading="eager">
@@ -268,7 +363,7 @@
   </div>
 
   <!-- Featured — Jean Lumb Public School Kindergarten Bedtime Stories — Rainbow Class 2026 | Toronto -->
-  <div class="featured" data-post data-cat="toronto">
+  <div class="featured" data-post data-cat="toronto" data-tags="featured toronto jean lumb public school kindergarten bedtime stories — rainbow class 2026 | toronto">
     <a href="/blog/jean-lumb-kindergarten-bedtime-stories-toronto">
       <div class="img">
         <img src="https://mysleepytale.com/dsp_ep1_development.png" alt="Jean Lumb Public School Kindergarten Bedtime Stories — Rainbow Class 2026 | Toronto" loading="eager">
@@ -288,31 +383,7 @@
     <h2 class="section-title">Child <em>Psychology</em></h2>
     <div class="grid">
 
-      <a href="/blog/bedtime-stories-in-your-own-voice" class="card" data-post data-cat="psychology">
-        <div class="thumb">
-          <img src="https://mysleepytale.com/media/blog/bedtime-stories-in-your-own-voice.jpg" alt="Bedtime stories in your own voice" loading="lazy">
-          <span class="tag">Voice Cloning</span>
-        </div>
-        <div class="info">
-          <h3>Bedtime Stories in Your Own Voice</h3>
-          <p class="snippet">Your child can now hear every story in your voice — or Grandma's. How voice cloning works, the science of familiar voices, and how to set it up in a minute.</p>
-          <div class="card-meta"><span>6 min</span><span class="dot"></span><span>Sep 2026</span></div>
-        </div>
-      </a>
-
-      <a href="/blog/grandmas-voice-bedtime-stories-and-memories" class="card" data-post data-cat="psychology">
-        <div class="thumb">
-          <img src="https://mysleepytale.com/media/blog/grandmas-voice-bedtime-stories-and-memories.jpg" alt="Hearing Grandma's voice again at bedtime" loading="lazy">
-          <span class="tag">Memories</span>
-        </div>
-        <div class="info">
-          <h3>Hearing Grandma's Voice Again</h3>
-          <p class="snippet">A familiar voice is a time machine. How families preserve Grandma's voice as a bedtime keepsake — and why it brings memories flooding back.</p>
-          <div class="card-meta"><span>6 min</span><span class="dot"></span><span>Sep 2026</span></div>
-        </div>
-      </a>
-
-      <a href="/blog/ai-and-childhood" class="card" data-post data-cat="psychology">
+      <a href="/blog/ai-and-childhood" class="card" data-post data-cat="psychology" data-tags="ai &amp;amp; parenting psychology ai and childhood: a calm guide for parents">
         <div class="thumb">
           <img src="https://images.unsplash.com/photo-1544776193-352d25ca82cd?w=1200&h=630&fit=crop&q=80" alt="AI and Childhood: A Calm Guide for Parents" loading="lazy">
           <span class="tag">AI &amp; Parenting</span>
@@ -324,7 +395,7 @@
         </div>
       </a>
 
-      <a href="/blog/why-family-stories-matter" class="card" data-post data-cat="psychology">
+      <a href="/blog/why-family-stories-matter" class="card" data-post data-cat="psychology" data-tags="research psychology why family stories are the most powerful bedtime tool">
         <div class="thumb">
           <img src="https://images.unsplash.com/photo-1551966775-a4ddc8df052b?w=1200&h=630&fit=crop&q=80" alt="Why Family Stories Are the Most Powerful Bedtime Tool" loading="lazy">
           <span class="tag">Research</span>
@@ -336,7 +407,7 @@
         </div>
       </a>
 
-      <a href="/blog/why-kids-love-cars-buses" class="card" data-post data-cat="psychology">
+      <a href="/blog/why-kids-love-cars-buses" class="card" data-post data-cat="psychology" data-tags="psychology psychology why are 4-6 year olds obsessed with cars, buses &amp; trucks?">
         <div class="thumb">
           <img src="https://images.unsplash.com/photo-1567818735868-e71b99932e29?w=1200&h=630&fit=crop&q=80" alt="Why Are 4-6 Year Olds Obsessed with Cars, Buses &amp; Trucks?" loading="lazy">
           <span class="tag">Psychology</span>
@@ -348,7 +419,7 @@
         </div>
       </a>
 
-      <a href="/blog/why-kids-love-countries" class="card" data-post data-cat="psychology">
+      <a href="/blog/why-kids-love-countries" class="card" data-post data-cat="psychology" data-tags="global psychology why stories about countries &amp; flags build open-minded kids">
         <div class="thumb">
           <img src="https://images.unsplash.com/photo-1633477189729-9290b3261d0a?w=1200&h=630&fit=crop&q=80" alt="Why Stories About Countries &amp; Flags Build Open-Minded Kids" loading="lazy">
           <span class="tag">Global</span>
@@ -360,7 +431,7 @@
         </div>
       </a>
 
-      <a href="/blog/why-kids-love-planets" class="card" data-post data-cat="psychology">
+      <a href="/blog/why-kids-love-planets" class="card" data-post data-cat="psychology" data-tags="psychology psychology why kids are fascinated by planets and space — the psychology">
         <div class="thumb">
           <img src="https://images.unsplash.com/photo-1516627145497-ae6968895b74?w=1200&h=630&fit=crop&q=80" alt="Why Kids Are Fascinated by Planets and Space — The Psychology" loading="lazy">
           <span class="tag">Psychology</span>
@@ -372,7 +443,7 @@
         </div>
       </a>
 
-      <a href="/blog/why-kids-love-sports-stories" class="card" data-post data-cat="psychology">
+      <a href="/blog/why-kids-love-sports-stories" class="card" data-post data-cat="psychology" data-tags="psychology psychology why sports stories build discipline, teamwork &amp; grit in kids">
         <div class="thumb">
           <img src="https://images.unsplash.com/photo-1509021436665-8f07dbf5bf1d?w=1200&h=630&fit=crop&q=80" alt="Why Sports Stories Build Discipline, Teamwork &amp; Grit in Kids" loading="lazy">
           <span class="tag">Psychology</span>
@@ -384,7 +455,7 @@
         </div>
       </a>
 
-      <a href="/blog/why-kids-love-who-would-win" class="card" data-post data-cat="psychology">
+      <a href="/blog/why-kids-love-who-would-win" class="card" data-post data-cat="psychology" data-tags="psychology psychology why do kids love &quot;who would win?&quot; — the psychology behind it">
         <div class="thumb">
           <img src="https://images.unsplash.com/photo-1503919545889-aef636e10ad4?w=1200&h=630&fit=crop&q=80" alt="Why Do Kids Love &quot;Who Would Win?&quot; — The Psychology Behind It" loading="lazy">
           <span class="tag">Psychology</span>
@@ -396,7 +467,7 @@
         </div>
       </a>
 
-      <a href="/blog/why-kids-need-superhero-stories" class="card" data-post data-cat="psychology">
+      <a href="/blog/why-kids-need-superhero-stories" class="card" data-post data-cat="psychology" data-tags="psychology psychology why every child needs superhero stories (not the marvel kind)">
         <div class="thumb">
           <img src="https://images.unsplash.com/photo-1521714161819-15534968fc5f?w=1200&h=630&fit=crop&q=80" alt="Why Every Child Needs Superhero Stories (Not the Marvel Kind)" loading="lazy">
           <span class="tag">Psychology</span>
@@ -412,7 +483,7 @@
     <h2 class="section-title">Guides & <em>Comparisons</em></h2>
     <div class="grid">
 
-      <a href="/blog/how-to-calm-kids-at-bedtime" class="card" data-post data-cat="guide">
+      <a href="/blog/how-to-calm-kids-at-bedtime" class="card" data-post data-cat="guide" data-tags="guide guide how to calm kids at bedtime — 7 proven techniques that actually work">
         <div class="thumb">
           <img src="https://mysleepytale.com/og-image.jpg" alt="How to Calm Kids at Bedtime — 7 Proven Techniques That Actually Work" loading="lazy">
           <span class="tag">Guide</span>
@@ -424,7 +495,7 @@
         </div>
       </a>
 
-      <a href="/blog/kids-storytelling-creativity-stem" class="card" data-post data-cat="guide">
+      <a href="/blog/kids-storytelling-creativity-stem" class="card" data-post data-cat="guide" data-tags="guide guide why kids who tell stories become better thinkers — creativity, stem &amp; confidence">
         <div class="thumb">
           <img src="https://mysleepytale.com/og-image.jpg" alt="Why Kids Who Tell Stories Become Better Thinkers — Creativity, STEM &amp; Confidence" loading="lazy">
           <span class="tag">Guide</span>
@@ -436,7 +507,7 @@
         </div>
       </a>
 
-      <a href="/blog/screen-free-bedtime-routines" class="card" data-post data-cat="guide">
+      <a href="/blog/screen-free-bedtime-routines" class="card" data-post data-cat="guide" data-tags="guide guide 5 screen-free bedtime routines that actually work">
         <div class="thumb">
           <img src="https://images.unsplash.com/photo-1515488042361-ee00e0ddd4e4?w=1200&h=630&fit=crop&q=80" alt="5 Screen-Free Bedtime Routines That Actually Work" loading="lazy">
           <span class="tag">Guide</span>
@@ -448,7 +519,7 @@
         </div>
       </a>
 
-      <a href="/blog/best-bedtime-story-app-2026" class="card" data-post data-cat="comparison">
+      <a href="/blog/best-bedtime-story-app-2026" class="card" data-post data-cat="comparison" data-tags="comparison comparison best bedtime story app in 2026 — my sleepy tale vs calm kids vs moshi">
         <div class="thumb">
           <img src="https://images.unsplash.com/photo-1606092195730-5d7b9af1efc5?w=1200&h=630&fit=crop&q=80" alt="Best Bedtime Story App in 2026 — My Sleepy Tale vs Calm Kids vs Moshi" loading="lazy">
           <span class="tag">Comparison</span>
@@ -460,7 +531,7 @@
         </div>
       </a>
 
-      <a href="/blog/why-bedtime-stories-matter" class="card" data-post data-cat="guide">
+      <a href="/blog/why-bedtime-stories-matter" class="card" data-post data-cat="guide" data-tags="guide guide why bedtime stories matter more than you think">
         <div class="thumb">
           <img src="https://images.unsplash.com/photo-1512820790803-83ca734da794?w=1200&h=630&fit=crop&q=80" alt="Why Bedtime Stories Matter More Than You Think" loading="lazy">
           <span class="tag">Guide</span>
@@ -476,7 +547,7 @@
     <h2 class="section-title">Cultural <em>Stories</em></h2>
     <div class="grid">
 
-      <a href="/blog/hispanic-bedtime-stories-for-kids" class="card" data-post data-cat="culture">
+      <a href="/blog/hispanic-bedtime-stories-for-kids" class="card" data-post data-cat="culture" data-tags="cultural culture hispanic bedtime stories for kids — latino folklore &amp; cultural tales">
         <div class="thumb">
           <img src="https://images.unsplash.com/photo-1590080875515-8a3a8dc5735e?w=1200&h=630&fit=crop&q=80" alt="Hispanic Bedtime Stories for Kids — Latino Folklore &amp; Cultural Tales" loading="lazy">
           <span class="tag">Cultural</span>
@@ -488,7 +559,7 @@
         </div>
       </a>
 
-      <a href="/blog/indian-bedtime-stories" class="card" data-post data-cat="culture">
+      <a href="/blog/indian-bedtime-stories" class="card" data-post data-cat="culture" data-tags="hindu · indian culture indian bedtime stories for kids — krishna, panchatantra, ramayana">
         <div class="thumb">
           <img src="https://images.unsplash.com/photo-1590080875515-8a3a8dc5735e?w=1200&h=630&fit=crop&q=80" alt="Indian Bedtime Stories for Kids — Krishna, Panchatantra, Ramayana" loading="lazy">
           <span class="tag">Hindu · Indian</span>
@@ -500,7 +571,7 @@
         </div>
       </a>
 
-      <a href="/blog/islamic-stories-for-kids" class="card" data-post data-cat="culture">
+      <a href="/blog/islamic-stories-for-kids" class="card" data-post data-cat="culture" data-tags="islamic culture islamic stories for kids — prophet stories for bedtime">
         <div class="thumb">
           <img src="https://images.unsplash.com/photo-1551966775-a4ddc8df052b?w=1200&h=630&fit=crop&q=80" alt="Islamic Stories for Kids — Prophet Stories for Bedtime" loading="lazy">
           <span class="tag">Islamic</span>
@@ -512,7 +583,7 @@
         </div>
       </a>
 
-      <a href="/blog/belief-stories-for-kids" class="card" data-post data-cat="culture">
+      <a href="/blog/belief-stories-for-kids" class="card" data-post data-cat="culture" data-tags="values culture why we tell stories from every belief — raising kids who respect every faith">
         <div class="thumb">
           <img src="https://mysleepytale.com/icon-180.png" alt="Why We Tell Stories from Every Belief — Raising Kids Who Respect Every Faith" loading="lazy">
           <span class="tag">Values</span>
@@ -528,7 +599,7 @@
     <h2 class="section-title">Guides &amp; <em>Transparency</em></h2>
     <div class="grid">
 
-      <a href="/blog/technology-stack" class="card" data-post data-cat="guide">
+      <a href="/blog/technology-stack" class="card" data-post data-cat="guide" data-tags="engineering guide how we built my sleepy tale — our technology stack">
         <div class="thumb">
           <img src="https://mysleepytale.com/icon-180.png" alt="How We Built My Sleepy Tale — Our Technology Stack" loading="lazy">
           <span class="tag">Engineering</span>
@@ -540,7 +611,7 @@
         </div>
       </a>
 
-      <a href="/blog/multilingual-bedtime-stories" class="card" data-post data-cat="guide">
+      <a href="/blog/multilingual-bedtime-stories" class="card" data-post data-cat="guide" data-tags="multilingual guide one story, nine languages — how we built multilingual bedtime stories">
         <div class="thumb">
           <img src="https://mysleepytale.com/og/multilingual-story.jpg" alt="One Story, Nine Languages — How We Built Multilingual Bedtime Stories" loading="lazy">
           <span class="tag">Multilingual</span>
@@ -552,7 +623,7 @@
         </div>
       </a>
 
-      <a href="/blog/email-notifications-guide" class="card" data-post data-cat="guide">
+      <a href="/blog/email-notifications-guide" class="card" data-post data-cat="guide" data-tags="transparency guide email notifications &amp;mdash; how we keep you updated without the spam">
         <div class="thumb">
           <img src="https://mysleepytale.com/og/cover.jpg" alt="Email Notifications &amp;mdash; How We Keep You Updated Without the Spam" loading="lazy">
           <span class="tag">Transparency</span>
@@ -564,7 +635,7 @@
         </div>
       </a>
 
-      <a href="/blog/security-improvements-guide" class="card" data-post data-cat="guide">
+      <a href="/blog/security-improvements-guide" class="card" data-post data-cat="guide" data-tags="security guide security improvements — how we protect your family's data">
         <div class="thumb">
           <img src="https://mysleepytale.com/icon-180.png" alt="Security Improvements — How We Protect Your Family's Data" loading="lazy">
           <span class="tag">Security</span>
@@ -580,7 +651,7 @@
     <h2 class="section-title">Creator <em>Program</em></h2>
     <div class="grid">
 
-      <a href="/blog/become-a-creator" class="card" data-post data-cat="creators">
+      <a href="/blog/become-a-creator" class="card" data-post data-cat="creators" data-tags="creator guide creators become a story creator — the complete guide">
         <div class="thumb">
           <img src="https://mysleepytale.com/dsp_ep1_development.png" alt="Become a Story Creator — The Complete Guide" loading="lazy">
           <span class="tag">Creator Guide</span>
@@ -592,7 +663,7 @@
         </div>
       </a>
 
-      <a href="/blog/creator-credits-guide" class="card" data-post data-cat="creators">
+      <a href="/blog/creator-credits-guide" class="card" data-post data-cat="creators" data-tags="credits creators creator credits guide — how to earn on">
         <div class="thumb">
           <img src="https://mysleepytale.com/dsp_ep1_development.png" alt="Creator Credits Guide — How to Earn on" loading="lazy">
           <span class="tag">Credits</span>
@@ -604,7 +675,7 @@
         </div>
       </a>
 
-      <a href="/blog/private-series-contributor-guide" class="card" data-post data-cat="creators">
+      <a href="/blog/private-series-contributor-guide" class="card" data-post data-cat="creators" data-tags="new feature creators private series &amp;amp; contributor flow — create family stories together">
         <div class="thumb">
           <img src="https://mysleepytale.com/blog/images/og-private-series-contributor.jpeg" alt="Private Series &amp;amp; Contributor Flow — Create Family Stories Together" loading="lazy">
           <span class="tag">New Feature</span>
@@ -616,7 +687,7 @@
         </div>
       </a>
 
-      <a href="/blog/rainbow-kindergarten-series-2026" class="card" data-post data-cat="creators">
+      <a href="/blog/rainbow-kindergarten-series-2026" class="card" data-post data-cat="creators" data-tags="series spotlight creators rainbow kindergarten adventures — our first series">
         <div class="thumb">
           <img src="https://mysleepytale.com/dsp_ep1_development.png" alt="Rainbow Kindergarten Adventures — Our First Series" loading="lazy">
           <span class="tag">Series Spotlight</span>
@@ -632,7 +703,7 @@
     <h2 class="section-title">Series <em>Launches</em></h2>
     <div class="grid">
 
-      <a href="/blog/series-launch-animal-battles" class="card" data-post data-cat="psychology">
+      <a href="/blog/series-launch-animal-battles" class="card" data-post data-cat="psychology" data-tags="series psychology who would win? animal battles — a new kind of bedtime debate">
         <div class="thumb">
           <img src="https://images.unsplash.com/photo-1474511320723-9a56873571b7?w=1200&h=630&fit=crop&q=80" alt="Who Would Win? Animal Battles — A New Kind of Bedtime Debate" loading="lazy">
           <span class="tag">Series</span>
@@ -644,7 +715,7 @@
         </div>
       </a>
 
-      <a href="/blog/series-launch-camping-outdoors" class="card" data-post data-cat="psychology">
+      <a href="/blog/series-launch-camping-outdoors" class="card" data-post data-cat="psychology" data-tags="series psychology camping &amp; outdoors — bedtime stories from the wild">
         <div class="thumb">
           <img src="https://images.unsplash.com/photo-1504280390367-361c6d9f38f4?w=1200&h=630&fit=crop&q=80" alt="Camping &amp; Outdoors — Bedtime Stories from the Wild" loading="lazy">
           <span class="tag">Series</span>
@@ -656,7 +727,7 @@
         </div>
       </a>
 
-      <a href="/blog/series-launch-discover-india" class="card" data-post data-cat="culture">
+      <a href="/blog/series-launch-discover-india" class="card" data-post data-cat="culture" data-tags="series culture discover india — culture, history &amp; wonder in 5 bedtime episodes">
         <div class="thumb">
           <img src="https://images.unsplash.com/photo-1524492412937-b28074a5d7da?w=1200&h=630&fit=crop&q=80" alt="Discover India — Culture, History &amp; Wonder in 5 Bedtime Episodes" loading="lazy">
           <span class="tag">Series</span>
@@ -668,7 +739,7 @@
         </div>
       </a>
 
-      <a href="/blog/series-launch-geometry-shapes" class="card" data-post data-cat="psychology">
+      <a href="/blog/series-launch-geometry-shapes" class="card" data-post data-cat="psychology" data-tags="series psychology geometry &amp; shapes — where shapes become characters at bedtime">
         <div class="thumb">
           <img src="https://images.unsplash.com/photo-1635070041078-e363dbe005cb?w=1200&h=630&fit=crop&q=80" alt="Geometry &amp; Shapes — Where Shapes Become Characters at Bedtime" loading="lazy">
           <span class="tag">Series</span>
@@ -680,7 +751,7 @@
         </div>
       </a>
 
-      <a href="/blog/series-launch-little-astronaut" class="card" data-post data-cat="psychology">
+      <a href="/blog/series-launch-little-astronaut" class="card" data-post data-cat="psychology" data-tags="series psychology little astronaut — bedtime adventures through the solar system">
         <div class="thumb">
           <img src="https://images.unsplash.com/photo-1516627145497-ae6968895b74?w=1200&h=630&fit=crop&q=80" alt="Little Astronaut — Bedtime Adventures Through the Solar System" loading="lazy">
           <span class="tag">Series</span>
@@ -692,7 +763,7 @@
         </div>
       </a>
 
-      <a href="/blog/series-launch-maths-adventures" class="card" data-post data-cat="psychology">
+      <a href="/blog/series-launch-maths-adventures" class="card" data-post data-cat="psychology" data-tags="series psychology maths adventures — numbers come alive at bedtime">
         <div class="thumb">
           <img src="https://images.unsplash.com/photo-1509228468518-180dd4864904?w=1200&h=630&fit=crop&q=80" alt="Maths Adventures — Numbers Come Alive at Bedtime" loading="lazy">
           <span class="tag">Series</span>
@@ -704,7 +775,7 @@
         </div>
       </a>
 
-      <a href="/blog/series-launch-music-lessons" class="card" data-post data-cat="psychology">
+      <a href="/blog/series-launch-music-lessons" class="card" data-post data-cat="psychology" data-tags="series psychology music lessons — when instruments teach life lessons at bedtime">
         <div class="thumb">
           <img src="https://images.unsplash.com/photo-1511379938547-c1f69419868d?w=1200&h=630&fit=crop&q=80" alt="Music Lessons — When Instruments Teach Life Lessons at Bedtime" loading="lazy">
           <span class="tag">Series</span>
@@ -716,7 +787,7 @@
         </div>
       </a>
 
-      <a href="/blog/series-launch-planets-and-stars" class="card" data-post data-cat="psychology">
+      <a href="/blog/series-launch-planets-and-stars" class="card" data-post data-cat="psychology" data-tags="series psychology planets &amp; stars — every planet has a personality at bedtime">
         <div class="thumb">
           <img src="https://images.unsplash.com/photo-1614732414444-096e5f1122d5?w=1200&h=630&fit=crop&q=80" alt="Planets &amp; Stars — Every Planet Has a Personality at Bedtime" loading="lazy">
           <span class="tag">Series</span>
@@ -728,7 +799,7 @@
         </div>
       </a>
 
-      <a href="/blog/series-launch-tallest-towers" class="card" data-post data-cat="psychology">
+      <a href="/blog/series-launch-tallest-towers" class="card" data-post data-cat="psychology" data-tags="series psychology tallest towers in the world — 20 bedtime episodes of architecture &amp; wonder">
         <div class="thumb">
           <img src="https://images.unsplash.com/photo-1518684079-3c830dcef090?w=1200&h=630&fit=crop&q=80" alt="Tallest Towers in the World — 20 Bedtime Episodes of Architecture &amp; Wonder" loading="lazy">
           <span class="tag">Series</span>
@@ -740,7 +811,7 @@
         </div>
       </a>
 
-      <a href="/blog/series-launch-water-and-swim" class="card" data-post data-cat="psychology">
+      <a href="/blog/series-launch-water-and-swim" class="card" data-post data-cat="psychology" data-tags="series psychology water &amp; swim — conquering the fear, one bedtime story at a time">
         <div class="thumb">
           <img src="https://images.unsplash.com/photo-1530549387789-4c1017266635?w=1200&h=630&fit=crop&q=80" alt="Water &amp; Swim — Conquering the Fear, One Bedtime Story at a Time" loading="lazy">
           <span class="tag">Series</span>
@@ -756,7 +827,7 @@
     <h2 class="section-title">Toronto <em>Stories</em></h2>
     <div class="grid">
 
-      <a href="/blog/kindergarten-learning-through-bedtime-stories" class="card" data-post data-cat="toronto">
+      <a href="/blog/kindergarten-learning-through-bedtime-stories" class="card" data-post data-cat="toronto" data-tags="toronto toronto how bedtime stories become learning tools — a kindergarten cognitive development framework">
         <div class="thumb">
           <img src="https://mysleepytale.com/media/story-gallery/rk_ep1_canoe_0.jpeg" alt="How Bedtime Stories Become Learning Tools — A Kindergarten Cognitive Development Framework" loading="lazy">
           <span class="tag">Toronto</span>
@@ -768,7 +839,7 @@
         </div>
       </a>
 
-      <a href="/blog/bluey-bingo-niagara-victoria-day" class="card" data-post data-cat="toronto">
+      <a href="/blog/bluey-bingo-niagara-victoria-day" class="card" data-post data-cat="toronto" data-tags="toronto toronto bluey &amp; bingo go to niagara-on-the-lake — a victoria day family adventure">
         <div class="thumb">
           <img src="https://images.unsplash.com/photo-1559757175-5700dde675bc?w=1200&h=630&fit=crop&q=80" alt="Bluey &amp; Bingo Go to Niagara-on-the-Lake — A Victoria Day Family Adventure" loading="lazy">
           <span class="tag">Toronto</span>
@@ -780,7 +851,7 @@
         </div>
       </a>
 
-      <a href="/blog/best-bedtime-story-app-toronto" class="card" data-post data-cat="toronto">
+      <a href="/blog/best-bedtime-story-app-toronto" class="card" data-post data-cat="toronto" data-tags="toronto toronto best bedtime story app for multicultural families in toronto">
         <div class="thumb">
           <img src="https://images.unsplash.com/photo-1515488042361-ee00e0ddd4e4?w=1200&h=630&fit=crop&q=80" alt="Best Bedtime Story App for Multicultural Families in Toronto" loading="lazy">
           <span class="tag">Toronto</span>
@@ -793,6 +864,13 @@
       </a>
     </div>
 
+    <!-- Empty state -->
+    <div id="noResults" style="display:none;text-align:center;padding:3rem 1rem 4rem;color:#8a857d">
+      <div style="font-size:2.2rem;margin-bottom:.6rem">🔍</div>
+      <p style="font-family:Fraunces,Georgia,serif;font-size:1.2rem;color:#f5f0e8;margin-bottom:.4rem">No matching articles</p>
+      <p style="font-size:.9rem">Nothing matched <strong id="noResultsQuery">that filter</strong>. Try a different word or clear your search.</p>
+      <button onclick="document.getElementById('search').value='';document.querySelector('.cat[data-cat=&quot;all&quot;]').click();document.getElementById('search').focus()" style="margin-top:1rem;background:rgba(240,165,0,.12);color:#f0a500;font-weight:600;font-size:.82rem;border:1px solid rgba(240,165,0,.25);border-radius:2rem;padding:.55rem 1.3rem;cursor:pointer">Clear filters</button>
+    </div>
   </div>
 
   <!-- CTA -->
@@ -804,11 +882,89 @@
     </div>
   </div>
 
-  <!-- Footer -->
-  <footer class="foot">
-    <p>🌙 My Sleepy Tale — bedtime stories that feel like home</p>
-    <p style="margin-top:.4rem"><a href="/">Home</a> · <a href="/creators">Creators</a> · <a href="/build">Create</a></p>
-  </footer>
+<!-- MST-FOOTER-START -->
+<footer class="mstc-ftr"><div class="mstc-ftr-in">
+    <p class="mstc-ftr-h">Explore More</p>
+    <div class="mstc-ftr-cols">
+      <div class="mstc-ftr-col">
+        <h4>Bedtime Stories</h4>
+        <ul>
+          <li><a href="/blog/why-bedtime-stories-matter" target="_blank" rel="noopener noreferrer">Why Bedtime Stories Matter</a></li>
+          <li><a href="/blog/screen-free-bedtime-routines" target="_blank" rel="noopener noreferrer">Screen-Free Bedtime Routines</a></li>
+          <li><a href="/blog/why-family-stories-matter" target="_blank" rel="noopener noreferrer">Why Family Stories Matter</a></li>
+          <li><a href="/blog/become-a-creator" target="_blank" rel="noopener noreferrer">Become a Creator</a></li>
+        </ul>
+      </div>
+      <div class="mstc-ftr-col">
+        <h4>World Cup 2026</h4>
+        <ul>
+          <li><a href="/blog/fifa-world-cup-kids-audiobook" target="_blank" rel="noopener noreferrer">FIFA World Cup Kids Audiobook</a></li>
+          <li><a href="/blog/fifa-world-cup-dallas-kids-audiobook" target="_blank" rel="noopener noreferrer">FIFA Dallas Kids Audiobook</a></li>
+          <li><a href="/fifa-world-cup-kids.html" target="_blank" rel="noopener noreferrer">World Cup Kids Stories</a></li>
+          <li><a href="/fifa-world-cup-dallas-kids.html" target="_blank" rel="noopener noreferrer">World Cup Dallas Stories</a></li>
+        </ul>
+      </div>
+      <div class="mstc-ftr-col">
+        <h4>Cultural Stories</h4>
+        <ul>
+          <li><a href="/blog/indian-bedtime-stories" target="_blank" rel="noopener noreferrer">Indian Bedtime Stories</a></li>
+          <li><a href="/blog/islamic-stories-for-kids" target="_blank" rel="noopener noreferrer">Islamic Stories for Kids</a></li>
+          <li><a href="/blog/hispanic-bedtime-stories-for-kids" target="_blank" rel="noopener noreferrer">Hispanic Bedtime Stories</a></li>
+          <li><a href="/blog/belief-stories-for-kids" target="_blank" rel="noopener noreferrer">Belief Stories for Kids</a></li>
+        </ul>
+      </div>
+      <div class="mstc-ftr-col">
+        <h4>Child Psychology</h4>
+        <ul>
+          <li><a href="/blog/why-kids-love-who-would-win" target="_blank" rel="noopener noreferrer">Why Kids Love Who Would Win</a></li>
+          <li><a href="/blog/why-kids-love-cars-buses" target="_blank" rel="noopener noreferrer">Why Kids Love Cars & Buses</a></li>
+          <li><a href="/blog/why-kids-love-planets" target="_blank" rel="noopener noreferrer">Why Kids Love Planets</a></li>
+          <li><a href="/blog/why-kids-love-sports-stories" target="_blank" rel="noopener noreferrer">Why Kids Love Sports Stories</a></li>
+          <li><a href="/blog/why-kids-need-superhero-stories" target="_blank" rel="noopener noreferrer">Why Kids Need Superhero Stories</a></li>
+          <li><a href="/blog/why-kids-love-countries" target="_blank" rel="noopener noreferrer">Why Kids Love Countries</a></li>
+        </ul>
+      </div>
+      <div class="mstc-ftr-col">
+        <h4>Landing Pages</h4>
+        <ul>
+          <li><a href="/bedtime-stories-for-kids" target="_blank" rel="noopener noreferrer">Bedtime Stories for Kids</a></li>
+          <li><a href="/bedtime-story-app" target="_blank" rel="noopener noreferrer">Bedtime Story App</a></li>
+          <li><a href="/hindu-bedtime-stories" target="_blank" rel="noopener noreferrer">Hindu Bedtime Stories</a></li>
+          <li><a href="/islamic-stories-for-kids" target="_blank" rel="noopener noreferrer">Islamic Stories for Kids</a></li>
+          <li><a href="/catholic-bedtime-stories" target="_blank" rel="noopener noreferrer">Catholic Bedtime Stories</a></li>
+          <li><a href="/sikh-bedtime-stories" target="_blank" rel="noopener noreferrer">Sikh Bedtime Stories</a></li>
+        </ul>
+      </div>
+      <div class="mstc-ftr-col">
+        <h4>Series & More</h4>
+        <ul>
+          <li><a href="/blog/best-bedtime-story-app-2026" target="_blank" rel="noopener noreferrer">Best Bedtime Story App 2026</a></li>
+          <li><a href="/blog/best-bedtime-story-app-toronto" target="_blank" rel="noopener noreferrer">Best App Toronto</a></li>
+          <li><a href="/blog/multilingual-bedtime-stories" target="_blank" rel="noopener noreferrer">Multilingual Bedtime Stories</a></li>
+          <li><a href="/blog/technology-stack" target="_blank" rel="noopener noreferrer">Technology Stack</a></li>
+          <li><a href="/demo/multilingual/" target="_blank" rel="noopener noreferrer">Multilingual Demo</a></li>
+          <li><a href="/blog/" target="_blank" rel="noopener noreferrer">All Blog Posts</a></li>
+        </ul>
+      </div>
+    </div>
+    <nav class="mstc-legal">
+      <a href="/blog/" target="_blank" rel="noopener noreferrer">Blog</a>
+      <a href="/aboutus" target="_blank" rel="noopener noreferrer">About</a>
+      <a href="/terms.html" target="_blank" rel="noopener noreferrer">Terms & Conditions</a>
+      <a href="/privacy" target="_blank" rel="noopener noreferrer">Privacy Policy</a>
+      <a href="/refund-policy.html" target="_blank" rel="noopener noreferrer">Refund & Cancellation</a>
+      <a href="mailto:hello@mysleepytale.com">Contact</a>
+    </nav>
+    <p class="mstc-copy">© 2026 My Sleepy Tale · Toronto, Canada · Bedtime stories that teach roots &amp; values</p>
+</div></footer>
+<nav class="mstc-bnav"><ul>
+  <li><a href="/"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg>Home</a></li>
+  <li><a href="/build"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M20.24 12.24a6 6 0 00-8.49-8.49L5 10.5V19h8.5z"/><line x1="16" y1="8" x2="2" y2="22"/><line x1="17.5" y1="15" x2="9" y2="15"/></svg>Create</a></li>
+  <li><a href="/world"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3a15 15 0 010 18M12 3a15 15 0 000 18"/></svg>My World</a></li>
+  <li><a href="/blog" class="on"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M2 3h6a4 4 0 014 4v14a3 3 0 00-3-3H2z"/><path d="M22 3h-6a4 4 0 00-4 4v14a3 3 0 013-3h7z"/></svg>Blog</a></li>
+  <li><a href="/profile"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>Me</a></li>
+</ul></nav>
+<!-- MST-FOOTER-END -->
 
 </body>
 </html>

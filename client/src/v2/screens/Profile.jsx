@@ -4,7 +4,7 @@
 // purchase state.
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { LogOut, ChevronRight, Gem, Mic2, Star, Shield, Settings as SettingsIcon, Moon, Check } from 'lucide-react';
+import { LogOut, ChevronRight, Gem, Mic2, Star, Shield, Settings as SettingsIcon, Moon, Check, BookOpen } from 'lucide-react';
 import { useAuth } from '../../hooks/useAuth.jsx';
 import { useFamilyProfile } from '../../hooks/useFamilyProfile.js';
 import { GOLD } from '../ui.js';
@@ -66,6 +66,7 @@ export default function Profile() {
     { Icon: Mic2, label: 'My Voices', sub: 'Clone a family voice', onClick: () => navigate('/voices') },
     { Icon: Star, label: 'Family & kids', sub: profile?.childName ? `${profile.childName}'s profile` : 'Set up a child', onClick: () => navigate('/settings') },
     { Icon: SettingsIcon, label: 'Settings', sub: 'Child, language, privacy, more', onClick: () => navigate('/settings') },
+    { Icon: BookOpen, label: 'Read our blog', sub: 'Bedtime tips, guides & stories', onClick: () => window.open('/blog', '_blank', 'noopener,noreferrer') },
   ];
 
   return (
