@@ -67,13 +67,27 @@ const COLUMNS = [
   },
 ];
 
+// Top row: general links + the prominent compliance hub.
 const LEGAL = [
   ['Blog', '/blog/'],
   ['About', '/aboutus'],
-  ['Terms & Conditions', '/terms.html'],
-  ['Privacy Policy', '/privacy'],
-  ['Refund & Cancellation', '/refund-policy.html'],
+  ['Privacy, Safety & Compliance', '/compliance.html'],
   ['Contact', 'mailto:hello@mysleepytale.com'],
+];
+
+// Compliance & Policies — grouped so it reads cleanly. All are first-party static
+// pages; link to the reachable .html URLs (clean-URL rewrites only cover /blog).
+const POLICIES = [
+  ['Privacy Policy', '/privacy.html'],
+  ["Children's Privacy", '/childrens-privacy.html'],
+  ['Voice & Recording Consent', '/voice-consent.html'],
+  ['Cookie Policy', '/cookie-policy.html'],
+  ['Terms & Conditions', '/terms.html'],
+  ['Refund & Cancellation', '/refund-policy.html'],
+  ['Community Guidelines', '/community-guidelines.html'],
+  ['Accessibility', '/accessibility.html'],
+  ['Security', '/security.html'],
+  ['Copyright & Takedown', '/copyright.html'],
 ];
 
 function ext(href) {
@@ -110,8 +124,18 @@ export default function SiteFooter() {
         ))}
       </div>
 
+      {/* Compliance & Policies */}
+      <div className="mt-9 border-t border-white/8 pt-6">
+        <p className="text-[11px] font-bold uppercase tracking-[0.16em] text-[#7A6B8A] mb-3 text-center" style={{ fontFamily: 'Lora, serif' }}>Compliance &amp; Policies</p>
+        <nav className="flex flex-wrap items-center justify-center gap-x-4 gap-y-2 max-w-2xl mx-auto">
+          {POLICIES.map(([label, href]) => (
+            <a key={href} href={href} {...ext(href)} className="text-[11px] leading-snug text-[#7A6B8A] hover:text-[#B8AAC8] transition">{label}</a>
+          ))}
+        </nav>
+      </div>
+
       {/* Legal + contact */}
-      <div className="mt-9 border-t border-white/8 pt-6 flex flex-col items-center gap-3">
+      <div className="mt-8 border-t border-white/8 pt-6 flex flex-col items-center gap-3">
         <nav className="flex flex-wrap items-center justify-center gap-x-4 gap-y-2">
           {LEGAL.map(([label, href]) => (
             <a key={href} href={href} {...ext(href)} className="text-[11px] font-semibold text-[#B8AAC8] hover:text-[#F7F1E8] transition">{label}</a>

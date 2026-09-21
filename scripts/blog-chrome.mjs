@@ -128,8 +128,9 @@ const FOOTER_LEGAL = [
   ['Blog', '/blog/'],
   ['About', '/aboutus'],
   ['Terms & Conditions', '/terms.html'],
-  ['Privacy Policy', '/privacy'],
+  ['Privacy Policy', '/privacy.html'],
   ['Refund & Cancellation', '/refund-policy.html'],
+  ['Privacy, Safety & Compliance', '/compliance.html'],
   ['Contact', 'mailto:hello@mysleepytale.com'],
 ];
 const ext = (href) => (href.startsWith('mailto:') ? '' : ' target="_blank" rel="noopener noreferrer"');
