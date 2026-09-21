@@ -4,6 +4,16 @@ import { db, auth as firebaseAuth, hasConfig } from '../lib/firebase.js';
 import { registerOnUserChange } from './useAuth.jsx';
 import { defaultCharactersFromProfile } from '../utils/constants.js';
 
+// Team/admin emails that get complimentary paid access (same list as the server
+// default in api/_entitlement.js). Display gating only — the server is authoritative.
+const COMP_EMAILS = [
+  'prateekyadav2010@gmail.com',
+  'sahil.faraz@gmail.com',
+  'deepti.ramaul@gmail.com',
+  'rakshajoshi476@gmail.com',
+  'vasudha.0512@gmail.com',
+];
+
 // ─────────────────────────────────────────────────────────────
 // useFamilyProfile — dual-layer persistence.
 //
@@ -272,7 +282,10 @@ export function FamilyProfileProvider({ children }) {
   // Server-authoritative plan (set only by the Stripe webhook via admin SDK).
   const [subscriptionTier, setSubscriptionTier] = useState('free');
   const [voiceClones, setVoiceClones] = useState([]); // server-persisted cloned voices
-  const isPaid = ['pro', 'family', 'enterprise', 'annual', 'premium'].includes(String(subscriptionTier || '').toLowerCase());
+  // Team/admin emails get complimentary paid access (mirrors COMP_EMAILS in
+  // api/_entitlement.js — server stays authoritative; this is display gating only).
+  const compEmail = COMP_EMAILS.includes(String(firebaseAuth?.currentUser?.email || '').toLowerCase());
+  const isPaid = compEmail || ['pro', 'family', 'enterprise', 'annual', 'premium'].includes(String(subscriptionTier || '').toLowerCase());
 
   // Re-read voiceClones from the server (source of truth). voiceClones is otherwise a
   // one-time fetch on login, so a newly cloned voice vanishes on remount until a hard
