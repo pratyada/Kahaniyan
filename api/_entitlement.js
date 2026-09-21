@@ -10,23 +10,6 @@ export function isPaidTier(tier) {
   return PAID_TIERS.has(String(tier || '').toLowerCase());
 }
 
-// ── Complimentary paid access for the team ──────────────────────────────────
-// Admins/team get the same entitlements as a paid subscriber (voice cloning,
-// unlimited creations, etc.) without going through Stripe. Kept in sync with the
-// ADMIN_EMAILS default used in create-checkout.js / bulk-tasks.js. Override via
-// the ADMIN_EMAILS env var (comma-separated).
-const COMP_EMAILS = new Set(
-  (process.env.ADMIN_EMAILS ||
-    'prateekyadav2010@gmail.com,sahil.faraz@gmail.com,deepti.ramaul@gmail.com,rakshajoshi476@gmail.com,vasudha.0512@gmail.com')
-    .split(',')
-    .map((e) => e.trim().toLowerCase())
-    .filter(Boolean)
-);
-
-export function isCompEmail(email) {
-  return !!email && COMP_EMAILS.has(String(email).toLowerCase());
-}
-
 // ── Launch promo: voice cloning + cloned-voice playback FREE for EVERYONE until
 // this date (announced by the "hear your voice" launch email). After it lapses,
 // voice reverts to a paid feature. Change VOICE_FREE_UNTIL to extend/end it.
@@ -48,10 +31,7 @@ export async function getUserTier(uid) {
     if (!db) return 'free';
     const snap = await db.collection('users').doc(uid).get();
     if (!snap.exists) return 'free';
-    const data = snap.data() || {};
-    // Team/admin emails get complimentary paid access (same rights as a subscriber).
-    if (isCompEmail(data.email)) return 'family';
-    return data.subscriptionTier || 'free';
+    return snap.data().subscriptionTier || 'free';
   } catch {
     return 'free';
   }
