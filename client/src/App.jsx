@@ -38,7 +38,6 @@ import ReportCardUpload from './pages/ReportCardUpload.jsx';
 import GrowthProfile from './pages/GrowthProfile.jsx';
 import DailyAdventure from './pages/DailyAdventure.jsx';
 import MultilingualDemo from './pages/MultilingualDemo.jsx';
-import Privacy from './pages/Privacy.jsx';
 import Incubate from './pages/Incubate.jsx';
 import KidRecord from './pages/KidRecord.jsx';
 import ChainStory from './pages/ChainStory.jsx';
@@ -63,6 +62,14 @@ import { ThemeProvider } from './hooks/useTheme.jsx';
 import { WhiteNoiseProvider } from './hooks/useWhiteNoise.jsx';
 import { FamilyVoicesProvider } from './hooks/useFamilyVoices.jsx';
 import { AdminProvider } from './hooks/useAdmin.jsx';
+
+// Redirect the legacy in-app /privacy route to the single canonical static policy
+// (/privacy.html). Uses a hard navigation because the policy is a static file, not a
+// React route.
+function PrivacyRedirect() {
+  useEffect(() => { window.location.replace('/privacy.html'); }, []);
+  return null;
+}
 
 function Shell() {
   const location = useLocation();
@@ -235,7 +242,9 @@ function Shell() {
             <Route path="/summer/upload" element={<ReportCardUpload />} />
             <Route path="/summer/profile" element={<GrowthProfile />} />
             <Route path="/summer/day/:dayNumber" element={<DailyAdventure />} />
-            <Route path="/privacy" element={<Privacy />} />
+            {/* Single canonical privacy policy: redirect the old in-app page to the
+                comprehensive static policy so there is only one source of truth. */}
+            <Route path="/privacy" element={<PrivacyRedirect />} />
             <Route path="/creators" element={<Incubate />} />
             <Route path="/creators/record" element={<KidRecord />} />
             <Route path="/creators/chain/:chainId" element={<ChainStory />} />
