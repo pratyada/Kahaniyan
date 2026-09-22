@@ -422,6 +422,9 @@ export async function resolveStory(storyId) {
 
     if (isSeries) {
       description = `${story.description || ''} ${story.totalEp} bedtime episodes. Free on My Sleepy Tale.`;
+    } else if (story?.description) {
+      // A hand-written description on the story wins over the generic template.
+      description = story.description;
     } else {
       const seriesInfo = story?.series ? `Episode ${story.ep} of ${story.totalEp} in "${story.series}". ` : '';
       description = story
