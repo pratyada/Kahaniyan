@@ -106,7 +106,7 @@ export const TITLES = {
   jewish_one_good_deed: { title: 'One Good Deed', tradition: 'Jewish', duration: 8 },
   jewish_two_pockets: { title: 'The Two Pockets', tradition: 'Jewish', duration: 7 },
   sikh_langar: { title: 'The Langar', tradition: 'Sikh', duration: 8 },
-  universal_garden_of_mistakes: { title: 'The Garden of Mistakes', tradition: 'Universal', duration: 7 },
+  universal_garden_of_mistakes: { title: 'The Garden Where Mistakes Grew Flowers', tradition: 'Universal', duration: 7, description: 'A magical bedtime story where every honest mistake grows a flower. Now an illustrated, page-turning storybook read aloud in a warm, human voice. 🌸', ogImage: 'https://mysleepytale.com/media/stories/garden/cover.jpg' },
   universal_invisible_boy: { title: 'The Invisible Boy', tradition: 'Universal', duration: 7 },
   universal_patience_river: { title: 'The Patient River', tradition: 'Universal', duration: 7 },
   universal_respect_old_tree: { title: 'The Old Tree', tradition: 'Universal', duration: 7 },

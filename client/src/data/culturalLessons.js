@@ -1128,6 +1128,7 @@ That night, {childName}, remember Milo on the stairs. Being brave doesn't mean y
     title: 'The Garden Where Mistakes Grew Flowers',
     durationMinutes: 7,
     source: 'Original · Universal',
+    coverImage: 'https://mysleepytale.com/media/stories/garden/cover.jpg',
     body: `In a village between two hills, there was a garden unlike any other. It was called the Honest Garden, and it had one magical rule: every time someone told the truth about a mistake they had made, a flower grew.
 
 But if someone told a lie to cover up a mistake, a weed appeared instead.
@@ -5820,7 +5821,7 @@ The Jain tradition teaches that every living being — from the mightiest elepha
 Tonight, {childName}, think of the smallest creature you saw today. A bug on the sidewalk. A spider on the wall. A bee on a flower. It has a life. It has a purpose. And noticing it — really seeing it — is the first step toward a gentle heart. Goodnight, compassionate soul.`
   },
   {
-    id: 'jain_spider_web',
+    id: 'jain_spider_beautiful_web',
     tradition: 'jain',
     theme: 'respect',
     title: 'The Spider\'s Beautiful Web',

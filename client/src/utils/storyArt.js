@@ -241,6 +241,7 @@ const STORY_ART = {
   universal_garden_of_mistakes: {
     gradient: 'linear-gradient(135deg, #064e3b 0%, #10b981 40%, #fcd34d 100%)',
     icon: '🌸', accent: '#10b981',
+    image: 'https://mysleepytale.com/media/stories/garden/cover.jpg',
     prompt: 'A magical garden where bright orange flowers bloom from the ground wherever a girl stands, glowing soil, enchanted garden at sunset',
   },
   universal_invisible_boy: {
@@ -402,7 +403,7 @@ const STORY_ART = {
 
   // ─── Jain standalone stories ───
   jain_prince_never_hurt_fly: { gradient: 'linear-gradient(135deg, #4338ca 0%, #6366f1 40%, #c7d2fe 100%)', icon: '🪰', accent: '#818cf8', prompt: 'A prince releasing a fly through a palace window, golden light, ornate Indian interior' },
-  jain_spider_web: { gradient: 'linear-gradient(135deg, #1a1a3e 0%, #2d2d5e 40%, #c4b5fd 100%)', icon: '🕸️', accent: '#a78bfa', prompt: 'A spider web with morning dew in golden sunrise, child watching in wonder, garden' },
+  jain_spider_beautiful_web: { gradient: 'linear-gradient(135deg, #1a1a3e 0%, #2d2d5e 40%, #c4b5fd 100%)', icon: '🕸️', accent: '#a78bfa', prompt: 'A spider web with morning dew in golden sunrise, child watching in wonder, garden' },
   jain_merchant_gave_everything: { gradient: 'linear-gradient(135deg, #78350f 0%, #b45309 40%, #fbbf24 100%)', icon: '🧘', accent: '#fbbf24', prompt: 'A merchant placing jewels at a monk feet under a tree, golden sunset, peace' },
   jain_bird_carried_water: { gradient: 'linear-gradient(135deg, #9a3412 0%, #f97316 40%, #fed7aa 100%)', icon: '🐦', accent: '#fb923c', prompt: 'A tiny bird flying with a water drop toward a forest fire, courage, golden orange light' },
   jain_walking_barefoot: { gradient: 'linear-gradient(135deg, #14532d 0%, #166534 40%, #86efac 100%)', icon: '🦶', accent: '#4ade80', prompt: 'Bare feet on soft green grass with wildflowers, golden light, dewdrops, mindful' },

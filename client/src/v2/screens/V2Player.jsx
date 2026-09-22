@@ -220,6 +220,11 @@ export default function V2Player() {
         <button onClick={() => { if (window.history.length > 1) navigate(-1); else navigate('/'); }} className="grid h-10 w-10 place-items-center rounded-full bg-white/[0.06] ring-1 ring-white/10 text-[#F7F1E8] active:scale-95" title="Back"><ChevronLeft size={20} /></button>
         <p className="text-[11px] font-bold uppercase tracking-[0.16em] text-[#7A6B8A]">Now Playing</p>
         <div className="flex items-center gap-2">
+          {isStorybookStory && (
+            <button onClick={() => setView('storybook')} className="flex items-center gap-1 rounded-full px-3 h-10 bg-white/[0.06] ring-1 ring-white/10 text-[11px] font-bold text-[#F6C453] active:scale-95" title="Switch to the illustrated storybook">
+              <BookOpen size={14} /> Enhanced
+            </button>
+          )}
           <button onClick={shareStory} className="grid h-10 w-10 place-items-center rounded-full bg-white/[0.06] ring-1 ring-white/10 text-[#B8AAC8] active:scale-95" title="Share this story">
             {copied ? <Check size={16} style={{ color: GOLD }} /> : <Share2 size={16} />}
           </button>
