@@ -18,9 +18,11 @@ import { GOLD } from '../ui.js';
 // story cover via onError. Kept here (not in Firestore) to stay fully self-contained.
 const SCENE_BASE = 'https://mysleepytale.com/media/stories/garden';
 const SCENES = [`${SCENE_BASE}/scene1.jpg`, `${SCENE_BASE}/scene2.jpg`, `${SCENE_BASE}/scene3.jpg`, `${SCENE_BASE}/scene4.jpg`];
-// Which scene image each paragraph (page) uses.
-const PAGE_SCENE = [0, 0, 1, 1, 1, 2, 2, 2, 3, 3, 3];
-const sceneFor = (i) => SCENES[PAGE_SCENE[i] ?? Math.min(3, Math.floor((i / 11) * 4))];
+// The 11 paragraphs are shown across 8 screens — 2 screens per scene image.
+// PAGE_GROUPS lists the paragraph indices grouped onto each screen; PAGE_SCENE maps
+// each screen to its image (2 screens per image → 0,0,1,1,2,2,3,3).
+const PAGE_GROUPS = [[0], [1], [2], [3, 4], [5], [6, 7], [8], [9, 10]];
+const PAGE_SCENE = [0, 0, 1, 1, 2, 2, 3, 3];
 
 const AUTOTURN_KEY = 'mst:storybook:autoturn';
 
@@ -34,16 +36,30 @@ export default function Storybook({ current, nar, onClassic }) {
     [current?.text]
   );
 
-  // Page boundaries as fractions of the whole narration (by paragraph length),
-  // so we can auto-turn on audio progress and seek on manual turns.
+  // Build the screens. For the 11-paragraph showcase story we group into 8 screens
+  // (2 per image). If the text ever changes shape, fall back to one paragraph per
+  // screen with the 4 images spread evenly — so it never breaks.
+  const pages = useMemo(() => {
+    if (paragraphs.length === 11) {
+      return PAGE_GROUPS.map((g, i) => ({
+        text: g.map((j) => paragraphs[j]).filter(Boolean).join('\n\n'),
+        img: SCENES[PAGE_SCENE[i]],
+      }));
+    }
+    const n = paragraphs.length || 1;
+    return paragraphs.map((t, i) => ({ text: t, img: SCENES[Math.min(3, Math.floor((i / n) * 4))] }));
+  }, [paragraphs]);
+
+  // Screen boundaries as fractions of the whole narration (by text length), so we can
+  // auto-turn on audio progress and seek on manual turns.
   const boundaries = useMemo(() => {
-    const total = paragraphs.reduce((n, p) => n + p.length, 0) || 1;
+    const total = pages.reduce((n, p) => n + p.text.length, 0) || 1;
     const out = [];
     let acc = 0;
-    for (const p of paragraphs) { out.push(acc / total); acc += p.length; }
+    for (const p of pages) { out.push(acc / total); acc += p.text.length; }
     out.push(1);
     return out;
-  }, [paragraphs]);
+  }, [pages]);
 
   const [page, setPage] = useState(0);
   const [autoTurn, setAutoTurn] = useState(() => {
@@ -53,10 +69,10 @@ export default function Storybook({ current, nar, onClassic }) {
   const startedRef = useRef(false);
 
   const pageForProgress = (p) => {
-    for (let i = 0; i < paragraphs.length; i++) {
+    for (let i = 0; i < pages.length; i++) {
       if (p >= boundaries[i] && p < boundaries[i + 1]) return i;
     }
-    return paragraphs.length - 1;
+    return pages.length - 1;
   };
 
   // ── Start expressive narration once, with graceful fallback ──
@@ -118,7 +134,7 @@ export default function Storybook({ current, nar, onClassic }) {
 
       {/* The book */}
       <div className="flex-1 grid place-items-center py-4 select-none">
-        {paragraphs.length > 0 && (
+        {pages.length > 0 && (
           <HTMLFlipBook
             ref={bookRef}
             width={360}
@@ -137,8 +153,8 @@ export default function Storybook({ current, nar, onClassic }) {
             className="storybook"
             onFlip={onFlip}
           >
-            {paragraphs.map((text, i) => (
-              <Page key={i} index={i} total={paragraphs.length} text={text} img={sceneFor(i)} cover={current?.coverImage} />
+            {pages.map((pg, i) => (
+              <Page key={i} index={i} total={pages.length} text={pg.text} img={pg.img} cover={current?.coverImage} />
             ))}
           </HTMLFlipBook>
         )}
@@ -166,7 +182,7 @@ export default function Storybook({ current, nar, onClassic }) {
         </button>
       </div>
       <p className="text-center text-[11px] text-[#7A6B8A] mt-2">
-        Page {page + 1} of {paragraphs.length}
+        Page {page + 1} of {pages.length}
         {voiceState === 'loading' && ' · weaving the voice…'}
         {voiceState === 'error' && ' · tap a page to turn'}
       </p>
@@ -194,8 +210,10 @@ const Page = forwardRef(function Page({ index, total, text, img, cover }, ref) {
             <div className="grid h-full w-full place-items-center text-4xl">🌱</div>
           )}
         </div>
-        <div className="flex-1 overflow-y-auto px-5 py-4">
-          <p className="font-display text-[16px] leading-relaxed text-[#F7F1E8]">{text}</p>
+        <div className="flex-1 overflow-y-auto px-5 py-4 space-y-3">
+          {String(text).split(/\n\s*\n/).filter(Boolean).map((para, k) => (
+            <p key={k} className="font-display text-[16px] leading-relaxed text-[#F7F1E8]">{para}</p>
+          ))}
         </div>
         <div className="px-5 pb-3 text-[10px] font-semibold uppercase tracking-[0.14em] text-[#7A6B8A]">{index + 1} / {total}</div>
       </div>
