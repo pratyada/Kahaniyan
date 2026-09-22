@@ -58,7 +58,7 @@ export default function V2Player() {
   const [sleepOpen, setSleepOpen] = useState(false); // sleep-timer popover
   const [lang, setLang] = useState('English');
   const [copied, setCopied] = useState(false);
-  const [showText, setShowText] = useState(true); // story text visible by default (collapsible)
+  const [showText, setShowText] = useState(false); // text hidden by default → "Read along" reveals it, "Hide text" hides it
   const [view, setView] = useState('storybook'); // only affects the showcase story: 'storybook' | 'classic'
   const sleepRef = useRef(null);
 
