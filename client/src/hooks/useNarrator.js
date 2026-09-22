@@ -121,7 +121,7 @@ export function useNarrator() {
   }, [cleanup, setupAudio]);
 
   // Generate fresh audio via TTS API
-  const generate = useCallback(async ({ text, narrator, language, customVoiceId, uid, country, beliefs }) => {
+  const generate = useCallback(async ({ text, narrator, language, customVoiceId, uid, country, beliefs, model, elevenVoice }) => {
     cleanup();
     setLoading(true);
     setError(null);
@@ -132,10 +132,13 @@ export function useNarrator() {
     abortRef.current = controller;
 
     try {
-      // A cloned voice routes to ElevenLabs; otherwise the default OpenAI narrator.
-      const endpoint = customVoiceId ? `${API_BASE}/api/generate-elevenlabs-audio` : `${API_BASE}/api/tts`;
-      const body = customVoiceId
-        ? { text, voiceId: customVoiceId, uid }
+      // A cloned voice OR an explicit ElevenLabs model/voice (e.g. the Storybook's
+      // expressive v3 narration) routes to ElevenLabs; otherwise the default OpenAI
+      // narrator. `model`/`elevenVoice` are additive — existing callers pass neither.
+      const useEleven = !!customVoiceId || !!model || !!elevenVoice;
+      const endpoint = useEleven ? `${API_BASE}/api/generate-elevenlabs-audio` : `${API_BASE}/api/tts`;
+      const body = useEleven
+        ? { text, voiceId: customVoiceId, uid, ...(model ? { model } : {}), ...(elevenVoice ? { voice: elevenVoice } : {}) }
         : { text, narrator, language, customVoiceId, country, beliefs };
       const res = await fetch(endpoint, {
         method: 'POST',

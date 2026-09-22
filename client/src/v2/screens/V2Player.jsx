@@ -17,6 +17,11 @@ import { COLLECTIONS } from '../../data/collections.js';
 import { buildStory } from '../play.js';
 import { markPlayed, isMultiLang } from '../played.js';
 import { GOLD } from '../ui.js';
+import Storybook from './Storybook.jsx';
+
+// Phase 1: exactly ONE story gets the immersive page-turning Storybook experience.
+// Every other story renders the normal player below, untouched.
+const STORYBOOK_STORY_ID = 'universal_garden_of_mistakes';
 
 const ML_LANGS = [['English', '🇬🇧'], ['French', '🇫🇷'], ['Hindi', '🇮🇳'], ['Arabic', '🇸🇦'], ['Spanish', '🇪🇸'], ['Chinese', '🇨🇳'], ['Polish', '🇵🇱'], ['Hungarian', '🇭🇺'], ['Tamil', '🇮🇳']];
 const TR_LANGS = [['English', '🇬🇧'], ['Spanish', '🇪🇸'], ['French', '🇫🇷'], ['Hindi', '🇮🇳'], ['Arabic', '🇸🇦'], ['Tamil', '🇮🇳'], ['Hungarian', '🇭🇺']];
@@ -54,7 +59,12 @@ export default function V2Player() {
   const [lang, setLang] = useState('English');
   const [copied, setCopied] = useState(false);
   const [showText, setShowText] = useState(true); // story text visible by default (collapsible)
+  const [view, setView] = useState('storybook'); // only affects the showcase story: 'storybook' | 'classic'
   const sleepRef = useRef(null);
+
+  const cleanCurrentId = stripId(current?.id);
+  const isStorybookStory = cleanCurrentId === STORYBOOK_STORY_ID || storyId === STORYBOOK_STORY_ID;
+  const storybookActive = isStorybookStory && view === 'storybook';
 
   // Ensure the story for THIS url is the active one (resolve + load if needed)
   useEffect(() => {
@@ -109,6 +119,9 @@ export default function V2Player() {
   // Playback — stored audio (with probe) → TTS fallback; non-English → translate + TTS
   useEffect(() => {
     if (!current) return;
+    // When the Storybook view is active it owns narration (shared narrator instance),
+    // so the classic player must not also start playback.
+    if (storybookActive) return;
     const key = `${current.id}|${lang}|${activeVoice?.id || 'default'}`;
     if (startedRef.current === key) return;
     startedRef.current = key;
@@ -159,7 +172,7 @@ export default function V2Player() {
 
     return () => { cancelled = true; nar.stop(); };
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [current?.id, lang, activeVoice?.id]);
+  }, [current?.id, lang, activeVoice?.id, storybookActive]);
 
   useEffect(() => {
     if (sleepRef.current) clearTimeout(sleepRef.current);
@@ -176,6 +189,11 @@ export default function V2Player() {
         <button onClick={() => navigate('/')} className="mt-5 rounded-full px-6 py-3 text-sm font-bold text-[#0D1B2A]" style={{ background: GOLD }}>Browse stories</button>
       </div>
     );
+  }
+
+  // Showcase story → the immersive Storybook experience (shares this narrator instance).
+  if (storybookActive) {
+    return <Storybook current={current} nar={nar} onClassic={() => setView('classic')} />;
   }
 
   const cleanId = stripId(current.id);
