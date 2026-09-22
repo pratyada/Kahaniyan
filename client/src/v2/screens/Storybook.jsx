@@ -9,8 +9,9 @@
 import { forwardRef, useEffect, useMemo, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import HTMLFlipBook from 'react-pageflip';
-import { ChevronLeft, Play, Pause, BookOpen, Sparkles } from 'lucide-react';
+import { ChevronLeft, Play, Pause, BookOpen, Sparkles, Share2, Check, Mic } from 'lucide-react';
 import { useAuth } from '../../hooks/useAuth.jsx';
+import { getActiveVoice } from '../voice.js';
 import { GOLD } from '../ui.js';
 
 // 4 scene illustrations mapped across the 11 paragraphs. These are generated in the
@@ -66,7 +67,19 @@ export default function Storybook({ current, nar, onClassic }) {
     try { return localStorage.getItem(AUTOTURN_KEY) !== '0'; } catch { return true; }
   });
   const [voiceState, setVoiceState] = useState('loading'); // loading · ready · error
+  const [copied, setCopied] = useState(false);
+  const [activeVoice] = useState(getActiveVoice()); // a chosen cloned family voice, if any
   const startedRef = useRef(false);
+
+  // Share the story (same link as the classic player, so both formats share one URL).
+  const shareUrl = `${typeof window !== 'undefined' ? window.location.origin : 'https://mysleepytale.com'}/player/universal_garden_of_mistakes`;
+  const shareStory = async () => {
+    const title = current?.title ? `${current.title} · My Sleepy Tale` : 'My Sleepy Tale';
+    try {
+      if (navigator.share) { await navigator.share({ title, url: shareUrl }); return; }
+    } catch { /* fall through to copy */ }
+    try { await navigator.clipboard.writeText(shareUrl); setCopied(true); setTimeout(() => setCopied(false), 1800); } catch { /* ignore */ }
+  };
 
   const pageForProgress = (p) => {
     for (let i = 0; i < pages.length; i++) {
@@ -82,11 +95,21 @@ export default function Storybook({ current, nar, onClassic }) {
     let cancelled = false;
     (async () => {
       setVoiceState('loading');
-      const attempts = [
-        { model: 'eleven_v3', elevenVoice: 'george' },            // most human
-        { model: 'eleven_multilingual_v2', elevenVoice: 'george' }, // fallback quality
-        { narrator: 'AI Narrator', language: 'English' },           // classic OpenAI TTS
-      ];
+      // If the family picked a cloned voice, read the story in it — using the more
+      // human multilingual model (not the faster/robotic turbo). Otherwise use the
+      // expressive v3 default narrator. Each chain falls back gracefully.
+      const attempts = activeVoice?.id
+        ? [
+            { customVoiceId: activeVoice.id, model: 'eleven_multilingual_v2' }, // cloned, more human
+            { customVoiceId: activeVoice.id },                                  // cloned, default model
+            { model: 'eleven_v3', elevenVoice: 'george' },                     // fall back to v3 narrator
+            { narrator: 'AI Narrator', language: 'English' },                  // classic OpenAI TTS
+          ]
+        : [
+            { model: 'eleven_v3', elevenVoice: 'george' },            // most human default
+            { model: 'eleven_multilingual_v2', elevenVoice: 'george' }, // fallback quality
+            { narrator: 'AI Narrator', language: 'English' },           // classic OpenAI TTS
+          ];
       for (const a of attempts) {
         try {
           const audio = await nar.generate({ text: current.text, uid: user?.uid, ...a });
@@ -127,9 +150,17 @@ export default function Storybook({ current, nar, onClassic }) {
     <div className="min-h-[100dvh] px-4 pt-5 pb-6 flex flex-col">
       {/* Top bar */}
       <header className="flex items-center justify-between gap-2">
-        <button onClick={goBack} className="grid h-9 w-9 place-items-center rounded-full bg-white/[0.06] ring-1 ring-white/10 text-[#F7F1E8]"><ChevronLeft size={18} /></button>
-        <h1 className="font-display text-[15px] lg:text-lg text-[#F7F1E8] truncate px-2">{current?.title}</h1>
-        <button onClick={onClassic} className="flex items-center gap-1 rounded-full px-3 py-1.5 text-[11px] font-bold text-[#B8AAC8] bg-white/[0.06] ring-1 ring-white/10"><BookOpen size={12} /> Classic</button>
+        <button onClick={goBack} className="grid h-9 w-9 place-items-center rounded-full bg-white/[0.06] ring-1 ring-white/10 text-[#F7F1E8]" title="Back"><ChevronLeft size={18} /></button>
+        <h1 className="font-display text-[15px] lg:text-lg text-[#F7F1E8] truncate px-2 flex-1 text-center">{current?.title}</h1>
+        <div className="flex items-center gap-1.5 shrink-0">
+          <button onClick={shareStory} className="grid h-9 w-9 place-items-center rounded-full bg-white/[0.06] ring-1 ring-white/10 text-[#B8AAC8]" title="Share this story">
+            {copied ? <Check size={15} style={{ color: GOLD }} /> : <Share2 size={15} />}
+          </button>
+          <button onClick={() => navigate('/voices')} className="grid h-9 w-9 place-items-center rounded-full bg-white/[0.06] ring-1 ring-white/10 text-[#B8AAC8]" title="Choose a voice">
+            <Mic size={15} />
+          </button>
+          <button onClick={onClassic} className="flex items-center gap-1 rounded-full px-3 py-1.5 text-[11px] font-bold text-[#B8AAC8] bg-white/[0.06] ring-1 ring-white/10" title="Switch to the classic player"><BookOpen size={12} /> Classic</button>
+        </div>
       </header>
 
       {/* The book */}
