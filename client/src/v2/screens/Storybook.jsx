@@ -31,6 +31,19 @@ export default function Storybook({ current, nar, onClassic }) {
   const navigate = useNavigate();
   const { user } = useAuth();
   const bookRef = useRef(null);
+  const flipLockRef = useRef(false); // blocks overlapping auto-flips during the animation
+  const autoFlipRef = useRef(false); // marks a flip as automatic so onFlip won't seek
+
+  // On a wide screen react-pageflip shows a 2-page spread; on a phone it's 1 page.
+  // In spread mode the two pages of a scene share ONE illustration split across both
+  // (a panorama), instead of repeating the image twice.
+  const [isSpread, setIsSpread] = useState(() => (typeof window !== 'undefined' ? window.matchMedia('(min-width: 920px)').matches : false));
+  useEffect(() => {
+    const mq = window.matchMedia('(min-width: 920px)');
+    const on = () => setIsSpread(mq.matches);
+    mq.addEventListener ? mq.addEventListener('change', on) : mq.addListener(on);
+    return () => { mq.removeEventListener ? mq.removeEventListener('change', on) : mq.removeListener(on); };
+  }, []);
 
   const paragraphs = useMemo(
     () => String(current?.text || '').split(/\n\s*\n/).map((s) => s.trim()).filter(Boolean),
@@ -124,27 +137,35 @@ export default function Storybook({ current, nar, onClassic }) {
   }, [current?.id]);
 
   // ── Auto-turn: follow the narration ──
-  // Guarded so a page never flips at load: while audio metadata is still loading the
-  // duration is NaN → progress is non-finite → pageForProgress would return the LAST
-  // page and flip there, then snap back once duration arrives (the "scroll changes the
-  // page for a few seconds then it's fine" bug). We only turn when actually playing,
-  // with a finite positive progress, and only ever FORWARD one step at a time.
+  // Guards that prevent the erratic flip-forward-then-back bug:
+  //  • only while actually playing, with finite positive progress (no NaN-at-load jump);
+  //  • flipLock so we never issue a new flip while the 800ms animation is running;
+  //  • autoFlip marker so onFlip knows this turn was automatic and must NOT seek the
+  //    audio (an auto-flip that seeks would jump progress → trigger another flip →
+  //    cascade). Advance exactly ONE page via flipNext().
   useEffect(() => {
     if (!autoTurn || voiceState !== 'ready' || !nar.playing) return;
     const p = nar.progress;
     if (!Number.isFinite(p) || p <= 0) return;
-    const idx = pageForProgress(p);
-    if (idx > page) { try { bookRef.current?.pageFlip()?.flip(page + 1); } catch { /* ignore */ } }
+    if (flipLockRef.current) return;
+    // In spread mode two pages are visible, so only advance once the audio passes BOTH.
+    const perView = isSpread ? 2 : 1;
+    if (pageForProgress(p) >= page + perView) {
+      flipLockRef.current = true;
+      autoFlipRef.current = true;
+      try { bookRef.current?.pageFlip()?.flipNext(); } catch { autoFlipRef.current = false; }
+      setTimeout(() => { flipLockRef.current = false; }, 900);
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [nar.progress, autoTurn, voiceState, nar.playing]);
+  }, [nar.progress, autoTurn, voiceState, nar.playing, page, isSpread]);
 
   const onFlip = (e) => {
     const idx = e?.data ?? 0;
     setPage(idx);
-    // A manual turn (page differs from where the audio is) seeks the voice to match.
-    if (voiceState === 'ready' && idx !== pageForProgress(nar.progress || 0)) {
-      nar.seek(boundaries[idx]);
-    }
+    // An AUTO flip must never seek (that would jump progress and cascade more flips).
+    if (autoFlipRef.current) { autoFlipRef.current = false; return; }
+    // A manual turn seeks the voice to that page.
+    if (voiceState === 'ready') nar.seek(boundaries[idx]);
   };
 
   const toggleAuto = () => {
@@ -175,13 +196,13 @@ export default function Storybook({ current, nar, onClassic }) {
         {pages.length > 0 && (
           <HTMLFlipBook
             ref={bookRef}
-            width={360}
-            height={560}
+            width={380}
+            height={480}
             size="stretch"
-            minWidth={280}
-            maxWidth={460}
-            minHeight={440}
-            maxHeight={680}
+            minWidth={300}
+            maxWidth={440}
+            minHeight={400}
+            maxHeight={520}
             maxShadowOpacity={0.5}
             showCover={false}
             mobileScrollSupport
@@ -195,7 +216,15 @@ export default function Storybook({ current, nar, onClassic }) {
             onFlip={onFlip}
           >
             {pages.map((pg, i) => (
-              <Page key={i} index={i} total={pages.length} text={pg.text} img={pg.img} cover={current?.coverImage} />
+              <Page
+                key={i}
+                index={i}
+                total={pages.length}
+                text={pg.text}
+                img={pg.img}
+                cover={current?.coverImage}
+                spreadSide={isSpread ? (i % 2 === 0 ? 'left' : 'right') : 'full'}
+              />
             ))}
           </HTMLFlipBook>
         )}
@@ -231,32 +260,35 @@ export default function Storybook({ current, nar, onClassic }) {
   );
 }
 
-// A single storybook page — scene image on top, paragraph below. forwardRef is
-// required by react-pageflip. Image falls back to the story cover, then a gradient.
-const Page = forwardRef(function Page({ index, total, text, img, cover }, ref) {
-  const [src, setSrc] = useState(img);
+// A single storybook page — scene illustration on top, text below (vertically centred
+// so short paragraphs don't leave a big blank box). forwardRef is required by
+// react-pageflip. In a 2-page spread the shared scene image is split across the two
+// pages (spreadSide left/right) so it reads as ONE panorama, not a repeat.
+const Page = forwardRef(function Page({ index, total, text, img, cover, spreadSide = 'full' }, ref) {
   const [failed, setFailed] = useState(false);
+  const url = failed ? (cover || null) : img;
+  // Panorama halves via background positioning; 'full' shows the whole image.
+  const imgStyle = url
+    ? spreadSide === 'full'
+      ? { backgroundImage: `url("${url}")`, backgroundSize: 'cover', backgroundPosition: 'center' }
+      : { backgroundImage: `url("${url}")`, backgroundSize: '200% 100%', backgroundPosition: spreadSide === 'left' ? 'left center' : 'right center' }
+    : {};
   return (
     <div ref={ref} className="storybook-page h-full w-full overflow-hidden rounded-2xl ring-1 ring-white/10" style={{ background: 'linear-gradient(160deg,#16233a,#0D1B2A)' }}>
       <div className="flex h-full flex-col">
-        <div className="relative w-full" style={{ aspectRatio: '4 / 3', background: 'linear-gradient(135deg,#243b6b,#5b3aa0)' }}>
-          {!failed && src ? (
-            <img
-              src={src}
-              alt=""
-              className="h-full w-full object-cover"
-              onError={() => { if (src !== cover && cover) setSrc(cover); else setFailed(true); }}
-            />
-          ) : (
-            <div className="grid h-full w-full place-items-center text-4xl">🌱</div>
-          )}
+        {/* Illustration — ~62% of the page so there's little empty space */}
+        <div className="relative w-full shrink-0" style={{ height: '62%', background: 'linear-gradient(135deg,#243b6b,#5b3aa0)', ...imgStyle }}>
+          {!url && <div className="grid h-full w-full place-items-center text-4xl">🌱</div>}
+          {/* hidden loader to detect a broken image → fall back to cover */}
+          {url && !failed && <img src={url} alt="" className="hidden" onError={() => setFailed(true)} />}
         </div>
-        <div className="flex-1 overflow-y-auto px-5 py-4 space-y-3">
+        {/* Text — centred in the remaining space */}
+        <div className="flex-1 flex flex-col justify-center px-5 py-3 space-y-2.5 overflow-y-auto">
           {String(text).split(/\n\s*\n/).filter(Boolean).map((para, k) => (
-            <p key={k} className="font-display text-[16px] leading-relaxed text-[#F7F1E8]">{para}</p>
+            <p key={k} className="font-display text-[15px] sm:text-[16px] leading-relaxed text-[#F7F1E8]">{para}</p>
           ))}
         </div>
-        <div className="px-5 pb-3 text-[10px] font-semibold uppercase tracking-[0.14em] text-[#7A6B8A]">{index + 1} / {total}</div>
+        <div className="px-5 pb-2.5 text-[10px] font-semibold uppercase tracking-[0.14em] text-[#7A6B8A]">{index + 1} / {total}</div>
       </div>
     </div>
   );
