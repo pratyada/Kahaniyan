@@ -39,12 +39,15 @@ export default function MyVoices() {
     // in the chosen voice (a short delay lets the selection persist first).
     if (returnTo) setTimeout(() => navigate(returnTo), 250);
   };
+  // Back button returns to wherever we came from — the story (if arrived via its mic
+  // button) or the profile screen otherwise.
+  const goBack = () => navigate(returnTo || '/profile');
   const canAddFree = useMemo(() => clones.length === 0, [clones]);
 
   if (!user) {
     return (
       <Wrap>
-        <Header title="My Voices" onBack={() => navigate('/profile')} />
+        <Header title="My Voices" onBack={goBack} />
         <div className="mt-8 rounded-3xl p-6 ring-1 ring-white/10 bg-white/[0.05] text-center">
           <Volume2 size={34} style={{ color: GOLD }} className="mx-auto mb-3" />
           <p className="font-display text-lg text-[#F7F1E8]">Sign in to add family voices</p>
@@ -177,7 +180,7 @@ export default function MyVoices() {
   /* ── list ── */
   return (
     <Wrap>
-      <Header title="My Voices" onBack={() => navigate('/profile')} />
+      <Header title="My Voices" onBack={goBack} />
       <p className="text-[13px] text-[#B8AAC8] mt-1">Pick the voice that reads your stories.</p>
 
       <div className="mt-5 space-y-2.5 max-w-[520px]">
