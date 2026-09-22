@@ -1,7 +1,7 @@
 // V2 My Voices — clone a family voice (ElevenLabs), pick the active voice for
 // playback. First voice free; more require Family Plus (enforced server-side).
 import { useEffect, useMemo, useRef, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import { ChevronLeft, Mic, Square, Check, Trash2, Plus, Gem, Volume2 } from 'lucide-react';
 import { useAuth } from '../../hooks/useAuth.jsx';
 import { useFamilyProfile } from '../../hooks/useFamilyProfile.js';
@@ -14,6 +14,8 @@ const READ_LINE = "Once upon a time, under a big silver moon, a little star wish
 
 export default function MyVoices() {
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
+  const returnTo = searchParams.get('returnTo'); // set when arriving from a story's mic button
   const { user, loginGoogle } = useAuth();
   const { voiceClones, isPaid, refreshVoiceClones } = useFamilyProfile();
 
@@ -30,7 +32,13 @@ export default function MyVoices() {
   useEffect(() => { setClones(voiceClones || []); }, [voiceClones]);
   useEffect(() => () => { if (timerRef.current) clearInterval(timerRef.current); }, []);
 
-  const pick = (v) => { setActive(v); setActiveVoice(v); };
+  const pick = (v) => {
+    setActive(v);
+    setActiveVoice(v);
+    // If we came here from a story to choose its voice, go straight back so it replays
+    // in the chosen voice (a short delay lets the selection persist first).
+    if (returnTo) setTimeout(() => navigate(returnTo), 250);
+  };
   const canAddFree = useMemo(() => clones.length === 0, [clones]);
 
   if (!user) {

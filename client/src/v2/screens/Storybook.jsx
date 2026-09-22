@@ -162,10 +162,12 @@ export default function Storybook({ current, nar, onClassic }) {
   const onFlip = (e) => {
     const idx = e?.data ?? 0;
     setPage(idx);
-    // An AUTO flip must never seek (that would jump progress and cascade more flips).
+    // An AUTO flip: just record the page and stop (no seek).
     if (autoFlipRef.current) { autoFlipRef.current = false; return; }
-    // A manual turn seeks the voice to that page.
-    if (voiceState === 'ready') nar.seek(boundaries[idx]);
+    // A MANUAL turn = the reader wants to browse. Keep the audio playing exactly where
+    // it is (no seek → no restart) and switch auto-turn OFF so it doesn't yank them
+    // back to the audio's page. They can re-enable auto-turn with the toggle.
+    setAutoTurn(false);
   };
 
   const toggleAuto = () => {
@@ -184,7 +186,7 @@ export default function Storybook({ current, nar, onClassic }) {
           <button onClick={shareStory} className="grid h-9 w-9 place-items-center rounded-full bg-white/[0.06] ring-1 ring-white/10 text-[#B8AAC8]" title="Share this story">
             {copied ? <Check size={15} style={{ color: GOLD }} /> : <Share2 size={15} />}
           </button>
-          <button onClick={() => navigate('/voices')} className="grid h-9 w-9 place-items-center rounded-full bg-white/[0.06] ring-1 ring-white/10 text-[#B8AAC8]" title="Choose a voice">
+          <button onClick={() => navigate(`/voices?returnTo=${encodeURIComponent('/player/universal_garden_of_mistakes')}`)} className="grid h-9 w-9 place-items-center rounded-full bg-white/[0.06] ring-1 ring-white/10 text-[#B8AAC8]" title="Choose a voice">
             <Mic size={15} />
           </button>
           <button onClick={onClassic} className="flex items-center gap-1 rounded-full px-3 py-1.5 text-[11px] font-bold text-[#B8AAC8] bg-white/[0.06] ring-1 ring-white/10" title="Switch to the classic player"><BookOpen size={12} /> Classic</button>
@@ -273,22 +275,29 @@ const Page = forwardRef(function Page({ index, total, text, img, cover, spreadSi
       ? { backgroundImage: `url("${url}")`, backgroundSize: 'cover', backgroundPosition: 'center' }
       : { backgroundImage: `url("${url}")`, backgroundSize: '200% 100%', backgroundPosition: spreadSide === 'left' ? 'left center' : 'right center' }
     : {};
+  // Auto-fit: text-heavy pages (e.g. two long paragraphs) shrink the font a little and
+  // give the image slightly less height, so the text fits without an in-page scroll.
+  const len = String(text).length;
+  const heavy = len > 260;
+  const imgH = heavy ? '50%' : len > 170 ? '55%' : '60%';
+  const fontPx = heavy ? 13.5 : len > 170 ? 14.5 : 16;
+  // Keep any residual scroll (very long pages) from being eaten by the flip gesture.
+  const stop = (e) => e.stopPropagation();
   return (
     <div ref={ref} className="storybook-page h-full w-full overflow-hidden rounded-2xl ring-1 ring-white/10" style={{ background: 'linear-gradient(160deg,#16233a,#0D1B2A)' }}>
       <div className="flex h-full flex-col">
-        {/* Illustration — ~62% of the page so there's little empty space */}
-        <div className="relative w-full shrink-0" style={{ height: '62%', background: 'linear-gradient(135deg,#243b6b,#5b3aa0)', ...imgStyle }}>
+        {/* Illustration — height adapts to how much text the page carries */}
+        <div className="relative w-full shrink-0" style={{ height: imgH, background: 'linear-gradient(135deg,#243b6b,#5b3aa0)', ...imgStyle }}>
           {!url && <div className="grid h-full w-full place-items-center text-4xl">🌱</div>}
-          {/* hidden loader to detect a broken image → fall back to cover */}
           {url && !failed && <img src={url} alt="" className="hidden" onError={() => setFailed(true)} />}
         </div>
-        {/* Text — centred in the remaining space */}
-        <div className="flex-1 flex flex-col justify-center px-5 py-3 space-y-2.5 overflow-y-auto">
+        {/* Text — centred, auto-sized to fit */}
+        <div className="flex-1 flex flex-col justify-center px-5 py-3 space-y-2 overflow-y-auto" onTouchMove={stop} onWheel={stop}>
           {String(text).split(/\n\s*\n/).filter(Boolean).map((para, k) => (
-            <p key={k} className="font-display text-[15px] sm:text-[16px] leading-relaxed text-[#F7F1E8]">{para}</p>
+            <p key={k} className="font-display text-[#F7F1E8]" style={{ fontSize: `${fontPx}px`, lineHeight: 1.5 }}>{para}</p>
           ))}
         </div>
-        <div className="px-5 pb-2.5 text-[10px] font-semibold uppercase tracking-[0.14em] text-[#7A6B8A]">{index + 1} / {total}</div>
+        <div className="px-5 pb-2 text-[10px] font-semibold uppercase tracking-[0.14em] text-[#7A6B8A]">{index + 1} / {total}</div>
       </div>
     </div>
   );
