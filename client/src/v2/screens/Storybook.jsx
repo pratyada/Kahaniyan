@@ -124,12 +124,19 @@ export default function Storybook({ current, nar, onClassic }) {
   }, [current?.id]);
 
   // ── Auto-turn: follow the narration ──
+  // Guarded so a page never flips at load: while audio metadata is still loading the
+  // duration is NaN → progress is non-finite → pageForProgress would return the LAST
+  // page and flip there, then snap back once duration arrives (the "scroll changes the
+  // page for a few seconds then it's fine" bug). We only turn when actually playing,
+  // with a finite positive progress, and only ever FORWARD one step at a time.
   useEffect(() => {
-    if (!autoTurn || voiceState !== 'ready') return;
-    const idx = pageForProgress(nar.progress || 0);
-    if (idx !== page) { try { bookRef.current?.pageFlip()?.flip(idx); } catch { /* ignore */ } }
+    if (!autoTurn || voiceState !== 'ready' || !nar.playing) return;
+    const p = nar.progress;
+    if (!Number.isFinite(p) || p <= 0) return;
+    const idx = pageForProgress(p);
+    if (idx > page) { try { bookRef.current?.pageFlip()?.flip(page + 1); } catch { /* ignore */ } }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [nar.progress, autoTurn, voiceState]);
+  }, [nar.progress, autoTurn, voiceState, nar.playing]);
 
   const onFlip = (e) => {
     const idx = e?.data ?? 0;
@@ -181,6 +188,9 @@ export default function Storybook({ current, nar, onClassic }) {
             drawShadow
             flippingTime={800}
             useMouseEvents
+            disableFlipByClick
+            swipeDistance={40}
+            showPageCorners={false}
             className="storybook"
             onFlip={onFlip}
           >
