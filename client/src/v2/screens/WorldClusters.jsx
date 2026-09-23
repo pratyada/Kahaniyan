@@ -3,37 +3,49 @@
 // framing (and the roadmap) is on-device theme + sentiment analysis so MST can learn
 // what sparks the child and grow the NEXT story from it.
 import { useRef } from 'react';
-import { Rocket, Sparkles, Cog, Leaf, Candy, Brain, Wand2 } from 'lucide-react';
+import { Rocket, Sparkles, Cog, Leaf, Candy, Trophy, Brain, Wand2 } from 'lucide-react';
 import { DraggableCardContainer, DraggableCardBody } from '../DraggableCard.jsx';
 import { GOLD } from '../ui.js';
 
-// The five clusters. `keywords` power the fallback classifier for real stories that
-// don't yet carry a topic. `interest` is a placeholder for the ML sentiment score.
+// The clusters. `keywords` power the fallback classifier for real stories that don't
+// carry an explicit topic — matched against the story's title AND its transcript, so
+// a kid's "pet" / "dinosaur" / "soccer" story lands in the right theme even when the
+// title is generic (e.g. "Veda's story"). `interest` is a placeholder for the ML score.
 export const CLUSTERS = [
-  { key: 'space',    title: 'Space & Sky',   icon: Rocket,   c1: '#3A2C6B', c2: '#5B8CFF', tag: 'Big questions', interest: 86, keywords: ['moon', 'star', 'space', 'rocket', 'planet', 'sky', 'astro', 'galaxy', 'comet'] },
-  { key: 'magic',    title: 'Magic & Myth',  icon: Sparkles, c1: '#5B2C87', c2: '#FF7EB6', tag: 'Fantasy',       interest: 78, keywords: ['dragon', 'unicorn', 'wizard', 'magic', 'fairy', 'spell', 'myth', 'giant', 'castle'] },
-  { key: 'machines', title: 'Machines',      icon: Cog,      c1: '#134E5E', c2: '#33C3E0', tag: 'How things work', interest: 72, keywords: ['car', 'robot', 'train', 'plane', 'machine', 'rocket ship', 'truck', 'engine', 'build'] },
-  { key: 'nature',   title: 'Animals',       icon: Leaf,     c1: '#1D6B4C', c2: '#4FD1A5', tag: 'Caring',        interest: 68, keywords: ['fish', 'fox', 'forest', 'ocean', 'puppy', 'dog', 'cat', 'bird', 'animal', 'tree', 'sea'] },
-  { key: 'silly',    title: 'Silly & Fun',   icon: Candy,    c1: '#B23A73', c2: '#FF9F6B', tag: 'Pure fun',      interest: 64, keywords: ['candy', 'giggle', 'silly', 'upside', 'funny', 'sweet', 'cake', 'party', 'laugh'] },
+  { key: 'space',    title: 'Space & Sky',   icon: Rocket,   c1: '#3A2C6B', c2: '#5B8CFF', tag: 'Big questions', interest: 86, keywords: ['moon', 'star', 'space', 'rocket', 'planet', 'sky', 'astro', 'galaxy', 'comet', 'alien', 'universe'] },
+  { key: 'nature',   title: 'Animals',       icon: Leaf,     c1: '#1D6B4C', c2: '#4FD1A5', tag: 'Caring',        interest: 68, keywords: ['fish', 'fox', 'forest', 'ocean', 'puppy', 'dog', 'cat', 'kitten', 'bird', 'animal', 'animals', 'pet', 'pets', 'rabbit', 'bunny', 'hamster', 'horse', 'lion', 'tiger', 'elephant', 'dinosaur', 'dino', 'tree', 'sea', 'jungle', 'zoo'] },
+  { key: 'sports',   title: 'Sports & Games',icon: Trophy,   c1: '#8A4B1E', c2: '#F6C453', tag: 'Play & teamwork', interest: 70, keywords: ['sport', 'sports', 'ball', 'soccer', 'football', 'cricket', 'basketball', 'tennis', 'hockey', 'race', 'racing', 'run', 'running', 'swim', 'game', 'team', 'goal', 'match', 'win', 'jump', 'skate', 'bike', 'ride'] },
+  { key: 'machines', title: 'Machines',      icon: Cog,      c1: '#134E5E', c2: '#33C3E0', tag: 'How things work', interest: 72, keywords: ['car', 'robot', 'train', 'plane', 'machine', 'truck', 'engine', 'build', 'digger', 'crane', 'boat', 'ship'] },
+  { key: 'magic',    title: 'Magic & Myth',  icon: Sparkles, c1: '#5B2C87', c2: '#FF7EB6', tag: 'Fantasy',       interest: 78, keywords: ['dragon', 'unicorn', 'wizard', 'magic', 'fairy', 'spell', 'myth', 'giant', 'castle', 'princess', 'mermaid', 'monster'] },
+  { key: 'silly',    title: 'Silly & Fun',   icon: Candy,    c1: '#B23A73', c2: '#FF9F6B', tag: 'Pure fun',      interest: 64, keywords: ['candy', 'giggle', 'silly', 'upside', 'funny', 'sweet', 'cake', 'party', 'laugh', 'joke', 'ice cream', 'pizza'] },
 ];
 
 const CLUSTER_MAP = CLUSTERS.reduce((m, c) => { m[c.key] = c; return m; }, {});
 
 // Layout for sm+ screens: a loose, playful scatter (cards are draggable anyway).
-// Two columns + a centered fifth, staggered so nothing hides on first load.
+// Two columns × three rows, staggered so nothing hides on first load.
 const POS = {
   space:    { top: 4,   left: '2%',  rotate: -5 },
-  magic:    { top: 22,  left: '52%', rotate: 5 },
-  machines: { top: 214, left: '4%',  rotate: 4 },
-  nature:   { top: 232, left: '54%', rotate: -4 },
-  silly:    { top: 418, left: '26%', rotate: 3 },
+  nature:   { top: 22,  left: '52%', rotate: 5 },
+  sports:   { top: 214, left: '4%',  rotate: 4 },
+  machines: { top: 232, left: '54%', rotate: -4 },
+  magic:    { top: 424, left: '2%',  rotate: -3 },
+  silly:    { top: 442, left: '52%', rotate: 3 },
 };
 
 export function classifyTopic(story) {
   if (story.topic && CLUSTER_MAP[story.topic]) return story.topic;
-  const t = `${story.title || ''}`.toLowerCase();
-  for (const c of CLUSTERS) { if (c.keywords.some((k) => t.includes(k))) return c.key; }
-  return 'magic'; // imagination is the safe home for the unclassified
+  // Classify on the title AND the transcript (the actual story), since kid recordings
+  // usually have a generic title — this is what segregates pet / sports / space / etc.
+  const t = `${story.title || ''} ${story.transcript || ''} ${story.text || ''}`.toLowerCase();
+  // Score every cluster by how many of its keywords appear; the strongest wins, so a
+  // story mentioning several animals beats an incidental single keyword elsewhere.
+  let best = null, bestScore = 0;
+  for (const c of CLUSTERS) {
+    const score = c.keywords.reduce((n, k) => (t.includes(k) ? n + 1 : n), 0);
+    if (score > bestScore) { bestScore = score; best = c.key; }
+  }
+  return best || 'magic'; // imagination is the safe home for the unclassified
 }
 
 export default function WorldClusters({ stories, name, onOpen, isWide }) {
@@ -65,7 +77,7 @@ export default function WorldClusters({ stories, name, onOpen, isWide }) {
 
       {/* Cluster cards */}
       <DraggableCardContainer className="mt-6">
-        <div ref={boardRef} className="relative" style={{ minHeight: isWide ? 620 : undefined }}>
+        <div ref={boardRef} className="relative" style={{ minHeight: isWide ? 660 : undefined }}>
           {grouped.map(({ cluster, items }) => {
             const p = POS[cluster.key] || { top: 0, left: '0%', rotate: 0 };
             // box grows with how many stories fall in the category
