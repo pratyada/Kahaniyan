@@ -13,7 +13,7 @@ export function isPaidTier(tier) {
 // ── Launch promo: voice cloning + cloned-voice playback FREE for EVERYONE until
 // this date (announced by the "hear your voice" launch email). After it lapses,
 // voice reverts to a paid feature. Change VOICE_FREE_UNTIL to extend/end it.
-export const VOICE_FREE_UNTIL = process.env.VOICE_FREE_UNTIL || '2026-10-01T04:00:00Z'; // ~Sep 30 EOD ET
+export const VOICE_FREE_UNTIL = process.env.VOICE_FREE_UNTIL || '2026-10-06T04:00:00Z'; // extended so the "free next week" weekend newsletter stays truthful (~Oct 5 EOD ET)
 export function isVoicePromoActive() {
   return new Date() < new Date(VOICE_FREE_UNTIL);
 }
