@@ -1,16 +1,21 @@
 // Search hook — client-side search across stories, series, and episodes.
 
-import { useMemo, useState, useCallback } from 'react';
+import { useMemo, useState, useCallback, useDeferredValue } from 'react';
 import { TRADITIONS, THEMES } from '../data/culturalLessons.js';
 
 const LS_KEY = 'mst:recentSearches';
 const MAX_RECENT = 8;
 
-// Build searchable text from an item's fields
+// Build searchable text from an item's fields. This lowercases the FULL story body
+// (so in-story keywords are searchable), which is expensive — cache the result per
+// item object so it's built once, not on every keystroke across hundreds of stories.
+const _searchTextCache = new WeakMap();
 function searchText(item) {
+  const cached = _searchTextCache.get(item);
+  if (cached !== undefined) return cached;
   const tradition = TRADITIONS.find(t => t.key === item.tradition);
   const theme = THEMES.find(t => t.key === item.theme);
-  return [
+  const text = [
     item.title,
     item.subtitle,
     item.description,
@@ -23,6 +28,8 @@ function searchText(item) {
     theme?.label,
     theme?.key,
   ].filter(Boolean).join(' ').toLowerCase();
+  _searchTextCache.set(item, text);
+  return text;
 }
 
 function matchesQuery(text, tokens) {
@@ -68,8 +75,13 @@ export function useSearch({ allLessons = [], series = [], collections = [], beli
     return stories;
   }, [allLessons, collections]);
 
+  // Defer the query that drives the heavy filter so typing stays instant — the input
+  // updates immediately from `query`, while `results` recomputes off `deferredQuery`
+  // at a lower priority (React skips intermediate keystrokes under load).
+  const deferredQuery = useDeferredValue(query);
+
   const results = useMemo(() => {
-    const tokens = query.trim().toLowerCase().split(/\s+/).filter(Boolean);
+    const tokens = deferredQuery.trim().toLowerCase().split(/\s+/).filter(Boolean);
     const hasQuery = tokens.length > 0;
     const hasFilters = traditionFilter || themeFilter;
 
@@ -110,7 +122,7 @@ export function useSearch({ allLessons = [], series = [], collections = [], beli
       episodes: episodeResults,
       total: storyResults.length + seriesResults.length + episodeResults.length,
     };
-  }, [query, traditionFilter, themeFilter, allLessons, collectionStories, series, allEpisodes, passesBeliefFilter]);
+  }, [deferredQuery, traditionFilter, themeFilter, allLessons, collectionStories, series, allEpisodes, passesBeliefFilter]);
 
   // Recent searches (localStorage)
   const getRecent = useCallback(() => {
