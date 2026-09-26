@@ -29,6 +29,29 @@ const TR_LANGS = [['English', '🇬🇧'], ['Spanish', '🇪🇸'], ['French', '
 const stripId = (id) => String(id || '').replace(/^lesson_/, '');
 const fmt = (sec) => (!isFinite(sec) || sec < 0 ? '0:00' : `${Math.floor(sec / 60)}:${String(Math.floor(sec % 60)).padStart(2, '0')}`);
 
+// The next story to play when the current one ends / the user taps Next.
+// A series episode flows to the next episode; a standalone story flows to the next
+// story in the SAME category (same tradition/theme), so it stays on-topic — falling
+// back to the wider library only if that category is too small.
+function resolveNextId(cur, allLessons) {
+  if (!cur) return null;
+  const curId = cur.episodeId || stripId(cur.id);
+  if (cur.seriesId) {
+    const s = (SERIES || []).find((x) => x.id === cur.seriesId);
+    const eps = s?.episodes || [];
+    const i = eps.findIndex((e) => e.id === curId);
+    if (i >= 0 && i < eps.length - 1) return eps[i + 1].id; // next episode in the series
+  }
+  const list = allLessons || [];
+  if (!list.length) return null;
+  const curLesson = list.find((l) => l.id === curId);
+  const cat = curLesson?.tradition || cur.tradition || null;
+  let pool = cat ? list.filter((l) => l.tradition === cat) : list;
+  if (pool.length < 2) pool = list; // too few in this category → widen to the whole library
+  const i = pool.findIndex((l) => l.id === curId);
+  return (i >= 0 ? pool[(i + 1) % pool.length] : pool[0])?.id || null;
+}
+
 // Resolve a raw content id to its lesson / episode / collection-story object
 function findContent(id, allLessons) {
   if (!id) return null;
@@ -65,6 +88,7 @@ export default function V2Player() {
   const sleepRef = useRef(null);
   const GATE_AT = 0.75; // guests are paused ~75% through and asked to sign up free
   const toggleAutoNext = () => setAutoNext((a) => { const n = !a; try { localStorage.setItem('mst:autoNext', n ? '1' : '0'); } catch {} return n; });
+  const goNext = () => { const nid = resolveNextId(current, allLessons); if (nid) navigate(`/player/${nid}`); };
 
   const cleanCurrentId = stripId(current?.id);
   const isStorybookStory = cleanCurrentId === STORYBOOK_STORY_ID || storyId === STORYBOOK_STORY_ID;
@@ -200,17 +224,13 @@ export default function V2Player() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [user]);
 
-  // Autoplay next — when an episode of a SERIES ends and Autoplay is on, continue to
-  // the next episode from wherever you are (episode 3 → 4 → 5 …), stopping at the end.
+  // Autoplay next — when a story ends and Autoplay is on, flow straight into the next
+  // one (series → next episode; otherwise the next story in the same category), so you
+  // never have to go back and pick again. Storybook view handles itself.
   useEffect(() => {
-    if (!nar.ended || !current || !autoNext) return;
-    const sid = current.seriesId;
-    if (!sid) return;
-    const s = (SERIES || []).find((x) => x.id === sid);
-    const eps = s?.episodes || [];
-    const curId = current.episodeId || stripId(current.id);
-    const idx = eps.findIndex((e) => e.id === curId || e.id === storyId);
-    if (idx >= 0 && idx < eps.length - 1) navigate(`/player/${eps[idx + 1].id}`);
+    if (!nar.ended || !current || !autoNext || storybookActive || current.isWisdom === false) return;
+    const nid = resolveNextId(current, allLessons);
+    if (nid) navigate(`/player/${nid}`);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [nar.ended]);
 
@@ -322,6 +342,7 @@ export default function V2Player() {
           {nar.playing ? <Pause size={30} fill="#0D1B2A" /> : <Play size={30} fill="#0D1B2A" className="ml-1" />}
         </button>
         <button onClick={() => nar.seekBy(15)} className="grid h-12 w-12 place-items-center rounded-full text-[#B8AAC8] hover:text-[#F7F1E8] active:scale-95 relative"><RotateCw size={26} strokeWidth={1.8} /><span className="absolute text-[8px] font-bold">15</span></button>
+        <button onClick={goNext} title="Next story" className="grid h-12 w-12 place-items-center rounded-full text-[#B8AAC8] hover:text-[#F7F1E8] active:scale-95"><SkipForward size={24} strokeWidth={1.8} /></button>
       </div>
 
       {nar.error && <p className="mt-4 text-center text-[12px] text-[#f3727f]">{nar.error}</p>}
@@ -337,12 +358,12 @@ export default function V2Player() {
         </div>
       )}
 
-      {/* Autoplay-next (series only) + sleep timer */}
+      {/* Autoplay-next + sleep timer */}
       <div className="mt-6 flex items-center justify-center gap-3">
-        {current.seriesId && (
+        {current.isWisdom !== false && (
           <button
             onClick={toggleAutoNext}
-            title="Autoplay the next episode"
+            title="Autoplay the next story"
             className={`flex items-center gap-1.5 rounded-full px-3 py-1.5 text-[12px] font-bold ring-1 transition ${autoNext ? 'text-[#0D1B2A]' : 'text-[#B8AAC8] bg-white/[0.06] ring-white/10'}`}
             style={autoNext ? { background: GOLD, borderColor: 'transparent' } : undefined}
           >
