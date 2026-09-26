@@ -26,6 +26,7 @@ export function useNarrator() {
   const [error, setError] = useState(null);
   const [progress, setProgress] = useState(0);
   const [playing, setPlaying] = useState(false);
+  const [ended, setEnded] = useState(false); // flips true when the current clip finishes (for series auto-advance)
   const [duration, setDuration] = useState(0);
   const audioRef = useRef(null);
   const urlRef = useRef(null);
@@ -56,12 +57,14 @@ export function useNarrator() {
     stopKeepalive();
     setPlaying(false);
     setProgress(0);
+    setEnded(false);
     setLoading(false);
   }, [stopKeepalive]);
 
   // Wire up all event listeners on an audio element
   const setupAudio = useCallback((audio) => {
     audioRef.current = audio;
+    setEnded(false);
 
     const updateDuration = () => {
       if (isFinite(audio.duration) && audio.duration > 0) {
@@ -84,7 +87,7 @@ export function useNarrator() {
     };
     audio.onplay = () => { setPlaying(true); ensureKeepalive(); };
     audio.onpause = () => setPlaying(false);
-    audio.onended = () => { setPlaying(false); setProgress(1); stopKeepalive(); };
+    audio.onended = () => { setPlaying(false); setProgress(1); setEnded(true); stopKeepalive(); };
 
     // Never auto-resume on visibility change. User must tap play manually.
     audio._cleanupVisibility = () => {};
@@ -232,6 +235,7 @@ export function useNarrator() {
     error,
     progress,
     playing,
+    ended,
     duration,
     audioRef,
   };

@@ -3,7 +3,7 @@
 // if it isn't already the active one). Plays stored audio directly via loadCached
 // with a liveness probe → TTS fallback for dead URLs. Multilingual → language picker.
 import { useEffect, useRef, useState } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useNavigate, useParams, useSearchParams } from 'react-router-dom';
 import { ChevronLeft, Play, Pause, RotateCcw, RotateCw, Moon, Mic, Globe, Share2, Check, BookOpen, ChevronDown } from 'lucide-react';
 import { usePlayer } from '../../hooks/usePlayer.jsx';
 import { useNarrator } from '../../hooks/useNarrator.js';
@@ -48,6 +48,7 @@ function findContent(id, allLessons) {
 export default function V2Player() {
   const navigate = useNavigate();
   const { storyId } = useParams();
+  const [searchParams] = useSearchParams();
   const { current, load } = usePlayer();
   const nar = useNarrator();
   const { user } = useAuth();
@@ -180,6 +181,22 @@ export default function V2Player() {
     return () => { if (sleepRef.current) clearTimeout(sleepRef.current); };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [sleepMin]);
+
+  // Series "Play all" — when an episode ends and we arrived with ?series=<id>,
+  // auto-advance to the next episode (top to bottom) until the series finishes.
+  useEffect(() => {
+    if (!nar.ended || !current) return;
+    const sid = searchParams.get('series');
+    if (!sid) return;
+    const s = (SERIES || []).find((x) => x.id === sid);
+    const eps = s?.episodes || [];
+    const curId = stripId(current.id);
+    const idx = eps.findIndex((e) => e.id === curId || e.id === storyId);
+    if (idx >= 0 && idx < eps.length - 1) {
+      navigate(`/player/${eps[idx + 1].id}?series=${sid}`);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [nar.ended]);
 
   if (!current) {
     return (
