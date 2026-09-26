@@ -17,7 +17,20 @@ const CACHE_BUCKET = 'mysleepytale-app';
 
 // Bump this whenever the pacing logic below changes. It is folded into the S3
 // cache key so old "rushed" clips are never served after a pacing update.
-const PACING_VERSION = 'pace-v1';
+const PACING_VERSION = 'pace-v2'; // bumped: id3-strip fix — busts stale broken (undecodable) cached mixes
+
+// ElevenLabs MP3 chunks each carry a leading ID3v2 tag. Concatenating chunks inserts
+// ID3 tags MID-STREAM, which Chrome refuses to decode (readyState 0 → silent failure /
+// no audio for long, multi-chunk stories). Strip the leading ID3v2 tag from each chunk
+// so Buffer.concat yields a clean, decodable MP3 frame stream.
+function stripId3(buf) {
+  if (buf.length > 10 && buf[0] === 0x49 && buf[1] === 0x44 && buf[2] === 0x33) { // "ID3"
+    const size = ((buf[6] & 0x7f) << 21) | ((buf[7] & 0x7f) << 14) | ((buf[8] & 0x7f) << 7) | (buf[9] & 0x7f);
+    const start = 10 + size;
+    if (start > 0 && start < buf.length) return buf.subarray(start);
+  }
+  return buf;
+}
 
 // Delivery speed passed to ElevenLabs voice_settings.speed.
 // Range ~0.7 (very slow) … 1.0 (normal) … 1.2 (fast). 0.9 = gentle bedtime read.
@@ -172,7 +185,8 @@ export default async function handler(req, res) {
       r = await call(baseVoiceSettings);
     }
     if (!r.ok) throw new Error(`ElevenLabs ${r.status}: ${await r.text()}`);
-    return Buffer.from(await r.arrayBuffer());
+    // Strip the per-chunk ID3 header so concatenated chunks form one decodable stream.
+    return stripId3(Buffer.from(await r.arrayBuffer()));
   };
 
   try {
