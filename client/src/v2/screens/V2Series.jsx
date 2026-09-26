@@ -1,7 +1,7 @@
 // V2 Series detail — night-sky episode list. Playing an episode stays in V2.
 import { useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { ChevronLeft, Play, Moon, ListVideo } from 'lucide-react';
+import { ChevronLeft, Play, Moon } from 'lucide-react';
 import { SERIES } from '../../data/series.js';
 import { useWisdomData } from '../../hooks/useWisdomData.js';
 import { usePlayer } from '../../hooks/usePlayer.jsx';
@@ -33,16 +33,12 @@ export default function V2Series() {
   const episodes = series.episodes || [];
   const cover = episodes.map((e) => wisdomImageUrls?.[e.id] || e.coverImage).find(Boolean);
 
-  const playEpisode = (ep, autoplaySeries = false) => {
+  const playEpisode = (ep) => {
     load(buildStory(ep, wisdomAudioUrls || {}, wisdomImageUrls || {}, {
       seriesId: series.id, episodeId: ep.id, episodeNumber: ep.episodeNumber, coverImage: wisdomImageUrls?.[ep.id] || ep.coverImage || cover || null,
     }));
-    // ?series=<id> tells the player to auto-advance to the next episode when this ends.
-    navigate(autoplaySeries ? `/player/${ep.id}?series=${series.id}` : `/player/${ep.id}`);
+    navigate(`/player/${ep.id}`);
   };
-
-  // Play every episode top to bottom, auto-advancing.
-  const playAll = () => { if (episodes.length) playEpisode(episodes[0], true); };
 
   return (
     <div className="pb-28 max-w-[720px] mx-auto">
@@ -58,15 +54,6 @@ export default function V2Series() {
             <p className="text-[11px] font-bold uppercase tracking-[0.16em] text-white/70">Series · {episodes.length} episodes</p>
             <h1 className="font-display text-2xl lg:text-3xl text-white mt-1.5 leading-snug">{series.icon} {series.title}</h1>
             {series.description && <p className="text-[13px] text-white/70 mt-2 max-w-[520px]">{series.description}</p>}
-            {episodes.length > 1 && (
-              <button
-                onClick={playAll}
-                className="mt-4 inline-flex items-center gap-2 rounded-full px-5 py-2.5 text-sm font-bold text-[#0D1B2A] active:scale-95 transition"
-                style={{ background: GOLD }}
-              >
-                <ListVideo size={17} /> Play all {episodes.length} episodes
-              </button>
-            )}
           </div>
         </div>
       </div>

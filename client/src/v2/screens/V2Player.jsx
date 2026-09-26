@@ -3,8 +3,8 @@
 // if it isn't already the active one). Plays stored audio directly via loadCached
 // with a liveness probe → TTS fallback for dead URLs. Multilingual → language picker.
 import { useEffect, useRef, useState } from 'react';
-import { useNavigate, useParams, useSearchParams } from 'react-router-dom';
-import { ChevronLeft, Play, Pause, RotateCcw, RotateCw, Moon, Mic, Globe, Share2, Check, BookOpen, ChevronDown } from 'lucide-react';
+import { useNavigate, useParams } from 'react-router-dom';
+import { ChevronLeft, Play, Pause, RotateCcw, RotateCw, Moon, Mic, Globe, Share2, Check, BookOpen, ChevronDown, SkipForward } from 'lucide-react';
 import { usePlayer } from '../../hooks/usePlayer.jsx';
 import { useNarrator } from '../../hooks/useNarrator.js';
 import { useWisdomData } from '../../hooks/useWisdomData.js';
@@ -48,7 +48,6 @@ function findContent(id, allLessons) {
 export default function V2Player() {
   const navigate = useNavigate();
   const { storyId } = useParams();
-  const [searchParams] = useSearchParams();
   const { current, load } = usePlayer();
   const nar = useNarrator();
   const { user, loginGoogle } = useAuth();
@@ -62,8 +61,10 @@ export default function V2Player() {
   const [showText, setShowText] = useState(false); // text hidden by default → "Read along" reveals it, "Hide text" hides it
   const [view, setView] = useState('storybook'); // only affects the showcase story: 'storybook' | 'classic'
   const [gated, setGated] = useState(false); // cliffhanger signup gate for guests
+  const [autoNext, setAutoNext] = useState(() => { try { return localStorage.getItem('mst:autoNext') !== '0'; } catch { return true; } });
   const sleepRef = useRef(null);
   const GATE_AT = 0.75; // guests are paused ~75% through and asked to sign up free
+  const toggleAutoNext = () => setAutoNext((a) => { const n = !a; try { localStorage.setItem('mst:autoNext', n ? '1' : '0'); } catch {} return n; });
 
   const cleanCurrentId = stripId(current?.id);
   const isStorybookStory = cleanCurrentId === STORYBOOK_STORY_ID || storyId === STORYBOOK_STORY_ID;
@@ -199,19 +200,17 @@ export default function V2Player() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [user]);
 
-  // Series "Play all" — when an episode ends and we arrived with ?series=<id>,
-  // auto-advance to the next episode (top to bottom) until the series finishes.
+  // Autoplay next — when an episode of a SERIES ends and Autoplay is on, continue to
+  // the next episode from wherever you are (episode 3 → 4 → 5 …), stopping at the end.
   useEffect(() => {
-    if (!nar.ended || !current) return;
-    const sid = searchParams.get('series');
+    if (!nar.ended || !current || !autoNext) return;
+    const sid = current.seriesId;
     if (!sid) return;
     const s = (SERIES || []).find((x) => x.id === sid);
     const eps = s?.episodes || [];
-    const curId = stripId(current.id);
+    const curId = current.episodeId || stripId(current.id);
     const idx = eps.findIndex((e) => e.id === curId || e.id === storyId);
-    if (idx >= 0 && idx < eps.length - 1) {
-      navigate(`/player/${eps[idx + 1].id}?series=${sid}`);
-    }
+    if (idx >= 0 && idx < eps.length - 1) navigate(`/player/${eps[idx + 1].id}`);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [nar.ended]);
 
@@ -338,8 +337,18 @@ export default function V2Player() {
         </div>
       )}
 
-      {/* Sleep timer — a single moon icon to save space; tap to reveal 5/10/15/20 */}
-      <div className="mt-6 flex items-center justify-center">
+      {/* Autoplay-next (series only) + sleep timer */}
+      <div className="mt-6 flex items-center justify-center gap-3">
+        {current.seriesId && (
+          <button
+            onClick={toggleAutoNext}
+            title="Autoplay the next episode"
+            className={`flex items-center gap-1.5 rounded-full px-3 py-1.5 text-[12px] font-bold ring-1 transition ${autoNext ? 'text-[#0D1B2A]' : 'text-[#B8AAC8] bg-white/[0.06] ring-white/10'}`}
+            style={autoNext ? { background: GOLD, borderColor: 'transparent' } : undefined}
+          >
+            <SkipForward size={14} /> Autoplay {autoNext ? 'on' : 'off'}
+          </button>
+        )}
         <div className="relative">
           <button
             onClick={() => setSleepOpen((o) => !o)}
