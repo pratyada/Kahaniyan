@@ -72,7 +72,24 @@ export function useNarrator() {
         setDuration(audio.duration);
       }
     };
-    audio.onloadedmetadata = updateDuration;
+    // Concatenated/blob MP3s (our generated TTS) report NaN/Infinity duration, which
+    // breaks the progress bar AND stops the browser firing 'ended' → autoplay-next never
+    // triggers. Seek far past the end ONCE to force the browser to compute the real
+    // duration, then reset to 0. This fixes progress, the cliffhanger gate, and 'ended'.
+    let durationFixTried = false;
+    const ensureDuration = () => {
+      if (isFinite(audio.duration) && audio.duration > 0) { updateDuration(); return; }
+      if (durationFixTried) return;
+      durationFixTried = true;
+      const onSeeked = () => {
+        audio.removeEventListener('seeked', onSeeked);
+        try { audio.currentTime = 0; } catch {}
+        updateDuration();
+      };
+      audio.addEventListener('seeked', onSeeked);
+      try { audio.currentTime = 1e101; } catch { durationFixTried = false; }
+    };
+    audio.onloadedmetadata = ensureDuration;
     audio.ondurationchange = updateDuration;
     audio.ontimeupdate = () => {
       const dur = knownDurationRef.current;
