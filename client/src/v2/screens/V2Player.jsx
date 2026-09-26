@@ -23,6 +23,12 @@ import Storybook from './Storybook.jsx';
 // Every other story renders the normal player below, untouched.
 const STORYBOOK_STORY_ID = 'universal_garden_of_mistakes';
 
+// Stories that have a pre-mixed immersive audio track (narration + ambience + SFX +
+// music). Offered behind an "Immersive ✨" toggle for A/B. Add more as we produce them.
+const IMMERSIVE_TRACKS = {
+  universal_garden_of_mistakes: 'https://mysleepytale.com/media/stories/garden/immersive.m4a',
+};
+
 const ML_LANGS = [['English', '🇬🇧'], ['French', '🇫🇷'], ['Hindi', '🇮🇳'], ['Arabic', '🇸🇦'], ['Spanish', '🇪🇸'], ['Chinese', '🇨🇳'], ['Polish', '🇵🇱'], ['Hungarian', '🇭🇺'], ['Tamil', '🇮🇳']];
 const TR_LANGS = [['English', '🇬🇧'], ['Spanish', '🇪🇸'], ['French', '🇫🇷'], ['Hindi', '🇮🇳'], ['Arabic', '🇸🇦'], ['Tamil', '🇮🇳'], ['Hungarian', '🇭🇺']];
 
@@ -93,6 +99,8 @@ export default function V2Player() {
   const cleanCurrentId = stripId(current?.id);
   const isStorybookStory = cleanCurrentId === STORYBOOK_STORY_ID || storyId === STORYBOOK_STORY_ID;
   const storybookActive = isStorybookStory && view === 'storybook';
+  const immersiveUrl = IMMERSIVE_TRACKS[cleanCurrentId] || IMMERSIVE_TRACKS[storyId];
+  const [immersive, setImmersive] = useState(false); // play the pre-mixed immersive track
 
   // Ensure the story for THIS url is the active one (resolve + load if needed)
   useEffect(() => {
@@ -150,7 +158,7 @@ export default function V2Player() {
     // When the Storybook view is active it owns narration (shared narrator instance),
     // so the classic player must not also start playback.
     if (storybookActive) return;
-    const key = `${current.id}|${lang}|${activeVoice?.id || 'default'}`;
+    const key = `${current.id}|${lang}|${activeVoice?.id || 'default'}|${immersive ? 'imm' : 'std'}`;
     if (startedRef.current === key) return;
     startedRef.current = key;
 
@@ -164,6 +172,14 @@ export default function V2Player() {
 
     (async () => {
       let audio = null;
+      // Immersive toggle: play the pre-mixed track (narration + ambience + SFX + music).
+      if (immersive && immersiveUrl) {
+        audio = nar.loadCached(immersiveUrl);
+        const ok = await probe(audio);
+        if (!ok || cancelled) { try { audio.pause(); audio.src = ''; audio.load(); } catch {} audio = null; }
+        if (audio && !cancelled) { const go = () => audio.play?.().catch(() => {}); audio.addEventListener('canplay', go, { once: true }); go(); markPlayed(current.id); }
+        return;
+      }
       // A CHILD'S OWN RECORDING (kid-created story) must ALWAYS play their real
       // voice — never a cloned voice, never AI/TTS. Play the stored audio directly.
       const isKidRecording = current.isWisdom === false && !!current.audioUrl;
@@ -200,7 +216,7 @@ export default function V2Player() {
 
     return () => { cancelled = true; nar.stop(); };
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [current?.id, lang, activeVoice?.id, storybookActive]);
+  }, [current?.id, lang, activeVoice?.id, storybookActive, immersive]);
 
   useEffect(() => {
     if (sleepRef.current) clearTimeout(sleepRef.current);
@@ -359,7 +375,17 @@ export default function V2Player() {
       )}
 
       {/* Autoplay-next + sleep timer */}
-      <div className="mt-6 flex items-center justify-center gap-3">
+      <div className="mt-6 flex items-center justify-center gap-3 flex-wrap">
+        {immersiveUrl && (
+          <button
+            onClick={() => setImmersive((v) => !v)}
+            title="Immersive audio — narration with ambience, sound effects & music"
+            className={`flex items-center gap-1.5 rounded-full px-3 py-1.5 text-[12px] font-bold ring-1 transition ${immersive ? 'text-[#0D1B2A]' : 'text-[#B8AAC8] bg-white/[0.06] ring-white/10'}`}
+            style={immersive ? { background: GOLD, borderColor: 'transparent' } : undefined}
+          >
+            ✨ Immersive {immersive ? 'on' : 'off'}
+          </button>
+        )}
         {current.isWisdom !== false && (
           <button
             onClick={toggleAutoNext}
