@@ -51,7 +51,7 @@ export default function V2Player() {
   const [searchParams] = useSearchParams();
   const { current, load } = usePlayer();
   const nar = useNarrator();
-  const { user } = useAuth();
+  const { user, loginGoogle } = useAuth();
   const { allLessons, wisdomImageUrls, wisdomAudioUrls } = useWisdomData();
   const [activeVoice] = useState(getActiveVoice()); // selected cloned voice, if any
   const startedRef = useRef(null);
@@ -61,7 +61,9 @@ export default function V2Player() {
   const [copied, setCopied] = useState(false);
   const [showText, setShowText] = useState(false); // text hidden by default → "Read along" reveals it, "Hide text" hides it
   const [view, setView] = useState('storybook'); // only affects the showcase story: 'storybook' | 'classic'
+  const [gated, setGated] = useState(false); // cliffhanger signup gate for guests
   const sleepRef = useRef(null);
+  const GATE_AT = 0.75; // guests are paused ~75% through and asked to sign up free
 
   const cleanCurrentId = stripId(current?.id);
   const isStorybookStory = cleanCurrentId === STORYBOOK_STORY_ID || storyId === STORYBOOK_STORY_ID;
@@ -182,6 +184,21 @@ export default function V2Player() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [sleepMin]);
 
+  // Cliffhanger signup gate — a GUEST is paused ~75% through and asked to sign up
+  // free to hear the ending. Signed-in users are never gated; the Storybook view
+  // handles its own thing so it's excluded here.
+  useEffect(() => { setGated(false); }, [current?.id]);
+  useEffect(() => {
+    if (user || gated || storybookActive) return;
+    if ((nar.progress || 0) >= GATE_AT) { setGated(true); nar.pause(); }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [nar.progress, user, gated, storybookActive]);
+  // Once the guest signs in while gated, resume right where they left off.
+  useEffect(() => {
+    if (user && gated) { setGated(false); nar.play(); }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [user]);
+
   // Series "Play all" — when an episode ends and we arrived with ?series=<id>,
   // auto-advance to the next episode (top to bottom) until the series finishes.
   useEffect(() => {
@@ -233,6 +250,24 @@ export default function V2Player() {
 
   return (
     <div className="px-5 lg:px-8 pt-5 pb-28 max-w-[520px] mx-auto">
+      {/* Cliffhanger signup gate (guests only) */}
+      {gated && (
+        <div className="fixed inset-0 z-[90] grid place-items-center bg-black/80 backdrop-blur-sm px-5">
+          <div className="w-full max-w-sm rounded-3xl p-6 ring-1 ring-white/10 text-center" style={{ background: '#0F1E30' }}>
+            <div className="text-4xl mb-2">🌙</div>
+            <h3 className="font-display text-xl text-[#F7F1E8]">The best part is coming…</h3>
+            <p className="text-[13px] text-[#B8AAC8] mt-2 leading-relaxed">
+              Sign up free to hear how <span className="text-[#F7F1E8]">{current.title}</span> ends — and unlock every bedtime story, even in your own voice.
+            </p>
+            <button onClick={() => loginGoogle && loginGoogle()} className="mt-5 w-full rounded-full px-6 py-3.5 text-sm font-bold text-[#0D1B2A]" style={{ background: GOLD }}>
+              Continue with Google — free
+            </button>
+            <button onClick={() => navigate('/')} className="mt-2 w-full rounded-full px-6 py-2.5 text-xs font-bold text-[#B8AAC8]">Maybe later</button>
+            <p className="text-[11px] text-[#7A6B8A] mt-3">Free forever · no card needed</p>
+          </div>
+        </div>
+      )}
+
       <div className="flex items-center justify-between">
         <button onClick={() => { if (window.history.length > 1) navigate(-1); else navigate('/'); }} className="grid h-10 w-10 place-items-center rounded-full bg-white/[0.06] ring-1 ring-white/10 text-[#F7F1E8] active:scale-95" title="Back"><ChevronLeft size={20} /></button>
         <p className="text-[11px] font-bold uppercase tracking-[0.16em] text-[#7A6B8A]">Now Playing</p>
